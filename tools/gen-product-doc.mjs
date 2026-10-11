@@ -26,6 +26,12 @@ for (const t of product.tentpoles) {
   if (!STATUSES.includes(t.status)) fail(`tentpole ${t.id}: status`);
   for (const id of t.features) if (!featureIds.has(id)) fail(`tentpole ${t.id}: unknown feature ${id}`);
 }
+if (!dist.source?.org?.startsWith("https://github.com/proseio")) fail("source.org");
+for (const r of dist.source.repos) {
+  if (!r.url?.startsWith(dist.source.org + "/")) fail(`source ${r.id}: url must be in ${dist.source.org}`);
+  if (typeof r.public !== "boolean") fail(`source ${r.id}: public must be true or false`);
+  if (!r.pt || !r.en) fail(`source ${r.id}: pt and en labels`);
+}
 const text = JSON.stringify(product) + JSON.stringify(dist);
 if (/[–—]/.test(text)) fail("rendered copy must not contain em or en dashes");
 
@@ -60,11 +66,17 @@ const lines = [
   `- Android: ${dist.android.status}. ${dist.android.en.note}`,
   `- Contact: ${dist.contact}.`,
   "",
+  "## Source code",
+  "",
+  `Organisation: ${dist.source.org}. The site links a repo only when it is public.`,
+  "",
+  ...dist.source.repos.map((r) => `- ${r.en}: ${r.url} (${r.public ? "public" : "private"})`),
+  "",
   "## Rules",
   "",
   "- A feature is `testing` only when it is in a TestFlight or beta build. Designed work stays `planned`.",
   "- Copy is pt-BR first. Rendered copy has no em or en dashes and passes the humanizer.",
-  "- Download links come only from `distribution.json`.",
+  "- Download links and source links come only from `distribution.json`.",
   "",
 ];
 writeFileSync(out, lines.join("\n"));

@@ -28,5 +28,53 @@
       "note": "The Android version has not started yet. Leave your email and we will tell you when it is out."
     }
   },
+  "source": {
+    "$comment": "Source code. A repo appears on the site only when public is true. Flip public when the GitHub repo is public (ADR 0024).",
+    "org": "https://github.com/proseio",
+    "repos": [
+      {
+        "id": "ios",
+        "url": "https://github.com/proseio/proseio-ios",
+        "public": false,
+        "pt": "App para iPhone",
+        "en": "iPhone app"
+      },
+      {
+        "id": "android",
+        "url": "https://github.com/proseio/proseio-android",
+        "public": false,
+        "pt": "App para Android",
+        "en": "Android app"
+      },
+      {
+        "id": "shared",
+        "url": "https://github.com/proseio/proseio-shared",
+        "public": false,
+        "pt": "Regras e textos dos apps",
+        "en": "App rules and text"
+      },
+      {
+        "id": "api",
+        "url": "https://github.com/proseio/proseio-api",
+        "public": false,
+        "pt": "Convites e diretório de @",
+        "en": "Invites and @ directory"
+      },
+      {
+        "id": "web",
+        "url": "https://github.com/proseio/proseio-web",
+        "public": false,
+        "pt": "Este site",
+        "en": "This site"
+      },
+      {
+        "id": "tokens",
+        "url": "https://github.com/proseio/compound-design-tokens",
+        "public": false,
+        "pt": "Cores e estilos",
+        "en": "Colours and styles"
+      }
+    ]
+  },
   "contact": "contact@envisioning.com"
 }

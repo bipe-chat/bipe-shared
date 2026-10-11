@@ -59,12 +59,12 @@ paths:
               schema: { $ref: "#/components/schemas/VerificationStatus" }
   /v1/signup:
     post:
-      summary: Create an account from an invite code (docs/usernames.md option A)
+      summary: Create an account (docs/usernames.md option A)
       description: >
         No auth. The server creates a random Matrix localpart, sets the password and
-        the email through the MAS admin API, consumes one invite use and, if given,
-        reserves the handle. The client then signs in through MAS with the email and
-        password. Rate-limited per IP.
+        the email through the MAS admin API, consumes one invite use when a code is
+        given and, if given, reserves the handle. The client then signs in through MAS
+        with the email and password. Rate-limited per IP and globally per hour.
       requestBody:
         required: true
         content:
@@ -180,9 +180,9 @@ components:
   schemas:
     SignupRequest:
       type: object
-      required: [invite_code, email, password]
+      required: [email, password]
       properties:
-        invite_code: { type: string, minLength: 1, maxLength: 64 }
+        invite_code: { type: string, maxLength: 64, description: "Optional while the server runs with SIGNUP_INVITE_REQUIRED=false (beta). A given code must be valid." }
         email: { type: string, format: email, maxLength: 254 }
         password: { type: string, minLength: 8, maxLength: 256 }
         handle: { type: string, description: "Optional. Without @." }

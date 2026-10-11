@@ -57,6 +57,23 @@ paths:
           content:
             application/json:
               schema: { $ref: "#/components/schemas/VerificationStatus" }
+  /v1/attest/challenge:
+    post:
+      summary: One-time App Attest challenge for sign-up (valid 5 minutes, single use)
+      description: >
+        No auth. The iOS app hashes the UTF-8 bytes of the challenge (SHA-256) and passes
+        that as clientDataHash to DCAppAttestService.attestKey. Rate-limited per IP.
+      responses:
+        "200":
+          description: Challenge
+          content:
+            application/json:
+              schema:
+                type: object
+                required: [challenge]
+                properties:
+                  challenge: { type: string }
+        "429": { $ref: "#/components/responses/Error" }
   /v1/signup:
     post:
       summary: Create an account (docs/usernames.md option A)
@@ -242,6 +259,15 @@ components:
         password: { type: string, minLength: 8, maxLength: 256 }
         handle: { type: string, description: "Optional. Without @." }
         display_name: { type: string, maxLength: 100 }
+        attestation: { $ref: "#/components/schemas/Attestation" }
+    Attestation:
+      type: object
+      required: [key_id, attestation_object, challenge]
+      description: Apple App Attest result. Required while the server runs with SIGNUP_ATTEST_REQUIRED (not false). Android uses Play Integrity later.
+      properties:
+        key_id: { type: string, description: "Base64 key ID from DCAppAttestService.generateKey" }
+        attestation_object: { type: string, description: "Base64 attestation object" }
+        challenge: { type: string, description: "From POST /v1/attest/challenge" }
     SignupResponse:
       type: object
       required: [user_id]
@@ -313,7 +339,7 @@ components:
       properties:
         error:
           type: string
-          enum: [bad_request, invite_invalid, invite_quota_exhausted, email_taken, handle_invalid, handle_taken, handle_cooldown, password_weak, unauthorized, not_found, rate_limited, internal]
+          enum: [bad_request, invite_invalid, invite_quota_exhausted, email_taken, handle_invalid, handle_taken, handle_cooldown, password_weak, attestation_invalid, unauthorized, not_found, rate_limited, internal]
         reason: { type: string, description: "Detail, e.g. a HandleProblem id." }
     BadgeEnvelope:
       type: object

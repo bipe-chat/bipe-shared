@@ -4,7 +4,7 @@ import { createPrivateKey, createPublicKey, sign } from "node:crypto";
 import { mkdirSync, writeFileSync } from "node:fs";
 import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
-import { loadRegistries, normalize } from "./lib/registries.mjs";
+import { handleProblem, handleSkeleton, loadRegistries, normalize } from "./lib/registries.mjs";
 
 const root = join(dirname(fileURLToPath(import.meta.url)), "..");
 const reg = loadRegistries(root);
@@ -104,3 +104,15 @@ write("scam-detection.json", {
 });
 
 console.log(`wrote test vectors to ${out}`);
+
+// --- Handles --------------------------------------------------------------
+
+const handleInputs = [
+  "ana.souza", "ana_souza", "anasouza", "a1b", "ab", "a".repeat(30), "a".repeat(31),
+  "Ana", "ana..souza", ".ana", "ana.", "ana_", "_ana", "ana-souza", "ana souza", "anã",
+  "itau", "1tau", "it.au", "b4nco.inter", "proseio", "pr0seio", "suporte.proseio",
+];
+write("handles.json", {
+  description: "Handle validation and skeletons. problem is null when valid. Equal skeletons collide.",
+  cases: handleInputs.map((input) => ({ input, problem: handleProblem(input, reg), skeleton: handleSkeleton(input, reg) })),
+});

@@ -2,7 +2,7 @@
 // Usage: node tools/gen.mjs --swift <output dir>
 //   Default Swift output: ../proseio-ios/Components/ProseioKit/Sources/ProseioKit/Generated
 // Kotlin output is added when the Android mirror starts.
-import { mkdirSync, writeFileSync } from "node:fs";
+import { copyFileSync, existsSync, mkdirSync, readdirSync, writeFileSync } from "node:fs";
 import { dirname, join, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
 import { loadRegistries } from "./lib/registries.mjs";
@@ -64,6 +64,11 @@ public enum ProseioRegistries {
 
     /// Normalised keywords, matched as substrings of the normalised message.
     public static let receiptKeywords: [String] = ${swiftArray(reg.scam.receiptKeywords.map(swiftString))}
+
+    /// Username (handle) rules. The server is the authority; clients check early for feedback.
+    public static let handleMinLength = ${reg.handles.minLength}
+    public static let handleMaxLength = ${reg.handles.maxLength}
+    public static let handlePattern = ${swiftString(reg.handles.pattern)}
 }
 `;
 }
@@ -105,3 +110,14 @@ for (const [locale, strings] of [["pt-BR", reg.strings.strings], ["en", reg.stri
   writeFileSync(join(resources, `${locale}.lproj`, "Proseio.strings"), appleStrings(strings));
 }
 console.log(`wrote Swift to ${swiftOut}`);
+
+// proseio-api: the reference library and the registries it reads, copied verbatim.
+const apiIndex = args.indexOf("--api");
+const apiOut = resolve(apiIndex >= 0 ? args[apiIndex + 1] : join(root, "../proseio-api/src/generated"));
+if (existsSync(resolve(apiOut, "../.."))) {
+  for (const dir of ["registries", "strings", "lib"]) mkdirSync(join(apiOut, dir), { recursive: true });
+  for (const f of readdirSync(join(root, "registries"))) copyFileSync(join(root, "registries", f), join(apiOut, "registries", f));
+  for (const f of ["pt-BR.json", "en.json"]) copyFileSync(join(root, "strings", f), join(apiOut, "strings", f));
+  copyFileSync(join(root, "tools/lib/registries.mjs"), join(apiOut, "lib/registries.mjs"));
+  console.log(`wrote API registries to ${apiOut}`);
+}

@@ -57,8 +57,174 @@ paths:
           content:
             application/json:
               schema: { $ref: "#/components/schemas/VerificationStatus" }
+  /v1/signup:
+    post:
+      summary: Create an account from an invite code (docs/usernames.md option A)
+      description: >
+        No auth. The server creates a random Matrix localpart, sets the password and
+        the email through the MAS admin API, consumes one invite use and, if given,
+        reserves the handle. The client then signs in through MAS with the email and
+        password. Rate-limited per IP.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: { $ref: "#/components/schemas/SignupRequest" }
+      responses:
+        "201":
+          description: Account created
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/SignupResponse" }
+        "400": { $ref: "#/components/responses/Error" }
+        "403": { $ref: "#/components/responses/Error" }
+        "409": { $ref: "#/components/responses/Error" }
+        "429": { $ref: "#/components/responses/Error" }
+  /v1/handles/{handle}/availability:
+    get:
+      summary: Check a handle before sign-up or change
+      description: No auth. Rate-limited per IP. Never reveals who holds a handle.
+      parameters:
+        - { name: handle, in: path, required: true, schema: { type: string } }
+      responses:
+        "200":
+          description: Result
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/HandleAvailability" }
+        "429": { $ref: "#/components/responses/Error" }
+  /v1/handles/{handle}:
+    get:
+      summary: Exact handle lookup (no search, no directory)
+      security: [{ matrix: [] }]
+      parameters:
+        - { name: handle, in: path, required: true, schema: { type: string } }
+      responses:
+        "200":
+          description: Current holder
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/HandleRecord" }
+        "401": { $ref: "#/components/responses/Error" }
+        "404": { $ref: "#/components/responses/Error" }
+        "429": { $ref: "#/components/responses/Error" }
+  /v1/handles/resolve:
+    post:
+      summary: Handles for Matrix IDs, for display (max 100 per call)
+      security: [{ matrix: [] }]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [user_ids]
+              properties:
+                user_ids: { type: array, maxItems: 100, items: { type: string } }
+      responses:
+        "200":
+          description: Map of Matrix ID to handle. IDs without a handle are absent.
+          content:
+            application/json:
+              schema:
+                type: object
+                required: [handles]
+                properties:
+                  handles: { type: object, additionalProperties: { type: string } }
+        "401": { $ref: "#/components/responses/Error" }
+  /v1/me/handle:
+    get:
+      summary: The caller's handle
+      security: [{ matrix: [] }]
+      responses:
+        "200":
+          description: Current handle and when it can next change
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/MyHandle" }
+        "401": { $ref: "#/components/responses/Error" }
+    put:
+      summary: Set or change the caller's handle (30-day cooldown; old handle held 90 days)
+      security: [{ matrix: [] }]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [handle]
+              properties:
+                handle: { type: string }
+      responses:
+        "200":
+          description: Handle set
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/MyHandle" }
+        "400": { $ref: "#/components/responses/Error" }
+        "401": { $ref: "#/components/responses/Error" }
+        "409": { $ref: "#/components/responses/Error" }
+        "429": { $ref: "#/components/responses/Error" }
 components:
+  responses:
+    Error:
+      description: Error
+      content:
+        application/json:
+          schema: { $ref: "#/components/schemas/Error" }
+  securitySchemes:
+    matrix:
+      type: http
+      scheme: bearer
+      description: Matrix access token from MAS. The API checks it with Synapse whoami.
   schemas:
+    SignupRequest:
+      type: object
+      required: [invite_code, email, password]
+      properties:
+        invite_code: { type: string, minLength: 1, maxLength: 64 }
+        email: { type: string, format: email, maxLength: 254 }
+        password: { type: string, minLength: 8, maxLength: 256 }
+        handle: { type: string, description: "Optional. Without @." }
+        display_name: { type: string, maxLength: 100 }
+    SignupResponse:
+      type: object
+      required: [user_id]
+      properties:
+        user_id: { type: string, description: "Random Matrix ID, e.g. @k7q2m9x4tpab:proseio.com.br" }
+        handle: { type: string }
+    HandleAvailability:
+      type: object
+      required: [handle, available]
+      properties:
+        handle: { type: string }
+        available: { type: boolean }
+        reason: { $ref: "#/components/schemas/HandleProblem" }
+    HandleProblem:
+      type: string
+      enum: [too_short, too_long, invalid_characters, reserved, taken]
+      description: Same ids as proseio-shared handleProblem(); "taken" also covers held and lookalike handles.
+    HandleRecord:
+      type: object
+      required: [handle, user_id]
+      properties:
+        handle: { type: string }
+        user_id: { type: string }
+    MyHandle:
+      type: object
+      required: [user_id]
+      properties:
+        user_id: { type: string }
+        handle: { type: string }
+        changeable_at: { type: string, format: date-time, description: "Absent when a change is allowed now." }
+    Error:
+      type: object
+      required: [error]
+      properties:
+        error:
+          type: string
+          enum: [bad_request, invite_invalid, email_taken, handle_invalid, handle_taken, handle_cooldown, password_weak, unauthorized, not_found, rate_limited, internal]
+        reason: { type: string, description: "Detail, e.g. a HandleProblem id." }
     BadgeEnvelope:
       type: object
       required: [v, kid, payload, sig]

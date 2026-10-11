@@ -10,6 +10,7 @@ export function loadRegistries(root) {
     family: read("registries/family-terms.json"),
     scam: read("registries/scam-patterns.json"),
     homoglyphs: read("registries/homoglyphs.json"),
+    handles: read("registries/handles.json"),
     strings: read("strings/pt-BR.json"),
     stringsEn: read("strings/en.json"),
   };
@@ -37,6 +38,9 @@ function validate(reg) {
       try { new RegExp(p.regex); } catch (e) { fail(`${group}.${p.id} regex: ${e.message}`); }
     }
   }
+  const h = reg.handles;
+  if (!(Number.isInteger(h.minLength) && Number.isInteger(h.maxLength) && h.minLength >= 1 && h.maxLength >= h.minLength)) fail("handles: lengths");
+  try { new RegExp(h.pattern); new RegExp(h.skeletonStrip, "g"); } catch (e) { fail(`handles regex: ${e.message}`); }
   for (const k of Object.keys(reg.homoglyphs.map)) if ([...k].length !== 1) fail(`homoglyph key "${k}" must be one character`);
   for (const key of Object.keys(reg.strings.strings)) if (!/^proseio_[a-z0-9_]+$/.test(key)) fail(`string key "${key}"`);
   const pt = Object.keys(reg.strings.strings).sort().join(), en = Object.keys(reg.stringsEn.strings).sort().join();
@@ -52,4 +56,21 @@ export function normalize(input, homoglyphMap) {
   const stripped = input.normalize("NFKD").replace(/\p{M}/gu, "").toLowerCase();
   const folded = [...stripped].map((c) => homoglyphMap[c] ?? c).join("");
   return folded.replace(/\s+/g, " ").trim();
+}
+
+// Handle checks (docs/usernames.md). Input is the raw handle without "@".
+// Returns null when valid, else a reason id shared by every platform.
+export function handleProblem(handle, reg) {
+  const h = reg.handles;
+  if (handle.length < h.minLength) return "too_short";
+  if (handle.length > h.maxLength) return "too_long";
+  if (!new RegExp(h.pattern).test(handle)) return "invalid_characters";
+  const skeleton = handleSkeleton(handle, reg);
+  const reserved = Object.values(reg.reserved.categories).flat().map((n) => n.replace(/\s+/g, ""));
+  if (reserved.includes(skeleton)) return "reserved";
+  return null;
+}
+
+export function handleSkeleton(handle, reg) {
+  return normalize(handle, reg.homoglyphs.map).replace(new RegExp(reg.handles.skeletonStrip, "g"), "").replace(/\s+/g, "");
 }

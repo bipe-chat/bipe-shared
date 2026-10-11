@@ -1,0 +1,120 @@
+{
+  "description": "Handle validation and skeletons. problem is null when valid. Equal skeletons collide.",
+  "cases": [
+    {
+      "input": "ana.souza",
+      "problem": null,
+      "skeleton": "anasouza"
+    },
+    {
+      "input": "ana_souza",
+      "problem": null,
+      "skeleton": "anasouza"
+    },
+    {
+      "input": "anasouza",
+      "problem": null,
+      "skeleton": "anasouza"
+    },
+    {
+      "input": "a1b",
+      "problem": null,
+      "skeleton": "aib"
+    },
+    {
+      "input": "ab",
+      "problem": "too_short",
+      "skeleton": "ab"
+    },
+    {
+      "input": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+      "problem": null,
+      "skeleton": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+    },
+    {
+      "input": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+      "problem": "too_long",
+      "skeleton": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+    },
+    {
+      "input": "Ana",
+      "problem": "invalid_characters",
+      "skeleton": "ana"
+    },
+    {
+      "input": "ana..souza",
+      "problem": "invalid_characters",
+      "skeleton": "anasouza"
+    },
+    {
+      "input": ".ana",
+      "problem": "invalid_characters",
+      "skeleton": "ana"
+    },
+    {
+      "input": "ana.",
+      "problem": "invalid_characters",
+      "skeleton": "ana"
+    },
+    {
+      "input": "ana_",
+      "problem": null,
+      "skeleton": "ana"
+    },
+    {
+      "input": "_ana",
+      "problem": "invalid_characters",
+      "skeleton": "ana"
+    },
+    {
+      "input": "ana-souza",
+      "problem": "invalid_characters",
+      "skeleton": "ana-souza"
+    },
+    {
+      "input": "ana souza",
+      "problem": "invalid_characters",
+      "skeleton": "anasouza"
+    },
+    {
+      "input": "anã",
+      "problem": "invalid_characters",
+      "skeleton": "ana"
+    },
+    {
+      "input": "itau",
+      "problem": "reserved",
+      "skeleton": "itau"
+    },
+    {
+      "input": "1tau",
+      "problem": "reserved",
+      "skeleton": "itau"
+    },
+    {
+      "input": "it.au",
+      "problem": "reserved",
+      "skeleton": "itau"
+    },
+    {
+      "input": "b4nco.inter",
+      "problem": "reserved",
+      "skeleton": "bancointer"
+    },
+    {
+      "input": "proseio",
+      "problem": "reserved",
+      "skeleton": "proseio"
+    },
+    {
+      "input": "pr0seio",
+      "problem": "reserved",
+      "skeleton": "proseio"
+    },
+    {
+      "input": "suporte.proseio",
+      "problem": "reserved",
+      "skeleton": "suporteproseio"
+    }
+  ]
+}

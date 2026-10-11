@@ -29,6 +29,8 @@
     "proseio_action_scam_victim": "Fui vítima de golpe",
     "proseio_scam_victim_body": "Fale com o seu banco agora e peça a devolução pelo MED. Quanto antes, maior a chance de recuperar o dinheiro.",
     "proseio_charge_status_paid": "Pago",
-    "proseio_charge_status_pending": "Pendente"
+    "proseio_charge_status_pending": "Pendente",
+    "proseio_settings_language": "Idioma",
+    "proseio_settings_language_footer": "Escolha entre português e inglês nos ajustes do iPhone."
   }
 }

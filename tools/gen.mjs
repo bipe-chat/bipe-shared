@@ -68,17 +68,28 @@ public enum ProseioRegistries {
 `;
 }
 
+// Apple .strings syntax; %N$s placeholders become %N$@ (Swift String arguments).
+const appleStrings = (strings) =>
+  HEADER.replace(/^\/\//gm, "/*").replace(/\n/g, " */\n") +
+  Object.entries(strings).map(([k, v]) => {
+    const esc = v.replace(/\\/g, "\\\\").replace(/"/g, '\\"').replace(/%(\d+)\$s/g, "%$1$$@");
+    return `"${k}" = "${esc}";`;
+  }).join("\n") + "\n";
+
 function swiftStrings() {
   const members = Object.entries(reg.strings.strings).map(([key, value]) => {
     const placeholders = [...new Set([...value.matchAll(/%(\d+)\$s/g)].map((m) => Number(m[1])))].sort();
-    if (placeholders.length === 0) return `    public static let ${camel(key)} = ${swiftString(value)}`;
+    const lookup = `NSLocalizedString(${swiftString(key)}, tableName: "Proseio", bundle: .module, comment: "")`;
+    if (placeholders.length === 0) return `    public static var ${camel(key)}: String { ${lookup} }`;
     const params = placeholders.map((n) => `_ p${n}: String`).join(", ");
-    let body = swiftString(value);
-    for (const n of placeholders) body = body.replaceAll(`%${n}$s`, `\\(p${n})`);
-    return `    public static func ${camel(key)}(${params}) -> String {\n        ${body}\n    }`;
+    const args = placeholders.map((n) => `p${n}`).join(", ");
+    return `    public static func ${camel(key)}(${params}) -> String {\n        String(format: ${lookup}, ${args})\n    }`;
   });
   return `${HEADER}
-// pt-BR only for now. DRAFT copy: not yet through the humanizer pass.
+import Foundation
+
+// pt-BR is the default language; en is the alternative (Resources/<locale>.lproj/Proseio.strings).
+// DRAFT copy: not yet through the humanizer pass.
 public enum ProseioStrings {
 ${members.join("\n\n")}
 }
@@ -88,4 +99,9 @@ ${members.join("\n\n")}
 mkdirSync(swiftOut, { recursive: true });
 writeFileSync(join(swiftOut, "ProseioRegistries.swift"), swiftRegistries());
 writeFileSync(join(swiftOut, "ProseioStrings.swift"), swiftStrings());
+const resources = resolve(swiftOut, "../../../Sources/ProseioKit/Resources");
+for (const [locale, strings] of [["pt-BR", reg.strings.strings], ["en", reg.stringsEn.strings]]) {
+  mkdirSync(join(resources, `${locale}.lproj`), { recursive: true });
+  writeFileSync(join(resources, `${locale}.lproj`, "Proseio.strings"), appleStrings(strings));
+}
 console.log(`wrote Swift to ${swiftOut}`);

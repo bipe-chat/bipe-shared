@@ -11,6 +11,7 @@ export function loadRegistries(root) {
     scam: read("registries/scam-patterns.json"),
     homoglyphs: read("registries/homoglyphs.json"),
     strings: read("strings/pt-BR.json"),
+    stringsEn: read("strings/en.json"),
   };
   validate(reg);
   return reg;
@@ -38,6 +39,12 @@ function validate(reg) {
   }
   for (const k of Object.keys(reg.homoglyphs.map)) if ([...k].length !== 1) fail(`homoglyph key "${k}" must be one character`);
   for (const key of Object.keys(reg.strings.strings)) if (!/^proseio_[a-z0-9_]+$/.test(key)) fail(`string key "${key}"`);
+  const pt = Object.keys(reg.strings.strings).sort().join(), en = Object.keys(reg.stringsEn.strings).sort().join();
+  if (pt !== en) fail("strings/pt-BR.json and strings/en.json must have the same keys");
+  for (const [key, value] of Object.entries(reg.strings.strings)) {
+    const ph = (v) => [...v.matchAll(/%(\d+)\$s/g)].map((m) => m[1]).sort().join();
+    if (ph(value) !== ph(reg.stringsEn.strings[key])) fail(`placeholders differ for ${key}`);
+  }
 }
 
 // NFKD, strip combining marks, lowercase, fold homoglyphs, collapse whitespace.

@@ -1,7 +1,7 @@
 // Generates platform code from registries/ and strings/.
-// Usage: node tools/gen.mjs --swift <output dir>
+// Usage: node tools/gen.mjs [--swift <dir>] [--kotlin <dir>] [--api <dir>]
 //   Default Swift output: ../proseio-ios/Components/ProseioKit/Sources/ProseioKit/Generated
-// Kotlin output is added when the Android mirror starts.
+//   Default Kotlin output: ../proseio-android/libraries/proseio/src/main (kotlin/ and res/ below it)
 import { copyFileSync, existsSync, mkdirSync, readdirSync, writeFileSync } from "node:fs";
 import { dirname, join, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
@@ -119,6 +119,112 @@ for (const [locale, strings] of [["pt-BR", reg.strings.strings], ["en", reg.stri
   writeFileSync(join(resources, `${locale}.lproj`, "Proseio.strings"), appleStrings(strings));
 }
 console.log(`wrote Swift to ${swiftOut}`);
+
+// Kotlin string literal. `$` is escaped because Kotlin templates use it.
+const kotlinString = (s) =>
+  '"' + [...s].map((c) => {
+    if (c === "\\") return "\\\\";
+    if (c === '"') return '\\"';
+    if (c === "$") return "\\$";
+    const code = c.codePointAt(0);
+    if (code < 0x20 || code === 0x7f) return `\\u${code.toString(16).padStart(4, "0")}`;
+    return c;
+  }).join("") + '"';
+
+const kotlinList = (fn, items, indent = "        ") => `${fn}(\n` + items.map((i) => `${indent}${i},`).join("\n") + `\n${indent.slice(4)})`;
+const KOTLIN_PACKAGE = "io.element.android.libraries.proseio.generated";
+
+function kotlinRegistries() {
+  const reserved = Object.entries(reg.reserved.categories).flatMap(([cat, names]) => names.map((n) => `${kotlinString(n)} to ReservedNameCategory.${cat.toUpperCase()}`));
+  const categories = Object.keys(reg.reserved.categories).map((c) => `    ${c.toUpperCase()}("${c}"),`).join("\n");
+  const patterns = (group) => kotlinList("listOf", reg.scam[group].map((p) => `ScamPattern(id = ${kotlinString(p.id)}, regex = ${kotlinString(p.regex)})`));
+  // Keyed by code point: JS folds per code point, and a Kotlin Char is one UTF-16 unit.
+  const homoglyphs = Object.entries(reg.homoglyphs.map).map(([k, v]) => `0x${k.codePointAt(0).toString(16).toUpperCase().padStart(4, "0")} to ${kotlinString(v)}`);
+
+  return `${HEADER}
+package ${KOTLIN_PACKAGE}
+
+enum class ReservedNameCategory(val id: String) {
+${categories}
+}
+
+data class ScamPattern(val id: String, val regex: String)
+
+object ProseioRegistries {
+    /** Normalised reserved display names and their category. */
+    val reservedNames: Map<String, ReservedNameCategory> = ${kotlinList("mapOf", reserved)}
+
+    /** Normalised relationship terms that trigger the name-mismatch check. */
+    val familyTerms: Set<String> = ${kotlinList("setOf", reg.family.terms.map(kotlinString))}
+
+    /** Character folding applied after lowercasing and diacritic stripping. Code point to replacement. */
+    val homoglyphs: Map<Int, String> = ${kotlinList("mapOf", homoglyphs)}
+
+    val pixKeyPatterns: List<ScamPattern> = ${patterns("pixKeyPatterns")}
+
+    val pixCopyPastePatterns: List<ScamPattern> = ${patterns("pixCopyPastePatterns")}
+
+    val boletoPatterns: List<ScamPattern> = ${patterns("boletoPatterns")}
+
+    /** Normalised phrases, matched as substrings of the normalised message. */
+    val urgencyPhrases: List<String> = ${kotlinList("listOf", reg.scam.urgencyPhrases.map(kotlinString))}
+
+    /** Normalised keywords, matched as substrings of the normalised message. */
+    val receiptKeywords: List<String> = ${kotlinList("listOf", reg.scam.receiptKeywords.map(kotlinString))}
+
+    /** Normalised words. A Pix-key match warns only when the normalised message also contains one of them. */
+    val pixKeyContextWords: List<String> = ${kotlinList("listOf", reg.scam.pixKeyContextWords.map(kotlinString))}
+
+    /** Normalised urgency phrases that make a message the "new number" kind. */
+    val newNumberPhrases: Set<String> = ${kotlinList("setOf", reg.scam.newNumberPhrases.map(kotlinString))}
+
+    /** Scam warning kind ids, most actionable first. The first kind whose rule applies wins. */
+    val scamWarningKindPriority: List<String> = ${kotlinList("listOf", reg.scam.warningKindPriority.map(kotlinString))}
+
+    /** Username (handle) rules. The server is the authority; clients check early for feedback. */
+    const val HANDLE_MIN_LENGTH = ${reg.handles.minLength}
+    const val HANDLE_MAX_LENGTH = ${reg.handles.maxLength}
+    const val HANDLE_PATTERN = ${kotlinString(reg.handles.pattern)}
+}
+`;
+}
+
+// Android string resource escaping. %N$s placeholders stay as they are.
+const androidString = (v) => {
+  const esc = v
+    .replace(/\\/g, "\\\\")
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/'/g, "\\'")
+    .replace(/"/g, '\\"')
+    .replace(/\n/g, "\\n");
+  return /^[@?]/.test(esc) ? `\\${esc}` : esc;
+};
+
+const androidStrings = (strings, comment) =>
+  `<?xml version="1.0" encoding="utf-8"?>\n<!-- ${HEADER.trim().replace(/^\/\/ /gm, "").replace(/\n/g, " ")} -->\n<!-- ${comment} -->\n<resources>\n` +
+  Object.entries(strings).map(([k, v]) => {
+    // A literal % that is not a placeholder would break String.format.
+    const formatted = /%(?!\d+\$s)/.test(v) ? ' formatted="false"' : "";
+    return `    <string name="${k}"${formatted}>${androidString(v)}</string>`;
+  }).join("\n") + "\n</resources>\n";
+
+const kotlinIndex = args.indexOf("--kotlin");
+const kotlinOut = resolve(kotlinIndex >= 0 ? args[kotlinIndex + 1] : join(root, "../proseio-android/libraries/proseio/src/main"));
+if (kotlinIndex >= 0 || existsSync(resolve(kotlinOut, "../../.."))) {
+  const kotlinDir = join(kotlinOut, "kotlin", ...KOTLIN_PACKAGE.split("."));
+  mkdirSync(kotlinDir, { recursive: true });
+  writeFileSync(join(kotlinDir, "ProseioRegistries.kt"), kotlinRegistries());
+  // pt-BR is the default language, so it fills values/. en is the alternative.
+  for (const [dir, strings, comment] of [
+    ["values", reg.strings.strings, "pt-BR (default). DRAFT copy: not yet through the humanizer pass."],
+    ["values-en", reg.stringsEn.strings, "en. DRAFT copy: not yet through the humanizer pass."],
+  ]) {
+    mkdirSync(join(kotlinOut, "res", dir), { recursive: true });
+    writeFileSync(join(kotlinOut, "res", dir, "proseio_strings.xml"), androidStrings(strings, comment));
+  }
+  console.log(`wrote Kotlin to ${kotlinOut}`);
+}
 
 // proseio-api: the reference library and the registries it reads, copied verbatim.
 const apiIndex = args.indexOf("--api");

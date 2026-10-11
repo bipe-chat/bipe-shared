@@ -8,3 +8,7 @@ Source of truth for registries, strings, API contract and test vectors shared by
 - `tools/lib/registries.mjs` `normalize()` is the reference implementation. Platform code must match `test-vectors/normalization.json`.
 - No npm dependencies. Node built-ins only.
 - Write docs in ASD-STE100 style. UI strings are draft until they pass the humanizer.
+
+## Decisions
+
+Product and architecture decisions for all Proseio repos are ADRs in the umbrella repo: `../proseio/docs/adr/` (index: `README.md`). Check them before changing a decided behaviour. A new decision gets an ADR there, not a note in this repo.

@@ -80,6 +80,60 @@ paths:
         "403": { $ref: "#/components/responses/Error" }
         "409": { $ref: "#/components/responses/Error" }
         "429": { $ref: "#/components/responses/Error" }
+  /v1/invites/{code}:
+    get:
+      summary: Preview an invite before sign-up
+      description: >
+        No auth. Rate-limited per IP. Tells the invite page and the app whether a code
+        can still be used, and the inviter's handle when they have one. The code is a
+        secret the inviter shared, so showing the inviter's handle to its holder is intended.
+        CORS allows https://proseio.com.br.
+      parameters:
+        - { name: code, in: path, required: true, schema: { type: string, maxLength: 64 } }
+      responses:
+        "200":
+          description: Result
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/InvitePreview" }
+        "429": { $ref: "#/components/responses/Error" }
+  /v1/me/invites:
+    get:
+      summary: The caller's personal invites and quota
+      security: [{ matrix: [] }]
+      responses:
+        "200":
+          description: Quota and invites, newest first
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/MyInvites" }
+        "401": { $ref: "#/components/responses/Error" }
+    post:
+      summary: Create one personal invite
+      description: >
+        Single use, expires after 30 days. The code is returned once and stored only as
+        a hash. Fails with invite_quota_exhausted when no invite is available.
+      security: [{ matrix: [] }]
+      responses:
+        "201":
+          description: New invite
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/CreatedInvite" }
+        "401": { $ref: "#/components/responses/Error" }
+        "403": { $ref: "#/components/responses/Error" }
+        "429": { $ref: "#/components/responses/Error" }
+  /v1/me/invites/{inviteId}:
+    delete:
+      summary: Revoke one of the caller's pending invites
+      description: The invite goes back to the caller's available count. Used invites cannot be revoked.
+      security: [{ matrix: [] }]
+      parameters:
+        - { name: inviteId, in: path, required: true, schema: { type: string } }
+      responses:
+        "204": { description: Revoked }
+        "401": { $ref: "#/components/responses/Error" }
+        "404": { $ref: "#/components/responses/Error" }
   /v1/handles/{handle}/availability:
     get:
       summary: Check a handle before sign-up or change
@@ -193,6 +247,40 @@ components:
       properties:
         user_id: { type: string, description: "Random Matrix ID, e.g. @k7q2m9x4tpab:proseio.com.br" }
         handle: { type: string }
+        inviter_user_id: { type: string, description: "Present when a personal invite was used. The app can offer a chat with the inviter." }
+    InvitePreview:
+      type: object
+      required: [valid]
+      properties:
+        valid: { type: boolean, description: "False when the code is unknown, used, expired or revoked. No reason is given." }
+        inviter_handle: { type: string, description: "Only for a valid personal invite whose inviter has a handle. Without @." }
+    InviteStatus:
+      type: string
+      enum: [pending, used, expired, revoked]
+    Invite:
+      type: object
+      required: [id, status, created_at, expires_at]
+      properties:
+        id: { type: string }
+        status: { $ref: "#/components/schemas/InviteStatus" }
+        created_at: { type: string, format: date-time }
+        expires_at: { type: string, format: date-time }
+        joined_user_id: { type: string, description: "Only when status is used: the account created with this invite." }
+    MyInvites:
+      type: object
+      required: [quota, available, invites]
+      properties:
+        quota: { type: integer, description: "Total personal invites the caller may hold (pending plus used)." }
+        available: { type: integer, description: "Invites the caller can create now." }
+        invites: { type: array, items: { $ref: "#/components/schemas/Invite" } }
+    CreatedInvite:
+      type: object
+      required: [id, code, url, expires_at]
+      properties:
+        id: { type: string }
+        code: { type: string, description: "Shown once. Format XXXX-XXXX-XXXX." }
+        url: { type: string, description: "https://proseio.com.br/convite/<code>, a universal link into the app." }
+        expires_at: { type: string, format: date-time }
     HandleAvailability:
       type: object
       required: [handle, available]
@@ -223,7 +311,7 @@ components:
       properties:
         error:
           type: string
-          enum: [bad_request, invite_invalid, email_taken, handle_invalid, handle_taken, handle_cooldown, password_weak, unauthorized, not_found, rate_limited, internal]
+          enum: [bad_request, invite_invalid, invite_quota_exhausted, email_taken, handle_invalid, handle_taken, handle_cooldown, password_weak, unauthorized, not_found, rate_limited, internal]
         reason: { type: string, description: "Detail, e.g. a HandleProblem id." }
     BadgeEnvelope:
       type: object

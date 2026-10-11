@@ -1,0 +1,70 @@
+{
+  "$comment": "On-device money-request detection (security.md rule 9). Friction, not protection: attackers can read these rules. Regexes use a portable subset (ICU and java.util.regex compatible). Phrases are compared after normalisation. Starter list: review before launch.",
+  "version": 1,
+  "pixKeyPatterns": [
+    {
+      "id": "cpf",
+      "regex": "\\b\\d{3}\\.?\\d{3}\\.?\\d{3}-?\\d{2}\\b"
+    },
+    {
+      "id": "cnpj",
+      "regex": "\\b\\d{2}\\.?\\d{3}\\.?\\d{3}/?\\d{4}-?\\d{2}\\b"
+    },
+    {
+      "id": "phone",
+      "regex": "(?<!\\d)(?:\\+?55\\s?)?\\(?[1-9]{2}\\)?\\s?9\\d{4}-?\\d{4}(?!\\d)"
+    },
+    {
+      "id": "email",
+      "regex": "[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,}"
+    },
+    {
+      "id": "random",
+      "regex": "\\b[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}\\b"
+    }
+  ],
+  "pixCopyPastePatterns": [
+    {
+      "id": "brcode",
+      "regex": "000201.*(?i:br\\.gov\\.bcb\\.pix)"
+    }
+  ],
+  "boletoPatterns": [
+    {
+      "id": "linha-digitavel",
+      "regex": "\\b\\d{5}\\.?\\d{5}\\s?\\d{5}\\.?\\d{6}\\s?\\d{5}\\.?\\d{6}\\s?\\d\\s?\\d{14}\\b"
+    }
+  ],
+  "urgencyPhrases": [
+    "troquei de numero",
+    "numero novo",
+    "esse e meu numero novo",
+    "salva esse numero",
+    "faz um pix",
+    "faz um pix pra mim",
+    "preciso de um pix",
+    "me empresta",
+    "me empresta um dinheiro",
+    "urgente",
+    "e urgente",
+    "hoje ainda",
+    "agora mesmo",
+    "nao posso falar agora",
+    "nao consigo falar agora",
+    "depois te explico",
+    "te devolvo amanha",
+    "te pago amanha",
+    "meu app do banco travou",
+    "me passa o codigo",
+    "codigo que chegou",
+    "aprova esse login",
+    "escaneia esse qr"
+  ],
+  "receiptKeywords": [
+    "comprovante",
+    "pix enviado",
+    "transferencia realizada",
+    "pagamento efetuado",
+    "id da transacao"
+  ]
+}

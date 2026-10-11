@@ -1,0 +1,21 @@
+{
+  "$comment": "Proseio-owned UI strings (Element strings stay on Localazy). DRAFT: not yet through the humanizer pass. Keys follow Element's naming rules with a proseio_ prefix. Placeholders use %1$s; generators convert per platform.",
+  "version": 1,
+  "strings": {
+    "proseio_badge_verified": "Verificado",
+    "proseio_badge_verified_name": "Verificado como %1$s",
+    "proseio_badge_institution": "Instituição verificada",
+    "proseio_badge_suspended": "Verificação suspensa",
+    "proseio_banner_unverified_title": "Conta não verificada",
+    "proseio_banner_unverified_body": "Criada há %1$s dias. Não está nos seus contatos.",
+    "proseio_banner_external": "Conta de fora do Proseio. Não conseguimos verificar esta pessoa.",
+    "proseio_banner_security_change": "Esta conta entrou em um aparelho novo e ainda não foi verificada nele.",
+    "proseio_warning_name_mismatch": "Esta conta está verificada como %1$s.",
+    "proseio_warning_money_request_title": "Pedido de dinheiro",
+    "proseio_warning_money_request_body": "Antes de pagar, confirme com a pessoa por outro meio. Golpistas criam pressa.",
+    "proseio_warning_receipt_image": "Imagem, não comprovante de pagamento.",
+    "proseio_warning_reserved_name": "Este nome é reservado para instituições verificadas.",
+    "proseio_warning_not_your_contact": "Não é o seu contato %1$s.",
+    "proseio_device_approval_never_for_others": "O Proseio nunca pede para você aprovar um login de outra pessoa."
+  }
+}

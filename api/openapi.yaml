@@ -1,0 +1,84 @@
+openapi: 3.1.0
+info:
+  title: Proseio API
+  version: 0.1.0
+  description: >
+    Verification, badges and directories. Skeleton contract: shapes are stable
+    identifiers shared by iOS, Android and the web console. Auth: Matrix access
+    token validated against MAS (OIDC).
+servers:
+  - url: https://api.proseio.com.br
+paths:
+  /v1/badges/{userId}:
+    get:
+      summary: Current badge envelope for a user
+      parameters:
+        - name: userId
+          in: path
+          required: true
+          schema: { type: string }
+      responses:
+        "200":
+          description: Badge envelope (verify locally, see docs/badge-attestation.md)
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/BadgeEnvelope" }
+        "404":
+          description: User has no badge
+  /v1/verifications/pix:
+    post:
+      summary: Start a Pix verification for the caller
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [cpf]
+              properties:
+                cpf: { type: string, pattern: "^\\d{11}$", description: "Digits only. Hashed on receipt, never stored in clear." }
+      responses:
+        "201":
+          description: Pix charge to pay from the user's own bank account
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/PixChallenge" }
+  /v1/verifications/{verificationId}:
+    get:
+      summary: Verification status
+      parameters:
+        - name: verificationId
+          in: path
+          required: true
+          schema: { type: string }
+      responses:
+        "200":
+          description: Status
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/VerificationStatus" }
+components:
+  schemas:
+    BadgeEnvelope:
+      type: object
+      required: [v, kid, payload, sig]
+      properties:
+        v: { type: integer, const: 1 }
+        kid: { type: string }
+        payload: { type: string, description: "base64url JSON payload bytes" }
+        sig: { type: string, description: "base64url Ed25519 signature" }
+    PixChallenge:
+      type: object
+      required: [verificationId, brcode, amountCents, expiresAt]
+      properties:
+        verificationId: { type: string }
+        brcode: { type: string, description: "Pix copia-e-cola payload; also rendered as QR" }
+        amountCents: { type: integer, const: 1 }
+        expiresAt: { type: string, format: date-time }
+    VerificationStatus:
+      type: object
+      required: [verificationId, state]
+      properties:
+        verificationId: { type: string }
+        state: { type: string, enum: [pending, verified, rejected, expired] }
+        badge: { $ref: "#/components/schemas/BadgeEnvelope" }

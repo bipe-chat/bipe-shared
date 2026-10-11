@@ -1,0 +1,129 @@
+{
+  "$comment": "TEST-ONLY key. Never trust kid test-only-* in a release build. See docs/badge-attestation.md for the verification order.",
+  "now": 1791720000,
+  "publicKeys": {
+    "test-only-2026-10": "iojj3XQJ8ZX9UtstPLpdcspnCb8dlBIb83SIAbQPb1w"
+  },
+  "vectors": [
+    {
+      "name": "valid",
+      "envelope": {
+        "v": 1,
+        "kid": "test-only-2026-10",
+        "payload": "eyJzdWIiOiJAYW5hOnByb3NlaW8uY29tLmJyIiwibHZsIjoicGl4IiwibmFtZSI6IkFuYSBTb3V6YSIsImRldiI6ImRHVnpkQzFrWlhacFkyVXRhMlY1TFdacGJtZGxjbkJ5YVc1MCIsImlhdCI6MTc5MTcxNjQwMCwiZXhwIjoxNzk0MzEyMDAwfQ",
+        "sig": "VPZXwYHK8e_e5z39-l7EDJ6kSC5R8AGekA091OXDq3vbK7ZMCTjqVTXq6A8fk3n1mhQmAbA_Rgnr9AXhw96gDw"
+      },
+      "sender": "@ana:proseio.com.br",
+      "senderDevice": "dGVzdC1kZXZpY2Uta2V5LWZpbmdlcnByaW50",
+      "expect": "valid"
+    },
+    {
+      "name": "tampered payload",
+      "envelope": {
+        "v": 1,
+        "kid": "test-only-2026-10",
+        "payload": "eyJzdWIiOiJAYW5hOnByb3NlaW8uY29tLmJyIiwibHZsIjoicGl4IiwibmFtZSI6IkFuYSBTb3V6YSBMaW1hIiwiZGV2IjoiZEdWemRDMWtaWFpwWTJVdGEyVjVMV1pwYm1kbGNuQnlhVzUwIiwiaWF0IjoxNzkxNzE2NDAwLCJleHAiOjE3OTQzMTIwMDB9",
+        "sig": "VPZXwYHK8e_e5z39-l7EDJ6kSC5R8AGekA091OXDq3vbK7ZMCTjqVTXq6A8fk3n1mhQmAbA_Rgnr9AXhw96gDw"
+      },
+      "sender": "@ana:proseio.com.br",
+      "senderDevice": "dGVzdC1kZXZpY2Uta2V5LWZpbmdlcnByaW50",
+      "expect": "invalid_signature"
+    },
+    {
+      "name": "signed by unknown key",
+      "envelope": {
+        "v": 1,
+        "kid": "test-only-2026-10",
+        "payload": "eyJzdWIiOiJAYW5hOnByb3NlaW8uY29tLmJyIiwibHZsIjoicGl4IiwibmFtZSI6IkFuYSBTb3V6YSIsImRldiI6ImRHVnpkQzFrWlhacFkyVXRhMlY1TFdacGJtZGxjbkJ5YVc1MCIsImlhdCI6MTc5MTcxNjQwMCwiZXhwIjoxNzk0MzEyMDAwfQ",
+        "sig": "pvI37jjyZn7sbJzk9b2umX4N5BEaKmwzlajTPETZ3NGD89DGmPSHMGOlqiouK5uxBmoTFF11HDMY0nks8xr8Ag"
+      },
+      "sender": "@ana:proseio.com.br",
+      "senderDevice": "dGVzdC1kZXZpY2Uta2V5LWZpbmdlcnByaW50",
+      "expect": "invalid_signature"
+    },
+    {
+      "name": "unknown kid",
+      "envelope": {
+        "v": 1,
+        "kid": "prod-unknown",
+        "payload": "eyJzdWIiOiJAYW5hOnByb3NlaW8uY29tLmJyIiwibHZsIjoicGl4IiwibmFtZSI6IkFuYSBTb3V6YSIsImRldiI6ImRHVnpkQzFrWlhacFkyVXRhMlY1TFdacGJtZGxjbkJ5YVc1MCIsImlhdCI6MTc5MTcxNjQwMCwiZXhwIjoxNzk0MzEyMDAwfQ",
+        "sig": "VPZXwYHK8e_e5z39-l7EDJ6kSC5R8AGekA091OXDq3vbK7ZMCTjqVTXq6A8fk3n1mhQmAbA_Rgnr9AXhw96gDw"
+      },
+      "sender": "@ana:proseio.com.br",
+      "senderDevice": "dGVzdC1kZXZpY2Uta2V5LWZpbmdlcnByaW50",
+      "expect": "unknown_kid"
+    },
+    {
+      "name": "unsupported version",
+      "envelope": {
+        "v": 2,
+        "kid": "test-only-2026-10",
+        "payload": "eyJzdWIiOiJAYW5hOnByb3NlaW8uY29tLmJyIiwibHZsIjoicGl4IiwibmFtZSI6IkFuYSBTb3V6YSIsImRldiI6ImRHVnpkQzFrWlhacFkyVXRhMlY1TFdacGJtZGxjbkJ5YVc1MCIsImlhdCI6MTc5MTcxNjQwMCwiZXhwIjoxNzk0MzEyMDAwfQ",
+        "sig": "VPZXwYHK8e_e5z39-l7EDJ6kSC5R8AGekA091OXDq3vbK7ZMCTjqVTXq6A8fk3n1mhQmAbA_Rgnr9AXhw96gDw"
+      },
+      "sender": "@ana:proseio.com.br",
+      "senderDevice": "dGVzdC1kZXZpY2Uta2V5LWZpbmdlcnByaW50",
+      "expect": "unsupported_version"
+    },
+    {
+      "name": "expired",
+      "envelope": {
+        "v": 1,
+        "kid": "test-only-2026-10",
+        "payload": "eyJzdWIiOiJAYW5hOnByb3NlaW8uY29tLmJyIiwibHZsIjoicGl4IiwibmFtZSI6IkFuYSBTb3V6YSIsImRldiI6ImRHVnpkQzFrWlhacFkyVXRhMlY1TFdacGJtZGxjbkJ5YVc1MCIsImlhdCI6MTc5MTcxNjQwMCwiZXhwIjoxNzkxNzE5OTk5fQ",
+        "sig": "s6Ym1m8NwepKK7jmuneBWdEOr9OitASTCh5qP4CSevaXWO4NOEeteES7s12jTMiqrAUDCbjb7wPZBlAISAHIDw"
+      },
+      "sender": "@ana:proseio.com.br",
+      "senderDevice": "dGVzdC1kZXZpY2Uta2V5LWZpbmdlcnByaW50",
+      "expect": "expired"
+    },
+    {
+      "name": "not yet valid",
+      "envelope": {
+        "v": 1,
+        "kid": "test-only-2026-10",
+        "payload": "eyJzdWIiOiJAYW5hOnByb3NlaW8uY29tLmJyIiwibHZsIjoicGl4IiwibmFtZSI6IkFuYSBTb3V6YSIsImRldiI6ImRHVnpkQzFrWlhacFkyVXRhMlY1TFdacGJtZGxjbkJ5YVc1MCIsImlhdCI6MTc5MTcyMDA2MCwiZXhwIjoxNzk0MzEyMDAwfQ",
+        "sig": "vN6-JPwLk-1t4_VB4hLwt0gV7DBzSLSM-dMpNYYWMslshc5yGZfs4QXk_z_GPKsmUDnWWgGCAduS-mgldcosAQ"
+      },
+      "sender": "@ana:proseio.com.br",
+      "senderDevice": "dGVzdC1kZXZpY2Uta2V5LWZpbmdlcnByaW50",
+      "expect": "not_yet_valid"
+    },
+    {
+      "name": "missing name",
+      "envelope": {
+        "v": 1,
+        "kid": "test-only-2026-10",
+        "payload": "eyJzdWIiOiJAYW5hOnByb3NlaW8uY29tLmJyIiwibHZsIjoicGl4IiwiZGV2IjoiZEdWemRDMWtaWFpwWTJVdGEyVjVMV1pwYm1kbGNuQnlhVzUwIiwiaWF0IjoxNzkxNzE2NDAwLCJleHAiOjE3OTQzMTIwMDB9",
+        "sig": "vuujaY1rKK0bUMaYQBbuFb7mbYjrYALYBxYAsjQdxpiynX3RMzDcMfbO0V5Snv1SNdQlFzNkk_gN-CSoPEunCQ"
+      },
+      "sender": "@ana:proseio.com.br",
+      "senderDevice": "dGVzdC1kZXZpY2Uta2V5LWZpbmdlcnByaW50",
+      "expect": "malformed"
+    },
+    {
+      "name": "subject mismatch",
+      "envelope": {
+        "v": 1,
+        "kid": "test-only-2026-10",
+        "payload": "eyJzdWIiOiJAYW5hOnByb3NlaW8uY29tLmJyIiwibHZsIjoicGl4IiwibmFtZSI6IkFuYSBTb3V6YSIsImRldiI6ImRHVnpkQzFrWlhacFkyVXRhMlY1TFdacGJtZGxjbkJ5YVc1MCIsImlhdCI6MTc5MTcxNjQwMCwiZXhwIjoxNzk0MzEyMDAwfQ",
+        "sig": "VPZXwYHK8e_e5z39-l7EDJ6kSC5R8AGekA091OXDq3vbK7ZMCTjqVTXq6A8fk3n1mhQmAbA_Rgnr9AXhw96gDw"
+      },
+      "sender": "@mallory:proseio.com.br",
+      "senderDevice": "dGVzdC1kZXZpY2Uta2V5LWZpbmdlcnByaW50",
+      "expect": "subject_mismatch"
+    },
+    {
+      "name": "device mismatch (new device, badge suspended)",
+      "envelope": {
+        "v": 1,
+        "kid": "test-only-2026-10",
+        "payload": "eyJzdWIiOiJAYW5hOnByb3NlaW8uY29tLmJyIiwibHZsIjoicGl4IiwibmFtZSI6IkFuYSBTb3V6YSIsImRldiI6ImRHVnpkQzFrWlhacFkyVXRhMlY1TFdacGJtZGxjbkJ5YVc1MCIsImlhdCI6MTc5MTcxNjQwMCwiZXhwIjoxNzk0MzEyMDAwfQ",
+        "sig": "VPZXwYHK8e_e5z39-l7EDJ6kSC5R8AGekA091OXDq3vbK7ZMCTjqVTXq6A8fk3n1mhQmAbA_Rgnr9AXhw96gDw"
+      },
+      "sender": "@ana:proseio.com.br",
+      "senderDevice": "bmV3LWRldmljZQ",
+      "expect": "device_mismatch"
+    }
+  ]
+}

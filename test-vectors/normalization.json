@@ -1,0 +1,60 @@
+{
+  "$comment": "normalize(): NFKD, strip combining marks, lowercase, fold homoglyphs (registries/homoglyphs.json), collapse whitespace. reserved: category if the normalised name is in registries/reserved-names.json.",
+  "vectors": [
+    {
+      "input": "Itaú",
+      "normalized": "itau",
+      "reserved": "bank"
+    },
+    {
+      "input": "ІТАÚ",
+      "normalized": "itau",
+      "reserved": "bank"
+    },
+    {
+      "input": "Nubаnk",
+      "normalized": "nubank",
+      "reserved": "bank"
+    },
+    {
+      "input": "Banco  do   Brasil",
+      "normalized": "banco do brasil",
+      "reserved": "bank"
+    },
+    {
+      "input": "B4nco do Br4sil",
+      "normalized": "banco do brasil",
+      "reserved": "bank"
+    },
+    {
+      "input": "Receita Federal",
+      "normalized": "receita federal",
+      "reserved": "government"
+    },
+    {
+      "input": "Proseio Oficial",
+      "normalized": "proseio oficial",
+      "reserved": "proseio"
+    },
+    {
+      "input": "Maria Souza",
+      "normalized": "maria souza",
+      "reserved": null
+    },
+    {
+      "input": "Ana",
+      "normalized": "ana",
+      "reserved": null
+    },
+    {
+      "input": "gov.br",
+      "normalized": "gov.br",
+      "reserved": "government"
+    },
+    {
+      "input": "Caixa Tem",
+      "normalized": "caixa tem",
+      "reserved": "government"
+    }
+  ]
+}

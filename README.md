@@ -9,7 +9,6 @@ Single source of truth for Proseio logic that iOS, Android and the web console s
 | `api/openapi.yaml` | Proseio API contract (verification, badges) |
 | `docs/badge-attestation.md` | Signed badge format and verification order |
 | `test-vectors/` | Generated cases every platform must pass: badges, normalisation, scam detection |
-| `tokens/acai.tokens.json` | DRAFT design tokens (açaí palette, trust states). Moves into the proseio-tokens fork of Compound. |
 | `tools/` | Generators (Node 24, no npm packages) |
 
 ## Commands
@@ -34,3 +33,5 @@ Regenerates `test-vectors/` from the registries and the reference implementation
 - Registries are starter lists. Review before launch (reserved names, phrases, confusables table).
 
 Kotlin generation starts with the Android mirror.
+
+Design tokens (colours, trust states) are not here. They live in the `proseio-tokens` fork of Compound, which generates Swift, Kotlin and web. See `proseio/docs/design/system.md`.

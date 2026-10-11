@@ -1,5 +1,5 @@
 {
-  "$comment": "Proseio-owned UI strings (Element strings stay on Localazy). DRAFT: not yet through the humanizer pass. Keys follow Element's naming rules with a proseio_ prefix. Placeholders use %1$s; generators convert per platform.",
+  "$comment": "Proseio-owned UI strings (Element strings stay on Localazy). DRAFT: not yet through the humanizer pass. Keys follow Element's naming rules with a proseio_ prefix. Placeholders use %1$s; generators convert per platform. No plural forms: a count goes into a placeholder that the platform formats with its own plural-aware formatter (proseio_banner_unverified_body %1$s = account age, for example '1 dia' or '2 dias', from DateComponentsFormatter / Android plurals). Words in a sentence never change with a count.",
   "version": 1,
   "strings": {
     "proseio_badge_verified": "Verificado",
@@ -7,7 +7,7 @@
     "proseio_badge_institution": "Instituição verificada",
     "proseio_badge_suspended": "Verificação suspensa",
     "proseio_banner_unverified_title": "Conta não verificada",
-    "proseio_banner_unverified_body": "Criada há %1$s dias. Não está nos seus contatos.",
+    "proseio_banner_unverified_body": "Conta criada há %1$s. Não está nos seus contatos.",
     "proseio_banner_external": "Conta de fora do Proseio. Não conseguimos verificar esta pessoa.",
     "proseio_banner_security_change": "Esta conta entrou em um aparelho novo e ainda não foi verificada nele.",
     "proseio_warning_name_mismatch": "Esta conta está verificada como %1$s.",
@@ -16,6 +16,19 @@
     "proseio_warning_receipt_image": "Imagem, não comprovante de pagamento.",
     "proseio_warning_reserved_name": "Este nome é reservado para instituições verificadas.",
     "proseio_warning_not_your_contact": "Não é o seu contato %1$s.",
-    "proseio_device_approval_never_for_others": "O Proseio nunca pede para você aprovar um login de outra pessoa."
+    "proseio_device_approval_never_for_others": "O Proseio nunca pede para você aprovar um login de outra pessoa.",
+    "proseio_badge_verified_contact": "Contato confirmado pessoalmente",
+    "proseio_badge_suspended_body": "Esta conta entrou em um aparelho novo. A verificação volta quando a pessoa confirmar a identidade nele.",
+    "proseio_warning_nickname_confirm_title": "Confirme quem é esta pessoa",
+    "proseio_warning_nickname_confirm_body": "Você salvou este contato como %1$s. A conta está verificada como %2$s. É a mesma pessoa?",
+    "proseio_action_nickname_confirm_yes": "Sim, é a mesma pessoa",
+    "proseio_action_nickname_confirm_unsure": "Não tenho certeza",
+    "proseio_pause_countdown": "Aguarde %1$s s",
+    "proseio_pix_card_bank_name": "Seu banco vai mostrar o nome %1$s. Se aparecer outro nome, não pague.",
+    "proseio_warning_name_lookalike_emoji": "Este emoji não pode ficar ao lado do nome. Ele parece um selo de verificação.",
+    "proseio_action_scam_victim": "Fui vítima de golpe",
+    "proseio_scam_victim_body": "Fale com o seu banco agora e peça a devolução pelo MED. Quanto antes, maior a chance de recuperar o dinheiro.",
+    "proseio_charge_status_paid": "Pago",
+    "proseio_charge_status_pending": "Pendente"
   }
 }

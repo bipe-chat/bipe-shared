@@ -112,7 +112,8 @@ paths:
       summary: Create one personal invite
       description: >
         Single use, expires after 30 days. The code is returned once and stored only as
-        a hash. Fails with invite_quota_exhausted when no invite is available.
+        a hash. Fails with invite_quota_exhausted when no invite is available. Slots come
+        back: a used invite frees its slot INVITE_RESPAWN_DAYS after the invitee joined.
       security: [{ matrix: [] }]
       responses:
         "201":
@@ -236,7 +237,7 @@ components:
       type: object
       required: [email, password]
       properties:
-        invite_code: { type: string, maxLength: 64, description: "Optional while the server runs with SIGNUP_INVITE_REQUIRED=false (beta). A given code must be valid." }
+        invite_code: { type: string, maxLength: 2048, description: "Optional while the server runs with SIGNUP_INVITE_REQUIRED=false (beta). A code, an invite link or a whole pasted message; the server extracts the code (test-vectors/invite-codes.json). A given code must be valid." }
         email: { type: string, format: email, maxLength: 254 }
         password: { type: string, minLength: 8, maxLength: 256 }
         handle: { type: string, description: "Optional. Without @." }
@@ -270,8 +271,9 @@ components:
       type: object
       required: [quota, available, invites]
       properties:
-        quota: { type: integer, description: "Total personal invites the caller may hold (pending plus used)." }
+        quota: { type: integer, description: "Slots the caller has. A pending invite holds a slot until it expires or is revoked; a used invite holds it for INVITE_RESPAWN_DAYS (default 7) after the invitee joined." }
         available: { type: integer, description: "Invites the caller can create now." }
+        next_available_at: { type: string, format: date-time, description: "Only when available is 0: when the next slot comes back." }
         invites: { type: array, items: { $ref: "#/components/schemas/Invite" } }
     CreatedInvite:
       type: object

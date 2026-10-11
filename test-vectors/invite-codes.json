@@ -1,0 +1,25 @@
+{
+  "$comment": "extractInviteCode(text): the invite code inside anything a user pastes or types (a bare code, a proseio.com.br/convite/ link, a whole share message). Rule: uppercase the text; find the first match of PATTERN; drop the separators; format XXXX-XXXX-XXXX. No match: null. Alphabet ABCDEFGHJKMNPQRSTUVWXYZ23456789 (no 0/O, 1/I/L), same as proseio-api newInviteCode(). Separators between groups: none, one space, or one hyphen or dash (U+002D, U+2010, U+2011, U+2012, U+2013, U+2014, U+2212). The pattern is portable: ICU (Swift), java.util.regex (Kotlin), V8 (JS). Hand-written: edit here, then make every platform pass.",
+  "pattern": "(?<![A-Z0-9])([A-HJKMNP-Z2-9]{4})[ \\-\\u2010-\\u2014\\u2212]?([A-HJKMNP-Z2-9]{4})[ \\-\\u2010-\\u2014\\u2212]?([A-HJKMNP-Z2-9]{4})(?![A-Z0-9])",
+  "vectors": [
+    { "input": "ABCD-EFGH-JKMN", "code": "ABCD-EFGH-JKMN" },
+    { "input": "abcd-efgh-jkmn", "code": "ABCD-EFGH-JKMN" },
+    { "input": "ABCDEFGHJKMN", "code": "ABCD-EFGH-JKMN" },
+    { "input": "  abcd efgh jkmn  ", "code": "ABCD-EFGH-JKMN" },
+    { "input": "ABCD–EFGH—JKMN", "code": "ABCD-EFGH-JKMN" },
+    { "input": "https://proseio.com.br/convite/ABCD-EFGH-JKMN", "code": "ABCD-EFGH-JKMN" },
+    { "input": "https://www.proseio.com.br/convite/abcd-efgh-jkmn/", "code": "ABCD-EFGH-JKMN" },
+    { "input": "proseio.com.br/convite/ABCDEFGHJKMN?utm_source=whatsapp", "code": "ABCD-EFGH-JKMN" },
+    { "input": "Entra no Proseio comigo: https://proseio.com.br/convite/Q7RM-2XKP-9HTV", "code": "Q7RM-2XKP-9HTV" },
+    { "input": "Join me on Proseio: https://proseio.com.br/convite/Q7RM-2XKP-9HTV\n", "code": "Q7RM-2XKP-9HTV" },
+    { "input": "", "code": null },
+    { "input": "hello", "code": null },
+    { "input": "ABCD-EFGH-JKM", "code": null },
+    { "input": "ABCD-EFGH-JKMNP", "code": null },
+    { "input": "ABCD-EFGH-JKM0", "code": null },
+    { "input": "OBCD-EFGH-JKMN", "code": null },
+    { "input": "ABCD--EFGH-JKMN", "code": null },
+    { "input": "https://proseio.com.br/@ana.souza", "code": null },
+    { "input": "XABCD-EFGH-JKMN", "code": null }
+  ]
+}

@@ -1,20 +1,32 @@
 {
-  "$comment": "Where people get the app. Every page and app screen that links to a download reads this file. status: available, waitlist (no build to link to yet).",
+  "$comment": "Where people get the app. Every page and app screen that links to a download reads this file. status: available, waitlist (no build to link to yet; the site shows the POST /v1/waitlist form, ADR 0025).",
   "version": 1,
   "ios": {
     "status": "available",
     "channel": "testflight",
     "url": "https://testflight.apple.com/join/KUnUX9Mz",
     "minOS": "iOS 18.5",
-    "pt": { "label": "Instalar no iPhone", "note": "Versão de testes, pelo TestFlight da Apple." },
-    "en": { "label": "Install on iPhone", "note": "Test version, through Apple TestFlight." }
+    "pt": {
+      "label": "Instalar no iPhone",
+      "note": "Versão de testes, pelo TestFlight da Apple."
+    },
+    "en": {
+      "label": "Install on iPhone",
+      "note": "Test version, through Apple TestFlight."
+    }
   },
   "android": {
     "status": "waitlist",
     "channel": "apk",
     "url": null,
-    "pt": { "label": "Android: em breve", "note": "A versão para Android ainda não começou. Mande um e-mail e a gente avisa quando sair." },
-    "en": { "label": "Android: coming soon", "note": "The Android version has not started yet. Send us an email and we will tell you when it is out." }
+    "pt": {
+      "label": "Android: em breve",
+      "note": "A versão para Android ainda não começou. Deixe seu e-mail e a gente avisa quando sair."
+    },
+    "en": {
+      "label": "Android: coming soon",
+      "note": "The Android version has not started yet. Leave your email and we will tell you when it is out."
+    }
   },
   "contact": "contact@envisioning.com"
 }

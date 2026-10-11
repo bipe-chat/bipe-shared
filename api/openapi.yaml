@@ -114,6 +114,24 @@ paths:
             application/json:
               schema: { $ref: "#/components/schemas/InvitePreview" }
         "429": { $ref: "#/components/responses/Error" }
+  /v1/waitlist:
+    post:
+      summary: Join the waitlist for a platform that has no build yet
+      description: >
+        No auth. Called from the public site (CORS allows https://proseio.com.br).
+        Rate-limited per IP and globally. Always answers 202 for a well-formed request,
+        also when the email is already on the list, so the endpoint never tells whether an
+        address is known. Proseio emails the address once, when the platform ships, and
+        never for anything else. The address is deleted after that email or on request.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: { $ref: "#/components/schemas/WaitlistRequest" }
+      responses:
+        "202": { description: Accepted }
+        "400": { $ref: "#/components/responses/Error" }
+        "429": { $ref: "#/components/responses/Error" }
   /v1/me/invites:
     get:
       summary: The caller's personal invites and quota
@@ -250,6 +268,15 @@ components:
       scheme: bearer
       description: Matrix access token from MAS. The API checks it with Synapse whoami.
   schemas:
+    WaitlistRequest:
+      type: object
+      required: [email, platform]
+      properties:
+        email: { type: string, format: email, maxLength: 254 }
+        platform: { type: string, enum: [android, ios, other], description: "The platform the person waits for." }
+        lang: { type: string, enum: [pt, en], default: pt, description: "Language of the one email Proseio sends." }
+        source: { type: string, maxLength: 64, pattern: "^[a-z0-9:/_.-]*$", description: "Where the form was: the page path, plus the headline variant when a test runs (issue #77), for example /baixar/ or /:h2." }
+        website: { type: string, maxLength: 200, description: "Honeypot. People leave it empty; a non-empty value is accepted and dropped." }
     SignupRequest:
       type: object
       required: [email, password]

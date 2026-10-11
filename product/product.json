@@ -1,14 +1,14 @@
 {
-  "$comment": "What Proseio is and what it does, for the website, store listings and docs. One source of truth: proseio-web renders it, tools/gen-product-doc.mjs writes proseio/docs/product.md from it. status per platform: testing (in the TestFlight or beta build), planned (designed, not in a build), policy (a promise about how Proseio runs, not a feature). Never mark a feature testing before it is in a build. Copy passed a humanizer pass by hand (no em dashes, plain words). Draft until the brand review.",
+  "$comment": "What Proseio is and what it does, for the website, store listings and docs. One source of truth: proseio-web renders it, tools/gen-product-doc.mjs writes proseio/docs/product.md from it. status per platform: testing (in the TestFlight or beta build), planned (designed, not in a build), policy (a promise about how Proseio runs, not a feature). Never mark a feature testing before it is in a build. Copy passed a humanizer pass by hand (no em dashes, plain words). Draft until the brand review. Tentpoles: the reasons to switch, in order. demos: simulations on the tentpole page, in order; the first one leads.",
   "version": 1,
   "promise": {
     "pt": {
-      "title": "Converse sem medo de golpe.",
-      "lede": "O Proseio é um app de mensagens brasileiro, gratuito e sem anúncios. Ele avisa quando uma mensagem parece golpe, e você fala com as pessoas pelo @, sem dar o seu número."
+      "title": "Você sabe com quem está falando.",
+      "lede": "O Proseio é um app de mensagens brasileiro, gratuito e sem anúncios. Ele avisa quando uma mensagem parece golpe, e as pessoas acham você pelo @, sem ver o seu número."
     },
     "en": {
-      "title": "Chat without the fear of scams.",
-      "lede": "Proseio is a free Brazilian messenger with no ads. It warns you when a message looks like a scam, and people reach you by your @ instead of your phone number."
+      "title": "You know who you are talking to.",
+      "lede": "Proseio is a free Brazilian messenger with no ads. It warns you when a message looks like a scam, and people find you by your @ without seeing your number."
     }
   },
   "headlineVariants": {
@@ -26,85 +26,70 @@
   },
   "tentpoles": [
     {
-      "id": "scam",
+      "id": "trust",
       "slug": {
-        "pt": "contra-golpe",
-        "en": "scam-warnings"
+        "pt": "confianca",
+        "en": "trust"
       },
       "status": "testing",
-      "demo": "scam",
+      "demos": [
+        "scam",
+        "identity"
+      ],
       "features": [
         "scam-alerts",
         "requests",
-        "money-pause"
-      ],
-      "docs": [
-        "proseio/docs/security.md",
-        "proseio-shared/registries/scam-patterns.json"
-      ],
-      "pt": {
-        "name": "Aviso de golpe",
-        "title": "O Proseio avisa antes do golpe.",
-        "summary": "Pedido de Pix com pressa, troca de número, boleto, print de comprovante. Quando uma mensagem tem cara de golpe, aparece um aviso logo embaixo dela, com o que fazer.",
-        "points": [
-          "A verificação roda no seu celular. A mensagem não sai do aparelho para isso.",
-          "O aviso diz o que fazer: ligar para a pessoa, conferir no app do banco.",
-          "Quem não está nos seus contatos chega como pedido. Você decide se responde."
-        ],
-        "demoCaption": "Simulação com mensagens de exemplo. O aviso usa a mesma regra do app."
-      },
-      "en": {
-        "name": "Scam warnings",
-        "title": "Proseio warns you before the scam.",
-        "summary": "A rushed Pix request, a new phone number, a boleto, a screenshot of a receipt. When a message looks like a scam, a warning appears right under it and tells you what to do.",
-        "points": [
-          "The check runs on your phone. The message never leaves the device for it.",
-          "The warning says what to do: call the person, check your bank app.",
-          "People who are not in your contacts arrive as a request. You decide whether to answer."
-        ],
-        "demoCaption": "Simulation with sample messages. The warning uses the same rules as the app."
-      }
-    },
-    {
-      "id": "identity",
-      "slug": {
-        "pt": "identidade",
-        "en": "identity"
-      },
-      "status": "planned",
-      "demo": "identity",
-      "features": [
+        "money-pause",
         "verified-badge",
         "reserved-names",
         "lookalikes",
         "family-check"
       ],
       "docs": [
+        "proseio/docs/security.md",
         "proseio/docs/identity.md",
         "proseio/docs/design/trust-ui.md",
-        "proseio-shared/docs/badge-attestation.md"
+        "proseio-shared/registries/scam-patterns.json"
       ],
       "pt": {
-        "name": "Identidade verificada",
-        "title": "Ninguém se passa por você.",
-        "summary": "Um selo mostra que a conta é mesmo de quem diz ser. Nome de banco e de órgão público fica só para a instituição verificada. E se alguém que diz ser a sua mãe tem outro nome verificado, o app mostra.",
+        "name": "Confiança",
+        "title": "Mais difícil de enganar.",
+        "summary": "Quando uma mensagem tem cara de golpe, aparece um aviso embaixo dela, com o que fazer. Quem não está nos seus contatos chega como pedido. Em breve, um selo mostra quem é quem, e nome de banco fica só para o banco.",
         "points": [
-          "O selo vem com o nome verificado embaixo. Emoji parecido com selo não pode ficar ao lado do nome.",
-          "Letras disfarçadas, como um \"а\" russo no lugar do \"a\", não enganam a comparação.",
-          "A verificação é gratuita e opcional."
+          "A verificação roda no seu celular. A mensagem não sai do aparelho para isso.",
+          "O aviso diz o que fazer: ligar para a pessoa, conferir no app do banco.",
+          "Em breve: selo com o nome verificado, gratuito e opcional. Letras disfarçadas não enganam a comparação de nomes."
         ],
-        "demoCaption": "Em breve no app. A simulação usa a mesma regra de nomes que o app vai usar."
+        "demos": [
+          {
+            "title": "Aviso de golpe",
+            "caption": "Simulação com mensagens de exemplo. O aviso usa a mesma regra do app."
+          },
+          {
+            "title": "Ninguém se passa por você",
+            "caption": "Em breve no app. A simulação usa a mesma regra de nomes que o app vai usar."
+          }
+        ]
       },
       "en": {
-        "name": "Verified identity",
-        "title": "Nobody can pretend to be you.",
-        "summary": "A seal shows that an account really belongs to the person it names. Bank and government names are kept for verified institutions. And if someone who says they are your mother has a different verified name, the app tells you.",
+        "name": "Trust",
+        "title": "Harder to fool.",
+        "summary": "When a message looks like a scam, a warning appears right under it and tells you what to do. People who are not in your contacts arrive as a request. Soon, a seal shows who is who, and a bank's name is kept for the bank.",
         "points": [
-          "The seal comes with the verified name under it. Emoji that look like a seal cannot sit next to a name.",
-          "Disguised letters, like a Cyrillic \"а\" in place of an \"a\", do not fool the check.",
-          "Verification is free and optional."
+          "The check runs on your phone. The message never leaves the device for it.",
+          "The warning says what to do: call the person, check your bank app.",
+          "Coming soon: a seal with the verified name, free and optional. Disguised letters do not fool the name check."
         ],
-        "demoCaption": "Coming to the app. The simulation uses the same name rules the app will use."
+        "demos": [
+          {
+            "title": "Scam warnings",
+            "caption": "Simulation with sample messages. The warning uses the same rules as the app."
+          },
+          {
+            "title": "Nobody can pretend to be you",
+            "caption": "Coming to the app. The simulation uses the same name rules the app will use."
+          }
+        ]
       }
     },
     {
@@ -114,7 +99,6 @@
         "en": "handles"
       },
       "status": "testing",
-      "demo": "handle",
       "features": [
         "handles",
         "profile-links",
@@ -133,7 +117,12 @@
           "Nomes que só mudam um detalhe, como ana.souza e anasouza, contam como o mesmo nome. Ninguém pega um quase igual ao seu.",
           "Quem troca de @ espera 30 dias para trocar de novo. O @ antigo fica guardado por 90 dias."
         ],
-        "demoCaption": "Simulação. As regras de nome são as mesmas do app."
+        "demos": [
+          {
+            "title": "Seu @",
+            "caption": "Simulação. As regras de nome são as mesmas do app."
+          }
+        ]
       },
       "en": {
         "name": "Your @",
@@ -144,8 +133,16 @@
           "Names that differ by one detail, like ana.souza and anasouza, count as the same name. Nobody can take one that looks almost like yours.",
           "After you change your @, you wait 30 days to change it again. Your old @ stays held for 90 days."
         ],
-        "demoCaption": "Simulation. The name rules are the same as in the app."
-      }
+        "demos": [
+          {
+            "title": "Your @",
+            "caption": "Simulation. The name rules are the same as in the app."
+          }
+        ]
+      },
+      "demos": [
+        "handle"
+      ]
     },
     {
       "id": "no-ads",
@@ -177,7 +174,7 @@
           "Servidores no Brasil, de empresas brasileiras.",
           "Conversas protegidas de ponta a ponta desde a primeira mensagem."
         ],
-        "demoCaption": ""
+        "demos": []
       },
       "en": {
         "name": "No ads",
@@ -189,7 +186,63 @@
           "Servers in Brazil, run by Brazilian companies.",
           "Chats encrypted end to end from the first message."
         ],
-        "demoCaption": ""
+        "demos": []
+      },
+      "demos": []
+    },
+    {
+      "id": "groups",
+      "slug": {
+        "pt": "pra-sua-turma",
+        "en": "groups"
+      },
+      "status": "planned",
+      "demos": [
+        "groups"
+      ],
+      "features": [
+        "group-types",
+        "channels",
+        "pix-cards",
+        "phone-discovery"
+      ],
+      "docs": [
+        "proseio/docs/groups.md",
+        "proseio/docs/payments.md",
+        "proseio/docs/social.md",
+        "proseio/docs/phone-link.md"
+      ],
+      "pt": {
+        "name": "Pra sua turma",
+        "title": "Feito para família, prédio e escola.",
+        "summary": "Cada grupo tem o seu jeito. No grupo do prédio, os avisos ficam separados da conversa. Na escola, só entra quem foi verificado. E o Pix vem dentro da conversa, com o nome que o banco vai mostrar.",
+        "points": [
+          "Grupos Família, Prédio e Escola, cada um com o seu jeito.",
+          "Canais para torcidas, igrejas, criadores e instituições.",
+          "Quem você já conhece aparece no Proseio desde o primeiro dia, se essa pessoa quiser."
+        ],
+        "demos": [
+          {
+            "title": "Pra sua turma",
+            "caption": "Em breve no app. Ilustração com dados de exemplo."
+          }
+        ]
+      },
+      "en": {
+        "name": "For your people",
+        "title": "Made for family, building and school.",
+        "summary": "Each group has its own shape. In the building group, notices stay apart from the chat. At school, only verified members join. And Pix comes inside the chat, with the name your bank will show.",
+        "points": [
+          "Family, Building and School groups, each with its own shape.",
+          "Channels for fan clubs, churches, creators and institutions.",
+          "People you already know show up on Proseio from day one, if they choose to."
+        ],
+        "demos": [
+          {
+            "title": "For your people",
+            "caption": "Coming to the app. Illustration with sample data."
+          }
+        ]
       }
     }
   ],
@@ -575,6 +628,23 @@
           "body": "Users, never. How Proseio is funded is still open. The options include fees paid by institutions on Pix charges and verification for businesses."
         }
       ]
+    }
+  },
+  "redirects": {
+    "$comment": "Old tentpole paths and where they now live.",
+    "/contra-golpe/": "/confianca/",
+    "/identidade/": "/confianca/",
+    "/en/scam-warnings/": "/en/trust/",
+    "/en/identity/": "/en/trust/"
+  },
+  "origin": {
+    "pt": {
+      "title": "Brasileiro, aberto e independente",
+      "body": "Os servidores ficam no Brasil, em empresas brasileiras. Por baixo, o Proseio usa uma rede aberta que nenhuma empresa controla sozinha. O código vai ser público no lançamento."
+    },
+    "en": {
+      "title": "Brazilian, open and independent",
+      "body": "The servers are in Brazil, run by Brazilian companies. Underneath, Proseio uses an open network that no single company controls. The code goes public at launch."
     }
   }
 }

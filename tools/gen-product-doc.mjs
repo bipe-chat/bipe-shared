@@ -46,7 +46,7 @@ const lines = [
   "",
   "| Tentpole | Promise (pt-BR) | Status | Demo | Features | Docs |",
   "|---|---|---|---|---|---|",
-  ...product.tentpoles.map((t) => `| ${t.en.name} | ${t.pt.title} | ${label[t.status]} | ${t.demo ?? "static"} | ${t.features.join(", ")} | ${t.docs.join(", ")} |`),
+  ...product.tentpoles.map((t) => `| ${t.en.name} | ${t.pt.title} | ${label[t.status]} | ${t.demos.join(", ") || "static"} | ${t.features.join(", ")} | ${t.docs.join(", ")} |`),
   "",
   "## Features",
   "",

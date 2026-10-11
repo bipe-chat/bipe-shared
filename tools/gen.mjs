@@ -65,6 +65,15 @@ public enum ProseioRegistries {
     /// Normalised keywords, matched as substrings of the normalised message.
     public static let receiptKeywords: [String] = ${swiftArray(reg.scam.receiptKeywords.map(swiftString))}
 
+    /// Normalised words. A Pix-key match warns only when the normalised message also contains one of them.
+    public static let pixKeyContextWords: [String] = ${swiftArray(reg.scam.pixKeyContextWords.map(swiftString))}
+
+    /// Normalised urgency phrases that make a message the "new number" kind.
+    public static let newNumberPhrases: Set<String> = ${swiftArray(reg.scam.newNumberPhrases.map(swiftString))}
+
+    /// Scam warning kind raw values, most actionable first. The first kind whose rule applies wins.
+    public static let scamWarningKindPriority: [String] = ${swiftArray(reg.scam.warningKindPriority.map(swiftString))}
+
     /// Username (handle) rules. The server is the authority; clients check early for feedback.
     public static let handleMinLength = ${reg.handles.minLength}
     public static let handleMaxLength = ${reg.handles.maxLength}

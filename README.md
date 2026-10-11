@@ -8,7 +8,7 @@ Single source of truth for Proseio logic that iOS, Android and the web console s
 | `strings/pt-BR.json` | Proseio-owned UI strings (Element strings stay on Localazy). Draft copy. |
 | `api/openapi.yaml` | Proseio API contract (verification, badges) |
 | `docs/badge-attestation.md` | Signed badge format and verification order |
-| `test-vectors/` | Generated cases every platform must pass: badges, normalisation, scam detection |
+| `test-vectors/` | Generated cases every platform must pass: badges, normalisation, scam detection, scam warnings |
 | `tools/` | Generators (Node 24, no npm packages) |
 
 ## Commands

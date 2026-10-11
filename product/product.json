@@ -3,11 +3,11 @@
   "version": 1,
   "promise": {
     "pt": {
-      "title": "Você sabe com quem está falando.",
+      "title": "Saiba com quem está falando.",
       "lede": "O Proseio é um app de mensagens brasileiro, gratuito e sem anúncios. Ele avisa quando uma mensagem parece golpe, e as pessoas acham você pelo @, sem ver o seu número."
     },
     "en": {
-      "title": "You know who you are talking to.",
+      "title": "Know who you are talking to.",
       "lede": "Proseio is a free Brazilian messenger with no ads. It warns you when a message looks like a scam, and people find you by your @ without seeing your number."
     }
   },

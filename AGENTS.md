@@ -8,6 +8,7 @@ Source of truth for registries, strings, API contract and test vectors shared by
 - `tools/lib/registries.mjs` `normalize()` is the reference implementation. Platform code must match `test-vectors/normalization.json`.
 - No npm dependencies. Node built-ins only.
 - Write docs in ASD-STE100 style. UI strings are draft until they pass the humanizer.
+- `product/product.json` (promise, tentpoles, features with status per platform) and `product/distribution.json` (download links) feed proseio-web and `proseio/docs/product.md`. After a change, run `node tools/gen-product-doc.mjs`; it validates and fails closed. Mark a feature `testing` only when it is in a build.
 
 ## Decisions
 

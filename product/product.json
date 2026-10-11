@@ -1,0 +1,580 @@
+{
+  "$comment": "What Proseio is and what it does, for the website, store listings and docs. One source of truth: proseio-web renders it, tools/gen-product-doc.mjs writes proseio/docs/product.md from it. status per platform: testing (in the TestFlight or beta build), planned (designed, not in a build), policy (a promise about how Proseio runs, not a feature). Never mark a feature testing before it is in a build. Copy passed a humanizer pass by hand (no em dashes, plain words). Draft until the brand review.",
+  "version": 1,
+  "promise": {
+    "pt": {
+      "title": "Converse sem medo de golpe.",
+      "lede": "O Proseio é um app de mensagens brasileiro, gratuito e sem anúncios. Ele avisa quando uma mensagem parece golpe, e você fala com as pessoas pelo @, sem dar o seu número."
+    },
+    "en": {
+      "title": "Chat without the fear of scams.",
+      "lede": "Proseio is a free Brazilian messenger with no ads. It warns you when a message looks like a scam, and people reach you by your @ instead of your phone number."
+    }
+  },
+  "headlineVariants": {
+    "$comment": "Issue #77: the three headlines the landing page tests. The site shows promise.title until the test runs.",
+    "pt": [
+      "Um app de mensagens brasileiro, de verdade.",
+      "Ninguém se passa por você.",
+      "Sem anúncio e sem perfil de anúncio."
+    ],
+    "en": [
+      "A messenger that is truly Brazilian.",
+      "Nobody can pretend to be you.",
+      "No ads and no ad profile."
+    ]
+  },
+  "tentpoles": [
+    {
+      "id": "scam",
+      "slug": {
+        "pt": "contra-golpe",
+        "en": "scam-warnings"
+      },
+      "status": "testing",
+      "demo": "scam",
+      "features": [
+        "scam-alerts",
+        "requests",
+        "money-pause"
+      ],
+      "docs": [
+        "proseio/docs/security.md",
+        "proseio-shared/registries/scam-patterns.json"
+      ],
+      "pt": {
+        "name": "Aviso de golpe",
+        "title": "O Proseio avisa antes do golpe.",
+        "summary": "Pedido de Pix com pressa, troca de número, boleto, print de comprovante. Quando uma mensagem tem cara de golpe, aparece um aviso logo embaixo dela, com o que fazer.",
+        "points": [
+          "A verificação roda no seu celular. A mensagem não sai do aparelho para isso.",
+          "O aviso diz o que fazer: ligar para a pessoa, conferir no app do banco.",
+          "Quem não está nos seus contatos chega como pedido. Você decide se responde."
+        ],
+        "demoCaption": "Simulação com mensagens de exemplo. O aviso usa a mesma regra do app."
+      },
+      "en": {
+        "name": "Scam warnings",
+        "title": "Proseio warns you before the scam.",
+        "summary": "A rushed Pix request, a new phone number, a boleto, a screenshot of a receipt. When a message looks like a scam, a warning appears right under it and tells you what to do.",
+        "points": [
+          "The check runs on your phone. The message never leaves the device for it.",
+          "The warning says what to do: call the person, check your bank app.",
+          "People who are not in your contacts arrive as a request. You decide whether to answer."
+        ],
+        "demoCaption": "Simulation with sample messages. The warning uses the same rules as the app."
+      }
+    },
+    {
+      "id": "identity",
+      "slug": {
+        "pt": "identidade",
+        "en": "identity"
+      },
+      "status": "planned",
+      "demo": "identity",
+      "features": [
+        "verified-badge",
+        "reserved-names",
+        "lookalikes",
+        "family-check"
+      ],
+      "docs": [
+        "proseio/docs/identity.md",
+        "proseio/docs/design/trust-ui.md",
+        "proseio-shared/docs/badge-attestation.md"
+      ],
+      "pt": {
+        "name": "Identidade verificada",
+        "title": "Ninguém se passa por você.",
+        "summary": "Um selo mostra que a conta é mesmo de quem diz ser. Nome de banco e de órgão público fica só para a instituição verificada. E se alguém que diz ser a sua mãe tem outro nome verificado, o app mostra.",
+        "points": [
+          "O selo vem com o nome verificado embaixo. Emoji parecido com selo não pode ficar ao lado do nome.",
+          "Letras disfarçadas, como um \"а\" russo no lugar do \"a\", não enganam a comparação.",
+          "A verificação é gratuita e opcional."
+        ],
+        "demoCaption": "Em breve no app. A simulação usa a mesma regra de nomes que o app vai usar."
+      },
+      "en": {
+        "name": "Verified identity",
+        "title": "Nobody can pretend to be you.",
+        "summary": "A seal shows that an account really belongs to the person it names. Bank and government names are kept for verified institutions. And if someone who says they are your mother has a different verified name, the app tells you.",
+        "points": [
+          "The seal comes with the verified name under it. Emoji that look like a seal cannot sit next to a name.",
+          "Disguised letters, like a Cyrillic \"а\" in place of an \"a\", do not fool the check.",
+          "Verification is free and optional."
+        ],
+        "demoCaption": "Coming to the app. The simulation uses the same name rules the app will use."
+      }
+    },
+    {
+      "id": "handle",
+      "slug": {
+        "pt": "seu-arroba",
+        "en": "handles"
+      },
+      "status": "testing",
+      "demo": "handle",
+      "features": [
+        "handles",
+        "profile-links",
+        "invites"
+      ],
+      "docs": [
+        "proseio/docs/usernames.md",
+        "proseio-shared/registries/handles.json"
+      ],
+      "pt": {
+        "name": "Seu @",
+        "title": "Seu @, não seu número.",
+        "summary": "Escolha um nome de usuário e compartilhe só ele. Quem tem o link proseio.com.br/@você abre a conversa direto, sem ver o seu telefone.",
+        "points": [
+          "Link e QR code do seu perfil, prontos para compartilhar.",
+          "Nomes que só mudam um detalhe, como ana.souza e anasouza, contam como o mesmo nome. Ninguém pega um quase igual ao seu.",
+          "Quem troca de @ espera 30 dias para trocar de novo. O @ antigo fica guardado por 90 dias."
+        ],
+        "demoCaption": "Simulação. As regras de nome são as mesmas do app."
+      },
+      "en": {
+        "name": "Your @",
+        "title": "Your @, not your number.",
+        "summary": "Pick a username and share only that. Anyone with the link proseio.com.br/@you opens a chat with you without seeing your phone number.",
+        "points": [
+          "A link and a QR code for your profile, ready to share.",
+          "Names that differ by one detail, like ana.souza and anasouza, count as the same name. Nobody can take one that looks almost like yours.",
+          "After you change your @, you wait 30 days to change it again. Your old @ stays held for 90 days."
+        ],
+        "demoCaption": "Simulation. The name rules are the same as in the app."
+      }
+    },
+    {
+      "id": "no-ads",
+      "slug": {
+        "pt": "sem-anuncios",
+        "en": "no-ads"
+      },
+      "status": "policy",
+      "demo": null,
+      "features": [
+        "no-ads",
+        "free",
+        "brazil-servers",
+        "e2ee",
+        "open-source"
+      ],
+      "docs": [
+        "proseio/docs/strategy.md",
+        "proseio/docs/wedge.md",
+        "proseio/docs/hosting.md"
+      ],
+      "pt": {
+        "name": "Sem anúncio",
+        "title": "Sem anúncio e sem perfil de anúncio.",
+        "summary": "O Proseio é gratuito e continua gratuito. Não tem anúncio em nenhuma tela e ninguém monta um perfil seu para vender anúncio. As conversas ficam em servidores no Brasil, protegidas de ponta a ponta.",
+        "points": [
+          "Você nunca paga para usar o Proseio.",
+          "Nenhum anúncio, em nenhuma aba. Nenhum perfil de anúncio.",
+          "Servidores no Brasil, de empresas brasileiras.",
+          "Conversas protegidas de ponta a ponta desde a primeira mensagem."
+        ],
+        "demoCaption": ""
+      },
+      "en": {
+        "name": "No ads",
+        "title": "No ads and no ad profile.",
+        "summary": "Proseio is free and stays free. There are no ads on any screen, and nobody builds a profile of you to sell ads. Chats live on servers in Brazil, encrypted end to end.",
+        "points": [
+          "You never pay to use Proseio.",
+          "No ads, in any tab. No ad profile.",
+          "Servers in Brazil, run by Brazilian companies.",
+          "Chats encrypted end to end from the first message."
+        ],
+        "demoCaption": ""
+      }
+    }
+  ],
+  "areas": [
+    {
+      "id": "safety",
+      "pt": "Proteção",
+      "en": "Safety"
+    },
+    {
+      "id": "identity",
+      "pt": "Identidade",
+      "en": "Identity"
+    },
+    {
+      "id": "chat",
+      "pt": "Conversa",
+      "en": "Chat"
+    },
+    {
+      "id": "privacy",
+      "pt": "Privacidade",
+      "en": "Privacy"
+    },
+    {
+      "id": "payments",
+      "pt": "Pagamentos",
+      "en": "Payments"
+    },
+    {
+      "id": "community",
+      "pt": "Comunidade",
+      "en": "Community"
+    }
+  ],
+  "features": [
+    {
+      "id": "scam-alerts",
+      "area": "safety",
+      "status": {
+        "ios": "testing",
+        "android": "planned"
+      },
+      "pt": {
+        "name": "Aviso de golpe",
+        "body": "Um aviso aparece embaixo da mensagem que parece golpe: Pix com pressa, troca de número, boleto, comprovante."
+      },
+      "en": {
+        "name": "Scam warnings",
+        "body": "A warning appears under a message that looks like a scam: a rushed Pix, a new number, a boleto, a receipt."
+      }
+    },
+    {
+      "id": "requests",
+      "area": "safety",
+      "status": {
+        "ios": "testing",
+        "android": "planned"
+      },
+      "pt": {
+        "name": "Pedidos de conversa",
+        "body": "Quem não está nos seus contatos chega como pedido. Você aceita ou ignora."
+      },
+      "en": {
+        "name": "Message requests",
+        "body": "People who are not in your contacts arrive as a request. You accept or ignore it."
+      }
+    },
+    {
+      "id": "money-pause",
+      "area": "safety",
+      "status": {
+        "ios": "planned",
+        "android": "planned"
+      },
+      "pt": {
+        "name": "Pausa antes de pagar",
+        "body": "Num pedido de dinheiro suspeito, copiar e pagar ficam travados por 5 segundos. A pausa quebra a pressa do golpe."
+      },
+      "en": {
+        "name": "A pause before paying",
+        "body": "On a suspicious money request, copy and pay stay locked for 5 seconds. The pause breaks the scammer's rush."
+      }
+    },
+    {
+      "id": "verified-badge",
+      "area": "identity",
+      "status": {
+        "ios": "planned",
+        "android": "planned"
+      },
+      "pt": {
+        "name": "Selo verificado",
+        "body": "Verificação gratuita pelo Pix ou pelo gov.br. O selo vem com o nome verificado."
+      },
+      "en": {
+        "name": "Verified seal",
+        "body": "Free verification through Pix or gov.br. The seal comes with the verified name."
+      }
+    },
+    {
+      "id": "reserved-names",
+      "area": "identity",
+      "status": {
+        "ios": "planned",
+        "android": "planned"
+      },
+      "pt": {
+        "name": "Nomes reservados",
+        "body": "Nome de banco, de órgão público e do Proseio fica só para a conta verificada da instituição."
+      },
+      "en": {
+        "name": "Reserved names",
+        "body": "Bank, government and Proseio names are kept for the institution's verified account."
+      }
+    },
+    {
+      "id": "lookalikes",
+      "area": "identity",
+      "status": {
+        "ios": "planned",
+        "android": "planned"
+      },
+      "pt": {
+        "name": "Letras disfarçadas",
+        "body": "Letras de outros alfabetos e números no lugar de letras não enganam a comparação de nomes."
+      },
+      "en": {
+        "name": "Disguised letters",
+        "body": "Letters from other alphabets and digits in place of letters do not fool the name check."
+      }
+    },
+    {
+      "id": "family-check",
+      "area": "identity",
+      "status": {
+        "ios": "planned",
+        "android": "planned"
+      },
+      "pt": {
+        "name": "Confere a \"Mãe\"",
+        "body": "Se o contato salvo como Mãe tem outro nome verificado, o app pergunta se é a mesma pessoa."
+      },
+      "en": {
+        "name": "Checks \"Mom\"",
+        "body": "If the contact saved as Mom has a different verified name, the app asks whether it is the same person."
+      }
+    },
+    {
+      "id": "handles",
+      "area": "chat",
+      "status": {
+        "ios": "testing",
+        "android": "planned"
+      },
+      "pt": {
+        "name": "Nome de usuário",
+        "body": "Converse pelo @, sem dar o seu número."
+      },
+      "en": {
+        "name": "Usernames",
+        "body": "Chat by @, without giving out your number."
+      }
+    },
+    {
+      "id": "profile-links",
+      "area": "chat",
+      "status": {
+        "ios": "testing",
+        "android": "planned"
+      },
+      "pt": {
+        "name": "Link e QR code",
+        "body": "proseio.com.br/@você abre a conversa direto no app."
+      },
+      "en": {
+        "name": "Link and QR code",
+        "body": "proseio.com.br/@you opens a chat in the app."
+      }
+    },
+    {
+      "id": "invites",
+      "area": "chat",
+      "status": {
+        "ios": "testing",
+        "android": "planned"
+      },
+      "pt": {
+        "name": "Convites",
+        "body": "Mande um link de convite para trazer alguém para o Proseio."
+      },
+      "en": {
+        "name": "Invites",
+        "body": "Send an invite link to bring someone to Proseio."
+      }
+    },
+    {
+      "id": "phone-discovery",
+      "area": "chat",
+      "status": {
+        "ios": "planned",
+        "android": "planned"
+      },
+      "pt": {
+        "name": "Ache seus contatos",
+        "body": "Quem você já conhece aparece no Proseio desde o primeiro dia, se essa pessoa quiser."
+      },
+      "en": {
+        "name": "Find your contacts",
+        "body": "People you already know show up on Proseio from day one, if they choose to."
+      }
+    },
+    {
+      "id": "e2ee",
+      "area": "privacy",
+      "status": {
+        "ios": "testing",
+        "android": "planned"
+      },
+      "pt": {
+        "name": "Ponta a ponta",
+        "body": "Toda conversa nova é protegida de ponta a ponta."
+      },
+      "en": {
+        "name": "End to end",
+        "body": "Every new chat is encrypted end to end."
+      }
+    },
+    {
+      "id": "no-ads",
+      "area": "privacy",
+      "status": {
+        "ios": "policy",
+        "android": "policy"
+      },
+      "pt": {
+        "name": "Sem anúncio",
+        "body": "Nenhum anúncio em nenhuma tela. Nenhum perfil de anúncio."
+      },
+      "en": {
+        "name": "No ads",
+        "body": "No ads on any screen. No ad profile."
+      }
+    },
+    {
+      "id": "free",
+      "area": "privacy",
+      "status": {
+        "ios": "policy",
+        "android": "policy"
+      },
+      "pt": {
+        "name": "Gratuito",
+        "body": "Você nunca paga para usar o Proseio."
+      },
+      "en": {
+        "name": "Free",
+        "body": "You never pay to use Proseio."
+      }
+    },
+    {
+      "id": "brazil-servers",
+      "area": "privacy",
+      "status": {
+        "ios": "policy",
+        "android": "policy"
+      },
+      "pt": {
+        "name": "Servidor no Brasil",
+        "body": "As conversas ficam em servidores no Brasil, de empresas brasileiras."
+      },
+      "en": {
+        "name": "Servers in Brazil",
+        "body": "Chats live on servers in Brazil, run by Brazilian companies."
+      }
+    },
+    {
+      "id": "open-source",
+      "area": "privacy",
+      "status": {
+        "ios": "planned",
+        "android": "planned"
+      },
+      "pt": {
+        "name": "Código aberto",
+        "body": "O código vai ser público no lançamento, para qualquer pessoa conferir."
+      },
+      "en": {
+        "name": "Open source",
+        "body": "The code goes public at launch, so anyone can check it."
+      }
+    },
+    {
+      "id": "pix-cards",
+      "area": "payments",
+      "status": {
+        "ios": "planned",
+        "android": "planned"
+      },
+      "pt": {
+        "name": "Pedido de Pix",
+        "body": "Um cartão de pedido mostra o nome que o seu banco vai mostrar. Se aparecer outro nome, não pague."
+      },
+      "en": {
+        "name": "Pix requests",
+        "body": "A request card shows the name your bank will show. If another name appears, do not pay."
+      }
+    },
+    {
+      "id": "group-types",
+      "area": "community",
+      "status": {
+        "ios": "planned",
+        "android": "planned"
+      },
+      "pt": {
+        "name": "Família, Prédio, Escola",
+        "body": "Grupos com jeito próprio: avisos do prédio separados da conversa, membros da escola verificados."
+      },
+      "en": {
+        "name": "Family, Building, School",
+        "body": "Groups with their own shape: building notices apart from the chat, verified school members."
+      }
+    },
+    {
+      "id": "channels",
+      "area": "community",
+      "status": {
+        "ios": "planned",
+        "android": "planned"
+      },
+      "pt": {
+        "name": "Canais",
+        "body": "Para torcidas, igrejas, criadores e instituições falarem com muita gente."
+      },
+      "en": {
+        "name": "Channels",
+        "body": "For fan clubs, churches, creators and institutions to reach many people."
+      }
+    }
+  ],
+  "about": {
+    "pt": {
+      "title": "Por que o Proseio existe",
+      "lede": "Para o Brasil ter uma saída: um app de mensagens aberto, brasileiro e independente, que funciona quando as pessoas precisam.",
+      "sections": [
+        {
+          "heading": "Não precisa vencer para valer a pena",
+          "body": "O Proseio não mede sucesso por tirar gente do WhatsApp. Ele precisa existir, ser confiável e estar pronto no dia em que as pessoas procurarem outra opção. Signal e Wikipedia são julgados assim."
+        },
+        {
+          "heading": "Uma rede que ninguém controla sozinho",
+          "body": "Por baixo, o Proseio usa o Matrix, um protocolo aberto de mensagens. Nenhuma empresa e nenhum governo é dono da rede. Os servidores ficam no Brasil, em empresas brasileiras."
+        },
+        {
+          "heading": "Quem faz",
+          "body": "Um grupo pequeno de pessoas ligadas à Envisioning, que roda a própria infraestrutura. O código vai ser público no lançamento, junto com as regras de moderação."
+        },
+        {
+          "heading": "Quem paga",
+          "body": "Os usuários, nunca. O jeito de financiar ainda está em aberto. Entre as opções estão taxas pagas por instituições em cobranças Pix e a verificação de empresas."
+        }
+      ]
+    },
+    "en": {
+      "title": "Why Proseio exists",
+      "lede": "So Brazil has a way out: an open, Brazilian, independent messenger that works when people need it.",
+      "sections": [
+        {
+          "heading": "It does not need to win to be worth it",
+          "body": "Proseio does not measure success by pulling people off WhatsApp. It needs to exist, be trustworthy and be ready on the day people look for another option. Signal and Wikipedia are judged the same way."
+        },
+        {
+          "heading": "A network nobody controls alone",
+          "body": "Underneath, Proseio uses Matrix, an open messaging protocol. No company and no government owns the network. The servers are in Brazil, run by Brazilian companies."
+        },
+        {
+          "heading": "Who makes it",
+          "body": "A small group of people connected to Envisioning, running their own infrastructure. The code goes public at launch, along with the moderation rules."
+        },
+        {
+          "heading": "Who pays",
+          "body": "Users, never. How Proseio is funded is still open. The options include fees paid by institutions on Pix charges and verification for businesses."
+        }
+      ]
+    }
+  }
+}

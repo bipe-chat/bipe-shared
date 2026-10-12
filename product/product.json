@@ -1,14 +1,14 @@
 {
-  "$comment": "What Proseio is and what it does, for the website, store listings and docs. One source of truth: proseio-web renders it, tools/gen-product-doc.mjs writes proseio/docs/product.md from it. status per platform: testing (in the TestFlight or beta build), planned (designed, not in a build), policy (a promise about how Proseio runs, not a feature). Never mark a feature testing before it is in a build. Copy passed a humanizer pass by hand (no em dashes, plain words). Draft until the brand review. Tentpoles: the reasons to switch, in order. demos: simulations on the tentpole page, in order; the first one leads.",
+  "$comment": "What Bipe is and what it does, for the website, store listings and docs. One source of truth: proseio-web renders it, tools/gen-product-doc.mjs writes proseio/docs/product.md from it. status per platform: testing (in the TestFlight or beta build), planned (designed, not in a build), policy (a promise about how Bipe runs, not a feature). Never mark a feature testing before it is in a build. Copy passed a humanizer pass by hand (no em dashes, plain words). Draft until the brand review. Tentpoles: the reasons to switch, in order. demos: simulations on the tentpole page, in order; the first one leads.",
   "version": 1,
   "promise": {
     "pt": {
       "title": "Saiba com quem está falando.",
-      "lede": "Seu número fica escondido. Quem fala com você, não. O Proseio é um app de mensagens brasileiro, gratuito e sem anúncio. Avisa quando uma mensagem tem cara de golpe, e quem você não conhece chega como pedido."
+      "lede": "Seu número fica escondido. Quem fala com você, não. O Bipe é um app de mensagens brasileiro, gratuito e sem anúncio. Avisa quando uma mensagem tem cara de golpe, e quem você não conhece chega como pedido."
     },
     "en": {
       "title": "Know who you are talking to.",
-      "lede": "Your number stays hidden. The person talking to you doesn't. Proseio is a free Brazilian messenger with no ads. It warns you when a message looks like a scam, and people you don't know arrive as a request."
+      "lede": "Your number stays hidden. The person talking to you doesn't. Bipe is a free Brazilian messenger with no ads. It warns you when a message looks like a scam, and people you don't know arrive as a request."
     }
   },
   "headlineTest": {
@@ -235,9 +235,9 @@
       "pt": {
         "name": "Sem anúncio",
         "title": "Sem anúncio. Seus dados não estão à venda.",
-        "summary": "O Proseio não vive de anúncio, então não tem motivo pra juntar dados sobre você. É gratuito e vai continuar assim. As conversas ficam em servidores no Brasil, protegidas de ponta a ponta.",
+        "summary": "O Bipe não vive de anúncio, então não tem motivo pra juntar dados sobre você. É gratuito e vai continuar assim. As conversas ficam em servidores no Brasil, protegidas de ponta a ponta.",
         "points": [
-          "Você nunca paga pra usar o Proseio.",
+          "Você nunca paga pra usar o Bipe.",
           "Nenhum anúncio, em nenhuma aba. Ninguém compra informação sobre você.",
           "Servidores no Brasil, de empresas brasileiras.",
           "Conversas protegidas de ponta a ponta desde a primeira mensagem."
@@ -247,9 +247,9 @@
       "en": {
         "name": "No ads",
         "title": "No ads. Your data is not for sale.",
-        "summary": "Proseio doesn't live on ads, so it has no reason to collect data about you. It's free and it will stay free. Chats live on servers in Brazil, encrypted end to end.",
+        "summary": "Bipe doesn't live on ads, so it has no reason to collect data about you. It's free and it will stay free. Chats live on servers in Brazil, encrypted end to end.",
         "points": [
-          "You never pay to use Proseio.",
+          "You never pay to use Bipe.",
           "No ads, in any tab. Nobody buys information about you.",
           "Servers in Brazil, run by Brazilian companies.",
           "Chats encrypted end to end from the first message."
@@ -286,7 +286,7 @@
         "points": [
           "Abriu o grupo depois de um tempo? Quem te marcou e as enquetes que você ainda não votou aparecem primeiro.",
           "Enquetes, mensagens fixadas e respostas em tópico já funcionam no app de testes.",
-          "Quem você já conhece aparece no Proseio desde o primeiro dia, se essa pessoa quiser."
+          "Quem você já conhece aparece no Bipe desde o primeiro dia, se essa pessoa quiser."
         ],
         "demos": [
           {
@@ -302,7 +302,7 @@
         "points": [
           "Back in the group after a while? Who mentioned you and the polls still waiting on your vote come first.",
           "Polls, pinned messages and threads already work in the test app.",
-          "People you already know show up on Proseio from day one, if they choose to."
+          "People you already know show up on Bipe from day one, if they choose to."
         ],
         "demos": [
           {
@@ -419,11 +419,11 @@
       },
       "pt": {
         "name": "Nomes reservados",
-        "body": "Nome de banco, de órgão público e do Proseio fica só pra conta verificada da instituição."
+        "body": "Nome de banco, de órgão público e do Bipe fica só pra conta verificada da instituição."
       },
       "en": {
         "name": "Reserved names",
-        "body": "Bank, government and Proseio names are kept for the institution's verified account."
+        "body": "Bank, government and Bipe names are kept for the institution's verified account."
       }
     },
     {
@@ -515,11 +515,11 @@
       },
       "pt": {
         "name": "Convites",
-        "body": "Mande um link de convite e traga alguém pro Proseio."
+        "body": "Mande um link de convite e traga alguém pro Bipe."
       },
       "en": {
         "name": "Invites",
-        "body": "Send an invite link to bring someone to Proseio."
+        "body": "Send an invite link to bring someone to Bipe."
       }
     },
     {
@@ -531,11 +531,11 @@
       },
       "pt": {
         "name": "Ache seus contatos",
-        "body": "Quem você já conhece aparece no Proseio desde o primeiro dia, se essa pessoa quiser."
+        "body": "Quem você já conhece aparece no Bipe desde o primeiro dia, se essa pessoa quiser."
       },
       "en": {
         "name": "Find your contacts",
-        "body": "People you already know show up on Proseio from day one, if they choose to."
+        "body": "People you already know show up on Bipe from day one, if they choose to."
       }
     },
     {
@@ -579,11 +579,11 @@
       },
       "pt": {
         "name": "Gratuito",
-        "body": "Você nunca paga pra usar o Proseio."
+        "body": "Você nunca paga pra usar o Bipe."
       },
       "en": {
         "name": "Free",
-        "body": "You never pay to use Proseio."
+        "body": "You never pay to use Bipe."
       }
     },
     {
@@ -669,46 +669,46 @@
   ],
   "about": {
     "pt": {
-      "title": "Por que o Proseio existe",
+      "title": "Por que o Bipe existe",
       "lede": "Pro Brasil ter uma saída: um app de mensagens aberto, brasileiro e independente, que funciona quando as pessoas precisam.",
       "sections": [
         {
           "heading": "Não precisa ganhar pra valer a pena",
-          "body": "O sucesso do Proseio não se mede por quanta gente sai do WhatsApp. O app precisa existir, ser confiável e estar pronto no dia em que as pessoas procurarem outra opção. É assim que se avalia o Signal e a Wikipédia."
+          "body": "O sucesso do Bipe não se mede por quanta gente sai do WhatsApp. O app precisa existir, ser confiável e estar pronto no dia em que as pessoas procurarem outra opção. É assim que se avalia o Signal e a Wikipédia."
         },
         {
           "heading": "Uma rede que ninguém controla sozinho",
-          "body": "O Proseio roda sobre o Matrix, um protocolo aberto de mensagens. Nenhuma empresa e nenhum governo é dono da rede. Os servidores ficam no Brasil, em empresas brasileiras."
+          "body": "O Bipe roda sobre o Matrix, um protocolo aberto de mensagens. Nenhuma empresa e nenhum governo é dono da rede. Os servidores ficam no Brasil, em empresas brasileiras."
         },
         {
           "heading": "Quem faz",
-          "body": "O Proseio é um projeto da Envisioning, um instituto de pesquisa que estuda desde 2010 como as instituições se adaptam à tecnologia. A Envisioning faz o app, roda os servidores no Brasil e responde pelo serviço. Mas ela não é dona da rede: o Proseio usa o Matrix, um protocolo aberto, e o código vai ser público em breve. Com o código aberto, se a Envisioning parar, outras pessoas podem continuar. As regras de moderação saem no lançamento."
+          "body": "O Bipe é um projeto da Envisioning, um instituto de pesquisa que estuda desde 2010 como as instituições se adaptam à tecnologia. A Envisioning faz o app, roda os servidores no Brasil e responde pelo serviço. Mas ela não é dona da rede: o Bipe usa o Matrix, um protocolo aberto, e o código vai ser público em breve. Com o código aberto, se a Envisioning parar, outras pessoas podem continuar. As regras de moderação saem no lançamento."
         },
         {
           "heading": "Quem paga",
-          "body": "Quem usa, nunca. Como o Proseio vai se pagar ainda está em aberto. A ideia é que empresas paguem uma mensalidade fixa pela conta verificada. O Proseio não cobra taxa sobre Pix."
+          "body": "Quem usa, nunca. Como o Bipe vai se pagar ainda está em aberto. A ideia é que empresas paguem uma mensalidade fixa pela conta verificada. O Bipe não cobra taxa sobre Pix."
         }
       ]
     },
     "en": {
-      "title": "Why Proseio exists",
+      "title": "Why Bipe exists",
       "lede": "So Brazil has a way out: an open, Brazilian, independent messenger that works when people need it.",
       "sections": [
         {
           "heading": "It does not need to win to be worth it",
-          "body": "Proseio does not measure success by pulling people off WhatsApp. It needs to exist, be trustworthy and be ready on the day people look for another option. Signal and Wikipedia are judged the same way."
+          "body": "Bipe does not measure success by pulling people off WhatsApp. It needs to exist, be trustworthy and be ready on the day people look for another option. Signal and Wikipedia are judged the same way."
         },
         {
           "heading": "A network nobody controls alone",
-          "body": "Underneath, Proseio uses Matrix, an open messaging protocol. No company and no government owns the network. The servers are in Brazil, run by Brazilian companies."
+          "body": "Underneath, Bipe uses Matrix, an open messaging protocol. No company and no government owns the network. The servers are in Brazil, run by Brazilian companies."
         },
         {
           "heading": "Who makes it",
-          "body": "Proseio is a project by Envisioning, a research institute that has studied since 2010 how institutions adapt to technology. Envisioning builds the app, runs the servers in Brazil and answers for the service. It does not own the network: Proseio uses Matrix, an open protocol, and the code goes public soon. With the code open, others can carry on if Envisioning stops. The moderation rules come out at launch."
+          "body": "Bipe is a project by Envisioning, a research institute that has studied since 2010 how institutions adapt to technology. Envisioning builds the app, runs the servers in Brazil and answers for the service. It does not own the network: Bipe uses Matrix, an open protocol, and the code goes public soon. With the code open, others can carry on if Envisioning stops. The moderation rules come out at launch."
         },
         {
           "heading": "Who pays",
-          "body": "Users, never. How Proseio is funded is still open. The idea is that businesses pay a flat monthly fee for a verified account. Proseio takes no fee on Pix."
+          "body": "Users, never. How Bipe is funded is still open. The idea is that businesses pay a flat monthly fee for a verified account. Bipe takes no fee on Pix."
         }
       ]
     }
@@ -723,11 +723,11 @@
   "origin": {
     "pt": {
       "title": "Brasileiro, aberto e independente",
-      "body": "Os servidores ficam no Brasil, em empresas brasileiras. O Proseio roda sobre uma rede aberta que nenhuma empresa controla sozinha. O código vai ser público em breve."
+      "body": "Os servidores ficam no Brasil, em empresas brasileiras. O Bipe roda sobre uma rede aberta que nenhuma empresa controla sozinha. O código vai ser público em breve."
     },
     "en": {
       "title": "Brazilian, open and independent",
-      "body": "The servers are in Brazil, run by Brazilian companies. Underneath, Proseio uses an open network that no single company controls. The code goes public soon."
+      "body": "The servers are in Brazil, run by Brazilian companies. Underneath, Bipe uses an open network that no single company controls. The code goes public soon."
     }
   },
   "business": {
@@ -735,7 +735,7 @@
     "pt": {
       "nav": "Empresas",
       "title": "Fale com seus clientes num lugar onde ninguém se passa por você.",
-      "lede": "O Proseio é gratuito pras pessoas. A ideia é que ele se pague com empresas e instituições que querem falar com os clientes com segurança. Esta página explica a proposta. Ela ainda está em estudo, e nada aqui está à venda.",
+      "lede": "O Bipe é gratuito pras pessoas. A ideia é que ele se pague com empresas e instituições que querem falar com os clientes com segurança. Esta página explica a proposta. Ela ainda está em estudo, e nada aqui está à venda.",
       "label": "Proposta em estudo",
       "sections": [
         {
@@ -748,19 +748,19 @@
           ]
         },
         {
-          "heading": "Como o Proseio se pagaria",
+          "heading": "Como o Bipe se pagaria",
           "points": [
-            "Quem usa o Proseio pra conversar nunca paga.",
+            "Quem usa o Bipe pra conversar nunca paga.",
             "A empresa paga um valor mensal fixo por CNPJ verificado. Ele cobre a verificação, o nome reservado e a API.",
             "No começo, não tem preço por mensagem.",
-            "O Proseio não cobra taxa sobre Pix."
+            "O Bipe não cobra taxa sobre Pix."
           ]
         },
         {
           "heading": "Uma API pro sistema da empresa",
           "points": [
-            "A empresa liga o próprio sistema ao Proseio: manda avisos, recebe respostas e atende pelo programa que já usa.",
-            "A conversa é descriptografada no sistema da empresa, não nos servidores do Proseio. Empresas menores podem usar um parceiro que roda isso pra elas.",
+            "A empresa liga o próprio sistema ao Bipe: manda avisos, recebe respostas e atende pelo programa que já usa.",
+            "A conversa é descriptografada no sistema da empresa, não nos servidores do Bipe. Empresas menores podem usar um parceiro que roda isso pra elas.",
             "A gente quer que seja fácil mudar pra quem já usa a API do WhatsApp.",
             "A API ainda não existe."
           ]
@@ -783,13 +783,13 @@
         }
       ],
       "cta": "Quer saber mais? Fale com a gente.",
-      "ctaSubject": "Proseio para empresas",
+      "ctaSubject": "Bipe para empresas",
       "figureCaption": "Ilustração com dados de exemplo. A proposta ainda está em estudo."
     },
     "en": {
       "nav": "Business",
       "title": "Talk to your customers where nobody can pretend to be you.",
-      "lede": "Proseio is free for people. The idea is that it pays for itself through companies and institutions that want to talk to their customers safely. This page explains the proposal. It is still under study, and nothing here is for sale.",
+      "lede": "Bipe is free for people. The idea is that it pays for itself through companies and institutions that want to talk to their customers safely. This page explains the proposal. It is still under study, and nothing here is for sale.",
       "label": "Proposal under study",
       "sections": [
         {
@@ -802,19 +802,19 @@
           ]
         },
         {
-          "heading": "How Proseio would pay for itself",
+          "heading": "How Bipe would pay for itself",
           "points": [
-            "People who use Proseio to chat never pay.",
+            "People who use Bipe to chat never pay.",
             "A company pays a flat monthly fee per verified CNPJ. It covers verification, the reserved name and the API.",
             "At the start there is no price per message.",
-            "Proseio takes no fee on Pix."
+            "Bipe takes no fee on Pix."
           ]
         },
         {
           "heading": "An API for the company's system",
           "points": [
-            "A company connects its own system to Proseio: it sends notices, receives replies and answers from the software it already uses.",
-            "The chat is decrypted on the company's system, not on Proseio's servers. Smaller companies can use a partner that runs this for them.",
+            "A company connects its own system to Bipe: it sends notices, receives replies and answers from the software it already uses.",
+            "The chat is decrypted on the company's system, not on Bipe's servers. Smaller companies can use a partner that runs this for them.",
             "We want the move to be easy for companies that already use the WhatsApp API.",
             "The API does not exist yet."
           ]
@@ -837,7 +837,7 @@
         }
       ],
       "cta": "Want to talk about it? Write to us.",
-      "ctaSubject": "Proseio for business",
+      "ctaSubject": "Bipe for business",
       "figureCaption": "Illustration with sample data. The proposal is still under study."
     }
   },
@@ -1026,11 +1026,11 @@
             "id": "api",
             "repo": "api",
             "pt": {
-              "name": "API do Proseio",
+              "name": "API do Bipe",
               "body": "TypeScript e Postgres. Convites, @ e verificação de CNPJ."
             },
             "en": {
-              "name": "Proseio API",
+              "name": "Bipe API",
               "body": "TypeScript and Postgres. Invites, handles and CNPJ checks."
             }
           },
@@ -1087,11 +1087,11 @@
             ],
             "pt": {
               "name": "Design",
-              "body": "Compound, com a paleta do Proseio."
+              "body": "Compound, com a paleta do Bipe."
             },
             "en": {
               "name": "Design",
-              "body": "Compound, with Proseio's palette."
+              "body": "Compound, with Bipe's palette."
             }
           }
         ]

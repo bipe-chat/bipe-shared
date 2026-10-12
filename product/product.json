@@ -112,7 +112,7 @@
       ],
       "pt": {
         "name": "Confiança",
-        "title": "Mais difícil de enganar.",
+        "title": "Um aviso antes de você cair no golpe.",
         "summary": "Quando uma mensagem tem cara de golpe, aparece um aviso embaixo dela dizendo o que fazer. Quem não está nos seus contatos chega como pedido. Em breve, um selo mostra quem é quem, e nome de banco fica só pro banco.",
         "points": [
           "A checagem roda no seu celular, e a mensagem não sai dali.",
@@ -132,7 +132,7 @@
       },
       "en": {
         "name": "Trust",
-        "title": "Harder to fool.",
+        "title": "A warning before you fall for a scam.",
         "summary": "When a message looks like a scam, a warning shows up right under it and tells you what to do. People who aren't in your contacts arrive as a request. Soon, a seal shows who is who, and a bank's name stays with the bank.",
         "points": [
           "The check runs on your phone, so the message never leaves it.",

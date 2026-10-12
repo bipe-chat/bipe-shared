@@ -4,7 +4,7 @@ import { createPrivateKey, createPublicKey, sign } from "node:crypto";
 import { mkdirSync, readFileSync, writeFileSync } from "node:fs";
 import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
-import { extractInviteCode, handleProblem, normalizePhone, handleSkeleton, loadRegistries, normalize, scamMatchIDs, scamWarningKind } from "./lib/registries.mjs";
+import { extractInviteCode, handleProblem, normalizeCnpj, normalizePhone, handleSkeleton, loadRegistries, normalize, scamMatchIDs, scamWarningKind } from "./lib/registries.mjs";
 
 const root = join(dirname(fileURLToPath(import.meta.url)), "..");
 const reg = loadRegistries(root);
@@ -133,6 +133,15 @@ const inviteCases = JSON.parse(readFileSync(join(root, "test-vectors", "invite-c
 for (const { input, code } of inviteCases) {
   const got = extractInviteCode(input, reg);
   if (got !== code) throw new Error(`invite-codes.json: ${JSON.stringify(input)} gives ${got}, expected ${code}`);
+}
+
+// --- CNPJ --------------------------------------------------------------------
+// Hand-written cases (test-vectors/cnpj.json). Check them against the reference; fail closed.
+
+const cnpjCases = JSON.parse(readFileSync(join(root, "test-vectors", "cnpj.json"), "utf8")).vectors;
+for (const { input, cnpj } of cnpjCases) {
+  const got = normalizeCnpj(input);
+  if (got !== cnpj) throw new Error(`cnpj.json: ${JSON.stringify(input)} gives ${got}, expected ${cnpj}`);
 }
 
 // --- Phone numbers -----------------------------------------------------------

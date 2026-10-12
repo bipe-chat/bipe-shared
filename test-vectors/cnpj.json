@@ -1,0 +1,18 @@
+{
+  "$comment": "normalizeCnpj(input): 14 uppercase characters or null (ADR 0042). Hand-written; gen-test-vectors.mjs checks them against tools/lib/registries.mjs and fails closed. 12.ABC.345/01DE-35 is Receita Federal's published example of an alphanumeric CNPJ. 11.222.333/0001-81 is the common numeric test CNPJ.",
+  "vectors": [
+    { "input": "11.222.333/0001-81", "cnpj": "11222333000181" },
+    { "input": "11222333000181", "cnpj": "11222333000181" },
+    { "input": " 11 222 333 0001 81 ", "cnpj": "11222333000181" },
+    { "input": "11.222.333/0001-82", "cnpj": null },
+    { "input": "12.ABC.345/01DE-35", "cnpj": "12ABC34501DE35" },
+    { "input": "12abc34501de35", "cnpj": "12ABC34501DE35" },
+    { "input": "12.ABC.345/01DE-36", "cnpj": null },
+    { "input": "12.ABC.345/01DE-3A", "cnpj": null },
+    { "input": "00.000.000/0000-00", "cnpj": null },
+    { "input": "1122233300018", "cnpj": null },
+    { "input": "112223330001811", "cnpj": null },
+    { "input": "11.222.333/0001-8l", "cnpj": null },
+    { "input": "", "cnpj": null }
+  ]
+}

@@ -382,6 +382,114 @@ paths:
         "400": { $ref: "#/components/responses/Error" }
         "401": { $ref: "#/components/responses/Error" }
         "429": { $ref: "#/components/responses/Error" }
+  /v1/me/business:
+    get:
+      summary: The caller's CNPJ claim (ADR 0042)
+      security: [{ matrix: [] }]
+      responses:
+        "200":
+          description: The claim
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/BusinessClaim" }
+        "404": { $ref: "#/components/responses/Error" }
+    post:
+      summary: Start a CNPJ claim for the caller's account
+      description: >
+        One claim per account. The server validates the CNPJ (numeric or alphanumeric,
+        test-vectors/cnpj.json), then reads it from its copy of Receita Federal's open data.
+        When the CNPJ is not in the current copy yet, the claim waits in status
+        registry_pending until the next scan. A CNPJ that another account already verified
+        is refused with cnpj_taken.
+      security: [{ matrix: [] }]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [cnpj]
+              properties:
+                cnpj: { type: string, maxLength: 32, description: "With or without separators." }
+      responses:
+        "201":
+          description: Claim created
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/BusinessClaim" }
+        "400": { $ref: "#/components/responses/Error" }
+        "409": { $ref: "#/components/responses/Error" }
+        "429": { $ref: "#/components/responses/Error" }
+    delete:
+      summary: Withdraw the caller's claim (also ends a verification)
+      security: [{ matrix: [] }]
+      responses:
+        "204": { description: Withdrawn }
+  /v1/me/business/ecnpj:
+    post:
+      summary: Prove control with the company's e-CNPJ certificate
+      description: >
+        The body carries a CMS (PKCS#7, .p7s) signature over the exact claim challenge text,
+        attached or detached, made with an ICP-Brasil e-CNPJ certificate. The server checks the
+        signature, the chain to a pinned ICP-Brasil root, the validity dates, and that the CNPJ in
+        the certificate has the same root (first 8 characters) as the claimed CNPJ. The registry
+        must show the CNPJ as active.
+      security: [{ matrix: [] }]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [signature]
+              properties:
+                signature: { type: string, maxLength: 65536, description: "Base64 of the DER-encoded CMS SignedData." }
+      responses:
+        "200":
+          description: Verified
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/BusinessClaim" }
+        "400": { $ref: "#/components/responses/Error" }
+        "403": { $ref: "#/components/responses/Error" }
+        "404": { $ref: "#/components/responses/Error" }
+        "409": { $ref: "#/components/responses/Error" }
+  /v1/me/business/domains:
+    post:
+      summary: Add a domain to the caller's claim (ADR 0036)
+      description: Returns the DNS TXT record the company must publish. Up to 5 domains per claim.
+      security: [{ matrix: [] }]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [domain]
+              properties:
+                domain: { type: string, maxLength: 253 }
+      responses:
+        "201":
+          description: Domain added, not verified yet
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/BusinessDomain" }
+        "400": { $ref: "#/components/responses/Error" }
+        "404": { $ref: "#/components/responses/Error" }
+  /v1/me/business/domains/{domain}/check:
+    post:
+      summary: Look up the domain's TXT record now
+      security: [{ matrix: [] }]
+      parameters:
+        - { name: domain, in: path, required: true, schema: { type: string, maxLength: 253 } }
+      responses:
+        "200":
+          description: Result; verified_at is set when the record matched
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/BusinessDomain" }
+        "404": { $ref: "#/components/responses/Error" }
+        "429": { $ref: "#/components/responses/Error" }
   /v1/me/handle:
     get:
       summary: The caller's handle
@@ -435,6 +543,50 @@ components:
         experiment: { type: string, pattern: "^[a-z0-9-]{1,32}$", example: headline-77 }
         arm: { type: string, pattern: "^h[0-9]$", description: "h0 is the control." }
         event: { type: string, enum: [assign, install_click], description: "assign: a browser got its arm (once per browser). install_click: a click on the TestFlight link." }
+    BusinessClaim:
+      type: object
+      required: [cnpj, status, domains, reserved_names]
+      properties:
+        cnpj: { type: string, description: "14 characters, digits and uppercase letters, no separators." }
+        status:
+          type: string
+          enum: [registry_pending, awaiting_proof, verified, rejected, revoked]
+          description: >
+            registry_pending: waiting for the next scan of the registry copy.
+            awaiting_proof: the CNPJ is active; prove control.
+            verified: proof accepted. rejected: the registry shows the CNPJ is not active.
+            revoked: a later check or staff ended the verification (see reason).
+        reason: { type: string, description: "Why the claim is rejected or revoked, e.g. not_active, staff." }
+        registry: { $ref: "#/components/schemas/CnpjRegistryRecord" }
+        challenge: { type: string, description: "Text to sign with the e-CNPJ certificate. Present while status is awaiting_proof." }
+        method: { type: string, enum: [ecnpj, partner, staff] }
+        verified_at: { type: string, format: date-time }
+        domains: { type: array, items: { $ref: "#/components/schemas/BusinessDomain" } }
+        reserved_names:
+          type: array
+          description: Reserved names that the registered names match, and whether staff approved them for this company.
+          items:
+            type: object
+            required: [name, approved]
+            properties:
+              name: { type: string }
+              approved: { type: boolean }
+    CnpjRegistryRecord:
+      type: object
+      required: [active, legal_name, checked_month]
+      properties:
+        active: { type: boolean }
+        legal_name: { type: string, description: "Razão social." }
+        trade_name: { type: string, description: "Nome fantasia, when the registry has one." }
+        checked_month: { type: string, description: "The Receita Federal release the record comes from, YYYY-MM." }
+    BusinessDomain:
+      type: object
+      required: [domain, txt_name, txt_value]
+      properties:
+        domain: { type: string }
+        txt_name: { type: string, description: "Where to publish the record, e.g. _proseio.example.com.br" }
+        txt_value: { type: string }
+        verified_at: { type: string, format: date-time }
     WaitlistRequest:
       type: object
       required: [email, platform]
@@ -543,7 +695,7 @@ components:
       properties:
         error:
           type: string
-          enum: [bad_request, invite_invalid, invite_quota_exhausted, email_taken, handle_invalid, handle_taken, handle_cooldown, password_weak, attestation_invalid, unauthorized, not_found, rate_limited, internal]
+          enum: [bad_request, invite_invalid, invite_quota_exhausted, email_taken, handle_invalid, handle_taken, handle_cooldown, password_weak, attestation_invalid, unauthorized, not_found, rate_limited, internal, cnpj_invalid, cnpj_not_active, cnpj_taken, signature_invalid]
         reason: { type: string, description: "Detail, e.g. a HandleProblem id." }
     BadgeEnvelope:
       type: object

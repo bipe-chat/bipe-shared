@@ -214,7 +214,6 @@
       ],
       "features": [
         "group-types",
-        "channels",
         "pix-cards",
         "phone-discovery"
       ],
@@ -230,7 +229,7 @@
         "summary": "O celular toca quando alguém te marca, te responde ou abre uma enquete. O resto chega em silêncio. Quando você abre o grupo, o que era pra você aparece no topo.",
         "points": [
           "Abriu o grupo depois de um tempo? Quem te marcou e as enquetes que faltam você votar vêm primeiro.",
-          "Canais para torcidas, igrejas, criadores e instituições.",
+          "Enquetes, mensagens fixadas e respostas em fio já funcionam no app de testes.",
           "Quem você já conhece aparece no Proseio desde o primeiro dia, se essa pessoa quiser."
         ],
         "demos": [
@@ -246,7 +245,7 @@
         "summary": "Your phone buzzes when someone mentions you, replies to you or starts a poll. Everything else arrives quietly. When you open the group, what was meant for you sits at the top.",
         "points": [
           "Back in the group after a while? Who mentioned you and the polls still waiting on your vote come first.",
-          "Channels for fan clubs, churches, creators and institutions.",
+          "Polls, pinned messages and threads already work in the test app.",
           "People you already know show up on Proseio from day one, if they choose to."
         ],
         "demos": [
@@ -540,11 +539,11 @@
       },
       "pt": {
         "name": "Código aberto",
-        "body": "O código vai ser público no lançamento, para qualquer pessoa conferir."
+        "body": "O código vai ser público em breve, para qualquer pessoa conferir."
       },
       "en": {
         "name": "Open source",
-        "body": "The code goes public at launch, so anyone can check it."
+        "body": "The code goes public soon, so anyone can check it."
       }
     },
     {
@@ -594,22 +593,6 @@
         "name": "Quiet groups",
         "body": "It only rings when it's about you. When you come back, mentions, replies, open polls and new pins come first."
       }
-    },
-    {
-      "id": "channels",
-      "area": "community",
-      "status": {
-        "ios": "planned",
-        "android": "planned"
-      },
-      "pt": {
-        "name": "Canais",
-        "body": "Para torcidas, igrejas, criadores e instituições falarem com muita gente."
-      },
-      "en": {
-        "name": "Channels",
-        "body": "For fan clubs, churches, creators and institutions to reach many people."
-      }
     }
   ],
   "about": {
@@ -627,7 +610,7 @@
         },
         {
           "heading": "Quem faz",
-          "body": "Um grupo pequeno de pessoas ligadas à Envisioning, que roda a própria infraestrutura. O código vai ser público no lançamento, junto com as regras de moderação."
+          "body": "Um grupo pequeno de pessoas ligadas à Envisioning, que roda a própria infraestrutura. O código vai ser público em breve. As regras de moderação saem no lançamento."
         },
         {
           "heading": "Quem paga",
@@ -649,7 +632,7 @@
         },
         {
           "heading": "Who makes it",
-          "body": "A small group of people connected to Envisioning, running their own infrastructure. The code goes public at launch, along with the moderation rules."
+          "body": "A small group of people connected to Envisioning, running their own infrastructure. The code goes public soon. The moderation rules come out at launch."
         },
         {
           "heading": "Who pays",
@@ -668,11 +651,11 @@
   "origin": {
     "pt": {
       "title": "Brasileiro, aberto e independente",
-      "body": "Os servidores ficam no Brasil, em empresas brasileiras. Por baixo, o Proseio usa uma rede aberta que nenhuma empresa controla sozinha. O código vai ser público no lançamento."
+      "body": "Os servidores ficam no Brasil, em empresas brasileiras. Por baixo, o Proseio usa uma rede aberta que nenhuma empresa controla sozinha. O código vai ser público em breve."
     },
     "en": {
       "title": "Brazilian, open and independent",
-      "body": "The servers are in Brazil, run by Brazilian companies. Underneath, Proseio uses an open network that no single company controls. The code goes public at launch."
+      "body": "The servers are in Brazil, run by Brazilian companies. Underneath, Proseio uses an open network that no single company controls. The code goes public soon."
     }
   },
   "business": {

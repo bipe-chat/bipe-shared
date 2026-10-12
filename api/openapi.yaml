@@ -523,6 +523,100 @@ paths:
         "401": { $ref: "#/components/responses/Error" }
         "409": { $ref: "#/components/responses/Error" }
         "429": { $ref: "#/components/responses/Error" }
+  /v1/profiles/{handle}:
+    get:
+      summary: Public profile by exact handle (ADR 0041)
+      description: >
+        No auth. CORS for the public site. Rate-limited per IP. The same 404 for "no such handle"
+        and "profile off". No search and no directory. Never returns the Matrix ID: apps that
+        start a chat call GET /v1/handles/{handle} with a token.
+      parameters:
+        - { name: handle, in: path, required: true, schema: { type: string } }
+      responses:
+        "200":
+          description: Published profile
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/PublicProfile" }
+        "404": { $ref: "#/components/responses/Error" }
+        "429": { $ref: "#/components/responses/Error" }
+  /v1/profiles/{handle}/photo:
+    get:
+      summary: Profile photo (JPEG, metadata removed by the server)
+      description: No auth. Same visibility as the profile. The URL changes when the photo changes.
+      parameters:
+        - { name: handle, in: path, required: true, schema: { type: string } }
+        - { name: v, in: query, required: false, schema: { type: string }, description: "Photo version from photo_url. Ignored by the server; it busts caches." }
+      responses:
+        "200":
+          description: The photo
+          content:
+            image/jpeg: {}
+        "404": { $ref: "#/components/responses/Error" }
+        "429": { $ref: "#/components/responses/Error" }
+  /v1/me/profile:
+    get:
+      summary: The caller's public profile, published or not
+      security: [{ matrix: [] }]
+      responses:
+        "200":
+          description: Current profile. A user who never saved one gets enabled false and an empty name.
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/MyProfile" }
+        "401": { $ref: "#/components/responses/Error" }
+    put:
+      summary: Save the caller's public profile and turn it on or off
+      description: >
+        Turning it on needs a handle (400 profile_invalid, reason no_handle). Name and bio follow
+        registries/profiles.json and the reserved names (reason: a ProfileProblem id).
+      security: [{ matrix: [] }]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: { $ref: "#/components/schemas/ProfileUpdate" }
+      responses:
+        "200":
+          description: Saved
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/MyProfile" }
+        "400": { $ref: "#/components/responses/Error" }
+        "401": { $ref: "#/components/responses/Error" }
+        "429": { $ref: "#/components/responses/Error" }
+  /v1/me/profile/photo:
+    put:
+      summary: Replace the caller's profile photo
+      description: >
+        Body is a baseline or progressive JPEG, at most photoMaxBytes and photoMaxPixels on each side
+        (registries/profiles.json). Apps re-encode before upload. The server removes every APPn and
+        COM segment (EXIF, GPS, XMP) and stores only the result.
+      security: [{ matrix: [] }]
+      requestBody:
+        required: true
+        content:
+          image/jpeg: {}
+      responses:
+        "200":
+          description: Saved
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/MyProfile" }
+        "400": { $ref: "#/components/responses/Error" }
+        "401": { $ref: "#/components/responses/Error" }
+        "413": { $ref: "#/components/responses/Error" }
+        "429": { $ref: "#/components/responses/Error" }
+    delete:
+      summary: Remove the caller's profile photo
+      security: [{ matrix: [] }]
+      responses:
+        "200":
+          description: Removed
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/MyProfile" }
+        "401": { $ref: "#/components/responses/Error" }
 components:
   responses:
     Error:
@@ -689,13 +783,43 @@ components:
         user_id: { type: string }
         handle: { type: string }
         changeable_at: { type: string, format: date-time, description: "Absent when a change is allowed now." }
+    PublicProfile:
+      type: object
+      required: [handle, name]
+      properties:
+        handle: { type: string }
+        name: { type: string }
+        bio: { type: string, description: "Plain text. Absent when empty." }
+        photo_url: { type: string, description: "Absolute URL of GET /v1/profiles/{handle}/photo with a version. Absent without a photo." }
+        badge: { $ref: "#/components/schemas/BadgeEnvelope" }
+    MyProfile:
+      type: object
+      required: [enabled, name, bio, has_photo]
+      properties:
+        enabled: { type: boolean }
+        name: { type: string }
+        bio: { type: string }
+        has_photo: { type: boolean }
+        handle: { type: string, description: "Absent when the caller has no handle." }
+        photo_url: { type: string, description: "Absent without a photo." }
+    ProfileUpdate:
+      type: object
+      required: [enabled, name, bio]
+      properties:
+        enabled: { type: boolean }
+        name: { type: string }
+        bio: { type: string }
+    ProfileProblem:
+      type: string
+      enum: [name_empty, name_too_long, name_reserved, bio_too_long, bio_too_many_lines, no_handle]
+      description: Same ids as proseio-shared profileProblem(), plus no_handle from the server.
     Error:
       type: object
       required: [error]
       properties:
         error:
           type: string
-          enum: [bad_request, invite_invalid, invite_quota_exhausted, email_taken, handle_invalid, handle_taken, handle_cooldown, password_weak, attestation_invalid, unauthorized, not_found, rate_limited, internal, cnpj_invalid, cnpj_not_active, cnpj_taken, signature_invalid]
+          enum: [bad_request, invite_invalid, invite_quota_exhausted, email_taken, handle_invalid, handle_taken, handle_cooldown, password_weak, attestation_invalid, profile_invalid, photo_invalid, unauthorized, not_found, rate_limited, internal, cnpj_invalid, cnpj_not_active, cnpj_taken, signature_invalid]
         reason: { type: string, description: "Detail, e.g. a HandleProblem id." }
     BadgeEnvelope:
       type: object

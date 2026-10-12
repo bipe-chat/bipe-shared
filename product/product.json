@@ -482,6 +482,22 @@
       }
     },
     {
+      "id": "public-profile",
+      "area": "chat",
+      "status": {
+        "ios": "built",
+        "android": "built"
+      },
+      "pt": {
+        "name": "Perfil público",
+        "body": "Se quiser, seu link mostra nome, foto e bio. Você liga e desliga. Ninguém acha seu perfil por busca."
+      },
+      "en": {
+        "name": "Public profile",
+        "body": "If you want, your link shows your name, photo and bio. You turn it on and off. Nobody finds your profile by search."
+      }
+    },
+    {
       "id": "invites",
       "area": "chat",
       "status": {

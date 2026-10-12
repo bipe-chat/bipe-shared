@@ -79,6 +79,13 @@ public enum ProseioRegistries {
     public static let handleMaxLength = ${reg.handles.maxLength}
     public static let handlePattern = ${swiftString(reg.handles.pattern)}
 
+    /// Public profile rules (ADR 0041). Lengths count Unicode scalars. The server is the authority.
+    public static let profileNameMaxLength = ${reg.profiles.nameMaxLength}
+    public static let profileBioMaxLength = ${reg.profiles.bioMaxLength}
+    public static let profileBioMaxLines = ${reg.profiles.bioMaxLines}
+    public static let profilePhotoMaxBytes = ${reg.profiles.photoMaxBytes}
+    public static let profilePhotoMaxPixels = ${reg.profiles.photoMaxPixels}
+
     /// Invite codes: the code inside anything a user pastes (registries/invite-codes.json).
     public static let inviteCodePattern = ${swiftString(reg.inviteCodes.pattern)}
     public static let inviteCodeMaxInputLength = ${reg.inviteCodes.maxInputLength}
@@ -198,6 +205,13 @@ object ProseioRegistries {
     const val HANDLE_MIN_LENGTH = ${reg.handles.minLength}
     const val HANDLE_MAX_LENGTH = ${reg.handles.maxLength}
     const val HANDLE_PATTERN = ${kotlinString(reg.handles.pattern)}
+
+    /** Public profile rules (ADR 0041). Lengths count code points. The server is the authority. */
+    const val PROFILE_NAME_MAX_LENGTH = ${reg.profiles.nameMaxLength}
+    const val PROFILE_BIO_MAX_LENGTH = ${reg.profiles.bioMaxLength}
+    const val PROFILE_BIO_MAX_LINES = ${reg.profiles.bioMaxLines}
+    const val PROFILE_PHOTO_MAX_BYTES = ${reg.profiles.photoMaxBytes}
+    const val PROFILE_PHOTO_MAX_PIXELS = ${reg.profiles.photoMaxPixels}
 
     /** Invite codes: the code inside anything a user pastes (registries/invite-codes.json). */
     const val INVITE_CODE_PATTERN = ${kotlinString(reg.inviteCodes.pattern)}

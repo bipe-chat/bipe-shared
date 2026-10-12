@@ -24,12 +24,16 @@ const MODELS = {
   HandleAvailability: { ios: "ProseioHandleAvailability", android: "ProseioHandleAvailability" },
   HandleRecord: { ios: "ProseioHandleRecord", android: "ProseioHandleRecord" },
   MyHandle: { ios: "ProseioMyHandle", android: "ProseioMyHandle" },
+  PublicProfile: { ios: "ProseioPublicProfile", android: "ProseioPublicProfile" },
+  MyProfile: { ios: "ProseioMyProfile", android: "ProseioMyProfile" },
+  ProfileUpdate: { ios: "ProseioProfileUpdate", android: "ProseioProfileUpdate" },
 };
 
 // Contract enum -> client enum per platform. "Error.error" is the enum on the error property of Error.
 const ENUMS = {
   InviteStatus: { ios: "ProseioInviteStatus", android: "ProseioInviteStatus" },
   HandleProblem: { ios: "ProseioHandleProblem", android: "ProseioHandleProblem" },
+  ProfileProblem: { ios: "ProseioProfileProblem", android: "ProseioProfileProblem" },
   "Error.error": { ios: "ProseioAPIErrorCode", android: "ProseioApiErrorCode" },
 };
 

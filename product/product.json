@@ -496,7 +496,7 @@
         "points": [
           "Pra criar a conta, basta seu nome. O @ e o e-mail são opcionais.",
           "A senha de 8 números trava o app e protege a volta pra sua conta. Sequência fácil, como 12345678, não passa.",
-          "Só a senha não abre sua conta. Também precisa do seu celular, do seu e-mail ou dos seus contatos de confiança.",
+          "Só a senha não abre sua conta. Também precisa do seu celular, do seu e-mail ou dos seus guardiões.",
           "Errou a senha 5 vezes, ela trava até você trocar."
         ]
       },
@@ -506,7 +506,7 @@
         "points": [
           "To create an account, your name is enough. The @ and the email are optional.",
           "The 8-digit PIN locks the app and protects getting back into your account. Easy sequences like 12345678 are not accepted.",
-          "The PIN alone does not open your account. It also takes your phone, your email or your trusted contacts.",
+          "The PIN alone does not open your account. It also takes your phone, your email or your guardians.",
           "Five wrong tries lock the PIN until you change it."
         ]
       }
@@ -528,7 +528,7 @@
         "points": [
           "Com o celular antigo na mão, aponte a câmera do novo pro QR code que aparece no antigo.",
           "Perdeu o antigo? Se a conta estava no iCloud ou no Google, ela volta no celular novo com sua senha de 8 números.",
-          "Sem isso, dá pra voltar pelo e-mail ou com a ajuda dos seus contatos de confiança. Aí tem uma espera de 24 horas.",
+          "Sem isso, dá pra voltar pelo e-mail ou com a ajuda dos seus guardiões. Aí tem uma espera de 24 horas.",
           "Durante a espera, seus outros aparelhos recebem um aviso e podem cancelar.",
           "O Bipe nunca pede pra você ler um QR code que outra pessoa mandou."
         ]
@@ -539,7 +539,7 @@
         "points": [
           "With the old phone in hand, point the new phone's camera at the QR code on the old one.",
           "Lost the old one? If the account was in iCloud or Google, it comes back on the new phone with your 8-digit PIN.",
-          "Without that, you can get back in by email or with help from your trusted contacts. Then there is a 24-hour wait.",
+          "Without that, you can get back in by email or with help from your guardians. Then there is a 24-hour wait.",
           "During the wait, your other devices get a notice and can cancel.",
           "Bipe never asks you to scan a QR code that someone else sent."
         ]
@@ -1285,6 +1285,18 @@
       ]
     }
   ],
+  "audiencesHub": {
+    "pt": {
+      "nav": "Pessoas e grupos",
+      "title": "Para quem é o Bipe",
+      "lede": "O Bipe é um app de mensagens pra todo mundo. Estas páginas mostram como ele serve grupos diferentes, com o que já funciona e o que ainda vem."
+    },
+    "en": {
+      "nav": "People and groups",
+      "title": "Who Bipe is for",
+      "lede": "Bipe is a messenger for everyone. These pages show how it serves different groups, with what already works and what is still coming."
+    }
+  },
   "audiences": [
     {
       "id": "builders",
@@ -1397,11 +1409,199 @@
       }
     },
     {
-      "id": "churches",
+      "id": "families",
+      "icp": "family",
+      "slug": {
+        "pt": "familias",
+        "en": "families"
+      },
+      "sections": [
+        {
+          "id": "warning",
+          "features": [
+            "scam-alerts",
+            "money-pause"
+          ]
+        },
+        {
+          "id": "who",
+          "features": [
+            "verified-badge",
+            "family-check",
+            "lookalikes"
+          ]
+        },
+        {
+          "id": "strangers",
+          "features": [
+            "requests",
+            "no-sms"
+          ]
+        },
+        {
+          "id": "pay",
+          "features": [
+            "pix-cards"
+          ]
+        },
+        {
+          "id": "bring",
+          "features": [
+            "invites",
+            "group-types"
+          ]
+        }
+      ],
+      "pt": {
+        "name": "Famílias",
+        "title": "Bipe para famílias",
+        "headline": "Ninguém se passa por você com a sua mãe.",
+        "lede": "O golpe do falso parente começa com uma foto e um número novo. No Bipe, quem não está nos contatos chega como pedido, a mensagem com cara de golpe vem com aviso, e o selo vai mostrar quem é quem.",
+        "sections": [
+          {
+            "heading": "Um aviso antes do Pix",
+            "body": "Pix com pressa, troca de número, boleto, print de comprovante: o aviso aparece embaixo da mensagem e diz o que fazer. Num pedido de dinheiro suspeito, copiar e pagar ficam travados por 5 segundos."
+          },
+          {
+            "heading": "Quem é quem",
+            "body": "O selo vem com o nome que o banco conferiu. Se o contato salvo como Mãe tem outro nome verificado, o app pergunta se é a mesma pessoa."
+          },
+          {
+            "heading": "Estranho não entra direto",
+            "body": "Quem não está nos seus contatos chega como pedido. E como não tem código por SMS, quem clona o chip não leva a conta."
+          },
+          {
+            "heading": "Pagar pro nome certo",
+            "body": "O pedido de Pix mostra o nome que o banco vai mostrar. Se aparecer outro nome, não pague."
+          },
+          {
+            "heading": "Traga a família",
+            "body": "Mande um convite, e quem entra chega direto na sua conversa. O grupo da família só toca quando é com você."
+          }
+        ],
+        "note": "No iPhone, o aviso de golpe e os pedidos de conversa já estão no app de testes. O selo e a pergunta sobre a Mãe ainda vêm. No Android, ainda não tem.",
+        "cta": "Quer proteger a sua família desde o começo? Fale com a gente.",
+        "ctaSubject": "Bipe para famílias"
+      },
+      "en": {
+        "name": "Families",
+        "title": "Bipe for families",
+        "headline": "Nobody can pose as you with your mom.",
+        "lede": "The fake-relative scam starts with a photo and a new number. On Bipe, people who aren't in your contacts arrive as a request, a message that looks like a scam comes with a warning, and the seal will show who is who.",
+        "sections": [
+          {
+            "heading": "A warning before the Pix",
+            "body": "A rushed Pix, a new number, a boleto, a receipt screenshot: the warning appears under the message and says what to do. On a suspicious money request, copy and pay stay locked for 5 seconds."
+          },
+          {
+            "heading": "Who is who",
+            "body": "The seal carries the name your bank checked. If the contact saved as Mom has a different verified name, the app asks if it is the same person."
+          },
+          {
+            "heading": "Strangers don't walk in",
+            "body": "People who aren't in your contacts arrive as a request. And with no SMS code, whoever clones the SIM doesn't get the account."
+          },
+          {
+            "heading": "Pay the right name",
+            "body": "A Pix request shows the name your bank will show. If you see another name, don't pay."
+          },
+          {
+            "heading": "Bring the family",
+            "body": "Send an invite, and whoever joins lands straight in your chat. The family group only rings when it's about you."
+          }
+        ],
+        "note": "On iPhone, scam warnings and message requests are in the test app. The seal and the question about Mom are still coming. There is no Android version yet.",
+        "cta": "Want to protect your family from the start? Talk to us.",
+        "ctaSubject": "Bipe for families"
+      }
+    },
+    {
+      "id": "abroad",
+      "icp": "family",
+      "slug": {
+        "pt": "brasileiros-no-exterior",
+        "en": "brazilians-abroad"
+      },
+      "sections": [
+        {
+          "id": "handle",
+          "features": [
+            "handles",
+            "profile-links",
+            "phone-discovery"
+          ]
+        },
+        {
+          "id": "you",
+          "features": [
+            "verified-badge",
+            "family-check",
+            "requests",
+            "scam-alerts"
+          ]
+        },
+        {
+          "id": "anywhere",
+          "features": [
+            "e2ee",
+            "no-sms",
+            "brazil-servers"
+          ]
+        }
+      ],
+      "pt": {
+        "name": "Brasileiros no exterior",
+        "title": "Bipe para brasileiros no exterior",
+        "headline": "Longe de casa, e ninguém usa o seu nome com a sua família.",
+        "lede": "Quem mora fora troca de número e passa dias sem falar com casa. O golpista aproveita: diz que é você, com número novo. No Bipe, o seu @ não muda quando o chip muda, e a sua família sabe com quem está falando.",
+        "sections": [
+          {
+            "heading": "Seu @ não muda com o chip",
+            "body": "Você troca de país e de chip, e o seu @ continua o mesmo. Quem tem o seu link fala com você em qualquer lugar."
+          },
+          {
+            "heading": "Sua família sabe que é você",
+            "body": "O selo vem com o seu nome verificado. Se alguém usa a sua foto com outro número, a mensagem chega como pedido, e o aviso aparece quando tem pedido de Pix com pressa."
+          },
+          {
+            "heading": "De qualquer lugar, protegido",
+            "body": "Toda conversa é protegida de ponta a ponta. Não tem código por SMS pra receber no número de fora, e os servidores ficam no Brasil."
+          }
+        ],
+        "note": "No iPhone, o Bipe está em teste pelo TestFlight. No Android, ainda não tem. O selo verificado ainda vem.",
+        "cta": "Mora fora e quer testar com a família? Fale com a gente.",
+        "ctaSubject": "Bipe para brasileiros no exterior"
+      },
+      "en": {
+        "name": "Brazilians abroad",
+        "title": "Bipe for Brazilians abroad",
+        "headline": "Far from home, and nobody uses your name with your family.",
+        "lede": "People who live abroad change numbers and go days without calling home. Scammers use that: they say they are you, with a new number. On Bipe, your @ stays the same when your SIM changes, and your family knows who they are talking to.",
+        "sections": [
+          {
+            "heading": "Your @ doesn't change with the SIM",
+            "body": "You change country and SIM, and your @ stays the same. Anyone with your link can reach you anywhere."
+          },
+          {
+            "heading": "Your family knows it's you",
+            "body": "The seal carries your verified name. If someone uses your photo with another number, the message arrives as a request, and a warning appears on a rushed Pix request."
+          },
+          {
+            "heading": "Protected from anywhere",
+            "body": "Every chat is end-to-end encrypted. There is no SMS code to receive on a foreign number, and the servers are in Brazil."
+          }
+        ],
+        "note": "On iPhone, Bipe is in testing through TestFlight. There is no Android version yet. The verified seal is still coming.",
+        "cta": "Live abroad and want to test with your family? Talk to us.",
+        "ctaSubject": "Bipe for Brazilians abroad"
+      }
+    },
+    {
+      "id": "groups",
       "icp": "communities",
       "slug": {
-        "pt": "igrejas",
-        "en": "churches"
+        "pt": "grupos-e-comunidades",
+        "en": "groups-and-communities"
       },
       "sections": [
         {
@@ -1411,8 +1611,7 @@
             "cnpj-badge",
             "lookalikes",
             "scam-alerts"
-          ],
-          "scene": "falso-pastor"
+          ]
         },
         {
           "id": "groups",
@@ -1420,8 +1619,7 @@
             "communities",
             "group-types",
             "polls"
-          ],
-          "scene": "igreja"
+          ]
         },
         {
           "id": "members",
@@ -1441,58 +1639,151 @@
         }
       ],
       "pt": {
-        "name": "Igrejas",
-        "title": "Bipe para igrejas",
-        "headline": "Os grupos da igreja, sem barulho e sem golpe.",
-        "lede": "Célula, pastoral, ministério, coral, grupo de jovens: a igreja vive em grupos. No Bipe, cada grupo só te chama quando é com você, e ninguém se passa pela liderança pra pedir Pix.",
+        "name": "Grupos e comunidades",
+        "title": "Bipe para grupos e comunidades",
+        "headline": "Grupo grande sem bagunça, e ninguém se passa por quem organiza.",
+        "lede": "Igreja, associação, time, torcida, coletivo, turma: grupo com gente que organiza e muita gente participando. No Bipe, cada grupo só te chama quando é com você, os avisos ficam num lugar só, e ninguém se passa pela organização pra pedir Pix.",
         "sections": [
           {
-            "heading": "Ninguém se passa pela liderança",
-            "body": "Golpista copia nome e foto de pastor, padre ou líder pra pedir oferta ou ajuda por Pix. No Bipe, o selo mostra o nome verificado de cada pessoa, e a igreja com CNPJ verificado ganha um selo com o nome que está na Receita."
+            "heading": "Ninguém se passa por quem organiza",
+            "body": "Golpista copia nome e foto de quem organiza, seja pastor, padre, técnico ou presidente da associação, pra pedir Pix. No Bipe, o selo mostra o nome verificado de cada pessoa, e a organização com CNPJ verificado ganha um selo com o nome que está na Receita."
           },
           {
             "heading": "Cada grupo no seu lugar, os avisos num lugar só",
-            "body": "A comunidade junta os grupos da igreja debaixo de um nome só. Os avisos ficam numa sala onde só quem cuida posta, e cada pessoa entra só nos grupos que quer."
+            "body": "A comunidade junta os grupos debaixo de um nome só. Os avisos ficam numa sala onde só quem organiza posta, e cada pessoa entra só nos grupos que quer."
           },
           {
             "heading": "Quem entra no grupo",
             "body": "Dá pra deixar um grupo só pra quem tem selo verificado. Quem não está nos seus contatos chega como pedido, e ninguém precisa mostrar o número pro grupo todo."
           },
           {
-            "heading": "Dízimo e oferta com o nome certo",
-            "body": "A cobrança por Pix mostra o CNPJ da igreja no cartão, e o banco mostra o nome de quem recebe antes de você pagar. O Bipe não cobra taxa sobre a cobrança."
+            "heading": "Mensalidade, dízimo e vaquinha pro nome certo",
+            "body": "A cobrança por Pix mostra o CNPJ da organização no cartão, e o banco mostra o nome de quem recebe antes de você pagar. O Bipe não cobra taxa sobre a cobrança."
           }
         ],
         "note": "Boa parte desta página ainda está em desenvolvimento. Cada recurso mostra se já está no app.",
-        "cta": "Cuida da comunicação de uma igreja? Fale com a gente.",
-        "ctaSubject": "Bipe para igrejas"
+        "cta": "Organiza um grupo grande? Fale com a gente.",
+        "ctaSubject": "Bipe para grupos e comunidades"
       },
       "en": {
-        "name": "Churches",
-        "title": "Bipe for churches",
-        "headline": "Your church's groups, without the noise and without the scams.",
-        "lede": "Small groups, ministries, choirs, youth groups: a church lives in groups. On Bipe, each group only calls you when it is about you, and nobody can pose as a church leader to ask for a Pix.",
+        "name": "Groups and communities",
+        "title": "Bipe for groups and communities",
+        "headline": "Big groups without the mess, and nobody poses as the organisers.",
+        "lede": "Churches, associations, teams, fan clubs, collectives, classes: groups with people who organise and many who take part. On Bipe, each group only calls you when it's about you, notices stay in one place, and nobody can pose as the organisers to ask for a Pix.",
         "sections": [
           {
-            "heading": "Nobody poses as your leaders",
-            "body": "Scammers copy a pastor's, priest's or leader's name and photo to ask for an offering or for help by Pix. On Bipe, the seal shows each person's verified name, and a church with a verified CNPJ gets a seal with its name from the federal register."
+            "heading": "Nobody poses as the organisers",
+            "body": "Scammers copy an organiser's name and photo, a pastor, a priest, a coach or an association's president, to ask for a Pix. On Bipe, the seal shows each person's verified name, and an organisation with a verified CNPJ gets a seal with its name from the federal register."
           },
           {
             "heading": "Each group in its place, notices in one place",
-            "body": "A community brings the church's groups together under one name. Notices go to a room where only the organisers post, and each person joins only the groups they want."
+            "body": "A community brings the groups together under one name. Notices go to a room where only the organisers post, and each person joins only the groups they want."
           },
           {
             "heading": "Who joins the group",
             "body": "A group can admit only people with a verified seal. People who aren't in your contacts arrive as a request, and nobody has to show their number to the whole group."
           },
           {
-            "heading": "Tithes and offerings with the right name",
-            "body": "A Pix charge shows the church's CNPJ on the card, and your bank shows who receives the money before you pay. Bipe takes no fee on the charge."
+            "heading": "Fees, tithes and collections to the right name",
+            "body": "A Pix charge shows the organisation's CNPJ on the card, and your bank shows who receives the money before you pay. Bipe takes no fee on the charge."
           }
         ],
         "note": "Much of this page is still in development. Each feature shows whether it is in the app yet.",
-        "cta": "Do you run communication for a church? Talk to us.",
-        "ctaSubject": "Bipe for churches"
+        "cta": "Do you run a big group? Talk to us.",
+        "ctaSubject": "Bipe for groups and communities"
+      }
+    },
+    {
+      "id": "professionals",
+      "icp": "national",
+      "slug": {
+        "pt": "profissionais",
+        "en": "professionals"
+      },
+      "sections": [
+        {
+          "id": "link",
+          "features": [
+            "handles",
+            "profile-links",
+            "public-profile"
+          ]
+        },
+        {
+          "id": "clients",
+          "features": [
+            "requests",
+            "e2ee"
+          ]
+        },
+        {
+          "id": "name",
+          "features": [
+            "verified-badge",
+            "lookalikes"
+          ]
+        },
+        {
+          "id": "account",
+          "features": [
+            "no-sms",
+            "no-ads"
+          ]
+        }
+      ],
+      "pt": {
+        "name": "Profissionais",
+        "title": "Bipe para profissionais",
+        "headline": "O cliente fala com você pelo @, não pelo seu número pessoal.",
+        "lede": "Médica, advogado, professora, terapeuta, corretor: muita gente passa o número pessoal pra cliente. No Bipe, você passa um link, quem não está nos seus contatos chega como pedido, e o seu número fica com você.",
+        "sections": [
+          {
+            "heading": "Um link no lugar do número",
+            "body": "Coloque o seu link no cartão, no site ou na bio. Com o app instalado, a conversa abre direto. Se quiser, o link mostra nome, foto e bio."
+          },
+          {
+            "heading": "Cliente novo chega como pedido",
+            "body": "Quem não está nos seus contatos chega como pedido, separado das suas conversas. Você decide quando responder, e a conversa é protegida de ponta a ponta."
+          },
+          {
+            "heading": "Seu nome não vira golpe",
+            "body": "Golpista usa nome de profissional pra pedir Pix a cliente. O selo mostra o seu nome verificado, e trocar uma letra não engana a checagem."
+          },
+          {
+            "heading": "Sem chip e sem anúncio",
+            "body": "Você não entra por código de SMS, então quem clona o seu chip não leva a conta. E não tem anúncio em tela nenhuma."
+          }
+        ],
+        "note": "O Bipe é um app de mensagens pra pessoas. Empresas que falam com muitos clientes têm uma página própria. No iPhone, o Bipe está em teste. No Android, ainda não tem.",
+        "cta": "Atende cliente pelo celular? Fale com a gente.",
+        "ctaSubject": "Bipe para profissionais"
+      },
+      "en": {
+        "name": "Professionals",
+        "title": "Bipe for professionals",
+        "headline": "Clients reach you by your @, not your personal number.",
+        "lede": "Doctors, lawyers, teachers, therapists, realtors: many people give clients their personal number. On Bipe, you share a link, people who aren't in your contacts arrive as a request, and your number stays with you.",
+        "sections": [
+          {
+            "heading": "A link instead of your number",
+            "body": "Put your link on your card, your site or your bio. With the app installed, the chat opens directly. If you want, the link shows your name, photo and bio."
+          },
+          {
+            "heading": "New clients arrive as a request",
+            "body": "People who aren't in your contacts arrive as a request, apart from your chats. You decide when to answer, and the chat is end-to-end encrypted."
+          },
+          {
+            "heading": "Your name doesn't become a scam",
+            "body": "Scammers use a professional's name to ask clients for a Pix. The seal shows your verified name, and swapping a letter doesn't fool the check."
+          },
+          {
+            "heading": "No SIM risk and no ads",
+            "body": "You don't sign in with an SMS code, so whoever clones your SIM doesn't get the account. And there are no ads on any screen."
+          }
+        ],
+        "note": "Bipe is a messenger for people. Companies that talk to many customers have their own page. On iPhone, Bipe is in testing. There is no Android version yet.",
+        "cta": "Do you serve clients from your phone? Talk to us.",
+        "ctaSubject": "Bipe for professionals"
       }
     }
   ],
@@ -1553,7 +1844,9 @@
     "/comparar/": "/compare/",
     "/comparar/whatsapp/": "/compare/whatsapp/",
     "/comparar/signal/": "/compare/signal/",
-    "/comparar/telegram/": "/compare/telegram/"
+    "/comparar/telegram/": "/compare/telegram/",
+    "/para/igrejas/": "/para/grupos-e-comunidades/",
+    "/en/for/churches/": "/en/for/groups-and-communities/"
   },
   "origin": {
     "pt": {

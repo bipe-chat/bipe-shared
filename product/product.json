@@ -11,17 +11,29 @@
       "lede": "Proseio is a free Brazilian messenger with no ads. It warns you when a message looks like a scam, and people find you by your @ without seeing your number."
     }
   },
-  "headlineVariants": {
-    "$comment": "Issue #77: the three headlines the landing page tests. The site shows promise.title until the test runs.",
-    "pt": [
-      "Um app de mensagens brasileiro, de verdade.",
-      "Ninguém se passa por você.",
-      "Sem anúncio e sem perfil de anúncio."
-    ],
-    "en": [
-      "A messenger that is truly Brazilian.",
-      "Nobody can pretend to be you.",
-      "No ads and no ad profile."
+  "headlineTest": {
+    "$comment": "Issue #77 (ADR 0026). The home page (pt-BR only) shows one arm per browser, chosen at random and kept. h0 is the control: promise.pt.title. The lede and everything else stay the same. active false shows promise.title to everyone.",
+    "experiment": "headline-77",
+    "active": true,
+    "arms": [
+      {
+        "id": "h1",
+        "angle": "brazilian",
+        "pt": "O mensageiro brasileiro.",
+        "en": "The Brazilian messenger."
+      },
+      {
+        "id": "h2",
+        "angle": "anti-impersonation",
+        "pt": "Ninguém se passa por você.",
+        "en": "Nobody can pretend to be you."
+      },
+      {
+        "id": "h3",
+        "angle": "no-ads",
+        "pt": "Sem anúncio e sem perfil de anúncio.",
+        "en": "No ads and no ad profile."
+      }
     ]
   },
   "tentpoles": [

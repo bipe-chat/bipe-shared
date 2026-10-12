@@ -15,6 +15,9 @@ const dist = JSON.parse(readFileSync(join(root, "product/distribution.json"), "u
 const STATUSES = ["testing", "planned", "policy"];
 const fail = (m) => { throw new Error(`product validation failed: ${m}`); };
 if (product.version !== 1 || dist.version !== 1) fail("version must be 1");
+const ht = product.headlineTest;
+if (!/^[a-z0-9-]{1,32}$/.test(ht.experiment)) fail("headlineTest.experiment");
+ht.arms.forEach((a, i) => { if (a.id !== `h${i + 1}` || !a.pt || !a.en) fail(`headlineTest arm ${i + 1}`); });
 const featureIds = new Set(product.features.map((f) => f.id));
 const areaIds = new Set(product.areas.map((a) => a.id));
 for (const f of product.features) {
@@ -46,7 +49,7 @@ const lines = [
   `- **pt-BR:** ${product.promise.pt.title} ${product.promise.pt.lede}`,
   `- **en:** ${product.promise.en.title} ${product.promise.en.lede}`,
   "",
-  "Headline test (issue #77): " + product.headlineVariants.pt.map((h) => `"${h}"`).join(", ") + ".",
+  `Headline test (issue #77, experiment \`${product.headlineTest.experiment}\`, ${product.headlineTest.active ? "active" : "off"}): h0 "${product.promise.pt.title}" (control), ` + product.headlineTest.arms.map((a) => `${a.id} "${a.pt}"`).join(", ") + ".",
   "",
   "## Tentpoles",
   "",

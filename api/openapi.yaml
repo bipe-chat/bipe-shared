@@ -114,6 +114,25 @@ paths:
             application/json:
               schema: { $ref: "#/components/schemas/InvitePreview" }
         "429": { $ref: "#/components/responses/Error" }
+  /v1/events:
+    post:
+      summary: Count one experiment event (headline test, issue #77)
+      description: >
+        No auth. Sent by the public site with navigator.sendBeacon, so the body arrives as
+        text/plain JSON and the browser reads no response. The server adds 1 to a daily
+        counter per experiment, arm and event. It stores no IP, no identifier and no
+        per-person row. Rate-limited per IP and globally. Always 204 for a well-formed request.
+      requestBody:
+        required: true
+        content:
+          text/plain:
+            schema: { $ref: "#/components/schemas/ExperimentEvent" }
+          application/json:
+            schema: { $ref: "#/components/schemas/ExperimentEvent" }
+      responses:
+        "204": { description: Counted }
+        "400": { $ref: "#/components/responses/Error" }
+        "429": { $ref: "#/components/responses/Error" }
   /v1/waitlist:
     post:
       summary: Join the waitlist for a platform that has no build yet
@@ -268,6 +287,13 @@ components:
       scheme: bearer
       description: Matrix access token from MAS. The API checks it with Synapse whoami.
   schemas:
+    ExperimentEvent:
+      type: object
+      required: [experiment, arm, event]
+      properties:
+        experiment: { type: string, pattern: "^[a-z0-9-]{1,32}$", example: headline-77 }
+        arm: { type: string, pattern: "^h[0-9]$", description: "h0 is the control." }
+        event: { type: string, enum: [assign, install_click], description: "assign: a browser got its arm (once per browser). install_click: a click on the TestFlight link." }
     WaitlistRequest:
       type: object
       required: [email, platform]
@@ -275,7 +301,7 @@ components:
         email: { type: string, format: email, maxLength: 254 }
         platform: { type: string, enum: [android, ios, other], description: "The platform the person waits for." }
         lang: { type: string, enum: [pt, en], default: pt, description: "Language of the one email Proseio sends." }
-        source: { type: string, maxLength: 64, pattern: "^[a-z0-9:/_.-]*$", description: "Where the form was: the page path, plus the headline variant when a test runs (issue #77), for example /baixar/ or /:h2." }
+        source: { type: string, maxLength: 64, pattern: "^[a-z0-9:/_.-]*$", description: "Where the form was: the page path, plus ':' and the headline arm when a test runs (issue #77), for example /baixar/ or /:h2." }
         website: { type: string, maxLength: 200, description: "Honeypot. People leave it empty; a non-empty value is accepted and dropped." }
     SignupRequest:
       type: object

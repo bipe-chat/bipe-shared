@@ -226,10 +226,10 @@
       ],
       "pt": {
         "name": "Pra sua turma",
-        "title": "Grupo sem barulho, e você não perde nada.",
-        "summary": "O grupo só avisa quando é com você: quando alguém te marca, te responde ou abre uma enquete. Quando você volta, vê primeiro o que perdeu. E quem você já conhece aparece no Proseio desde o primeiro dia.",
+        "title": "O grupo só te chama quando é com você.",
+        "summary": "O celular toca quando alguém te marca, te responde ou abre uma enquete. O resto chega em silêncio. Quando você abre o grupo, o que era pra você aparece no topo.",
         "points": [
-          "O grupo só avisa quando te marcam, te respondem ou abrem uma enquete.",
+          "Abriu o grupo depois de um tempo? Quem te marcou e as enquetes que faltam você votar vêm primeiro.",
           "Canais para torcidas, igrejas, criadores e instituições.",
           "Quem você já conhece aparece no Proseio desde o primeiro dia, se essa pessoa quiser."
         ],
@@ -242,10 +242,10 @@
       },
       "en": {
         "name": "For your people",
-        "title": "Groups without the noise, and you miss nothing.",
-        "summary": "A group only notifies you when it is about you: when someone mentions you, replies to you or starts a poll. When you come back, you see what you missed first. And people you already know show up on Proseio from day one.",
+        "title": "The group only calls you when it's about you.",
+        "summary": "Your phone buzzes when someone mentions you, replies to you or starts a poll. Everything else arrives quietly. When you open the group, what was meant for you sits at the top.",
         "points": [
-          "A group only notifies you for mentions, replies and polls.",
+          "Back in the group after a while? Who mentioned you and the polls still waiting on your vote come first.",
           "Channels for fan clubs, churches, creators and institutions.",
           "People you already know show up on Proseio from day one, if they choose to."
         ],
@@ -588,11 +588,11 @@
       },
       "pt": {
         "name": "Grupos sem barulho",
-        "body": "O grupo só avisa quando é com você. Quando você volta, vê primeiro o que perdeu: menções, respostas, enquetes e mensagens fixadas."
+        "body": "Só toca quando é com você. Na volta, aparece primeiro quem te marcou ou respondeu, as enquetes abertas e o que foi fixado."
       },
       "en": {
-        "name": "Groups without the noise",
-        "body": "A group only notifies you when it is about you. When you come back, you see what you missed first: mentions, replies, polls and pinned messages."
+        "name": "Quiet groups",
+        "body": "It only rings when it's about you. When you come back, mentions, replies, open polls and new pins come first."
       }
     },
     {

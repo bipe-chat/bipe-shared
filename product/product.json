@@ -1439,6 +1439,13 @@
           ]
         },
         {
+          "id": "account",
+          "features": [
+            "phone-account",
+            "new-phone"
+          ]
+        },
+        {
           "id": "pay",
           "features": [
             "pix-cards"
@@ -1471,6 +1478,10 @@
             "body": "Quem não está nos seus contatos chega como pedido. E como não tem código por SMS, quem clona o chip não leva a conta."
           },
           {
+            "heading": "Conta que não pede senha difícil",
+            "body": "Pai e mãe não precisam de e-mail nem de senha complicada. A conta fica no celular, com uma senha de 8 números, como a do banco. Se o celular quebrar ou sumir, tem mais de um jeito de voltar pra conta, e alguém da família pode ajudar."
+          },
+          {
             "heading": "Pagar pro nome certo",
             "body": "O pedido de Pix mostra o nome que o banco vai mostrar. Se aparecer outro nome, não pague."
           },
@@ -1500,6 +1511,10 @@
           {
             "heading": "Strangers don't walk in",
             "body": "People who aren't in your contacts arrive as a request. And with no SMS code, whoever clones the SIM doesn't get the account."
+          },
+          {
+            "heading": "An account with no hard password",
+            "body": "Mom and dad don't need an email or a complicated password. The account lives on the phone, with an 8-digit PIN, like their bank's. If the phone breaks or goes missing, there is more than one way back to the account, and someone in the family can help."
           },
           {
             "heading": "Pay the right name",
@@ -1543,6 +1558,8 @@
         {
           "id": "anywhere",
           "features": [
+            "phone-account",
+            "new-phone",
             "e2ee",
             "no-sms",
             "brazil-servers"
@@ -1564,8 +1581,8 @@
             "body": "O selo vem com o seu nome verificado. Se alguém usa a sua foto com outro número, a mensagem chega como pedido, e o aviso aparece quando tem pedido de Pix com pressa."
           },
           {
-            "heading": "De qualquer lugar, protegido",
-            "body": "Toda conversa é protegida de ponta a ponta. Não tem código por SMS pra receber no número de fora, e os servidores ficam no Brasil."
+            "heading": "De qualquer lugar, com a mesma conta",
+            "body": "A conta fica no seu celular, não no seu número. Trocou de aparelho, de chip ou de país, você volta pra conta sem código por SMS. Toda conversa é protegida de ponta a ponta, e os servidores ficam no Brasil."
           }
         ],
         "note": "No iPhone, o Bipe está em teste pelo TestFlight. No Android, ainda não tem. O selo verificado ainda vem.",
@@ -1587,8 +1604,8 @@
             "body": "The seal carries your verified name. If someone uses your photo with another number, the message arrives as a request, and a warning appears on a rushed Pix request."
           },
           {
-            "heading": "Protected from anywhere",
-            "body": "Every chat is end-to-end encrypted. There is no SMS code to receive on a foreign number, and the servers are in Brazil."
+            "heading": "From anywhere, with the same account",
+            "body": "Your account lives on your phone, not on your number. New phone, new SIM or new country, you get back into your account with no SMS code. Every chat is end-to-end encrypted, and the servers are in Brazil."
           }
         ],
         "note": "On iPhone, Bipe is in testing through TestFlight. There is no Android version yet. The verified seal is still coming.",

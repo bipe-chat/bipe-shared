@@ -53,6 +53,7 @@ for (const i of product.icps) {
 }
 if (product.icps.filter((i) => i.current).length !== 1) fail("icps: exactly one current step");
 // Audience pages (/para/<slug>/): each names a registered ICP (ADR 0060) and is built from feature pages.
+for (const l of ["pt", "en"]) for (const k of ["nav", "title", "lede"]) if (!product.audiencesHub?.[l]?.[k]) fail(`audiencesHub.${l}.${k}`);
 const audienceSlugs = new Set();
 for (const a of product.audiences) {
   if (!icpIds.has(a.icp)) fail(`audience ${a.id}: icp ${a.icp} is not in the register (ADR 0058)`);
@@ -213,6 +214,17 @@ const lines = [
   "| Audience | ICP | Page (pt) | Features |",
   "|---|---|---|---|",
   ...product.audiences.map((a) => `| ${a.en.name} | ${a.icp} | /para/${a.slug.pt}/ | ${a.sections.flatMap((s) => s.features).join(", ")} |`),
+  "",
+  "### Features by audience",
+  "",
+  "Which audience page uses which feature. A feature no page uses is a gap or a feature for everyone.",
+  "",
+  `| Feature | iOS | ${product.audiences.map((a) => a.en.name).join(" | ")} | Pages |`,
+  `|---|---|${product.audiences.map(() => "---|").join("")}---|`,
+  ...product.features.map((f) => {
+    const used = product.audiences.map((a) => a.sections.some((s) => s.features.includes(f.id)));
+    return `| ${f.en.name} | ${label[f.status.ios]} | ${used.map((u) => (u ? "x" : "")).join(" | ")} | ${used.filter(Boolean).length} |`;
+  }),
   "",
   "## Comparison",
   "",

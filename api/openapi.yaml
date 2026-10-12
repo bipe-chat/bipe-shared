@@ -617,6 +617,27 @@ paths:
             application/json:
               schema: { $ref: "#/components/schemas/MyProfile" }
         "401": { $ref: "#/components/responses/Error" }
+  /v1/admin/inviters:
+    get:
+      summary: Staff report of inviters ranked by joins
+      description: >
+        Only for users that MAS marks admin (proseio ADR 0056); every other user gets 404 not_found, so the route does not show that it exists.
+        Covers personal invites only. CORS allows PUBLIC_SITE_URL.
+      security: [{ matrix: [] }]
+      parameters:
+        - { name: limit, in: query, required: false, schema: { type: integer, minimum: 1, maximum: 1000, default: 200 } }
+      responses:
+        "200":
+          description: Inviters, most joins first
+          content:
+            application/json:
+              schema:
+                type: object
+                required: [inviters]
+                properties:
+                  inviters: { type: array, items: { $ref: "#/components/schemas/InviterStats" } }
+        "401": { $ref: "#/components/responses/Error" }
+        "404": { $ref: "#/components/responses/Error" }
 components:
   responses:
     Error:
@@ -743,6 +764,18 @@ components:
         created_at: { type: string, format: date-time }
         expires_at: { type: string, format: date-time }
         joined_user_id: { type: string, description: "Only when status is used: the account created with this invite." }
+    InviterStats:
+      type: object
+      required: [user_id, sent, joined, downstream, depth]
+      properties:
+        user_id: { type: string }
+        handle: { type: [string, "null"] }
+        sent: { type: integer, description: "Personal invites the user created." }
+        joined: { type: integer, description: "People who signed up with those invites." }
+        rate_pct: { type: [integer, "null"], description: "joined / sent, in percent." }
+        downstream: { type: integer, description: "Everyone below the user in the invite tree, all levels." }
+        depth: { type: integer, description: "Levels in the user's invite tree." }
+        last_join: { type: [string, "null"], format: date-time }
     MyInvites:
       type: object
       required: [quota, available, invites]

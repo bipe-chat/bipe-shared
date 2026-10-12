@@ -73,6 +73,10 @@ public enum ProseioRegistries {
     /// Normalised urgency phrases that make a message the "new number" kind.
     public static let newNumberPhrases: Set<String> = ${swiftArray(reg.scam.newNumberPhrases.map(swiftString))}
 
+    /// Normalised phrases, matched as substrings of the normalised message. They make a message the "new number" kind
+    /// only with a family term (whole word) or a matched urgency phrase.
+    public static let newAccountPhrases: [String] = ${swiftArray(reg.scam.newAccountPhrases.map(swiftString))}
+
     /// Normalised words for the "delivery fee" kind. It needs a link and an entry from each of the three lists.
     public static let deliveryParcelWords: [String] = ${swiftArray(reg.scam.deliveryParcelWords.map(swiftString))}
     public static let deliveryHoldWords: [String] = ${swiftArray(reg.scam.deliveryHoldWords.map(swiftString))}
@@ -206,6 +210,12 @@ object ProseioRegistries {
 
     /** Normalised urgency phrases that make a message the "new number" kind. */
     val newNumberPhrases: Set<String> = ${kotlinList("setOf", reg.scam.newNumberPhrases.map(kotlinString))}
+
+    /**
+     * Normalised phrases, matched as substrings of the normalised message. They make a message the "new number" kind
+     * only with a family term (whole word) or a matched urgency phrase.
+     */
+    val newAccountPhrases: List<String> = ${kotlinList("listOf", reg.scam.newAccountPhrases.map(kotlinString))}
 
     /** Normalised words for the "delivery fee" kind. It needs a link and an entry from each of the three lists. */
     val deliveryParcelWords: List<String> = ${kotlinList("listOf", reg.scam.deliveryParcelWords.map(kotlinString))}

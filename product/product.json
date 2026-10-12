@@ -835,24 +835,24 @@
   "technical": {
     "pt": {
       "nav": "Tecnologia",
-      "title": "Como o Proseio é feito",
-      "lede": "O Proseio usa o Matrix, um protocolo aberto de mensagens, e parte de apps e servidores que já existem e têm código aberto. Esta página mostra cada peça, de onde ela vem e o que ainda tem limite."
+      "title": "Feito sobre o Matrix",
+      "lede": "Protocolo aberto, apps nativos, servidores no Brasil. Código aberto, AGPL-3.0."
     },
     "en": {
       "nav": "Technology",
-      "title": "How Proseio is built",
-      "lede": "Proseio runs on Matrix, an open messaging protocol, and starts from apps and servers that already exist as open source. This page shows each part, where it comes from and where its limits are."
+      "title": "Built on Matrix",
+      "lede": "Open protocol, native apps, servers in Brazil. Open source, AGPL-3.0."
     },
     "groups": [
       {
         "id": "apps",
         "pt": {
-          "heading": "Os apps",
-          "line": "Apps nativos, um pra cada sistema, com as mesmas regras."
+          "heading": "Apps",
+          "line": "Nativos no iPhone e no Android."
         },
         "en": {
-          "heading": "The apps",
-          "line": "Native apps, one per platform, with the same rules."
+          "heading": "Apps",
+          "line": "Native on iPhone and Android."
         },
         "parts": [
           {
@@ -866,11 +866,11 @@
             ],
             "pt": {
               "name": "iPhone",
-              "body": "Feito em SwiftUI, a partir do Element X. O código do Proseio fica num pacote separado, o ProseioKit, pra que as atualizações do Element continuem fáceis de trazer."
+              "body": "SwiftUI, a partir do Element X iOS."
             },
             "en": {
               "name": "iPhone",
-              "body": "Built in SwiftUI, starting from Element X. Proseio's own code sits in a separate package, ProseioKit, so updates from Element stay easy to bring in."
+              "body": "SwiftUI, built on Element X iOS."
             }
           },
           {
@@ -884,11 +884,11 @@
             ],
             "pt": {
               "name": "Android",
-              "body": "Feito em Kotlin e Jetpack Compose, também a partir do Element X. Segue o iPhone com as mesmas regras. Ainda não tem versão de testes."
+              "body": "Kotlin e Jetpack Compose, a partir do Element X Android."
             },
             "en": {
               "name": "Android",
-              "body": "Built in Kotlin and Jetpack Compose, also starting from Element X. It follows the iPhone app with the same rules. It has no test version yet."
+              "body": "Kotlin and Jetpack Compose, built on Element X Android."
             }
           },
           {
@@ -900,24 +900,24 @@
               }
             ],
             "pt": {
-              "name": "O motor dos dois apps",
-              "body": "Criptografia, sincronização e o armazenamento no celular vêm do matrix-rust-sdk, escrito em Rust. Os dois apps usam o mesmo código pra isso."
+              "name": "Núcleo em Rust",
+              "body": "Criptografia, sincronização e armazenamento pelo matrix-rust-sdk, o mesmo nos dois apps."
             },
             "en": {
-              "name": "The engine under both apps",
-              "body": "Encryption, sync and on-phone storage come from matrix-rust-sdk, written in Rust. Both apps use the same code for this."
+              "name": "Rust core",
+              "body": "Encryption, sync and storage through matrix-rust-sdk, the same in both apps."
             }
           },
           {
             "id": "shared",
             "repo": "shared",
             "pt": {
-              "name": "Regras num lugar só",
-              "body": "Nomes reservados, padrões de golpe, letras disfarçadas, os textos dos apps e o contrato da API ficam num repositório só. Um gerador escreve o código de cada app a partir dele. Os apps, o servidor e este site passam pelos mesmos testes."
+              "name": "Regras compartilhadas",
+              "body": "Nomes reservados, padrões de golpe e textos num repositório só, gerados pra cada app."
             },
             "en": {
-              "name": "Rules in one place",
-              "body": "Reserved names, scam patterns, disguised letters, the app text and the API contract live in one repository. A generator writes each app's code from it. The apps, the server and this site pass the same tests."
+              "name": "Shared rules",
+              "body": "Reserved names, scam patterns and app text in one repository, generated for each app."
             }
           }
         ]
@@ -925,45 +925,45 @@
       {
         "id": "phone",
         "pt": {
-          "heading": "No seu celular",
-          "line": "O que pode ficar no aparelho, fica no aparelho."
+          "heading": "No aparelho",
+          "line": "Criptografia e checagens no seu celular."
         },
         "en": {
-          "heading": "On your phone",
-          "line": "What can stay on the phone stays on the phone."
+          "heading": "On the device",
+          "line": "Encryption and checks on your phone."
         },
         "parts": [
           {
             "id": "e2ee",
             "pt": {
-              "name": "Criptografia de ponta a ponta",
-              "body": "As conversas privadas são cifradas no seu celular e só abrem no celular de quem recebe. O servidor guarda e entrega, mas não lê."
+              "name": "Ponta a ponta",
+              "body": "Conversas privadas cifradas no aparelho. O servidor entrega, não lê."
             },
             "en": {
-              "name": "End-to-end encryption",
-              "body": "Private chats are encrypted on your phone and open only on the phone that receives them. The server stores and delivers them but cannot read them."
+              "name": "End to end",
+              "body": "Private chats encrypted on the device. The server delivers, it does not read."
             }
           },
           {
             "id": "scam-check",
             "pt": {
-              "name": "Aviso de golpe no aparelho",
-              "body": "O celular confere a mensagem depois de abrir a criptografia e mostra o aviso ali mesmo. Nada é enviado pra fora. Os exemplos deste site rodam a mesma regra no seu navegador."
+              "name": "Aviso de golpe local",
+              "body": "A checagem roda no celular, depois de decifrar. Nada sai do aparelho."
             },
             "en": {
-              "name": "Scam warning on the phone",
-              "body": "The phone checks the message after it decrypts it and shows the warning right there. Nothing is sent out. The examples on this site run the same rule in your browser."
+              "name": "Local scam warning",
+              "body": "The check runs on the phone, after decryption. Nothing leaves the device."
             }
           },
           {
             "id": "ids",
             "pt": {
-              "name": "Seu número fica escondido",
-              "body": "Sua conta no Matrix tem um código aleatório. Ele não vem do seu nome nem do seu telefone. O @ que as pessoas veem é uma camada à parte, e dá pra trocar."
+              "name": "ID aleatório",
+              "body": "A conta no Matrix não vem do seu nome nem do seu número. O @ é uma camada à parte."
             },
             "en": {
-              "name": "Your number stays hidden",
-              "body": "Your Matrix account has a random code. It does not come from your name or your phone number. The @ people see is a separate layer, and you can change it."
+              "name": "Random ID",
+              "body": "The Matrix account does not come from your name or number. The @ is a separate layer."
             }
           }
         ]
@@ -971,11 +971,11 @@
       {
         "id": "servers",
         "pt": {
-          "heading": "Os servidores",
+          "heading": "Servidores",
           "line": "No Brasil, em empresas brasileiras."
         },
         "en": {
-          "heading": "The servers",
+          "heading": "Servers",
           "line": "In Brazil, with Brazilian companies."
         },
         "parts": [
@@ -989,11 +989,11 @@
             ],
             "pt": {
               "name": "Servidor Matrix",
-              "body": "O Synapse guarda e entrega as mensagens. No lançamento, ele não conversa com outros servidores Matrix: assim fica mais difícil alguém de fora se passar por uma conta do Proseio."
+              "body": "Synapse."
             },
             "en": {
               "name": "Matrix server",
-              "body": "Synapse stores and delivers the messages. At launch it does not talk to other Matrix servers, which makes it harder for an outsider to pass as a Proseio account."
+              "body": "Synapse."
             }
           },
           {
@@ -1006,11 +1006,11 @@
             ],
             "pt": {
               "name": "Login",
-              "body": "Contas e login passam pelo Matrix Authentication Service. O Proseio não usa código por SMS pra entrar: número de telefone não é prova de quem você é."
+              "body": "Matrix Authentication Service. Sem código por SMS."
             },
             "en": {
               "name": "Login",
-              "body": "Accounts and login go through Matrix Authentication Service. Proseio does not use SMS codes to sign in: a phone number is not proof of who you are."
+              "body": "Matrix Authentication Service. No SMS codes."
             }
           },
           {
@@ -1018,11 +1018,11 @@
             "repo": "api",
             "pt": {
               "name": "API do Proseio",
-              "body": "Um serviço próprio, em TypeScript com Postgres. Cuida dos convites, do diretório de @, de quem pode te mandar mensagem e da verificação de CNPJ. Ele não lê mensagens."
+              "body": "TypeScript e Postgres. Convites, @ e verificação de CNPJ."
             },
             "en": {
               "name": "Proseio API",
-              "body": "A service of its own, in TypeScript with Postgres. It handles invites, the @ directory, who can message you and CNPJ checks. It does not read messages."
+              "body": "TypeScript and Postgres. Invites, handles and CNPJ checks."
             }
           },
           {
@@ -1034,12 +1034,12 @@
               }
             ],
             "pt": {
-              "name": "Onde roda",
-              "body": "Na fase de testes, tudo roda num servidor só, num provedor brasileiro. Pro lançamento, o plano é o Element Server Suite em Kubernetes, também num provedor brasileiro."
+              "name": "Infraestrutura",
+              "body": "Element Server Suite."
             },
             "en": {
-              "name": "Where it runs",
-              "body": "During testing, everything runs on one server at a Brazilian provider. For launch, the plan is Element Server Suite on Kubernetes, also at a Brazilian provider."
+              "name": "Infrastructure",
+              "body": "Element Server Suite."
             }
           }
         ]
@@ -1047,24 +1047,24 @@
       {
         "id": "site",
         "pt": {
-          "heading": "Este site",
-          "line": "Páginas simples, sem rastreador de terceiros."
+          "heading": "Site",
+          "line": "Páginas estáticas, sem rastreadores de terceiros."
         },
         "en": {
-          "heading": "This site",
-          "line": "Plain pages, no third-party trackers."
+          "heading": "Site",
+          "line": "Static pages, no third-party trackers."
         },
         "parts": [
           {
             "id": "web",
             "repo": "web",
             "pt": {
-              "name": "Páginas prontas",
-              "body": "Feito com React e Vite e gerado antes de ir pro ar, então cada página chega pronta. Só as simulações rodam código no navegador. Cada página também existe em Markdown, e o site publica um llms.txt."
+              "name": "Este site",
+              "body": "React e Vite, gerado antes de ir pro ar. Cada página também em Markdown."
             },
             "en": {
-              "name": "Pages built ahead",
-              "body": "Made with React and Vite and generated before it goes live, so every page arrives ready. Only the simulations run code in the browser. Every page also exists as Markdown, and the site publishes an llms.txt."
+              "name": "This site",
+              "body": "React and Vite, prerendered. Every page also as Markdown."
             }
           },
           {
@@ -1077,47 +1077,12 @@
               }
             ],
             "pt": {
-              "name": "Cores e estilos",
-              "body": "As cores do site e dos apps vêm de uma versão do Compound, o sistema visual do Element, com a paleta do Proseio."
+              "name": "Design",
+              "body": "Compound, com a paleta do Proseio."
             },
             "en": {
-              "name": "Colours and styles",
-              "body": "The colours of the site and the apps come from a version of Compound, Element's design system, with Proseio's palette."
-            }
-          }
-        ]
-      },
-      {
-        "id": "limits",
-        "pt": {
-          "heading": "Os limites",
-          "line": "O que a tecnologia não resolve sozinha."
-        },
-        "en": {
-          "heading": "The limits",
-          "line": "What the technology does not solve by itself."
-        },
-        "parts": [
-          {
-            "id": "metadata",
-            "pt": {
-              "name": "O servidor vê quem fala com quem",
-              "body": "O conteúdo é cifrado, mas o servidor sabe quem está em cada conversa e quando as mensagens passam. O Matrix mostra mais desses dados que o Signal. O Proseio não promete o mesmo nível de privacidade do Signal."
-            },
-            "en": {
-              "name": "The server sees who talks to whom",
-              "body": "The content is encrypted, but the server knows who is in each chat and when messages pass. Matrix exposes more of this data than Signal does. Proseio does not promise Signal's level of privacy."
-            }
-          },
-          {
-            "id": "warnings",
-            "pt": {
-              "name": "Aviso não é garantia",
-              "body": "O aviso de golpe procura padrões conhecidos. Um golpe novo pode passar sem aviso. Ele serve pra fazer você parar e pensar, não pra decidir por você."
-            },
-            "en": {
-              "name": "A warning is not a guarantee",
-              "body": "The scam warning looks for known patterns. A new scam can pass without one. It is there to make you stop and think, not to decide for you."
+              "name": "Design",
+              "body": "Compound, with Proseio's palette."
             }
           }
         ]

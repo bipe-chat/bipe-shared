@@ -33,3 +33,7 @@ Regenerates `test-vectors/` from the registries and the reference implementation
 - Registries are starter lists. Review before launch (reserved names, phrases, confusables table).
 
 Design tokens (colours, trust states) are not here. They live in the `proseio-tokens` fork of Compound, which generates Swift, Kotlin and web. See `proseio/docs/design/system.md`.
+
+## Licence and contributing
+
+AGPL-3.0-only, see [LICENSE](LICENSE). Contributions need a DCO sign-off (`git commit -s`): see the [Proseio contributing guide](https://github.com/proseio/.github/blob/main/CONTRIBUTING.md). The Proseio name and logo are not covered by the licence: see [TRADEMARKS.md](https://github.com/proseio/.github/blob/main/TRADEMARKS.md).

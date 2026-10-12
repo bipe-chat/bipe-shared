@@ -61,7 +61,9 @@ for (const r of dist.source.repos) {
 // features that carry its status; every competitor cell belongs to a known threat.
 const cmp = JSON.parse(readFileSync(join(root, "product/compare.json"), "utf8"));
 if (cmp.version !== 1 || !/^\d{4}-\d{2}-\d{2}$/.test(cmp.date)) fail("compare: version or date");
-for (const l of ["pt", "en"]) for (const k of ["nav", "title", "lede", "bipe", "appsTitle", "more", "aheadTitle", "limitTitle", "limit", "sourcesTitle", "sourcesNote"]) if (!cmp[l]?.[k]) fail(`compare.${l}.${k}`);
+for (const l of ["pt", "en"]) for (const k of ["nav", "title", "lede", "bipe", "appsTitle", "more", "aheadTitle", "limitTitle", "limit", "sourcesTitle", "sourcesNote", "tableTitle", "threatCol"]) if (!cmp[l]?.[k]) fail(`compare.${l}.${k}`);
+const LEVELS = ["on", "setting", "limited", "none"];
+for (const l of ["pt", "en"]) for (const k of LEVELS) if (!cmp[l]?.levels?.[k]) fail(`compare.${l}.levels.${k}`);
 const threatIds = new Set();
 for (const t of cmp.threats) {
   if (threatIds.has(t.id) || !t.features.length) fail(`compare threat ${t.id}`);
@@ -75,7 +77,7 @@ for (const a of cmp.apps) {
   slugs.add(a.slug);
   for (const l of ["pt", "en"]) for (const k of ["title", "lede", "line", "on"]) if (!a[l]?.[k]) fail(`compare app ${a.id}: ${l}.${k}`);
   if (a.pt.ahead.length !== a.en.ahead.length) fail(`compare app ${a.id}: ahead pt and en differ`);
-  for (const [id, cell] of Object.entries(a.cells)) if (!threatIds.has(id) || !cell.pt || !cell.en) fail(`compare app ${a.id}: cell ${id}`);
+  for (const [id, cell] of Object.entries(a.cells)) if (!threatIds.has(id) || !cell.pt || !cell.en || !LEVELS.includes(cell.level)) fail(`compare app ${a.id}: cell ${id}`);
   if (!a.sources.length) fail(`compare app ${a.id}: no sources`);
   for (const s of a.sources) if (!s.name || !s.url?.startsWith("https://")) fail(`compare app ${a.id}: source`);
 }
@@ -124,7 +126,7 @@ const lines = [
   "",
   `| Threat | Bipe features | ${cmp.apps.map((a) => a.name).join(" | ")} |`,
   `|---|---|${cmp.apps.map(() => "---|").join("")}`,
-  ...cmp.threats.map((t) => `| ${t.en.threat} | ${t.features.join(", ")} | ${cmp.apps.map((a) => (a.cells[t.id] ? "yes" : "")).join(" | ")} |`),
+  ...cmp.threats.map((t) => `| ${t.en.threat} | ${t.features.join(", ")} | ${cmp.apps.map((a) => a.cells[t.id]?.level ?? "").join(" | ")} |`),
   "",
   "## Distribution",
   "",

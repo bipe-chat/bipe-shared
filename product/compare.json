@@ -1,5 +1,5 @@
 {
-  "$comment": "Comparison register: /compare/ and one page per app. Source: proseio/docs/vs-whatsapp.md. Bipe status comes from the features of each threat, never from the copy. A competitor cell states what that app does, with a source in the app's list. No fact, no cell: never write 'we found nothing'. Repeat the research before a change.",
+  "$comment": "Comparison register: /compare/ and one page per app. Source: proseio/docs/vs-whatsapp.md. Bipe status comes from the features of each threat, never from the copy. A competitor cell states what that app does, with a source in the app's list. No fact, no cell: never write 'we found nothing'. Repeat the research before a change. Each cell has a level for the summary table: on (on by default), setting (the user must turn it on), limited (a stated limit: beta, only non-contacts, both people must turn it on), none (a source shows the threat is not covered).",
   "version": 1,
   "date": "2026-10-12",
   "pt": {
@@ -13,7 +13,15 @@
     "limit": "O Bipe só protege as conversas que acontecem no Bipe. Se a sua mãe ainda usa o WhatsApp, um golpista pode escrever pra ela lá. Funciona melhor quando a família conversa pelo Bipe. Aí um pedido de dinheiro que chega por outro app já chama atenção.",
     "sourcesTitle": "De onde vêm essas informações",
     "sourcesNote": "Pesquisa feita em 12 de outubro de 2026, com base no que cada empresa publicou e no que a imprensa noticiou. Os apps mudam rápido. A gente atualiza esta página quando muda.",
-    "aheadTitle": "Onde o {app} está na frente"
+    "aheadTitle": "Onde o {app} está na frente",
+    "tableTitle": "Resumo",
+    "threatCol": "Golpe",
+    "levels": {
+      "on": "Ligado por padrão",
+      "setting": "Precisa ligar",
+      "limited": "Com limite",
+      "none": "Não cobre"
+    }
   },
   "en": {
     "nav": "Compare",
@@ -26,7 +34,15 @@
     "limit": "Bipe protects only the chats that happen in Bipe. If your mother still uses WhatsApp, a scammer can write to her there. It works best when the family talks on Bipe. Then a request for money that arrives in another app stands out.",
     "sourcesTitle": "Where this comes from",
     "sourcesNote": "Researched on 12 October 2026, from what each company published and the press reported. The apps change fast. We update this page when they do.",
-    "aheadTitle": "Where {app} is ahead"
+    "aheadTitle": "Where {app} is ahead",
+    "tableTitle": "Summary",
+    "threatCol": "Scam",
+    "levels": {
+      "on": "On by default",
+      "setting": "You turn it on",
+      "limited": "With limits",
+      "none": "Not covered"
+    }
   },
   "threats": [
     {
@@ -138,22 +154,27 @@
       },
       "cells": {
         "falso-parente": {
+          "level": "limited",
           "pt": "Um alerta de golpe está em teste com pouca gente. Precisa ser ligado e só confere quem não está nos seus contatos.",
           "en": "A scam alert is in a limited test. You have to turn it on, and it checks only people who are not in your contacts."
         },
         "contato-invadido": {
+          "level": "none",
           "pt": "O alerta de golpe não confere mensagens de quem está nos seus contatos.",
           "en": "The scam alert does not check messages from people in your contacts."
         },
         "codigo-sms": {
+          "level": "setting",
           "pt": "A conta é o seu número. Dá pra proteger com a verificação em duas etapas e a chave de acesso, se você ativar.",
           "en": "Your number is the account. Two-step verification and passkeys protect it, if you turn them on."
         },
         "pix": {
+          "level": "limited",
           "pt": "O alerta em teste vale aqui também, só pra quem não está nos seus contatos.",
           "en": "The alert in test covers this too, only for people not in your contacts."
         },
         "numero": {
+          "level": "limited",
           "pt": "Os nomes de usuário estão chegando aos poucos desde junho de 2026. Pra criar a conta, ainda precisa de número.",
           "en": "Usernames have been arriving slowly since June 2026. You still need a number to create an account."
         }
@@ -223,22 +244,27 @@
       },
       "cells": {
         "falso-parente": {
+          "level": "on",
           "pt": "Quem não está nos seus contatos chega como pedido. Desde maio de 2026, o pedido avisa que o nome não é verificado, porque cada um escolhe o seu.",
           "en": "People not in your contacts arrive as a request. Since May 2026, the request says the name is not verified, because anyone can pick any name."
         },
         "contato-invadido": {
+          "level": "on",
           "pt": "Quando um contato troca de celular ou reinstala o app, a conversa avisa que o número de segurança mudou. Se você tinha conferido esse contato, precisa aprovar antes de mandar mensagem.",
           "en": "When a contact gets a new phone or reinstalls the app, the chat says the safety number changed. If you had checked that contact, you must approve before you can send."
         },
         "codigo-sms": {
+          "level": "setting",
           "pt": "A conta é criada com um código por SMS. Com o bloqueio de registro ligado, também precisa do seu PIN do Signal.",
           "en": "The account is created with an SMS code. With Registration Lock on, your Signal PIN is also needed."
         },
         "pix": {
+          "level": "limited",
           "pt": "O Signal combate spam pelo comportamento de quem manda, como as denúncias, e não pelo conteúdo da mensagem.",
           "en": "Signal fights spam by how the sender behaves, such as reports, not by what the message says."
         },
         "numero": {
+          "level": "on",
           "pt": "Desde 2024 tem nome de usuário, e seu número fica escondido por padrão. Pra criar a conta, ainda precisa de número.",
           "en": "Usernames since 2024, and your number is hidden by default. You still need a number to create an account."
         }
@@ -304,18 +330,22 @@
       },
       "cells": {
         "falso-parente": {
+          "level": "on",
           "pt": "Desde março de 2025, a primeira mensagem de um desconhecido mostra uma ficha: país do número, quando entrou no Telegram, grupos em comum e quando trocou foto ou nome. Conta denunciada e confirmada como spam fica limitada.",
           "en": "Since March 2025, a first message from a stranger shows a card: the number's country, when they joined, groups in common and when they changed photo or name. An account confirmed as spam is limited."
         },
         "contato-invadido": {
+          "level": "limited",
           "pt": "Quando a conta entra num aparelho novo, os outros aparelhos perguntam se foi você. Se ninguém responde, o acesso é aceito depois de um tempo.",
           "en": "When the account signs in on a new device, the other devices ask if it was you. If nobody answers, the sign-in is accepted after a while."
         },
         "codigo-sms": {
+          "level": "setting",
           "pt": "O código de entrada chega por SMS ou dentro do app. Dá pra proteger com senha em duas etapas e, desde dezembro de 2025, com chave de acesso.",
           "en": "The sign-in code arrives by SMS or inside the app. Two-step verification and, since December 2025, passkeys protect it."
         },
         "numero": {
+          "level": "on",
           "pt": "Seu número aparece só pra quem já salvou ele, e dá pra conversar pelo @. Dá até pra criar conta sem chip, com um número comprado no Fragment.",
           "en": "Your number shows only to people who saved it, and you can chat by @. You can even sign up without a SIM, with a number bought on Fragment."
         }
@@ -385,22 +415,27 @@
       },
       "cells": {
         "falso-parente": {
+          "level": "setting",
           "pt": "Desde o iOS 26, dá pra separar mensagem de desconhecido numa pasta própria. O filtro vem desligado. No Brasil, dá pra silenciar a notificação de desconhecidos.",
           "en": "Since iOS 26, messages from unknown senders can go to their own folder. The filter starts off. In Brazil, you can silence notifications from unknown senders."
         },
         "contato-invadido": {
+          "level": "setting",
           "pt": "Com a Verificação de Chave de Contato ligada nos dois lados, a conversa avisa quando um aparelho que a Apple não reconhece entra na conta do contato.",
           "en": "With Contact Key Verification on for both people, the chat warns when a device Apple does not recognise joins the contact's account."
         },
         "codigo-sms": {
+          "level": "limited",
           "pt": "A conta Apple usa dois fatores, com código num aparelho de confiança ou por SMS. Dá pra exigir uma chave de segurança física.",
           "en": "The Apple Account uses two-factor authentication, with a code on a trusted device or by SMS. You can require a physical security key."
         },
         "pix": {
+          "level": "limited",
           "pt": "O iOS 26 manda spam pra uma pasta e desliga os links dessas mensagens. O filtro roda no iPhone.",
           "en": "iOS 26 moves spam to a folder and turns off links in those messages. The filter runs on the iPhone."
         },
         "numero": {
+          "level": "setting",
           "pt": "Dá pra escolher se o iMessage usa seu número ou seu e-mail.",
           "en": "You can choose whether iMessage uses your number or your email."
         }
@@ -472,22 +507,27 @@
       },
       "cells": {
         "falso-parente": {
+          "level": "limited",
           "pt": "O Google Mensagens confere golpe com IA no próprio celular, ligado por padrão, em mensagens de quem não está nos seus contatos. Tem português desde fevereiro de 2026, mas o Google não diz em quais países.",
           "en": "Google Messages checks for scams with AI on the phone, on by default, in messages from people not in your contacts. Portuguese since February 2026, but Google does not say in which countries."
         },
         "contato-invadido": {
+          "level": "setting",
           "pt": "Dá pra conferir as chaves de criptografia de um contato com um QR code. A conferência pode cair quando o contato troca de celular ou de chip.",
           "en": "You can check a contact's encryption keys with a QR code. The check can lapse when the contact gets a new phone or SIM."
         },
         "codigo-sms": {
+          "level": "none",
           "pt": "A conta é o seu número, confirmado por SMS.",
           "en": "Your number is the account, confirmed by SMS."
         },
         "pix": {
+          "level": "limited",
           "pt": "A detecção de golpe cobre emprego, entrega, falso banco, prêmio e investimento, pra quem não está nos seus contatos. Links suspeitos são bloqueados.",
           "en": "Scam detection covers job, delivery, fake bank, prize and investment scams, for people not in your contacts. Suspicious links are blocked."
         },
         "numero": {
+          "level": "none",
           "pt": "O RCS usa o seu número de telefone como identidade.",
           "en": "RCS uses your phone number as your identity."
         }

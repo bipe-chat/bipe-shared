@@ -19,7 +19,7 @@
     "levels": {
       "on": "Ligado por padrão",
       "setting": "Precisa ligar",
-      "limited": "Com limite",
+      "limited": "Restrito",
       "none": "Não cobre"
     }
   },
@@ -40,7 +40,7 @@
     "levels": {
       "on": "On by default",
       "setting": "You turn it on",
-      "limited": "With limits",
+      "limited": "Restricted",
       "none": "Not covered"
     }
   },

@@ -23,26 +23,26 @@ jobs:
           path: proseio-shared
       - uses: actions/checkout@v4
         with:
-          repository: proseio/proseio
+          repository: bipe-chat/proseio
           token: ${{ secrets.PROSEIO_REPOS_TOKEN }}
           path: proseio
       - uses: actions/checkout@v4
         with:
-          repository: proseio/proseio-ios
+          repository: bipe-chat/proseio-ios
           token: ${{ secrets.PROSEIO_REPOS_TOKEN }}
           path: proseio-ios
           lfs: false
           submodules: false
       - uses: actions/checkout@v4
         with:
-          repository: proseio/proseio-android
+          repository: bipe-chat/proseio-android
           token: ${{ secrets.PROSEIO_REPOS_TOKEN }}
           path: proseio-android
           lfs: false
           submodules: false
       - uses: actions/checkout@v4
         with:
-          repository: proseio/proseio-api
+          repository: bipe-chat/proseio-api
           token: ${{ secrets.PROSEIO_REPOS_TOKEN }}
           path: proseio-api
       - uses: actions/setup-node@v4

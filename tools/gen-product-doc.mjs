@@ -48,17 +48,31 @@ for (const r of dist.source.repos) {
   if (typeof r.public !== "boolean") fail(`source ${r.id}: public must be true or false`);
   if (!r.pt || !r.en) fail(`source ${r.id}: pt and en labels`);
 }
-// Comparison page (proseio/docs/vs-whatsapp.md): every Bipe claim names the features that carry its status.
-const cmp = product.comparison;
-if (!/^\d{4}-\d{2}-\d{2}$/.test(cmp.date)) fail("comparison.date");
-for (const l of ["pt", "en"]) for (const k of ["nav", "title", "lede", "whatsapp", "bipe", "aheadTitle", "limitTitle", "limit", "sourcesTitle", "sourcesNote"]) if (!cmp[l]?.[k]) fail(`comparison.${l}.${k}`);
-if (cmp.pt.ahead.length !== cmp.en.ahead.length) fail("comparison ahead: pt and en differ");
-for (const r of cmp.rows) {
-  if (!r.features.length) fail(`comparison row ${r.id}: no features`);
-  for (const id of r.features) if (!featureIds.has(id)) fail(`comparison row ${r.id}: unknown feature ${id}`);
-  for (const l of ["pt", "en"]) if (!r[l]?.threat || !r[l]?.whatsapp || !r[l]?.bipe) fail(`comparison row ${r.id}: ${l} copy`);
+// Comparison register (product/compare.json, proseio/docs/vs-whatsapp.md): every Bipe claim names the
+// features that carry its status; every competitor cell belongs to a known threat.
+const cmp = JSON.parse(readFileSync(join(root, "product/compare.json"), "utf8"));
+if (cmp.version !== 1 || !/^\d{4}-\d{2}-\d{2}$/.test(cmp.date)) fail("compare: version or date");
+for (const l of ["pt", "en"]) for (const k of ["nav", "title", "lede", "bipe", "appsTitle", "more", "aheadTitle", "limitTitle", "limit", "sourcesTitle", "sourcesNote"]) if (!cmp[l]?.[k]) fail(`compare.${l}.${k}`);
+const threatIds = new Set();
+for (const t of cmp.threats) {
+  if (threatIds.has(t.id) || !t.features.length) fail(`compare threat ${t.id}`);
+  threatIds.add(t.id);
+  for (const id of t.features) if (!featureIds.has(id)) fail(`compare threat ${t.id}: unknown feature ${id}`);
+  for (const l of ["pt", "en"]) if (!t[l]?.threat || !t[l]?.bipe) fail(`compare threat ${t.id}: ${l} copy`);
 }
-for (const s of cmp.sources) if (!s.name || !s.url?.startsWith("https://")) fail("comparison source");
+const slugs = new Set();
+for (const a of cmp.apps) {
+  if (!/^[a-z0-9-]+$/.test(a.slug) || slugs.has(a.slug) || !a.name) fail(`compare app ${a.id}: slug or name`);
+  slugs.add(a.slug);
+  for (const l of ["pt", "en"]) for (const k of ["title", "lede", "line", "on"]) if (!a[l]?.[k]) fail(`compare app ${a.id}: ${l}.${k}`);
+  if (a.pt.ahead.length !== a.en.ahead.length) fail(`compare app ${a.id}: ahead pt and en differ`);
+  for (const [id, cell] of Object.entries(a.cells)) if (!threatIds.has(id) || !cell.pt || !cell.en) fail(`compare app ${a.id}: cell ${id}`);
+  if (!a.sources.length) fail(`compare app ${a.id}: no sources`);
+  for (const s of a.sources) if (!s.name || !s.url?.startsWith("https://")) fail(`compare app ${a.id}: source`);
+}
+const cmpText = JSON.stringify(cmp, (k, v) => (k === "$comment" ? undefined : v));
+if (/[–—]/.test(cmpText)) fail("compare: rendered copy must not contain em or en dashes");
+if (/n[ãa]o ach(ou|amos)|found nothing/i.test(cmpText)) fail("compare: state what an app does, never what we did not find");
 const text = JSON.stringify(product) + JSON.stringify(dist);
 if (/[–—]/.test(text)) fail("rendered copy must not contain em or en dashes");
 
@@ -95,13 +109,13 @@ const lines = [
   "|---|---|---|---|---|",
   ...product.features.map((f) => `| ${f.en.name} (\`${f.id}\`) | ${f.area} | ${label[f.status.ios]} | ${label[f.status.android]} | ${f.en.body} |`),
   "",
-  "## Bipe and WhatsApp",
+  "## Comparison",
   "",
-  `Page \`/bipe-e-whatsapp/\`, researched ${cmp.date}. Source: [vs-whatsapp.md](vs-whatsapp.md).`,
+  `Register \`product/compare.json\`, researched ${cmp.date}. Hub \`/comparar/\`, one page per app. Source: [vs-whatsapp.md](vs-whatsapp.md).`,
   "",
-  "| Threat | Bipe features |",
-  "|---|---|",
-  ...cmp.rows.map((r) => `| ${r.en.threat} | ${r.features.join(", ")} |`),
+  `| Threat | Bipe features | ${cmp.apps.map((a) => a.name).join(" | ")} |`,
+  `|---|---|${cmp.apps.map(() => "---|").join("")}`,
+  ...cmp.threats.map((t) => `| ${t.en.threat} | ${t.features.join(", ")} | ${cmp.apps.map((a) => (a.cells[t.id] ? "yes" : "")).join(" | ")} |`),
   "",
   "## Distribution",
   "",

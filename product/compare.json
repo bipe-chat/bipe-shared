@@ -1,0 +1,359 @@
+{
+  "$comment": "Comparison register: /comparar/ and one page per app. Source: proseio/docs/vs-whatsapp.md. Bipe status comes from the features of each threat, never from the copy. A competitor cell states what that app does, with a source in the app's list. No fact, no cell: never write 'we found nothing'. Repeat the research before a change.",
+  "version": 1,
+  "date": "2026-10-12",
+  "pt": {
+    "nav": "Comparar",
+    "title": "Bipe e outros apps contra golpe",
+    "lede": "Cada app entende segurança de um jeito. O Signal cuida da sua privacidade. O Telegram mostra quem te escreve, mas guarda a conversa no servidor. O WhatsApp tem proteções que você precisa ligar. O Bipe quer que você saiba com quem está falando.",
+    "bipe": "No Bipe",
+    "appsTitle": "Compare com cada app",
+    "more": "Ver a comparação",
+    "limitTitle": "O que o Bipe não resolve sozinho",
+    "limit": "O Bipe só protege as conversas que acontecem no Bipe. Se a sua mãe ainda usa o WhatsApp, um golpista pode escrever pra ela lá. Funciona melhor quando a família conversa pelo Bipe. Aí um pedido de dinheiro que chega por outro app já chama atenção.",
+    "sourcesTitle": "De onde vêm essas informações",
+    "sourcesNote": "Pesquisa feita em 12 de outubro de 2026, com base no que cada empresa publicou e no que a imprensa noticiou. Os apps mudam rápido. A gente atualiza esta página quando muda.",
+    "aheadTitle": "Onde o {app} está na frente"
+  },
+  "en": {
+    "nav": "Compare",
+    "title": "Bipe and other apps against scams",
+    "lede": "Each app means something different by security. Signal guards your privacy. Telegram shows who is writing to you, but keeps the chat on its server. WhatsApp has protections you need to turn on. Bipe wants you to know who you are talking to.",
+    "bipe": "On Bipe",
+    "appsTitle": "Compare with each app",
+    "more": "See the comparison",
+    "limitTitle": "What Bipe cannot fix alone",
+    "limit": "Bipe protects only the chats that happen in Bipe. If your mother still uses WhatsApp, a scammer can write to her there. It works best when the family talks on Bipe. Then a request for money that arrives in another app stands out.",
+    "sourcesTitle": "Where this comes from",
+    "sourcesNote": "Researched on 12 October 2026, from what each company published and the press reported. The apps change fast. We update this page when they do.",
+    "aheadTitle": "Where {app} is ahead"
+  },
+  "threats": [
+    {
+      "id": "falso-parente",
+      "features": [
+        "requests",
+        "scam-alerts",
+        "verified-badge",
+        "family-check"
+      ],
+      "pt": {
+        "threat": "Golpe do falso parente",
+        "bipe": "Quem não está nos seus contatos chega como pedido. O aviso de golpe já vem ligado. Com o selo, o nome verificado aparece do lado do nome da pessoa, e golpista não tem como copiar."
+      },
+      "en": {
+        "threat": "Fake relative scam",
+        "bipe": "People who are not in your contacts arrive as a request. Scam warnings are on from the start. With the seal, the verified name shows next to the person's name, and a scammer cannot copy it."
+      }
+    },
+    {
+      "id": "contato-invadido",
+      "features": [
+        "scam-alerts"
+      ],
+      "pt": {
+        "threat": "Conta de um contato invadida",
+        "bipe": "O aviso de golpe confere toda mensagem que chega, também a de quem está nos seus contatos."
+      },
+      "en": {
+        "threat": "A contact's account taken over",
+        "bipe": "Scam warnings check every message you get, also from people in your contacts."
+      }
+    },
+    {
+      "id": "codigo-sms",
+      "features": [
+        "no-sms"
+      ],
+      "pt": {
+        "threat": "Clonagem pelo código SMS",
+        "bipe": "O Bipe não usa código por SMS pra entrar. Quem pega seu chip não pega sua conta."
+      },
+      "en": {
+        "threat": "Account cloning by SMS code",
+        "bipe": "Bipe does not use SMS codes to sign in. Whoever takes your SIM does not get your account."
+      }
+    },
+    {
+      "id": "pix",
+      "features": [
+        "scam-alerts",
+        "money-pause"
+      ],
+      "pt": {
+        "threat": "Pedido de Pix, boleto e comprovante",
+        "bipe": "Código Pix, chave Pix, boleto e conversa de comprovante na mensagem recebem um aviso que diz o que fazer antes de pagar."
+      },
+      "en": {
+        "threat": "Pix, boleto and receipt scams",
+        "bipe": "A Pix code, Pix key, boleto or talk of a receipt in a message gets a warning that says what to do before you pay."
+      }
+    },
+    {
+      "id": "numero",
+      "features": [
+        "handles",
+        "profile-links"
+      ],
+      "pt": {
+        "threat": "Seu número à mostra",
+        "bipe": "Você cria a conta com e-mail. As pessoas te acham pelo @, e ninguém vê seu número."
+      },
+      "en": {
+        "threat": "Your number on show",
+        "bipe": "You create the account with email. People find you by your @, and nobody sees your number."
+      }
+    }
+  ],
+  "apps": [
+    {
+      "id": "whatsapp",
+      "slug": "whatsapp",
+      "name": "WhatsApp",
+      "pt": {
+        "title": "Bipe e WhatsApp contra golpe",
+        "lede": "O WhatsApp também tem proteção contra golpe. Veja, golpe por golpe, o que cada um faz hoje. O que o Bipe ainda não tem aparece como Em breve.",
+        "line": "O app que todo mundo usa. A maior parte das proteções contra golpe precisa ser ligada.",
+        "on": "No WhatsApp",
+        "ahead": [
+          "Chave de acesso pra entrar na conta. O Bipe ainda usa senha.",
+          "Aviso quando alguém tenta conectar sua conta num aparelho estranho.",
+          "Um resumo do grupo quando um desconhecido te adiciona.",
+          "Antes de atender um número desconhecido, mostra o país e os grupos em comum.",
+          "Só no primeiro semestre de 2025, o WhatsApp derrubou 6,8 milhões de contas ligadas a golpe."
+        ]
+      },
+      "en": {
+        "title": "Bipe and WhatsApp against scams",
+        "lede": "WhatsApp has scam protection too. Here is what each one does today, scam by scam. What Bipe does not have yet shows as Coming soon.",
+        "line": "The app everyone uses. Most of its scam protection has to be turned on.",
+        "on": "On WhatsApp",
+        "ahead": [
+          "Passkeys to sign in. Bipe still uses a password.",
+          "A warning when someone tries to link your account to an unfamiliar device.",
+          "A group summary when a stranger adds you to a group.",
+          "Before you answer an unknown number, it shows the country and groups in common.",
+          "In the first half of 2025 alone, WhatsApp took down 6.8 million scam-linked accounts."
+        ]
+      },
+      "cells": {
+        "falso-parente": {
+          "pt": "Um alerta de golpe está em teste com pouca gente. Precisa ser ligado e só confere quem não está nos seus contatos.",
+          "en": "A scam alert is in a limited test. You have to turn it on, and it checks only people who are not in your contacts."
+        },
+        "contato-invadido": {
+          "pt": "O alerta de golpe não confere mensagens de quem está nos seus contatos.",
+          "en": "The scam alert does not check messages from people in your contacts."
+        },
+        "codigo-sms": {
+          "pt": "A conta é o seu número. Dá pra proteger com a verificação em duas etapas e a chave de acesso, se você ativar.",
+          "en": "Your number is the account. Two-step verification and passkeys protect it, if you turn them on."
+        },
+        "pix": {
+          "pt": "O alerta em teste vale aqui também, só pra quem não está nos seus contatos.",
+          "en": "The alert in test covers this too, only for people not in your contacts."
+        },
+        "numero": {
+          "pt": "Os nomes de usuário estão chegando aos poucos desde junho de 2026. Pra criar a conta, ainda precisa de número.",
+          "en": "Usernames have been arriving slowly since June 2026. You still need a number to create an account."
+        }
+      },
+      "sources": [
+        {
+          "name": "Malwarebytes: WhatsApp is testing a new warning for scam messages (14 Aug 2026)",
+          "url": "https://www.malwarebytes.com/blog/news/2026/08/whatsapp-is-testing-a-new-warning-for-scam-messages"
+        },
+        {
+          "name": "Forbes Brasil: WhatsApp ganha recurso de detecção de golpes por IA em versão beta (Aug 2026)",
+          "url": "https://forbes.com.br/forbes-tech/2026/08/whatsapp-ganha-recurso-de-deteccao-de-golpes-por-inteligencia-artificial-em-versao-beta/"
+        },
+        {
+          "name": "MacMagazine: Meta anuncia novas proteções contra golpes no WhatsApp (11 Mar 2026)",
+          "url": "https://macmagazine.com.br/post/2026/03/11/meta-anuncia-novas-protecoes-contra-golpes-no-whatsapp-facebook-e-messenger/"
+        },
+        {
+          "name": "Frances News: WhatsApp reforça proteção contra golpes e invasões (26 Aug 2026)",
+          "url": "https://francesnews.com.br/post/2026/08/26/36543-whatsapp-reforca-protecao-contra-golpes-e-invasoes-veja-as-novidades"
+        },
+        {
+          "name": "Malwarebytes: Protect your WhatsApp account with new passkey and 2FA upgrades (Aug 2026)",
+          "url": "https://www.malwarebytes.com/blog/news/2026/08/protect-your-whatsapp-account-with-new-passkey-and-2fa-upgrades"
+        },
+        {
+          "name": "tbreak: WhatsApp's new safety overview helps catch group chat scams",
+          "url": "https://tbreak.com/whatsapps-new-safety-overview-helps-catch-group-chat-scams"
+        },
+        {
+          "name": "Anadolu: WhatsApp bans over 6.8M scam-linked accounts",
+          "url": "https://aa.com.tr/en/science-technology/whatsapp-bans-over-68m-scam-linked-accounts-meta-says/3651720"
+        },
+        {
+          "name": "BleepingComputer: WhatsApp rolls out usernames to help users hide their phone number",
+          "url": "https://bleepingcomputer.com/news/security/whatsapp-rolls-out-usernames-to-help-users-hide-their-phone-number"
+        }
+      ]
+    },
+    {
+      "id": "signal",
+      "slug": "signal",
+      "name": "Signal",
+      "pt": {
+        "title": "Bipe e Signal contra golpe",
+        "lede": "O Signal é referência em privacidade. Contra golpe, ele usa pedido de conversa e um aviso de que o nome não é verificado. Veja, golpe por golpe, o que cada um faz hoje.",
+        "line": "Referência em privacidade. Protege a conversa, mas não mostra quem está do outro lado.",
+        "on": "No Signal",
+        "ahead": [
+          "Guarda muito pouco sobre você. Numa ordem judicial, o Signal diz que só tem a data de criação da conta e a última conexão.",
+          "A foto de quem não está nos seus contatos fica embaçada até você tocar nela.",
+          "Link num pedido de conversa não abre com um toque.",
+          "Desde agosto de 2026, confere sozinho as chaves de criptografia dos seus contatos."
+        ]
+      },
+      "en": {
+        "title": "Bipe and Signal against scams",
+        "lede": "Signal is the reference for privacy. Against scams, it uses message requests and a notice that a name is not verified. Here is what each one does today, scam by scam.",
+        "line": "The reference for privacy. It protects the chat, but does not show who is on the other side.",
+        "on": "On Signal",
+        "ahead": [
+          "It keeps very little about you. Under a court order, Signal says it has only the account creation date and the last connection.",
+          "Photos from people not in your contacts stay blurred until you tap them.",
+          "Links in a message request do not open with a tap.",
+          "Since August 2026, it checks your contacts' encryption keys by itself."
+        ]
+      },
+      "cells": {
+        "falso-parente": {
+          "pt": "Quem não está nos seus contatos chega como pedido. Desde maio de 2026, o pedido avisa que o nome não é verificado, porque cada um escolhe o seu.",
+          "en": "People not in your contacts arrive as a request. Since May 2026, the request says the name is not verified, because anyone can pick any name."
+        },
+        "contato-invadido": {
+          "pt": "Quando um contato troca de celular ou reinstala o app, a conversa avisa que o número de segurança mudou. Se você tinha conferido esse contato, precisa aprovar antes de mandar mensagem.",
+          "en": "When a contact gets a new phone or reinstalls the app, the chat says the safety number changed. If you had checked that contact, you must approve before you can send."
+        },
+        "codigo-sms": {
+          "pt": "A conta é criada com um código por SMS. Com o bloqueio de registro ligado, também precisa do seu PIN do Signal.",
+          "en": "The account is created with an SMS code. With Registration Lock on, your Signal PIN is also needed."
+        },
+        "pix": {
+          "pt": "O Signal combate spam pelo comportamento de quem manda, como as denúncias, e não pelo conteúdo da mensagem.",
+          "en": "Signal fights spam by how the sender behaves, such as reports, not by what the message says."
+        },
+        "numero": {
+          "pt": "Desde 2024 tem nome de usuário, e seu número fica escondido por padrão. Pra criar a conta, ainda precisa de número.",
+          "en": "Usernames since 2024, and your number is hidden by default. You still need a number to create an account."
+        }
+      },
+      "sources": [
+        {
+          "name": "Signal: Keeping spam off Signal",
+          "url": "https://signal.org/blog/keeping-spam-off-signal/"
+        },
+        {
+          "name": "Signal: Message requests",
+          "url": "https://signal.org/blog/message-requests/"
+        },
+        {
+          "name": "Help Net Security: Signal adds phishing and social engineering protections (13 May 2026)",
+          "url": "https://www.helpnetsecurity.com/2026/05/13/signal-phishing-social-engineering-protections/"
+        },
+        {
+          "name": "Signal: Automatic key verification (Aug 2026)",
+          "url": "https://signal.org/blog/automatic-key-verification/"
+        },
+        {
+          "name": "Signal support: Signal PIN",
+          "url": "https://support.signal.org/hc/en-us/articles/360007059792-Signal-PIN"
+        },
+        {
+          "name": "Signal: Phone number privacy and usernames (2024)",
+          "url": "https://signal.org/blog/phone-number-privacy-usernames/"
+        },
+        {
+          "name": "Signal: Government communication (court orders)",
+          "url": "https://signal.org/bigbrother/"
+        }
+      ]
+    },
+    {
+      "id": "telegram",
+      "slug": "telegram",
+      "name": "Telegram",
+      "pt": {
+        "title": "Bipe e Telegram contra golpe",
+        "lede": "O Telegram tem boas ferramentas pra conferir quem te escreve. Mas a conversa comum fica guardada no servidor dele, sem proteção de ponta a ponta. Veja, golpe por golpe, o que cada um faz hoje.",
+        "line": "Mostra uma ficha de quem te escreve. A conversa comum fica no servidor, sem ponta a ponta.",
+        "on": "No Telegram",
+        "ahead": [
+          "Uma ficha de quem te escreve pela primeira vez: país do número, quando entrou, grupos em comum e quando trocou foto ou nome.",
+          "Chave de acesso pra entrar na conta, desde dezembro de 2025.",
+          "Selo pra contas oficiais e verificação feita por organizações, desde janeiro de 2025.",
+          "Quando sua conta entra num aparelho novo, seus outros aparelhos perguntam se foi você."
+        ]
+      },
+      "en": {
+        "title": "Bipe and Telegram against scams",
+        "lede": "Telegram has good tools to check who is writing to you. But a normal chat is stored on its server, without end-to-end encryption. Here is what each one does today, scam by scam.",
+        "line": "Shows a profile card of who writes to you. Normal chats sit on its server, not end-to-end encrypted.",
+        "on": "On Telegram",
+        "ahead": [
+          "A card on anyone who writes to you for the first time: the number's country, when they joined, groups in common and when they changed photo or name.",
+          "Passkeys to sign in, since December 2025.",
+          "A badge for official accounts and verification by organisations, since January 2025.",
+          "When your account signs in on a new device, your other devices ask if it was you."
+        ]
+      },
+      "cells": {
+        "falso-parente": {
+          "pt": "Desde março de 2025, a primeira mensagem de um desconhecido mostra uma ficha: país do número, quando entrou no Telegram, grupos em comum e quando trocou foto ou nome. Conta denunciada e confirmada como spam fica limitada.",
+          "en": "Since March 2025, a first message from a stranger shows a card: the number's country, when they joined, groups in common and when they changed photo or name. An account confirmed as spam is limited."
+        },
+        "contato-invadido": {
+          "pt": "Quando a conta entra num aparelho novo, os outros aparelhos perguntam se foi você. Se ninguém responde, o acesso é aceito depois de um tempo.",
+          "en": "When the account signs in on a new device, the other devices ask if it was you. If nobody answers, the sign-in is accepted after a while."
+        },
+        "codigo-sms": {
+          "pt": "O código de entrada chega por SMS ou dentro do app. Dá pra proteger com senha em duas etapas e, desde dezembro de 2025, com chave de acesso.",
+          "en": "The sign-in code arrives by SMS or inside the app. Two-step verification and, since December 2025, passkeys protect it."
+        },
+        "numero": {
+          "pt": "Seu número aparece só pra quem já salvou ele, e dá pra conversar pelo @. Dá até pra criar conta sem chip, com um número comprado no Fragment.",
+          "en": "Your number shows only to people who saved it, and you can chat by @. You can even sign up without a SIM, with a number bought on Fragment."
+        }
+      },
+      "sources": [
+        {
+          "name": "Telegram API: action bar for chats with non-contacts",
+          "url": "https://core.telegram.org/api/action-bar"
+        },
+        {
+          "name": "Telegram: Star messages, Gateway 2.0 and more (Mar 2025)",
+          "url": "https://telegram.org/blog/star-messages-gateway-2-0-and-more"
+        },
+        {
+          "name": "Telegram: Spam FAQ",
+          "url": "https://telegram.org/faq_spam"
+        },
+        {
+          "name": "Telegram API: authorization and new login alerts",
+          "url": "https://core.telegram.org/api/auth"
+        },
+        {
+          "name": "Telegram FAQ",
+          "url": "https://telegram.org/faq"
+        },
+        {
+          "name": "Telegram: Passkeys (Dec 2025)",
+          "url": "https://telegram.org/blog/passkeys-and-gift-offers"
+        },
+        {
+          "name": "Telegram: Verification",
+          "url": "https://telegram.org/verify"
+        },
+        {
+          "name": "Telegram: Ultimate privacy, numbers on Fragment (Dec 2022)",
+          "url": "https://telegram.org/blog/ultimate-privacy-topics-2-0"
+        }
+      ]
+    }
+  ]
+}

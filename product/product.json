@@ -395,6 +395,22 @@
       }
     },
     {
+      "id": "no-sms",
+      "area": "safety",
+      "status": {
+        "ios": "testing",
+        "android": "built"
+      },
+      "pt": {
+        "name": "Sem código por SMS",
+        "body": "Você entra com e-mail e senha. Quem pega seu chip não pega sua conta."
+      },
+      "en": {
+        "name": "No SMS codes",
+        "body": "You sign in with email and a password. Whoever takes your SIM does not get your account."
+      }
+    },
+    {
       "id": "verified-badge",
       "area": "identity",
       "status": {
@@ -1095,6 +1111,185 @@
             }
           }
         ]
+      }
+    ]
+  },
+  "comparison": {
+    "$comment": "Public page /bipe-e-whatsapp/. Source: proseio/docs/vs-whatsapp.md. Bipe status comes from the listed features, never from the copy. Repeat the WhatsApp research before any change.",
+    "date": "2026-10-12",
+    "pt": {
+      "nav": "Bipe e WhatsApp",
+      "title": "Bipe e WhatsApp contra golpe",
+      "lede": "O WhatsApp também tem proteção contra golpe. Veja, golpe por golpe, o que cada um faz hoje. O que o Bipe ainda não tem aparece como Em breve.",
+      "whatsapp": "No WhatsApp",
+      "bipe": "No Bipe",
+      "aheadTitle": "Onde o WhatsApp está na frente",
+      "ahead": [
+        "Chave de acesso pra entrar na conta. O Bipe ainda usa senha.",
+        "Aviso quando alguém tenta conectar sua conta num aparelho estranho.",
+        "Um resumo do grupo quando um desconhecido te adiciona.",
+        "Antes de atender um número desconhecido, mostra o país e os grupos em comum.",
+        "Só no primeiro semestre de 2025, o WhatsApp derrubou 6,8 milhões de contas ligadas a golpe."
+      ],
+      "limitTitle": "O que o Bipe não resolve sozinho",
+      "limit": "O Bipe só protege as conversas que acontecem no Bipe. Se a sua mãe ainda usa o WhatsApp, um golpista pode escrever pra ela lá. Funciona melhor quando a família conversa pelo Bipe. Aí um pedido de dinheiro que chega por outro app já chama atenção.",
+      "sourcesTitle": "De onde vêm essas informações",
+      "sourcesNote": "Pesquisa feita em 12 de outubro de 2026, com base no que a Meta anunciou e a imprensa publicou. O WhatsApp muda rápido. A gente atualiza esta página quando muda."
+    },
+    "en": {
+      "nav": "Bipe and WhatsApp",
+      "title": "Bipe and WhatsApp against scams",
+      "lede": "WhatsApp has scam protection too. Here is what each one does today, scam by scam. What Bipe does not have yet shows as Coming soon.",
+      "whatsapp": "On WhatsApp",
+      "bipe": "On Bipe",
+      "aheadTitle": "Where WhatsApp is ahead",
+      "ahead": [
+        "Passkeys to sign in. Bipe still uses a password.",
+        "A warning when someone tries to link your account to an unfamiliar device.",
+        "A group summary when a stranger adds you to a group.",
+        "Before you answer an unknown number, it shows the country and groups in common.",
+        "In the first half of 2025 alone, WhatsApp took down 6.8 million scam-linked accounts."
+      ],
+      "limitTitle": "What Bipe cannot fix alone",
+      "limit": "Bipe protects only the chats that happen in Bipe. If your mother still uses WhatsApp, a scammer can write to her there. It works best when the family talks on Bipe. Then a request for money that arrives in another app stands out.",
+      "sourcesTitle": "Where this comes from",
+      "sourcesNote": "Researched on 12 October 2026, from what Meta announced and the press reported. WhatsApp changes fast. We update this page when it does."
+    },
+    "rows": [
+      {
+        "id": "falso-parente",
+        "features": [
+          "requests",
+          "scam-alerts",
+          "verified-badge",
+          "family-check"
+        ],
+        "pt": {
+          "threat": "Golpe do falso parente",
+          "whatsapp": "Um alerta de golpe está em teste com pouca gente. Precisa ser ligado e só confere quem não está nos seus contatos.",
+          "bipe": "Quem não está nos seus contatos chega como pedido. O aviso de golpe já vem ligado. Com o selo, o nome verificado aparece do lado do nome da pessoa, e golpista não tem como copiar."
+        },
+        "en": {
+          "threat": "Fake relative scam",
+          "whatsapp": "A scam alert is in a limited test. You have to turn it on, and it checks only people who are not in your contacts.",
+          "bipe": "People who are not in your contacts arrive as a request. Scam warnings are on from the start. With the seal, the verified name shows next to the person's name, and a scammer cannot copy it."
+        }
+      },
+      {
+        "id": "contato-invadido",
+        "features": [
+          "scam-alerts"
+        ],
+        "pt": {
+          "threat": "Conta de um contato invadida",
+          "whatsapp": "O alerta de golpe não confere mensagens de quem está nos seus contatos.",
+          "bipe": "O aviso de golpe confere toda mensagem que chega, também a de quem está nos seus contatos."
+        },
+        "en": {
+          "threat": "A contact's account taken over",
+          "whatsapp": "The scam alert does not check messages from people in your contacts.",
+          "bipe": "Scam warnings check every message you get, also from people in your contacts."
+        }
+      },
+      {
+        "id": "codigo-sms",
+        "features": [
+          "no-sms"
+        ],
+        "pt": {
+          "threat": "Clonagem pelo código SMS",
+          "whatsapp": "A conta é o seu número. Dá pra proteger com a verificação em duas etapas e a chave de acesso, se você ativar.",
+          "bipe": "O Bipe não usa código por SMS pra entrar. Quem pega seu chip não pega sua conta."
+        },
+        "en": {
+          "threat": "Account cloning by SMS code",
+          "whatsapp": "Your number is the account. Two-step verification and passkeys protect it, if you turn them on.",
+          "bipe": "Bipe does not use SMS codes to sign in. Whoever takes your SIM does not get your account."
+        }
+      },
+      {
+        "id": "pix",
+        "features": [
+          "scam-alerts",
+          "money-pause"
+        ],
+        "pt": {
+          "threat": "Pedido de Pix e boleto",
+          "whatsapp": "O alerta em teste vale aqui também, só pra quem não está nos seus contatos.",
+          "bipe": "Código Pix, chave Pix e boleto na mensagem recebem um aviso que diz o que fazer antes de pagar."
+        },
+        "en": {
+          "threat": "Pix and boleto requests",
+          "whatsapp": "The alert in test covers this too, only for people not in your contacts.",
+          "bipe": "A Pix code, Pix key or boleto in a message gets a warning that says what to do before you pay."
+        }
+      },
+      {
+        "id": "comprovante",
+        "features": [
+          "scam-alerts"
+        ],
+        "pt": {
+          "threat": "Comprovante falso",
+          "whatsapp": "A gente não achou nada específico pra isso.",
+          "bipe": "Mensagem que fala de comprovante recebe um aviso: print não prova pagamento, confira no app do banco."
+        },
+        "en": {
+          "threat": "Fake payment receipt",
+          "whatsapp": "We found nothing specific for this.",
+          "bipe": "A message about a receipt gets a warning: a screenshot is not proof of payment, check in your bank app."
+        }
+      },
+      {
+        "id": "numero",
+        "features": [
+          "handles",
+          "profile-links"
+        ],
+        "pt": {
+          "threat": "Seu número à mostra",
+          "whatsapp": "Os nomes de usuário estão chegando aos poucos desde junho de 2026. Pra criar a conta, ainda precisa de número.",
+          "bipe": "Você cria a conta com e-mail. As pessoas te acham pelo @, e ninguém vê seu número."
+        },
+        "en": {
+          "threat": "Your number on show",
+          "whatsapp": "Usernames have been arriving slowly since June 2026. You still need a number to create an account.",
+          "bipe": "You create the account with email. People find you by your @, and nobody sees your number."
+        }
+      }
+    ],
+    "sources": [
+      {
+        "name": "Malwarebytes: WhatsApp is testing a new warning for scam messages (14 Aug 2026)",
+        "url": "https://www.malwarebytes.com/blog/news/2026/08/whatsapp-is-testing-a-new-warning-for-scam-messages"
+      },
+      {
+        "name": "Forbes Brasil: WhatsApp ganha recurso de detecção de golpes por IA em versão beta (Aug 2026)",
+        "url": "https://forbes.com.br/forbes-tech/2026/08/whatsapp-ganha-recurso-de-deteccao-de-golpes-por-inteligencia-artificial-em-versao-beta/"
+      },
+      {
+        "name": "MacMagazine: Meta anuncia novas proteções contra golpes no WhatsApp (11 Mar 2026)",
+        "url": "https://macmagazine.com.br/post/2026/03/11/meta-anuncia-novas-protecoes-contra-golpes-no-whatsapp-facebook-e-messenger/"
+      },
+      {
+        "name": "Frances News: WhatsApp reforça proteção contra golpes e invasões (26 Aug 2026)",
+        "url": "https://francesnews.com.br/post/2026/08/26/36543-whatsapp-reforca-protecao-contra-golpes-e-invasoes-veja-as-novidades"
+      },
+      {
+        "name": "Malwarebytes: Protect your WhatsApp account with new passkey and 2FA upgrades (Aug 2026)",
+        "url": "https://www.malwarebytes.com/blog/news/2026/08/protect-your-whatsapp-account-with-new-passkey-and-2fa-upgrades"
+      },
+      {
+        "name": "tbreak: WhatsApp's new safety overview helps catch group chat scams",
+        "url": "https://tbreak.com/whatsapps-new-safety-overview-helps-catch-group-chat-scams"
+      },
+      {
+        "name": "Anadolu: WhatsApp bans over 6.8M scam-linked accounts",
+        "url": "https://aa.com.tr/en/science-technology/whatsapp-bans-over-68m-scam-linked-accounts-meta-says/3651720"
+      },
+      {
+        "name": "BleepingComputer: WhatsApp rolls out usernames to help users hide their phone number",
+        "url": "https://bleepingcomputer.com/news/security/whatsapp-rolls-out-usernames-to-help-users-hide-their-phone-number"
       }
     ]
   }

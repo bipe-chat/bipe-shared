@@ -48,6 +48,17 @@ for (const r of dist.source.repos) {
   if (typeof r.public !== "boolean") fail(`source ${r.id}: public must be true or false`);
   if (!r.pt || !r.en) fail(`source ${r.id}: pt and en labels`);
 }
+// Comparison page (proseio/docs/vs-whatsapp.md): every Bipe claim names the features that carry its status.
+const cmp = product.comparison;
+if (!/^\d{4}-\d{2}-\d{2}$/.test(cmp.date)) fail("comparison.date");
+for (const l of ["pt", "en"]) for (const k of ["nav", "title", "lede", "whatsapp", "bipe", "aheadTitle", "limitTitle", "limit", "sourcesTitle", "sourcesNote"]) if (!cmp[l]?.[k]) fail(`comparison.${l}.${k}`);
+if (cmp.pt.ahead.length !== cmp.en.ahead.length) fail("comparison ahead: pt and en differ");
+for (const r of cmp.rows) {
+  if (!r.features.length) fail(`comparison row ${r.id}: no features`);
+  for (const id of r.features) if (!featureIds.has(id)) fail(`comparison row ${r.id}: unknown feature ${id}`);
+  for (const l of ["pt", "en"]) if (!r[l]?.threat || !r[l]?.whatsapp || !r[l]?.bipe) fail(`comparison row ${r.id}: ${l} copy`);
+}
+for (const s of cmp.sources) if (!s.name || !s.url?.startsWith("https://")) fail("comparison source");
 const text = JSON.stringify(product) + JSON.stringify(dist);
 if (/[–—]/.test(text)) fail("rendered copy must not contain em or en dashes");
 
@@ -83,6 +94,14 @@ const lines = [
   "| Feature | Area | iOS | Android | What it does |",
   "|---|---|---|---|---|",
   ...product.features.map((f) => `| ${f.en.name} (\`${f.id}\`) | ${f.area} | ${label[f.status.ios]} | ${label[f.status.android]} | ${f.en.body} |`),
+  "",
+  "## Bipe and WhatsApp",
+  "",
+  `Page \`/bipe-e-whatsapp/\`, researched ${cmp.date}. Source: [vs-whatsapp.md](vs-whatsapp.md).`,
+  "",
+  "| Threat | Bipe features |",
+  "|---|---|",
+  ...cmp.rows.map((r) => `| ${r.en.threat} | ${r.features.join(", ")} |`),
   "",
   "## Distribution",
   "",

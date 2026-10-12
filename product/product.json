@@ -564,6 +564,22 @@
       }
     },
     {
+      "id": "stickers",
+      "area": "chat",
+      "status": {
+        "ios": "planned",
+        "android": "planned"
+      },
+      "pt": {
+        "name": "Stickers",
+        "body": "Mande stickers, transforme uma foto em sticker e traga seus pacotes."
+      },
+      "en": {
+        "name": "Stickers",
+        "body": "Send stickers, turn a photo into a sticker and bring your packs."
+      }
+    },
+    {
       "id": "group-types",
       "area": "community",
       "status": {

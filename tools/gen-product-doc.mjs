@@ -130,7 +130,20 @@ for (const s of scams.stats) {
   for (const l of ["pt", "en"]) for (const k of ["value", "label", "period"]) if (!s[l]?.[k]) fail(`scams stat ${s.id}: ${l}.${k}`);
   scamStats.add(s.id);
 }
-for (const id of [...scams.hero, ...scams.more, ...scams.types.map((t) => t.stat)]) if (!scamStats.has(id)) fail(`scams: unknown stat ${id}`);
+for (const id of [...scams.hero, ...scams.more, ...scams.types.flatMap((t) => t.stats)]) if (!scamStats.has(id)) fail(`scams: unknown stat ${id}`);
+// Types: one page each under /golpes-no-brasil/<slug>/. The first stat also shows on the hub.
+const scamSlugs = new Set();
+for (const t of scams.types) {
+  if (!t.stats?.length || !t.protect?.length) fail(`scams type ${t.id}: stats and protect`);
+  for (const f of t.protect) if (!scams.protect.some((p) => p.feature === f)) fail(`scams type ${t.id}: protect ${f} is not in scams.protect`);
+  for (const l of ["pt", "en"]) {
+    if (!/^[a-z0-9-]+$/.test(t.slug?.[l] ?? "") || scamSlugs.has(`${l}/${t.slug[l]}`)) fail(`scams type ${t.id}: ${l} slug`);
+    scamSlugs.add(`${l}/${t.slug[l]}`);
+    for (const k of ["heading", "body", "title", "headline", "lede"]) if (!t[l]?.[k]) fail(`scams type ${t.id}: ${l}.${k}`);
+    for (const k of ["how", "signs", "todo"]) if (!t[l]?.[k]?.length) fail(`scams type ${t.id}: ${l}.${k}`);
+  }
+  for (const k of ["how", "signs", "todo"]) if (t.pt[k].length !== t.en[k].length) fail(`scams type ${t.id}: ${k} pt and en differ`);
+}
 if (scams.hero.length < 3 || scams.hero.length > 5) fail("scams: 3 to 5 hero numbers");
 const scamCharts = new Set();
 for (const c of scams.charts) {
@@ -147,9 +160,8 @@ for (const id of scams.channelCharts) if (!scamCharts.has(id)) fail(`scams: unkn
 for (const p of scams.protect) if (!featureIds.has(p.feature) || !p.pt || !p.en) fail(`scams protect ${p.feature}`);
 for (const l of ["pt", "en"]) {
   const c = scams[l];
-  for (const k of ["title", "headline", "lede", "numbersTitle", "channelsTitle", "channelsBody", "chartsTitle", "typesTitle", "moreTitle", "moreBody", "protectTitle", "protectLede", "bipeTitle", "bipeLede", "limit", "sourcesTitle", "sourcesNote", "source", "table"]) if (!c?.[k]) fail(`scams.${l}.${k}`);
+  for (const k of ["title", "headline", "lede", "numbersTitle", "channelsTitle", "channelsBody", "chartsTitle", "typesTitle", "moreTitle", "moreBody", "protectTitle", "protectLede", "bipeTitle", "bipeLede", "limit", "sourcesTitle", "sourcesNote", "source", "table", "typeNumbers", "typeHow", "typeSigns", "typeTodo", "typeOthers", "typeMore"]) if (!c?.[k]) fail(`scams.${l}.${k}`);
   for (const k of KINDS) if (!c.kinds?.[k]) fail(`scams.${l}.kinds.${k}`);
-  if (c.types.length !== scams.types.length || c.types.some((t) => !t.heading || !t.body)) fail(`scams.${l}.types`);
   if (!c.advice.length) fail(`scams.${l}.advice`);
 }
 if (scams.pt.advice.length !== scams.en.advice.length) fail("scams: advice pt and en differ");
@@ -157,7 +169,7 @@ if (scams.pt.advice.length !== scams.en.advice.length) fail("scams: advice pt an
 const scamsCopy = JSON.stringify({ ...scams, $comment: undefined, sources: scams.sources.map((s) => ({ ...s, name: undefined })) });
 if (/[–—]/.test(JSON.stringify({ ...scams, $comment: undefined }))) fail("scams: rendered copy must not contain em or en dashes");
 if (/!/.test(scamsCopy.replace(/https:\/\/[^"]*/g, ""))) fail("scams: no exclamation marks");
-const scamsPt = JSON.stringify([scams.pt, scams.stats.map((s) => s.pt), scams.charts.map((c) => [c.pt, c.rows.map((r) => r.pt)]), scams.protect.map((p) => p.pt)]);
+const scamsPt = JSON.stringify([scams.pt, scams.stats.map((s) => s.pt), scams.charts.map((c) => [c.pt, c.rows.map((r) => r.pt)]), scams.protect.map((p) => p.pt), scams.types.map((t) => t.pt)]);
 if (/\b(fraudes?|fraudador\w*|perigo\w*|alerta\w*|aten[çc][ãa]o)\b/i.test(scamsPt)) fail("scams: pt copy says golpe, not fraude, and uses no fear words (language.md)");
 const text = JSON.stringify(product) + JSON.stringify(dist);
 if (/[–—]/.test(text)) fail("rendered copy must not contain em or en dashes");

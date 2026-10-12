@@ -76,5 +76,10 @@
       }
     ]
   },
-  "contact": "contact@envisioning.com"
+  "contact": "contact@envisioning.com",
+  "steward": {
+    "$comment": "ADR 0040: Envisioning is the named steward on every public surface.",
+    "name": "Envisioning",
+    "url": "https://envisioning.com"
+  }
 }

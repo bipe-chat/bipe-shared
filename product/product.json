@@ -4,7 +4,7 @@
   "promise": {
     "pt": {
       "title": "Saiba com quem está falando.",
-      "lede": "O Proseio é um app de mensagens brasileiro, gratuito e sem anúncios. Ele avisa quando uma mensagem parece golpe, e as pessoas acham você pelo @, sem ver o seu número."
+      "lede": "O Proseio é um app de mensagens brasileiro, gratuito e sem anúncios. Avisa quando uma mensagem tem cara de golpe, e as pessoas te acham pelo @, sem ver o seu número."
     },
     "en": {
       "title": "Know who you are talking to.",
@@ -66,10 +66,10 @@
       "pt": {
         "name": "Confiança",
         "title": "Mais difícil de enganar.",
-        "summary": "Quando uma mensagem tem cara de golpe, aparece um aviso embaixo dela, com o que fazer. Quem não está nos seus contatos chega como pedido. Em breve, um selo mostra quem é quem, e nome de banco fica só para o banco.",
+        "summary": "Quando uma mensagem tem cara de golpe, aparece um aviso embaixo dela dizendo o que fazer. Quem não está nos seus contatos chega como pedido. Em breve, um selo mostra quem é quem, e nome de banco fica só pro banco.",
         "points": [
-          "A checagem roda no seu celular, e a mensagem não sai dele.",
-          "O aviso diz o que fazer: ligar para a pessoa, conferir no app do banco.",
+          "A checagem roda no seu celular, e a mensagem não sai dali.",
+          "O aviso diz o que fazer: ligar pra pessoa, conferir no app do banco.",
           "Em breve: selo com o nome verificado, gratuito e opcional. Trocar um O por 0 não engana a checagem de nome."
         ],
         "demos": [
@@ -123,11 +123,11 @@
       "pt": {
         "name": "Seu @",
         "title": "Seu @, não seu número.",
-        "summary": "Escolha um nome de usuário e compartilhe só ele. Quem tem o link proseio.com.br/@você abre a conversa direto, sem ver o seu telefone.",
+        "summary": "Escolha um nome de usuário e passe só ele. Quem tem o link proseio.com.br/@você abre a conversa direto, sem ver o seu número.",
         "points": [
-          "Link e QR code do seu perfil, prontos para compartilhar.",
+          "Link e QR code do seu perfil, prontos pra compartilhar.",
           "Nomes que só mudam um detalhe, como ana.souza e anasouza, contam como o mesmo nome. Ninguém pega um quase igual ao seu.",
-          "Quem troca de @ espera 30 dias para trocar de novo. O @ antigo fica guardado por 90 dias."
+          "Quem troca de @ espera 30 dias pra trocar de novo. O @ antigo fica guardado por 90 dias."
         ],
         "demos": [
           {
@@ -179,9 +179,9 @@
       "pt": {
         "name": "Sem anúncio",
         "title": "Sem anúncio. Seus dados não estão à venda.",
-        "summary": "O Proseio não vive de anúncio, então não tem motivo para juntar dados sobre você. É gratuito e vai continuar assim. As conversas ficam em servidores no Brasil, protegidas de ponta a ponta.",
+        "summary": "O Proseio não vive de anúncio, então não tem motivo pra juntar dados sobre você. É gratuito e vai continuar assim. As conversas ficam em servidores no Brasil, protegidas de ponta a ponta.",
         "points": [
-          "Você nunca paga para usar o Proseio.",
+          "Você nunca paga pra usar o Proseio.",
           "Nenhum anúncio, em nenhuma aba. Ninguém compra informação sobre você.",
           "Servidores no Brasil, de empresas brasileiras.",
           "Conversas protegidas de ponta a ponta desde a primeira mensagem."
@@ -228,8 +228,8 @@
         "title": "O grupo só te chama quando é com você.",
         "summary": "O celular toca quando alguém te marca, te responde ou abre uma enquete. O resto chega em silêncio. Quando você abre o grupo, o que era pra você aparece no topo.",
         "points": [
-          "Abriu o grupo depois de um tempo? Quem te marcou e as enquetes que faltam você votar vêm primeiro.",
-          "Enquetes, mensagens fixadas e respostas em fio já funcionam no app de testes.",
+          "Abriu o grupo depois de um tempo? Quem te marcou e as enquetes que você ainda não votou aparecem primeiro.",
+          "Enquetes, mensagens fixadas e respostas em tópico já funcionam no app de testes.",
           "Quem você já conhece aparece no Proseio desde o primeiro dia, se essa pessoa quiser."
         ],
         "demos": [
@@ -299,7 +299,7 @@
       },
       "pt": {
         "name": "Aviso de golpe",
-        "body": "Um aviso aparece embaixo da mensagem que parece golpe: Pix com pressa, troca de número, boleto, comprovante."
+        "body": "Aparece um aviso embaixo da mensagem com cara de golpe: Pix com pressa, troca de número, boleto, comprovante."
       },
       "en": {
         "name": "Scam warnings",
@@ -363,7 +363,7 @@
       },
       "pt": {
         "name": "Nomes reservados",
-        "body": "Nome de banco, de órgão público e do Proseio fica só para a conta verificada da instituição."
+        "body": "Nome de banco, de órgão público e do Proseio fica só pra conta verificada da instituição."
       },
       "en": {
         "name": "Reserved names",
@@ -411,7 +411,7 @@
       },
       "pt": {
         "name": "Nome de usuário",
-        "body": "Converse pelo @, sem dar o seu número."
+        "body": "Converse pelo @, sem passar o seu número."
       },
       "en": {
         "name": "Usernames",
@@ -443,7 +443,7 @@
       },
       "pt": {
         "name": "Convites",
-        "body": "Mande um link de convite para trazer alguém para o Proseio."
+        "body": "Mande um link de convite e traga alguém pro Proseio."
       },
       "en": {
         "name": "Invites",
@@ -507,7 +507,7 @@
       },
       "pt": {
         "name": "Gratuito",
-        "body": "Você nunca paga para usar o Proseio."
+        "body": "Você nunca paga pra usar o Proseio."
       },
       "en": {
         "name": "Free",
@@ -539,7 +539,7 @@
       },
       "pt": {
         "name": "Código aberto",
-        "body": "O código vai ser público em breve, para qualquer pessoa conferir."
+        "body": "O código vai ser público em breve, pra qualquer pessoa conferir."
       },
       "en": {
         "name": "Open source",
@@ -598,23 +598,23 @@
   "about": {
     "pt": {
       "title": "Por que o Proseio existe",
-      "lede": "Para o Brasil ter uma saída: um app de mensagens aberto, brasileiro e independente, que funciona quando as pessoas precisam.",
+      "lede": "Pro Brasil ter uma saída: um app de mensagens aberto, brasileiro e independente, que funciona quando as pessoas precisam.",
       "sections": [
         {
-          "heading": "Não precisa vencer para valer a pena",
-          "body": "O Proseio não mede sucesso por tirar gente do WhatsApp. Ele precisa existir, ser confiável e estar pronto no dia em que as pessoas procurarem outra opção. Signal e Wikipedia são julgados assim."
+          "heading": "Não precisa ganhar pra valer a pena",
+          "body": "O sucesso do Proseio não se mede por quanta gente sai do WhatsApp. O app precisa existir, ser confiável e estar pronto no dia em que as pessoas procurarem outra opção. É assim que se avalia o Signal e a Wikipédia."
         },
         {
           "heading": "Uma rede que ninguém controla sozinho",
-          "body": "Por baixo, o Proseio usa o Matrix, um protocolo aberto de mensagens. Nenhuma empresa e nenhum governo é dono da rede. Os servidores ficam no Brasil, em empresas brasileiras."
+          "body": "O Proseio roda sobre o Matrix, um protocolo aberto de mensagens. Nenhuma empresa e nenhum governo é dono da rede. Os servidores ficam no Brasil, em empresas brasileiras."
         },
         {
           "heading": "Quem faz",
-          "body": "Um grupo pequeno de pessoas ligadas à Envisioning, que roda a própria infraestrutura. O código vai ser público em breve. As regras de moderação saem no lançamento."
+          "body": "O Proseio é um projeto da Envisioning, um instituto de pesquisa que estuda desde 2010 como as instituições se adaptam à tecnologia. A Envisioning faz o app, roda os servidores no Brasil e responde pelo serviço. Mas ela não é dona da rede: o Proseio usa o Matrix, um protocolo aberto, e o código vai ser público em breve. Com o código aberto, se a Envisioning parar, outras pessoas podem continuar. As regras de moderação saem no lançamento."
         },
         {
           "heading": "Quem paga",
-          "body": "Os usuários, nunca. O jeito de financiar ainda está em aberto. Entre as opções estão taxas pagas por instituições em cobranças Pix e a verificação de empresas."
+          "body": "Quem usa, nunca. Como o Proseio vai se pagar ainda está em aberto. Entre as opções estão taxas pagas por instituições em cobranças Pix e a verificação de empresas."
         }
       ]
     },
@@ -632,7 +632,7 @@
         },
         {
           "heading": "Who makes it",
-          "body": "A small group of people connected to Envisioning, running their own infrastructure. The code goes public soon. The moderation rules come out at launch."
+          "body": "Proseio is a project by Envisioning, a research institute that has studied since 2010 how institutions adapt to technology. Envisioning builds the app, runs the servers in Brazil and answers for the service. It does not own the network: Proseio uses Matrix, an open protocol, and the code goes public soon. With the code open, others can carry on if Envisioning stops. The moderation rules come out at launch."
         },
         {
           "heading": "Who pays",
@@ -651,7 +651,7 @@
   "origin": {
     "pt": {
       "title": "Brasileiro, aberto e independente",
-      "body": "Os servidores ficam no Brasil, em empresas brasileiras. Por baixo, o Proseio usa uma rede aberta que nenhuma empresa controla sozinha. O código vai ser público em breve."
+      "body": "Os servidores ficam no Brasil, em empresas brasileiras. O Proseio roda sobre uma rede aberta que nenhuma empresa controla sozinha. O código vai ser público em breve."
     },
     "en": {
       "title": "Brazilian, open and independent",
@@ -663,13 +663,13 @@
     "pt": {
       "nav": "Empresas",
       "title": "Fale com seus clientes num lugar onde ninguém se passa por você.",
-      "lede": "O Proseio é gratuito para as pessoas. A ideia é que ele se pague com empresas e instituições que querem falar com os clientes com segurança. Esta página explica a proposta. Ela ainda está em estudo, e nada aqui está à venda.",
+      "lede": "O Proseio é gratuito pras pessoas. A ideia é que ele se pague com empresas e instituições que querem falar com os clientes com segurança. Esta página explica a proposta. Ela ainda está em estudo, e nada aqui está à venda.",
       "label": "Proposta em estudo",
       "sections": [
         {
           "heading": "Por que uma empresa estaria aqui",
           "points": [
-            "Só a sua empresa usa o seu nome. Nome de banco, loja ou órgão público fica reservado para a conta com CNPJ verificado, e o falso atendimento não consegue copiar você.",
+            "Só a sua empresa usa o seu nome. Nome de banco, loja ou órgão público fica reservado pra conta com CNPJ verificado, e o falso atendente não consegue se passar por você.",
             "O cliente vê o selo e o CNPJ em toda conversa com você.",
             "Uma cobrança por Pix mostra o CNPJ que vai receber antes de o cliente pagar.",
             "Os dados e os servidores ficam no Brasil, sob a lei brasileira."
@@ -678,25 +678,25 @@
         {
           "heading": "Como o Proseio se pagaria",
           "points": [
-            "Quem usa o Proseio para conversar nunca paga.",
+            "Quem usa o Proseio pra conversar nunca paga.",
             "A empresa paga um valor mensal fixo por CNPJ verificado. Ele cobre a verificação, o nome reservado e a API.",
             "No começo, não tem preço por mensagem.",
             "O Proseio não cobra taxa sobre Pix."
           ]
         },
         {
-          "heading": "Uma API para o sistema da empresa",
+          "heading": "Uma API pro sistema da empresa",
           "points": [
             "A empresa liga o próprio sistema ao Proseio: manda avisos, recebe respostas e atende pelo programa que já usa.",
-            "A conversa é decifrada no sistema da empresa, não nos servidores do Proseio. Empresas menores podem usar um parceiro que roda isso para elas.",
-            "A gente quer que seja fácil mudar para quem já usa a API do WhatsApp.",
+            "A conversa é descriptografada no sistema da empresa, não nos servidores do Proseio. Empresas menores podem usar um parceiro que roda isso pra elas.",
+            "A gente quer que seja fácil mudar pra quem já usa a API do WhatsApp.",
             "A API ainda não existe."
           ]
         },
         {
           "heading": "As regras que protegem o cliente",
           "points": [
-            "A empresa só manda mensagem para quem aceitou receber.",
+            "A empresa só manda mensagem pra quem aceitou receber.",
             "O app mostra quando quem responde é um programa.",
             "Link em mensagem de empresa só abre se for do site da própria empresa. Pagamento só pelo Pix dentro do app.",
             "Empresa que recebe muito bloqueio e denúncia passa a poder mandar menos."
@@ -710,7 +710,7 @@
           ]
         }
       ],
-      "cta": "Quer conversar sobre isso? Escreva para a gente.",
+      "cta": "Quer saber mais? Fale com a gente.",
       "ctaSubject": "Proseio para empresas",
       "figureCaption": "Ilustração com dados de exemplo. A proposta ainda está em estudo."
     },

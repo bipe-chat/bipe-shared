@@ -10,7 +10,7 @@ Source of truth for registries, strings, API contract and test vectors shared by
 - After a contract change, run `node tools/check-contract.mjs`. After a registry or vector change, run `swift test` in `../proseio-ios/Components/ProseioKit`.
 - No npm dependencies. Node built-ins only.
 - Write docs in ASD-STE100 style. UI strings are draft until they pass the humanizer.
-- `product/product.json` (promise, tentpoles, features with status per platform) and `product/distribution.json` (download links) feed proseio-web and `proseio/docs/product.md`. After a change, run `node tools/gen-product-doc.mjs`; it validates and fails closed. Mark a feature `testing` only when it is in a build.
+- `product/product.json` (promise, tentpoles, features with status per platform) and `product/distribution.json` (download links) feed proseio-web and `proseio/docs/product.md`. After a change, run `node tools/gen-product-doc.mjs`; it validates and fails closed. Status per platform: `testing` only when it is in a tester build; `built` when the code is merged on that platform but not in a tester build; else `planned` (or `policy`). Set `built` in the same change that merges the feature (ADR 0031).
 
 ## Decisions
 

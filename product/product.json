@@ -296,7 +296,7 @@
       "area": "safety",
       "status": {
         "ios": "testing",
-        "android": "planned"
+        "android": "built"
       },
       "pt": {
         "name": "Aviso de golpe",
@@ -312,7 +312,7 @@
       "area": "safety",
       "status": {
         "ios": "testing",
-        "android": "planned"
+        "android": "built"
       },
       "pt": {
         "name": "Pedidos de conversa",
@@ -408,7 +408,7 @@
       "area": "chat",
       "status": {
         "ios": "testing",
-        "android": "planned"
+        "android": "built"
       },
       "pt": {
         "name": "Nome de usuário",
@@ -424,7 +424,7 @@
       "area": "chat",
       "status": {
         "ios": "testing",
-        "android": "planned"
+        "android": "built"
       },
       "pt": {
         "name": "Link e QR code",
@@ -440,7 +440,7 @@
       "area": "chat",
       "status": {
         "ios": "testing",
-        "android": "planned"
+        "android": "built"
       },
       "pt": {
         "name": "Convites",
@@ -472,7 +472,7 @@
       "area": "privacy",
       "status": {
         "ios": "testing",
-        "android": "planned"
+        "android": "built"
       },
       "pt": {
         "name": "Ponta a ponta",

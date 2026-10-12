@@ -12,7 +12,7 @@ const out = resolve(outIndex >= 0 ? args[outIndex + 1] : join(root, "../proseio/
 const product = JSON.parse(readFileSync(join(root, "product/product.json"), "utf8"));
 const dist = JSON.parse(readFileSync(join(root, "product/distribution.json"), "utf8"));
 
-const STATUSES = ["testing", "planned", "policy"];
+const STATUSES = ["testing", "built", "planned", "policy"];
 const fail = (m) => { throw new Error(`product validation failed: ${m}`); };
 if (product.version !== 1 || dist.version !== 1) fail("version must be 1");
 const ht = product.headlineTest;
@@ -38,7 +38,7 @@ for (const r of dist.source.repos) {
 const text = JSON.stringify(product) + JSON.stringify(dist);
 if (/[–—]/.test(text)) fail("rendered copy must not contain em or en dashes");
 
-const label = { testing: "TestFlight", planned: "Planned", policy: "Policy" };
+const label = { testing: "TestFlight", built: "Built", planned: "Planned", policy: "Policy" };
 const lines = [
   "# Product: what Proseio is and does",
   "",
@@ -77,7 +77,7 @@ const lines = [
   "",
   "## Rules",
   "",
-  "- A feature is `testing` only when it is in a TestFlight or beta build. Designed work stays `planned`.",
+  "- A feature is `testing` only when it is in a TestFlight or beta build. `built`: the code is merged on that platform but is not in a tester build yet (ADR 0031). Designed work stays `planned`.",
   "- Copy is pt-BR first. Rendered copy has no em or en dashes and passes the humanizer.",
   "- Download links and source links come only from `distribution.json`.",
   "",

@@ -661,7 +661,7 @@
         },
         {
           "heading": "Quem paga",
-          "body": "Quem usa, nunca. Como o Proseio vai se pagar ainda está em aberto. Entre as opções estão taxas pagas por instituições em cobranças Pix e a verificação de empresas."
+          "body": "Quem usa, nunca. Como o Proseio vai se pagar ainda está em aberto. A ideia é que empresas paguem uma mensalidade fixa pela conta verificada. O Proseio não cobra taxa sobre Pix."
         }
       ]
     },
@@ -683,7 +683,7 @@
         },
         {
           "heading": "Who pays",
-          "body": "Users, never. How Proseio is funded is still open. The options include fees paid by institutions on Pix charges and verification for businesses."
+          "body": "Users, never. How Proseio is funded is still open. The idea is that businesses pay a flat monthly fee for a verified account. Proseio takes no fee on Pix."
         }
       ]
     }

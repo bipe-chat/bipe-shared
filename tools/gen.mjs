@@ -89,6 +89,8 @@ public enum ProseioRegistries {
     public static let phoneMobileLength = ${reg.phones.mobileLength}
     public static let phoneMobilePrefix = ${swiftString(reg.phones.mobilePrefix)}
     public static let phoneMaxInputLength = ${reg.phones.maxInputLength}
+    public static let phoneInternationalMinDigits = ${reg.phones.internationalMinDigits}
+    public static let phoneInternationalMaxDigits = ${reg.phones.internationalMaxDigits}
 }
 `;
 }
@@ -207,6 +209,8 @@ object ProseioRegistries {
     const val PHONE_MOBILE_LENGTH = ${reg.phones.mobileLength}
     const val PHONE_MOBILE_PREFIX = ${kotlinString(reg.phones.mobilePrefix)}
     const val PHONE_MAX_INPUT_LENGTH = ${reg.phones.maxInputLength}
+    const val PHONE_INTERNATIONAL_MIN_DIGITS = ${reg.phones.internationalMinDigits}
+    const val PHONE_INTERNATIONAL_MAX_DIGITS = ${reg.phones.internationalMaxDigits}
 }
 `;
 }

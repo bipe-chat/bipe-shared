@@ -30,46 +30,46 @@
   },
   "source": {
     "$comment": "Source code. A repo appears on the site only when public is true. Flip public when the GitHub repo is public (ADR 0024).",
-    "org": "https://github.com/proseio",
+    "org": "https://github.com/bipe-chat",
     "repos": [
       {
         "id": "ios",
-        "url": "https://github.com/proseio/proseio-ios",
+        "url": "https://github.com/bipe-chat/proseio-ios",
         "public": false,
         "pt": "App para iPhone",
         "en": "iPhone app"
       },
       {
         "id": "android",
-        "url": "https://github.com/proseio/proseio-android",
+        "url": "https://github.com/bipe-chat/proseio-android",
         "public": false,
         "pt": "App para Android",
         "en": "Android app"
       },
       {
         "id": "shared",
-        "url": "https://github.com/proseio/proseio-shared",
+        "url": "https://github.com/bipe-chat/proseio-shared",
         "public": false,
         "pt": "Regras e textos dos apps",
         "en": "App rules and text"
       },
       {
         "id": "api",
-        "url": "https://github.com/proseio/proseio-api",
+        "url": "https://github.com/bipe-chat/proseio-api",
         "public": false,
         "pt": "Convites e diretório de @",
         "en": "Invites and @ directory"
       },
       {
         "id": "web",
-        "url": "https://github.com/proseio/proseio-web",
+        "url": "https://github.com/bipe-chat/proseio-web",
         "public": false,
         "pt": "Este site",
         "en": "This site"
       },
       {
         "id": "tokens",
-        "url": "https://github.com/proseio/compound-design-tokens",
+        "url": "https://github.com/bipe-chat/compound-design-tokens",
         "public": false,
         "pt": "Cores e estilos",
         "en": "Colours and styles"

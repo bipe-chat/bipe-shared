@@ -75,7 +75,7 @@ for (const t of product.tentpoles) {
   if (!STATUSES.includes(t.status)) fail(`tentpole ${t.id}: status`);
   for (const id of t.features) if (!featureIds.has(id)) fail(`tentpole ${t.id}: unknown feature ${id}`);
 }
-if (!dist.source?.org?.startsWith("https://github.com/proseio")) fail("source.org");
+if (!dist.source?.org?.startsWith("https://github.com/bipe-chat")) fail("source.org");
 for (const r of dist.source.repos) {
   if (!r.url?.startsWith(dist.source.org + "/")) fail(`source ${r.id}: url must be in ${dist.source.org}`);
   if (typeof r.public !== "boolean") fail(`source ${r.id}: public must be true or false`);

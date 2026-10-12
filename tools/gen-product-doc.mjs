@@ -17,13 +17,26 @@ const fail = (m) => { throw new Error(`product validation failed: ${m}`); };
 if (product.version !== 1 || dist.version !== 1) fail("version must be 1");
 const ht = product.headlineTest;
 if (!/^[a-z0-9-]{1,32}$/.test(ht.experiment)) fail("headlineTest.experiment");
-ht.arms.forEach((a, i) => { if (a.id !== `h${i + 1}` || !a.pt || !a.en) fail(`headlineTest arm ${i + 1}`); });
+// Arm ids are h1 to h9 (the API accepts /^h[0-9]$/, h0 is the control). A retired id is never reused.
+const retired = new Set((ht.retired ?? []).map((a) => a.id));
+const armIds = new Set();
+for (const a of ht.arms) {
+  if (!/^h[1-9]$/.test(a.id) || armIds.has(a.id) || retired.has(a.id) || !a.pt || !a.en) fail(`headlineTest arm ${a.id}`);
+  armIds.add(a.id);
+}
 const featureIds = new Set(product.features.map((f) => f.id));
 const areaIds = new Set(product.areas.map((a) => a.id));
 for (const f of product.features) {
   if (!areaIds.has(f.area)) fail(`feature ${f.id}: unknown area ${f.area}`);
   for (const p of ["ios", "android"]) if (!STATUSES.includes(f.status[p])) fail(`feature ${f.id}: status.${p}`);
   for (const l of ["pt", "en"]) if (!f[l]?.name || !f[l]?.body) fail(`feature ${f.id}: ${l} copy`);
+}
+const tentpoleIds = new Set(product.tentpoles.map((t) => t.id));
+const sided = new Set();
+for (const s of product.sides) {
+  for (const id of s.tentpoles) { if (!tentpoleIds.has(id) || sided.has(id)) fail(`side ${s.id}: tentpole ${id}`); sided.add(id); }
+  for (const id of s.areas) if (!areaIds.has(id)) fail(`side ${s.id}: unknown area ${id}`);
+  for (const l of ["pt", "en"]) if (!s[l]?.name || !s[l]?.line) fail(`side ${s.id}: ${l} copy`);
 }
 for (const t of product.tentpoles) {
   if (!STATUSES.includes(t.status)) fail(`tentpole ${t.id}: status`);
@@ -49,7 +62,15 @@ const lines = [
   `- **pt-BR:** ${product.promise.pt.title} ${product.promise.pt.lede}`,
   `- **en:** ${product.promise.en.title} ${product.promise.en.lede}`,
   "",
-  `Headline test (issue #77, experiment \`${product.headlineTest.experiment}\`, ${product.headlineTest.active ? "active" : "off"}): h0 "${product.promise.pt.title}" (control), ` + product.headlineTest.arms.map((a) => `${a.id} "${a.pt}"`).join(", ") + ".",
+  `Headline test (issue #77, experiment \`${product.headlineTest.experiment}\`, ${product.headlineTest.active ? "active" : "off"}): h0 "${product.promise.pt.title}" (control), ` + product.headlineTest.arms.map((a) => `${a.id} "${a.pt}"`).join(", ") + "." + (ht.retired?.length ? " Retired: " + ht.retired.map((a) => `${a.id} "${a.pt}" (${a.date})`).join(", ") + "." : ""),
+  "",
+  "## Sides",
+  "",
+  "Positioning: [positioning.md](positioning.md) ([ADR 0047](adr/0047-security-means-identity.md)). The home page and the features page group tentpoles and areas by side.",
+  "",
+  "| Side | pt-BR | Tentpoles | Areas |",
+  "|---|---|---|---|",
+  ...product.sides.map((s) => `| ${s.en.name} | ${s.pt.name} | ${s.tentpoles.join(", ")} | ${s.areas.join(", ")} |`),
   "",
   "## Tentpoles",
   "",

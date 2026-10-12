@@ -4,24 +4,18 @@
   "promise": {
     "pt": {
       "title": "Saiba com quem está falando.",
-      "lede": "O Proseio é um app de mensagens brasileiro, gratuito e sem anúncios. Avisa quando uma mensagem tem cara de golpe, e as pessoas te acham pelo @, sem ver o seu número."
+      "lede": "Seu número fica escondido. Quem fala com você, não. O Proseio é um app de mensagens brasileiro, gratuito e sem anúncio. Avisa quando uma mensagem tem cara de golpe, e quem você não conhece chega como pedido."
     },
     "en": {
       "title": "Know who you are talking to.",
-      "lede": "Proseio is a free Brazilian messenger with no ads. It warns you when a message looks like a scam, and people find you by your @ without seeing your number."
+      "lede": "Your number stays hidden. The person talking to you doesn't. Proseio is a free Brazilian messenger with no ads. It warns you when a message looks like a scam, and people you don't know arrive as a request."
     }
   },
   "headlineTest": {
-    "$comment": "Issue #77 (ADR 0032). The home page (pt-BR only) shows one arm per browser, chosen at random and kept. h0 is the control: promise.pt.title. The lede and everything else stay the same. active false shows promise.title to everyone.",
+    "$comment": "Issue #77 (ADR 0032, ADR 0047). The home page (pt-BR only) shows one arm per browser, chosen at random and kept. h0 is the control: promise.pt.title. The lede and everything else stay the same. active false shows promise.title to everyone. An arm id is never reused: retired ids stay in retired, so old counts never mix with a new headline.",
     "experiment": "headline-77",
     "active": true,
     "arms": [
-      {
-        "id": "h1",
-        "angle": "brazilian",
-        "pt": "O mensageiro brasileiro.",
-        "en": "The Brazilian messenger."
-      },
       {
         "id": "h2",
         "angle": "anti-impersonation",
@@ -33,9 +27,62 @@
         "angle": "no-ads",
         "pt": "Sem anúncio. Seus dados não estão à venda.",
         "en": "No ads. Your data is not for sale."
+      },
+      {
+        "id": "h4",
+        "angle": "scam-warning",
+        "pt": "Golpe aqui chega com aviso.",
+        "en": "Here, a scam comes with a warning."
+      }
+    ],
+    "retired": [
+      {
+        "id": "h1",
+        "angle": "brazilian",
+        "pt": "O mensageiro brasileiro.",
+        "date": "2026-10-12",
+        "why": "ADR 0047: sovereignty is proof, not the pitch"
       }
     ]
   },
+  "sides": [
+    {
+      "id": "other",
+      "tentpoles": [
+        "trust"
+      ],
+      "areas": [
+        "safety",
+        "identity"
+      ],
+      "pt": {
+        "name": "Quem fala com você",
+        "line": "Golpe chega com aviso, e quem você não conhece chega como pedido. Em breve, um selo mostra o nome verificado."
+      },
+      "en": {
+        "name": "Who is talking to you",
+        "line": "A scam comes with a warning, and people you don't know arrive as a request. Soon, a seal shows the verified name."
+      }
+    },
+    {
+      "id": "you",
+      "tentpoles": [
+        "handle",
+        "no-ads"
+      ],
+      "areas": [
+        "privacy"
+      ],
+      "pt": {
+        "name": "Do seu lado",
+        "line": "Seu número e seus dados ficam com você. As pessoas te acham pelo @, e nada do que você faz vira anúncio."
+      },
+      "en": {
+        "name": "On your side",
+        "line": "Your number and your data stay with you. People find you by your @, and nothing you do turns into an ad."
+      }
+    }
+  ],
   "tentpoles": [
     {
       "id": "trust",
@@ -404,7 +451,7 @@
     },
     {
       "id": "handles",
-      "area": "chat",
+      "area": "privacy",
       "status": {
         "ios": "testing",
         "android": "built"
@@ -420,7 +467,7 @@
     },
     {
       "id": "profile-links",
-      "area": "chat",
+      "area": "privacy",
       "status": {
         "ios": "testing",
         "android": "built"

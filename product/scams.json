@@ -1,0 +1,252 @@
+{
+  "$comment": "Scams in Brazil register: the page /golpes-no-brasil/ and /en/scams-in-brazil/. Research and conflicts: proseio/docs/scams-brazil.md. Every number in stats and charts has a source in sources, with a URL and a date. Never write a number that is not in a source. Bipe features in protect take their status from product.json. Validated by tools/gen-product-doc.mjs.",
+  "version": 1,
+  "date": "2026-10-12",
+  "sources": [
+    { "id": "anuario2026", "name": "20º Anuário Brasileiro de Segurança Pública 2026", "publisher": "Fórum Brasileiro de Segurança Pública", "url": "https://forumseguranca.org.br/wp-content/uploads/2026/07/anuario-2026.pdf", "date": "2026-07", "kind": "primary" },
+    { "id": "vitimizacao2025", "name": "Pesquisa de vitimização e percepção sobre violência e segurança pública 2025", "publisher": "Fórum Brasileiro de Segurança Pública e Datafolha", "url": "https://publicacoes.forumseguranca.org.br/server/api/core/bitstreams/33ed3320-fc11-45f9-a909-ed69eba48cfd/content", "date": "2025-08", "kind": "primary" },
+    { "id": "medo2026", "name": "Medo do crime e eleições 2026: os gatilhos da insegurança", "publisher": "Fórum Brasileiro de Segurança Pública e Datafolha", "url": "https://forumseguranca.org.br/wp-content/uploads/2026/05/os-gatilhos-da-inseguranca-relatorio-completo-2026.pdf", "date": "2026-05", "kind": "primary" },
+    { "id": "cetic2025", "name": "Privacidade e proteção de dados pessoais 2025, resumo executivo", "publisher": "Cetic.br, NIC.br e CGI.br", "url": "https://cetic.br/media/docs/publicacoes/2/pt-br/20260831092525/PRIVACIDADE_2025_RE%20PT.pdf", "date": "2026-08-31", "kind": "primary" },
+    { "id": "datasenado2024", "name": "Panorama Político 2024: golpes digitais atingem 24% dos brasileiros", "publisher": "Instituto DataSenado", "url": "https://www12.senado.leg.br/institucional/datasenado/publicacaodatasenado?id=golpes-digitais-atingem-24-dos-brasileiros-aponta-21a-edicao-da-pesquisa-panorama-politico", "date": "2024-10-01", "kind": "primary" },
+    { "id": "febraban2025", "name": "Golpe da Falsa Venda é o mais aplicado contra clientes bancários no 1º semestre do ano", "publisher": "Febraban", "url": "https://portal.febraban.org.br/noticia/4381/pt-br/", "date": "2025-11-11", "kind": "primary" },
+    { "id": "gasa2026", "name": "State of Scams in Brazil 2026", "publisher": "Global Anti-Scam Alliance", "url": "https://gasa.org/knowledge-base/reports/state-of-scams-in-brazil-2026", "date": "2026-08-06", "kind": "secondary" }
+  ],
+  "hero": ["records2025", "lostMoney", "messagingApps", "pixLoss", "noCourt"],
+  "stats": [
+    {
+      "id": "records2025", "source": "anuario2026",
+      "pt": { "value": "2,26 milhões", "label": "de golpes registrados na polícia em 2025, cinco vezes mais que em 2018", "period": "2025" },
+      "en": { "value": "2.26 million", "label": "scams reported to the police in 2025, five times more than in 2018", "period": "2025" }
+    },
+    {
+      "id": "lostMoney", "source": "vitimizacao2025",
+      "pt": { "value": "1 em cada 3", "label": "brasileiros de 16 anos ou mais perdeu dinheiro num golpe digital em um ano (33,4%, cerca de 56 milhões de pessoas)", "period": "jul. 2024 a jun. 2025" },
+      "en": { "value": "1 in 3", "label": "Brazilians aged 16 or older lost money to a digital scam in one year (33.4%, about 56 million people)", "period": "Jul 2024 to Jun 2025" }
+    },
+    {
+      "id": "messagingApps", "source": "cetic2025",
+      "pt": { "value": "84%", "label": "de quem teve tentativa de golpe com os próprios dados foi procurado por app de mensagem", "period": "2025" },
+      "en": { "value": "84%", "label": "of people who had a scam attempt with their own data were approached on a messaging app", "period": "2025" }
+    },
+    {
+      "id": "pixLoss", "source": "vitimizacao2025",
+      "pt": { "value": "R$ 28,8 bilhões", "label": "perdidos em golpes com Pix ou boleto falso, na estimativa da pesquisa", "period": "jul. 2024 a jun. 2025" },
+      "en": { "value": "R$ 28.8 billion", "label": "lost to Pix or fake boleto scams, as the survey estimates", "period": "Jul 2024 to Jun 2025" }
+    },
+    {
+      "id": "noCourt", "source": "anuario2026",
+      "pt": { "value": "Mais de 97%", "label": "dos golpes registrados na polícia não chegam à Justiça", "period": "2025" },
+      "en": { "value": "Over 97%", "label": "of scams reported to the police never reach a court", "period": "2025" }
+    },
+    {
+      "id": "familyData", "source": "cetic2025",
+      "pt": { "value": "39%", "label": "dos usuários de internet contam que tentaram aplicar um golpe em alguém da família usando dados de outro parente", "period": "2025" },
+      "en": { "value": "39%", "label": "of internet users say someone tried to scam a family member using another relative's data", "period": "2025" }
+    },
+    {
+      "id": "cloned", "source": "vitimizacao2025",
+      "pt": { "value": "8,7%", "label": "tiveram o número usado por outra pessoa pra aplicar golpe (cerca de 14,7 milhões de pessoas)", "period": "jul. 2024 a jun. 2025" },
+      "en": { "value": "8.7%", "label": "had their number used by someone else to scam people (about 14.7 million people)", "period": "Jul 2024 to Jun 2025" }
+    },
+    {
+      "id": "fakeCall", "source": "febraban2025",
+      "pt": { "value": "139 mil", "label": "relatos de falsa central ou falso funcionário de banco aos bancos, quase o triplo do mesmo período de 2024", "period": "1º semestre de 2025" },
+      "en": { "value": "139,000", "label": "reports to banks of a fake bank call centre or fake bank employee, almost three times the same period of 2024", "period": "first half of 2025" }
+    },
+    {
+      "id": "pixAverage", "source": "vitimizacao2025",
+      "pt": { "value": "R$ 1.198", "label": "é quanto perdeu, em média, cada vítima de golpe com Pix ou boleto falso", "period": "jul. 2024 a jun. 2025" },
+      "en": { "value": "R$ 1,198", "label": "is what each victim of a Pix or fake boleto scam lost on average", "period": "Jul 2024 to Jun 2025" }
+    },
+    {
+      "id": "fakeSale", "source": "febraban2025",
+      "pt": { "value": "174 mil", "label": "relatos de venda falsa aos bancos, o golpe mais relatado do semestre", "period": "1º semestre de 2025" },
+      "en": { "value": "174,000", "label": "reports of a fake sale to banks, the most reported scam of the half year", "period": "first half of 2025" }
+    },
+    {
+      "id": "threats", "source": "vitimizacao2025",
+      "pt": { "value": "19,1%", "label": "receberam ligação, mensagem ou e-mail com ameaça de criminoso que tinha seus dados ou da sua família, pedindo dinheiro", "period": "jul. 2024 a jun. 2025" },
+      "en": { "value": "19.1%", "label": "got a call, message or e-mail with threats from a criminal who had their or their family's data, asking for money", "period": "Jul 2024 to Jun 2025" }
+    },
+    {
+      "id": "datasenado24", "source": "datasenado2024",
+      "pt": { "value": "24%", "label": "dos brasileiros de 16 anos ou mais perderam dinheiro com crime digital nos 12 meses anteriores", "period": "jun. 2024" },
+      "en": { "value": "24%", "label": "of Brazilians aged 16 or older lost money to a digital crime in the previous 12 months", "period": "Jun 2024" }
+    },
+    {
+      "id": "medo158", "source": "medo2026",
+      "pt": { "value": "15,8%", "label": "caíram num golpe e perderam dinheiro pela internet ou pelo celular, numa única pergunta", "period": "12 meses antes de mar. 2026" },
+      "en": { "value": "15.8%", "label": "fell for a scam and lost money online or by phone, in a single question", "period": "12 months before Mar 2026" }
+    },
+    {
+      "id": "fear", "source": "medo2026",
+      "pt": { "value": "83,2%", "label": "têm medo de cair num golpe e perder dinheiro pela internet ou pelo celular, o medo mais citado", "period": "mar. 2026" },
+      "en": { "value": "83.2%", "label": "fear falling for a scam and losing money online or by phone, the most named fear", "period": "Mar 2026" }
+    }
+  ],
+  "more": ["datasenado24", "medo158", "fear"],
+  "channelCharts": ["channels", "platforms"],
+  "charts": [
+    {
+      "id": "channels", "form": "bars", "sources": ["cetic2025"],
+      "pt": { "title": "Por onde chega a tentativa de golpe", "note": "Usuários de internet com 16 anos ou mais que passaram por uma tentativa de golpe com os próprios dados, em 2025. Cada pessoa pode citar mais de um canal, por isso a soma passa de 100%." },
+      "en": { "title": "How the scam attempt arrives", "note": "Internet users aged 16 or older who had a scam attempt with their own data, in 2025. Each person can name more than one channel, so the total is above 100%." },
+      "rows": [
+        { "id": "messaging", "value": 84, "highlight": true, "pt": { "label": "App de mensagem", "value": "84%" }, "en": { "label": "Messaging app", "value": "84%" } },
+        { "id": "call", "value": 79, "pt": { "label": "Ligação", "value": "79%" }, "en": { "label": "Phone call", "value": "79%" } },
+        { "id": "fakesite", "value": 71, "pt": { "label": "Site ou app falso", "value": "71%" }, "en": { "label": "Fake website or app", "value": "71%" } },
+        { "id": "sms", "value": 71, "pt": { "label": "SMS", "value": "71%" }, "en": { "label": "SMS", "value": "71%" } },
+        { "id": "email", "value": 69, "pt": { "label": "E-mail", "value": "69%" }, "en": { "label": "E-mail", "value": "69%" } },
+        { "id": "social", "value": 67, "pt": { "label": "Rede social", "value": "67%" }, "en": { "label": "Social media", "value": "67%" } }
+      ]
+    },
+    {
+      "id": "platforms", "form": "bars", "sources": ["gasa2026"],
+      "pt": { "title": "Em qual plataforma o golpista procurou", "note": "Adultos que deram de cara com um golpe nos últimos 12 meses: 820 de 1.170 pessoas num painel online, em março e abril de 2026. Cada pessoa pode citar mais de uma plataforma. Em destaque, os apps de mensagem." },
+      "en": { "title": "Which platform the scammer used", "note": "Adults who met a scam in the last 12 months: 820 of 1,170 people in an online panel, March and April 2026. Each person can name more than one platform. Messaging apps are highlighted." },
+      "rows": [
+        { "id": "whatsapp", "value": 64, "highlight": true, "pt": { "label": "WhatsApp", "value": "64%" }, "en": { "label": "WhatsApp", "value": "64%" } },
+        { "id": "gmail", "value": 32, "pt": { "label": "Gmail", "value": "32%" }, "en": { "label": "Gmail", "value": "32%" } },
+        { "id": "instagram", "value": 22, "pt": { "label": "Instagram", "value": "22%" }, "en": { "label": "Instagram", "value": "22%" } },
+        { "id": "facebook", "value": 17, "pt": { "label": "Facebook", "value": "17%" }, "en": { "label": "Facebook", "value": "17%" } },
+        { "id": "google", "value": 13, "pt": { "label": "Google", "value": "13%" }, "en": { "label": "Google", "value": "13%" } },
+        { "id": "telegram", "value": 12, "highlight": true, "pt": { "label": "Telegram", "value": "12%" }, "en": { "label": "Telegram", "value": "12%" } },
+        { "id": "outlook", "value": 11, "pt": { "label": "Outlook", "value": "11%" }, "en": { "label": "Outlook", "value": "11%" } },
+        { "id": "olx", "value": 9, "pt": { "label": "OLX", "value": "9%" }, "en": { "label": "OLX", "value": "9%" } },
+        { "id": "tiktok", "value": 9, "pt": { "label": "TikTok", "value": "9%" }, "en": { "label": "TikTok", "value": "9%" } },
+        { "id": "youtube", "value": 6, "pt": { "label": "YouTube", "value": "6%" }, "en": { "label": "YouTube", "value": "6%" } }
+      ]
+    },
+    {
+      "id": "records", "form": "columns", "sources": ["anuario2026"],
+      "pt": { "title": "Golpes registrados na polícia, por ano", "note": "Boletins de ocorrência de estelionato no Brasil, que inclui o golpe pela internet e pelo celular. Conta só quem foi à polícia." },
+      "en": { "title": "Scams reported to the police, per year", "note": "Police reports of estelionato (fraud by deceit) in Brazil, which includes scams online and by phone. It counts only people who went to the police." },
+      "rows": [
+        { "id": "2018", "value": 426799, "pt": { "label": "2018", "value": "427 mil" }, "en": { "label": "2018", "value": "427k" } },
+        { "id": "2019", "value": 523820, "pt": { "label": "2019", "value": "524 mil" }, "en": { "label": "2019", "value": "524k" } },
+        { "id": "2020", "value": 927898, "pt": { "label": "2020", "value": "928 mil" }, "en": { "label": "2020", "value": "928k" } },
+        { "id": "2021", "value": 1312964, "pt": { "label": "2021", "value": "1,31 milhão" }, "en": { "label": "2021", "value": "1.31M" } },
+        { "id": "2022", "value": 1816438, "pt": { "label": "2022", "value": "1,82 milhão" }, "en": { "label": "2022", "value": "1.82M" } },
+        { "id": "2023", "value": 2000960, "pt": { "label": "2023", "value": "2,00 milhões" }, "en": { "label": "2023", "value": "2.00M" } },
+        { "id": "2024", "value": 2193122, "pt": { "label": "2024", "value": "2,19 milhões" }, "en": { "label": "2024", "value": "2.19M" } },
+        { "id": "2025", "value": 2261055, "pt": { "label": "2025", "value": "2,26 milhões" }, "en": { "label": "2025", "value": "2.26M" } }
+      ]
+    },
+    {
+      "id": "types", "form": "bars", "sources": ["vitimizacao2025"],
+      "pt": { "title": "Que golpe tirou dinheiro das pessoas", "note": "Brasileiros de 16 anos ou mais que perderam dinheiro em cada tipo de golpe, entre julho de 2024 e junho de 2025. Uma pessoa pode ter caído em mais de um." },
+      "en": { "title": "Which scams took people's money", "note": "Brazilians aged 16 or older who lost money to each kind of scam, July 2024 to June 2025. One person can have fallen for more than one." },
+      "rows": [
+        { "id": "notDelivered", "value": 17.7, "pt": { "label": "Pagou e não recebeu a compra", "value": "17,7%" }, "en": { "label": "Paid and never got the purchase", "value": "17.7%" } },
+        { "id": "pixBoleto", "value": 14.3, "pt": { "label": "Golpe com Pix ou boleto falso", "value": "14,3%" }, "en": { "label": "Pix or fake boleto scam", "value": "14.3%" } },
+        { "id": "card", "value": 8.0, "pt": { "label": "Golpe no cartão de crédito", "value": "8,0%" }, "en": { "label": "Credit card scam", "value": "8.0%" } },
+        { "id": "investment", "value": 7.4, "pt": { "label": "Investimento visto em anúncio na internet", "value": "7,4%" }, "en": { "label": "Investment seen in an online ad", "value": "7.4%" } },
+        { "id": "account", "value": 6.5, "pt": { "label": "Golpe na conta corrente ou poupança", "value": "6,5%" }, "en": { "label": "Current or savings account scam", "value": "6.5%" } }
+      ]
+    },
+    {
+      "id": "ages", "form": "bars", "sources": ["datasenado2024"],
+      "pt": { "title": "Golpe pega gente de toda idade", "note": "Idade de quem perdeu dinheiro com crime digital nos 12 meses antes de junho de 2024. Entre parênteses, quanto cada faixa é da população. As fatias ficam parecidas, então não dá pra dizer que uma idade cai mais que outra." },
+      "en": { "title": "Scams hit people of every age", "note": "Age of people who lost money to a digital crime in the 12 months before June 2024. In brackets, each group's share of the population. The shares are close, so no age group falls for scams more than another." },
+      "rows": [
+        { "id": "16-29", "value": 27, "pt": { "label": "16 a 29 anos (27% da população)", "value": "27%" }, "en": { "label": "16 to 29 (27% of the population)", "value": "27%" } },
+        { "id": "30-39", "value": 23, "pt": { "label": "30 a 39 anos (20% da população)", "value": "23%" }, "en": { "label": "30 to 39 (20% of the population)", "value": "23%" } },
+        { "id": "40-49", "value": 20, "pt": { "label": "40 a 49 anos (18% da população)", "value": "20%" }, "en": { "label": "40 to 49 (18% of the population)", "value": "20%" } },
+        { "id": "50-59", "value": 14, "pt": { "label": "50 a 59 anos (15% da população)", "value": "14%" }, "en": { "label": "50 to 59 (15% of the population)", "value": "14%" } },
+        { "id": "60+", "value": 16, "pt": { "label": "60 anos ou mais (20% da população)", "value": "16%" }, "en": { "label": "60 or older (20% of the population)", "value": "16%" } }
+      ]
+    }
+  ],
+  "types": [
+    { "id": "falsoParente", "stat": "familyData" },
+    { "id": "numberTaken", "stat": "cloned" },
+    { "id": "fakeCall", "stat": "fakeCall" },
+    { "id": "pix", "stat": "pixAverage" },
+    { "id": "fakeShop", "stat": "fakeSale" },
+    { "id": "threats", "stat": "threats" }
+  ],
+  "protect": [
+    { "feature": "scam-alerts", "pt": "Aparece um aviso embaixo da mensagem com cara de golpe, como Pix com pressa, troca de número ou boleto. Vem ligado, sem precisar mexer em nada.", "en": "A warning shows under a message that looks like a scam, such as a rushed Pix, a new number or a boleto. It is on by default, with nothing to set up." },
+    { "feature": "requests", "pt": "Quem não está nos seus contatos chega como pedido. Uma mensagem de número novo não cai direto na sua lista de conversas.", "en": "People who are not in your contacts arrive as a request. A message from a new number does not land straight in your chat list." },
+    { "feature": "no-sms", "pt": "Você entra com e-mail e senha. Quem pega seu chip não pega sua conta.", "en": "You sign in with e-mail and a password. Whoever takes your SIM card does not get your account." },
+    { "feature": "money-pause", "pt": "Num pedido de dinheiro suspeito, copiar e pagar ficam travados por 5 segundos, pra quebrar a pressa do golpe.", "en": "On a suspicious money request, copy and pay stay locked for 5 seconds, to break the scam's rush." },
+    { "feature": "verified-badge", "pt": "Um selo com o nome verificado pelo Pix ou pelo gov.br. Aí dá pra saber quem está do outro lado.", "en": "A seal with a name verified through Pix or gov.br, so you know who is on the other side." },
+    { "feature": "family-check", "pt": "Se o contato salvo como Mãe tem outro nome verificado, o app pergunta se é a mesma pessoa.", "en": "If the contact saved as Mum has a different verified name, the app asks if it is the same person." }
+  ],
+  "pt": {
+    "title": "Golpes no Brasil em números",
+    "headline": "Golpe no Brasil: mais de 2 milhões de registros num ano",
+    "lede": "Em 2025, a polícia registrou 2,26 milhões de golpes, cinco vezes mais que em 2018. E isso é só quem foi à polícia. Os canais mais citados pra tentativa de golpe são o app de mensagem e a ligação. Aqui estão os números, com a fonte de cada um.",
+    "numbersTitle": "Os números principais",
+    "channelsTitle": "Quanto golpe passa pelo app de mensagem",
+    "channelsBody": "O golpe chega por vários caminhos ao mesmo tempo, mas o app de mensagem aparece na frente. Numa pesquisa oficial, 84% de quem teve tentativa de golpe com os próprios dados foi procurado por app de mensagem, e 79% por ligação. Numa pesquisa internacional com brasileiros, o WhatsApp é a plataforma mais citada, bem à frente das outras. Nenhuma das pesquisas mede em que canal cada golpe começou, só por onde as pessoas foram procuradas.",
+    "chartsTitle": "Como o golpe cresceu e quem ele atinge",
+    "typesTitle": "Os golpes mais comuns",
+    "types": [
+      { "heading": "Falso parente", "body": "Chega uma mensagem com a foto do seu filho, da sua mãe ou de um amigo: \"troquei de número\". Logo depois vem um pedido de Pix, sempre com pressa. O golpista usa nome e foto de verdade, tirados das redes sociais ou de dados vazados." },
+      { "heading": "Número ou conta tomada", "body": "O golpista pega o código de acesso do seu app de mensagem, ou clona o número, e passa a falar com os seus contatos como se fosse você. Quem recebe confia, porque a mensagem vem de um contato salvo." },
+      { "heading": "Falsa central do banco", "body": "Alguém liga ou manda mensagem dizendo que é do banco e que tem uma compra estranha na sua conta. Pra \"proteger\" o dinheiro, pede senha, código ou uma transferência. Banco nenhum pede isso." },
+      { "heading": "Pix e boleto falso", "body": "O boleto parece de verdade, mas o dinheiro vai pra conta do golpista. No Pix, a chave ou o QR code é trocado. Um print de comprovante também não prova que o dinheiro caiu." },
+      { "heading": "Loja falsa", "body": "Um anúncio com preço muito abaixo do normal, numa loja ou perfil que você não conhece. Você paga e a compra nunca chega. Na pesquisa nacional, foi o golpe que tirou dinheiro de mais gente." },
+      { "heading": "Ameaça com seus dados", "body": "Com seus dados ou os da sua família em mãos, o criminoso liga ou escreve fazendo ameaça e pede dinheiro. Na pesquisa, 27% de quem recebeu esse tipo de ligação acabou transferindo." }
+    ],
+    "moreTitle": "Por que os números não batem",
+    "moreBody": "Cada pesquisa pergunta uma coisa, num ano diferente. A do Fórum e do Datafolha de 2025 soma cinco tipos de golpe e chega a 33,4%. A do DataSenado de 2024 fez uma pergunta só, por telefone, e chegou a 24%. A do Fórum de 2026 fez outra pergunta só e chegou a 15,8%. Nenhuma está errada: elas medem coisas diferentes.",
+    "protectTitle": "O que protege você",
+    "protectLede": "Golpista sempre tem pressa. O que mais protege é parar e conferir por outro caminho.",
+    "advice": [
+      "Alguém pediu dinheiro por mensagem? Ligue pra pessoa num número que você já tinha antes de pagar.",
+      "Banco não liga pedindo senha, código ou transferência. Desligue e ligue você pro número que está atrás do cartão.",
+      "O código que chega por SMS é só seu. Não passe pra ninguém, nem pra quem diz ser do app.",
+      "Print de comprovante não prova pagamento. Confira no app do seu banco se o dinheiro caiu.",
+      "Preço bom demais numa loja que você não conhece costuma ser golpe.",
+      "Caiu num golpe com Pix? Fale com o seu banco na hora e peça o MED, o mecanismo de devolução do Pix. Depois faça o boletim de ocorrência."
+    ],
+    "bipeTitle": "Como o Bipe ajuda",
+    "bipeLede": "O Bipe foi feito pra você saber quem está do outro lado. Nem tudo está pronto: cada item mostra em que pé está no iPhone e no Android.",
+    "limit": "O Bipe só protege as conversas que acontecem no Bipe. Se alguém da família ainda usa outro app, o golpista pode escrever pra essa pessoa lá.",
+    "sourcesTitle": "De onde vêm esses números",
+    "sourcesNote": "Pesquisa feita em 12 de outubro de 2026. A gente só usa número que tem fonte. Pesquisa de empresa ou de associação privada aparece marcada como tal.",
+    "source": "Fonte",
+    "table": "Ver os números em tabela",
+    "kinds": { "primary": "fonte oficial", "secondary": "pesquisa de associação privada", "press": "como noticiado pela imprensa" }
+  },
+  "en": {
+    "title": "Scams in Brazil in numbers",
+    "headline": "Scams in Brazil: over 2 million police reports in one year",
+    "lede": "In 2025, the police recorded 2.26 million scams, five times more than in 2018. And that is only the people who went to the police. The channels people name most for scam attempts are messaging apps and phone calls. Here are the numbers, each with its source.",
+    "numbersTitle": "The main numbers",
+    "channelsTitle": "How much scamming goes through messaging apps",
+    "channelsBody": "Scams arrive by many routes at once, but messaging apps come first. In an official survey, 84% of people who had a scam attempt with their own data were approached on a messaging app, and 79% by phone call. In an international survey of Brazilians, WhatsApp is the platform people name most, far ahead of the rest. None of the surveys measures where each scam started, only where people were approached.",
+    "chartsTitle": "How scams grew and who they hit",
+    "typesTitle": "The most common scams",
+    "types": [
+      { "heading": "Fake relative", "body": "A message arrives with the photo of your son, your mother or a friend: \"I changed my number\". Next comes a Pix request, always in a rush. The scammer uses a real name and photo, taken from social media or leaked data." },
+      { "heading": "Taken number or account", "body": "The scammer gets the login code of your messaging app, or clones the number, and talks to your contacts as if it were you. People trust it, because the message comes from a saved contact." },
+      { "heading": "Fake bank call centre", "body": "Someone calls or writes saying they are from the bank and there is a strange purchase on your account. To \"protect\" the money, they ask for a password, a code or a transfer. No bank asks for that." },
+      { "heading": "Pix and fake boleto", "body": "The boleto looks real, but the money goes to the scammer's account. With Pix, the key or the QR code is swapped. A screenshot of a receipt does not prove the money arrived either." },
+      { "heading": "Fake shop", "body": "An ad with a price far below normal, from a shop or profile you do not know. You pay and the purchase never arrives. In the national survey, it is the scam that took money from the most people." },
+      { "heading": "Threats with your data", "body": "With your or your family's data in hand, the criminal calls or writes with threats and asks for money. In the survey, 27% of people who got this kind of call ended up transferring money." }
+    ],
+    "moreTitle": "Why the numbers differ",
+    "moreBody": "Each survey asks a different thing, in a different year. The 2025 Fórum and Datafolha survey adds up five kinds of scam and reaches 33.4%. The 2024 DataSenado survey asked one question, by phone, and reached 24%. The 2026 Fórum survey asked another single question and reached 15.8%. None is wrong: they measure different things.",
+    "protectTitle": "What protects you",
+    "protectLede": "A scammer is always in a rush. What protects you most is to stop and check another way.",
+    "advice": [
+      "Someone asked for money by message? Call them on a number you already had before you pay.",
+      "Banks do not call asking for a password, a code or a transfer. Hang up and call the number on the back of your card yourself.",
+      "The code you get by SMS is yours alone. Do not give it to anyone, not even someone who says they are from the app.",
+      "A screenshot of a receipt does not prove payment. Check in your bank app that the money arrived.",
+      "A price too good to be true, from a shop you do not know, is usually a scam.",
+      "Fell for a Pix scam? Talk to your bank at once and ask for MED, the Pix refund mechanism. Then file a police report."
+    ],
+    "bipeTitle": "How Bipe helps",
+    "bipeLede": "Bipe is made so you know who is on the other side. Not everything is ready: each item shows where it stands on iPhone and Android.",
+    "limit": "Bipe only protects the chats that happen in Bipe. If someone in the family still uses another app, a scammer can write to them there.",
+    "sourcesTitle": "Where these numbers come from",
+    "sourcesNote": "Researched on 12 October 2026. We only use numbers that have a source. Surveys by a company or a private association are marked as such.",
+    "source": "Source",
+    "table": "See the numbers as a table",
+    "kinds": { "primary": "official source", "secondary": "private association survey", "press": "as reported by the press" }
+  }
+}

@@ -110,6 +110,54 @@ for (const a of cmp.apps) {
 const cmpText = JSON.stringify(cmp, (k, v) => (k === "$comment" ? undefined : v));
 if (/[–—]/.test(cmpText)) fail("compare: rendered copy must not contain em or en dashes");
 if (/n[ãa]o ach(ou|amos)|found nothing/i.test(cmpText)) fail("compare: state what an app does, never what we did not find");
+// Scams register (product/scams.json, proseio/docs/scams-brazil.md): /golpes-no-brasil/. Fails closed: every
+// number has a source with an https URL and a date; pt copy follows language.md (golpe, not fraude; no fear words).
+const scams = JSON.parse(readFileSync(join(root, "product/scams.json"), "utf8"));
+if (scams.version !== 1 || !/^\d{4}-\d{2}-\d{2}$/.test(scams.date)) fail("scams: version or date");
+const KINDS = ["primary", "secondary", "press"];
+const scamSources = new Set();
+for (const s of scams.sources) {
+  if (!/^[a-z0-9]+$/i.test(s.id) || scamSources.has(s.id)) fail(`scams source ${s.id}: id`);
+  if (!s.name || !s.publisher || !s.url?.startsWith("https://")) fail(`scams source ${s.id}: name, publisher and https url`);
+  if (!/^\d{4}-\d{2}(-\d{2})?$/.test(s.date ?? "")) fail(`scams source ${s.id}: date must be YYYY-MM or YYYY-MM-DD`);
+  if (!KINDS.includes(s.kind)) fail(`scams source ${s.id}: kind`);
+  scamSources.add(s.id);
+}
+const scamStats = new Set();
+for (const s of scams.stats) {
+  if (scamStats.has(s.id) || !scamSources.has(s.source)) fail(`scams stat ${s.id}: duplicate id or unknown source ${s.source}`);
+  for (const l of ["pt", "en"]) for (const k of ["value", "label", "period"]) if (!s[l]?.[k]) fail(`scams stat ${s.id}: ${l}.${k}`);
+  scamStats.add(s.id);
+}
+for (const id of [...scams.hero, ...scams.more, ...scams.types.map((t) => t.stat)]) if (!scamStats.has(id)) fail(`scams: unknown stat ${id}`);
+if (scams.hero.length < 3 || scams.hero.length > 5) fail("scams: 3 to 5 hero numbers");
+const scamCharts = new Set();
+for (const c of scams.charts) {
+  if (scamCharts.has(c.id) || !["columns", "bars"].includes(c.form) || !c.rows.length) fail(`scams chart ${c.id}`);
+  if (!c.sources.length || c.sources.some((id) => !scamSources.has(id))) fail(`scams chart ${c.id}: sources`);
+  for (const l of ["pt", "en"]) if (!c[l]?.title || !c[l]?.note) fail(`scams chart ${c.id}: ${l} copy`);
+  for (const r of c.rows) {
+    if (typeof r.value !== "number" || !(r.value >= 0)) fail(`scams chart ${c.id} row ${r.id}: value`);
+    for (const l of ["pt", "en"]) if (!r[l]?.label || !r[l]?.value) fail(`scams chart ${c.id} row ${r.id}: ${l}`);
+  }
+  scamCharts.add(c.id);
+}
+for (const id of scams.channelCharts) if (!scamCharts.has(id)) fail(`scams: unknown channel chart ${id}`);
+for (const p of scams.protect) if (!featureIds.has(p.feature) || !p.pt || !p.en) fail(`scams protect ${p.feature}`);
+for (const l of ["pt", "en"]) {
+  const c = scams[l];
+  for (const k of ["title", "headline", "lede", "numbersTitle", "channelsTitle", "channelsBody", "chartsTitle", "typesTitle", "moreTitle", "moreBody", "protectTitle", "protectLede", "bipeTitle", "bipeLede", "limit", "sourcesTitle", "sourcesNote", "source", "table"]) if (!c?.[k]) fail(`scams.${l}.${k}`);
+  for (const k of KINDS) if (!c.kinds?.[k]) fail(`scams.${l}.kinds.${k}`);
+  if (c.types.length !== scams.types.length || c.types.some((t) => !t.heading || !t.body)) fail(`scams.${l}.types`);
+  if (!c.advice.length) fail(`scams.${l}.advice`);
+}
+if (scams.pt.advice.length !== scams.en.advice.length) fail("scams: advice pt and en differ");
+// Rendered copy: everything except $comment and the source titles, which quote the publisher.
+const scamsCopy = JSON.stringify({ ...scams, $comment: undefined, sources: scams.sources.map((s) => ({ ...s, name: undefined })) });
+if (/[–—]/.test(JSON.stringify({ ...scams, $comment: undefined }))) fail("scams: rendered copy must not contain em or en dashes");
+if (/!/.test(scamsCopy.replace(/https:\/\/[^"]*/g, ""))) fail("scams: no exclamation marks");
+const scamsPt = JSON.stringify([scams.pt, scams.stats.map((s) => s.pt), scams.charts.map((c) => [c.pt, c.rows.map((r) => r.pt)]), scams.protect.map((p) => p.pt)]);
+if (/\b(fraudes?|fraudador\w*|perigo\w*|alerta\w*|aten[çc][ãa]o)\b/i.test(scamsPt)) fail("scams: pt copy says golpe, not fraude, and uses no fear words (language.md)");
 const text = JSON.stringify(product) + JSON.stringify(dist);
 if (/[–—]/.test(text)) fail("rendered copy must not contain em or en dashes");
 
@@ -173,6 +221,16 @@ const lines = [
   `| Threat | Bipe features | ${cmp.apps.map((a) => a.name).join(" | ")} |`,
   `|---|---|${cmp.apps.map(() => "---|").join("")}`,
   ...cmp.threats.map((t) => `| ${t.en.threat} | ${t.features.join(", ")} | ${cmp.apps.map((a) => a.cells[t.id]?.level ?? "").join(" | ")} |`),
+  "",
+  "## Scams page",
+  "",
+  `Register \`product/scams.json\`, researched ${scams.date}. Page \`/golpes-no-brasil/\` and \`/en/scams-in-brazil/\`. Source: [scams-brazil.md](scams-brazil.md).`,
+  "",
+  "| Number | What it is | Period | Source |",
+  "|---|---|---|---|",
+  ...scams.hero.map((id) => scams.stats.find((s) => s.id === id)).map((s) => { const src = scams.sources.find((x) => x.id === s.source); return `| ${s.en.value} | ${s.en.label} | ${s.en.period} | [${src.publisher}](${src.url}) |`; }),
+  "",
+  `Charts: ${scams.charts.map((c) => `${c.en.title} (${c.sources.join(", ")})`).join("; ")}. Bipe features named: ${scams.protect.map((p) => p.feature).join(", ")}.`,
   "",
   "## Distribution",
   "",

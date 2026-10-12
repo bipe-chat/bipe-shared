@@ -178,6 +178,25 @@ paths:
         "401": { $ref: "#/components/responses/Error" }
         "403": { $ref: "#/components/responses/Error" }
         "429": { $ref: "#/components/responses/Error" }
+  /v1/me/invite-connections:
+    get:
+      summary: The caller's invite pairs
+      description: >
+        People the caller invited with a personal invite who joined, plus the person who
+        invited the caller. Clients treat a direct-chat invite from these users as trusted:
+        it skips message requests and is accepted automatically (proseio ADR 0034).
+      security: [{ matrix: [] }]
+      responses:
+        "200":
+          description: Matrix user IDs
+          content:
+            application/json:
+              schema:
+                type: object
+                required: [user_ids]
+                properties:
+                  user_ids: { type: array, items: { type: string } }
+        "401": { $ref: "#/components/responses/Error" }
   /v1/me/invites/{inviteId}:
     delete:
       summary: Revoke one of the caller's pending invites

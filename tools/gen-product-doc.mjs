@@ -120,7 +120,7 @@ const lines = [
   "",
   "## Comparison",
   "",
-  `Register \`product/compare.json\`, researched ${cmp.date}. Hub \`/comparar/\`, one page per app. Source: [vs-whatsapp.md](vs-whatsapp.md).`,
+  `Register \`product/compare.json\`, researched ${cmp.date}. Hub \`/compare/\`, one page per app. Source: [vs-whatsapp.md](vs-whatsapp.md).`,
   "",
   `| Threat | Bipe features | ${cmp.apps.map((a) => a.name).join(" | ")} |`,
   `|---|---|${cmp.apps.map(() => "---|").join("")}`,

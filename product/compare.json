@@ -1,11 +1,11 @@
 {
-  "$comment": "Comparison register: /comparar/ and one page per app. Source: proseio/docs/vs-whatsapp.md. Bipe status comes from the features of each threat, never from the copy. A competitor cell states what that app does, with a source in the app's list. No fact, no cell: never write 'we found nothing'. Repeat the research before a change.",
+  "$comment": "Comparison register: /compare/ and one page per app. Source: proseio/docs/vs-whatsapp.md. Bipe status comes from the features of each threat, never from the copy. A competitor cell states what that app does, with a source in the app's list. No fact, no cell: never write 'we found nothing'. Repeat the research before a change.",
   "version": 1,
   "date": "2026-10-12",
   "pt": {
     "nav": "Comparar",
     "title": "Bipe e outros apps contra golpe",
-    "lede": "Cada app entende segurança de um jeito. O Signal cuida da sua privacidade. O Telegram mostra quem te escreve, mas guarda a conversa no servidor. O WhatsApp tem proteções que você precisa ligar. O Bipe quer que você saiba com quem está falando.",
+    "lede": "Cada app entende segurança de um jeito. O Signal cuida da sua privacidade. O Telegram mostra quem te escreve, mas guarda a conversa no servidor. O WhatsApp e o iMessage têm proteções que você precisa ligar. O RCS confere golpe, mas a conta é o seu número. O Bipe quer que você saiba com quem está falando.",
     "bipe": "No Bipe",
     "appsTitle": "Compare com cada app",
     "more": "Ver a comparação",
@@ -18,7 +18,7 @@
   "en": {
     "nav": "Compare",
     "title": "Bipe and other apps against scams",
-    "lede": "Each app means something different by security. Signal guards your privacy. Telegram shows who is writing to you, but keeps the chat on its server. WhatsApp has protections you need to turn on. Bipe wants you to know who you are talking to.",
+    "lede": "Each app means something different by security. Signal guards your privacy. Telegram shows who is writing to you, but keeps the chat on its server. WhatsApp and iMessage have protections you need to turn on. RCS checks for scams, but your number is the account. Bipe wants you to know who you are talking to.",
     "bipe": "On Bipe",
     "appsTitle": "Compare with each app",
     "more": "See the comparison",
@@ -352,6 +352,174 @@
         {
           "name": "Telegram: Ultimate privacy, numbers on Fragment (Dec 2022)",
           "url": "https://telegram.org/blog/ultimate-privacy-topics-2-0"
+        }
+      ]
+    },
+    {
+      "id": "imessage",
+      "slug": "imessage",
+      "name": "iMessage",
+      "pt": {
+        "title": "Bipe e iMessage contra golpe",
+        "lede": "O iMessage só funciona entre iPhones, e no Brasil a maioria das pessoas usa Android. Veja, golpe por golpe, o que cada um faz hoje.",
+        "line": "Só no iPhone. Protegido de ponta a ponta, com filtro de desconhecidos que vem desligado.",
+        "on": "No iMessage",
+        "ahead": [
+          "Proteção pra celular roubado: algumas ações pedem Face ID sem senha de reserva, e trocar a senha da conta longe de casa espera uma hora.",
+          "Chave de segurança física pra entrar na conta.",
+          "Criptografia pós-quântica desde 2024.",
+          "Spam vai pra uma pasta separada, com os links desligados, e o filtro roda no próprio iPhone."
+        ]
+      },
+      "en": {
+        "title": "Bipe and iMessage against scams",
+        "lede": "iMessage works only between iPhones, and most people in Brazil use Android. Here is what each one does today, scam by scam.",
+        "line": "iPhone only. End-to-end encrypted, with an unknown-sender filter that starts off.",
+        "on": "On iMessage",
+        "ahead": [
+          "Stolen device protection: some actions need Face ID with no passcode fallback, and changing the account password away from home waits one hour.",
+          "Physical security keys to sign in.",
+          "Post-quantum encryption since 2024.",
+          "Spam goes to a separate folder with links turned off, and the filter runs on the iPhone itself."
+        ]
+      },
+      "cells": {
+        "falso-parente": {
+          "pt": "Desde o iOS 26, dá pra separar mensagem de desconhecido numa pasta própria. O filtro vem desligado. No Brasil, dá pra silenciar a notificação de desconhecidos.",
+          "en": "Since iOS 26, messages from unknown senders can go to their own folder. The filter starts off. In Brazil, you can silence notifications from unknown senders."
+        },
+        "contato-invadido": {
+          "pt": "Com a Verificação de Chave de Contato ligada nos dois lados, a conversa avisa quando um aparelho que a Apple não reconhece entra na conta do contato.",
+          "en": "With Contact Key Verification on for both people, the chat warns when a device Apple does not recognise joins the contact's account."
+        },
+        "codigo-sms": {
+          "pt": "A conta Apple usa dois fatores, com código num aparelho de confiança ou por SMS. Dá pra exigir uma chave de segurança física.",
+          "en": "The Apple Account uses two-factor authentication, with a code on a trusted device or by SMS. You can require a physical security key."
+        },
+        "pix": {
+          "pt": "O iOS 26 manda spam pra uma pasta e desliga os links dessas mensagens. O filtro roda no iPhone.",
+          "en": "iOS 26 moves spam to a folder and turns off links in those messages. The filter runs on the iPhone."
+        },
+        "numero": {
+          "pt": "Dá pra escolher se o iMessage usa seu número ou seu e-mail.",
+          "en": "You can choose whether iMessage uses your number or your email."
+        }
+      },
+      "sources": [
+        {
+          "name": "Apple support: Screen unknown senders in Messages (iOS 26)",
+          "url": "https://support.apple.com/en-us/125068"
+        },
+        {
+          "name": "Apple Newsroom: Apple helps safeguard users from scams and fraud (Oct 2025)",
+          "url": "https://www.apple.com/sg/newsroom/2025/10/apple-helps-safeguard-users-from-scams-and-fraud-while-protecting-personal-data/"
+        },
+        {
+          "name": "Apple support: Contact Key Verification",
+          "url": "https://support.apple.com/118247"
+        },
+        {
+          "name": "Apple support: Two-factor authentication",
+          "url": "https://support.apple.com/122621"
+        },
+        {
+          "name": "Apple support: Security Keys for Apple Account",
+          "url": "https://support.apple.com/en-us/102637"
+        },
+        {
+          "name": "Apple support: Stolen Device Protection",
+          "url": "https://support.apple.com/120340"
+        },
+        {
+          "name": "Apple Security: iMessage with PQ3 (Feb 2024)",
+          "url": "https://security.apple.com/blog/imessage-pq3/"
+        },
+        {
+          "name": "Apple guide: Set up Messages on iPhone",
+          "url": "https://support.apple.com/guide/iphone/set-up-messages-iph3d039b67/ios"
+        },
+        {
+          "name": "MacMagazine: Brasileiros que têm iPhone (Opinion Box, Jul 2025)",
+          "url": "https://macmagazine.com.br/post/2025/07/02/brasileiros-que-tem-iphones-priorizam-processamento-e-camera-ao-trocar-de-aparelho/"
+        }
+      ]
+    },
+    {
+      "id": "rcs",
+      "slug": "rcs",
+      "name": "RCS",
+      "pt": {
+        "title": "Bipe e RCS contra golpe",
+        "lede": "RCS é a mensagem que já vem no celular, no lugar do SMS. No Android, o app é o Google Mensagens. Veja, golpe por golpe, o que cada um faz hoje.",
+        "line": "Já vem no celular. Confere golpe com IA, mas a conta é o seu número.",
+        "on": "No RCS",
+        "ahead": [
+          "Detecção de golpe com IA no celular, ligada por padrão. Cobre golpe de emprego, entrega, falso banco, prêmio e investimento.",
+          "Bloqueia links suspeitos em mensagem de golpe.",
+          "Empresas com selo verificado pelo Google ou por um parceiro."
+        ]
+      },
+      "en": {
+        "title": "Bipe and RCS against scams",
+        "lede": "RCS is the messaging built into the phone, replacing SMS. On Android, the app is Google Messages. Here is what each one does today, scam by scam.",
+        "line": "Built into the phone. Checks for scams with AI, but your number is the account.",
+        "on": "On RCS",
+        "ahead": [
+          "On-device AI scam detection, on by default. It covers job, delivery, fake bank, prize and investment scams.",
+          "Blocks suspicious links in scam messages.",
+          "Businesses with a badge verified by Google or a partner."
+        ]
+      },
+      "cells": {
+        "falso-parente": {
+          "pt": "O Google Mensagens confere golpe com IA no próprio celular, ligado por padrão, em mensagens de quem não está nos seus contatos. Tem português desde fevereiro de 2026, mas o Google não diz em quais países.",
+          "en": "Google Messages checks for scams with AI on the phone, on by default, in messages from people not in your contacts. Portuguese since February 2026, but Google does not say in which countries."
+        },
+        "contato-invadido": {
+          "pt": "Dá pra conferir as chaves de criptografia de um contato com um QR code. A conferência pode cair quando o contato troca de celular ou de chip.",
+          "en": "You can check a contact's encryption keys with a QR code. The check can lapse when the contact gets a new phone or SIM."
+        },
+        "codigo-sms": {
+          "pt": "A conta é o seu número, confirmado por SMS.",
+          "en": "Your number is the account, confirmed by SMS."
+        },
+        "pix": {
+          "pt": "A detecção de golpe cobre emprego, entrega, falso banco, prêmio e investimento, pra quem não está nos seus contatos. Links suspeitos são bloqueados.",
+          "en": "Scam detection covers job, delivery, fake bank, prize and investment scams, for people not in your contacts. Suspicious links are blocked."
+        },
+        "numero": {
+          "pt": "O RCS usa o seu número de telefone como identidade.",
+          "en": "RCS uses your phone number as your identity."
+        }
+      },
+      "sources": [
+        {
+          "name": "Google: New AI-powered scam detection features (Mar 2025)",
+          "url": "https://blog.google/security/new-ai-powered-scam-detection-features/"
+        },
+        {
+          "name": "Google: Strengthening Android's lead in scam protection (Feb 2026)",
+          "url": "https://blog.google/security/staying-one-step-ahead-strengthening-androids-lead-in-scam-protection/"
+        },
+        {
+          "name": "Google: How Android protects you from scams (Oct 2025)",
+          "url": "https://blog.google/security/how-android-protects-you-from-scams/"
+        },
+        {
+          "name": "Google Messages help: Spam protection",
+          "url": "https://support.google.com/messages/answer/9327903"
+        },
+        {
+          "name": "Android help: Key Verifier",
+          "url": "https://support.google.com/android/answer/15669061"
+        },
+        {
+          "name": "Google Messages help: RCS chats",
+          "url": "https://support.google.com/messages/answer/9487020"
+        },
+        {
+          "name": "Google Messages help: Verified business senders",
+          "url": "https://support.google.com/messages/answer/7513219"
         }
       ]
     }

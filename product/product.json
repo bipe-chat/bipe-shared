@@ -1133,6 +1133,139 @@
       }
     }
   ],
+  "icps": [
+    {
+      "id": "privacy",
+      "step": 1,
+      "current": true,
+      "adr": "0058",
+      "name": "Privacy nerds",
+      "who": "People who care how a messenger works: our own circles, developers, open-source and privacy people."
+    },
+    {
+      "id": "family",
+      "step": 2,
+      "current": false,
+      "adr": "0058",
+      "name": "Family protectors",
+      "who": "The family's tech person and the parent who gets the scam message (ADR 0047)."
+    },
+    {
+      "id": "communities",
+      "step": 3,
+      "current": false,
+      "adr": "0058",
+      "name": "Organised communities",
+      "who": "Churches, associations, teams: groups with organisers and many members."
+    },
+    {
+      "id": "national",
+      "step": 4,
+      "current": false,
+      "adr": "0058",
+      "name": "National use",
+      "who": "Everyone in Brazil, often in a shock."
+    }
+  ],
+  "audiences": [
+    {
+      "id": "churches",
+      "icp": "communities",
+      "slug": {
+        "pt": "igrejas",
+        "en": "churches"
+      },
+      "sections": [
+        {
+          "id": "identity",
+          "features": [
+            "verified-badge",
+            "cnpj-badge",
+            "lookalikes",
+            "scam-alerts"
+          ]
+        },
+        {
+          "id": "groups",
+          "features": [
+            "communities",
+            "group-types",
+            "polls"
+          ]
+        },
+        {
+          "id": "members",
+          "features": [
+            "verified-groups",
+            "requests",
+            "handles"
+          ]
+        },
+        {
+          "id": "money",
+          "features": [
+            "pix-charges",
+            "pix-cards",
+            "money-pause"
+          ]
+        }
+      ],
+      "pt": {
+        "name": "Igrejas",
+        "title": "Bipe para igrejas",
+        "headline": "Os grupos da igreja, sem barulho e sem golpe.",
+        "lede": "Célula, pastoral, ministério, coral, grupo de jovens: a igreja vive em grupos. No Bipe, cada grupo só te chama quando é com você, e ninguém se passa pela liderança pra pedir Pix.",
+        "sections": [
+          {
+            "heading": "Ninguém se passa pela liderança",
+            "body": "Golpista copia nome e foto de pastor, padre ou líder pra pedir oferta ou ajuda por Pix. No Bipe, o selo mostra o nome verificado de cada pessoa, e a igreja com CNPJ verificado ganha um selo com o nome que está na Receita."
+          },
+          {
+            "heading": "Cada grupo no seu lugar, os avisos num lugar só",
+            "body": "A comunidade junta os grupos da igreja debaixo de um nome só. Os avisos ficam numa sala onde só quem cuida posta, e cada pessoa entra só nos grupos que quer."
+          },
+          {
+            "heading": "Quem entra no grupo",
+            "body": "Dá pra deixar um grupo só pra quem tem selo verificado. Quem não está nos seus contatos chega como pedido, e ninguém precisa mostrar o número pro grupo todo."
+          },
+          {
+            "heading": "Dízimo e oferta com o nome certo",
+            "body": "A cobrança por Pix mostra o CNPJ da igreja no cartão, e o banco mostra o nome de quem recebe antes de você pagar. O Bipe não cobra taxa sobre a cobrança."
+          }
+        ],
+        "note": "Boa parte desta página ainda está em desenvolvimento. Cada recurso mostra se já está no app.",
+        "cta": "Cuida da comunicação de uma igreja? Fale com a gente.",
+        "ctaSubject": "Bipe para igrejas"
+      },
+      "en": {
+        "name": "Churches",
+        "title": "Bipe for churches",
+        "headline": "Your church's groups, without the noise and without the scams.",
+        "lede": "Small groups, ministries, choirs, youth groups: a church lives in groups. On Bipe, each group only calls you when it is about you, and nobody can pose as a church leader to ask for a Pix.",
+        "sections": [
+          {
+            "heading": "Nobody poses as your leaders",
+            "body": "Scammers copy a pastor's, priest's or leader's name and photo to ask for an offering or for help by Pix. On Bipe, the seal shows each person's verified name, and a church with a verified CNPJ gets a seal with its name from the federal register."
+          },
+          {
+            "heading": "Each group in its place, notices in one place",
+            "body": "A community brings the church's groups together under one name. Notices go to a room where only the organisers post, and each person joins only the groups they want."
+          },
+          {
+            "heading": "Who joins the group",
+            "body": "A group can admit only people with a verified seal. People who aren't in your contacts arrive as a request, and nobody has to show their number to the whole group."
+          },
+          {
+            "heading": "Tithes and offerings with the right name",
+            "body": "A Pix charge shows the church's CNPJ on the card, and your bank shows who receives the money before you pay. Bipe takes no fee on the charge."
+          }
+        ],
+        "note": "Much of this page is still in development. Each feature shows whether it is in the app yet.",
+        "cta": "Do you run communication for a church? Talk to us.",
+        "ctaSubject": "Bipe for churches"
+      }
+    }
+  ],
   "about": {
     "pt": {
       "title": "Por que o Bipe existe",

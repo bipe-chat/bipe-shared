@@ -1,6 +1,6 @@
 // Writes proseio/docs/product.md from product/product.json and product/distribution.json.
 // Usage: node tools/gen-product-doc.mjs [--out <file>]
-import { readFileSync, writeFileSync } from "node:fs";
+import { readdirSync, readFileSync, writeFileSync } from "node:fs";
 import { dirname, join, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
 
@@ -39,6 +39,30 @@ for (const f of product.features) {
     featureSlugs.add(`${l}/${slug}`);
   }
   if (f.pt.points.length !== f.en.points.length) fail(`feature ${f.id}: points pt and en differ`);
+}
+// ICP register (ADR 0058): every ICP cites an ADR file in ../proseio/docs/adr; exactly one step is current.
+const adrDir = join(root, "../proseio/docs/adr");
+const adrFiles = readdirSync(adrDir);
+const icpIds = new Set();
+for (const i of product.icps) {
+  if (!/^[a-z]+$/.test(i.id) || icpIds.has(i.id) || !Number.isInteger(i.step) || !i.name || !i.who) fail(`icp ${i.id}`);
+  if (!adrFiles.some((f) => f.startsWith(`${i.adr}-`))) fail(`icp ${i.id}: ADR ${i.adr} not found in proseio/docs/adr`);
+  icpIds.add(i.id);
+}
+if (product.icps.filter((i) => i.current).length !== 1) fail("icps: exactly one current step");
+// Audience pages (/para/<slug>/): each names a registered ICP and is built from feature pages.
+const audienceSlugs = new Set();
+for (const a of product.audiences) {
+  if (!icpIds.has(a.icp)) fail(`audience ${a.id}: icp ${a.icp} is not in the register (ADR 0058)`);
+  if (!a.sections.length) fail(`audience ${a.id}: no sections`);
+  for (const s of a.sections) for (const id of s.features) if (!featureIds.has(id)) fail(`audience ${a.id}: unknown feature ${id}`);
+  for (const l of ["pt", "en"]) {
+    for (const k of ["name", "title", "headline", "lede", "note", "cta", "ctaSubject"]) if (!a[l]?.[k]) fail(`audience ${a.id}: ${l}.${k}`);
+    if (a[l].sections.length !== a.sections.length || a[l].sections.some((s) => !s.heading || !s.body)) fail(`audience ${a.id}: ${l}.sections`);
+    const slug = a.slug?.[l];
+    if (!/^[a-z0-9-]+$/.test(slug ?? "") || audienceSlugs.has(`${l}/${slug}`)) fail(`audience ${a.id}: slug.${l}`);
+    audienceSlugs.add(`${l}/${slug}`);
+  }
 }
 const tentpoleIds = new Set(product.tentpoles.map((t) => t.id));
 const sided = new Set();
@@ -119,6 +143,22 @@ const lines = [
   "| Feature | Area | iOS | Android | What it does |",
   "|---|---|---|---|---|",
   ...product.features.map((f) => `| ${f.en.name} (\`${f.id}\`) | ${f.area} | ${label[f.status.ios]} | ${label[f.status.android]} | ${f.en.body} |`),
+  "",
+  "## ICPs",
+  "",
+  "Order of audiences: [ADR 0058](adr/0058-icp-ladder.md). A step becomes current only by a new ADR.",
+  "",
+  "| Step | ICP | Who | Current | ADR |",
+  "|---|---|---|---|---|",
+  ...product.icps.map((i) => `| ${i.step} | ${i.name} (\`${i.id}\`) | ${i.who} | ${i.current ? "yes" : ""} | ${i.adr} |`),
+  "",
+  "## Audiences",
+  "",
+  "Pages at `/para/<slug>/` and `/en/for/<slug>/`. Each names an ICP and is built from feature pages.",
+  "",
+  "| Audience | ICP | Page (pt) | Features |",
+  "|---|---|---|---|",
+  ...product.audiences.map((a) => `| ${a.en.name} | ${a.icp} | /para/${a.slug.pt}/ | ${a.sections.flatMap((s) => s.features).join(", ")} |`),
   "",
   "## Comparison",
   "",

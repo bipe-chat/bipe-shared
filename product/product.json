@@ -659,7 +659,7 @@
     }
   },
   "business": {
-    "$comment": "The /empresas/ page. Source: proseio/docs/business-messaging.md (exploration, issue #93). Everything here is a proposal: nothing is decided, built or for sale. Keep that visible on the page.",
+    "$comment": "The /empresas/ page. Source: proseio/docs/business-messaging.md (exploration, issue #93). Everything here is a proposal: nothing is built or for sale. Keep that visible on the page. Decided so far: ADR 0035 (the business decrypts), ADR 0036 (own-domain links), ADR 0037 (flat fee per CNPJ, no Pix fee; categories decided but not published here).",
     "pt": {
       "nav": "Empresas",
       "title": "Fale com seus clientes num lugar onde ninguém se passa por você.",
@@ -679,16 +679,16 @@
           "heading": "Como o Proseio se pagaria",
           "points": [
             "Quem usa o Proseio para conversar nunca paga.",
-            "A empresa paga uma taxa para verificar o CNPJ e reservar o nome.",
-            "Avisos, confirmações e lembretes que a empresa manda têm preço por mensagem.",
-            "Quando o cliente escreve primeiro, a empresa responde sem pagar.",
-            "Em cobranças por Pix de instituições, a instituição paga uma taxa. O cliente nunca paga."
+            "A empresa paga um valor mensal fixo por CNPJ verificado. Ele cobre a verificação, o nome reservado e a API.",
+            "No começo, não tem preço por mensagem.",
+            "O Proseio não cobra taxa sobre Pix."
           ]
         },
         {
           "heading": "Uma API para o sistema da empresa",
           "points": [
-            "A empresa liga o próprio sistema ao Proseio por uma API: manda avisos, recebe respostas e atende pelo programa que já usa.",
+            "A empresa liga o próprio sistema ao Proseio: manda avisos, recebe respostas e atende pelo programa que já usa.",
+            "A conversa é decifrada no sistema da empresa, não nos servidores do Proseio. Empresas menores podem usar um parceiro que roda isso para elas.",
             "A gente quer que seja fácil mudar para quem já usa a API do WhatsApp.",
             "A API ainda não existe."
           ]
@@ -698,15 +698,14 @@
           "points": [
             "A empresa só manda mensagem para quem aceitou receber.",
             "O app mostra quando quem responde é um programa.",
-            "Mensagem de instituição verificada não tem link clicável. Pagamento só pelo Pix dentro do app.",
+            "Link em mensagem de empresa só abre se for do site da própria empresa. Pagamento só pelo Pix dentro do app.",
             "Empresa que recebe muito bloqueio e denúncia passa a poder mandar menos."
           ]
         },
         {
           "heading": "O que ainda está em aberto",
           "points": [
-            "Onde a conversa com a empresa é decifrada: nos servidores do Proseio ou nos da empresa. A gente publica a escolha antes de abrir.",
-            "O preço: por mensagem, por cliente ativo ou um valor fixo por CNPJ.",
+            "O valor da mensalidade.",
             "Quais setores entram primeiro: bancos, serviços públicos, escolas e condomínios, ou lojas."
           ]
         }
@@ -734,16 +733,16 @@
           "heading": "How Proseio would pay for itself",
           "points": [
             "People who use Proseio to chat never pay.",
-            "A company pays a fee to verify its CNPJ and reserve its name.",
-            "Notices, confirmations and reminders the company sends are priced per message.",
-            "When the customer writes first, the company answers for free.",
-            "On Pix charges from institutions, the institution pays a fee. The customer never does."
+            "A company pays a flat monthly fee per verified CNPJ. It covers verification, the reserved name and the API.",
+            "At the start there is no price per message.",
+            "Proseio takes no fee on Pix."
           ]
         },
         {
           "heading": "An API for the company's system",
           "points": [
-            "A company connects its own system to Proseio through an API: it sends notices, receives replies and answers from the software it already uses.",
+            "A company connects its own system to Proseio: it sends notices, receives replies and answers from the software it already uses.",
+            "The chat is decrypted on the company's system, not on Proseio's servers. Smaller companies can use a partner that runs this for them.",
             "We want the move to be easy for companies that already use the WhatsApp API.",
             "The API does not exist yet."
           ]
@@ -753,15 +752,14 @@
           "points": [
             "A company only messages people who agreed to receive messages.",
             "The app shows when a program is answering.",
-            "Messages from verified institutions have no clickable links. Payment only through Pix inside the app.",
+            "A link in a company's message opens only if it points to the company's own site. Payment only through Pix inside the app.",
             "A company that gets many blocks and reports can send less."
           ]
         },
         {
           "heading": "What is still open",
           "points": [
-            "Where a chat with a company is decrypted: on Proseio's servers or on the company's. We publish the choice before opening.",
-            "The price: per message, per active customer, or a flat fee per CNPJ.",
+            "The amount of the monthly fee.",
             "Which sectors come first: banks, public services, schools and condomínios, or shops."
           ]
         }

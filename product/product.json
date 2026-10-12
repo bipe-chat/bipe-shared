@@ -68,9 +68,9 @@
         "title": "Mais difícil de enganar.",
         "summary": "Quando uma mensagem tem cara de golpe, aparece um aviso embaixo dela, com o que fazer. Quem não está nos seus contatos chega como pedido. Em breve, um selo mostra quem é quem, e nome de banco fica só para o banco.",
         "points": [
-          "A verificação roda no seu celular. A mensagem não sai do aparelho para isso.",
+          "A checagem roda no seu celular, e a mensagem não sai dele.",
           "O aviso diz o que fazer: ligar para a pessoa, conferir no app do banco.",
-          "Em breve: selo com o nome verificado, gratuito e opcional. Letras disfarçadas não enganam a comparação de nomes."
+          "Em breve: selo com o nome verificado, gratuito e opcional. Trocar um O por 0 não engana a checagem de nome."
         ],
         "demos": [
           {
@@ -86,11 +86,11 @@
       "en": {
         "name": "Trust",
         "title": "Harder to fool.",
-        "summary": "When a message looks like a scam, a warning appears right under it and tells you what to do. People who are not in your contacts arrive as a request. Soon, a seal shows who is who, and a bank's name is kept for the bank.",
+        "summary": "When a message looks like a scam, a warning shows up right under it and tells you what to do. People who aren't in your contacts arrive as a request. Soon, a seal shows who is who, and a bank's name stays with the bank.",
         "points": [
-          "The check runs on your phone. The message never leaves the device for it.",
+          "The check runs on your phone, so the message never leaves it.",
           "The warning says what to do: call the person, check your bank app.",
-          "Coming soon: a seal with the verified name, free and optional. Disguised letters do not fool the name check."
+          "Coming soon: a seal with the verified name, free and optional. Swapping an O for a 0 won't fool the name check."
         ],
         "demos": [
           {
@@ -179,7 +179,7 @@
       "pt": {
         "name": "Sem anúncio",
         "title": "Sem anúncio. Seus dados não estão à venda.",
-        "summary": "O Proseio é gratuito e continua gratuito. Não tem anúncio em nenhuma tela e ninguém monta um perfil seu para vender anúncio. As conversas ficam em servidores no Brasil, protegidas de ponta a ponta.",
+        "summary": "O Proseio não vive de anúncio, então não tem motivo para juntar dados sobre você. É gratuito e vai continuar assim. As conversas ficam em servidores no Brasil, protegidas de ponta a ponta.",
         "points": [
           "Você nunca paga para usar o Proseio.",
           "Nenhum anúncio, em nenhuma aba. Ninguém compra informação sobre você.",
@@ -191,7 +191,7 @@
       "en": {
         "name": "No ads",
         "title": "No ads. Your data is not for sale.",
-        "summary": "Proseio is free and stays free. There are no ads on any screen, and nobody builds a profile of you to sell ads. Chats live on servers in Brazil, encrypted end to end.",
+        "summary": "Proseio doesn't live on ads, so it has no reason to collect data about you. It's free and it will stay free. Chats live on servers in Brazil, encrypted end to end.",
         "points": [
           "You never pay to use Proseio.",
           "No ads, in any tab. Nobody buys information about you.",
@@ -320,7 +320,7 @@
       },
       "en": {
         "name": "Message requests",
-        "body": "People who are not in your contacts arrive as a request. You accept or ignore it."
+        "body": "People who aren't in your contacts arrive as a request. You accept it or ignore it."
       }
     },
     {
@@ -336,7 +336,7 @@
       },
       "en": {
         "name": "A pause before paying",
-        "body": "On a suspicious money request, copy and pay stay locked for 5 seconds. The pause breaks the scammer's rush."
+        "body": "When a money request looks suspicious, copy and pay stay locked for 5 seconds. The pause breaks the scammer's rush."
       }
     },
     {
@@ -380,11 +380,11 @@
       },
       "pt": {
         "name": "Letras disfarçadas",
-        "body": "Letras de outros alfabetos e números no lugar de letras não enganam a comparação de nomes."
+        "body": "Trocar um O por 0, ou por uma letra parecida de outro alfabeto, não engana a checagem de nome."
       },
       "en": {
         "name": "Disguised letters",
-        "body": "Letters from other alphabets and digits in place of letters do not fool the name check."
+        "body": "Swapping an O for a 0, or for a lookalike letter from another alphabet, won't fool the name check."
       }
     },
     {
@@ -395,12 +395,12 @@
         "android": "planned"
       },
       "pt": {
-        "name": "Confere a \"Mãe\"",
+        "name": "É a Mãe mesmo?",
         "body": "Se o contato salvo como Mãe tem outro nome verificado, o app pergunta se é a mesma pessoa."
       },
       "en": {
-        "name": "Checks \"Mom\"",
-        "body": "If the contact saved as Mom has a different verified name, the app asks whether it is the same person."
+        "name": "Is that really Mom?",
+        "body": "If the contact saved as Mom has a different verified name, the app asks if it's the same person."
       }
     },
     {
@@ -556,11 +556,11 @@
       },
       "pt": {
         "name": "Pedido de Pix",
-        "body": "Um cartão de pedido mostra o nome que o seu banco vai mostrar. Se aparecer outro nome, não pague."
+        "body": "O cartão de pedido traz o nome que o seu banco vai mostrar. Se aparecer outro nome, não pague."
       },
       "en": {
         "name": "Pix requests",
-        "body": "A request card shows the name your bank will show. If another name appears, do not pay."
+        "body": "The request card shows the name your bank will display. If you see another name, don't pay."
       }
     },
     {

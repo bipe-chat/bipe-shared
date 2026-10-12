@@ -1212,6 +1212,116 @@
   ],
   "audiences": [
     {
+      "id": "builders",
+      "icp": "circles",
+      "slug": {
+        "pt": "devs-e-criativos",
+        "en": "builders"
+      },
+      "sections": [
+        {
+          "id": "handle",
+          "features": [
+            "handles",
+            "profile-links",
+            "public-profile"
+          ]
+        },
+        {
+          "id": "groups",
+          "features": [
+            "group-types",
+            "polls",
+            "requests"
+          ]
+        },
+        {
+          "id": "check",
+          "features": [
+            "e2ee",
+            "open-source",
+            "brazil-servers"
+          ]
+        },
+        {
+          "id": "account",
+          "features": [
+            "no-sms",
+            "no-ads",
+            "free"
+          ]
+        },
+        {
+          "id": "build",
+          "features": [
+            "invites"
+          ]
+        }
+      ],
+      "pt": {
+        "name": "Devs e criativos",
+        "title": "Bipe para devs e criativos",
+        "headline": "Seu @ no lugar do número. Grupo que só toca quando é com você.",
+        "lede": "Pra quem escolhe app pelo jeito que ele funciona: protegido de ponta a ponta, sem anúncio, sem código por SMS e com servidores no Brasil. O Bipe está em teste no iPhone, e cada retorno muda o app.",
+        "sections": [
+          {
+            "heading": "Passe o @, não o número",
+            "body": "Freela, cliente, evento, grupo de projeto: você passa o seu @ ou o seu link, e a conversa abre direto no app. Seu número fica com você."
+          },
+          {
+            "heading": "Grupo de trabalho que não te interrompe",
+            "body": "Grupo novo só toca quando alguém te marca, responde você ou abre uma enquete. Quando você volta, o que era pra você aparece primeiro. E quem não está nos seus contatos chega como pedido."
+          },
+          {
+            "heading": "Dá pra conferir",
+            "body": "A criptografia é a do Matrix, um padrão aberto. O código do app, do servidor e das regras de golpe vai ser público, com licença livre. Os servidores ficam no Brasil, numa nuvem de empresa brasileira."
+          },
+          {
+            "heading": "Conta sem SMS e sem anúncio",
+            "body": "Você não entra por código de SMS, então quem clona seu chip não leva sua conta. Não tem anúncio em tela nenhuma e não tem plano pago."
+          },
+          {
+            "heading": "Teste e ajude a construir",
+            "body": "Hoje o Bipe abre por convite, no iPhone. Traga seu grupo, conte o que quebrou e o que faltou. Quando o código abrir, dá pra mandar código também."
+          }
+        ],
+        "note": "No iPhone, o Bipe está em teste pelo TestFlight. No Android, ainda não tem. Cada recurso mostra em que pé está.",
+        "cta": "Quer testar com o seu grupo e dar retorno? Fale com a gente.",
+        "ctaSubject": "Bipe para devs e criativos"
+      },
+      "en": {
+        "name": "Builders",
+        "title": "Bipe for builders",
+        "headline": "Your @ instead of your number. Groups that only ring when it's about you.",
+        "lede": "For people who pick an app by how it works: end-to-end encrypted, no ads, no SMS codes and servers in Brazil. Bipe is in testing on iPhone, and every piece of feedback changes the app.",
+        "sections": [
+          {
+            "heading": "Share your @, not your number",
+            "body": "Freelance work, clients, events, project groups: you share your @ or your link, and the chat opens straight in the app. Your number stays with you."
+          },
+          {
+            "heading": "Work groups that don't interrupt you",
+            "body": "A new group only rings when someone mentions you, replies to you or starts a poll. When you come back, what was for you comes first. People who aren't in your contacts arrive as a request."
+          },
+          {
+            "heading": "You can check it",
+            "body": "The encryption is Matrix, an open standard. The code of the app, the server and the scam rules will be public under a free licence. The servers are in Brazil, in a Brazilian company's cloud."
+          },
+          {
+            "heading": "An account with no SMS and no ads",
+            "body": "You don't sign in with an SMS code, so whoever clones your SIM doesn't get your account. No ads on any screen and no paid plan."
+          },
+          {
+            "heading": "Test it and help build it",
+            "body": "Bipe opens by invite for now, on iPhone. Bring your group, tell us what broke and what was missing. When the code opens, you can send code too."
+          }
+        ],
+        "note": "On iPhone, Bipe is in testing through TestFlight. There is no Android version yet. Each feature shows where it stands.",
+        "cta": "Want to test it with your group and give feedback? Talk to us.",
+        "ctaSubject": "Bipe for builders"
+      }
+    },
+    {
       "id": "churches",
       "icp": "communities",
       "slug": {

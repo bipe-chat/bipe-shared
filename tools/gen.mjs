@@ -5,7 +5,7 @@
 import { copyFileSync, existsSync, mkdirSync, readdirSync, writeFileSync } from "node:fs";
 import { dirname, join, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
-import { loadRegistries } from "./lib/registries.mjs";
+import { hostHomoglyphs, loadRegistries } from "./lib/registries.mjs";
 
 const root = join(dirname(fileURLToPath(import.meta.url)), "..");
 const args = process.argv.slice(2);
@@ -31,7 +31,7 @@ function swiftRegistries() {
   const reserved = Object.entries(reg.reserved.categories).flatMap(([cat, names]) => names.map((n) => `${swiftString(n)}: .${cat}`));
   const categories = Object.keys(reg.reserved.categories).map((c) => `    case ${c}`).join("\n");
   const patterns = (group) => swiftArray(reg.scam[group].map((p) => `ScamPattern(id: ${swiftString(p.id)}, regex: ${swiftString(p.regex)})`));
-  const homoglyphs = Object.entries(reg.homoglyphs.map).map(([k, v]) => `${swiftString(k)}: ${swiftString(v)}`);
+  const swiftMap = (map) => swiftArray(Object.entries(map).map(([k, v]) => `${swiftString(k)}: ${swiftString(v)}`));
 
   return `${HEADER}
 public enum ReservedNameCategory: String, Sendable {
@@ -51,7 +51,10 @@ public enum ProseioRegistries {
     public static let familyTerms: Set<String> = ${swiftArray(reg.family.terms.map(swiftString))}
 
     /// Character folding applied after lowercasing and diacritic stripping.
-    public static let homoglyphs: [Character: Character] = ${swiftArray(homoglyphs)}
+    public static let homoglyphs: [Character: Character] = ${swiftMap(reg.homoglyphs.map)}
+
+    /// \`homoglyphs\` without ASCII keys outside [0-9a-z], for link hosts. Each key and value is one UTF-16 unit.
+    public static let hostHomoglyphs: [Character: Character] = ${swiftMap(hostHomoglyphs(reg))}
 
     public static let pixKeyPatterns: [ScamPattern] = ${patterns("pixKeyPatterns")}
 
@@ -81,6 +84,16 @@ public enum ProseioRegistries {
     public static let deliveryParcelWords: [String] = ${swiftArray(reg.scam.deliveryParcelWords.map(swiftString))}
     public static let deliveryHoldWords: [String] = ${swiftArray(reg.scam.deliveryHoldWords.map(swiftString))}
     public static let deliveryFeeWords: [String] = ${swiftArray(reg.scam.deliveryFeeWords.map(swiftString))}
+
+    /// Brand names for the "lookalike link" kind, matched in a folded link host without dots and hyphens.
+    public static let lookalikeBrandTokens: [String] = ${swiftArray(reg.scam.lookalikeBrandTokens.map(swiftString))}
+
+    /// Real domains of those brands. A host that is one of them, or a subdomain of one, is not a lookalike.
+    public static let officialDomains: [String] = ${swiftArray(reg.scam.officialDomains.map(swiftString))}
+
+    /// Normalised words for the "bank alert" kind. It needs a link and an entry from each of the two lists.
+    public static let bankAlertSubjectWords: [String] = ${swiftArray(reg.scam.bankAlertSubjectWords.map(swiftString))}
+    public static let bankAlertThreatWords: [String] = ${swiftArray(reg.scam.bankAlertThreatWords.map(swiftString))}
 
     /// Scam warning kind raw values, most actionable first. The first kind whose rule applies wins.
     public static let scamWarningKindPriority: [String] = ${swiftArray(reg.scam.warningKindPriority.map(swiftString))}
@@ -170,7 +183,7 @@ function kotlinRegistries() {
   const categories = Object.keys(reg.reserved.categories).map((c) => `    ${c.toUpperCase()}("${c}"),`).join("\n");
   const patterns = (group) => kotlinList("listOf", reg.scam[group].map((p) => `ScamPattern(id = ${kotlinString(p.id)}, regex = ${kotlinString(p.regex)})`));
   // Keyed by code point: JS folds per code point, and a Kotlin Char is one UTF-16 unit.
-  const homoglyphs = Object.entries(reg.homoglyphs.map).map(([k, v]) => `0x${k.codePointAt(0).toString(16).toUpperCase().padStart(4, "0")} to ${kotlinString(v)}`);
+  const kotlinMap = (map) => kotlinList("mapOf", Object.entries(map).map(([k, v]) => `0x${k.codePointAt(0).toString(16).toUpperCase().padStart(4, "0")} to ${kotlinString(v)}`));
 
   return `${HEADER}
 package ${KOTLIN_PACKAGE}
@@ -189,7 +202,10 @@ object ProseioRegistries {
     val familyTerms: Set<String> = ${kotlinList("setOf", reg.family.terms.map(kotlinString))}
 
     /** Character folding applied after lowercasing and diacritic stripping. Code point to replacement. */
-    val homoglyphs: Map<Int, String> = ${kotlinList("mapOf", homoglyphs)}
+    val homoglyphs: Map<Int, String> = ${kotlinMap(reg.homoglyphs.map)}
+
+    /** [homoglyphs] without ASCII keys outside [0-9a-z], for link hosts. Each key and value is one UTF-16 unit. */
+    val hostHomoglyphs: Map<Int, String> = ${kotlinMap(hostHomoglyphs(reg))}
 
     val pixKeyPatterns: List<ScamPattern> = ${patterns("pixKeyPatterns")}
 
@@ -221,6 +237,16 @@ object ProseioRegistries {
     val deliveryParcelWords: List<String> = ${kotlinList("listOf", reg.scam.deliveryParcelWords.map(kotlinString))}
     val deliveryHoldWords: List<String> = ${kotlinList("listOf", reg.scam.deliveryHoldWords.map(kotlinString))}
     val deliveryFeeWords: List<String> = ${kotlinList("listOf", reg.scam.deliveryFeeWords.map(kotlinString))}
+
+    /** Brand names for the "lookalike link" kind, matched in a folded link host without dots and hyphens. */
+    val lookalikeBrandTokens: List<String> = ${kotlinList("listOf", reg.scam.lookalikeBrandTokens.map(kotlinString))}
+
+    /** Real domains of those brands. A host that is one of them, or a subdomain of one, is not a lookalike. */
+    val officialDomains: List<String> = ${kotlinList("listOf", reg.scam.officialDomains.map(kotlinString))}
+
+    /** Normalised words for the "bank alert" kind. It needs a link and an entry from each of the two lists. */
+    val bankAlertSubjectWords: List<String> = ${kotlinList("listOf", reg.scam.bankAlertSubjectWords.map(kotlinString))}
+    val bankAlertThreatWords: List<String> = ${kotlinList("listOf", reg.scam.bankAlertThreatWords.map(kotlinString))}
 
     /** Scam warning kind ids, most actionable first. The first kind whose rule applies wins. */
     val scamWarningKindPriority: List<String> = ${kotlinList("listOf", reg.scam.warningKindPriority.map(kotlinString))}

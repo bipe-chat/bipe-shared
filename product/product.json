@@ -376,7 +376,7 @@
         "points": [
           "A checagem roda no seu celular. A mensagem não sai dali pra ser conferida.",
           "O aviso diz o que fazer: ligar pra pessoa no número que você já tem, conferir no app do banco se o dinheiro caiu.",
-          "Pega os golpes mais comuns no Brasil: Pix com pressa, chave Pix colada na conversa, boleto, print de comprovante e número novo."
+          "Pega os golpes mais comuns no Brasil: Pix com pressa, chave Pix colada na conversa, boleto, print de comprovante, número novo e link falso de banco, de loja ou do governo."
         ]
       },
       "en": {
@@ -385,7 +385,7 @@
         "points": [
           "The check runs on your phone. The message never leaves it to be checked.",
           "The warning says what to do: call the person on the number you already have, check in your bank app that the money arrived.",
-          "It catches the most common scams in Brazil: a rushed Pix, a Pix key pasted in the chat, a boleto, a receipt screenshot and a new number."
+          "It catches the most common scams in Brazil: a rushed Pix, a Pix key pasted in the chat, a boleto, a receipt screenshot, a new number and a fake link that copies a bank, a store or the government."
         ]
       }
     },

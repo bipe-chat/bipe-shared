@@ -1,0 +1,6 @@
+#!/bin/sh
+# proseio-shared pre-commit (ADR 0031): registries validate, vectors and generated files match, clients match the contract.
+# Enable once per clone: git config core.hooksPath .githooks
+set -e
+node tools/check-contract.mjs
+node tools/check-drift.mjs --against worktree

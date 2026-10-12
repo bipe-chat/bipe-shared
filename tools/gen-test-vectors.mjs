@@ -8,7 +8,9 @@ import { extractInviteCode, handleProblem, handleSkeleton, loadRegistries, norma
 
 const root = join(dirname(fileURLToPath(import.meta.url)), "..");
 const reg = loadRegistries(root);
-const out = join(root, "test-vectors");
+// --out <dir> writes elsewhere (tools/check-drift.mjs compares the result with test-vectors/).
+const outIndex = process.argv.indexOf("--out");
+const out = outIndex >= 0 ? process.argv[outIndex + 1] : join(root, "test-vectors");
 mkdirSync(out, { recursive: true });
 const write = (name, data) => writeFileSync(join(out, name), JSON.stringify(data, null, 2) + "\n");
 
@@ -127,7 +129,7 @@ write("handles.json", {
 // --- Invite codes ------------------------------------------------------------
 // Hand-written cases (test-vectors/invite-codes.json). Check them against the reference; fail closed.
 
-const inviteCases = JSON.parse(readFileSync(join(out, "invite-codes.json"), "utf8")).vectors;
+const inviteCases = JSON.parse(readFileSync(join(root, "test-vectors", "invite-codes.json"), "utf8")).vectors;
 for (const { input, code } of inviteCases) {
   const got = extractInviteCode(input, reg);
   if (got !== code) throw new Error(`invite-codes.json: ${JSON.stringify(input)} gives ${got}, expected ${code}`);

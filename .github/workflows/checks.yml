@@ -1,0 +1,54 @@
+# ADR 0031: the shared rules, the generated code in every repo and the API clients stay in step.
+# Needs the secret PROSEIO_REPOS_TOKEN: a fine-grained token with read access to contents of
+# proseio, proseio-ios, proseio-android and proseio-api (the repos are private).
+name: Checks
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  schedule:
+    - cron: "0 9 * * *" # daily: catches a sibling repo that drifted on its own
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  lockstep:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          path: proseio-shared
+      - uses: actions/checkout@v4
+        with:
+          repository: proseio/proseio
+          token: ${{ secrets.PROSEIO_REPOS_TOKEN }}
+          path: proseio
+      - uses: actions/checkout@v4
+        with:
+          repository: proseio/proseio-ios
+          token: ${{ secrets.PROSEIO_REPOS_TOKEN }}
+          path: proseio-ios
+          lfs: false
+          submodules: false
+      - uses: actions/checkout@v4
+        with:
+          repository: proseio/proseio-android
+          token: ${{ secrets.PROSEIO_REPOS_TOKEN }}
+          path: proseio-android
+          lfs: false
+          submodules: false
+      - uses: actions/checkout@v4
+        with:
+          repository: proseio/proseio-api
+          token: ${{ secrets.PROSEIO_REPOS_TOKEN }}
+          path: proseio-api
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+      - name: Contract
+        run: node proseio-shared/tools/check-contract.mjs
+      - name: Drift
+        run: node proseio-shared/tools/check-drift.mjs --against head --repos "$GITHUB_WORKSPACE"

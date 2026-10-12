@@ -101,6 +101,7 @@
         "requests",
         "money-pause",
         "verified-badge",
+        "cnpj-badge",
         "reserved-names",
         "lookalikes",
         "family-check"
@@ -270,6 +271,9 @@
       ],
       "features": [
         "group-types",
+        "polls",
+        "communities",
+        "verified-groups",
         "pix-cards",
         "phone-discovery"
       ],
@@ -353,13 +357,27 @@
         "ios": "testing",
         "android": "built"
       },
+      "slug": {
+        "pt": "aviso-de-golpe",
+        "en": "scam-warnings"
+      },
       "pt": {
         "name": "Aviso de golpe",
-        "body": "Aparece um aviso embaixo da mensagem com cara de golpe: Pix com pressa, troca de número, boleto, comprovante."
+        "body": "Aparece um aviso embaixo da mensagem com cara de golpe: Pix com pressa, troca de número, boleto, comprovante.",
+        "points": [
+          "A checagem roda no seu celular. A mensagem não sai dali pra ser conferida.",
+          "O aviso diz o que fazer: ligar pra pessoa no número que você já tem, conferir no app do banco se o dinheiro caiu.",
+          "Pega os golpes mais comuns no Brasil: Pix com pressa, chave Pix colada na conversa, boleto, print de comprovante e número novo."
+        ]
       },
       "en": {
         "name": "Scam warnings",
-        "body": "A warning appears under a message that looks like a scam: a rushed Pix, a new number, a boleto, a receipt."
+        "body": "A warning appears under a message that looks like a scam: a rushed Pix, a new number, a boleto, a receipt.",
+        "points": [
+          "The check runs on your phone. The message never leaves it to be checked.",
+          "The warning says what to do: call the person on the number you already have, check in your bank app that the money arrived.",
+          "It catches the most common scams in Brazil: a rushed Pix, a Pix key pasted in the chat, a boleto, a receipt screenshot and a new number."
+        ]
       }
     },
     {
@@ -369,13 +387,27 @@
         "ios": "testing",
         "android": "built"
       },
+      "slug": {
+        "pt": "pedidos-de-conversa",
+        "en": "message-requests"
+      },
       "pt": {
         "name": "Pedidos de conversa",
-        "body": "Quem não está nos seus contatos chega como pedido. Você aceita ou ignora."
+        "body": "Quem não está nos seus contatos chega como pedido. Você aceita ou ignora.",
+        "points": [
+          "Quem não está nos seus contatos chega como pedido, separado das suas conversas.",
+          "Você vê o pedido antes de abrir a conversa e decide se aceita.",
+          "A regra vale no servidor do Bipe, não só no app. Golpista com outro programa não pula a fila."
+        ]
       },
       "en": {
         "name": "Message requests",
-        "body": "People who aren't in your contacts arrive as a request. You accept it or ignore it."
+        "body": "People who aren't in your contacts arrive as a request. You accept it or ignore it.",
+        "points": [
+          "People who aren't in your contacts arrive as a request, apart from your chats.",
+          "You see the request before the chat opens and decide whether to accept it.",
+          "The rule holds on the Bipe server, not only in the app. A scammer using another program can't skip the line."
+        ]
       }
     },
     {
@@ -385,13 +417,27 @@
         "ios": "planned",
         "android": "planned"
       },
+      "slug": {
+        "pt": "pausa-antes-de-pagar",
+        "en": "pause-before-paying"
+      },
       "pt": {
         "name": "Pausa antes de pagar",
-        "body": "Num pedido de dinheiro suspeito, copiar e pagar ficam travados por 5 segundos. A pausa quebra a pressa do golpe."
+        "body": "Num pedido de dinheiro suspeito, copiar e pagar ficam travados por 5 segundos. A pausa quebra a pressa do golpe.",
+        "points": [
+          "Vale quando um pedido de dinheiro tem cara de golpe.",
+          "Durante a pausa, o aviso diz o que conferir antes de pagar.",
+          "Depois dos 5 segundos, quem decide é você. O Bipe não segura o seu dinheiro."
+        ]
       },
       "en": {
         "name": "A pause before paying",
-        "body": "When a money request looks suspicious, copy and pay stay locked for 5 seconds. The pause breaks the scammer's rush."
+        "body": "When a money request looks suspicious, copy and pay stay locked for 5 seconds. The pause breaks the scammer's rush.",
+        "points": [
+          "It applies when a money request looks like a scam.",
+          "During the pause, the warning says what to check before you pay.",
+          "After 5 seconds, you decide. Bipe never holds your money."
+        ]
       }
     },
     {
@@ -401,13 +447,27 @@
         "ios": "testing",
         "android": "built"
       },
+      "slug": {
+        "pt": "sem-codigo-por-sms",
+        "en": "no-sms-codes"
+      },
       "pt": {
         "name": "Sem código por SMS",
-        "body": "Você entra com e-mail e senha. Quem pega seu chip não pega sua conta."
+        "body": "Você entra com e-mail e senha. Quem pega seu chip não pega sua conta.",
+        "points": [
+          "Golpista rouba conta de WhatsApp pedindo o código do SMS ou clonando o chip. No Bipe não tem código por SMS pra pedir.",
+          "Você entra com e-mail e senha.",
+          "Trocar de chip não muda nada na sua conta."
+        ]
       },
       "en": {
         "name": "No SMS codes",
-        "body": "You sign in with email and a password. Whoever takes your SIM does not get your account."
+        "body": "You sign in with email and a password. Whoever takes your SIM does not get your account.",
+        "points": [
+          "Scammers take WhatsApp accounts by asking for the SMS code or cloning the SIM. Bipe has no SMS code to ask for.",
+          "You sign in with email and a password.",
+          "A new SIM changes nothing on your account."
+        ]
       }
     },
     {
@@ -417,13 +477,59 @@
         "ios": "planned",
         "android": "planned"
       },
+      "slug": {
+        "pt": "selo-verificado",
+        "en": "verified-seal"
+      },
       "pt": {
         "name": "Selo verificado",
-        "body": "Verificação gratuita pelo Pix ou pelo gov.br. O selo vem com o nome verificado."
+        "body": "Verificação gratuita pelo Pix ou pelo gov.br. O selo vem com o nome verificado.",
+        "points": [
+          "Você paga um Pix de R$0,01 da sua própria conta. O banco já conferiu seu nome, então o selo vem com o nome que o banco tem.",
+          "Outro caminho em estudo: assinar com a sua conta gov.br.",
+          "O Bipe guarda só o resultado. O CPF não fica salvo, e um CPF verifica uma conta só.",
+          "É opcional. Conta sem selo funciona normal."
+        ]
       },
       "en": {
         "name": "Verified seal",
-        "body": "Free verification through Pix or gov.br. The seal comes with the verified name."
+        "body": "Free verification through Pix or gov.br. The seal comes with the verified name.",
+        "points": [
+          "You pay a R$0.01 Pix from your own account. Your bank already checked your name, so the seal carries the name your bank has.",
+          "Another route under study: sign with your gov.br account.",
+          "Bipe keeps only the result. Your CPF is not stored, and one CPF verifies one account only.",
+          "It is optional. An account without a seal works as normal."
+        ]
+      }
+    },
+    {
+      "id": "cnpj-badge",
+      "area": "identity",
+      "status": {
+        "ios": "planned",
+        "android": "planned"
+      },
+      "slug": {
+        "pt": "selo-de-cnpj",
+        "en": "business-seal"
+      },
+      "pt": {
+        "name": "Selo de CNPJ",
+        "body": "Empresa, escola ou associação prova o CNPJ e ganha um selo com o nome que está na Receita.",
+        "points": [
+          "O CNPJ precisa estar ativo na Receita Federal.",
+          "A prova é uma assinatura com o certificado e-CNPJ da instituição.",
+          "Com o selo, um nome reservado pode ficar só pra ela."
+        ]
+      },
+      "en": {
+        "name": "Business seal",
+        "body": "A company, school or association proves its CNPJ and gets a seal with the name on the federal register.",
+        "points": [
+          "The CNPJ must be active at Receita Federal.",
+          "The proof is a signature with the institution's e-CNPJ certificate.",
+          "With the seal, a reserved name can belong to it alone."
+        ]
       }
     },
     {
@@ -433,13 +539,27 @@
         "ios": "planned",
         "android": "planned"
       },
+      "slug": {
+        "pt": "nomes-reservados",
+        "en": "reserved-names"
+      },
       "pt": {
         "name": "Nomes reservados",
-        "body": "Nome de banco, de órgão público e do Bipe fica só pra conta verificada da instituição."
+        "body": "Nome de banco, de órgão público e do Bipe fica só pra conta verificada da instituição.",
+        "points": [
+          "A lista tem bancos, órgãos públicos e o próprio Bipe.",
+          "A checagem compara a forma simplificada do nome, sem acento e sem letra disfarçada.",
+          "Só a conta com o CNPJ certo e o selo usa o nome."
+        ]
       },
       "en": {
         "name": "Reserved names",
-        "body": "Bank, government and Bipe names are kept for the institution's verified account."
+        "body": "Bank, government and Bipe names are kept for the institution's verified account.",
+        "points": [
+          "The list holds banks, public bodies and Bipe itself.",
+          "The check compares the simplified form of the name, with no accents and no disguised letters.",
+          "Only the account with the right CNPJ and the seal can use the name."
+        ]
       }
     },
     {
@@ -449,13 +569,27 @@
         "ios": "planned",
         "android": "planned"
       },
+      "slug": {
+        "pt": "letras-disfarcadas",
+        "en": "lookalike-letters"
+      },
       "pt": {
         "name": "Letras disfarçadas",
-        "body": "Trocar um O por 0, ou por uma letra parecida de outro alfabeto, não engana a checagem de nome."
+        "body": "Trocar um O por 0, ou por uma letra parecida de outro alfabeto, não engana a checagem de nome.",
+        "points": [
+          "O app simplifica o nome antes de comparar: tira acento, troca número por letra e troca letra de outro alfabeto pela nossa.",
+          "Assim, @itau, @ltau e @1tau contam como o mesmo nome.",
+          "Vale pro nome de usuário e pro nome que aparece na conversa."
+        ]
       },
       "en": {
         "name": "Disguised letters",
-        "body": "Swapping an O for a 0, or for a lookalike letter from another alphabet, won't fool the name check."
+        "body": "Swapping an O for a 0, or for a lookalike letter from another alphabet, won't fool the name check.",
+        "points": [
+          "The app simplifies a name before it compares: it drops accents, turns digits into letters and turns letters from other alphabets into ours.",
+          "So @itau, @ltau and @1tau count as the same name.",
+          "It applies to usernames and to the name shown in the chat."
+        ]
       }
     },
     {
@@ -465,13 +599,27 @@
         "ios": "planned",
         "android": "planned"
       },
+      "slug": {
+        "pt": "e-a-mae-mesmo",
+        "en": "is-that-really-mom"
+      },
       "pt": {
         "name": "É a Mãe mesmo?",
-        "body": "Se o contato salvo como Mãe tem outro nome verificado, o app pergunta se é a mesma pessoa."
+        "body": "Se o contato salvo como Mãe tem outro nome verificado, o app pergunta se é a mesma pessoa.",
+        "points": [
+          "Funciona com contato salvo como mãe, pai, filho, vó e outros nomes de família.",
+          "Se o nome verificado não bate, o app pergunta uma vez se é a mesma pessoa. A resposta fica só no seu celular.",
+          "Se a conta troca de nome verificado, a pergunta volta."
+        ]
       },
       "en": {
         "name": "Is that really Mom?",
-        "body": "If the contact saved as Mom has a different verified name, the app asks if it's the same person."
+        "body": "If the contact saved as Mom has a different verified name, the app asks if it's the same person.",
+        "points": [
+          "It works with contacts saved as mom, dad, son, grandma and other family names.",
+          "If the verified name doesn't match, the app asks once whether it is the same person. The answer stays on your phone.",
+          "If the account's verified name changes, the question comes back."
+        ]
       }
     },
     {
@@ -481,13 +629,27 @@
         "ios": "testing",
         "android": "built"
       },
+      "slug": {
+        "pt": "nome-de-usuario",
+        "en": "usernames"
+      },
       "pt": {
         "name": "Nome de usuário",
-        "body": "Converse pelo @, sem passar o seu número."
+        "body": "Converse pelo @, sem passar o seu número.",
+        "points": [
+          "Tem de 3 a 30 caracteres: letras, números, ponto e sublinhado.",
+          "Não tem lista nem busca. Só te acha quem sabe o seu @ exato ou tem o seu link.",
+          "Dá pra trocar a cada 30 dias. O @ que você largou fica guardado por 90 dias, pra ninguém pegar e se passar por você."
+        ]
       },
       "en": {
         "name": "Usernames",
-        "body": "Chat by @, without giving out your number."
+        "body": "Chat by @, without giving out your number.",
+        "points": [
+          "3 to 30 characters: letters, digits, dot and underscore.",
+          "There is no list and no search. Only people who know your exact @ or have your link can find you.",
+          "You can change it every 30 days. A handle you drop is held for 90 days, so nobody can take it and pose as you."
+        ]
       }
     },
     {
@@ -497,13 +659,27 @@
         "ios": "testing",
         "android": "built"
       },
+      "slug": {
+        "pt": "link-e-qr-code",
+        "en": "link-and-qr-code"
+      },
       "pt": {
         "name": "Link e QR code",
-        "body": "proseio.com.br/@você abre a conversa direto no app."
+        "body": "proseio.com.br/@você abre a conversa direto no app.",
+        "points": [
+          "Com o app instalado, o link abre direto na conversa.",
+          "O QR code faz o mesmo: a pessoa aponta a câmera e fala com você.",
+          "Seu número não aparece no link nem no QR code."
+        ]
       },
       "en": {
         "name": "Link and QR code",
-        "body": "proseio.com.br/@you opens a chat in the app."
+        "body": "proseio.com.br/@you opens a chat in the app.",
+        "points": [
+          "With the app installed, the link opens the chat directly.",
+          "The QR code does the same: the person points the camera and talks to you.",
+          "Your number does not show in the link or in the QR code."
+        ]
       }
     },
     {
@@ -513,13 +689,27 @@
         "ios": "built",
         "android": "built"
       },
+      "slug": {
+        "pt": "perfil-publico",
+        "en": "public-profile"
+      },
       "pt": {
         "name": "Perfil público",
-        "body": "Se quiser, seu link mostra nome, foto e bio. Você liga e desliga. Ninguém acha seu perfil por busca."
+        "body": "Se quiser, seu link mostra nome, foto e bio. Você liga e desliga. Ninguém acha seu perfil por busca.",
+        "points": [
+          "Vem desligado. Você liga quando quiser.",
+          "Mostra só nome, foto e bio. Seu número nunca aparece.",
+          "Não aparece em busca nenhuma. Só vê quem tem o seu link."
+        ]
       },
       "en": {
         "name": "Public profile",
-        "body": "If you want, your link shows your name, photo and bio. You turn it on and off. Nobody finds your profile by search."
+        "body": "If you want, your link shows your name, photo and bio. You turn it on and off. Nobody finds your profile by search.",
+        "points": [
+          "It starts off. You turn it on when you want.",
+          "It shows only your name, photo and bio. Your number never shows.",
+          "It shows up in no search. Only people with your link see it."
+        ]
       }
     },
     {
@@ -529,13 +719,27 @@
         "ios": "testing",
         "android": "built"
       },
+      "slug": {
+        "pt": "convites",
+        "en": "invites"
+      },
       "pt": {
         "name": "Convites",
-        "body": "Mande um link de convite e traga alguém pro Bipe."
+        "body": "Mande um link de convite e traga alguém pro Bipe.",
+        "points": [
+          "Cada convite vale pra uma pessoa só.",
+          "Quem entra pelo seu convite chega direto na sua conversa, sem passar por pedido.",
+          "Hoje o Bipe abre por convite, pra crescer no ritmo que dá pra cuidar bem de cada conta."
+        ]
       },
       "en": {
         "name": "Invites",
-        "body": "Send an invite link to bring someone to Bipe."
+        "body": "Send an invite link to bring someone to Bipe.",
+        "points": [
+          "Each invite works for one person only.",
+          "Someone who joins with your invite lands straight in your chat, with no request step.",
+          "Bipe opens by invite for now, so it grows at a pace where every account gets proper care."
+        ]
       }
     },
     {
@@ -545,13 +749,27 @@
         "ios": "planned",
         "android": "planned"
       },
+      "slug": {
+        "pt": "ache-seus-contatos",
+        "en": "find-your-contacts"
+      },
       "pt": {
         "name": "Ache seus contatos",
-        "body": "Quem você já conhece aparece no Bipe desde o primeiro dia, se essa pessoa quiser."
+        "body": "Quem você já conhece aparece no Bipe desde o primeiro dia, se essa pessoa quiser.",
+        "points": [
+          "Você escolhe se quer ser encontrado pelo número.",
+          "Quem já tem seu número na agenda só fica sabendo que você está no Bipe. Seu número não aparece pra mais ninguém.",
+          "O servidor não guarda o número como texto, só uma versão embaralhada que serve pra comparar."
+        ]
       },
       "en": {
         "name": "Find your contacts",
-        "body": "People you already know show up on Bipe from day one, if they choose to."
+        "body": "People you already know show up on Bipe from day one, if they choose to.",
+        "points": [
+          "You choose whether people can find you by your number.",
+          "People who already have your number only learn that you are on Bipe. Nobody else sees your number.",
+          "The server never stores the number as text, only a scrambled form used for matching."
+        ]
       }
     },
     {
@@ -561,13 +779,27 @@
         "ios": "testing",
         "android": "built"
       },
+      "slug": {
+        "pt": "ponta-a-ponta",
+        "en": "end-to-end"
+      },
       "pt": {
         "name": "Ponta a ponta",
-        "body": "Toda conversa nova é protegida de ponta a ponta."
+        "body": "Toda conversa nova é protegida de ponta a ponta.",
+        "points": [
+          "Só quem está na conversa lê as mensagens. O Bipe não lê.",
+          "Vale pra conversa a dois e pra grupo.",
+          "Usa a criptografia do Matrix, um padrão aberto que qualquer pessoa pode conferir."
+        ]
       },
       "en": {
         "name": "End to end",
-        "body": "Every new chat is encrypted end to end."
+        "body": "Every new chat is encrypted end to end.",
+        "points": [
+          "Only the people in the chat can read the messages. Bipe can't.",
+          "It applies to one-to-one chats and to groups.",
+          "It uses Matrix encryption, an open standard anyone can check."
+        ]
       }
     },
     {
@@ -577,13 +809,27 @@
         "ios": "policy",
         "android": "policy"
       },
+      "slug": {
+        "pt": "sem-anuncio",
+        "en": "no-ads"
+      },
       "pt": {
         "name": "Sem anúncio",
-        "body": "Nenhum anúncio em nenhuma tela. Seus dados não estão à venda."
+        "body": "Nenhum anúncio em nenhuma tela. Seus dados não estão à venda.",
+        "points": [
+          "Não tem anúncio na conversa, nos grupos nem em aba nenhuma.",
+          "O Bipe não monta perfil seu pra vender anúncio.",
+          "Ninguém compra acesso a você aqui."
+        ]
       },
       "en": {
         "name": "No ads",
-        "body": "No ads on any screen. Your data is not for sale."
+        "body": "No ads on any screen. Your data is not for sale.",
+        "points": [
+          "No ads in chats, in groups or in any tab.",
+          "Bipe builds no profile of you to sell ads.",
+          "Nobody buys access to you here."
+        ]
       }
     },
     {
@@ -593,13 +839,27 @@
         "ios": "policy",
         "android": "policy"
       },
+      "slug": {
+        "pt": "gratuito",
+        "en": "free"
+      },
       "pt": {
         "name": "Gratuito",
-        "body": "Você nunca paga pra usar o Bipe."
+        "body": "Você nunca paga pra usar o Bipe.",
+        "points": [
+          "Não tem plano pago nem recurso só pra quem paga.",
+          "O selo verificado também é gratuito. Só tem o Pix de R$0,01 que prova que a conta é sua.",
+          "Também não tem anúncio: o Bipe não ganha dinheiro com seus dados."
+        ]
       },
       "en": {
         "name": "Free",
-        "body": "You never pay to use Bipe."
+        "body": "You never pay to use Bipe.",
+        "points": [
+          "No paid plan and no feature only for paying users.",
+          "The verified seal is free too. The only cost is the R$0.01 Pix that proves the account is yours.",
+          "No ads either: Bipe makes no money from your data."
+        ]
       }
     },
     {
@@ -609,13 +869,27 @@
         "ios": "policy",
         "android": "policy"
       },
+      "slug": {
+        "pt": "servidor-no-brasil",
+        "en": "servers-in-brazil"
+      },
       "pt": {
         "name": "Servidor no Brasil",
-        "body": "As conversas ficam em servidores no Brasil, de empresas brasileiras."
+        "body": "As conversas ficam em servidores no Brasil, de empresas brasileiras.",
+        "points": [
+          "Os servidores ficam no Brasil, numa nuvem de empresa brasileira.",
+          "Vale a lei brasileira, com a LGPD.",
+          "Quem responde pelo Bipe atende em português, aqui no Brasil."
+        ]
       },
       "en": {
         "name": "Servers in Brazil",
-        "body": "Chats live on servers in Brazil, run by Brazilian companies."
+        "body": "Chats live on servers in Brazil, run by Brazilian companies.",
+        "points": [
+          "The servers are in Brazil, in a Brazilian company's cloud.",
+          "Brazilian law applies, including the LGPD.",
+          "The people responsible for Bipe answer in Portuguese, here in Brazil."
+        ]
       }
     },
     {
@@ -625,13 +899,27 @@
         "ios": "planned",
         "android": "planned"
       },
+      "slug": {
+        "pt": "codigo-aberto",
+        "en": "open-source"
+      },
       "pt": {
         "name": "Código aberto",
-        "body": "O código vai ser público em breve, pra qualquer pessoa conferir."
+        "body": "O código vai ser público em breve, pra qualquer pessoa conferir.",
+        "points": [
+          "O código dos apps, do servidor e das regras de golpe vai ser público.",
+          "Qualquer pessoa pode conferir que o app faz o que diz.",
+          "A licença é livre: dá pra estudar, mudar e rodar o seu."
+        ]
       },
       "en": {
         "name": "Open source",
-        "body": "The code goes public soon, so anyone can check it."
+        "body": "The code goes public soon, so anyone can check it.",
+        "points": [
+          "The code of the apps, the server and the scam rules will be public.",
+          "Anyone can check that the app does what it says.",
+          "The licence is free: you can study it, change it and run your own."
+        ]
       }
     },
     {
@@ -641,13 +929,57 @@
         "ios": "planned",
         "android": "planned"
       },
+      "slug": {
+        "pt": "pedido-de-pix",
+        "en": "pix-requests"
+      },
       "pt": {
         "name": "Pedido de Pix",
-        "body": "O cartão de pedido traz o nome que o seu banco vai mostrar. Se aparecer outro nome, não pague."
+        "body": "O cartão de pedido traz o nome que o seu banco vai mostrar. Se aparecer outro nome, não pague.",
+        "points": [
+          "Só conta verificada manda pedido de Pix.",
+          "O cartão traz o nome verificado de quem pede e o valor.",
+          "Você toca no cartão, o código vai pro app do seu banco, e o banco mostra o nome de quem recebe. Se não for o mesmo nome, não pague."
+        ]
       },
       "en": {
         "name": "Pix requests",
-        "body": "The request card shows the name your bank will display. If you see another name, don't pay."
+        "body": "The request card shows the name your bank will display. If you see another name, don't pay.",
+        "points": [
+          "Only verified accounts can send a Pix request.",
+          "The card shows the requester's verified name and the amount.",
+          "You tap the card, the code goes to your bank app, and the bank shows who receives the money. If the name is different, don't pay."
+        ]
+      }
+    },
+    {
+      "id": "pix-charges",
+      "area": "payments",
+      "status": {
+        "ios": "planned",
+        "android": "planned"
+      },
+      "slug": {
+        "pt": "cobranca-com-cnpj",
+        "en": "business-pix-charges"
+      },
+      "pt": {
+        "name": "Cobrança com CNPJ",
+        "body": "Uma instituição verificada cobra pelo Pix dentro da conversa. O cartão mostra o CNPJ que recebe e muda pra pago quando o banco confirma.",
+        "points": [
+          "Só conta com selo de CNPJ cria cobrança.",
+          "O cartão não tem link. Você paga só pelo Pix, no app do seu banco.",
+          "O Bipe não cobra taxa sobre a cobrança."
+        ]
+      },
+      "en": {
+        "name": "Business Pix charges",
+        "body": "A verified institution charges by Pix inside the chat. The card shows the CNPJ that receives the money and turns to paid when the bank confirms.",
+        "points": [
+          "Only an account with a business seal can create a charge.",
+          "The card has no link. You pay only by Pix, in your bank app.",
+          "Bipe takes no fee on the charge."
+        ]
       }
     },
     {
@@ -657,13 +989,27 @@
         "ios": "planned",
         "android": "planned"
       },
+      "slug": {
+        "pt": "stickers",
+        "en": "stickers"
+      },
       "pt": {
         "name": "Stickers",
-        "body": "Mande stickers, transforme uma foto em sticker e traga seus pacotes."
+        "body": "Mande stickers, transforme uma foto em sticker e traga seus pacotes.",
+        "points": [
+          "Faça um sticker de uma foto direto no app.",
+          "Traga os pacotes que você já usa em outros apps.",
+          "Funciona em conversa a dois e em grupo."
+        ]
       },
       "en": {
         "name": "Stickers",
-        "body": "Send stickers, turn a photo into a sticker and bring your packs."
+        "body": "Send stickers, turn a photo into a sticker and bring your packs.",
+        "points": [
+          "Make a sticker from a photo right in the app.",
+          "Bring the packs you already use in other apps.",
+          "Works in one-to-one chats and in groups."
+        ]
       }
     },
     {
@@ -673,13 +1019,117 @@
         "ios": "built",
         "android": "built"
       },
+      "slug": {
+        "pt": "grupos-sem-barulho",
+        "en": "quiet-groups"
+      },
       "pt": {
         "name": "Grupos sem barulho",
-        "body": "Só toca quando é com você. Na volta, aparece primeiro quem te marcou ou respondeu e as enquetes que faltam você votar."
+        "body": "Só toca quando é com você. Na volta, aparece primeiro quem te marcou ou respondeu e as enquetes que faltam você votar.",
+        "points": [
+          "Grupo novo só toca quando alguém te marca, responde você ou abre uma enquete.",
+          "Quando você volta, um bloco no topo mostra o que você perdeu: quem te marcou, respostas, enquetes e mensagens fixadas.",
+          "Tudo isso roda no seu celular. O servidor não lê o grupo."
+        ]
       },
       "en": {
         "name": "Quiet groups",
-        "body": "It only rings when it's about you. When you come back, mentions, replies and polls waiting on your vote come first."
+        "body": "It only rings when it's about you. When you come back, mentions, replies and polls waiting on your vote come first.",
+        "points": [
+          "A new group only rings when someone mentions you, replies to you or starts a poll.",
+          "When you come back, a block at the top shows what you missed: mentions, replies, polls and pinned messages.",
+          "All of this runs on your phone. The server can't read the group."
+        ]
+      }
+    },
+    {
+      "id": "polls",
+      "area": "community",
+      "status": {
+        "ios": "testing",
+        "android": "built"
+      },
+      "slug": {
+        "pt": "enquetes",
+        "en": "polls"
+      },
+      "pt": {
+        "name": "Enquetes",
+        "body": "Pergunte pro grupo e cada um vota com um toque. Bom pra marcar o dia do encontro ou decidir quem leva o quê.",
+        "points": [
+          "Todo mundo do grupo vê o resultado.",
+          "Quem criou a enquete encerra quando quiser.",
+          "Protegida de ponta a ponta, como o resto do grupo."
+        ]
+      },
+      "en": {
+        "name": "Polls",
+        "body": "Ask the group and everyone votes with one tap. Good for picking a day to meet or deciding who brings what.",
+        "points": [
+          "Everyone in the group sees the result.",
+          "The person who started the poll closes it when they want.",
+          "End-to-end encrypted, like the rest of the group."
+        ]
+      }
+    },
+    {
+      "id": "communities",
+      "area": "community",
+      "status": {
+        "ios": "planned",
+        "android": "planned"
+      },
+      "slug": {
+        "pt": "comunidades",
+        "en": "communities"
+      },
+      "pt": {
+        "name": "Comunidades",
+        "body": "Vários grupos debaixo de um nome só, com uma sala de avisos onde só quem cuida posta. Cada pessoa entra só nos grupos que quer.",
+        "points": [
+          "Bom pra quem tem muita gente e muitos assuntos: escola, time, associação, igreja.",
+          "Os avisos ficam fora da conversa, então ninguém perde o recado no meio das mensagens.",
+          "Um grupo que já existe pode entrar na comunidade depois."
+        ]
+      },
+      "en": {
+        "name": "Communities",
+        "body": "Many groups under one name, with a notices room where only the organisers post. Each person joins only the groups they want.",
+        "points": [
+          "Good for many people with many topics: a school, a team, an association, a church.",
+          "Notices stay out of the chat, so nobody misses them among the messages.",
+          "A group that already exists can join the community later."
+        ]
+      }
+    },
+    {
+      "id": "verified-groups",
+      "area": "community",
+      "status": {
+        "ios": "planned",
+        "android": "planned"
+      },
+      "slug": {
+        "pt": "grupo-so-com-verificados",
+        "en": "verified-only-groups"
+      },
+      "pt": {
+        "name": "Grupo só com verificados",
+        "body": "O grupo pode aceitar só quem tem selo verificado. Quem pede pra entrar sem selo recebe um aviso e não entra.",
+        "points": [
+          "Quem quer entrar pede, e quem cuida do grupo aprova.",
+          "O pedido chega pra quem cuida já marcado como verificado.",
+          "O Bipe confere o selo sem ler nada do grupo."
+        ]
+      },
+      "en": {
+        "name": "Verified-only groups",
+        "body": "A group can admit only people with a verified seal. Someone without a seal who asks to join gets a notice and stays out.",
+        "points": [
+          "People ask to join, and the organisers approve.",
+          "The request reaches the organisers already marked as verified.",
+          "Bipe checks the seal without reading anything in the group."
+        ]
       }
     }
   ],
@@ -735,8 +1185,12 @@
     "/identidade/": "/confianca/",
     "/en/scam-warnings/": "/en/trust/",
     "/en/identity/": "/en/trust/",
-    "/bipe-e-whatsapp/": "/comparar/whatsapp/",
-    "/en/bipe-and-whatsapp/": "/en/compare/whatsapp/"
+    "/bipe-e-whatsapp/": "/compare/whatsapp/",
+    "/en/bipe-and-whatsapp/": "/en/compare/whatsapp/",
+    "/comparar/": "/compare/",
+    "/comparar/whatsapp/": "/compare/whatsapp/",
+    "/comparar/signal/": "/compare/signal/",
+    "/comparar/telegram/": "/compare/telegram/"
   },
   "origin": {
     "pt": {

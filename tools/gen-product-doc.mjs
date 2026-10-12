@@ -26,10 +26,19 @@ for (const a of ht.arms) {
 }
 const featureIds = new Set(product.features.map((f) => f.id));
 const areaIds = new Set(product.areas.map((a) => a.id));
+// Every feature has its own page on the site (/recursos/<slug>/): a slug per language and points that say how it works.
+const featureSlugs = new Set();
 for (const f of product.features) {
   if (!areaIds.has(f.area)) fail(`feature ${f.id}: unknown area ${f.area}`);
   for (const p of ["ios", "android"]) if (!STATUSES.includes(f.status[p])) fail(`feature ${f.id}: status.${p}`);
-  for (const l of ["pt", "en"]) if (!f[l]?.name || !f[l]?.body) fail(`feature ${f.id}: ${l} copy`);
+  for (const l of ["pt", "en"]) {
+    if (!f[l]?.name || !f[l]?.body) fail(`feature ${f.id}: ${l} copy`);
+    if (!f[l].points?.length || f[l].points.some((x) => !x)) fail(`feature ${f.id}: ${l}.points`);
+    const slug = f.slug?.[l];
+    if (!/^[a-z0-9-]+$/.test(slug ?? "") || featureSlugs.has(`${l}/${slug}`)) fail(`feature ${f.id}: slug.${l}`);
+    featureSlugs.add(`${l}/${slug}`);
+  }
+  if (f.pt.points.length !== f.en.points.length) fail(`feature ${f.id}: points pt and en differ`);
 }
 const tentpoleIds = new Set(product.tentpoles.map((t) => t.id));
 const sided = new Set();

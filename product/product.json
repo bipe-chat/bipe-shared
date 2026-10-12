@@ -94,7 +94,8 @@
       "demos": [
         "scam",
         "identity",
-        "levels"
+        "levels",
+        "pix"
       ],
       "features": [
         "scam-alerts",
@@ -133,6 +134,10 @@
           {
             "title": "Quem é quem",
             "caption": "Simulação com pessoas de exemplo. Os avisos usam os textos do app. A verificação por Pix e gov.br ainda não está no app."
+          },
+          {
+            "title": "Pedido de Pix com o nome certo",
+            "caption": "Em breve no app. O cartão segue as regras já decididas. O visual ainda é rascunho."
           }
         ]
       },
@@ -157,6 +162,10 @@
           {
             "title": "Who is who",
             "caption": "Simulation with sample people. The warnings use the app's own text. Pix and gov.br verification are not in the app yet."
+          },
+          {
+            "title": "A Pix request with the right name",
+            "caption": "Coming to the app. The card follows the rules already decided. The look is still a draft."
           }
         ]
       }

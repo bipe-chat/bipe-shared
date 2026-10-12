@@ -17,8 +17,8 @@
     "tableTitle": "Resumo",
     "threatCol": "Risco",
     "levels": {
-      "on": "Ligado por padrão",
-      "setting": "Precisa ligar",
+      "on": "Automático",
+      "setting": "Opcional",
       "limited": "Restrito",
       "none": "Não cobre"
     }
@@ -38,8 +38,8 @@
     "tableTitle": "Summary",
     "threatCol": "Risk",
     "levels": {
-      "on": "On by default",
-      "setting": "You turn it on",
+      "on": "Automatic",
+      "setting": "Optional",
       "limited": "Restricted",
       "none": "Not covered"
     }

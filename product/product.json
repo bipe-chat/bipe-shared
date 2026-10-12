@@ -453,20 +453,86 @@
       },
       "pt": {
         "name": "Sem código por SMS",
-        "body": "Você entra com e-mail e senha. Quem pega seu chip não pega sua conta.",
+        "body": "Quem pega seu chip não pega sua conta. No Bipe não tem código por SMS pra pedir.",
         "points": [
           "Golpista rouba conta de WhatsApp pedindo o código do SMS ou clonando o chip. No Bipe não tem código por SMS pra pedir.",
-          "Você entra com e-mail e senha.",
+          "Seu número não é sua conta.",
           "Trocar de chip não muda nada na sua conta."
         ]
       },
       "en": {
         "name": "No SMS codes",
-        "body": "You sign in with email and a password. Whoever takes your SIM does not get your account.",
+        "body": "Whoever takes your SIM does not get your account. Bipe has no SMS code to ask for.",
         "points": [
           "Scammers take WhatsApp accounts by asking for the SMS code or cloning the SIM. Bipe has no SMS code to ask for.",
-          "You sign in with email and a password.",
+          "Your number is not your account.",
           "A new SIM changes nothing on your account."
+        ]
+      }
+    },
+    {
+      "id": "phone-account",
+      "area": "safety",
+      "status": {
+        "ios": "planned",
+        "android": "planned"
+      },
+      "slug": {
+        "pt": "conta-no-celular",
+        "en": "account-on-your-phone"
+      },
+      "pt": {
+        "name": "Sua conta fica no celular",
+        "body": "Sem e-mail obrigatório e sem senha difícil de lembrar. Você escolhe uma senha de 8 números, como a do banco.",
+        "points": [
+          "Pra criar a conta, basta seu nome. O @ e o e-mail são opcionais.",
+          "A senha de 8 números trava o app e protege a volta pra sua conta. Sequência fácil, como 12345678, não passa.",
+          "Só a senha não abre sua conta. Também precisa do seu celular, do seu e-mail ou dos seus contatos de confiança.",
+          "Errou a senha 5 vezes, ela trava até você trocar."
+        ]
+      },
+      "en": {
+        "name": "Your account lives on your phone",
+        "body": "No email required and no hard password to remember. You pick an 8-digit PIN, like the one for your bank.",
+        "points": [
+          "To create an account, your name is enough. The @ and the email are optional.",
+          "The 8-digit PIN locks the app and protects getting back into your account. Easy sequences like 12345678 are not accepted.",
+          "The PIN alone does not open your account. It also takes your phone, your email or your trusted contacts.",
+          "Five wrong tries lock the PIN until you change it."
+        ]
+      }
+    },
+    {
+      "id": "new-phone",
+      "area": "safety",
+      "status": {
+        "ios": "planned",
+        "android": "planned"
+      },
+      "slug": {
+        "pt": "celular-novo",
+        "en": "new-phone"
+      },
+      "pt": {
+        "name": "Celular novo, mesma conta",
+        "body": "Trocou de celular ou perdeu o seu? Tem mais de um jeito de voltar pra sua conta, e nenhum passa por código SMS.",
+        "points": [
+          "Com o celular antigo na mão, aponte a câmera do novo pro QR code que aparece no antigo.",
+          "Perdeu o antigo? Se a conta estava no iCloud ou no Google, ela volta no celular novo com sua senha de 8 números.",
+          "Sem isso, dá pra voltar pelo e-mail ou com a ajuda dos seus contatos de confiança. Aí tem uma espera de 24 horas.",
+          "Durante a espera, seus outros aparelhos recebem um aviso e podem cancelar.",
+          "O Bipe nunca pede pra você ler um QR code que outra pessoa mandou."
+        ]
+      },
+      "en": {
+        "name": "New phone, same account",
+        "body": "Got a new phone or lost yours? There is more than one way back into your account, and none goes through an SMS code.",
+        "points": [
+          "With the old phone in hand, point the new phone's camera at the QR code on the old one.",
+          "Lost the old one? If the account was in iCloud or Google, it comes back on the new phone with your 8-digit PIN.",
+          "Without that, you can get back in by email or with help from your trusted contacts. Then there is a 24-hour wait.",
+          "During the wait, your other devices get a notice and can cancel.",
+          "Bipe never asks you to scan a QR code that someone else sent."
         ]
       }
     },

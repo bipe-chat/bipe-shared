@@ -1135,36 +1135,79 @@
   ],
   "icps": [
     {
-      "id": "privacy",
+      "id": "circles",
       "step": 1,
       "current": true,
-      "adr": "0058",
-      "name": "Privacy nerds",
-      "who": "People who care how a messenger works: our own circles, developers, open-source and privacy people."
+      "adr": "0060",
+      "name": "Builders and their circles",
+      "who": "People who choose a messenger for how it works: developers, designers, creative, open-source and privacy-minded people, starting with our own circles.",
+      "platforms": [
+        "ios"
+      ],
+      "gate": [
+        "handles",
+        "profile-links",
+        "invites",
+        "requests",
+        "e2ee",
+        "group-types"
+      ]
     },
     {
       "id": "family",
       "step": 2,
       "current": false,
-      "adr": "0058",
-      "name": "Family protectors",
-      "who": "The family's tech person and the parent who gets the scam message (ADR 0047)."
+      "adr": "0060",
+      "name": "Family protectors and their parents",
+      "who": "The family's tech person and the parent who gets the scam message (ADR 0047). Brazilians abroad first.",
+      "platforms": [
+        "ios",
+        "android"
+      ],
+      "gate": [
+        "scam-alerts",
+        "requests",
+        "verified-badge",
+        "family-check",
+        "invites"
+      ]
     },
     {
       "id": "communities",
       "step": 3,
       "current": false,
-      "adr": "0058",
+      "adr": "0060",
       "name": "Organised communities",
-      "who": "Churches, associations, teams: groups with organisers and many members."
+      "who": "Churches, associations, teams, torcidas: groups with organisers and many members, several traditions at once.",
+      "platforms": [
+        "ios",
+        "android"
+      ],
+      "gate": [
+        "communities",
+        "verified-groups",
+        "cnpj-badge",
+        "group-types",
+        "polls"
+      ]
     },
     {
       "id": "national",
       "step": 4,
       "current": false,
-      "adr": "0058",
+      "adr": "0060",
       "name": "National use",
-      "who": "Everyone in Brazil, often in a shock."
+      "who": "Everyone in Brazil, often in a shock to WhatsApp. Also needs spike readiness, moderation staff and funding.",
+      "platforms": [
+        "ios",
+        "android"
+      ],
+      "gate": [
+        "phone-discovery",
+        "verified-badge",
+        "scam-alerts",
+        "stickers"
+      ]
     }
   ],
   "audiences": [

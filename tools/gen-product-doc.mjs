@@ -40,17 +40,19 @@ for (const f of product.features) {
   }
   if (f.pt.points.length !== f.en.points.length) fail(`feature ${f.id}: points pt and en differ`);
 }
-// ICP register (ADR 0058): every ICP cites an ADR file in ../proseio/docs/adr; exactly one step is current.
+// ICP register (ADR 0060): every ICP cites an ADR file in ../proseio/docs/adr; exactly one step is current.
 const adrDir = join(root, "../proseio/docs/adr");
 const adrFiles = readdirSync(adrDir);
 const icpIds = new Set();
 for (const i of product.icps) {
   if (!/^[a-z]+$/.test(i.id) || icpIds.has(i.id) || !Number.isInteger(i.step) || !i.name || !i.who) fail(`icp ${i.id}`);
+  if (!i.platforms?.length || i.platforms.some((x) => !["ios", "android"].includes(x))) fail(`icp ${i.id}: platforms`);
+  if (!i.gate?.length || i.gate.some((id) => !featureIds.has(id))) fail(`icp ${i.id}: gate`);
   if (!adrFiles.some((f) => f.startsWith(`${i.adr}-`))) fail(`icp ${i.id}: ADR ${i.adr} not found in proseio/docs/adr`);
   icpIds.add(i.id);
 }
 if (product.icps.filter((i) => i.current).length !== 1) fail("icps: exactly one current step");
-// Audience pages (/para/<slug>/): each names a registered ICP and is built from feature pages.
+// Audience pages (/para/<slug>/): each names a registered ICP (ADR 0060) and is built from feature pages.
 const audienceSlugs = new Set();
 for (const a of product.audiences) {
   if (!icpIds.has(a.icp)) fail(`audience ${a.id}: icp ${a.icp} is not in the register (ADR 0058)`);
@@ -146,11 +148,15 @@ const lines = [
   "",
   "## ICPs",
   "",
-  "Order of audiences: [ADR 0058](adr/0058-icp-ladder.md). A step becomes current only by a new ADR.",
+  "Order of audiences: [icps.md](icps.md) ([ADR 0060](adr/0060-icp-ladder-by-success-chance.md)). A step becomes current only by a new ADR. Gate: the features that must be in a tester build on the step's platforms.",
   "",
-  "| Step | ICP | Who | Current | ADR |",
-  "|---|---|---|---|---|",
-  ...product.icps.map((i) => `| ${i.step} | ${i.name} (\`${i.id}\`) | ${i.who} | ${i.current ? "yes" : ""} | ${i.adr} |`),
+  "| Step | ICP | Who | Current | Platforms | Gate in tester build |",
+  "|---|---|---|---|---|---|",
+  ...product.icps.map((i) => {
+    const ready = (id) => i.platforms.every((pl) => product.features.find((f) => f.id === id).status[pl] === "testing");
+    const gate = i.gate.map((id) => (ready(id) ? id : `~~${id}~~`)).join(", ");
+    return `| ${i.step} | ${i.name} (\`${i.id}\`) | ${i.who} | ${i.current ? "yes" : ""} | ${i.platforms.join(", ")} | ${i.gate.filter(ready).length} of ${i.gate.length}: ${gate} |`;
+  }),
   "",
   "## Audiences",
   "",

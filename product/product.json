@@ -12,7 +12,7 @@
     }
   },
   "headlineTest": {
-    "$comment": "Issue #77 (ADR 0026). The home page (pt-BR only) shows one arm per browser, chosen at random and kept. h0 is the control: promise.pt.title. The lede and everything else stay the same. active false shows promise.title to everyone.",
+    "$comment": "Issue #77 (ADR 0032). The home page (pt-BR only) shows one arm per browser, chosen at random and kept. h0 is the control: promise.pt.title. The lede and everything else stay the same. active false shows promise.title to everyone.",
     "experiment": "headline-77",
     "active": true,
     "arms": [
@@ -673,6 +673,121 @@
     "en": {
       "title": "Brazilian, open and independent",
       "body": "The servers are in Brazil, run by Brazilian companies. Underneath, Proseio uses an open network that no single company controls. The code goes public at launch."
+    }
+  },
+  "business": {
+    "$comment": "The /empresas/ page. Source: proseio/docs/business-messaging.md (exploration, issue #93). Everything here is a proposal: nothing is decided, built or for sale. Keep that visible on the page.",
+    "pt": {
+      "nav": "Empresas",
+      "title": "Fale com seus clientes num lugar onde ninguém se passa por você.",
+      "lede": "O Proseio é gratuito para as pessoas. A ideia é que ele se pague com empresas e instituições que querem falar com os clientes com segurança. Esta página explica a proposta. Ela ainda está em estudo, e nada aqui está à venda.",
+      "label": "Proposta em estudo",
+      "sections": [
+        {
+          "heading": "Por que uma empresa estaria aqui",
+          "points": [
+            "Só a sua empresa usa o seu nome. Nome de banco, loja ou órgão público fica reservado para a conta com CNPJ verificado, e o falso atendimento não consegue copiar você.",
+            "O cliente vê o selo e o CNPJ em toda conversa com você.",
+            "Uma cobrança por Pix mostra o CNPJ que vai receber antes de o cliente pagar.",
+            "Os dados e os servidores ficam no Brasil, sob a lei brasileira."
+          ]
+        },
+        {
+          "heading": "Como o Proseio se pagaria",
+          "points": [
+            "Quem usa o Proseio para conversar nunca paga.",
+            "A empresa paga uma taxa para verificar o CNPJ e reservar o nome.",
+            "Avisos, confirmações e lembretes que a empresa manda têm preço por mensagem.",
+            "Quando o cliente escreve primeiro, a empresa responde sem pagar.",
+            "Em cobranças por Pix de instituições, a instituição paga uma taxa. O cliente nunca paga."
+          ]
+        },
+        {
+          "heading": "Uma API para o sistema da empresa",
+          "points": [
+            "A empresa liga o próprio sistema ao Proseio por uma API: manda avisos, recebe respostas e atende pelo programa que já usa.",
+            "A gente quer que seja fácil mudar para quem já usa a API do WhatsApp.",
+            "A API ainda não existe."
+          ]
+        },
+        {
+          "heading": "As regras que protegem o cliente",
+          "points": [
+            "A empresa só manda mensagem para quem aceitou receber.",
+            "O app mostra quando quem responde é um programa.",
+            "Mensagem de instituição verificada não tem link clicável. Pagamento só pelo Pix dentro do app.",
+            "Empresa que recebe muito bloqueio e denúncia passa a poder mandar menos.",
+            "No começo, nada de mensagem de propaganda."
+          ]
+        },
+        {
+          "heading": "O que ainda está em aberto",
+          "points": [
+            "Onde a conversa com a empresa é decifrada: nos servidores do Proseio ou nos da empresa. A gente publica a escolha antes de abrir.",
+            "O preço: por mensagem, por cliente ativo ou um valor fixo por CNPJ.",
+            "Quais setores entram primeiro: bancos, serviços públicos, escolas e condomínios, ou lojas."
+          ]
+        }
+      ],
+      "cta": "Quer conversar sobre isso? Escreva para a gente.",
+      "ctaSubject": "Proseio para empresas",
+      "figureCaption": "Ilustração com dados de exemplo. A proposta ainda está em estudo."
+    },
+    "en": {
+      "nav": "Business",
+      "title": "Talk to your customers where nobody can pretend to be you.",
+      "lede": "Proseio is free for people. The idea is that it pays for itself through companies and institutions that want to talk to their customers safely. This page explains the proposal. It is still under study, and nothing here is for sale.",
+      "label": "Proposal under study",
+      "sections": [
+        {
+          "heading": "Why a company would be here",
+          "points": [
+            "Only your company uses your name. Bank, shop and government names are kept for the account with a verified CNPJ, so fake support cannot copy you.",
+            "Customers see the seal and the CNPJ in every chat with you.",
+            "A Pix charge shows the CNPJ that receives the money before the customer pays.",
+            "Data and servers stay in Brazil, under Brazilian law."
+          ]
+        },
+        {
+          "heading": "How Proseio would pay for itself",
+          "points": [
+            "People who use Proseio to chat never pay.",
+            "A company pays a fee to verify its CNPJ and reserve its name.",
+            "Notices, confirmations and reminders the company sends are priced per message.",
+            "When the customer writes first, the company answers for free.",
+            "On Pix charges from institutions, the institution pays a fee. The customer never does."
+          ]
+        },
+        {
+          "heading": "An API for the company's system",
+          "points": [
+            "A company connects its own system to Proseio through an API: it sends notices, receives replies and answers from the software it already uses.",
+            "We want the move to be easy for companies that already use the WhatsApp API.",
+            "The API does not exist yet."
+          ]
+        },
+        {
+          "heading": "The rules that protect customers",
+          "points": [
+            "A company only messages people who agreed to receive messages.",
+            "The app shows when a program is answering.",
+            "Messages from verified institutions have no clickable links. Payment only through Pix inside the app.",
+            "A company that gets many blocks and reports can send less.",
+            "At the start, no advertising messages."
+          ]
+        },
+        {
+          "heading": "What is still open",
+          "points": [
+            "Where a chat with a company is decrypted: on Proseio's servers or on the company's. We publish the choice before opening.",
+            "The price: per message, per active customer, or a flat fee per CNPJ.",
+            "Which sectors come first: banks, public services, schools and condomínios, or shops."
+          ]
+        }
+      ],
+      "cta": "Want to talk about it? Write to us.",
+      "ctaSubject": "Proseio for business",
+      "figureCaption": "Illustration with sample data. The proposal is still under study."
     }
   }
 }

@@ -214,10 +214,10 @@
       ],
       "pt": {
         "name": "Pra sua turma",
-        "title": "Feito para família, prédio e escola.",
-        "summary": "Cada grupo tem o seu jeito. No grupo do prédio, os avisos ficam separados da conversa. Na escola, só entra quem foi verificado. E o Pix vem dentro da conversa, com o nome que o banco vai mostrar.",
+        "title": "Grupo sem barulho, e você não perde nada.",
+        "summary": "O grupo só avisa quando é com você: quando alguém te marca, te responde ou abre uma enquete. Quando você volta, vê primeiro o que perdeu. E quem você já conhece aparece no Proseio desde o primeiro dia.",
         "points": [
-          "Grupos Família, Prédio e Escola, cada um com o seu jeito.",
+          "O grupo só avisa quando te marcam, te respondem ou abrem uma enquete.",
           "Canais para torcidas, igrejas, criadores e instituições.",
           "Quem você já conhece aparece no Proseio desde o primeiro dia, se essa pessoa quiser."
         ],
@@ -230,10 +230,10 @@
       },
       "en": {
         "name": "For your people",
-        "title": "Made for family, building and school.",
-        "summary": "Each group has its own shape. In the building group, notices stay apart from the chat. At school, only verified members join. And Pix comes inside the chat, with the name your bank will show.",
+        "title": "Groups without the noise, and you miss nothing.",
+        "summary": "A group only notifies you when it is about you: when someone mentions you, replies to you or starts a poll. When you come back, you see what you missed first. And people you already know show up on Proseio from day one.",
         "points": [
-          "Family, Building and School groups, each with its own shape.",
+          "A group only notifies you for mentions, replies and polls.",
           "Channels for fan clubs, churches, creators and institutions.",
           "People you already know show up on Proseio from day one, if they choose to."
         ],
@@ -559,12 +559,12 @@
         "android": "planned"
       },
       "pt": {
-        "name": "Família, Prédio, Escola",
-        "body": "Grupos com jeito próprio: avisos do prédio separados da conversa, membros da escola verificados."
+        "name": "Grupos sem barulho",
+        "body": "O grupo só avisa quando é com você. Quando você volta, vê primeiro o que perdeu: menções, respostas, enquetes e mensagens fixadas."
       },
       "en": {
-        "name": "Family, Building, School",
-        "body": "Groups with their own shape: building notices apart from the chat, verified school members."
+        "name": "Groups without the noise",
+        "body": "A group only notifies you when it is about you. When you come back, you see what you missed first: mentions, replies, polls and pinned messages."
       }
     },
     {

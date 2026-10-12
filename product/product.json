@@ -111,7 +111,7 @@
         "proseio-shared/registries/scam-patterns.json"
       ],
       "pt": {
-        "name": "Confiança",
+        "name": "Segurança",
         "title": "Um aviso quando alguém tenta te dar um golpe.",
         "summary": "Quando uma mensagem tem cara de golpe, aparece um aviso embaixo dela dizendo o que fazer. Quem não está nos seus contatos chega como pedido. Em breve, um selo mostra quem é quem, e nome de banco fica só pro banco.",
         "points": [

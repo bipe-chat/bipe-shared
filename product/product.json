@@ -1185,12 +1185,8 @@
     "/identidade/": "/confianca/",
     "/en/scam-warnings/": "/en/trust/",
     "/en/identity/": "/en/trust/",
-    "/bipe-e-whatsapp/": "/compare/whatsapp/",
-    "/en/bipe-and-whatsapp/": "/en/compare/whatsapp/",
-    "/comparar/": "/compare/",
-    "/comparar/whatsapp/": "/compare/whatsapp/",
-    "/comparar/signal/": "/compare/signal/",
-    "/comparar/telegram/": "/compare/telegram/"
+    "/bipe-e-whatsapp/": "/comparar/whatsapp/",
+    "/en/bipe-and-whatsapp/": "/en/compare/whatsapp/"
   },
   "origin": {
     "pt": {

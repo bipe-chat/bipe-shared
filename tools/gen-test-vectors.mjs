@@ -1,10 +1,10 @@
 // Writes test-vectors/*.json. Every platform implementation must pass them.
 // Badge vectors use a TEST-ONLY Ed25519 key derived from a fixed seed.
 import { createPrivateKey, createPublicKey, sign } from "node:crypto";
-import { mkdirSync, writeFileSync } from "node:fs";
+import { mkdirSync, readFileSync, writeFileSync } from "node:fs";
 import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
-import { handleProblem, handleSkeleton, loadRegistries, normalize, scamMatchIDs, scamWarningKind } from "./lib/registries.mjs";
+import { extractInviteCode, handleProblem, handleSkeleton, loadRegistries, normalize, scamMatchIDs, scamWarningKind } from "./lib/registries.mjs";
 
 const root = join(dirname(fileURLToPath(import.meta.url)), "..");
 const reg = loadRegistries(root);
@@ -123,3 +123,12 @@ write("handles.json", {
   description: "Handle validation and skeletons. problem is null when valid. Equal skeletons collide.",
   cases: handleInputs.map((input) => ({ input, problem: handleProblem(input, reg), skeleton: handleSkeleton(input, reg) })),
 });
+
+// --- Invite codes ------------------------------------------------------------
+// Hand-written cases (test-vectors/invite-codes.json). Check them against the reference; fail closed.
+
+const inviteCases = JSON.parse(readFileSync(join(out, "invite-codes.json"), "utf8")).vectors;
+for (const { input, code } of inviteCases) {
+  const got = extractInviteCode(input, reg);
+  if (got !== code) throw new Error(`invite-codes.json: ${JSON.stringify(input)} gives ${got}, expected ${code}`);
+}

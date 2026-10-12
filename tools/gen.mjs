@@ -78,6 +78,10 @@ public enum ProseioRegistries {
     public static let handleMinLength = ${reg.handles.minLength}
     public static let handleMaxLength = ${reg.handles.maxLength}
     public static let handlePattern = ${swiftString(reg.handles.pattern)}
+
+    /// Invite codes: the code inside anything a user pastes (registries/invite-codes.json).
+    public static let inviteCodePattern = ${swiftString(reg.inviteCodes.pattern)}
+    public static let inviteCodeMaxInputLength = ${reg.inviteCodes.maxInputLength}
 }
 `;
 }
@@ -185,6 +189,10 @@ object ProseioRegistries {
     const val HANDLE_MIN_LENGTH = ${reg.handles.minLength}
     const val HANDLE_MAX_LENGTH = ${reg.handles.maxLength}
     const val HANDLE_PATTERN = ${kotlinString(reg.handles.pattern)}
+
+    /** Invite codes: the code inside anything a user pastes (registries/invite-codes.json). */
+    const val INVITE_CODE_PATTERN = ${kotlinString(reg.inviteCodes.pattern)}
+    const val INVITE_CODE_MAX_INPUT_LENGTH = ${reg.inviteCodes.maxInputLength}
 }
 `;
 }

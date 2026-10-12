@@ -6,6 +6,8 @@ Source of truth for registries, strings, API contract and test vectors shared by
 - Registry entries must already be normalised (`tools/lib/registries.mjs` validates and fails closed).
 - Regexes must stay portable: ICU (Swift), java.util.regex (Kotlin), V8 (Node 24). Fixed-length lookbehind only; `(?i:...)` modifiers are fine.
 - `tools/lib/registries.mjs` `normalize()` is the reference implementation. Platform code must match `test-vectors/normalization.json`.
+- Generate, never copy (ADR 0031): a rule more than one surface uses lives in `registries/` and reaches Swift, Kotlin and the API through `tools/gen.mjs`.
+- After a contract change, run `node tools/check-contract.mjs`. After a registry or vector change, run `swift test` in `../proseio-ios/Components/ProseioKit`.
 - No npm dependencies. Node built-ins only.
 - Write docs in ASD-STE100 style. UI strings are draft until they pass the humanizer.
 - `product/product.json` (promise, tentpoles, features with status per platform) and `product/distribution.json` (download links) feed proseio-web and `proseio/docs/product.md`. After a change, run `node tools/gen-product-doc.mjs`; it validates and fails closed. Mark a feature `testing` only when it is in a build.

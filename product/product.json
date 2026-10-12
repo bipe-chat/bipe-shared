@@ -31,8 +31,8 @@
       {
         "id": "h3",
         "angle": "no-ads",
-        "pt": "Sem anúncio e sem perfil de anúncio.",
-        "en": "No ads and no ad profile."
+        "pt": "Sem anúncio. Seus dados não estão à venda.",
+        "en": "No ads. Your data is not for sale."
       }
     ]
   },
@@ -178,11 +178,11 @@
       ],
       "pt": {
         "name": "Sem anúncio",
-        "title": "Sem anúncio e sem perfil de anúncio.",
+        "title": "Sem anúncio. Seus dados não estão à venda.",
         "summary": "O Proseio é gratuito e continua gratuito. Não tem anúncio em nenhuma tela e ninguém monta um perfil seu para vender anúncio. As conversas ficam em servidores no Brasil, protegidas de ponta a ponta.",
         "points": [
           "Você nunca paga para usar o Proseio.",
-          "Nenhum anúncio, em nenhuma aba. Nenhum perfil de anúncio.",
+          "Nenhum anúncio, em nenhuma aba. Ninguém compra informação sobre você.",
           "Servidores no Brasil, de empresas brasileiras.",
           "Conversas protegidas de ponta a ponta desde a primeira mensagem."
         ],
@@ -190,11 +190,11 @@
       },
       "en": {
         "name": "No ads",
-        "title": "No ads and no ad profile.",
+        "title": "No ads. Your data is not for sale.",
         "summary": "Proseio is free and stays free. There are no ads on any screen, and nobody builds a profile of you to sell ads. Chats live on servers in Brazil, encrypted end to end.",
         "points": [
           "You never pay to use Proseio.",
-          "No ads, in any tab. No ad profile.",
+          "No ads, in any tab. Nobody buys information about you.",
           "Servers in Brazil, run by Brazilian companies.",
           "Chats encrypted end to end from the first message."
         ],
@@ -492,11 +492,11 @@
       },
       "pt": {
         "name": "Sem anúncio",
-        "body": "Nenhum anúncio em nenhuma tela. Nenhum perfil de anúncio."
+        "body": "Nenhum anúncio em nenhuma tela. Seus dados não estão à venda."
       },
       "en": {
         "name": "No ads",
-        "body": "No ads on any screen. No ad profile."
+        "body": "No ads on any screen. Your data is not for sale."
       }
     },
     {

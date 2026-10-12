@@ -82,6 +82,13 @@ public enum ProseioRegistries {
     /// Invite codes: the code inside anything a user pastes (registries/invite-codes.json).
     public static let inviteCodePattern = ${swiftString(reg.inviteCodes.pattern)}
     public static let inviteCodeMaxInputLength = ${reg.inviteCodes.maxInputLength}
+
+    /// Brazilian mobile numbers for contact discovery (registries/phone-numbers.json).
+    public static let phoneCountryCode = ${swiftString(reg.phones.countryCode)}
+    public static let phoneAreaCodes: Set<String> = ${swiftArray(reg.phones.areaCodes.map(swiftString))}
+    public static let phoneMobileLength = ${reg.phones.mobileLength}
+    public static let phoneMobilePrefix = ${swiftString(reg.phones.mobilePrefix)}
+    public static let phoneMaxInputLength = ${reg.phones.maxInputLength}
 }
 `;
 }
@@ -193,6 +200,13 @@ object ProseioRegistries {
     /** Invite codes: the code inside anything a user pastes (registries/invite-codes.json). */
     const val INVITE_CODE_PATTERN = ${kotlinString(reg.inviteCodes.pattern)}
     const val INVITE_CODE_MAX_INPUT_LENGTH = ${reg.inviteCodes.maxInputLength}
+
+    /** Brazilian mobile numbers for contact discovery (registries/phone-numbers.json). */
+    const val PHONE_COUNTRY_CODE = ${kotlinString(reg.phones.countryCode)}
+    val phoneAreaCodes: Set<String> = ${kotlinList("setOf", reg.phones.areaCodes.map(kotlinString))}
+    const val PHONE_MOBILE_LENGTH = ${reg.phones.mobileLength}
+    const val PHONE_MOBILE_PREFIX = ${kotlinString(reg.phones.mobilePrefix)}
+    const val PHONE_MAX_INPUT_LENGTH = ${reg.phones.maxInputLength}
 }
 `;
 }

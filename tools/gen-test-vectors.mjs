@@ -4,7 +4,7 @@ import { createPrivateKey, createPublicKey, sign } from "node:crypto";
 import { mkdirSync, readFileSync, writeFileSync } from "node:fs";
 import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
-import { extractInviteCode, handleProblem, handleSkeleton, loadRegistries, normalize, scamMatchIDs, scamWarningKind } from "./lib/registries.mjs";
+import { extractInviteCode, handleProblem, normalizePhone, handleSkeleton, loadRegistries, normalize, scamMatchIDs, scamWarningKind } from "./lib/registries.mjs";
 
 const root = join(dirname(fileURLToPath(import.meta.url)), "..");
 const reg = loadRegistries(root);
@@ -133,4 +133,13 @@ const inviteCases = JSON.parse(readFileSync(join(root, "test-vectors", "invite-c
 for (const { input, code } of inviteCases) {
   const got = extractInviteCode(input, reg);
   if (got !== code) throw new Error(`invite-codes.json: ${JSON.stringify(input)} gives ${got}, expected ${code}`);
+}
+
+// --- Phone numbers -----------------------------------------------------------
+// Hand-written cases (test-vectors/phone-numbers.json). Check them against the reference; fail closed.
+
+const phoneCases = JSON.parse(readFileSync(join(root, "test-vectors", "phone-numbers.json"), "utf8")).vectors;
+for (const { input, e164 } of phoneCases) {
+  const got = normalizePhone(input, reg);
+  if (got !== e164) throw new Error(`phone-numbers.json: ${JSON.stringify(input)} gives ${got}, expected ${e164}`);
 }

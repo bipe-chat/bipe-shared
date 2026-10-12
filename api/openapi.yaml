@@ -178,6 +178,96 @@ paths:
         "401": { $ref: "#/components/responses/Error" }
         "403": { $ref: "#/components/responses/Error" }
         "429": { $ref: "#/components/responses/Error" }
+  /v1/contacts/lookup:
+    post:
+      summary: Find address-book contacts on Proseio by phone number
+      description: >
+        Phase 0 of phone-number discovery (proseio docs/phone-link.md). The client sends
+        numbers it normalised with registries/phone-numbers.json; the server normalises again
+        and ignores the rest. It compares HMACs with linked numbers and returns only matches
+        whose holder allows discovery. The submitted list is never stored. Limits: 500 numbers
+        per request, a daily budget per account (lower for accounts younger than 7 days),
+        30 requests per hour.
+      security: [{ matrix: [] }]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [phones]
+              properties:
+                phones: { type: array, maxItems: 500, items: { type: string, maxLength: 64 } }
+      responses:
+        "200":
+          description: Matches
+          content:
+            application/json:
+              schema:
+                type: object
+                required: [matches]
+                properties:
+                  matches:
+                    type: array
+                    items:
+                      type: object
+                      required: [phone, user_id]
+                      properties:
+                        phone: { type: string, description: "The matched number in E.164, as normalised by the server." }
+                        user_id: { type: string }
+        "401": { $ref: "#/components/responses/Error" }
+        "429": { $ref: "#/components/responses/Error" }
+  /v1/me/phone:
+    get:
+      summary: The caller's linked phone number status (never the number)
+      security: [{ matrix: [] }]
+      responses:
+        "200":
+          description: Status
+          content:
+            application/json:
+              schema:
+                type: object
+                required: [linked, discoverable_by_phone]
+                properties:
+                  linked: { type: boolean }
+                  method: { type: string, enum: [admin, pix, sms] }
+                  linked_at: { type: string, format: date-time }
+                  confirm_by: { type: string, format: date-time, description: "After this date the number stops being discoverable until confirmed again." }
+                  discoverable_by_phone: { type: boolean }
+        "401": { $ref: "#/components/responses/Error" }
+    delete:
+      summary: Unlink the caller's phone number
+      security: [{ matrix: [] }]
+      responses:
+        "204": { description: Unlinked }
+        "401": { $ref: "#/components/responses/Error" }
+  /v1/me/discovery:
+    get:
+      summary: Who can find the caller
+      security: [{ matrix: [] }]
+      responses:
+        "200":
+          description: Setting
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/DiscoverySettings" }
+        "401": { $ref: "#/components/responses/Error" }
+    put:
+      summary: Change who can find the caller
+      security: [{ matrix: [] }]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: { $ref: "#/components/schemas/DiscoverySettings" }
+      responses:
+        "200":
+          description: Saved
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/DiscoverySettings" }
+        "401": { $ref: "#/components/responses/Error" }
   /v1/me/invite-connections:
     get:
       summary: The caller's invite pairs
@@ -260,6 +350,38 @@ paths:
                 properties:
                   handles: { type: object, additionalProperties: { type: string } }
         "401": { $ref: "#/components/responses/Error" }
+  /v1/me/messaging:
+    get:
+      summary: Who can message the caller (default everyone)
+      security: [{ matrix: [] }]
+      responses:
+        "200":
+          description: Current setting
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/MessagingSetting" }
+        "401": { $ref: "#/components/responses/Error" }
+    put:
+      summary: Change who can message the caller
+      description: >
+        Enforced by the server: a Synapse module refuses invites (DMs and groups) that the
+        setting does not allow. Contacts (a shared joined room or an invite pair, ADR 0034)
+        can always invite. "verified" also admits verified accounts; none exist yet.
+      security: [{ matrix: [] }]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: { $ref: "#/components/schemas/MessagingSetting" }
+      responses:
+        "200":
+          description: Saved
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/MessagingSetting" }
+        "400": { $ref: "#/components/responses/Error" }
+        "401": { $ref: "#/components/responses/Error" }
+        "429": { $ref: "#/components/responses/Error" }
   /v1/me/handle:
     get:
       summary: The caller's handle
@@ -340,6 +462,11 @@ components:
         key_id: { type: string, description: "Base64 key ID from DCAppAttestService.generateKey" }
         attestation_object: { type: string, description: "Base64 attestation object" }
         challenge: { type: string, description: "From POST /v1/attest/challenge" }
+    MessagingSetting:
+      type: object
+      required: [who_can_message]
+      properties:
+        who_can_message: { type: string, enum: [everyone, verified, contacts], description: "everyone: invites from strangers arrive in Pedidos. contacts: only people you share a room with or your invite pair." }
     SignupResponse:
       type: object
       required: [user_id]
@@ -347,6 +474,11 @@ components:
         user_id: { type: string, description: "Random Matrix ID, e.g. @k7q2m9x4tpab:proseio.com.br" }
         handle: { type: string }
         inviter_user_id: { type: string, description: "Present when a personal invite was used. The app can offer a chat with the inviter." }
+    DiscoverySettings:
+      type: object
+      required: [by_phone]
+      properties:
+        by_phone: { type: boolean, description: "People who have the caller's number can find them. Default true." }
     InvitePreview:
       type: object
       required: [valid]

@@ -35,6 +35,8 @@ const ENUMS = {
 
 // Schemas the apps do not model, with the reason.
 const NOT_IN_APPS = {
+  DiscoverySettings: "one boolean; iOS sends it from a private request type in ProseioAPIClient",
+  MessagingSetting: "one enum field; iOS decodes it in a private MessagingSetting type in ProseioAPIClient, exposed as ProseioWhoCanMessage",
   ExperimentEvent: "web only (headline test)",
   WaitlistRequest: "web only",
   Error: "clients read error and reason into their error type; the enum is checked as Error.error",

@@ -634,11 +634,11 @@
       },
       "pt": {
         "name": "Grupos sem barulho",
-        "body": "Só toca quando é com você. Na volta, aparece primeiro quem te marcou ou respondeu, as enquetes abertas e o que foi fixado."
+        "body": "Só toca quando é com você. Na volta, aparece primeiro quem te marcou ou respondeu e as enquetes que faltam você votar."
       },
       "en": {
         "name": "Quiet groups",
-        "body": "It only rings when it's about you. When you come back, mentions, replies, open polls and new pins come first."
+        "body": "It only rings when it's about you. When you come back, mentions, replies and polls waiting on your vote come first."
       }
     }
   ],

@@ -1226,7 +1226,8 @@
             "cnpj-badge",
             "lookalikes",
             "scam-alerts"
-          ]
+          ],
+          "scene": "falso-pastor"
         },
         {
           "id": "groups",
@@ -1234,7 +1235,8 @@
             "communities",
             "group-types",
             "polls"
-          ]
+          ],
+          "scene": "igreja"
         },
         {
           "id": "members",

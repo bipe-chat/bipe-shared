@@ -93,7 +93,8 @@
       "status": "testing",
       "demos": [
         "scam",
-        "identity"
+        "identity",
+        "levels"
       ],
       "features": [
         "scam-alerts",
@@ -127,6 +128,10 @@
           {
             "title": "Ninguém se passa por você",
             "caption": "Em breve no app. A simulação usa a mesma regra de nomes que o app vai usar."
+          },
+          {
+            "title": "Quem é quem",
+            "caption": "Simulação com pessoas de exemplo. Os avisos usam os textos do app. A verificação por Pix e gov.br ainda não está no app."
           }
         ]
       },
@@ -147,6 +152,10 @@
           {
             "title": "Nobody can pretend to be you",
             "caption": "Coming to the app. The simulation uses the same name rules the app will use."
+          },
+          {
+            "title": "Who is who",
+            "caption": "Simulation with sample people. The warnings use the app's own text. Pix and gov.br verification are not in the app yet."
           }
         ]
       }

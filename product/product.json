@@ -629,8 +629,8 @@
       "id": "group-types",
       "area": "community",
       "status": {
-        "ios": "planned",
-        "android": "planned"
+        "ios": "built",
+        "android": "built"
       },
       "pt": {
         "name": "Grupos sem barulho",

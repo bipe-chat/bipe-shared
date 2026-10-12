@@ -15,7 +15,7 @@
     "sourcesNote": "Pesquisa feita em 12 de outubro de 2026, com base no que cada empresa publicou e no que a imprensa noticiou. Os apps mudam rápido. A gente atualiza esta página quando muda.",
     "aheadTitle": "Onde o {app} está na frente",
     "tableTitle": "Resumo",
-    "threatCol": "Golpe",
+    "threatCol": "Risco",
     "levels": {
       "on": "Ligado por padrão",
       "setting": "Precisa ligar",
@@ -36,7 +36,7 @@
     "sourcesNote": "Researched on 12 October 2026, from what each company published and the press reported. The apps change fast. We update this page when they do.",
     "aheadTitle": "Where {app} is ahead",
     "tableTitle": "Summary",
-    "threatCol": "Scam",
+    "threatCol": "Risk",
     "levels": {
       "on": "On by default",
       "setting": "You turn it on",

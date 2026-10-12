@@ -195,6 +195,12 @@
     "proseio_discovery_toggle": "Quem tem meu número pode me encontrar",
     "proseio_discovery_footer": "Ninguém vê o seu número. Só quem já tem ele salvo consegue te achar.",
     "proseio_phone_not_linked": "Seu número ainda não está vinculado, então ninguém te encontra por ele por enquanto.",
-    "proseio_phone_linked": "Seu número está vinculado."
+    "proseio_phone_linked": "Seu número está vinculado.",
+    "proseio_tab_chats": "Conversas",
+    "proseio_tab_groups": "Grupos",
+    "proseio_tab_you": "Você",
+    "proseio_self_chat_title": "Anotações",
+    "proseio_self_chat_subtitle": "Mensagens que só você vê",
+    "proseio_self_chat_error": "Não deu para abrir suas anotações. Tente de novo."
   }
 }

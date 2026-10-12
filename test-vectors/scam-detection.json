@@ -59,6 +59,19 @@
     {
       "message": "Bom dia! A reunião do condomínio é às 19h",
       "matches": []
+    },
+    {
+      "message": "Seu pacote está retido. Pague a taxa de R$ 9,90 pelo link pra liberar a entrega: entrega-rapida.com",
+      "matches": [
+        "linkPatterns:domain"
+      ]
+    },
+    {
+      "message": "Acompanhe em https://loja.com.br/rastreio ou escreva pra ajuda@loja.com.br",
+      "matches": [
+        "pixKeyPatterns:email",
+        "linkPatterns:domain"
+      ]
     }
   ]
 }

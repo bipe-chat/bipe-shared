@@ -59,6 +59,8 @@ public enum ProseioRegistries {
 
     public static let boletoPatterns: [ScamPattern] = ${patterns("boletoPatterns")}
 
+    public static let linkPatterns: [ScamPattern] = ${patterns("linkPatterns")}
+
     /// Normalised phrases, matched as substrings of the normalised message.
     public static let urgencyPhrases: [String] = ${swiftArray(reg.scam.urgencyPhrases.map(swiftString))}
 
@@ -70,6 +72,11 @@ public enum ProseioRegistries {
 
     /// Normalised urgency phrases that make a message the "new number" kind.
     public static let newNumberPhrases: Set<String> = ${swiftArray(reg.scam.newNumberPhrases.map(swiftString))}
+
+    /// Normalised words for the "delivery fee" kind. It needs a link and an entry from each of the three lists.
+    public static let deliveryParcelWords: [String] = ${swiftArray(reg.scam.deliveryParcelWords.map(swiftString))}
+    public static let deliveryHoldWords: [String] = ${swiftArray(reg.scam.deliveryHoldWords.map(swiftString))}
+    public static let deliveryFeeWords: [String] = ${swiftArray(reg.scam.deliveryFeeWords.map(swiftString))}
 
     /// Scam warning kind raw values, most actionable first. The first kind whose rule applies wins.
     public static let scamWarningKindPriority: [String] = ${swiftArray(reg.scam.warningKindPriority.map(swiftString))}
@@ -186,6 +193,8 @@ object ProseioRegistries {
 
     val boletoPatterns: List<ScamPattern> = ${patterns("boletoPatterns")}
 
+    val linkPatterns: List<ScamPattern> = ${patterns("linkPatterns")}
+
     /** Normalised phrases, matched as substrings of the normalised message. */
     val urgencyPhrases: List<String> = ${kotlinList("listOf", reg.scam.urgencyPhrases.map(kotlinString))}
 
@@ -197,6 +206,11 @@ object ProseioRegistries {
 
     /** Normalised urgency phrases that make a message the "new number" kind. */
     val newNumberPhrases: Set<String> = ${kotlinList("setOf", reg.scam.newNumberPhrases.map(kotlinString))}
+
+    /** Normalised words for the "delivery fee" kind. It needs a link and an entry from each of the three lists. */
+    val deliveryParcelWords: List<String> = ${kotlinList("listOf", reg.scam.deliveryParcelWords.map(kotlinString))}
+    val deliveryHoldWords: List<String> = ${kotlinList("listOf", reg.scam.deliveryHoldWords.map(kotlinString))}
+    val deliveryFeeWords: List<String> = ${kotlinList("listOf", reg.scam.deliveryFeeWords.map(kotlinString))}
 
     /** Scam warning kind ids, most actionable first. The first kind whose rule applies wins. */
     val scamWarningKindPriority: List<String> = ${kotlinList("listOf", reg.scam.warningKindPriority.map(kotlinString))}

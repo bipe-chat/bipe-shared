@@ -1214,30 +1214,14 @@
           "money-pause"
         ],
         "pt": {
-          "threat": "Pedido de Pix e boleto",
+          "threat": "Pedido de Pix, boleto e comprovante",
           "whatsapp": "O alerta em teste vale aqui também, só pra quem não está nos seus contatos.",
-          "bipe": "Código Pix, chave Pix e boleto na mensagem recebem um aviso que diz o que fazer antes de pagar."
+          "bipe": "Código Pix, chave Pix, boleto e conversa de comprovante na mensagem recebem um aviso que diz o que fazer antes de pagar."
         },
         "en": {
-          "threat": "Pix and boleto requests",
+          "threat": "Pix, boleto and receipt scams",
           "whatsapp": "The alert in test covers this too, only for people not in your contacts.",
-          "bipe": "A Pix code, Pix key or boleto in a message gets a warning that says what to do before you pay."
-        }
-      },
-      {
-        "id": "comprovante",
-        "features": [
-          "scam-alerts"
-        ],
-        "pt": {
-          "threat": "Comprovante falso",
-          "whatsapp": "A gente não achou nada específico pra isso.",
-          "bipe": "Mensagem que fala de comprovante recebe um aviso: print não prova pagamento, confira no app do banco."
-        },
-        "en": {
-          "threat": "Fake payment receipt",
-          "whatsapp": "We found nothing specific for this.",
-          "bipe": "A message about a receipt gets a warning: a screenshot is not proof of payment, check in your bank app."
+          "bipe": "A Pix code, Pix key, boleto or talk of a receipt in a message gets a warning that says what to do before you pay."
         }
       },
       {

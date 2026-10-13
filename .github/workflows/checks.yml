@@ -50,5 +50,7 @@ jobs:
           node-version: 24
       - name: Contract
         run: node bipe-shared/tools/check-contract.mjs
+      - name: Trust facts
+        run: node --test bipe-shared/tools/trust-facts.test.mjs
       - name: Drift
         run: node bipe-shared/tools/check-drift.mjs --against head --repos "$GITHUB_WORKSPACE"

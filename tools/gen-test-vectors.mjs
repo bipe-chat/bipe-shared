@@ -4,7 +4,7 @@ import { createPrivateKey, createPublicKey, sign } from "node:crypto";
 import { mkdirSync, readFileSync, writeFileSync } from "node:fs";
 import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
-import { extractInviteCode, handleProblem, pinProblem, normalizeCnpj, normalizePhone, handleSkeleton, loadRegistries, normalize, scamMatchIDs, scamWarningKind } from "./lib/registries.mjs";
+import { extractInviteCode, handleProblem, pinProblem, normalizeCnpj, normalizePhone, handleSkeleton, loadRegistries, normalize, scamMatchIDs, scamWarningKind, trustFacts } from "./lib/registries.mjs";
 
 const root = join(dirname(fileURLToPath(import.meta.url)), "..");
 const reg = loadRegistries(root);
@@ -13,6 +13,14 @@ const outIndex = process.argv.indexOf("--out");
 const out = outIndex >= 0 ? process.argv[outIndex + 1] : join(root, "test-vectors");
 mkdirSync(out, { recursive: true });
 const write = (name, data) => writeFileSync(join(out, name), JSON.stringify(data, null, 2) + "\n");
+
+const trustVectors = JSON.parse(readFileSync(join(root, "fixtures/trust-facts.json"), "utf8"));
+for (const vector of trustVectors.vectors) {
+  if (JSON.stringify(trustFacts(vector.input, reg)) !== JSON.stringify(vector.expected)) {
+    throw new Error(`trust-facts: expected outcome differs for ${vector.name}`);
+  }
+}
+write("trust-facts.json", trustVectors);
 
 // --- Badges ---------------------------------------------------------------
 

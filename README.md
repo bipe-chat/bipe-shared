@@ -8,7 +8,9 @@ Single source of truth for Bipe logic that iOS, Android, the API and the website
 | `strings/pt-BR.json`, `strings/en.json` | Bipe-owned UI strings (Element strings stay on Localazy). Draft copy. |
 | `api/openapi.yaml` | Bipe API contract (sign-up, invites, handles, verification, badges) |
 | `docs/badge-attestation.md` | Signed badge format and verification order |
+| `docs/trust-facts.md` | Independent trust facts, adapter inputs, invalidation and generated platform rules |
 | `test-vectors/` | Cases every platform must pass: badges, normalisation, scam detection, scam warnings, handles (generated), invite codes (hand-written, checked against the reference) |
+| `fixtures/trust-facts.json` | Hand-authored expected outcomes checked before trust vectors are generated |
 | `product/` | Promise, features with status per platform, download links. Feeds bipe-web and `bipe/docs/product.md` |
 | `tools/` | Generators and checks (Node 24, no npm packages). `tools/lib/registries.mjs` is the reference implementation |
 

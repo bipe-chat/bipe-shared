@@ -1,0 +1,909 @@
+{
+  "version": 1,
+  "$comment": "Hand-authored expected outcomes. Generator checks the reference rules against these before writing platform vectors.",
+  "vectors": [
+    {
+      "name": "missing-context",
+      "input": {},
+      "expected": {
+        "identity": "unverified",
+        "verifiedName": null,
+        "contact": "unconfirmed",
+        "change": "unknown",
+        "warningKind": null
+      }
+    },
+    {
+      "name": "known-unverified",
+      "input": {
+        "accountId": "@ana:bipe.net.br",
+        "deviceKey": "key-a",
+        "lifecycleKnown": true,
+        "deviceChangedAt": null,
+        "identityChangedAt": null
+      },
+      "expected": {
+        "identity": "unverified",
+        "verifiedName": null,
+        "contact": "unconfirmed",
+        "change": "none",
+        "warningKind": null
+      }
+    },
+    {
+      "name": "identity-is-not-personal-confirmation",
+      "input": {
+        "accountId": "@ana:bipe.net.br",
+        "deviceKey": "key-a",
+        "lifecycleKnown": true,
+        "deviceChangedAt": null,
+        "identityChangedAt": null,
+        "badgeStatus": "valid",
+        "badgeAccountId": "@ana:bipe.net.br",
+        "badgeDeviceKey": "key-a",
+        "badgeName": "Ana Souza",
+        "badgeIssuedAt": 100
+      },
+      "expected": {
+        "identity": "verified",
+        "verifiedName": "Ana Souza",
+        "contact": "unconfirmed",
+        "change": "none",
+        "warningKind": null
+      }
+    },
+    {
+      "name": "invite-is-not-personal-confirmation",
+      "input": {
+        "accountId": "@ana:bipe.net.br",
+        "deviceKey": "key-a",
+        "lifecycleKnown": true,
+        "deviceChangedAt": null,
+        "identityChangedAt": null,
+        "badgeStatus": "valid",
+        "badgeAccountId": "@ana:bipe.net.br",
+        "badgeDeviceKey": "key-a",
+        "badgeName": "Ana Souza",
+        "badgeIssuedAt": 100,
+        "confirmationMethod": "invite_pair",
+        "confirmationAccountId": "@ana:bipe.net.br",
+        "confirmationDeviceKey": "key-a",
+        "confirmedAt": 120
+      },
+      "expected": {
+        "identity": "verified",
+        "verifiedName": "Ana Souza",
+        "contact": "unconfirmed",
+        "change": "none",
+        "warningKind": null
+      }
+    },
+    {
+      "name": "personally-confirmed-identity",
+      "input": {
+        "accountId": "@ana:bipe.net.br",
+        "deviceKey": "key-a",
+        "lifecycleKnown": true,
+        "deviceChangedAt": null,
+        "identityChangedAt": null,
+        "badgeStatus": "valid",
+        "badgeAccountId": "@ana:bipe.net.br",
+        "badgeDeviceKey": "key-a",
+        "badgeName": "Ana Souza",
+        "badgeIssuedAt": 100,
+        "confirmationMethod": "in_person",
+        "confirmationAccountId": "@ana:bipe.net.br",
+        "confirmationDeviceKey": "key-a",
+        "confirmedAt": 120
+      },
+      "expected": {
+        "identity": "verified",
+        "verifiedName": "Ana Souza",
+        "contact": "confirmed",
+        "change": "none",
+        "warningKind": null
+      }
+    },
+    {
+      "name": "personal-confirmation-without-global-badge",
+      "input": {
+        "accountId": "@ana:bipe.net.br",
+        "deviceKey": "key-a",
+        "lifecycleKnown": true,
+        "deviceChangedAt": null,
+        "identityChangedAt": null,
+        "confirmationMethod": "in_person",
+        "confirmationAccountId": "@ana:bipe.net.br",
+        "confirmationDeviceKey": "key-a",
+        "confirmedAt": 120
+      },
+      "expected": {
+        "identity": "unverified",
+        "verifiedName": null,
+        "contact": "confirmed",
+        "change": "none",
+        "warningKind": null
+      }
+    },
+    {
+      "name": "invalid-badge-invalid_signature",
+      "input": {
+        "accountId": "@ana:bipe.net.br",
+        "deviceKey": "key-a",
+        "lifecycleKnown": true,
+        "deviceChangedAt": null,
+        "identityChangedAt": null,
+        "badgeStatus": "invalid_signature",
+        "badgeAccountId": "@ana:bipe.net.br",
+        "badgeDeviceKey": "key-a",
+        "badgeName": "Ana Souza",
+        "badgeIssuedAt": 100
+      },
+      "expected": {
+        "identity": "unverified",
+        "verifiedName": null,
+        "contact": "unconfirmed",
+        "change": "none",
+        "warningKind": null
+      }
+    },
+    {
+      "name": "invalid-badge-expired",
+      "input": {
+        "accountId": "@ana:bipe.net.br",
+        "deviceKey": "key-a",
+        "lifecycleKnown": true,
+        "deviceChangedAt": null,
+        "identityChangedAt": null,
+        "badgeStatus": "expired",
+        "badgeAccountId": "@ana:bipe.net.br",
+        "badgeDeviceKey": "key-a",
+        "badgeName": "Ana Souza",
+        "badgeIssuedAt": 100
+      },
+      "expected": {
+        "identity": "unverified",
+        "verifiedName": null,
+        "contact": "unconfirmed",
+        "change": "none",
+        "warningKind": null
+      }
+    },
+    {
+      "name": "invalid-badge-revoked",
+      "input": {
+        "accountId": "@ana:bipe.net.br",
+        "deviceKey": "key-a",
+        "lifecycleKnown": true,
+        "deviceChangedAt": null,
+        "identityChangedAt": null,
+        "badgeStatus": "revoked",
+        "badgeAccountId": "@ana:bipe.net.br",
+        "badgeDeviceKey": "key-a",
+        "badgeName": "Ana Souza",
+        "badgeIssuedAt": 100
+      },
+      "expected": {
+        "identity": "unverified",
+        "verifiedName": null,
+        "contact": "unconfirmed",
+        "change": "none",
+        "warningKind": null
+      }
+    },
+    {
+      "name": "invalid-badge-subject_mismatch",
+      "input": {
+        "accountId": "@ana:bipe.net.br",
+        "deviceKey": "key-a",
+        "lifecycleKnown": true,
+        "deviceChangedAt": null,
+        "identityChangedAt": null,
+        "badgeStatus": "subject_mismatch",
+        "badgeAccountId": "@ana:bipe.net.br",
+        "badgeDeviceKey": "key-a",
+        "badgeName": "Ana Souza",
+        "badgeIssuedAt": 100
+      },
+      "expected": {
+        "identity": "unverified",
+        "verifiedName": null,
+        "contact": "unconfirmed",
+        "change": "none",
+        "warningKind": null
+      }
+    },
+    {
+      "name": "invalid-badge-not_yet_valid",
+      "input": {
+        "accountId": "@ana:bipe.net.br",
+        "deviceKey": "key-a",
+        "lifecycleKnown": true,
+        "deviceChangedAt": null,
+        "identityChangedAt": null,
+        "badgeStatus": "not_yet_valid",
+        "badgeAccountId": "@ana:bipe.net.br",
+        "badgeDeviceKey": "key-a",
+        "badgeName": "Ana Souza",
+        "badgeIssuedAt": 100
+      },
+      "expected": {
+        "identity": "unverified",
+        "verifiedName": null,
+        "contact": "unconfirmed",
+        "change": "none",
+        "warningKind": null
+      }
+    },
+    {
+      "name": "invalid-badge-unknown_kid",
+      "input": {
+        "accountId": "@ana:bipe.net.br",
+        "deviceKey": "key-a",
+        "lifecycleKnown": true,
+        "deviceChangedAt": null,
+        "identityChangedAt": null,
+        "badgeStatus": "unknown_kid",
+        "badgeAccountId": "@ana:bipe.net.br",
+        "badgeDeviceKey": "key-a",
+        "badgeName": "Ana Souza",
+        "badgeIssuedAt": 100
+      },
+      "expected": {
+        "identity": "unverified",
+        "verifiedName": null,
+        "contact": "unconfirmed",
+        "change": "none",
+        "warningKind": null
+      }
+    },
+    {
+      "name": "invalid-badge-malformed",
+      "input": {
+        "accountId": "@ana:bipe.net.br",
+        "deviceKey": "key-a",
+        "lifecycleKnown": true,
+        "deviceChangedAt": null,
+        "identityChangedAt": null,
+        "badgeStatus": "malformed",
+        "badgeAccountId": "@ana:bipe.net.br",
+        "badgeDeviceKey": "key-a",
+        "badgeName": "Ana Souza",
+        "badgeIssuedAt": 100
+      },
+      "expected": {
+        "identity": "unverified",
+        "verifiedName": null,
+        "contact": "unconfirmed",
+        "change": "none",
+        "warningKind": null
+      }
+    },
+    {
+      "name": "invalid-badge-unsupported_version",
+      "input": {
+        "accountId": "@ana:bipe.net.br",
+        "deviceKey": "key-a",
+        "lifecycleKnown": true,
+        "deviceChangedAt": null,
+        "identityChangedAt": null,
+        "badgeStatus": "unsupported_version",
+        "badgeAccountId": "@ana:bipe.net.br",
+        "badgeDeviceKey": "key-a",
+        "badgeName": "Ana Souza",
+        "badgeIssuedAt": 100
+      },
+      "expected": {
+        "identity": "unverified",
+        "verifiedName": null,
+        "contact": "unconfirmed",
+        "change": "none",
+        "warningKind": null
+      }
+    },
+    {
+      "name": "wrong-account-badge",
+      "input": {
+        "accountId": "@ana:bipe.net.br",
+        "deviceKey": "key-a",
+        "lifecycleKnown": true,
+        "deviceChangedAt": null,
+        "identityChangedAt": null,
+        "badgeStatus": "valid",
+        "badgeAccountId": "@other:bipe.net.br",
+        "badgeDeviceKey": "key-a",
+        "badgeName": "Ana Souza",
+        "badgeIssuedAt": 100
+      },
+      "expected": {
+        "identity": "unverified",
+        "verifiedName": null,
+        "contact": "unconfirmed",
+        "change": "none",
+        "warningKind": null
+      }
+    },
+    {
+      "name": "wrong-device-badge",
+      "input": {
+        "accountId": "@ana:bipe.net.br",
+        "deviceKey": "key-a",
+        "lifecycleKnown": true,
+        "deviceChangedAt": null,
+        "identityChangedAt": null,
+        "badgeStatus": "valid",
+        "badgeAccountId": "@ana:bipe.net.br",
+        "badgeDeviceKey": "key-old",
+        "badgeName": "Ana Souza",
+        "badgeIssuedAt": 100
+      },
+      "expected": {
+        "identity": "suspended",
+        "verifiedName": null,
+        "contact": "unconfirmed",
+        "change": "none",
+        "warningKind": null
+      }
+    },
+    {
+      "name": "missing-lifecycle-with-proofs",
+      "input": {
+        "accountId": "@ana:bipe.net.br",
+        "deviceKey": "key-a",
+        "lifecycleKnown": null,
+        "deviceChangedAt": null,
+        "identityChangedAt": null,
+        "badgeStatus": "valid",
+        "badgeAccountId": "@ana:bipe.net.br",
+        "badgeDeviceKey": "key-a",
+        "badgeName": "Ana Souza",
+        "badgeIssuedAt": 100,
+        "confirmationMethod": "in_person",
+        "confirmationAccountId": "@ana:bipe.net.br",
+        "confirmationDeviceKey": "key-a",
+        "confirmedAt": 120
+      },
+      "expected": {
+        "identity": "unverified",
+        "verifiedName": null,
+        "contact": "unconfirmed",
+        "change": "unknown",
+        "warningKind": null
+      }
+    },
+    {
+      "name": "device-change-invalidates-both",
+      "input": {
+        "accountId": "@ana:bipe.net.br",
+        "deviceKey": "key-a",
+        "lifecycleKnown": true,
+        "deviceChangedAt": 150,
+        "identityChangedAt": null,
+        "badgeStatus": "valid",
+        "badgeAccountId": "@ana:bipe.net.br",
+        "badgeDeviceKey": "key-a",
+        "badgeName": "Ana Souza",
+        "badgeIssuedAt": 100,
+        "confirmationMethod": "in_person",
+        "confirmationAccountId": "@ana:bipe.net.br",
+        "confirmationDeviceKey": "key-a",
+        "confirmedAt": 120
+      },
+      "expected": {
+        "identity": "suspended",
+        "verifiedName": null,
+        "contact": "unconfirmed",
+        "change": "device",
+        "warningKind": null
+      }
+    },
+    {
+      "name": "fresh-badge-does-not-confirm-contact",
+      "input": {
+        "accountId": "@ana:bipe.net.br",
+        "deviceKey": "key-a",
+        "lifecycleKnown": true,
+        "deviceChangedAt": 150,
+        "identityChangedAt": null,
+        "badgeStatus": "valid",
+        "badgeAccountId": "@ana:bipe.net.br",
+        "badgeDeviceKey": "key-a",
+        "badgeName": "Ana Souza",
+        "badgeIssuedAt": 200,
+        "confirmationMethod": "in_person",
+        "confirmationAccountId": "@ana:bipe.net.br",
+        "confirmationDeviceKey": "key-a",
+        "confirmedAt": 120
+      },
+      "expected": {
+        "identity": "verified",
+        "verifiedName": "Ana Souza",
+        "contact": "unconfirmed",
+        "change": "device",
+        "warningKind": null
+      }
+    },
+    {
+      "name": "rescan-after-device-change",
+      "input": {
+        "accountId": "@ana:bipe.net.br",
+        "deviceKey": "key-a",
+        "lifecycleKnown": true,
+        "deviceChangedAt": 150,
+        "identityChangedAt": null,
+        "badgeStatus": "valid",
+        "badgeAccountId": "@ana:bipe.net.br",
+        "badgeDeviceKey": "key-a",
+        "badgeName": "Ana Souza",
+        "badgeIssuedAt": 200,
+        "confirmationMethod": "in_person",
+        "confirmationAccountId": "@ana:bipe.net.br",
+        "confirmationDeviceKey": "key-a",
+        "confirmedAt": 210
+      },
+      "expected": {
+        "identity": "verified",
+        "verifiedName": "Ana Souza",
+        "contact": "confirmed",
+        "change": "device",
+        "warningKind": null
+      }
+    },
+    {
+      "name": "approved-old-device-preserves-prior-relationship",
+      "input": {
+        "accountId": "@ana:bipe.net.br",
+        "deviceKey": "key-a",
+        "lifecycleKnown": true,
+        "deviceChangedAt": 150,
+        "identityChangedAt": null,
+        "badgeStatus": "valid",
+        "badgeAccountId": "@ana:bipe.net.br",
+        "badgeDeviceKey": "key-a",
+        "badgeName": "Ana Souza",
+        "badgeIssuedAt": 200,
+        "confirmationMethod": "old_device_approval",
+        "confirmationAccountId": "@ana:bipe.net.br",
+        "confirmationDeviceKey": "key-a",
+        "confirmedAt": 210,
+        "priorInPersonConfirmedAt": 120
+      },
+      "expected": {
+        "identity": "verified",
+        "verifiedName": "Ana Souza",
+        "contact": "confirmed",
+        "change": "device",
+        "warningKind": null
+      }
+    },
+    {
+      "name": "device-approval-cannot-create-relationship",
+      "input": {
+        "accountId": "@ana:bipe.net.br",
+        "deviceKey": "key-a",
+        "lifecycleKnown": true,
+        "deviceChangedAt": null,
+        "identityChangedAt": null,
+        "badgeStatus": "valid",
+        "badgeAccountId": "@ana:bipe.net.br",
+        "badgeDeviceKey": "key-a",
+        "badgeName": "Ana Souza",
+        "badgeIssuedAt": 100,
+        "confirmationMethod": "old_device_approval",
+        "confirmationAccountId": "@ana:bipe.net.br",
+        "confirmationDeviceKey": "key-a",
+        "confirmedAt": 120
+      },
+      "expected": {
+        "identity": "verified",
+        "verifiedName": "Ana Souza",
+        "contact": "unconfirmed",
+        "change": "none",
+        "warningKind": null
+      }
+    },
+    {
+      "name": "approval-cannot-use-future-personal-confirmation",
+      "input": {
+        "accountId": "@ana:bipe.net.br",
+        "deviceKey": "key-a",
+        "lifecycleKnown": true,
+        "deviceChangedAt": null,
+        "identityChangedAt": null,
+        "badgeStatus": "valid",
+        "badgeAccountId": "@ana:bipe.net.br",
+        "badgeDeviceKey": "key-a",
+        "badgeName": "Ana Souza",
+        "badgeIssuedAt": 100,
+        "confirmationMethod": "old_device_approval",
+        "confirmationAccountId": "@ana:bipe.net.br",
+        "confirmationDeviceKey": "key-a",
+        "confirmedAt": 120,
+        "priorInPersonConfirmedAt": 200
+      },
+      "expected": {
+        "identity": "verified",
+        "verifiedName": "Ana Souza",
+        "contact": "unconfirmed",
+        "change": "none",
+        "warningKind": null
+      }
+    },
+    {
+      "name": "identity-change-invalidates-both",
+      "input": {
+        "accountId": "@ana:bipe.net.br",
+        "deviceKey": "key-a",
+        "lifecycleKnown": true,
+        "deviceChangedAt": null,
+        "identityChangedAt": 150,
+        "badgeStatus": "valid",
+        "badgeAccountId": "@ana:bipe.net.br",
+        "badgeDeviceKey": "key-a",
+        "badgeName": "Ana Souza",
+        "badgeIssuedAt": 100,
+        "confirmationMethod": "in_person",
+        "confirmationAccountId": "@ana:bipe.net.br",
+        "confirmationDeviceKey": "key-a",
+        "confirmedAt": 120
+      },
+      "expected": {
+        "identity": "suspended",
+        "verifiedName": null,
+        "contact": "unconfirmed",
+        "change": "identity",
+        "warningKind": null
+      }
+    },
+    {
+      "name": "old-device-approval-cannot-hide-identity-change",
+      "input": {
+        "accountId": "@ana:bipe.net.br",
+        "deviceKey": "key-a",
+        "lifecycleKnown": true,
+        "deviceChangedAt": null,
+        "identityChangedAt": 150,
+        "badgeStatus": "valid",
+        "badgeAccountId": "@ana:bipe.net.br",
+        "badgeDeviceKey": "key-a",
+        "badgeName": "Ana Souza",
+        "badgeIssuedAt": 200,
+        "confirmationMethod": "old_device_approval",
+        "confirmationAccountId": "@ana:bipe.net.br",
+        "confirmationDeviceKey": "key-a",
+        "confirmedAt": 210,
+        "priorInPersonConfirmedAt": 120
+      },
+      "expected": {
+        "identity": "verified",
+        "verifiedName": "Ana Souza",
+        "contact": "unconfirmed",
+        "change": "identity",
+        "warningKind": null
+      }
+    },
+    {
+      "name": "approval-after-new-in-person-identity-check",
+      "input": {
+        "accountId": "@ana:bipe.net.br",
+        "deviceKey": "key-a",
+        "lifecycleKnown": true,
+        "deviceChangedAt": null,
+        "identityChangedAt": 150,
+        "badgeStatus": "valid",
+        "badgeAccountId": "@ana:bipe.net.br",
+        "badgeDeviceKey": "key-a",
+        "badgeName": "Ana Souza",
+        "badgeIssuedAt": 200,
+        "confirmationMethod": "old_device_approval",
+        "confirmationAccountId": "@ana:bipe.net.br",
+        "confirmationDeviceKey": "key-a",
+        "confirmedAt": 210,
+        "priorInPersonConfirmedAt": 180
+      },
+      "expected": {
+        "identity": "verified",
+        "verifiedName": "Ana Souza",
+        "contact": "confirmed",
+        "change": "identity",
+        "warningKind": null
+      }
+    },
+    {
+      "name": "wrong-account-personal-record",
+      "input": {
+        "accountId": "@ana:bipe.net.br",
+        "deviceKey": "key-a",
+        "lifecycleKnown": true,
+        "deviceChangedAt": null,
+        "identityChangedAt": null,
+        "badgeStatus": "valid",
+        "badgeAccountId": "@ana:bipe.net.br",
+        "badgeDeviceKey": "key-a",
+        "badgeName": "Ana Souza",
+        "badgeIssuedAt": 100,
+        "confirmationMethod": "in_person",
+        "confirmationAccountId": "@other:bipe.net.br",
+        "confirmationDeviceKey": "key-a",
+        "confirmedAt": 120
+      },
+      "expected": {
+        "identity": "verified",
+        "verifiedName": "Ana Souza",
+        "contact": "unconfirmed",
+        "change": "none",
+        "warningKind": null
+      }
+    },
+    {
+      "name": "wrong-device-personal-record",
+      "input": {
+        "accountId": "@ana:bipe.net.br",
+        "deviceKey": "key-a",
+        "lifecycleKnown": true,
+        "deviceChangedAt": null,
+        "identityChangedAt": null,
+        "badgeStatus": "valid",
+        "badgeAccountId": "@ana:bipe.net.br",
+        "badgeDeviceKey": "key-a",
+        "badgeName": "Ana Souza",
+        "badgeIssuedAt": 100,
+        "confirmationMethod": "in_person",
+        "confirmationAccountId": "@ana:bipe.net.br",
+        "confirmationDeviceKey": "key-other",
+        "confirmedAt": 120
+      },
+      "expected": {
+        "identity": "verified",
+        "verifiedName": "Ana Souza",
+        "contact": "unconfirmed",
+        "change": "none",
+        "warningKind": null
+      }
+    },
+    {
+      "name": "warning-on-confirmed-verified-contact",
+      "input": {
+        "accountId": "@ana:bipe.net.br",
+        "deviceKey": "key-a",
+        "lifecycleKnown": true,
+        "deviceChangedAt": null,
+        "identityChangedAt": null,
+        "badgeStatus": "valid",
+        "badgeAccountId": "@ana:bipe.net.br",
+        "badgeDeviceKey": "key-a",
+        "badgeName": "Ana Souza",
+        "badgeIssuedAt": 100,
+        "confirmationMethod": "in_person",
+        "confirmationAccountId": "@ana:bipe.net.br",
+        "confirmationDeviceKey": "key-a",
+        "confirmedAt": 120,
+        "warningKind": "pixKey"
+      },
+      "expected": {
+        "identity": "verified",
+        "verifiedName": "Ana Souza",
+        "contact": "confirmed",
+        "change": "none",
+        "warningKind": "pixKey"
+      }
+    },
+    {
+      "name": "warning-on-unverified-account",
+      "input": {
+        "accountId": "@ana:bipe.net.br",
+        "deviceKey": "key-a",
+        "lifecycleKnown": true,
+        "deviceChangedAt": null,
+        "identityChangedAt": null,
+        "warningKind": "urgency"
+      },
+      "expected": {
+        "identity": "unverified",
+        "verifiedName": null,
+        "contact": "unconfirmed",
+        "change": "none",
+        "warningKind": "urgency"
+      }
+    },
+    {
+      "name": "no-warning-has-no-safe-claim",
+      "input": {
+        "accountId": "@ana:bipe.net.br",
+        "deviceKey": "key-a",
+        "lifecycleKnown": true,
+        "deviceChangedAt": null,
+        "identityChangedAt": null,
+        "badgeStatus": "valid",
+        "badgeAccountId": "@ana:bipe.net.br",
+        "badgeDeviceKey": "key-a",
+        "badgeName": "Ana Souza",
+        "badgeIssuedAt": 100,
+        "confirmationMethod": "in_person",
+        "confirmationAccountId": "@ana:bipe.net.br",
+        "confirmationDeviceKey": "key-a",
+        "confirmedAt": 120,
+        "warningKind": null
+      },
+      "expected": {
+        "identity": "verified",
+        "verifiedName": "Ana Souza",
+        "contact": "confirmed",
+        "change": "none",
+        "warningKind": null
+      }
+    },
+    {
+      "name": "equal-time-badge-does-not-prove-after-change",
+      "input": {
+        "accountId": "@ana:bipe.net.br",
+        "deviceKey": "key-a",
+        "lifecycleKnown": true,
+        "deviceChangedAt": 100,
+        "identityChangedAt": null,
+        "badgeStatus": "valid",
+        "badgeAccountId": "@ana:bipe.net.br",
+        "badgeDeviceKey": "key-a",
+        "badgeName": "Ana Souza",
+        "badgeIssuedAt": 100
+      },
+      "expected": {
+        "identity": "suspended",
+        "verifiedName": null,
+        "contact": "unconfirmed",
+        "change": "device",
+        "warningKind": null
+      }
+    },
+    {
+      "name": "equal-time-confirmation-does-not-prove-after-change",
+      "input": {
+        "accountId": "@ana:bipe.net.br",
+        "deviceKey": "key-a",
+        "lifecycleKnown": true,
+        "deviceChangedAt": 120,
+        "identityChangedAt": null,
+        "badgeStatus": "valid",
+        "badgeAccountId": "@ana:bipe.net.br",
+        "badgeDeviceKey": "key-a",
+        "badgeName": "Ana Souza",
+        "badgeIssuedAt": 150,
+        "confirmationMethod": "in_person",
+        "confirmationAccountId": "@ana:bipe.net.br",
+        "confirmationDeviceKey": "key-a",
+        "confirmedAt": 120
+      },
+      "expected": {
+        "identity": "verified",
+        "verifiedName": "Ana Souza",
+        "contact": "unconfirmed",
+        "change": "device",
+        "warningKind": null
+      }
+    },
+    {
+      "name": "invalid-lifecycle-time",
+      "input": {
+        "accountId": "@ana:bipe.net.br",
+        "deviceKey": "key-a",
+        "lifecycleKnown": true,
+        "deviceChangedAt": -1,
+        "identityChangedAt": null,
+        "badgeStatus": "valid",
+        "badgeAccountId": "@ana:bipe.net.br",
+        "badgeDeviceKey": "key-a",
+        "badgeName": "Ana Souza",
+        "badgeIssuedAt": 100,
+        "confirmationMethod": "in_person",
+        "confirmationAccountId": "@ana:bipe.net.br",
+        "confirmationDeviceKey": "key-a",
+        "confirmedAt": 120
+      },
+      "expected": {
+        "identity": "unverified",
+        "verifiedName": null,
+        "contact": "unconfirmed",
+        "change": "unknown",
+        "warningKind": null
+      }
+    },
+    {
+      "name": "missing-badge-issue-time",
+      "input": {
+        "accountId": "@ana:bipe.net.br",
+        "deviceKey": "key-a",
+        "lifecycleKnown": true,
+        "deviceChangedAt": null,
+        "identityChangedAt": null,
+        "badgeStatus": "valid",
+        "badgeAccountId": "@ana:bipe.net.br",
+        "badgeDeviceKey": "key-a",
+        "badgeName": "Ana Souza",
+        "badgeIssuedAt": null
+      },
+      "expected": {
+        "identity": "unverified",
+        "verifiedName": null,
+        "contact": "unconfirmed",
+        "change": "none",
+        "warningKind": null
+      }
+    },
+    {
+      "name": "both-changes-with-fresh-proof",
+      "input": {
+        "accountId": "@ana:bipe.net.br",
+        "deviceKey": "key-a",
+        "lifecycleKnown": true,
+        "deviceChangedAt": 150,
+        "identityChangedAt": 170,
+        "badgeStatus": "valid",
+        "badgeAccountId": "@ana:bipe.net.br",
+        "badgeDeviceKey": "key-a",
+        "badgeName": "Ana Souza",
+        "badgeIssuedAt": 200,
+        "confirmationMethod": "in_person",
+        "confirmationAccountId": "@ana:bipe.net.br",
+        "confirmationDeviceKey": "key-a",
+        "confirmedAt": 210
+      },
+      "expected": {
+        "identity": "verified",
+        "verifiedName": "Ana Souza",
+        "contact": "confirmed",
+        "change": "device_and_identity",
+        "warningKind": null
+      }
+    },
+    {
+      "name": "unknown-warning-remains-a-warning",
+      "input": {
+        "accountId": "@ana:bipe.net.br",
+        "deviceKey": "key-a",
+        "lifecycleKnown": true,
+        "deviceChangedAt": null,
+        "identityChangedAt": null,
+        "badgeStatus": "valid",
+        "badgeAccountId": "@ana:bipe.net.br",
+        "badgeDeviceKey": "key-a",
+        "badgeName": "Ana Souza",
+        "badgeIssuedAt": 100,
+        "warningKind": "futureWarning"
+      },
+      "expected": {
+        "identity": "verified",
+        "verifiedName": "Ana Souza",
+        "contact": "unconfirmed",
+        "change": "none",
+        "warningKind": "futureWarning"
+      }
+    },
+    {
+      "name": "unknown-lifecycle-keeps-warning",
+      "input": {
+        "accountId": "@ana:bipe.net.br",
+        "deviceKey": "key-a",
+        "lifecycleKnown": false,
+        "deviceChangedAt": null,
+        "identityChangedAt": null,
+        "badgeStatus": "valid",
+        "badgeAccountId": "@ana:bipe.net.br",
+        "badgeDeviceKey": "key-a",
+        "badgeName": "Ana Souza",
+        "badgeIssuedAt": 100,
+        "confirmationMethod": "in_person",
+        "confirmationAccountId": "@ana:bipe.net.br",
+        "confirmationDeviceKey": "key-a",
+        "confirmedAt": 120,
+        "warningKind": "pixKey"
+      },
+      "expected": {
+        "identity": "unverified",
+        "verifiedName": null,
+        "contact": "unconfirmed",
+        "change": "unknown",
+        "warningKind": "pixKey"
+      }
+    }
+  ]
+}

@@ -373,7 +373,11 @@
       "figures": [
         "numero-novo",
         "falso-suporte",
-        "renda-extra"
+        "renda-extra",
+        "falso-advogado",
+        "pix-errado",
+        "comprovante-falso",
+        "boleto"
       ],
       "pt": {
         "name": "Aviso de golpe",

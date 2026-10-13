@@ -150,20 +150,45 @@ for (const s of scams.stats) {
   for (const l of ["pt", "en"]) for (const k of ["value", "label", "period"]) if (!s[l]?.[k]) fail(`scams stat ${s.id}: ${l}.${k}`);
   scamStats.add(s.id);
 }
-for (const id of [...scams.hero, ...scams.more, ...scams.types.flatMap((t) => t.stats)]) if (!scamStats.has(id)) fail(`scams: unknown stat ${id}`);
-// Types: one page each under /golpes-no-brasil/<slug>/. The first stat also shows on the hub.
+for (const id of [...scams.hero, ...scams.more, ...scams.types.flatMap((t) => t.stats ?? [])]) if (!scamStats.has(id)) fail(`scams: unknown stat ${id}`);
+// Types: one page each under /golpes-no-brasil/<slug>/ (bipe#175, the library of golpes). The first stat, if any,
+// also shows on the hub. A golpe with no measured figure has no stats: the doc says "no figure", the page shows none.
+// describedBy: official pages with the script (never press). protect: feature ids in product.json. scene: a figure id.
+const GROUPS = Object.keys(scams.pt?.groups ?? {});
+const CHANNELS = Object.keys(scams.pt?.channels ?? {});
+for (const l of ["en"]) for (const k of ["groups", "channels"]) if (JSON.stringify(Object.keys(scams[l]?.[k] ?? {})) !== JSON.stringify(Object.keys(scams.pt[k]))) fail(`scams.${l}.${k}: keys differ from pt`);
 const scamSlugs = new Set();
+const scamTypeIds = new Set();
 for (const t of scams.types) {
-  if (!t.stats?.length || !t.protect?.length) fail(`scams type ${t.id}: stats and protect`);
-  for (const f of t.protect) if (!scams.protect.some((p) => p.feature === f)) fail(`scams type ${t.id}: protect ${f} is not in scams.protect`);
+  if (!/^[a-z][A-Za-z]+$/.test(t.id) || scamTypeIds.has(t.id)) fail(`scams type ${t.id}: id`);
+  scamTypeIds.add(t.id);
+  if (!Array.isArray(t.stats) || !t.protect?.length) fail(`scams type ${t.id}: stats list and protect`);
+  for (const f of t.protect) if (!featureIds.has(f)) fail(`scams type ${t.id}: protect ${f} is not a feature in product.json`);
+  if (!GROUPS.includes(t.group)) fail(`scams type ${t.id}: group ${t.group}`);
+  if (!t.channels?.length || t.channels.some((c) => !CHANNELS.includes(c))) fail(`scams type ${t.id}: channels`);
+  if (!FIGURES.has(t.scene)) fail(`scams type ${t.id}: unknown scene ${t.scene}`);
+  if (!t.describedBy?.length) fail(`scams type ${t.id}: describedBy needs an official source`);
+  for (const id of t.describedBy) {
+    const src = scams.sources.find((x) => x.id === id);
+    if (!src || src.kind === "press") fail(`scams type ${t.id}: describedBy ${id} must be a known source that is not press`);
+  }
   for (const l of ["pt", "en"]) {
     if (!/^[a-z0-9-]+$/.test(t.slug?.[l] ?? "") || scamSlugs.has(`${l}/${t.slug[l]}`)) fail(`scams type ${t.id}: ${l} slug`);
     scamSlugs.add(`${l}/${t.slug[l]}`);
-    for (const k of ["heading", "body", "title", "headline", "lede"]) if (!t[l]?.[k]) fail(`scams type ${t.id}: ${l}.${k}`);
+    for (const k of ["heading", "body", "title", "headline", "lede", "limit"]) if (!t[l]?.[k]) fail(`scams type ${t.id}: ${l}.${k}`);
     for (const k of ["how", "signs", "todo"]) if (!t[l]?.[k]?.length) fail(`scams type ${t.id}: ${l}.${k}`);
+    if (!t.aliases?.[l]?.length || t.aliases[l].some((a) => !a)) fail(`scams type ${t.id}: aliases.${l}`);
   }
   for (const k of ["how", "signs", "todo"]) if (t.pt[k].length !== t.en[k].length) fail(`scams type ${t.id}: ${k} pt and en differ`);
 }
+// Outside Bipe: golpes that start by phone or in person. Each links an official page and has no Bipe card.
+const outsideIds = new Set();
+for (const o of scams.outside ?? []) {
+  if (outsideIds.has(o.id) || scamTypeIds.has(o.id) || !scamSources.has(o.source)) fail(`scams outside ${o.id}: id or source`);
+  for (const l of ["pt", "en"]) if (!o[l]?.name || !o[l]?.body) fail(`scams outside ${o.id}: ${l} copy`);
+  outsideIds.add(o.id);
+}
+if (!scams.outside?.length) fail("scams: outside list");
 if (scams.hero.length < 3 || scams.hero.length > 5) fail("scams: 3 to 5 hero numbers");
 const scamCharts = new Set();
 for (const c of scams.charts) {
@@ -180,7 +205,7 @@ for (const id of scams.channelCharts) if (!scamCharts.has(id)) fail(`scams: unkn
 for (const p of scams.protect) if (!featureIds.has(p.feature) || !p.pt || !p.en) fail(`scams protect ${p.feature}`);
 for (const l of ["pt", "en"]) {
   const c = scams[l];
-  for (const k of ["title", "headline", "lede", "numbersTitle", "channelsTitle", "channelsBody", "chartsTitle", "typesTitle", "moreTitle", "moreBody", "protectTitle", "protectLede", "bipeTitle", "bipeLede", "limit", "sourcesTitle", "sourcesNote", "source", "table", "typeNumbers", "typeHow", "typeSigns", "typeTodo", "typeOthers", "typeMore"]) if (!c?.[k]) fail(`scams.${l}.${k}`);
+  for (const k of ["title", "headline", "lede", "numbersTitle", "channelsTitle", "channelsBody", "chartsTitle", "typesTitle", "moreTitle", "moreBody", "protectTitle", "protectLede", "bipeTitle", "bipeLede", "limit", "sourcesTitle", "sourcesNote", "source", "table", "typeNumbers", "typeHow", "typeSigns", "typeTodo", "typeOthers", "typeMore", "typeAliases", "typeChannels", "typeDescribedBy", "typeDescribedByNote", "typeLimitTitle", "typeScene", "outsideTitle", "outsideLede", "outsideMore"]) if (!c?.[k]) fail(`scams.${l}.${k}`);
   for (const k of KINDS) if (!c.kinds?.[k]) fail(`scams.${l}.kinds.${k}`);
   if (!c.advice.length) fail(`scams.${l}.advice`);
 }
@@ -189,7 +214,7 @@ if (scams.pt.advice.length !== scams.en.advice.length) fail("scams: advice pt an
 const scamsCopy = JSON.stringify({ ...scams, $comment: undefined, sources: scams.sources.map((s) => ({ ...s, name: undefined })) });
 if (/[–—]/.test(JSON.stringify({ ...scams, $comment: undefined }))) fail("scams: rendered copy must not contain em or en dashes");
 if (/!/.test(scamsCopy.replace(/https:\/\/[^"]*/g, ""))) fail("scams: no exclamation marks");
-const scamsPt = JSON.stringify([scams.pt, scams.stats.map((s) => s.pt), scams.charts.map((c) => [c.pt, c.rows.map((r) => r.pt)]), scams.protect.map((p) => p.pt), scams.types.map((t) => t.pt)]);
+const scamsPt = JSON.stringify([scams.pt, scams.stats.map((s) => s.pt), scams.charts.map((c) => [c.pt, c.rows.map((r) => r.pt)]), scams.protect.map((p) => p.pt), scams.types.map((t) => [t.pt, t.aliases.pt]), scams.outside.map((o) => o.pt)]);
 if (/\b(fraudes?|fraudador\w*|perigo\w*|alerta\w*|aten[çc][ãa]o)\b/i.test(scamsPt)) fail("scams: pt copy says golpe, not fraude, and uses no fear words (language.md)");
 const text = JSON.stringify(product) + JSON.stringify(dist);
 if (/[–—]/.test(text)) fail("rendered copy must not contain em or en dashes");
@@ -275,6 +300,16 @@ const lines = [
   ...scams.hero.map((id) => scams.stats.find((s) => s.id === id)).map((s) => { const src = scams.sources.find((x) => x.id === s.source); return `| ${s.en.value} | ${s.en.label} | ${s.en.period} | [${src.publisher}](${src.url}) |`; }),
   "",
   `Charts: ${scams.charts.map((c) => `${c.en.title} (${c.sources.join(", ")})`).join("; ")}. Bipe features named: ${scams.protect.map((p) => p.feature).join(", ")}.`,
+  "",
+  "### Library of golpes",
+  "",
+  `${scams.types.length} golpes, one page each at \`/golpes-no-brasil/<slug>/\` (bipe#175). Figures: stat ids from the register, or "no figure" when no source measures the golpe. The page never shows a number without a source.`,
+  "",
+  "| Golpe | Group | Page (pt) | Figures | Described by | Bipe features | Scene |",
+  "|---|---|---|---|---|---|---|",
+  ...scams.types.map((t) => `| ${t.en.heading} (\`${t.id}\`) | ${t.group} | /golpes-no-brasil/${t.slug.pt}/ | ${t.stats.join(", ") || "no figure"} | ${t.describedBy.join(", ")} | ${t.protect.map((id) => `${id} (${label[product.features.find((f) => f.id === id).status.ios]})`).join(", ")} | ${t.scene} |`),
+  "",
+  `Outside Bipe (hub list, no Bipe card): ${scams.outside.map((o) => `${o.en.name} (${o.source})`).join("; ")}.`,
   "",
   "## Distribution",
   "",

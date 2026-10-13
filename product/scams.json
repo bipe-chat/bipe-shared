@@ -1,7 +1,7 @@
 {
   "$comment": "Scams in Brazil register: the page /golpes-no-brasil/ and /en/scams-in-brazil/. Research and conflicts: bipe/docs/scams-brazil.md. Every number in stats and charts has a source in sources, with a URL and a date. Never write a number that is not in a source. Bipe features in protect take their status from product.json. Validated by tools/gen-product-doc.mjs.",
   "version": 1,
-  "date": "2026-10-12",
+  "date": "2026-10-13",
   "sources": [
     { "id": "anuario2026", "name": "20º Anuário Brasileiro de Segurança Pública 2026", "publisher": "Fórum Brasileiro de Segurança Pública", "url": "https://forumseguranca.org.br/wp-content/uploads/2026/07/anuario-2026.pdf", "date": "2026-07", "kind": "primary" },
     { "id": "vitimizacao2025", "name": "Pesquisa de vitimização e percepção sobre violência e segurança pública 2025", "publisher": "Fórum Brasileiro de Segurança Pública e Datafolha", "url": "https://publicacoes.forumseguranca.org.br/server/api/core/bitstreams/33ed3320-fc11-45f9-a909-ed69eba48cfd/content", "date": "2025-08", "kind": "primary" },
@@ -9,7 +9,56 @@
     { "id": "cetic2025", "name": "Privacidade e proteção de dados pessoais 2025, resumo executivo", "publisher": "Cetic.br, NIC.br e CGI.br", "url": "https://cetic.br/media/docs/publicacoes/2/pt-br/20260831092525/PRIVACIDADE_2025_RE%20PT.pdf", "date": "2026-08-31", "kind": "primary" },
     { "id": "datasenado2024", "name": "Panorama Político 2024: golpes digitais atingem 24% dos brasileiros", "publisher": "Instituto DataSenado", "url": "https://www12.senado.leg.br/institucional/datasenado/publicacaodatasenado?id=golpes-digitais-atingem-24-dos-brasileiros-aponta-21a-edicao-da-pesquisa-panorama-politico", "date": "2024-10-01", "kind": "primary" },
     { "id": "febraban2025", "name": "Golpe da Falsa Venda é o mais aplicado contra clientes bancários no 1º semestre do ano", "publisher": "Febraban", "url": "https://portal.febraban.org.br/noticia/4381/pt-br/", "date": "2025-11-11", "kind": "primary" },
-    { "id": "gasa2026", "name": "State of Scams in Brazil 2026", "publisher": "Global Anti-Scam Alliance", "url": "https://gasa.org/knowledge-base/reports/state-of-scams-in-brazil-2026", "date": "2026-08-06", "kind": "secondary" }
+    { "id": "gasa2026", "name": "State of Scams in Brazil 2026", "publisher": "Global Anti-Scam Alliance", "url": "https://gasa.org/knowledge-base/reports/state-of-scams-in-brazil-2026", "date": "2026-08-06", "kind": "secondary" },
+    { "id": "glossario2025", "name": "Glossário de Tipologias de Fraudes e Golpes Digitais", "publisher": "Ministério da Justiça e Segurança Pública e Febraban (Aliança Nacional de Combate a Fraudes Bancárias Digitais)", "url": "https://www.gov.br/mj/pt-br/assuntos/alianca-nacional-de-combate-a-fraudes-bancarias-digitais/glossario_final_iniciativa_1-8_v10.pdf", "date": "2025-10", "kind": "primary" },
+    { "id": "febWhatsapp", "name": "Golpe do Whatsapp", "publisher": "Febraban", "url": "https://portal.febraban.org.br/DetalheAntifraude/7/pt-br/", "date": "2025-01-21", "kind": "primary" },
+    { "id": "febZap", "name": "Alguém te pedindo dinheiro pelo Zap?", "publisher": "Febraban", "url": "https://portal.febraban.org.br/DetalheAntifraude/18/pt-br/", "date": "2026-01-14", "kind": "primary" },
+    { "id": "febZapCodigo", "name": "Golpe do Zap tem contragolpe", "publisher": "Febraban", "url": "https://portal.febraban.org.br/DetalheAntifraude/17/pt-br/", "date": "2025-07-14", "kind": "primary" },
+    { "id": "febFalsaCentral", "name": "Golpe da falsa central de atendimento", "publisher": "Febraban", "url": "https://portal.febraban.org.br/DetalheAntifraude/2/pt-br/", "date": "2025-01-21", "kind": "primary" },
+    { "id": "febContaInvadida", "name": "Te ligaram dizendo que sua conta foi invadida e pediram sua senha?", "publisher": "Febraban", "url": "https://portal.febraban.org.br/DetalheAntifraude/15/pt-br/", "date": "2026-01-14", "kind": "primary" },
+    { "id": "febMaoFantasma", "name": "Golpe acesso remoto ou mão fantasma", "publisher": "Febraban", "url": "https://portal.febraban.org.br/DetalheAntifraude/9/pt-br/", "date": "2025-01-21", "kind": "primary" },
+    { "id": "febLink", "name": "Golpe do link falso (Phishing - Pescaria Digital)", "publisher": "Febraban", "url": "https://portal.febraban.org.br/DetalheAntifraude/8/pt-br/", "date": "2025-01-21", "kind": "primary" },
+    { "id": "febPixErrado", "name": "Golpe do Pix errado", "publisher": "Febraban", "url": "https://portal.febraban.org.br/DetalheAntifraude/1/pt-br/", "date": "2025-01-21", "kind": "primary" },
+    { "id": "febEmprestimo", "name": "Golpe do falso empréstimo", "publisher": "Febraban", "url": "https://portal.febraban.org.br/DetalheAntifraude/10/pt-br/", "date": "2025-01-21", "kind": "primary" },
+    { "id": "febInvestimento", "name": "Golpe do falso investimento", "publisher": "Febraban", "url": "https://portal.febraban.org.br/DetalheAntifraude/11/pt-br/", "date": "2025-01-21", "kind": "primary" },
+    { "id": "febFalsaVenda", "name": "Golpe Falsa Venda", "publisher": "Febraban", "url": "https://portal.febraban.org.br/DetalheAntifraude/13/pt-br/", "date": "2025-04-05", "kind": "primary" },
+    { "id": "febBoleto", "name": "Golpe Falso Boleto", "publisher": "Febraban", "url": "https://portal.febraban.org.br/DetalheAntifraude/14/pt-br/", "date": "2025-04-05", "kind": "primary" },
+    { "id": "febAdvogado", "name": "Golpe do falso advogado", "publisher": "Febraban", "url": "https://portal.febraban.org.br/DetalheAntifraude/19/pt-br/", "date": "2026-10-13", "kind": "primary" },
+    { "id": "febMotoboy", "name": "Golpe do falso motoboy", "publisher": "Febraban", "url": "https://portal.febraban.org.br/DetalheAntifraude/3/pt-br/", "date": "2025-01-21", "kind": "primary" },
+    { "id": "febTrocaCartao", "name": "Golpe da troca de cartão", "publisher": "Febraban", "url": "https://portal.febraban.org.br/DetalheAntifraude/4/pt-br/", "date": "2025-01-21", "kind": "primary" },
+    { "id": "febMaquininha", "name": "Golpe da maquininha quebrada", "publisher": "Febraban", "url": "https://portal.febraban.org.br/DetalheAntifraude/5/pt-br/", "date": "2025-01-21", "kind": "primary" },
+    { "id": "febTarefa", "name": "Febraban alerta para o golpe da tarefa", "publisher": "Febraban", "url": "https://portal.febraban.org.br/noticia/4051/pt-br/", "date": "2024-01-10", "kind": "primary" },
+    { "id": "febCompras", "name": "Veja 10 dicas para fazer compras seguras no Dia das Crianças", "publisher": "Febraban", "url": "https://portal.febraban.org.br/noticia/4504/pt-br/", "date": "2026-10-06", "kind": "primary" },
+    { "id": "oabCampanha", "name": "OAB lança campanha nacional e plataforma de verificação contra 'golpe do falso advogado'", "publisher": "Ordem dos Advogados do Brasil", "url": "https://www.oab.org.br/noticia/63063/oab-lanca-campanha-nacional-e-plataforma-de-verificacao-contra-golpe-do-falso-advogado", "date": "2025-04-29", "kind": "primary" },
+    { "id": "oabsp2026", "name": "Golpe do falso advogado já soma 4.388 denúncias e acende alerta em todo o país", "publisher": "OAB São Paulo", "url": "https://www.oabsp.org.br/jornaldaadvocacia/26-02-06-1718-golpe-do-falso-advogado-ja-soma-4388-denuncias-e-acende-alerta-em-todo-o-pais", "date": "2026-02-06", "kind": "primary" },
+    { "id": "bcbValores", "name": "Valores a Receber: Consultas foram retomadas", "publisher": "Banco Central do Brasil", "url": "https://www.bcb.gov.br/detalhenoticia/609/noticia", "date": "2022-02-15", "kind": "primary" },
+    { "id": "bcbPix", "name": "Segurança no Pix", "publisher": "Banco Central do Brasil", "url": "https://www.bcb.gov.br/estabilidadefinanceira/pix-seguranca", "date": "2026-10-13", "kind": "primary" },
+    { "id": "bcbMed2025", "name": "Aprimoramentos no MED: MED 2.0 (Circuito Pix)", "publisher": "Banco Central do Brasil", "url": "https://www.bcb.gov.br/content/estabilidadefinanceira/pix/MED/MED_2-0_Circuito_Pix-Dia_1.pdf", "date": "2025-10-14", "kind": "primary" },
+    { "id": "inssSms", "name": "INSS não envia SMS para informar sobre corte de benefício por falta de Prova de Vida", "publisher": "INSS", "url": "https://www.gov.br/inss/pt-br/assuntos/noticias/inss-nao-envia-sms-para-informar-sobre-corte-de-beneficio-por-falta-de-prova-de-vida", "date": "2026-08-12", "kind": "primary" },
+    { "id": "inssLinks", "name": "Alerta de golpe: jamais clique em links suspeitos", "publisher": "INSS", "url": "https://www.gov.br/inss/pt-br/assuntos/noticias/alerta-de-golpe-jamais-clique-em-links-suspeitos", "date": "2026-08-31", "kind": "primary" },
+    { "id": "detranPr", "name": "Detran-PR alerta para golpe com mensagens falsas referentes à suspensão da CNH", "publisher": "Detran-PR", "url": "https://www.detran.pr.gov.br/Noticia/Detran-PR-alerta-para-golpe-com-mensagens-falsas-referentes-suspensao-da-CNH", "date": "2024-11-19", "kind": "primary" },
+    { "id": "correiosFalsas", "name": "Mensagens falsas sobre encomendas", "publisher": "Correios", "url": "https://www.correios.com.br/central-de-informacoes/boletim-aos-clientes/mensagens-falsas-sobre-encomendas", "date": "2026-10-13", "kind": "primary" },
+    { "id": "correiosSeguranca", "name": "Segurança", "publisher": "Correios", "url": "https://www.correios.com.br/falecomoscorreios/seguranca", "date": "2026-10-13", "kind": "primary" },
+    { "id": "proconQr", "name": "Procon-SP orienta consumidores sobre novo golpe que altera QR Code do Pix em compras online", "publisher": "Procon-SP", "url": "https://www.procon.sp.gov.br/procon-sp-orienta-consumidores-sobre-novo-golpe-que-altera-qr-code-do-pix-em-compras-online/", "date": "2026-09-16", "kind": "primary" },
+    { "id": "proconEvite", "name": "Evite esses sites", "publisher": "Procon-SP", "url": "https://sistemas.procon.sp.gov.br/evitesite/list/evitesites.php", "date": "2026-05-12", "kind": "primary" },
+    { "id": "proconValinhos", "name": "Procon alerta fornecedores sobre golpe do pix agendado e fraude no comprovante de pagamento", "publisher": "Prefeitura de Valinhos (Procon Valinhos)", "url": "https://www.valinhos.sp.gov.br/portal/noticias/0/3/56373/procon-alerta-fornecedores-sobre-golpe-do-pix-agendado-e-fraude-no-comprovante-de-pagamento/", "date": "2026-10-13", "kind": "primary" },
+    { "id": "pcprAluguel", "name": "PCPR reforça orientações contra o golpe do falso aluguel no Carnaval", "publisher": "Governo do Paraná (Polícia Civil do Paraná)", "url": "https://www.parana.pr.gov.br/Audio/PCPR-reforca-orientacoes-contra-o-golpe-do-falso-aluguel-no-Carnaval", "date": "2026-02-02", "kind": "primary" },
+    { "id": "cvmIrregulares", "name": "Ofertas / Atuações irregulares", "publisher": "Comissão de Valores Mobiliários (CVM)", "url": "https://www.gov.br/cvm/pt-br/assuntos/protecao/alertas/ofertas-atuacoes-irregulares", "date": "2025-08-08", "kind": "primary" },
+    { "id": "cvmStopOrders", "name": "Número de stop orders quase triplica de 2024 para 2025", "publisher": "Comissão de Valores Mobiliários (CVM)", "url": "https://www.gov.br/cvm/pt-br/assuntos/noticias/2026/numero-de-stop-orders-quase-triplica-de-2024-para-2025/", "date": "2026-04-09", "kind": "primary" },
+    { "id": "fazendaApostas", "name": "Medida Provisória nº 1.394/2026: entenda as novas regras para as apostas de quota fixa", "publisher": "Ministério da Fazenda (Secretaria de Prêmios e Apostas)", "url": "https://www.gov.br/fazenda/pt-br/composicao/orgaos/secretaria-de-premios-e-apostas/medida-provisoria-ndeg-1-394-2026-entenda-as-novas-regras-para-as-apostas-de-quota-fixa", "date": "2026-10-07", "kind": "primary" },
+    { "id": "anatelGolpes", "name": "Golpes atuais mais comuns", "publisher": "Anatel", "url": "https://www.gov.br/anatel/pt-br/assuntos/dicas-contra-fraudes/golpes-atuais-mais-comuns", "date": "2026-04-30", "kind": "primary" },
+    { "id": "certFraudes", "name": "Golpes: Evite Fraudes (Cartilha de Segurança para Internet)", "publisher": "CERT.br, NIC.br", "url": "https://cartilha.cert.br/fasciculos/golpes-evite-fraudes/fasciculo-golpes-evite-fraudes.pdf", "date": "2026-03", "kind": "primary" },
+    { "id": "certCaiu", "name": "Golpes: Caiu? Veja o que Fazer (Cartilha de Segurança para Internet)", "publisher": "CERT.br, NIC.br", "url": "https://cartilha.cert.br/fasciculos/golpes-o-que-fazer/fasciculo-golpes-o-que-fazer.pdf", "date": "2026-05", "kind": "primary" },
+    { "id": "pcprAmeaca", "name": "Golpes por mensagens: PCPR reforça orientações à população sobre falsas ameaças", "publisher": "Polícia Civil do Paraná", "url": "https://www.policiacivil.pr.gov.br/Noticia/Golpes-por-mensagens-PCPR-reforca-orientacoes-populacao-sobre-falsas-ameacas", "date": "2025-10-14", "kind": "primary" },
+    { "id": "pcscCartilha", "name": "O golpe tá aí. Cai quem não se informa. Cartilha de prevenção contra golpes", "publisher": "Polícia Civil de Santa Catarina", "url": "https://pc.sc.gov.br/wp-content/uploads/2024/04/Cartilha-Prevencao-Golpes-1.pdf", "date": "2024-01", "kind": "primary" },
+    { "id": "sspspCartilha", "name": "Cartilha Golpe Tô Fora", "publisher": "Secretaria da Segurança Pública de São Paulo", "url": "https://www.ssp.sp.gov.br/midia/Midia/00000349.pdf", "date": "2020-07", "kind": "primary" },
+    { "id": "pcprSequestro", "name": "PCPR orienta população sobre golpes de falso sequestro no verão", "publisher": "Polícia Civil do Paraná", "url": "https://www.policiacivil.pr.gov.br/Noticia/PCPR-orienta-populacao-sobre-golpes-de-falso-sequestro-no-verao", "date": "2020-12-26", "kind": "primary" },
+    { "id": "safernetSextorsao", "name": "O que é sextorsão?", "publisher": "SaferNet Brasil", "url": "https://new.safernet.org.br/content/o-que-%C3%A9-sextors%C3%A3o", "date": "2026-10-13", "kind": "primary" },
+    { "id": "safernetHelpline", "name": "Canal de Ajuda (Helpline)", "publisher": "SaferNet Brasil", "url": "https://new.safernet.org.br/helpline", "date": "2026-10-13", "kind": "primary" },
+    { "id": "safernetIndicadores", "name": "Indicadores do Canal de Ajuda", "publisher": "SaferNet Brasil", "url": "https://indicadores.safernet.org.br/helpline/helplineviz/helpchart-page.html", "date": "2026-10-13", "kind": "primary" },
+    { "id": "pcprSextorsao", "name": "Alguém está exigindo dinheiro para não divulgar conteúdo íntimo para meus contatos", "publisher": "Polícia Civil do Paraná", "url": "https://www.policiacivil.pr.gov.br/golpeExtorsaoSexual", "date": "2026-10-13", "kind": "primary" },
+    { "id": "aenAmor", "name": "Dia dos Namorados: PCPR alerta para golpes amorosos e orienta sobre formas de prevenção", "publisher": "Governo do Paraná (Polícia Civil do Paraná)", "url": "https://www.parana.pr.gov.br/aen/Noticia/Dia-dos-Namorados-PCPR-alerta-para-golpes-amorosos-e-orienta-sobre-formas-de-prevencao", "date": "2026-06-12", "kind": "primary" },
+    { "id": "pcspPerguntas", "name": "Delitos praticados por meios eletrônicos: perguntas e respostas", "publisher": "Polícia Civil do Estado de São Paulo", "url": "https://www.policiacivil.sp.gov.br/portal/imagens/CRIMES%20CIBERN%C3%89TICOS%20-%20PERGUNTAS%20E%20RESPOSTAS%20V2.pdf", "date": "2021-01", "kind": "primary" }
   ],
   "hero": ["records2025", "lostMoney", "messagingApps", "pixLoss", "noCourt"],
   "stats": [
@@ -94,7 +143,42 @@
     { "id": "fakeShopShare", "source": "vitimizacao2025", "pt": {"value": "17,7%", "label": "dos brasileiros de 16 anos ou mais pagaram por uma compra na internet que nunca chegou, o golpe que tirou dinheiro de mais gente", "period": "jul. 2024 a jun. 2025"}, "en": {"value": "17.7%", "label": "of Brazilians aged 16 or older paid for an online purchase that never arrived, the scam that took money from the most people", "period": "Jul 2024 to Jun 2025"}},
     { "id": "fakeShopAverage", "source": "vitimizacao2025", "pt": {"value": "R$ 446", "label": "foi a perda média de quem pagou e não recebeu", "period": "jul. 2024 a jun. 2025"}, "en": {"value": "R$ 446", "label": "was the mean loss of people who paid and got nothing", "period": "Jul 2024 to Jun 2025"}},
     { "id": "fakeShopLoss", "source": "vitimizacao2025", "pt": {"value": "R$ 13,3 bilhões", "label": "perdidos com compras pagas e não entregues, na estimativa da pesquisa", "period": "jul. 2024 a jun. 2025"}, "en": {"value": "R$ 13.3 billion", "label": "lost to purchases paid and never delivered, as the survey estimates", "period": "Jul 2024 to Jun 2025"}},
-    { "id": "threatsPaid", "source": "vitimizacao2025", "pt": {"value": "27%", "label": "de quem recebeu esse tipo de ligação acabou transferindo dinheiro", "period": "jul. 2024 a jun. 2025"}, "en": {"value": "27%", "label": "of people who got this kind of call ended up transferring money", "period": "Jul 2024 to Jun 2025"}}
+    { "id": "threatsPaid", "source": "vitimizacao2025", "pt": {"value": "27%", "label": "de quem recebeu esse tipo de ligação acabou transferindo dinheiro", "period": "jul. 2024 a jun. 2025"}, "en": {"value": "27%", "label": "of people who got this kind of call ended up transferring money", "period": "Jul 2024 to Jun 2025"}},
+    {
+      "id": "investShare", "source": "vitimizacao2025",
+      "pt": { "value": "7,4%", "label": "dos brasileiros de 16 anos ou mais perderam dinheiro num investimento que viram anunciado na internet", "period": "jul. 2024 a jun. 2025" },
+      "en": { "value": "7.4%", "label": "of Brazilians aged 16 or older lost money on an investment they saw advertised online", "period": "Jul 2024 to Jun 2025" }
+    },
+    {
+      "id": "investAverage", "source": "vitimizacao2025",
+      "pt": { "value": "R$ 717", "label": "foi a perda média de quem caiu num investimento anunciado na internet", "period": "jul. 2024 a jun. 2025" },
+      "en": { "value": "R$ 717", "label": "was the mean loss of people who fell for an investment advertised online", "period": "Jul 2024 to Jun 2025" }
+    },
+    {
+      "id": "investLoss", "source": "vitimizacao2025",
+      "pt": { "value": "R$ 8,9 bilhões", "label": "perdidos em investimentos anunciados na internet, na estimativa da pesquisa", "period": "jul. 2024 a jun. 2025" },
+      "en": { "value": "R$ 8.9 billion", "label": "lost on investments advertised online, as the survey estimates", "period": "Jul 2024 to Jun 2025" }
+    },
+    {
+      "id": "cvmStopOrders", "source": "cvmStopOrders",
+      "pt": { "value": "37", "label": "ordens da CVM para parar uma oferta ou atuação irregular no mercado em 2025, quase o triplo de 2024 (13)", "period": "2025" },
+      "en": { "value": "37", "label": "CVM orders to stop an irregular offer or activity in the market in 2025, almost three times 2024 (13)", "period": "2025" }
+    },
+    {
+      "id": "oabsp", "source": "oabsp2026",
+      "pt": { "value": "4.388", "label": "denúncias do golpe do falso advogado à OAB de São Paulo, em pouco mais de um ano e meio", "period": "até fev. 2026" },
+      "en": { "value": "4,388", "label": "reports of the fake lawyer scam to the São Paulo bar association, in a little over a year and a half", "period": "to Feb 2026" }
+    },
+    {
+      "id": "medRecovered", "source": "bcbMed2025",
+      "pt": { "value": "9,3%", "label": "do valor contestado no MED, o mecanismo de devolução do Pix, voltou em média para as vítimas", "period": "2025" },
+      "en": { "value": "9.3%", "label": "of the value disputed through MED, the Pix refund mechanism, went back to victims on average", "period": "2025" }
+    },
+    {
+      "id": "intimateImages", "source": "safernetIndicadores",
+      "pt": { "value": "266", "label": "pedidos de ajuda sobre exposição de imagens íntimas ao canal da SaferNet, o tema mais procurado do ano", "period": "2024" },
+      "en": { "value": "266", "label": "requests for help with exposed intimate images to SaferNet's helpline, the most common topic of the year", "period": "2024" }
+    }
   ],
   "more": ["datasenado24", "medo158", "fear"],
   "channelCharts": ["channels", "platforms"],
@@ -176,15 +260,37 @@
         "pt": "golpe-do-falso-parente",
         "en": "fake-relative-scam"
       },
+      "group": "pessoa",
+      "channels": [
+        "messaging"
+      ],
+      "aliases": {
+        "pt": [
+          "oi mãe, troquei de número",
+          "golpe do número novo",
+          "golpe do WhatsApp",
+          "golpe do filho"
+        ],
+        "en": [
+          "hi mum I changed my number",
+          "new number scam"
+        ]
+      },
+      "scene": "numero-novo",
       "stats": [
         "familyData",
         "whatsappBanks",
         "messagingApps"
       ],
+      "describedBy": [
+        "glossario2025",
+        "febZap",
+        "febZapCodigo"
+      ],
       "protect": [
+        "requests",
         "family-check",
         "scam-alerts",
-        "requests",
         "money-pause"
       ],
       "pt": {
@@ -210,7 +316,8 @@
           "Faça uma pergunta que só a pessoa sabe responder.",
           "Já pagou? Fale com o seu banco na hora e peça o MED, o mecanismo de devolução do Pix. Depois faça o boletim de ocorrência.",
           "Avise a família e a pessoa que teve o nome e a foto usados."
-        ]
+        ],
+        "limit": "A pessoa ainda pode aceitar o pedido e pagar depois da pausa. O Bipe avisa, não segura o seu dinheiro."
       },
       "en": {
         "heading": "Fake relative",
@@ -235,7 +342,8 @@
           "Ask a question only that person can answer.",
           "Already paid? Talk to your bank at once and ask for MED, the Pix refund mechanism. Then file a police report.",
           "Tell the family and the person whose name and photo were used."
-        ]
+        ],
+        "limit": "The person can still accept the request and pay after the pause. Bipe warns, it does not hold your money."
       }
     },
     {
@@ -244,14 +352,39 @@
         "pt": "golpe-do-numero-clonado",
         "en": "cloned-number-scam"
       },
+      "group": "pessoa",
+      "channels": [
+        "sms",
+        "messaging",
+        "carrier"
+      ],
+      "aliases": {
+        "pt": [
+          "número clonado",
+          "WhatsApp clonado",
+          "conta sequestrada",
+          "golpe do código"
+        ],
+        "en": [
+          "cloned number",
+          "hijacked account"
+        ]
+      },
+      "scene": "aparelho-novo",
       "stats": [
         "cloned",
         "clonedLoss",
         "profileTaken",
         "posedAs"
       ],
+      "describedBy": [
+        "febWhatsapp",
+        "glossario2025",
+        "pcspPerguntas"
+      ],
       "protect": [
         "no-sms",
+        "new-phone",
         "verified-badge",
         "family-check"
       ],
@@ -278,7 +411,8 @@
           "Ligue a confirmação em duas etapas no seu app de mensagem.",
           "Perdeu a conta? Avise seus contatos por outro caminho e peça para ninguém mandar dinheiro.",
           "Se o chip parou de funcionar do nada, fale com a operadora na hora. Depois faça o boletim de ocorrência."
-        ]
+        ],
+        "limit": "O Bipe não protege a sua conta em outros apps. Alguém ainda pode tentar pegar a sua senha de 8 números com conversa."
       },
       "en": {
         "heading": "Taken number or account",
@@ -303,7 +437,8 @@
           "Turn on two-step verification in your messaging app.",
           "Lost the account? Tell your contacts another way and ask them not to send money.",
           "If your SIM card stopped working out of nowhere, call your carrier at once. Then file a police report."
-        ]
+        ],
+        "limit": "Bipe does not protect your account in other apps. Someone can still try to talk you out of your 8-digit PIN."
       }
     },
     {
@@ -312,12 +447,38 @@
         "pt": "golpe-da-falsa-central",
         "en": "fake-bank-call-scam"
       },
+      "group": "instituicao",
+      "channels": [
+        "call",
+        "messaging",
+        "sms"
+      ],
+      "aliases": {
+        "pt": [
+          "falsa central",
+          "falso funcionário do banco",
+          "golpe da conta segura",
+          "golpe do 0800"
+        ],
+        "en": [
+          "fake bank call",
+          "safe account scam"
+        ]
+      },
+      "scene": "falso-suporte",
       "stats": [
         "fakeCall",
         "fakeCallAttempts"
       ],
+      "describedBy": [
+        "febFalsaCentral",
+        "febContaInvadida",
+        "glossario2025"
+      ],
       "protect": [
-        "verified-badge",
+        "reserved-names",
+        "lookalikes",
+        "cnpj-badge",
         "requests",
         "scam-alerts"
       ],
@@ -343,7 +504,8 @@
           "Desligue e ligue você para o número que está atrás do cartão ou no app do banco.",
           "Não instale nenhum app que pedirem por ligação ou mensagem.",
           "Já passou dados ou dinheiro? Fale com o banco na hora, bloqueie o cartão e faça o boletim de ocorrência."
-        ]
+        ],
+        "limit": "A maioria começa por ligação de telefone, e o Bipe não tem como agir ali."
       },
       "en": {
         "heading": "Fake bank call centre",
@@ -367,7 +529,8 @@
           "Hang up and call the number on the back of your card or in the bank app yourself.",
           "Do not install any app someone asks for by call or message.",
           "Already gave data or money? Talk to the bank at once, block the card and file a police report."
-        ]
+        ],
+        "limit": "Most of these start with a phone call, and Bipe cannot act there."
       }
     },
     {
@@ -376,15 +539,39 @@
         "pt": "golpe-do-pix",
         "en": "pix-scam"
       },
+      "group": "dinheiro",
+      "channels": [
+        "messaging",
+        "email"
+      ],
+      "aliases": {
+        "pt": [
+          "golpe do Pix",
+          "QR code trocado",
+          "chave Pix trocada"
+        ],
+        "en": [
+          "Pix scam",
+          "swapped QR code"
+        ]
+      },
+      "scene": "pix-errado",
       "stats": [
         "pixAverage",
         "pixShare",
         "pixLoss",
         "pixAttempts"
       ],
+      "describedBy": [
+        "bcbPix",
+        "proconQr",
+        "febPixErrado"
+      ],
       "protect": [
         "money-pause",
-        "scam-alerts"
+        "scam-alerts",
+        "pix-cards",
+        "pix-charges"
       ],
       "pt": {
         "heading": "Pix e boleto falso",
@@ -409,7 +596,8 @@
           "Confira no app do seu banco se o dinheiro caiu. Print não prova pagamento.",
           "Recebeu um Pix por engano? Devolva só pelo botão de devolução no app do banco, nunca para outra chave.",
           "Caiu no golpe? Fale com o seu banco na hora e peça o MED, o mecanismo de devolução do Pix. Depois faça o boletim de ocorrência."
-        ]
+        ],
+        "limit": "O Pix acontece no app do banco. O Bipe avisa na conversa e mostra o nome certo no pedido de Pix, mas quem paga é você."
       },
       "en": {
         "heading": "Pix and fake boleto",
@@ -434,7 +622,8 @@
           "Check in your bank app that the money arrived. A screenshot does not prove payment.",
           "Got a Pix by mistake? Return it only with the refund button in the bank app, never to another key.",
           "Fell for it? Talk to your bank at once and ask for MED, the Pix refund mechanism. Then file a police report."
-        ]
+        ],
+        "limit": "The Pix happens in your bank app. Bipe warns in the chat and shows the right name on a Pix request, but you make the payment."
       }
     },
     {
@@ -443,14 +632,39 @@
         "pt": "golpe-da-loja-falsa",
         "en": "fake-shop-scam"
       },
+      "group": "compra",
+      "channels": [
+        "ad",
+        "social",
+        "messaging"
+      ],
+      "aliases": {
+        "pt": [
+          "loja falsa",
+          "site falso",
+          "loja fake",
+          "golpe da promoção"
+        ],
+        "en": [
+          "fake shop",
+          "fake store"
+        ]
+      },
+      "scene": "loja-falsa",
       "stats": [
         "fakeShopShare",
         "fakeSale",
         "fakeShopAverage",
         "fakeShopLoss"
       ],
+      "describedBy": [
+        "febFalsaVenda",
+        "febCompras",
+        "proconEvite"
+      ],
       "protect": [
-        "verified-badge",
+        "cnpj-badge",
+        "pix-charges",
         "scam-alerts",
         "money-pause"
       ],
@@ -476,7 +690,8 @@
           "Antes de comprar, pesquise o nome da loja e o CNPJ.",
           "Prefira pagar pelo próprio site de vendas, com cartão.",
           "Caiu no golpe? Fale com o seu banco, peça o MED se pagou por Pix e faça o boletim de ocorrência."
-        ]
+        ],
+        "limit": "O anúncio fica no Instagram, no Google ou em outro site. O Bipe vê só a parte da conversa."
       },
       "en": {
         "heading": "Fake shop",
@@ -500,7 +715,8 @@
           "Before you buy, search the shop's name and CNPJ.",
           "Pay through the marketplace itself, by card, when you can.",
           "Fell for it? Talk to your bank, ask for MED if you paid by Pix and file a police report."
-        ]
+        ],
+        "limit": "The ad is on Instagram, Google or another site. Bipe only sees the chat part."
       }
     },
     {
@@ -509,9 +725,31 @@
         "pt": "golpe-da-ameaca",
         "en": "threat-scam"
       },
+      "group": "grupo",
+      "channels": [
+        "call",
+        "messaging"
+      ],
+      "aliases": {
+        "pt": [
+          "golpe da facção",
+          "ameaça com dados",
+          "sei onde você mora"
+        ],
+        "en": [
+          "threat scam",
+          "extortion with your data"
+        ]
+      },
+      "scene": "ameaca",
       "stats": [
         "threats",
         "threatsPaid"
+      ],
+      "describedBy": [
+        "pcprAmeaca",
+        "pcscCartilha",
+        "glossario2025"
       ],
       "protect": [
         "requests",
@@ -539,7 +777,8 @@
           "Desligue. Ter os seus dados não prova que a ameaça é real.",
           "Ligue para o parente citado num número que você já tinha.",
           "Não pague. Faça o boletim de ocorrência e, se tiver risco, ligue 190."
-        ]
+        ],
+        "limit": "O vazamento dos seus dados aconteceu em outro lugar. O Bipe não apaga esses dados."
       },
       "en": {
         "heading": "Threats with your data",
@@ -563,14 +802,1925 @@
           "Hang up. Having your data does not prove the threat is real.",
           "Call the relative they named on a number you already had.",
           "Do not pay. File a police report and, if there is a risk, call 190."
+        ],
+        "limit": "Your data leaked somewhere else. Bipe cannot erase it."
+      }
+    },
+    {
+      "id": "fakeAcquaintance",
+      "slug": {
+        "pt": "golpe-do-falso-conhecido",
+        "en": "fake-acquaintance-scam"
+      },
+      "group": "pessoa",
+      "channels": [
+        "messaging",
+        "social"
+      ],
+      "aliases": {
+        "pt": [
+          "golpe do falso chefe",
+          "golpe do perfil clonado",
+          "golpe da foto copiada"
+        ],
+        "en": [
+          "fake boss scam",
+          "cloned profile scam"
         ]
+      },
+      "scene": "falso-chefe",
+      "stats": [
+        "posedAs"
+      ],
+      "describedBy": [
+        "glossario2025",
+        "febZap",
+        "febWhatsapp"
+      ],
+      "protect": [
+        "requests",
+        "verified-badge",
+        "scam-alerts",
+        "money-pause"
+      ],
+      "pt": {
+        "heading": "Falso conhecido",
+        "body": "O golpista copia a foto e o nome de um amigo, colega ou chefe e escreve de outro número. Logo vem um pedido: um Pix para um fornecedor, um empréstimo rápido, um favor com pressa.",
+        "title": "Golpe do falso conhecido: como funciona e o que fazer",
+        "headline": "Golpe do falso conhecido: a foto é de quem você conhece, a conta não",
+        "lede": "O golpista copia a foto e o nome de alguém que você conhece, como um amigo ou o seu chefe, e escreve de outro número pedindo dinheiro. Veja como reconhecer e o que fazer.",
+        "how": [
+          "O golpista copia a foto e o nome de um perfil de rede social ou de app de mensagem.",
+          "Escreve de outro número como se fosse a pessoa, às vezes dizendo que trocou de número.",
+          "Pede um Pix, um pagamento para um fornecedor ou a compra de cartões presente, sempre com pressa."
+        ],
+        "signs": [
+          "A conversa vem de um número que você não tinha salvo.",
+          "A pessoa não pode ligar nem mandar áudio.",
+          "O dinheiro vai para a conta de outra pessoa ou empresa."
+        ],
+        "todo": [
+          "Ligue para a pessoa no número que você já tinha antes de pagar.",
+          "Deixe sua foto de perfil visível só para os seus contatos.",
+          "Já pagou? Fale com o seu banco na hora, peça o MED e faça o boletim de ocorrência."
+        ],
+        "limit": "O selo só ajuda quando a pessoa de verdade é verificada. Se ela não tem selo, o Bipe mostra que a conta é nova e não está nos seus contatos, mas não sabe quem está do outro lado."
+      },
+      "en": {
+        "heading": "Fake acquaintance",
+        "body": "The scammer copies the photo and name of a friend, colleague or boss and writes from another number. Soon comes a request: a Pix to a supplier, a quick loan, a rushed favour.",
+        "title": "Fake acquaintance scam: how it works and what to do",
+        "headline": "The fake acquaintance scam: the photo is someone you know, the account is not",
+        "lede": "The scammer copies the photo and name of someone you know, such as a friend or your boss, and writes from another number asking for money. Here is how to spot it and what to do.",
+        "how": [
+          "The scammer copies a photo and name from a social media or messaging profile.",
+          "They write from another number as that person, sometimes saying they changed number.",
+          "They ask for a Pix, a payment to a supplier or gift cards, always in a rush."
+        ],
+        "signs": [
+          "The chat comes from a number you did not have saved.",
+          "The person cannot call or send a voice message.",
+          "The money goes to someone else's account or company."
+        ],
+        "todo": [
+          "Call the person on the number you already had before you pay.",
+          "Show your profile photo only to your contacts.",
+          "Already paid? Talk to your bank at once, ask for MED and file a police report."
+        ],
+        "limit": "The seal helps only when the real person is verified. If they have no seal, Bipe shows that the account is new and not in your contacts, but it cannot tell who is on the other side."
+      }
+    },
+    {
+      "id": "wrongCode",
+      "slug": {
+        "pt": "golpe-do-codigo",
+        "en": "code-by-mistake-scam"
+      },
+      "group": "pessoa",
+      "channels": [
+        "messaging",
+        "sms"
+      ],
+      "aliases": {
+        "pt": [
+          "te mandei um código por engano",
+          "golpe do código de verificação",
+          "golpe do SMS"
+        ],
+        "en": [
+          "I sent you a code by mistake",
+          "verification code scam"
+        ]
+      },
+      "scene": "codigo-engano",
+      "stats": [],
+      "describedBy": [
+        "febZapCodigo",
+        "febWhatsapp",
+        "pcspPerguntas"
+      ],
+      "protect": [
+        "no-sms",
+        "scam-alerts",
+        "requests"
+      ],
+      "pt": {
+        "heading": "\"Te mandei um código por engano\"",
+        "body": "Alguém diz que mandou um código para o seu número sem querer e pede para você repassar. Esse código é a chave da sua conta em outro app. Quem passa o código perde a conta.",
+        "title": "Golpe do código por engano: como funciona e o que fazer",
+        "headline": "\"Te mandei um código por engano\": o código é a chave da sua conta",
+        "lede": "Alguém diz que mandou um código para o seu número sem querer e pede para você repassar. Com esse código, o golpista entra na sua conta de outro app e pede dinheiro para os seus contatos.",
+        "how": [
+          "O golpista pede, em nome do seu número, o código de acesso de um app. O código chega por SMS para você.",
+          "Logo depois escreve dizendo que digitou o número errado e pede o código.",
+          "Com o código, entra na sua conta e escreve para os seus contatos como se fosse você."
+        ],
+        "signs": [
+          "Chegou um código que você não pediu.",
+          "Um desconhecido ou um contato pede esse código por mensagem.",
+          "A mensagem tem pressa e um pedido de desculpas."
+        ],
+        "todo": [
+          "Não passe o código para ninguém. Código que você não pediu nunca é engano.",
+          "Ligue a confirmação em duas etapas nos seus apps de mensagem.",
+          "Passou o código? Avise seus contatos por outro caminho e fale com o suporte do app."
+        ],
+        "limit": "No Bipe não existe código por SMS, então não tem o que pedir. Mas o Bipe não protege a sua conta em outros apps."
+      },
+      "en": {
+        "heading": "\"I sent you a code by mistake\"",
+        "body": "Someone says they sent a code to your number by mistake and asks you to pass it on. That code is the key to your account in another app. Whoever passes it on loses the account.",
+        "title": "Code by mistake scam: how it works and what to do",
+        "headline": "\"I sent you a code by mistake\": the code is the key to your account",
+        "lede": "Someone says they sent a code to your number by mistake and asks you to pass it on. With that code, the scammer gets into your account in another app and asks your contacts for money.",
+        "how": [
+          "The scammer asks an app for a sign-in code for your number. The code reaches you by SMS.",
+          "Right after, they write that they typed the wrong number and ask for the code.",
+          "With the code, they get into your account and write to your contacts as you."
+        ],
+        "signs": [
+          "A code arrived that you did not ask for.",
+          "A stranger or a contact asks for that code by message.",
+          "The message is rushed and full of apologies."
+        ],
+        "todo": [
+          "Do not pass the code to anyone. A code you did not ask for is never a mistake.",
+          "Turn on two-step verification in your messaging apps.",
+          "Passed it on? Warn your contacts another way and contact the app's support."
+        ],
+        "limit": "Bipe has no SMS code, so there is nothing to ask for. But Bipe does not protect your account in other apps."
+      }
+    },
+    {
+      "id": "romance",
+      "slug": {
+        "pt": "golpe-do-amor",
+        "en": "romance-scam"
+      },
+      "group": "pessoa",
+      "channels": [
+        "dating",
+        "social",
+        "messaging"
+      ],
+      "aliases": {
+        "pt": [
+          "golpe do namoro",
+          "estelionato sentimental",
+          "golpe do falso relacionamento"
+        ],
+        "en": [
+          "romance scam",
+          "dating scam"
+        ]
+      },
+      "scene": "golpe-amor",
+      "stats": [],
+      "describedBy": [
+        "glossario2025",
+        "aenAmor",
+        "pcspPerguntas"
+      ],
+      "protect": [
+        "scam-alerts",
+        "money-pause",
+        "verified-badge"
+      ],
+      "pt": {
+        "heading": "Golpe do amor",
+        "body": "Uma pessoa conhecida na internet conversa por semanas, fala de amor e de futuro juntos. Um dia aparece um problema: taxa da alfândega, passagem, hospital. E o pedido de dinheiro.",
+        "title": "Golpe do amor: como funciona e o que fazer",
+        "headline": "Golpe do amor: semanas de conversa, depois o pedido de dinheiro",
+        "lede": "Uma pessoa conhecida na internet conversa por semanas e cria um laço. Um dia surge um problema que só dinheiro resolve. Veja como o golpe funciona, como reconhecer e o que fazer.",
+        "how": [
+          "O golpista cria um perfil com fotos de outra pessoa, num app de namoro ou rede social.",
+          "Conversa todo dia por semanas, cria confiança e promete um encontro.",
+          "Aí aparece a taxa de um presente preso na alfândega, uma passagem ou uma conta de hospital."
+        ],
+        "signs": [
+          "A pessoa nunca aceita chamada de vídeo.",
+          "Mora longe ou está sempre viajando a trabalho.",
+          "O pedido de dinheiro vem com urgência e muita emoção."
+        ],
+        "todo": [
+          "Nunca mande dinheiro para quem você só conhece pela internet.",
+          "Procure a foto do perfil na busca por imagem.",
+          "Já pagou? Fale com o seu banco, peça o MED e faça o boletim de ocorrência."
+        ],
+        "limit": "É um golpe lento, de semanas. O aviso aparece no pedido de dinheiro, mas não convence quem já confia na pessoa."
+      },
+      "en": {
+        "heading": "Romance scam",
+        "body": "Someone met online chats for weeks, talks about love and a future together. One day there is a problem: a customs fee, a ticket, a hospital bill. And a request for money.",
+        "title": "Romance scam: how it works and what to do",
+        "headline": "The romance scam: weeks of chat, then the request for money",
+        "lede": "Someone met online chats for weeks and builds a bond. One day a problem comes up that only money can fix. Here is how the scam works, how to spot it and what to do.",
+        "how": [
+          "The scammer makes a profile with someone else's photos, on a dating app or social media.",
+          "They chat every day for weeks, build trust and promise to meet.",
+          "Then comes a fee for a gift held at customs, a ticket or a hospital bill."
+        ],
+        "signs": [
+          "The person never takes a video call.",
+          "They live far away or always travel for work.",
+          "The request for money is urgent and emotional."
+        ],
+        "todo": [
+          "Never send money to someone you only know online.",
+          "Search for the profile photo with an image search.",
+          "Already paid? Talk to your bank, ask for MED and file a police report."
+        ],
+        "limit": "It is a slow scam that takes weeks. The warning shows on the request for money, but it will not convince someone who already trusts the person."
+      }
+    },
+    {
+      "id": "fakeLawyer",
+      "slug": {
+        "pt": "golpe-do-falso-advogado",
+        "en": "fake-lawyer-scam"
+      },
+      "group": "instituicao",
+      "channels": [
+        "messaging"
+      ],
+      "aliases": {
+        "pt": [
+          "golpe do advogado",
+          "golpe do processo",
+          "golpe da causa ganha",
+          "golpe do alvará"
+        ],
+        "en": [
+          "fake lawyer scam",
+          "won case scam"
+        ]
+      },
+      "scene": "falso-advogado",
+      "stats": [
+        "oabsp"
+      ],
+      "describedBy": [
+        "oabCampanha",
+        "glossario2025",
+        "febAdvogado"
+      ],
+      "protect": [
+        "cnpj-badge",
+        "verified-badge",
+        "scam-alerts",
+        "money-pause"
+      ],
+      "pt": {
+        "heading": "Falso advogado",
+        "body": "Alguém se apresenta como o seu advogado, ou como do escritório dele, e diz que o seu processo foi ganho. Para liberar o dinheiro, falta pagar custas ou uma taxa. O processo e os nomes são de verdade.",
+        "title": "Golpe do falso advogado: como funciona e o que fazer",
+        "headline": "Golpe do falso advogado: \"seu processo foi ganho, falta só a taxa\"",
+        "lede": "Alguém se passa pelo seu advogado e diz que o processo foi ganho. Para liberar o dinheiro, pede custas ou uma taxa adiantada. Os dados do processo são de verdade, tirados de registros públicos.",
+        "how": [
+          "O golpista pega número do processo, nomes e valores em sistemas públicos da Justiça.",
+          "Escreve com a foto e o nome do seu advogado ou do escritório, dizendo que a causa foi ganha.",
+          "Pede um Pix de custas, imposto ou taxa para liberar o dinheiro, para uma conta de outra pessoa."
+        ],
+        "signs": [
+          "Pedem dinheiro antes de você receber o que ganhou.",
+          "O contato vem de um número que não é o do seu advogado.",
+          "Tem pressa: o alvará vence hoje, o juiz exige agora."
+        ],
+        "todo": [
+          "Ligue para o seu advogado no número que você já tinha.",
+          "Confira o advogado no ConfirmADV, a consulta da OAB.",
+          "Já pagou? Fale com o seu banco, peça o MED e faça o boletim de ocorrência."
+        ],
+        "limit": "O golpista usa dados reais de processos públicos. O Bipe não confere esses dados nem sabe quem é o seu advogado."
+      },
+      "en": {
+        "heading": "Fake lawyer",
+        "body": "Someone says they are your lawyer, or from their office, and tells you your case was won. To release the money, you only need to pay court costs or a fee. The case and the names are real.",
+        "title": "Fake lawyer scam: how it works and what to do",
+        "headline": "The fake lawyer scam: \"your case was won, there is just a fee\"",
+        "lede": "Someone poses as your lawyer and says the case was won. To release the money, they ask for costs or a fee up front. The case details are real, taken from public records.",
+        "how": [
+          "The scammer takes the case number, names and amounts from public court systems.",
+          "They write with your lawyer's or the office's photo and name, saying the case was won.",
+          "They ask for a Pix for costs, tax or a fee to release the money, to someone else's account."
+        ],
+        "signs": [
+          "They ask for money before you receive what you won.",
+          "The contact comes from a number that is not your lawyer's.",
+          "There is a rush: the release order expires today, the judge demands it now."
+        ],
+        "todo": [
+          "Call your lawyer on the number you already had.",
+          "Check the lawyer on ConfirmADV, the bar association's lookup.",
+          "Already paid? Talk to your bank, ask for MED and file a police report."
+        ],
+        "limit": "The scammer uses real data from public cases. Bipe does not check that data and does not know who your lawyer is."
+      }
+    },
+    {
+      "id": "fakeAgency",
+      "slug": {
+        "pt": "golpe-do-falso-orgao-publico",
+        "en": "fake-government-scam"
+      },
+      "group": "instituicao",
+      "channels": [
+        "sms",
+        "messaging",
+        "email"
+      ],
+      "aliases": {
+        "pt": [
+          "golpe dos valores a receber",
+          "golpe do INSS",
+          "golpe da prova de vida",
+          "golpe da CNH suspensa",
+          "golpe do CPF irregular"
+        ],
+        "en": [
+          "fake government message",
+          "unclaimed money scam"
+        ]
+      },
+      "scene": "orgao-publico",
+      "stats": [],
+      "describedBy": [
+        "bcbValores",
+        "inssSms",
+        "detranPr",
+        "glossario2025"
+      ],
+      "protect": [
+        "reserved-names",
+        "lookalikes",
+        "scam-alerts"
+      ],
+      "pt": {
+        "heading": "Falso órgão público",
+        "body": "Uma mensagem em nome da Receita, do INSS, do Detran ou do Banco Central fala de dinheiro a receber, benefício cortado, multa ou CPF irregular. O link leva para uma página falsa que pede dados ou um pagamento.",
+        "title": "Golpe do falso órgão público: como funciona e o que fazer",
+        "headline": "Golpe do falso órgão público: valores a receber, benefício cortado, multa",
+        "lede": "Uma mensagem em nome de um órgão do governo fala de dinheiro a receber, benefício cortado ou multa e manda um link. Órgão público não manda link de pagamento por SMS nem por app de mensagem.",
+        "how": [
+          "Chega um SMS ou uma mensagem com nome de órgão do governo: valores a receber, prova de vida, CNH suspensa.",
+          "O link abre uma página que copia o gov.br ou o site do órgão.",
+          "A página pede CPF, senha, dados do banco ou um pagamento para liberar o dinheiro ou evitar o corte."
+        ],
+        "signs": [
+          "A mensagem tem link e prazo curto.",
+          "O endereço do site não termina em gov.br.",
+          "Pedem pagamento para liberar um dinheiro que seria seu."
+        ],
+        "todo": [
+          "Não clique. Digite você mesmo o endereço gov.br ou abra o app oficial.",
+          "Valores a receber só se consultam em valoresareceber.bcb.gov.br. INSS só pelo Meu INSS ou pelo 135.",
+          "Passou dados ou pagou? Fale com o seu banco e faça o boletim de ocorrência."
+        ],
+        "limit": "A maioria chega por SMS e e-mail, fora do Bipe. No Bipe, nome de órgão público fica reservado e o aviso aparece em link com cara de golpe."
+      },
+      "en": {
+        "heading": "Fake government body",
+        "body": "A message in the name of the tax office, INSS, Detran or the Central Bank talks about money to claim, a cut benefit, a fine or an irregular CPF. The link leads to a fake page that asks for data or a payment.",
+        "title": "Fake government body scam: how it works and what to do",
+        "headline": "The fake government body scam: money to claim, a cut benefit, a fine",
+        "lede": "A message in the name of a government body talks about money to claim, a cut benefit or a fine, and sends a link. Public bodies do not send payment links by SMS or messaging app.",
+        "how": [
+          "An SMS or message arrives with a government body's name: money to claim, proof of life, a suspended licence.",
+          "The link opens a page that copies gov.br or the body's site.",
+          "The page asks for your CPF, password, bank details or a payment to release the money or avoid the cut."
+        ],
+        "signs": [
+          "The message has a link and a short deadline.",
+          "The site address does not end in gov.br.",
+          "They ask for a payment to release money that would be yours."
+        ],
+        "todo": [
+          "Do not click. Type the gov.br address yourself or open the official app.",
+          "Check money to claim only at valoresareceber.bcb.gov.br. INSS only through Meu INSS or 135.",
+          "Gave data or paid? Talk to your bank and file a police report."
+        ],
+        "limit": "Most of these arrive by SMS and e-mail, outside Bipe. On Bipe, public bodies' names are reserved and the warning shows on links that look like a scam."
+      }
+    },
+    {
+      "id": "fakeDelivery",
+      "slug": {
+        "pt": "golpe-da-taxa-dos-correios",
+        "en": "fake-delivery-fee-scam"
+      },
+      "group": "instituicao",
+      "channels": [
+        "sms",
+        "messaging",
+        "email"
+      ],
+      "aliases": {
+        "pt": [
+          "golpe da encomenda retida",
+          "golpe da falsa entrega",
+          "golpe do rastreio",
+          "taxa de importação falsa"
+        ],
+        "en": [
+          "fake delivery fee",
+          "parcel held scam"
+        ]
+      },
+      "scene": "taxa-correios",
+      "stats": [],
+      "describedBy": [
+        "correiosFalsas",
+        "correiosSeguranca",
+        "glossario2025"
+      ],
+      "protect": [
+        "reserved-names",
+        "scam-alerts"
+      ],
+      "pt": {
+        "heading": "Falsa taxa de entrega",
+        "body": "Uma mensagem diz que a sua encomenda está retida e cobra uma taxa pequena por um link. A página copia os Correios ou uma transportadora. O pagamento vai para o golpista, e às vezes o cartão também.",
+        "title": "Golpe da taxa dos Correios: como funciona e o que fazer",
+        "headline": "Golpe da falsa taxa de entrega: \"sua encomenda está retida\"",
+        "lede": "Uma mensagem diz que a sua encomenda está retida e cobra uma taxa pequena por um link. Os Correios não mandam link de pagamento nem pedem dados por SMS, e-mail ou app de mensagem.",
+        "how": [
+          "Chega um SMS ou mensagem: encomenda retida, taxada ou com endereço incompleto.",
+          "O link abre uma página com a cara dos Correios ou de uma transportadora.",
+          "A página cobra uma taxa por Pix ou cartão, e às vezes guarda os dados do cartão."
+        ],
+        "signs": [
+          "Você não estava esperando nada, ou a mensagem não diz de qual loja é.",
+          "O valor é baixo, para você pagar sem pensar.",
+          "O link não é do site oficial."
+        ],
+        "todo": [
+          "Não pague pelo link. Confira a encomenda no app ou no site oficial dos Correios.",
+          "Imposto de importação só se paga no site oficial, com o código de rastreio.",
+          "Passou o cartão? Fale com o banco para bloquear e faça o boletim de ocorrência."
+        ],
+        "limit": "Quase sempre chega por SMS, fora do Bipe. No Bipe, o nome Correios fica reservado e o aviso aparece em mensagem com link e taxa de entrega."
+      },
+      "en": {
+        "heading": "Fake delivery fee",
+        "body": "A message says your parcel is held and charges a small fee through a link. The page copies Correios or a courier. The payment goes to the scammer, and sometimes the card details too.",
+        "title": "Fake delivery fee scam: how it works and what to do",
+        "headline": "The fake delivery fee scam: \"your parcel is held\"",
+        "lede": "A message says your parcel is held and charges a small fee through a link. Correios do not send payment links or ask for data by SMS, e-mail or messaging app.",
+        "how": [
+          "An SMS or message arrives: the parcel is held, taxed or has an incomplete address.",
+          "The link opens a page that looks like Correios or a courier.",
+          "The page charges a fee by Pix or card, and sometimes keeps the card details."
+        ],
+        "signs": [
+          "You were not expecting anything, or the message does not say which shop.",
+          "The amount is small, so you pay without thinking.",
+          "The link is not the official site."
+        ],
+        "todo": [
+          "Do not pay through the link. Check the parcel in the official Correios app or site.",
+          "Import tax is paid only on the official site, with the tracking code.",
+          "Gave your card? Ask your bank to block it and file a police report."
+        ],
+        "limit": "It almost always arrives by SMS, outside Bipe. On Bipe, the name Correios is reserved and the warning shows on messages with a link and a delivery fee."
+      }
+    },
+    {
+      "id": "fakeJob",
+      "slug": {
+        "pt": "golpe-da-tarefa",
+        "en": "task-job-scam"
+      },
+      "group": "instituicao",
+      "channels": [
+        "messaging",
+        "social",
+        "ad"
+      ],
+      "aliases": {
+        "pt": [
+          "golpe da renda extra",
+          "golpe do like",
+          "falsa vaga de emprego",
+          "golpe das tarefas"
+        ],
+        "en": [
+          "task scam",
+          "fake job offer",
+          "paid likes scam"
+        ]
+      },
+      "scene": "renda-extra",
+      "stats": [],
+      "describedBy": [
+        "febTarefa",
+        "glossario2025"
+      ],
+      "protect": [
+        "requests",
+        "scam-alerts",
+        "verified-groups"
+      ],
+      "pt": {
+        "heading": "Falsa vaga e golpe da tarefa",
+        "body": "Uma vaga de renda extra paga para curtir vídeos ou avaliar produtos. As primeiras tarefas pagam de verdade. Depois, para liberar os ganhos ou subir de nível, você precisa depositar.",
+        "title": "Golpe da tarefa e falsa vaga de emprego: como funciona e o que fazer",
+        "headline": "Golpe da tarefa: ganhe para curtir vídeos, depois pague para sacar",
+        "lede": "Uma vaga de renda extra paga pequenas tarefas, como curtir vídeos. As primeiras pagam de verdade, para criar confiança. Depois vem o pedido de depósito para liberar os ganhos.",
+        "how": [
+          "Chega uma oferta de trabalho fácil pelo celular, com ganho por tarefa.",
+          "As primeiras tarefas pagam alguns reais por Pix, e você entra num grupo com outras pessoas ganhando.",
+          "Para continuar, sacar ou subir de nível, pedem um depósito que nunca volta."
+        ],
+        "signs": [
+          "Ninguém fez entrevista nem pediu currículo.",
+          "Para ganhar, você precisa pagar.",
+          "O grupo só tem gente comemorando ganhos."
+        ],
+        "todo": [
+          "Trabalho de verdade não cobra para você trabalhar nem para sacar.",
+          "Saia do grupo e não deposite mais nada para recuperar o que já foi.",
+          "Já pagou? Fale com o seu banco, peça o MED e faça o boletim de ocorrência."
+        ],
+        "limit": "A pessoa entra por vontade própria. O Bipe avisa, mas não bloqueia a conversa."
+      },
+      "en": {
+        "heading": "Fake job and task scam",
+        "body": "A side-income job pays you to like videos or rate products. The first tasks really pay. Then, to release your earnings or move up a level, you need to deposit money.",
+        "title": "Task scam and fake job offer: how it works and what to do",
+        "headline": "The task scam: get paid to like videos, then pay to cash out",
+        "lede": "A side-income job pays for small tasks, such as liking videos. The first ones really pay, to build trust. Then comes the request for a deposit to release your earnings.",
+        "how": [
+          "An offer of easy work on your phone arrives, paid per task.",
+          "The first tasks pay a few reais by Pix, and you join a group of people who are earning.",
+          "To go on, cash out or move up a level, they ask for a deposit that never comes back."
+        ],
+        "signs": [
+          "Nobody interviewed you or asked for a CV.",
+          "You have to pay to earn.",
+          "The group is only people celebrating their earnings."
+        ],
+        "todo": [
+          "Real work never charges you to work or to cash out.",
+          "Leave the group and do not deposit more to get back what is gone.",
+          "Already paid? Talk to your bank, ask for MED and file a police report."
+        ],
+        "limit": "The person joins by choice. Bipe warns, but it does not block the chat."
+      }
+    },
+    {
+      "id": "fakeSupport",
+      "slug": {
+        "pt": "golpe-do-falso-suporte",
+        "en": "fake-support-scam"
+      },
+      "group": "instituicao",
+      "channels": [
+        "messaging",
+        "call",
+        "sms"
+      ],
+      "aliases": {
+        "pt": [
+          "falso suporte",
+          "falso SAC",
+          "falso atendente",
+          "golpe do protocolo"
+        ],
+        "en": [
+          "fake support",
+          "fake customer service"
+        ]
+      },
+      "scene": "falso-suporte-bipe",
+      "stats": [],
+      "describedBy": [
+        "glossario2025",
+        "febWhatsapp"
+      ],
+      "protect": [
+        "reserved-names",
+        "lookalikes",
+        "scam-alerts",
+        "requests"
+      ],
+      "pt": {
+        "heading": "Falso suporte",
+        "body": "Alguém diz ser do suporte de um app, de uma loja ou da operadora. Para resolver um problema que você nem tinha, pede um código, a sua senha ou que você instale um app.",
+        "title": "Golpe do falso suporte: como funciona e o que fazer",
+        "headline": "Golpe do falso suporte: \"aqui é do suporte, me passa a sua senha\"",
+        "lede": "Alguém diz ser do suporte de um app, de uma loja ou da operadora e pede um código, a sua senha ou que você instale um app. Suporte de verdade não pede nada disso.",
+        "how": [
+          "O golpista escreve ou liga dizendo ser do suporte: conta bloqueada, pagamento recusado, pedido cancelado.",
+          "Para resolver, pede o código que chegou, a sua senha ou os dados do cartão.",
+          "Às vezes pede para você instalar um app, e assim controla o seu celular."
+        ],
+        "signs": [
+          "O contato veio sem você pedir.",
+          "Pedem senha, código ou dados do cartão.",
+          "Ameaçam cortar o serviço ou bloquear a conta hoje."
+        ],
+        "todo": [
+          "Não passe código, senha nem dados do cartão.",
+          "Feche a conversa e procure o suporte pelo app ou pelo site oficial.",
+          "Passou dados? Troque a senha, fale com o banco e faça o boletim de ocorrência."
+        ],
+        "limit": "No Bipe, ninguém usa o nome Bipe sem ser o Bipe. O app ainda não diz em todo lugar que o Bipe nunca pede a sua senha de 8 números."
+      },
+      "en": {
+        "heading": "Fake support",
+        "body": "Someone says they are support for an app, a shop or the phone carrier. To fix a problem you did not have, they ask for a code, your PIN or that you install an app.",
+        "title": "Fake support scam: how it works and what to do",
+        "headline": "The fake support scam: \"this is support, send me your PIN\"",
+        "lede": "Someone says they are support for an app, a shop or the carrier and asks for a code, your PIN or that you install an app. Real support never asks for any of this.",
+        "how": [
+          "The scammer writes or calls as support: account blocked, payment declined, order cancelled.",
+          "To fix it, they ask for the code you got, your PIN or your card details.",
+          "Sometimes they ask you to install an app, and then they control your phone."
+        ],
+        "signs": [
+          "The contact came without you asking.",
+          "They ask for a PIN, a code or card details.",
+          "They threaten to cut the service or block the account today."
+        ],
+        "todo": [
+          "Do not pass on a code, PIN or card details.",
+          "Close the chat and find support through the official app or site.",
+          "Gave data? Change your PIN, talk to your bank and file a police report."
+        ],
+        "limit": "On Bipe, nobody but Bipe can use the name Bipe. The app does not yet say everywhere that Bipe never asks for your 8-digit PIN."
+      }
+    },
+    {
+      "id": "fakeSale",
+      "slug": {
+        "pt": "golpe-da-falsa-venda",
+        "en": "fake-seller-scam"
+      },
+      "group": "compra",
+      "channels": [
+        "marketplace",
+        "social",
+        "messaging"
+      ],
+      "aliases": {
+        "pt": [
+          "golpe da OLX",
+          "golpe do marketplace",
+          "falso vendedor",
+          "golpe do anúncio falso"
+        ],
+        "en": [
+          "fake seller",
+          "marketplace scam"
+        ]
+      },
+      "scene": "venda-falsa",
+      "stats": [
+        "fakeSale"
+      ],
+      "describedBy": [
+        "febFalsaVenda",
+        "glossario2025",
+        "febCompras"
+      ],
+      "protect": [
+        "verified-badge",
+        "pix-cards",
+        "scam-alerts",
+        "money-pause"
+      ],
+      "pt": {
+        "heading": "Falsa venda de usado",
+        "body": "Um anúncio de usado com preço bom. O vendedor leva a conversa para fora do site, pede o Pix adiantado e some. Às vezes pede um sinal para segurar o produto para você.",
+        "title": "Golpe da falsa venda: como funciona e o que fazer",
+        "headline": "Golpe da falsa venda: o vendedor pega o Pix e some",
+        "lede": "Um anúncio de usado com preço bom leva a uma conversa fora do site. O vendedor pede o Pix adiantado, ou um sinal para segurar o produto, e some. Veja como reconhecer e o que fazer.",
+        "how": [
+          "O golpista anuncia um produto usado, com fotos copiadas e preço abaixo do normal.",
+          "Chama você para conversar fora do site e diz que tem outros interessados.",
+          "Pede o Pix adiantado ou um sinal, para a conta de outra pessoa, e some."
+        ],
+        "signs": [
+          "O preço está bem abaixo do normal.",
+          "O vendedor não deixa ver o produto antes.",
+          "O nome da conta do Pix não é o do vendedor."
+        ],
+        "todo": [
+          "Veja o produto antes de pagar, ou pague dentro do site, com a proteção dele.",
+          "Antes de confirmar o Pix, confira o nome que o banco mostra.",
+          "Já pagou? Fale com o seu banco, peça o MED e faça o boletim de ocorrência."
+        ],
+        "limit": "Uma pessoa verificada ainda pode dar golpe. O selo prova quem é a pessoa, não que ela é honesta. O anúncio fica em outro site, o Bipe vê só a conversa."
+      },
+      "en": {
+        "heading": "Fake second-hand sale",
+        "body": "A second-hand ad with a good price. The seller moves the chat off the site, asks for the Pix up front and disappears. Sometimes they ask for a deposit to hold the item for you.",
+        "title": "Fake seller scam: how it works and what to do",
+        "headline": "The fake seller scam: the seller takes the Pix and disappears",
+        "lede": "A second-hand ad with a good price leads to a chat off the site. The seller asks for the Pix up front, or a deposit to hold the item, and disappears. Here is how to spot it and what to do.",
+        "how": [
+          "The scammer lists a used item with copied photos and a price below normal.",
+          "They ask you to chat off the site and say others are interested.",
+          "They ask for the Pix up front or a deposit, to someone else's account, and disappear."
+        ],
+        "signs": [
+          "The price is well below normal.",
+          "The seller will not let you see the item first.",
+          "The name on the Pix account is not the seller's."
+        ],
+        "todo": [
+          "See the item before you pay, or pay inside the site, with its protection.",
+          "Before you confirm the Pix, check the name your bank shows.",
+          "Already paid? Talk to your bank, ask for MED and file a police report."
+        ],
+        "limit": "A verified person can still scam. The seal proves who the person is, not that they are honest. The ad is on another site, and Bipe only sees the chat."
+      }
+    },
+    {
+      "id": "fakeReceipt",
+      "slug": {
+        "pt": "golpe-do-comprovante-falso",
+        "en": "fake-receipt-scam"
+      },
+      "group": "compra",
+      "channels": [
+        "marketplace",
+        "messaging",
+        "inPerson"
+      ],
+      "aliases": {
+        "pt": [
+          "golpe do Pix agendado",
+          "comprovante falso",
+          "falso comprador",
+          "golpe do comprovante editado"
+        ],
+        "en": [
+          "fake payment receipt",
+          "scheduled Pix scam",
+          "fake buyer"
+        ]
+      },
+      "scene": "comprovante-falso",
+      "stats": [],
+      "describedBy": [
+        "proconValinhos",
+        "bcbPix"
+      ],
+      "protect": [
+        "scam-alerts",
+        "pix-cards"
+      ],
+      "pt": {
+        "heading": "Falso comprador e comprovante falso",
+        "body": "O comprador manda um print de comprovante e pede para você enviar o produto. O Pix foi agendado e cancelado depois, ou o comprovante foi editado. O dinheiro nunca caiu.",
+        "title": "Golpe do comprovante falso e do Pix agendado: como funciona e o que fazer",
+        "headline": "Golpe do comprovante falso: o print chegou, o dinheiro não",
+        "lede": "O comprador manda um print de comprovante e pede o produto. O Pix foi agendado e cancelado, ou o comprovante foi editado. Print não prova pagamento.",
+        "how": [
+          "O golpista responde ao seu anúncio e aceita o preço sem negociar.",
+          "Manda o print de um Pix agendado, ou de um comprovante editado, e pede para enviar hoje.",
+          "Depois cancela o agendamento. Você fica sem o produto e sem o dinheiro."
+        ],
+        "signs": [
+          "O comprovante diz \"agendado\".",
+          "O comprador tem pressa e manda o motoboy buscar.",
+          "O dinheiro ainda não aparece no seu extrato."
+        ],
+        "todo": [
+          "Entregue só depois de ver o dinheiro no extrato do app do seu banco.",
+          "Print de comprovante não prova pagamento.",
+          "Caiu no golpe? Guarde as conversas e faça o boletim de ocorrência."
+        ],
+        "limit": "O Bipe não lê a sua conta no banco. O aviso lembra de conferir, mas quem confere é você."
+      },
+      "en": {
+        "heading": "Fake buyer and fake receipt",
+        "body": "The buyer sends a receipt screenshot and asks you to ship. The Pix was scheduled and cancelled later, or the receipt was edited. The money never arrived.",
+        "title": "Fake receipt and scheduled Pix scam: how it works and what to do",
+        "headline": "The fake receipt scam: the screenshot arrived, the money did not",
+        "lede": "The buyer sends a receipt screenshot and asks for the item. The Pix was scheduled and cancelled, or the receipt was edited. A screenshot does not prove payment.",
+        "how": [
+          "The scammer answers your ad and takes the price without haggling.",
+          "They send a screenshot of a scheduled Pix, or an edited receipt, and ask you to ship today.",
+          "Then they cancel the schedule. You lose the item and get no money."
+        ],
+        "signs": [
+          "The receipt says \"scheduled\".",
+          "The buyer is in a rush and sends a courier to collect.",
+          "The money does not show in your statement yet."
+        ],
+        "todo": [
+          "Hand over the item only after you see the money in your bank app statement.",
+          "A receipt screenshot does not prove payment.",
+          "Fell for it? Keep the chats and file a police report."
+        ],
+        "limit": "Bipe does not read your bank account. The warning reminds you to check, but you do the check."
+      }
+    },
+    {
+      "id": "fakeRental",
+      "slug": {
+        "pt": "golpe-do-aluguel",
+        "en": "fake-rental-scam"
+      },
+      "group": "compra",
+      "channels": [
+        "social",
+        "marketplace",
+        "messaging"
+      ],
+      "aliases": {
+        "pt": [
+          "golpe do falso aluguel",
+          "golpe da casa de praia",
+          "aluguel de temporada falso",
+          "golpe do sinal"
+        ],
+        "en": [
+          "fake rental",
+          "holiday rental scam"
+        ]
+      },
+      "scene": "aluguel",
+      "stats": [],
+      "describedBy": [
+        "pcprAluguel",
+        "glossario2025"
+      ],
+      "protect": [
+        "verified-badge",
+        "scam-alerts",
+        "money-pause"
+      ],
+      "pt": {
+        "heading": "Falso aluguel",
+        "body": "Uma casa de praia ou um apartamento com preço ótimo, em fotos bonitas. Para garantir a data, pedem um sinal por Pix. O imóvel não existe, ou não é de quem anunciou.",
+        "title": "Golpe do aluguel: como funciona e o que fazer",
+        "headline": "Golpe do falso aluguel: o sinal vai, a casa não existe",
+        "lede": "Uma casa de temporada ou um apartamento com preço ótimo pede um sinal por Pix para garantir a data. O imóvel não existe ou não é de quem anunciou. Veja como reconhecer.",
+        "how": [
+          "O golpista anuncia um imóvel com fotos copiadas, num grupo, rede social ou site.",
+          "Diz que a procura está grande e que só garante a data com um sinal.",
+          "Recebe o Pix e some. Em feriado e férias, o golpe aumenta."
+        ],
+        "signs": [
+          "O preço está bem abaixo dos outros da região.",
+          "Não dá para visitar antes, porque o dono está longe.",
+          "O Pix vai para o nome de outra pessoa."
+        ],
+        "todo": [
+          "Visite o imóvel antes de pagar, ou mande alguém de confiança.",
+          "Prefira imobiliária ou site com pagamento protegido.",
+          "Já pagou? Guarde prints, a chave Pix e o nome da conta e faça o boletim de ocorrência."
+        ],
+        "limit": "O anúncio fica em outro site. O selo prova quem é a pessoa, não que o imóvel é dela."
+      },
+      "en": {
+        "heading": "Fake rental",
+        "body": "A beach house or a flat at a great price, in nice photos. To hold the dates, they ask for a deposit by Pix. The place does not exist, or is not the advertiser's.",
+        "title": "Fake rental scam: how it works and what to do",
+        "headline": "The fake rental scam: the deposit goes, the house does not exist",
+        "lede": "A holiday house or a flat at a great price asks for a Pix deposit to hold the dates. The place does not exist or is not the advertiser's. Here is how to spot it.",
+        "how": [
+          "The scammer lists a place with copied photos, in a group, on social media or a site.",
+          "They say demand is high and only a deposit holds the dates.",
+          "They take the Pix and disappear. On holidays and in summer, the scam grows."
+        ],
+        "signs": [
+          "The price is well below others in the area.",
+          "You cannot visit first, because the owner is far away.",
+          "The Pix goes to someone else's name."
+        ],
+        "todo": [
+          "Visit the place before you pay, or send someone you trust.",
+          "Prefer an agency or a site with protected payment.",
+          "Already paid? Keep screenshots, the Pix key and the account name and file a police report."
+        ],
+        "limit": "The ad is on another site. The seal proves who the person is, not that the place is theirs."
+      }
+    },
+    {
+      "id": "wrongPix",
+      "slug": {
+        "pt": "golpe-do-pix-errado",
+        "en": "wrong-pix-scam"
+      },
+      "group": "dinheiro",
+      "channels": [
+        "messaging",
+        "call"
+      ],
+      "aliases": {
+        "pt": [
+          "devolve o Pix",
+          "golpe da devolução do Pix",
+          "golpe do MED",
+          "golpe do Pix em duplicidade"
+        ],
+        "en": [
+          "wrong Pix refund scam",
+          "send it back scam"
+        ]
+      },
+      "scene": "pix-errado",
+      "stats": [
+        "medRecovered"
+      ],
+      "describedBy": [
+        "febPixErrado",
+        "glossario2025",
+        "bcbPix"
+      ],
+      "protect": [
+        "scam-alerts",
+        "money-pause"
+      ],
+      "pt": {
+        "heading": "Pix errado",
+        "body": "Cai um Pix na sua conta e logo alguém pede para devolver, para outra chave. Depois o golpista pede o dinheiro de volta pelo MED. Você devolve duas vezes.",
+        "title": "Golpe do Pix errado: como funciona e o que fazer",
+        "headline": "Golpe do Pix errado: \"mandei sem querer, devolve para essa chave\"",
+        "lede": "Cai um Pix na sua conta e alguém pede para devolver para outra chave. Depois o golpista também pede o estorno pelo MED, e o banco tira o valor de novo. Devolva só pelo botão do banco.",
+        "how": [
+          "O golpista manda um Pix para a sua chave, muitas vezes de dinheiro de outro golpe.",
+          "Escreve ou liga dizendo que mandou errado e pede para devolver para outra chave.",
+          "Depois pede o estorno do Pix original pelo MED, e você paga duas vezes."
+        ],
+        "signs": [
+          "Caiu um Pix de alguém que você não conhece.",
+          "Pedem a devolução para uma chave diferente da que mandou.",
+          "Tem pressa e insistência."
+        ],
+        "todo": [
+          "Devolva só pelo botão de devolução, na própria transação, no app do seu banco.",
+          "Nunca mande para uma chave nova.",
+          "Na dúvida, fale com o seu banco antes de devolver."
+        ],
+        "limit": "É mecânica de banco. O Bipe só avisa quando a mensagem pede para devolver para uma chave."
+      },
+      "en": {
+        "heading": "Wrong Pix",
+        "body": "A Pix lands in your account and soon someone asks you to send it back, to another key. Then the scammer also asks for the money back through MED. You pay it back twice.",
+        "title": "Wrong Pix scam: how it works and what to do",
+        "headline": "The wrong Pix scam: \"I sent it by mistake, send it back to this key\"",
+        "lede": "A Pix lands in your account and someone asks you to return it to another key. Then the scammer also disputes it through MED, and the bank takes the amount again. Return money only with your bank's button.",
+        "how": [
+          "The scammer sends a Pix to your key, often money from another scam.",
+          "They write or call to say it was a mistake and ask you to return it to another key.",
+          "Then they dispute the original Pix through MED, and you pay twice."
+        ],
+        "signs": [
+          "A Pix arrived from someone you do not know.",
+          "They ask for the return to a key other than the one that paid.",
+          "They are in a rush and insist."
+        ],
+        "todo": [
+          "Return it only with the refund button on the transaction itself, in your bank app.",
+          "Never send it to a new key.",
+          "In doubt, talk to your bank before you return anything."
+        ],
+        "limit": "These are bank mechanics. Bipe only warns when a message asks you to send money back to a key."
+      }
+    },
+    {
+      "id": "fakeBoleto",
+      "slug": {
+        "pt": "golpe-do-boleto-falso",
+        "en": "fake-boleto-scam"
+      },
+      "group": "dinheiro",
+      "channels": [
+        "email",
+        "messaging",
+        "sms"
+      ],
+      "aliases": {
+        "pt": [
+          "boleto falso",
+          "boleto adulterado",
+          "segunda via falsa",
+          "código de barras trocado"
+        ],
+        "en": [
+          "fake boleto",
+          "altered bill"
+        ]
+      },
+      "scene": "boleto",
+      "stats": [
+        "pixShare"
+      ],
+      "describedBy": [
+        "febBoleto",
+        "glossario2025"
+      ],
+      "protect": [
+        "scam-alerts",
+        "pix-charges",
+        "cnpj-badge"
+      ],
+      "pt": {
+        "heading": "Boleto falso",
+        "body": "O boleto parece da escola, do condomínio ou da loja, mas o código de barras leva para a conta do golpista. Chega por e-mail, mensagem ou num site falso de segunda via.",
+        "title": "Golpe do boleto falso: como funciona e o que fazer",
+        "headline": "Golpe do boleto falso: parece da empresa, paga o golpista",
+        "lede": "O boleto parece de uma empresa com quem você tem conta, mas o código de barras leva o dinheiro para outra pessoa. Antes de pagar, confira o nome que o banco mostra.",
+        "how": [
+          "O golpista manda um boleto em nome de uma empresa, escola ou condomínio, ou cria um site de segunda via.",
+          "O boleto tem logo e valor certos, mas o código de barras é de outra conta.",
+          "Você paga, e o dinheiro cai na conta do golpista."
+        ],
+        "signs": [
+          "Chegou um boleto que você não esperava, ou por um caminho novo.",
+          "O nome de quem recebe, na tela do banco, não é o da empresa.",
+          "Dizem que a conta ou a chave de pagamento mudou."
+        ],
+        "todo": [
+          "Antes de pagar, confira o nome e o CNPJ que o banco mostra.",
+          "Pegue a segunda via só no app ou no site oficial da empresa.",
+          "Pagou? Fale com o seu banco na hora e com a empresa, e faça o boletim de ocorrência."
+        ],
+        "limit": "Boleto em PDF por e-mail fica fora do Bipe. No Bipe, o aviso aparece em código de boleto colado na conversa."
+      },
+      "en": {
+        "heading": "Fake boleto",
+        "body": "The boleto looks like it is from the school, the building or the shop, but the barcode pays the scammer's account. It arrives by e-mail, message or a fake duplicate-bill site.",
+        "title": "Fake boleto scam: how it works and what to do",
+        "headline": "The fake boleto scam: it looks like the company's, it pays the scammer",
+        "lede": "The boleto looks like it is from a company you deal with, but the barcode sends the money to someone else. Before you pay, check the name your bank shows.",
+        "how": [
+          "The scammer sends a boleto in the name of a company, school or building, or makes a fake duplicate-bill site.",
+          "The boleto has the right logo and amount, but the barcode is for another account.",
+          "You pay, and the money lands in the scammer's account."
+        ],
+        "signs": [
+          "A boleto arrived that you did not expect, or by a new route.",
+          "The payee's name on your bank screen is not the company's.",
+          "They say the account or payment key changed."
+        ],
+        "todo": [
+          "Before you pay, check the name and CNPJ your bank shows.",
+          "Get duplicate bills only in the company's official app or site.",
+          "Paid? Talk to your bank at once and to the company, and file a police report."
+        ],
+        "limit": "A PDF boleto by e-mail is outside Bipe. On Bipe, the warning shows on a boleto code pasted in a chat."
+      }
+    },
+    {
+      "id": "fakeLoan",
+      "slug": {
+        "pt": "golpe-do-falso-emprestimo",
+        "en": "fake-loan-scam"
+      },
+      "group": "dinheiro",
+      "channels": [
+        "ad",
+        "messaging",
+        "call"
+      ],
+      "aliases": {
+        "pt": [
+          "golpe do empréstimo",
+          "golpe do consignado",
+          "golpe da taxa antecipada",
+          "falsa portabilidade"
+        ],
+        "en": [
+          "advance fee loan",
+          "fake loan offer"
+        ]
+      },
+      "scene": "emprestimo",
+      "stats": [],
+      "describedBy": [
+        "febEmprestimo",
+        "glossario2025"
+      ],
+      "protect": [
+        "scam-alerts",
+        "cnpj-badge",
+        "reserved-names"
+      ],
+      "pt": {
+        "heading": "Falso empréstimo",
+        "body": "Um empréstimo fácil, sem consulta, ou uma troca de consignado com parcela menor. Para liberar o dinheiro, pedem uma taxa, um seguro ou a primeira parcela adiantada.",
+        "title": "Golpe do falso empréstimo: como funciona e o que fazer",
+        "headline": "Golpe do falso empréstimo: \"aprovado, só falta pagar a taxa\"",
+        "lede": "Um empréstimo aprovado na hora, ou uma troca de consignado com parcela menor. Para liberar, pedem uma taxa adiantada. Empréstimo de verdade não cobra nada antes.",
+        "how": [
+          "O golpista anuncia crédito fácil ou liga oferecendo portabilidade do consignado.",
+          "Manda um contrato com cara de banco e diz que o crédito foi aprovado.",
+          "Pede taxa, seguro, imposto ou a primeira parcela antes de liberar, e o dinheiro nunca chega."
+        ],
+        "signs": [
+          "Aprovado sem consultar nada.",
+          "Pedem dinheiro antes de você receber.",
+          "O pagamento vai para uma pessoa, não para um banco."
+        ],
+        "todo": [
+          "Não pague nada para receber um empréstimo.",
+          "Simule e contrate só no app do seu banco ou numa instituição autorizada pelo Banco Central.",
+          "Já pagou? Fale com o seu banco, peça o MED e faça o boletim de ocorrência."
+        ],
+        "limit": "O aviso aparece quando a conversa pede taxa para liberar dinheiro. Fora isso, o Bipe não tem como conferir a oferta."
+      },
+      "en": {
+        "heading": "Fake loan",
+        "body": "An easy loan with no credit check, or a payroll loan swap with a lower instalment. To release the money, they ask for a fee, insurance or the first instalment up front.",
+        "title": "Fake loan scam: how it works and what to do",
+        "headline": "The fake loan scam: \"approved, you just need to pay the fee\"",
+        "lede": "A loan approved on the spot, or a payroll loan swap with a lower instalment. To release it, they ask for a fee up front. A real loan never charges anything first.",
+        "how": [
+          "The scammer advertises easy credit or calls to offer a payroll loan transfer.",
+          "They send a contract that looks like a bank's and say the credit was approved.",
+          "They ask for a fee, insurance, tax or the first instalment before release, and the money never comes."
+        ],
+        "signs": [
+          "Approved without any check.",
+          "They ask for money before you receive anything.",
+          "The payment goes to a person, not a bank."
+        ],
+        "todo": [
+          "Do not pay anything to receive a loan.",
+          "Simulate and sign only in your bank app or with an institution the Central Bank authorises.",
+          "Already paid? Talk to your bank, ask for MED and file a police report."
+        ],
+        "limit": "The warning shows when the chat asks for a fee to release money. Beyond that, Bipe cannot check the offer."
+      }
+    },
+    {
+      "id": "investment",
+      "slug": {
+        "pt": "golpe-do-falso-investimento",
+        "en": "fake-investment-scam"
+      },
+      "group": "dinheiro",
+      "channels": [
+        "ad",
+        "social",
+        "messaging"
+      ],
+      "aliases": {
+        "pt": [
+          "pirâmide financeira",
+          "golpe da cripto",
+          "robô de investimento",
+          "grupo VIP de sinais",
+          "golpe do trader"
+        ],
+        "en": [
+          "investment scam",
+          "Ponzi scheme",
+          "crypto scam"
+        ]
+      },
+      "scene": "investimento",
+      "stats": [
+        "investShare",
+        "investAverage",
+        "investLoss",
+        "cvmStopOrders"
+      ],
+      "describedBy": [
+        "cvmIrregulares",
+        "febInvestimento",
+        "glossario2025"
+      ],
+      "protect": [
+        "verified-groups",
+        "scam-alerts",
+        "cnpj-badge"
+      ],
+      "pt": {
+        "heading": "Falso investimento",
+        "body": "Retorno garantido e alto, um robô que não perde, um grupo cheio de gente mostrando lucro. No começo até dá para sacar um pouco. Depois o dinheiro some.",
+        "title": "Golpe do falso investimento e pirâmide: como funciona e o que fazer",
+        "headline": "Golpe do falso investimento: retorno garantido, grupo cheio de ganhadores",
+        "lede": "Retorno alto e garantido, um robô que não perde, um grupo cheio de lucros. No começo dá para sacar um pouco, para criar confiança. Confira na CVM se quem oferece pode oferecer.",
+        "how": [
+          "O golpista anuncia nas redes ou chama você para um grupo com outros \"investidores\" comemorando.",
+          "Promete retorno alto e garantido, por cripto, robô de trade ou indicação de amigos.",
+          "Deixa sacar um pouco no começo, pede depósitos maiores, e depois some com tudo."
+        ],
+        "signs": [
+          "Retorno garantido e alto. Investimento de verdade não garante isso.",
+          "Pressa para entrar e prêmio por trazer amigos.",
+          "A empresa não aparece no cadastro da CVM."
+        ],
+        "todo": [
+          "Confira no cadastro da CVM se a empresa pode oferecer investimento.",
+          "Pague só para conta no nome da empresa registrada.",
+          "Caiu? Guarde tudo, fale com o seu banco e faça o boletim de ocorrência. Denuncie à CVM."
+        ],
+        "limit": "O Bipe ainda não confere o CNPJ no cadastro da CVM. O aviso aparece em promessa de retorno garantido."
+      },
+      "en": {
+        "heading": "Fake investment",
+        "body": "High guaranteed returns, a bot that never loses, a group full of people showing profit. At first you can even cash out a little. Then the money is gone.",
+        "title": "Fake investment and pyramid scam: how it works and what to do",
+        "headline": "The fake investment scam: guaranteed returns, a group full of winners",
+        "lede": "High guaranteed returns, a bot that never loses, a group full of profits. At first you can cash out a little, to build trust. Check with the CVM that whoever offers it is allowed to.",
+        "how": [
+          "The scammer advertises on social media or invites you to a group of \"investors\" celebrating.",
+          "They promise high guaranteed returns, through crypto, a trading bot or bringing in friends.",
+          "They let you cash out a little at first, ask for bigger deposits, then disappear with everything."
+        ],
+        "signs": [
+          "Guaranteed high returns. Real investments do not guarantee that.",
+          "A rush to join and rewards for bringing friends.",
+          "The company is not in the CVM register."
+        ],
+        "todo": [
+          "Check the CVM register to see if the company may offer investments.",
+          "Pay only to an account in the registered company's name.",
+          "Fell for it? Keep everything, talk to your bank and file a police report. Report it to the CVM."
+        ],
+        "limit": "Bipe does not check a CNPJ against the CVM register yet. The warning shows on promises of guaranteed returns."
+      }
+    },
+    {
+      "id": "fakeBet",
+      "slug": {
+        "pt": "golpe-das-apostas",
+        "en": "betting-scam"
+      },
+      "group": "dinheiro",
+      "channels": [
+        "social",
+        "messaging",
+        "ad"
+      ],
+      "aliases": {
+        "pt": [
+          "golpe do tigrinho",
+          "robô do tigrinho",
+          "sinais de aposta",
+          "devolução de saldo de bet"
+        ],
+        "en": [
+          "betting scam",
+          "fake betting tips"
+        ]
+      },
+      "scene": "aposta",
+      "stats": [],
+      "describedBy": [
+        "fazendaApostas"
+      ],
+      "protect": [
+        "scam-alerts",
+        "verified-groups"
+      ],
+      "pt": {
+        "heading": "Apostas e \"tigrinho\"",
+        "body": "Um robô que acerta a hora certa de jogar, um grupo de sinais pago, uma plataforma nova que paga muito. Desde outubro de 2026, aposta de quota fixa é proibida no Brasil, e surgiu outro golpe: a falsa devolução de saldo.",
+        "title": "Golpe das apostas e do tigrinho: como funciona e o que fazer",
+        "headline": "Golpe das apostas: robô do tigrinho, sinais pagos e falsa devolução de saldo",
+        "lede": "Um robô que acerta a hora de jogar, um grupo de sinais pago ou uma plataforma que paga muito. Desde outubro de 2026, as apostas de quota fixa estão proibidas no Brasil. Devolução de saldo nunca cobra taxa.",
+        "how": [
+          "O golpista vende acesso a um robô ou a um grupo de sinais que promete ganho certo.",
+          "Ou indica uma plataforma nova que paga no começo e depois trava o saque.",
+          "Agora também manda mensagem sobre a devolução do saldo de bet e cobra uma taxa para liberar."
+        ],
+        "signs": [
+          "Ganho certo num jogo de azar.",
+          "Pagam por indicação e por depósito de amigos.",
+          "Pedem taxa para devolver um saldo seu."
+        ],
+        "todo": [
+          "Não pague por robô nem por sinal. Ninguém prevê jogo de azar.",
+          "A devolução do saldo passa pelo seu banco e não cobra taxa.",
+          "Caiu? Guarde tudo e faça o boletim de ocorrência."
+        ],
+        "limit": "Quase tudo acontece em anúncio, rede social e grupo de outro app. No Bipe, o aviso aparece em pedido de taxa e depósito."
+      },
+      "en": {
+        "heading": "Betting and \"tigrinho\"",
+        "body": "A bot that knows when to play, a paid tips group, a new platform that pays a lot. Since October 2026, fixed-odds betting is banned in Brazil, and another scam came up: the fake balance refund.",
+        "title": "Betting scam and the tigrinho bot: how it works and what to do",
+        "headline": "The betting scam: tigrinho bots, paid tips and fake balance refunds",
+        "lede": "A bot that knows when to play, a paid tips group or a platform that pays a lot. Since October 2026, fixed-odds betting is banned in Brazil. A balance refund never charges a fee.",
+        "how": [
+          "The scammer sells access to a bot or a tips group that promises sure wins.",
+          "Or they point you to a new platform that pays at first and then blocks withdrawals.",
+          "Now they also write about refunds of betting balances and charge a fee to release them."
+        ],
+        "signs": [
+          "A sure win in a game of chance.",
+          "They pay you for referrals and for friends' deposits.",
+          "They ask for a fee to refund money that is yours."
+        ],
+        "todo": [
+          "Do not pay for a bot or tips. Nobody predicts a game of chance.",
+          "Balance refunds go through your bank and charge no fee.",
+          "Fell for it? Keep everything and file a police report."
+        ],
+        "limit": "Almost all of it happens in ads, social media and groups in other apps. On Bipe, the warning shows on requests for a fee or a deposit."
+      }
+    },
+    {
+      "id": "phishing",
+      "slug": {
+        "pt": "golpe-do-link-falso",
+        "en": "fake-link-scam"
+      },
+      "group": "conta",
+      "channels": [
+        "sms",
+        "messaging",
+        "email",
+        "ad"
+      ],
+      "aliases": {
+        "pt": [
+          "link falso",
+          "site falso",
+          "phishing",
+          "página falsa do banco",
+          "pescaria digital"
+        ],
+        "en": [
+          "phishing",
+          "fake link",
+          "fake bank site"
+        ]
+      },
+      "scene": "link-falso",
+      "stats": [],
+      "describedBy": [
+        "febLink",
+        "certFraudes",
+        "inssLinks"
+      ],
+      "protect": [
+        "scam-alerts",
+        "reserved-names",
+        "lookalikes"
+      ],
+      "pt": {
+        "heading": "Link falso",
+        "body": "Um link que copia o site do banco, do gov.br ou de uma loja. A página pede senha, dados do cartão ou um código. O que você digita vai direto para o golpista.",
+        "title": "Golpe do link falso: como funciona e o que fazer",
+        "headline": "Golpe do link falso: a página copia o banco, o gov.br ou a loja",
+        "lede": "Um link leva para uma página que copia o site do banco, do gov.br ou de uma loja. O que você digita ali vai para o golpista. Digite o endereço você mesmo, ou abra o app oficial.",
+        "how": [
+          "Chega uma mensagem com pressa: conta bloqueada, compra suspeita, prêmio, desconto.",
+          "O link abre uma página igual à de verdade, com um endereço parecido.",
+          "A página pede senha, cartão ou código, e o golpista usa na hora."
+        ],
+        "signs": [
+          "O endereço tem letra trocada, palavra a mais ou termina diferente.",
+          "A mensagem tem prazo curto ou ameaça de bloqueio.",
+          "Pedem senha ou código, coisa que site oficial não pede por link."
+        ],
+        "todo": [
+          "Não entre pelo link. Abra o app ou digite o endereço oficial.",
+          "Nunca digite senha ou código numa página que chegou por mensagem.",
+          "Digitou? Troque a senha, fale com o banco e faça o boletim de ocorrência."
+        ],
+        "limit": "O Bipe avisa quando o link imita um banco, um órgão do governo ou uma empresa conhecida. Ainda não confere domínio novo nem domínio parecido com qualquer site."
+      },
+      "en": {
+        "heading": "Fake link",
+        "body": "A link that copies the bank's site, gov.br or a shop. The page asks for a password, card details or a code. What you type goes straight to the scammer.",
+        "title": "Fake link scam: how it works and what to do",
+        "headline": "The fake link scam: the page copies the bank, gov.br or a shop",
+        "lede": "A link leads to a page that copies the bank's site, gov.br or a shop. What you type there goes to the scammer. Type the address yourself, or open the official app.",
+        "how": [
+          "A rushed message arrives: account blocked, suspicious purchase, a prize, a discount.",
+          "The link opens a page that looks real, with an address that looks close.",
+          "The page asks for a password, card or code, and the scammer uses it at once."
+        ],
+        "signs": [
+          "The address has a swapped letter, an extra word or a different ending.",
+          "The message has a short deadline or threatens a block.",
+          "They ask for a password or code, which an official site does not ask for by link."
+        ],
+        "todo": [
+          "Do not use the link. Open the app or type the official address.",
+          "Never type a password or code on a page that came by message.",
+          "Typed it? Change your password, talk to your bank and file a police report."
+        ],
+        "limit": "Bipe warns when a link copies a bank, a government body or a well-known company. It does not yet check new domains or domains that look like any site."
+      }
+    },
+    {
+      "id": "remoteAccess",
+      "slug": {
+        "pt": "golpe-da-mao-fantasma",
+        "en": "remote-access-scam"
+      },
+      "group": "conta",
+      "channels": [
+        "call",
+        "messaging"
+      ],
+      "aliases": {
+        "pt": [
+          "mão fantasma",
+          "golpe do acesso remoto",
+          "app falso do banco",
+          "golpe do AnyDesk"
+        ],
+        "en": [
+          "remote access scam",
+          "phantom hand scam"
+        ]
+      },
+      "scene": "acesso-remoto",
+      "stats": [],
+      "describedBy": [
+        "febMaoFantasma",
+        "glossario2025",
+        "certCaiu"
+      ],
+      "protect": [
+        "scam-alerts",
+        "reserved-names"
+      ],
+      "pt": {
+        "heading": "Mão fantasma e app falso",
+        "body": "Um falso funcionário do banco pede para você instalar um app para \"proteger a conta\". É um app de acesso remoto. Com ele, o golpista mexe no seu celular e esvazia a conta.",
+        "title": "Golpe da mão fantasma: como funciona e o que fazer",
+        "headline": "Golpe da mão fantasma: o app que o falso banco manda instalar",
+        "lede": "Um falso funcionário do banco pede para você instalar um app para proteger a conta. É um app de acesso remoto, e com ele o golpista controla o seu celular. Nenhum banco pede isso.",
+        "how": [
+          "O golpista liga ou escreve como se fosse do banco: compra suspeita, conta invadida.",
+          "Pede para você instalar um app de suporte ou de proteção, e passar um código de acesso.",
+          "Com o app, vê a sua tela, abre o app do banco e faz transferências."
+        ],
+        "signs": [
+          "Pedem para instalar um app fora da loja oficial, ou um app de acesso remoto.",
+          "Pedem para você não desligar e seguir as instruções.",
+          "O celular começa a se mexer sozinho."
+        ],
+        "todo": [
+          "Desligue na hora. Nenhum banco pede para instalar app.",
+          "Já instalou? Desligue a internet, apague o app e fale com o banco por outro celular.",
+          "Depois, restaure o celular e faça o boletim de ocorrência."
+        ],
+        "limit": "Depois que o app está instalado, o golpe acontece fora da conversa. O Bipe ainda não tem um aviso específico para pedido de instalar app de acesso remoto."
+      },
+      "en": {
+        "heading": "Phantom hand and fake app",
+        "body": "A fake bank employee asks you to install an app to \"protect the account\". It is a remote-access app. With it, the scammer works your phone and empties the account.",
+        "title": "Phantom hand scam: how it works and what to do",
+        "headline": "The phantom hand scam: the app the fake bank asks you to install",
+        "lede": "A fake bank employee asks you to install an app to protect your account. It is a remote-access app, and with it the scammer controls your phone. No bank asks for this.",
+        "how": [
+          "The scammer calls or writes as the bank: a suspicious purchase, a hacked account.",
+          "They ask you to install a support or protection app, and to pass on an access code.",
+          "With the app, they see your screen, open your bank app and make transfers."
+        ],
+        "signs": [
+          "They ask you to install an app from outside the official store, or a remote-access app.",
+          "They ask you not to hang up and to follow instructions.",
+          "The phone starts moving on its own."
+        ],
+        "todo": [
+          "Hang up at once. No bank asks you to install an app.",
+          "Already installed? Turn off the internet, delete the app and call the bank from another phone.",
+          "Then reset the phone and file a police report."
+        ],
+        "limit": "Once the app is installed, the scam happens outside the chat. Bipe has no specific warning yet for a request to install a remote-access app."
+      }
+    },
+    {
+      "id": "simSwap",
+      "slug": {
+        "pt": "golpe-da-troca-de-chip",
+        "en": "sim-swap-scam"
+      },
+      "group": "conta",
+      "channels": [
+        "carrier"
+      ],
+      "aliases": {
+        "pt": [
+          "SIM swap",
+          "sequestro da linha",
+          "chip clonado",
+          "golpe da portabilidade"
+        ],
+        "en": [
+          "SIM swap",
+          "line hijack"
+        ]
+      },
+      "scene": "noSms",
+      "stats": [],
+      "describedBy": [
+        "anatelGolpes"
+      ],
+      "protect": [
+        "no-sms",
+        "new-phone"
+      ],
+      "pt": {
+        "heading": "Troca de chip",
+        "body": "O golpista passa o seu número para um chip dele, na operadora. O seu celular fica sem sinal, e os códigos por SMS dos seus apps passam a chegar para ele.",
+        "title": "Golpe da troca de chip (SIM swap): como funciona e o que fazer",
+        "headline": "Golpe da troca de chip: o seu número vai para o celular do golpista",
+        "lede": "O golpista passa o seu número para um chip dele, com documento falso ou ajuda de dentro da operadora. O seu celular fica sem sinal, e os códigos por SMS passam a chegar para ele.",
+        "how": [
+          "O golpista junta os seus dados e pede a troca de chip ou a portabilidade do seu número.",
+          "O seu celular para de fazer ligação e de receber SMS, fora do Wi-Fi.",
+          "Com o seu número, recebe os códigos e entra nas contas que usam SMS."
+        ],
+        "signs": [
+          "O celular fica sem sinal do nada.",
+          "Chega aviso de troca de chip ou de portabilidade que você não pediu.",
+          "Amigos recebem mensagem sua que você não mandou."
+        ],
+        "todo": [
+          "Fale com a operadora na hora, pelo canal oficial.",
+          "Registre reclamação na Anatel e faça o boletim de ocorrência.",
+          "Avise o banco e troque as senhas das contas que usam SMS."
+        ],
+        "limit": "O Bipe não usa SMS, então trocar de chip não muda nada na conta do Bipe. Mas o Bipe não protege as suas outras contas."
+      },
+      "en": {
+        "heading": "SIM swap",
+        "body": "The scammer moves your number to their own SIM, at the carrier. Your phone loses signal, and your apps' SMS codes start going to them.",
+        "title": "SIM swap scam: how it works and what to do",
+        "headline": "The SIM swap scam: your number moves to the scammer's phone",
+        "lede": "The scammer moves your number to their own SIM, with a forged document or help inside the carrier. Your phone loses signal, and SMS codes start going to them.",
+        "how": [
+          "The scammer gathers your data and asks for a SIM swap or a port of your number.",
+          "Your phone stops making calls and getting SMS, off Wi-Fi.",
+          "With your number, they get the codes and sign in to accounts that use SMS."
+        ],
+        "signs": [
+          "The phone loses signal out of nowhere.",
+          "A notice of a SIM swap or port arrives that you did not ask for.",
+          "Friends get messages from you that you did not send."
+        ],
+        "todo": [
+          "Contact your carrier at once, through the official channel.",
+          "File a complaint with Anatel and a police report.",
+          "Tell your bank and change the passwords of accounts that use SMS."
+        ],
+        "limit": "Bipe does not use SMS, so a SIM swap changes nothing in your Bipe account. But Bipe does not protect your other accounts."
+      }
+    },
+    {
+      "id": "fakeKidnap",
+      "slug": {
+        "pt": "golpe-do-falso-sequestro",
+        "en": "fake-kidnapping-scam"
+      },
+      "group": "grupo",
+      "channels": [
+        "call",
+        "messaging"
+      ],
+      "aliases": {
+        "pt": [
+          "falso sequestro",
+          "golpe do sequestro",
+          "golpe do filho sequestrado"
+        ],
+        "en": [
+          "fake kidnapping",
+          "virtual kidnapping"
+        ]
+      },
+      "scene": "sequestro",
+      "stats": [],
+      "describedBy": [
+        "sspspCartilha",
+        "pcscCartilha",
+        "pcprSequestro"
+      ],
+      "protect": [
+        "family-check",
+        "requests",
+        "scam-alerts"
+      ],
+      "pt": {
+        "heading": "Falso sequestro",
+        "body": "Uma ligação ou um áudio com alguém chorando: seu filho foi sequestrado. O criminoso exige um Pix agora e manda você não desligar. Muitas vezes a pessoa nem saiu de casa.",
+        "title": "Golpe do falso sequestro: como funciona e o que fazer",
+        "headline": "Golpe do falso sequestro: um choro ao fundo e um Pix agora",
+        "lede": "Uma ligação ou um áudio com alguém chorando diz que um parente foi sequestrado. O criminoso exige um Pix na hora e manda você não desligar. Fale com o parente por outro caminho.",
+        "how": [
+          "O criminoso liga ou manda áudio com alguém gritando ou chorando ao fundo.",
+          "Espera você dizer um nome, e usa esse nome dali em diante.",
+          "Exige um Pix ou depósito na hora e manda você não falar com ninguém."
+        ],
+        "signs": [
+          "Pedem para você não desligar e não ligar para ninguém.",
+          "A voz que chora não diz o próprio nome.",
+          "O prazo é de minutos."
+        ],
+        "todo": [
+          "Não diga nomes. Desligue e ligue para o parente, ou peça para alguém ligar.",
+          "Não pague.",
+          "Ligue 190."
+        ],
+        "limit": "Quase sempre é por ligação, fora do Bipe. No Bipe, quem não está nos seus contatos chega como pedido, e o aviso aparece no pedido de dinheiro com pressa."
+      },
+      "en": {
+        "heading": "Fake kidnapping",
+        "body": "A call or voice message with someone crying: your child was kidnapped. The criminal demands a Pix now and tells you not to hang up. Often the person never left home.",
+        "title": "Fake kidnapping scam: how it works and what to do",
+        "headline": "The fake kidnapping scam: crying in the background and a Pix right now",
+        "lede": "A call or voice message with someone crying says a relative was kidnapped. The criminal demands a Pix at once and tells you not to hang up. Reach the relative another way.",
+        "how": [
+          "The criminal calls or sends audio with someone screaming or crying in the background.",
+          "They wait for you to say a name, and use it from then on.",
+          "They demand a Pix or deposit at once and tell you to speak to nobody."
+        ],
+        "signs": [
+          "They tell you not to hang up and not to call anyone.",
+          "The crying voice does not say its own name.",
+          "The deadline is minutes."
+        ],
+        "todo": [
+          "Do not say names. Hang up and call the relative, or ask someone to call.",
+          "Do not pay.",
+          "Call 190."
+        ],
+        "limit": "It is almost always a phone call, outside Bipe. On Bipe, people not in your contacts arrive as a request, and the warning shows on a rushed request for money."
+      }
+    },
+    {
+      "id": "sextortion",
+      "slug": {
+        "pt": "golpe-da-sextorsao",
+        "en": "sextortion-scam"
+      },
+      "group": "grupo",
+      "channels": [
+        "dating",
+        "social",
+        "messaging"
+      ],
+      "aliases": {
+        "pt": [
+          "sextorsão",
+          "golpe do nude",
+          "golpe dos nudes",
+          "falso pai da menor",
+          "golpe da novinha"
+        ],
+        "en": [
+          "sextortion",
+          "nude scam"
+        ]
+      },
+      "scene": "sextorsao",
+      "stats": [
+        "intimateImages"
+      ],
+      "describedBy": [
+        "safernetSextorsao",
+        "pcprSextorsao",
+        "glossario2025"
+      ],
+      "protect": [
+        "requests",
+        "scam-alerts"
+      ],
+      "pt": {
+        "heading": "Sextorsão",
+        "body": "Um perfil falso puxa conversa íntima e consegue fotos ou um vídeo. Depois vem a ameaça: pague ou as imagens vão para os seus contatos. Às vezes aparece um falso pai, policial ou advogado.",
+        "title": "Sextorsão e golpe do nude: como funciona e o que fazer",
+        "headline": "Sextorsão: pague ou as imagens vão para os seus contatos",
+        "lede": "Um perfil falso puxa conversa íntima e consegue imagens. Depois vem a ameaça: pague ou as imagens vão para os seus contatos. Pagar não faz a ameaça parar. Peça ajuda à SaferNet.",
+        "how": [
+          "Um perfil atraente puxa conversa numa rede social ou app de namoro e leva para conversa íntima.",
+          "Grava a chamada ou guarda as imagens, ou só finge que tem.",
+          "Ameaça mandar para a família e os amigos se você não pagar. Às vezes diz que era menor de idade."
+        ],
+        "signs": [
+          "A conversa ficou íntima muito rápido.",
+          "A pessoa pediu para trocar de app logo no começo.",
+          "Depois do primeiro pagamento, vem outro pedido."
+        ],
+        "todo": [
+          "Não pague. Pagar não faz a ameaça parar.",
+          "Guarde as provas, bloqueie e denuncie o perfil.",
+          "Peça ajuda no canal da SaferNet e faça o boletim de ocorrência."
+        ],
+        "limit": "O Bipe ainda não indica a SaferNet no aviso. A ameaça pode vir de outro app, onde as imagens foram trocadas."
+      },
+      "en": {
+        "heading": "Sextortion",
+        "body": "A fake profile starts an intimate chat and gets photos or a video. Then comes the threat: pay or the images go to your contacts. Sometimes a fake father, police officer or lawyer joins in.",
+        "title": "Sextortion and nude scams: how it works and what to do",
+        "headline": "Sextortion: pay or the images go to your contacts",
+        "lede": "A fake profile starts an intimate chat and gets images. Then comes the threat: pay or the images go to your contacts. Paying does not stop the threat. Ask SaferNet for help.",
+        "how": [
+          "An attractive profile starts a chat on social media or a dating app and steers it to intimacy.",
+          "They record the call or keep the images, or only pretend to have them.",
+          "They threaten to send them to family and friends unless you pay. Sometimes they say they were a minor."
+        ],
+        "signs": [
+          "The chat got intimate very fast.",
+          "The person asked to switch apps early on.",
+          "After the first payment, another demand comes."
+        ],
+        "todo": [
+          "Do not pay. Paying does not stop the threat.",
+          "Keep the evidence, block and report the profile.",
+          "Ask SaferNet's helpline for help and file a police report."
+        ],
+        "limit": "Bipe does not point to SaferNet in the warning yet. The threat can come from another app, where the images were shared."
+      }
+    },
+    {
+      "id": "groupScam",
+      "slug": {
+        "pt": "golpe-em-grupo",
+        "en": "group-chat-scam"
+      },
+      "group": "grupo",
+      "channels": [
+        "messaging"
+      ],
+      "aliases": {
+        "pt": [
+          "falso sorteio",
+          "falso administrador do grupo",
+          "golpe do prêmio",
+          "golpe da taxa no grupo"
+        ],
+        "en": [
+          "fake prize draw",
+          "fake group admin"
+        ]
+      },
+      "scene": "escola",
+      "stats": [],
+      "describedBy": [
+        "pcscCartilha",
+        "febWhatsapp"
+      ],
+      "protect": [
+        "verified-groups",
+        "communities",
+        "scam-alerts"
+      ],
+      "pt": {
+        "heading": "Golpe em grupo",
+        "body": "No grupo da escola, do condomínio ou da igreja, alguém posta uma taxa, um sorteio ou um link. Parece coisa do grupo, então muita gente paga ou passa o código sem pensar.",
+        "title": "Golpe em grupo: falso sorteio, falsa taxa e falso administrador",
+        "headline": "Golpe em grupo: a falsa taxa, o falso sorteio e o código para \"virar administrador\"",
+        "lede": "No grupo da escola, do condomínio ou da igreja, alguém posta uma taxa, um sorteio ou um link. Como vem de dentro do grupo, parece de confiança. Confira com quem cuida do grupo.",
+        "how": [
+          "O golpista entra no grupo, ou usa a conta de alguém que já estava lá.",
+          "Posta uma taxa de passeio, uma rifa, um sorteio ou um link de promoção.",
+          "Pede Pix, ou pede o código que vai chegar para \"validar a participação\"."
+        ],
+        "signs": [
+          "Quem cobra não é quem costuma cuidar do grupo.",
+          "A chave Pix é de uma pessoa, não da escola ou do condomínio.",
+          "Pedem um código para você entrar no sorteio ou virar administrador."
+        ],
+        "todo": [
+          "Confira com quem cuida do grupo por outro caminho antes de pagar.",
+          "Não passe código nenhum.",
+          "Avise o grupo e quem cuida dele."
+        ],
+        "limit": "Grupo aberto continua aberto. O Bipe avisa na mensagem, e a comunidade deixa só quem cuida postar nos avisos."
+      },
+      "en": {
+        "heading": "Group chat scam",
+        "body": "In the school, building or church group, someone posts a fee, a prize draw or a link. It looks like group business, so many people pay or pass on a code without thinking.",
+        "title": "Group chat scam: fake draws, fake fees and fake admins",
+        "headline": "The group chat scam: a fake fee, a fake draw and a code to \"become admin\"",
+        "lede": "In the school, building or church group, someone posts a fee, a draw or a link. Coming from inside the group, it looks trustworthy. Check with the people who run the group.",
+        "how": [
+          "The scammer joins the group, or uses the account of someone already in it.",
+          "They post a trip fee, a raffle, a prize draw or a promo link.",
+          "They ask for a Pix, or for the code you are about to get to \"confirm your entry\"."
+        ],
+        "signs": [
+          "The person charging is not the one who usually runs the group.",
+          "The Pix key belongs to a person, not the school or the building.",
+          "They ask for a code to enter the draw or to become admin."
+        ],
+        "todo": [
+          "Check with the people who run the group another way before you pay.",
+          "Do not pass on any code.",
+          "Tell the group and the people who run it."
+        ],
+        "limit": "An open group stays open. Bipe warns on the message, and a community lets only its admins post announcements."
+      }
+    },
+    {
+      "id": "fakeCharity",
+      "slug": {
+        "pt": "golpe-da-falsa-vaquinha",
+        "en": "fake-charity-scam"
+      },
+      "group": "grupo",
+      "channels": [
+        "social",
+        "messaging"
+      ],
+      "aliases": {
+        "pt": [
+          "falsa vaquinha",
+          "falsa doação",
+          "falsa caridade",
+          "golpe da campanha"
+        ],
+        "en": [
+          "fake charity",
+          "fake fundraiser"
+        ]
+      },
+      "scene": "vaquinha",
+      "stats": [],
+      "describedBy": [
+        "glossario2025"
+      ],
+      "protect": [
+        "scam-alerts",
+        "cnpj-badge",
+        "money-pause"
+      ],
+      "pt": {
+        "heading": "Falsa vaquinha",
+        "body": "Uma campanha para uma criança doente, para vítimas de enchente ou para uma igreja. A história emociona e a chave Pix é de uma pessoa qualquer. O dinheiro não chega a quem precisa.",
+        "title": "Golpe da falsa vaquinha: como funciona e o que fazer",
+        "headline": "Golpe da falsa vaquinha: a história é triste, a chave é do golpista",
+        "lede": "Uma campanha para alguém doente ou para vítimas de uma tragédia pede Pix. A história emociona, mas a chave é do golpista. Doe por instituições que você consegue conferir.",
+        "how": [
+          "Depois de uma tragédia, ou com a foto de uma criança doente, o golpista cria uma campanha.",
+          "Espalha em grupos e redes, com fotos copiadas e pressa.",
+          "A chave Pix é de uma pessoa, não da família nem de uma instituição."
+        ],
+        "signs": [
+          "Não dá para falar com a família ou com a instituição.",
+          "A chave Pix está no nome de outra pessoa.",
+          "A mesma história aparece com nomes diferentes."
+        ],
+        "todo": [
+          "Doe para instituições com CNPJ que você consegue conferir.",
+          "Antes de confirmar o Pix, veja o nome que o banco mostra.",
+          "Desconfiou? Avise o grupo e denuncie o perfil."
+        ],
+        "limit": "O aviso aparece quando a mensagem tem chave Pix e pedido com pressa. O Bipe não sabe se a história é verdade."
+      },
+      "en": {
+        "heading": "Fake fundraiser",
+        "body": "A campaign for a sick child, flood victims or a church. The story is moving and the Pix key belongs to just anyone. The money never reaches the people in need.",
+        "title": "Fake fundraiser scam: how it works and what to do",
+        "headline": "The fake fundraiser scam: a sad story, the scammer's key",
+        "lede": "A campaign for someone sick or for the victims of a tragedy asks for a Pix. The story is moving, but the key is the scammer's. Give through organisations you can check.",
+        "how": [
+          "After a tragedy, or with a photo of a sick child, the scammer starts a campaign.",
+          "They spread it in groups and on social media, with copied photos and a rush.",
+          "The Pix key belongs to a person, not the family or an organisation."
+        ],
+        "signs": [
+          "You cannot reach the family or the organisation.",
+          "The Pix key is in someone else's name.",
+          "The same story shows up with different names."
+        ],
+        "todo": [
+          "Give to organisations with a CNPJ you can check.",
+          "Before you confirm the Pix, look at the name your bank shows.",
+          "Suspicious? Tell the group and report the profile."
+        ],
+        "limit": "The warning shows when the message has a Pix key and a rushed request. Bipe does not know if the story is true."
       }
     }
+  ],
+  "outside": [
+    { "id": "motoboy", "source": "febMotoboy", "pt": {"name": "Falso motoboy", "body": "Um falso funcionário do banco liga, diz que o cartão foi clonado e manda um motoboy buscar. Banco nunca busca cartão."}, "en": {"name": "Fake courier", "body": "A fake bank employee calls, says the card was cloned and sends a courier to collect it. A bank never collects your card."} },
+    { "id": "maquininha", "source": "febMaquininha", "pt": {"name": "Maquininha com valor trocado", "body": "Na entrega, a maquininha tem o visor quebrado ou cobra a mais. Confira o valor na tela antes de pagar."}, "en": {"name": "Card machine with a changed amount", "body": "On delivery, the card machine has a broken screen or charges more. Check the amount on screen before you pay."} },
+    { "id": "trocaCartao", "source": "febTrocaCartao", "pt": {"name": "Cartão trocado na loja ou no caixa", "body": "Alguém vê a sua senha e devolve outro cartão. Coloque o cartão você mesmo e confira se o que voltou é o seu."}, "en": {"name": "Card swapped in a shop or at an ATM", "body": "Someone sees your PIN and hands back another card. Insert the card yourself and check that the one you get back is yours."} },
+    { "id": "ligacao", "source": "febFalsaCentral", "pt": {"name": "Ligação da falsa central", "body": "Uma ligação diz ser do banco e pede senha ou transferência. Desligue e ligue você para o número que está atrás do cartão, de outro telefone."}, "en": {"name": "A call from a fake bank line", "body": "A call says it is the bank and asks for your password or a transfer. Hang up and call the number on the back of the card, from another phone."} }
   ],
   "protect": [
     { "feature": "scam-alerts", "pt": "Aparece um aviso embaixo da mensagem com cara de golpe, como Pix com pressa, troca de número ou boleto. Vem ligado, sem precisar mexer em nada.", "en": "A warning shows under a message that looks like a scam, such as a rushed Pix, a new number or a boleto. It is on by default, with nothing to set up." },
     { "feature": "requests", "pt": "Quem não está nos seus contatos chega como pedido. Uma mensagem de número novo não cai direto na sua lista de conversas.", "en": "People who are not in your contacts arrive as a request. A message from a new number does not land straight in your chat list." },
-    { "feature": "no-sms", "pt": "Você entra com e-mail e senha. Quem pega seu chip não pega sua conta.", "en": "You sign in with e-mail and a password. Whoever takes your SIM card does not get your account." },
+    { "feature": "no-sms", "pt": "No Bipe não tem código por SMS para pedir. Quem pega seu chip não pega sua conta.", "en": "Bipe has no SMS code anyone could ask for. Whoever takes your SIM card does not get your account." },
     { "feature": "money-pause", "pt": "Num pedido de dinheiro suspeito, copiar e pagar ficam travados por 5 segundos, para quebrar a pressa do golpe.", "en": "On a suspicious money request, copy and pay stay locked for 5 seconds, to break the scam's rush." },
     { "feature": "verified-badge", "pt": "Um selo com o nome verificado pelo Pix ou pelo gov.br. Aí dá para saber quem está do outro lado.", "en": "A seal with a name verified through Pix or gov.br, so you know who is on the other side." },
     { "feature": "family-check", "pt": "Se o contato salvo como Mãe tem outro nome verificado, o app pergunta se é a mesma pessoa.", "en": "If the contact saved as Mum has a different verified name, the app asks if it is the same person." }
@@ -606,9 +2756,20 @@
     "bipeLede": "O Bipe foi feito para você saber quem está do outro lado. Nem tudo está pronto: cada item mostra em que pé está no iPhone e no Android.",
     "limit": "O Bipe só protege as conversas que acontecem no Bipe. Se alguém da família ainda usa outro app, o golpista pode escrever para essa pessoa lá.",
     "sourcesTitle": "De onde vêm esses números",
-    "sourcesNote": "Pesquisa feita em 12 de outubro de 2026. A gente só usa número que tem fonte. Pesquisa de empresa ou de associação privada aparece marcada como tal.",
+    "sourcesNote": "Pesquisa feita em 13 de outubro de 2026. A gente só usa número que tem fonte. Pesquisa de empresa ou de associação privada aparece marcada como tal.",
     "source": "Fonte",
     "table": "Ver os números em tabela",
+    "typeAliases": "Também chamado de",
+    "typeChannels": "Onde costuma começar",
+    "typeDescribedBy": "Quem descreve este golpe",
+    "typeDescribedByNote": "Páginas oficiais com o roteiro do golpe e o que fazer.",
+    "typeLimitTitle": "O que o Bipe não resolve aqui",
+    "typeScene": "Como chega no Bipe",
+    "outsideTitle": "Golpes que começam fora da conversa",
+    "outsideLede": "O Bipe cuida da conversa. Estes golpes começam fora dela, por ligação ou pessoalmente.",
+    "outsideMore": "Como se proteger",
+    "groups": { "pessoa": "Alguém se passa por quem você conhece", "instituicao": "Alguém se passa por banco, órgão público ou empresa", "compra": "Compra e venda", "dinheiro": "Pix, boleto, empréstimo e investimento", "conta": "Conta e celular", "grupo": "Grupos e ameaças" },
+    "channels": { "messaging": "app de mensagem", "sms": "SMS", "call": "ligação", "email": "e-mail", "ad": "anúncio", "social": "rede social", "marketplace": "site de vendas", "dating": "app de namoro", "carrier": "operadora do celular", "inPerson": "pessoalmente" },
     "kinds": { "primary": "fonte oficial", "secondary": "pesquisa de associação privada", "press": "como noticiado pela imprensa" }
   },
   "en": {
@@ -642,9 +2803,20 @@
     "bipeLede": "Bipe is made so you know who is on the other side. Not everything is ready: each item shows where it stands on iPhone and Android.",
     "limit": "Bipe only protects the chats that happen in Bipe. If someone in the family still uses another app, a scammer can write to them there.",
     "sourcesTitle": "Where these numbers come from",
-    "sourcesNote": "Researched on 12 October 2026. We only use numbers that have a source. Surveys by a company or a private association are marked as such.",
+    "sourcesNote": "Researched on 13 October 2026. We only use numbers that have a source. Surveys by a company or a private association are marked as such.",
     "source": "Source",
     "table": "See the numbers as a table",
+    "typeAliases": "Also called",
+    "typeChannels": "Where it usually starts",
+    "typeDescribedBy": "Who describes this scam",
+    "typeDescribedByNote": "Official pages with the scam's script and what to do.",
+    "typeLimitTitle": "What Bipe does not solve here",
+    "typeScene": "How it arrives on Bipe",
+    "outsideTitle": "Scams that start outside the chat",
+    "outsideLede": "Bipe looks after the chat. These scams start outside it, by phone call or in person.",
+    "outsideMore": "How to protect yourself",
+    "groups": { "pessoa": "Someone poses as a person you know", "instituicao": "Someone poses as a bank, a public body or a company", "compra": "Buying and selling", "dinheiro": "Pix, boleto, loans and investment", "conta": "Account and phone", "grupo": "Groups and threats" },
+    "channels": { "messaging": "messaging app", "sms": "SMS", "call": "phone call", "email": "e-mail", "ad": "ad", "social": "social media", "marketplace": "marketplace", "dating": "dating app", "carrier": "phone carrier", "inPerson": "in person" },
     "kinds": { "primary": "official source", "secondary": "private association survey", "press": "as reported by the press" }
   }
 }

@@ -1934,7 +1934,7 @@
           "body": "O Bipe é um experimento. Ele testa se dá para ter um app de mensagens feito contra os golpes que acontecem aqui, com os dados no Brasil. Quem começou e cuida do Bipe é a Envisioning, um instituto de pesquisa que estuda desde 2010 como as instituições se adaptam à tecnologia. Hoje ela faz o app e roda os servidores no Brasil. Mas ela não quer ser dona do Bipe, nem tocar ele sozinha."
         },
         {
-          "heading": "Feito pra não ter dono",
+          "heading": "Feito para não ter dono",
           "body": "A ideia é que o Bipe vire uma infraestrutura comum: várias organizações sustentam, nenhuma é dona, nenhuma muda as regras sozinha. Por enquanto isso é uma ideia, não um acordo. O código vai ser público em breve e a rede é aberta, então, se a Envisioning parar, outras pessoas podem continuar. As regras de moderação saem no lançamento."
         },
         {
@@ -2120,7 +2120,7 @@
           "heading": "Por que ser parceiro",
           "points": [
             "Os dados e os servidores ficam no Brasil, sob a lei brasileira.",
-            "Golpe por mensagem custa caro pra todo mundo: pra quem perde o dinheiro, pro banco que atende, pra loja que tem o nome usado. Um app feito contra golpe sai mais barato junto do que sozinho.",
+            "Golpe por mensagem custa caro para todo mundo: para quem perde o dinheiro, para o banco que atende, para a loja que tem o nome usado. Um app feito contra golpe sai mais barato junto do que sozinho.",
             "Ninguém é dono. Nenhum parceiro, nem a Envisioning, muda as regras sozinho.",
             "O código e o protocolo são abertos. O que você ajuda a construir fica público e não fica preso a ninguém.",
             "Os custos e os riscos são divididos. Jurídico, moderação e servidores não ficam nas costas de uma organização só."
@@ -2137,13 +2137,13 @@
           ]
         },
         {
-          "heading": "Como dá pra ajudar",
+          "heading": "Como dá para ajudar",
           "points": [
-            "Dinheiro pra manter o serviço no ar.",
+            "Dinheiro para manter o serviço no ar.",
             "Servidores e hospedagem no Brasil.",
-            "Gente pra cuidar da parte jurídica e da moderação.",
+            "Gente para cuidar da parte jurídica e da moderação.",
             "Pesquisa sobre golpes, segurança e como as pessoas usam o app.",
-            "Levar o Bipe pra quem mais precisa dele."
+            "Levar o Bipe para quem mais precisa dele."
           ]
         },
         {

@@ -699,7 +699,7 @@
         "body": "Trocar um O por 0, ou por uma letra parecida de outro alfabeto, não engana a checagem de nome.",
         "points": [
           "O app simplifica o nome antes de comparar: tira acento, troca número por letra e troca letra de outro alfabeto pela nossa.",
-          "Assim, @itau, @ltau e @1tau contam como o mesmo nome.",
+          "Assim, @itau, @1tau e @it4u contam como o mesmo nome.",
           "Vale para o nome de usuário e para o nome que aparece na conversa."
         ]
       },
@@ -708,7 +708,7 @@
         "body": "Swapping an O for a 0, or for a lookalike letter from another alphabet, won't fool the name check.",
         "points": [
           "The app simplifies a name before it compares: it drops accents, turns digits into letters and turns letters from other alphabets into ours.",
-          "So @itau, @ltau and @1tau count as the same name.",
+          "So @itau, @1tau and @it4u count as the same name.",
           "It applies to usernames and to the name shown in the chat."
         ]
       }

@@ -15,6 +15,15 @@ permissions:
   contents: read
 
 jobs:
+  trust-facts:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+      - name: Trust facts
+        run: node --test tools/trust-facts.test.mjs
   lockstep:
     runs-on: ubuntu-latest
     steps:
@@ -50,7 +59,5 @@ jobs:
           node-version: 24
       - name: Contract
         run: node bipe-shared/tools/check-contract.mjs
-      - name: Trust facts
-        run: node --test bipe-shared/tools/trust-facts.test.mjs
       - name: Drift
         run: node bipe-shared/tools/check-drift.mjs --against head --repos "$GITHUB_WORKSPACE"

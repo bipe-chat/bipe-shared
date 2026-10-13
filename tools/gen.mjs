@@ -1,11 +1,13 @@
 // Generates platform code from registries/ and strings/.
-// Usage: node tools/gen.mjs [--swift <dir>] [--kotlin <dir>] [--api <dir>]
+// Usage: node tools/gen.mjs [--swift <dir>] [--kotlin <dir>] [--api <dir>] [--ios-version <dir>] [--android-version <dir>]
 //   Default Swift output: ../bipe-ios/Components/BipeKit/Sources/BipeKit/Generated
 //   Default Kotlin output: ../bipe-android/libraries/bipe/src/main (kotlin/ and res/ below it)
+//   Default version output (ADR 0072): ../bipe-ios/Tools/Bipe/version.env, ../bipe-android/plugins/src/main/kotlin/BipeVersion.kt
 import { copyFileSync, existsSync, mkdirSync, readdirSync, writeFileSync } from "node:fs";
 import { dirname, join, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
 import { hostHomoglyphs, loadRegistries } from "./lib/registries.mjs";
+import { iosVersionEnv, kotlinVersion, loadVersion } from "./lib/version.mjs";
 
 const root = join(dirname(fileURLToPath(import.meta.url)), "..");
 const args = process.argv.slice(2);
@@ -360,4 +362,18 @@ if (existsSync(resolve(apiOut, "../.."))) {
   for (const f of ["pt-BR.json", "en.json"]) copyFileSync(join(root, "strings", f), join(apiOut, "strings", f));
   copyFileSync(join(root, "tools/lib/registries.mjs"), join(apiOut, "lib/registries.mjs"));
   console.log(`wrote API registries to ${apiOut}`);
+}
+
+// App version and build number (ADR 0072). Written when the flag is given or the sibling repo exists.
+const version = loadVersion(root);
+for (const [flag, fallback, repoDepth, file, render] of [
+  ["--ios-version", "../bipe-ios/Tools/Bipe", "../..", "version.env", iosVersionEnv],
+  ["--android-version", "../bipe-android/plugins/src/main/kotlin", "../../../..", "BipeVersion.kt", kotlinVersion],
+]) {
+  const index = args.indexOf(flag);
+  const out = resolve(index >= 0 ? args[index + 1] : join(root, fallback));
+  if (index < 0 && !existsSync(resolve(out, repoDepth))) continue;
+  mkdirSync(out, { recursive: true });
+  writeFileSync(join(out, file), render(version));
+  console.log(`wrote ${version.version} (${version.build}) to ${join(out, file)}`);
 }

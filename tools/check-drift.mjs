@@ -1,6 +1,7 @@
 // Drift check (ADR 0031, rule 5): regenerates everything bipe-shared generates into a temporary
 // folder and compares it with the generated files in the sibling repos (Swift, Kotlin, API copy,
-// bipe/docs/product.md) and with test-vectors/.
+// app version files, bipe/docs/product.md) and with test-vectors/. It also checks that
+// MARKETING_VERSION in bipe-ios/project.yml is the version in product/version.json (ADR 0072).
 // Usage: node tools/check-drift.mjs [--against worktree|head] [--repos <dir>]
 //   worktree (default): compare with the files on disk. The pre-commit hook uses this.
 //   head: compare with each repo's committed HEAD. CI uses this.
@@ -11,6 +12,7 @@ import { existsSync, mkdirSync, mkdtempSync, readdirSync, readFileSync, rmSync, 
 import { tmpdir } from "node:os";
 import { dirname, join, relative, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
+import { loadVersion } from "./lib/version.mjs";
 
 const root = join(dirname(fileURLToPath(import.meta.url)), "..");
 const args = process.argv.slice(2);
@@ -43,6 +45,9 @@ const TARGETS = [
     repoBase: "src/generated",
     generatedOnly: ["."],
   },
+  // App version name and build number (ADR 0072). The folders also hold hand-written files.
+  { repo: "bipe-ios", tmpBase: join(tmp, "ios-version"), repoBase: "Tools/Bipe", generatedOnly: [] },
+  { repo: "bipe-android", tmpBase: join(tmp, "android-version"), repoBase: "plugins/src/main/kotlin", generatedOnly: [] },
 ];
 
 function walk(dir) {
@@ -75,7 +80,8 @@ const problems = [];
 const warnings = [];
 try {
   mkdirSync(join(tmp, "api/src"), { recursive: true }); // gen.mjs writes the API copy only when ../.. exists
-  node("gen.mjs", "--swift", join(tmp, "ios/Sources/BipeKit/Generated"), "--kotlin", join(tmp, "android/src/main"), "--api", join(tmp, "api/src/generated"));
+  node("gen.mjs", "--swift", join(tmp, "ios/Sources/BipeKit/Generated"), "--kotlin", join(tmp, "android/src/main"), "--api", join(tmp, "api/src/generated"),
+    "--ios-version", join(tmp, "ios-version"), "--android-version", join(tmp, "android-version"));
   node("gen-test-vectors.mjs", "--out", join(tmp, "test-vectors"));
   node("gen-product-doc.mjs", "--out", join(tmp, "product.md"));
 
@@ -98,6 +104,14 @@ try {
         if (!expected.has(path) && !path.endsWith(".DS_Store")) problems.push(`${target.repo}: ${path} is not generator output (stale?)`);
       }
     }
+  }
+
+  // project.yml is hand-edited (xcodegen input), so only its MARKETING_VERSION line is checked.
+  const ios = join(reposDir, "bipe-ios");
+  if (existsSync(ios)) {
+    const { version } = loadVersion(root);
+    const marketing = /^\s*MARKETING_VERSION:\s*"?([^"\s#]+)/m.exec(repoFile(ios, "project.yml") ?? "")?.[1];
+    if (marketing !== version) problems.push(`bipe-ios: project.yml MARKETING_VERSION is ${marketing ?? "missing"}, product/version.json says ${version} (edit project.yml, then xcodegen)`);
   }
 
   // bipe/docs/product.md is generated from product/.

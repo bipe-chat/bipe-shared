@@ -167,6 +167,7 @@ for (const t of scams.types) {
   if (!GROUPS.includes(t.group)) fail(`scams type ${t.id}: group ${t.group}`);
   if (!t.channels?.length || t.channels.some((c) => !CHANNELS.includes(c))) fail(`scams type ${t.id}: channels`);
   if (!FIGURES.has(t.scene)) fail(`scams type ${t.id}: unknown scene ${t.scene}`);
+  if (t.realScene !== undefined && !FIGURES.has(t.realScene)) fail(`scams type ${t.id}: unknown realScene ${t.realScene}`);
   if (!t.describedBy?.length) fail(`scams type ${t.id}: describedBy needs an official source`);
   for (const id of t.describedBy) {
     const src = scams.sources.find((x) => x.id === id);

@@ -466,6 +466,7 @@
         ]
       },
       "scene": "falso-suporte",
+      "realScene": "banco-real",
       "stats": [
         "fakeCall",
         "fakeCallAttempts"
@@ -651,6 +652,7 @@
         ]
       },
       "scene": "loja-falsa",
+      "realScene": "loja-real",
       "stats": [
         "fakeShopShare",
         "fakeSale",
@@ -1076,6 +1078,7 @@
         ]
       },
       "scene": "falso-advogado",
+      "realScene": "advogado-real",
       "stats": [
         "oabsp"
       ],
@@ -1247,6 +1250,7 @@
         ]
       },
       "scene": "taxa-correios",
+      "realScene": "entrega-real",
       "stats": [],
       "describedBy": [
         "correiosFalsas",
@@ -1663,6 +1667,7 @@
         ]
       },
       "scene": "aluguel",
+      "realScene": "pousada-real",
       "stats": [],
       "describedBy": [
         "pcprAluguel",
@@ -1828,6 +1833,7 @@
         ]
       },
       "scene": "boleto",
+      "realScene": "escola-real",
       "stats": [
         "pixShare"
       ],
@@ -1912,6 +1918,7 @@
         ]
       },
       "scene": "emprestimo",
+      "realScene": "credito-real",
       "stats": [],
       "describedBy": [
         "febEmprestimo",
@@ -2654,6 +2661,7 @@
         ]
       },
       "scene": "vaquinha",
+      "realScene": "doacao-real",
       "stats": [],
       "describedBy": [
         "glossario2025"
@@ -2766,6 +2774,8 @@
     "typeDescribedByNote": "Páginas oficiais com o roteiro do golpe e o que fazer.",
     "typeLimitTitle": "O que o Bipe não resolve aqui",
     "typeScene": "Como chega no Bipe",
+    "typeReal": "A mensagem de verdade",
+    "typeRealLede": "A empresa de verdade não pede código, senha nem Pix para chave pessoal. No Bipe, ela vai aparecer com o selo e o CNPJ (em breve).",
     "outsideTitle": "Golpes que começam fora da conversa",
     "outsideLede": "Estes golpes começam fora da conversa, por ligação ou pessoalmente.",
     "outsideMore": "Como se proteger",
@@ -2814,6 +2824,8 @@
     "typeDescribedByNote": "Official pages with the scam's script and what to do.",
     "typeLimitTitle": "What Bipe does not solve here",
     "typeScene": "How it arrives on Bipe",
+    "typeReal": "The real message",
+    "typeRealLede": "The real company never asks for a code, a password or a Pix to a personal key. On Bipe, it will show the seal and its CNPJ (coming soon).",
     "outsideTitle": "Scams that start outside the chat",
     "outsideLede": "These scams start outside the chat, by phone call or in person.",
     "outsideMore": "How to protect yourself",

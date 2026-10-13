@@ -157,9 +157,28 @@ const handleInputs = [
   "Ana", "ana..souza", ".ana", "ana.", "ana_", "_ana", "ana-souza", "ana souza", "anã",
   "itau", "1tau", "it.au", "b4nco.inter", "bipe", "b1pe", "suporte.bipe",
 ];
+// Owned handles (ADR 0065). claimant: the Matrix user ID that wants the handle. Without it the case is a
+// lookup (shape only). The owner comes from registries/reserved-name-owners.json.
+const mzOwner = reg.owners.handles.mz;
+const claimCases = [
+  { input: "mz" },
+  { input: "mz", claimant: mzOwner },
+  { input: "mz", claimant: "@ana:bipe.net.br" },
+  { input: "mz", claimant: "" },
+  { input: "m.z", claimant: mzOwner },
+  { input: "m.z", claimant: "@ana:bipe.net.br" },
+  { input: "qx" },
+  { input: "qx", claimant: "@ana:bipe.net.br" },
+  { input: "m_" },
+  { input: "MZ" },
+  { input: "m" },
+];
 write("handles.json", {
-  description: "Handle validation and skeletons. problem is null when valid. Equal skeletons collide.",
-  cases: handleInputs.map((input) => ({ input, problem: handleProblem(input, reg), skeleton: handleSkeleton(input, reg) })),
+  description: "Handle validation and skeletons. problem is null when valid. Equal skeletons collide. A case without claimant is a lookup (shape only); with claimant it is a claim by that Matrix user ID (\"\" for a new account).",
+  cases: [
+    ...handleInputs.map((input) => ({ input, problem: handleProblem(input, reg), skeleton: handleSkeleton(input, reg) })),
+    ...claimCases.map(({ input, claimant }) => ({ input, ...(claimant === undefined ? {} : { claimant }), problem: handleProblem(input, reg, claimant), skeleton: handleSkeleton(input, reg) })),
+  ],
 });
 
 // --- Invite codes ------------------------------------------------------------

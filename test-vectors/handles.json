@@ -1,5 +1,5 @@
 {
-  "description": "Handle validation and skeletons. problem is null when valid. Equal skeletons collide.",
+  "description": "Handle validation and skeletons. problem is null when valid. Equal skeletons collide. A case without claimant is a lookup (shape only); with claimant it is a claim by that Matrix user ID (\"\" for a new account).",
   "cases": [
     {
       "input": "ana.souza",
@@ -115,6 +115,67 @@
       "input": "suporte.bipe",
       "problem": "reserved",
       "skeleton": "suportebipe"
+    },
+    {
+      "input": "mz",
+      "problem": null,
+      "skeleton": "mz"
+    },
+    {
+      "input": "mz",
+      "claimant": "@fmfwxwwys6v2:bipe.net.br",
+      "problem": null,
+      "skeleton": "mz"
+    },
+    {
+      "input": "mz",
+      "claimant": "@ana:bipe.net.br",
+      "problem": "reserved",
+      "skeleton": "mz"
+    },
+    {
+      "input": "mz",
+      "claimant": "",
+      "problem": "reserved",
+      "skeleton": "mz"
+    },
+    {
+      "input": "m.z",
+      "claimant": "@fmfwxwwys6v2:bipe.net.br",
+      "problem": null,
+      "skeleton": "mz"
+    },
+    {
+      "input": "m.z",
+      "claimant": "@ana:bipe.net.br",
+      "problem": "reserved",
+      "skeleton": "mz"
+    },
+    {
+      "input": "qx",
+      "problem": "too_short",
+      "skeleton": "qx"
+    },
+    {
+      "input": "qx",
+      "claimant": "@ana:bipe.net.br",
+      "problem": "too_short",
+      "skeleton": "qx"
+    },
+    {
+      "input": "m_",
+      "problem": "too_short",
+      "skeleton": "m"
+    },
+    {
+      "input": "MZ",
+      "problem": "too_short",
+      "skeleton": "mz"
+    },
+    {
+      "input": "m",
+      "problem": "too_short",
+      "skeleton": "m"
     }
   ]
 }

@@ -1,6 +1,6 @@
 # ADR 0031: the shared rules, the generated code in every repo and the API clients stay in step.
 # Needs the secret BIPE_REPOS_TOKEN: a fine-grained token with read access to contents of
-# proseio, proseio-ios, proseio-android and proseio-api (the repos are private).
+# bipe, bipe-ios, bipe-android and bipe-api (the repos are private).
 name: Checks
 
 on:
@@ -20,35 +20,35 @@ jobs:
     steps:
       - uses: actions/checkout@v4
         with:
-          path: proseio-shared
+          path: bipe-shared
       - uses: actions/checkout@v4
         with:
-          repository: bipe-chat/proseio
+          repository: bipe-chat/bipe
           token: ${{ secrets.BIPE_REPOS_TOKEN }}
-          path: proseio
+          path: bipe
       - uses: actions/checkout@v4
         with:
-          repository: bipe-chat/proseio-ios
+          repository: bipe-chat/bipe-ios
           token: ${{ secrets.BIPE_REPOS_TOKEN }}
-          path: proseio-ios
+          path: bipe-ios
           lfs: false
           submodules: false
       - uses: actions/checkout@v4
         with:
-          repository: bipe-chat/proseio-android
+          repository: bipe-chat/bipe-android
           token: ${{ secrets.BIPE_REPOS_TOKEN }}
-          path: proseio-android
+          path: bipe-android
           lfs: false
           submodules: false
       - uses: actions/checkout@v4
         with:
-          repository: bipe-chat/proseio-api
+          repository: bipe-chat/bipe-api
           token: ${{ secrets.BIPE_REPOS_TOKEN }}
-          path: proseio-api
+          path: bipe-api
       - uses: actions/setup-node@v4
         with:
           node-version: 24
       - name: Contract
-        run: node proseio-shared/tools/check-contract.mjs
+        run: node bipe-shared/tools/check-contract.mjs
       - name: Drift
-        run: node proseio-shared/tools/check-drift.mjs --against head --repos "$GITHUB_WORKSPACE"
+        run: node bipe-shared/tools/check-drift.mjs --against head --repos "$GITHUB_WORKSPACE"

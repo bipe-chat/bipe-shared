@@ -1,5 +1,5 @@
 {
-  "$comment": "Scams in Brazil register: the page /golpes-no-brasil/ and /en/scams-in-brazil/. Research and conflicts: proseio/docs/scams-brazil.md. Every number in stats and charts has a source in sources, with a URL and a date. Never write a number that is not in a source. Bipe features in protect take their status from product.json. Validated by tools/gen-product-doc.mjs.",
+  "$comment": "Scams in Brazil register: the page /golpes-no-brasil/ and /en/scams-in-brazil/. Research and conflicts: bipe/docs/scams-brazil.md. Every number in stats and charts has a source in sources, with a URL and a date. Never write a number that is not in a source. Bipe features in protect take their status from product.json. Validated by tools/gen-product-doc.mjs.",
   "version": 1,
   "date": "2026-10-12",
   "sources": [

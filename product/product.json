@@ -1,5 +1,5 @@
 {
-  "$comment": "What Bipe is and what it does, for the website, store listings and docs. One source of truth: proseio-web renders it, tools/gen-product-doc.mjs writes proseio/docs/product.md from it. status per platform: testing (in the TestFlight or beta build), planned (designed, not in a build), policy (a promise about how Bipe runs, not a feature). Never mark a feature testing before it is in a build. Copy passed a humanizer pass by hand (no em dashes, plain words). Draft until the brand review. Tentpoles: the reasons to switch, in order. demos: simulations on the tentpole page, in order; the first one leads.",
+  "$comment": "What Bipe is and what it does, for the website, store listings and docs. One source of truth: bipe-web renders it, tools/gen-product-doc.mjs writes bipe/docs/product.md from it. status per platform: testing (in the TestFlight or beta build), planned (designed, not in a build), policy (a promise about how Bipe runs, not a feature). Never mark a feature testing before it is in a build. Copy passed a humanizer pass by hand (no em dashes, plain words). Draft until the brand review. Tentpoles: the reasons to switch, in order. demos: simulations on the tentpole page, in order; the first one leads.",
   "version": 1,
   "promise": {
     "pt": {
@@ -108,10 +108,10 @@
         "family-check"
       ],
       "docs": [
-        "proseio/docs/security.md",
-        "proseio/docs/identity.md",
-        "proseio/docs/design/trust-ui.md",
-        "proseio-shared/registries/scam-patterns.json"
+        "bipe/docs/security.md",
+        "bipe/docs/identity.md",
+        "bipe/docs/design/trust-ui.md",
+        "bipe-shared/registries/scam-patterns.json"
       ],
       "pt": {
         "name": "Segurança",
@@ -183,8 +183,8 @@
         "invites"
       ],
       "docs": [
-        "proseio/docs/usernames.md",
-        "proseio-shared/registries/handles.json"
+        "bipe/docs/usernames.md",
+        "bipe-shared/registries/handles.json"
       ],
       "pt": {
         "name": "Seu @",
@@ -238,9 +238,9 @@
         "open-source"
       ],
       "docs": [
-        "proseio/docs/strategy.md",
-        "proseio/docs/wedge.md",
-        "proseio/docs/hosting.md"
+        "bipe/docs/strategy.md",
+        "bipe/docs/wedge.md",
+        "bipe/docs/hosting.md"
       ],
       "pt": {
         "name": "Sem anúncio",
@@ -287,10 +287,10 @@
         "phone-discovery"
       ],
       "docs": [
-        "proseio/docs/groups.md",
-        "proseio/docs/payments.md",
-        "proseio/docs/social.md",
-        "proseio/docs/phone-link.md"
+        "bipe/docs/groups.md",
+        "bipe/docs/payments.md",
+        "bipe/docs/social.md",
+        "bipe/docs/phone-link.md"
       ],
       "pt": {
         "name": "Pra sua turma",
@@ -1876,7 +1876,7 @@
     }
   },
   "business": {
-    "$comment": "The /empresas/ page. Source: proseio/docs/business-messaging.md (exploration, issue #93). Everything here is a proposal: nothing is built or for sale. Keep that visible on the page. Decided so far: ADR 0035 (the business decrypts), ADR 0036 (own-domain links), ADR 0037 (flat fee per CNPJ, no Pix fee; categories decided but not published here).",
+    "$comment": "The /empresas/ page. Source: bipe/docs/business-messaging.md (exploration, issue #93). Everything here is a proposal: nothing is built or for sale. Keep that visible on the page. Decided so far: ADR 0035 (the business decrypts), ADR 0036 (own-domain links), ADR 0037 (flat fee per CNPJ, no Pix fee; categories decided but not published here).",
     "pt": {
       "nav": "Empresas",
       "title": "Fale com seus clientes num lugar onde ninguém se passa por você.",

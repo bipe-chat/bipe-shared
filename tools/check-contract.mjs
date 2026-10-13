@@ -9,8 +9,8 @@ import { fileURLToPath } from "node:url";
 const root = join(dirname(fileURLToPath(import.meta.url)), "..");
 const args = process.argv.slice(2);
 const argPath = (flag, fallback) => resolve(args.includes(flag) ? args[args.indexOf(flag) + 1] : join(root, fallback));
-const iosDir = argPath("--ios", "../proseio-ios/Components/BipeKit/Sources/BipeKit");
-const androidDir = argPath("--android", "../proseio-android/libraries/bipe/src/main/kotlin");
+const iosDir = argPath("--ios", "../bipe-ios/Components/BipeKit/Sources/BipeKit");
+const androidDir = argPath("--android", "../bipe-android/libraries/bipe/src/main/kotlin");
 
 // Contract schema -> client type per platform. null: the platform has no such type (see gaps).
 const MODELS = {
@@ -47,24 +47,24 @@ const NOT_IN_APPS = {
   Error: "clients read error and reason into their error type; the enum is checked as Error.error",
   BadgeEnvelope: "verified on device by BadgeVerifier; covered by test-vectors/badges.json",
   PixChallenge: "Pix verification is not built in the apps yet",
-  BusinessClaim: "CNPJ verification runs on the web console first; app UI is proseio/proseio#115",
-  CnpjRegistryRecord: "CNPJ verification runs on the web console first; app UI is proseio/proseio#115",
-  BusinessDomain: "CNPJ verification runs on the web console first; app UI is proseio/proseio#115",
+  BusinessClaim: "CNPJ verification runs on the web console first; app UI is bipe-chat/bipe#115",
+  CnpjRegistryRecord: "CNPJ verification runs on the web console first; app UI is bipe-chat/bipe#115",
+  BusinessDomain: "CNPJ verification runs on the web console first; app UI is bipe-chat/bipe#115",
   VerificationStatus: "Pix verification is not built in the apps yet",
 };
 
 // Known gaps: "<platform>:<Schema>" or "<platform>:<Schema>.<field>" -> issue. Remove the entry when the gap closes.
 const GAPS = {
-  "android:Attestation": "proseio/proseio#92 (Play Integrity)",
-  "android:SignupRequest.attestation": "proseio/proseio#92 (Play Integrity)",
-  "ios:Error.error.cnpj_invalid": "proseio/proseio#115 (business UI in the apps)",
-  "ios:Error.error.cnpj_not_active": "proseio/proseio#115 (business UI in the apps)",
-  "ios:Error.error.cnpj_taken": "proseio/proseio#115 (business UI in the apps)",
-  "ios:Error.error.signature_invalid": "proseio/proseio#115 (business UI in the apps)",
-  "android:Error.error.cnpj_invalid": "proseio/proseio#115 (business UI in the apps)",
-  "android:Error.error.cnpj_not_active": "proseio/proseio#115 (business UI in the apps)",
-  "android:Error.error.cnpj_taken": "proseio/proseio#115 (business UI in the apps)",
-  "android:Error.error.signature_invalid": "proseio/proseio#115 (business UI in the apps)",
+  "android:Attestation": "bipe-chat/bipe#92 (Play Integrity)",
+  "android:SignupRequest.attestation": "bipe-chat/bipe#92 (Play Integrity)",
+  "ios:Error.error.cnpj_invalid": "bipe-chat/bipe#115 (business UI in the apps)",
+  "ios:Error.error.cnpj_not_active": "bipe-chat/bipe#115 (business UI in the apps)",
+  "ios:Error.error.cnpj_taken": "bipe-chat/bipe#115 (business UI in the apps)",
+  "ios:Error.error.signature_invalid": "bipe-chat/bipe#115 (business UI in the apps)",
+  "android:Error.error.cnpj_invalid": "bipe-chat/bipe#115 (business UI in the apps)",
+  "android:Error.error.cnpj_not_active": "bipe-chat/bipe#115 (business UI in the apps)",
+  "android:Error.error.cnpj_taken": "bipe-chat/bipe#115 (business UI in the apps)",
+  "android:Error.error.signature_invalid": "bipe-chat/bipe#115 (business UI in the apps)",
 };
 
 // --- openapi.yaml: schema names, property names, enums ----------------------

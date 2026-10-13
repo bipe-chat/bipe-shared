@@ -1,10 +1,10 @@
-// Drift check (ADR 0031, rule 5): regenerates everything proseio-shared generates into a temporary
+// Drift check (ADR 0031, rule 5): regenerates everything bipe-shared generates into a temporary
 // folder and compares it with the generated files in the sibling repos (Swift, Kotlin, API copy,
-// proseio/docs/product.md) and with test-vectors/.
+// bipe/docs/product.md) and with test-vectors/.
 // Usage: node tools/check-drift.mjs [--against worktree|head] [--repos <dir>]
 //   worktree (default): compare with the files on disk. The pre-commit hook uses this.
 //   head: compare with each repo's committed HEAD. CI uses this.
-//   --repos: the folder that holds proseio, proseio-ios, proseio-android and proseio-api (default: next to this repo).
+//   --repos: the folder that holds bipe, bipe-ios, bipe-android and bipe-api (default: next to this repo).
 // A missing sibling repo is skipped with a warning. Exit 1 on any difference.
 import { execFileSync } from "node:child_process";
 import { existsSync, mkdirSync, mkdtempSync, readdirSync, readFileSync, rmSync, statSync } from "node:fs";
@@ -26,19 +26,19 @@ const node = (script, ...scriptArgs) => execFileSync(process.execPath, [join(roo
 // so an extra file there is stale output.
 const TARGETS = [
   {
-    repo: "proseio-ios",
+    repo: "bipe-ios",
     tmpBase: join(tmp, "ios/Sources/BipeKit"),
     repoBase: "Components/BipeKit/Sources/BipeKit",
     generatedOnly: ["Generated"],
   },
   {
-    repo: "proseio-android",
+    repo: "bipe-android",
     tmpBase: join(tmp, "android/src/main"),
     repoBase: "libraries/bipe/src/main",
     generatedOnly: ["kotlin/io/element/android/libraries/bipe/generated"],
   },
   {
-    repo: "proseio-api",
+    repo: "bipe-api",
     tmpBase: join(tmp, "api/src/generated"),
     repoBase: "src/generated",
     generatedOnly: ["."],
@@ -100,18 +100,18 @@ try {
     }
   }
 
-  // proseio/docs/product.md is generated from product/.
-  const umbrella = join(reposDir, "proseio");
-  if (!existsSync(umbrella)) warnings.push(`proseio: not found in ${reposDir}, skipped`);
+  // bipe/docs/product.md is generated from product/.
+  const umbrella = join(reposDir, "bipe");
+  if (!existsSync(umbrella)) warnings.push(`bipe: not found in ${reposDir}, skipped`);
   else if (repoFile(umbrella, "docs/product.md") !== readFileSync(join(tmp, "product.md"), "utf8")) {
-    problems.push("proseio: docs/product.md is out of date (run node tools/gen-product-doc.mjs)");
+    problems.push("bipe: docs/product.md is out of date (run node tools/gen-product-doc.mjs)");
   }
 
   // test-vectors: generated files must match; invite-codes.json is hand-written and checked by gen-test-vectors.
   for (const file of walk(join(tmp, "test-vectors"))) {
     const path = join("test-vectors", relative(join(tmp, "test-vectors"), file));
     const actual = repoFile(root, path);
-    if (actual !== readFileSync(file, "utf8")) problems.push(`proseio-shared: ${path} is out of date (run node tools/gen-test-vectors.mjs)`);
+    if (actual !== readFileSync(file, "utf8")) problems.push(`bipe-shared: ${path} is out of date (run node tools/gen-test-vectors.mjs)`);
   }
 } finally {
   rmSync(tmp, { recursive: true, force: true });

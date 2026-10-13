@@ -182,7 +182,7 @@ paths:
     post:
       summary: Find address-book contacts on Bipe by phone number
       description: >
-        Phase 0 of phone-number discovery (proseio/docs/phone-link.md). The client sends
+        Phase 0 of phone-number discovery (bipe/docs/phone-link.md). The client sends
         numbers it normalised with registries/phone-numbers.json; the server normalises again
         and ignores the rest. It compares HMACs with linked numbers and returns only matches
         whose holder allows discovery. The submitted list is never stored. Limits: 500 numbers
@@ -274,7 +274,7 @@ paths:
       description: >
         People the caller invited with a personal invite who joined, plus the person who
         invited the caller. Clients treat a direct-chat invite from these users as trusted:
-        it skips message requests and is accepted automatically (proseio/docs/adr ADR 0034).
+        it skips message requests and is accepted automatically (bipe/docs/adr ADR 0034).
       security: [{ matrix: [] }]
       responses:
         "200":
@@ -621,7 +621,7 @@ paths:
     get:
       summary: Staff report of inviters ranked by joins
       description: >
-        Only for users that MAS marks admin (proseio/docs/adr ADR 0056); every other user gets 404 not_found, so the route does not show that it exists.
+        Only for users that MAS marks admin (bipe/docs/adr ADR 0056); every other user gets 404 not_found, so the route does not show that it exists.
         Covers personal invites only. CORS allows PUBLIC_SITE_URL.
       security: [{ matrix: [] }]
       parameters:
@@ -802,7 +802,7 @@ components:
     HandleProblem:
       type: string
       enum: [too_short, too_long, invalid_characters, reserved, taken]
-      description: Same ids as proseio-shared handleProblem(); "taken" also covers held and lookalike handles.
+      description: Same ids as bipe-shared handleProblem(); "taken" also covers held and lookalike handles.
     HandleRecord:
       type: object
       required: [handle, user_id]
@@ -845,7 +845,7 @@ components:
     ProfileProblem:
       type: string
       enum: [name_empty, name_too_long, name_reserved, bio_too_long, bio_too_many_lines, no_handle]
-      description: Same ids as proseio-shared profileProblem(), plus no_handle from the server.
+      description: Same ids as bipe-shared profileProblem(), plus no_handle from the server.
     Error:
       type: object
       required: [error]

@@ -1,5 +1,5 @@
 {
-  "$comment": "Comparison register: /compare/ and one page per app. Source: proseio/docs/vs-whatsapp.md. Bipe status comes from the features of each threat, never from the copy. A competitor cell states what that app does, with a source in the app's list. No fact, no cell: never write 'we found nothing'. Repeat the research before a change. Each cell has a level for the summary table: on (on by default), setting (the user must turn it on), limited (a stated limit: beta, only non-contacts, both people must turn it on), none (a source shows the threat is not covered).",
+  "$comment": "Comparison register: /compare/ and one page per app. Source: bipe/docs/vs-whatsapp.md. Bipe status comes from the features of each threat, never from the copy. A competitor cell states what that app does, with a source in the app's list. No fact, no cell: never write 'we found nothing'. Repeat the research before a change. Each cell has a level for the summary table: on (on by default), setting (the user must turn it on), limited (a stated limit: beta, only non-contacts, both people must turn it on), none (a source shows the threat is not covered).",
   "version": 1,
   "date": "2026-10-12",
   "pt": {

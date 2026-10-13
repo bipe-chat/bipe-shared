@@ -1,13 +1,13 @@
 openapi: 3.1.0
 info:
-  title: Proseio API
+  title: Bipe API
   version: 0.1.0
   description: >
     Verification, badges and directories. Skeleton contract: shapes are stable
     identifiers shared by iOS, Android and the web console. Auth: Matrix access
     token validated against MAS (OIDC).
 servers:
-  - url: https://api.proseio.com.br
+  - url: https://api.bipe.net.br
 paths:
   /v1/badges/{userId}:
     get:
@@ -104,7 +104,7 @@ paths:
         No auth. Rate-limited per IP. Tells the invite page and the app whether a code
         can still be used, and the inviter's handle when they have one. The code is a
         secret the inviter shared, so showing the inviter's handle to its holder is intended.
-        CORS allows https://proseio.com.br.
+        CORS allows https://bipe.chat.
       parameters:
         - { name: code, in: path, required: true, schema: { type: string, maxLength: 64 } }
       responses:
@@ -137,10 +137,10 @@ paths:
     post:
       summary: Join the waitlist for a platform that has no build yet
       description: >
-        No auth. Called from the public site (CORS allows https://proseio.com.br).
+        No auth. Called from the public site (CORS allows https://bipe.chat).
         Rate-limited per IP and globally. Always answers 202 for a well-formed request,
         also when the email is already on the list, so the endpoint never tells whether an
-        address is known. Proseio emails the address once, when the platform ships, and
+        address is known. Bipe emails the address once, when the platform ships, and
         never for anything else. The address is deleted after that email or on request.
       requestBody:
         required: true
@@ -180,9 +180,9 @@ paths:
         "429": { $ref: "#/components/responses/Error" }
   /v1/contacts/lookup:
     post:
-      summary: Find address-book contacts on Proseio by phone number
+      summary: Find address-book contacts on Bipe by phone number
       description: >
-        Phase 0 of phone-number discovery (proseio docs/phone-link.md). The client sends
+        Phase 0 of phone-number discovery (proseio/docs/phone-link.md). The client sends
         numbers it normalised with registries/phone-numbers.json; the server normalises again
         and ignores the rest. It compares HMACs with linked numbers and returns only matches
         whose holder allows discovery. The submitted list is never stored. Limits: 500 numbers
@@ -274,7 +274,7 @@ paths:
       description: >
         People the caller invited with a personal invite who joined, plus the person who
         invited the caller. Clients treat a direct-chat invite from these users as trusted:
-        it skips message requests and is accepted automatically (proseio ADR 0034).
+        it skips message requests and is accepted automatically (proseio/docs/adr ADR 0034).
       security: [{ matrix: [] }]
       responses:
         "200":
@@ -621,7 +621,7 @@ paths:
     get:
       summary: Staff report of inviters ranked by joins
       description: >
-        Only for users that MAS marks admin (proseio ADR 0056); every other user gets 404 not_found, so the route does not show that it exists.
+        Only for users that MAS marks admin (proseio/docs/adr ADR 0056); every other user gets 404 not_found, so the route does not show that it exists.
         Covers personal invites only. CORS allows PUBLIC_SITE_URL.
       security: [{ matrix: [] }]
       parameters:
@@ -699,7 +699,7 @@ components:
       required: [domain, txt_name, txt_value]
       properties:
         domain: { type: string }
-        txt_name: { type: string, description: "Where to publish the record, e.g. _proseio.example.com.br" }
+        txt_name: { type: string, description: "Where to publish the record, e.g. _bipe.example.com.br" }
         txt_value: { type: string }
         verified_at: { type: string, format: date-time }
     WaitlistRequest:
@@ -708,7 +708,7 @@ components:
       properties:
         email: { type: string, format: email, maxLength: 254 }
         platform: { type: string, enum: [android, ios, other], description: "The platform the person waits for." }
-        lang: { type: string, enum: [pt, en], default: pt, description: "Language of the one email Proseio sends." }
+        lang: { type: string, enum: [pt, en], default: pt, description: "Language of the one email Bipe sends." }
         source: { type: string, maxLength: 64, pattern: "^[a-z0-9:/_.-]*$", description: "Where the form was: the page path, plus ':' and the headline arm when a test runs (issue #77), for example /baixar/ or /:h2." }
         website: { type: string, maxLength: 200, description: "Honeypot. People leave it empty; a non-empty value is accepted and dropped." }
     SignupRequest:
@@ -738,7 +738,7 @@ components:
       type: object
       required: [user_id]
       properties:
-        user_id: { type: string, description: "Random Matrix ID, e.g. @k7q2m9x4tpab:proseio.com.br" }
+        user_id: { type: string, description: "Random Matrix ID, e.g. @k7q2m9x4tpab:bipe.net.br" }
         handle: { type: string }
         inviter_user_id: { type: string, description: "Present when a personal invite was used. The app can offer a chat with the inviter." }
     DiscoverySettings:
@@ -790,7 +790,7 @@ components:
       properties:
         id: { type: string }
         code: { type: string, description: "Shown once. Format XXXX-XXXX-XXXX." }
-        url: { type: string, description: "https://proseio.com.br/convite/<code>, a universal link into the app." }
+        url: { type: string, description: "https://bipe.chat/convite/<code>, a universal link into the app." }
         expires_at: { type: string, format: date-time }
     HandleAvailability:
       type: object

@@ -7,7 +7,7 @@ Source of truth for registries, strings, API contract and test vectors shared by
 - Regexes must stay portable: ICU (Swift), java.util.regex (Kotlin), V8 (Node 24). Fixed-length lookbehind only; `(?i:...)` modifiers are fine.
 - `tools/lib/registries.mjs` `normalize()` is the reference implementation. Platform code must match `test-vectors/normalization.json`.
 - Generate, never copy (ADR 0031): a rule more than one surface uses lives in `registries/` and reaches Swift, Kotlin and the API through `tools/gen.mjs`.
-- After a contract change, run `node tools/check-contract.mjs`. After a registry or vector change, run `swift test` in `../proseio-ios/Components/ProseioKit`.
+- After a contract change, run `node tools/check-contract.mjs`. After a registry or vector change, run `swift test` in `../proseio-ios/Components/BipeKit`.
 - A string, registry or product change is done only when `node tools/check-drift.mjs` passes: regenerate, then commit the generated files in every sibling repo. The pre-commit hook runs it (`git config core.hooksPath .githooks`).
 - No npm dependencies. Node built-ins only.
 - Write docs in ASD-STE100 style. pt-BR strings follow `../proseio/docs/design/language.md` (ADR 0039). UI strings are draft until they pass the humanizer.
@@ -15,4 +15,4 @@ Source of truth for registries, strings, API contract and test vectors shared by
 
 ## Decisions
 
-Product and architecture decisions for all Proseio repos are ADRs in the umbrella repo: `../proseio/docs/adr/` (index: `README.md`). Check them before changing a decided behaviour. A new decision gets an ADR there, not a note in this repo.
+Product and architecture decisions for all Bipe repos are ADRs in the umbrella repo: `../proseio/docs/adr/` (index: `README.md`). Check them before changing a decided behaviour. A new decision gets an ADR there, not a note in this repo.

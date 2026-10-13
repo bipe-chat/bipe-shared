@@ -1,5 +1,5 @@
 // Checks the hand-written API clients against api/openapi.yaml (ADR 0031, rule 3).
-// Usage: node tools/check-contract.mjs [--ios <ProseioKit sources>] [--android <libraries/proseio sources>]
+// Usage: node tools/check-contract.mjs [--ios <BipeKit sources>] [--android <libraries/bipe sources>]
 // Fails (exit 1) when a schema field or enum value is missing in a client, or when the contract has a
 // schema this file does not map. Node built-ins only; the YAML reader handles the style of openapi.yaml.
 import { existsSync, readdirSync, readFileSync, statSync } from "node:fs";
@@ -9,38 +9,38 @@ import { fileURLToPath } from "node:url";
 const root = join(dirname(fileURLToPath(import.meta.url)), "..");
 const args = process.argv.slice(2);
 const argPath = (flag, fallback) => resolve(args.includes(flag) ? args[args.indexOf(flag) + 1] : join(root, fallback));
-const iosDir = argPath("--ios", "../proseio-ios/Components/ProseioKit/Sources/ProseioKit");
-const androidDir = argPath("--android", "../proseio-android/libraries/proseio/src/main/kotlin");
+const iosDir = argPath("--ios", "../proseio-ios/Components/BipeKit/Sources/BipeKit");
+const androidDir = argPath("--android", "../proseio-android/libraries/bipe/src/main/kotlin");
 
 // Contract schema -> client type per platform. null: the platform has no such type (see gaps).
 const MODELS = {
-  SignupRequest: { ios: "ProseioSignupRequest", android: "ProseioSignupRequest" },
-  Attestation: { ios: "ProseioAttestation", android: null },
-  SignupResponse: { ios: "ProseioSignupResponse", android: "ProseioSignupResponse" },
-  InvitePreview: { ios: "ProseioInvitePreview", android: "ProseioInvitePreview" },
-  Invite: { ios: "ProseioInvite", android: "ProseioInvite" },
-  MyInvites: { ios: "ProseioMyInvites", android: "ProseioMyInvites" },
-  CreatedInvite: { ios: "ProseioCreatedInvite", android: "ProseioCreatedInvite" },
-  HandleAvailability: { ios: "ProseioHandleAvailability", android: "ProseioHandleAvailability" },
-  HandleRecord: { ios: "ProseioHandleRecord", android: "ProseioHandleRecord" },
-  MyHandle: { ios: "ProseioMyHandle", android: "ProseioMyHandle" },
-  PublicProfile: { ios: "ProseioPublicProfile", android: "ProseioPublicProfile" },
-  MyProfile: { ios: "ProseioMyProfile", android: "ProseioMyProfile" },
-  ProfileUpdate: { ios: "ProseioProfileUpdate", android: "ProseioProfileUpdate" },
+  SignupRequest: { ios: "BipeSignupRequest", android: "BipeSignupRequest" },
+  Attestation: { ios: "BipeAttestation", android: null },
+  SignupResponse: { ios: "BipeSignupResponse", android: "BipeSignupResponse" },
+  InvitePreview: { ios: "BipeInvitePreview", android: "BipeInvitePreview" },
+  Invite: { ios: "BipeInvite", android: "BipeInvite" },
+  MyInvites: { ios: "BipeMyInvites", android: "BipeMyInvites" },
+  CreatedInvite: { ios: "BipeCreatedInvite", android: "BipeCreatedInvite" },
+  HandleAvailability: { ios: "BipeHandleAvailability", android: "BipeHandleAvailability" },
+  HandleRecord: { ios: "BipeHandleRecord", android: "BipeHandleRecord" },
+  MyHandle: { ios: "BipeMyHandle", android: "BipeMyHandle" },
+  PublicProfile: { ios: "BipePublicProfile", android: "BipePublicProfile" },
+  MyProfile: { ios: "BipeMyProfile", android: "BipeMyProfile" },
+  ProfileUpdate: { ios: "BipeProfileUpdate", android: "BipeProfileUpdate" },
 };
 
 // Contract enum -> client enum per platform. "Error.error" is the enum on the error property of Error.
 const ENUMS = {
-  InviteStatus: { ios: "ProseioInviteStatus", android: "ProseioInviteStatus" },
-  HandleProblem: { ios: "ProseioHandleProblem", android: "ProseioHandleProblem" },
-  ProfileProblem: { ios: "ProseioProfileProblem", android: "ProseioProfileProblem" },
-  "Error.error": { ios: "ProseioAPIErrorCode", android: "ProseioApiErrorCode" },
+  InviteStatus: { ios: "BipeInviteStatus", android: "BipeInviteStatus" },
+  HandleProblem: { ios: "BipeHandleProblem", android: "BipeHandleProblem" },
+  ProfileProblem: { ios: "BipeProfileProblem", android: "BipeProfileProblem" },
+  "Error.error": { ios: "BipeAPIErrorCode", android: "BipeApiErrorCode" },
 };
 
 // Schemas the apps do not model, with the reason.
 const NOT_IN_APPS = {
-  DiscoverySettings: "one boolean; iOS sends it from a private request type in ProseioAPIClient",
-  MessagingSetting: "one enum field; iOS decodes it in a private MessagingSetting type in ProseioAPIClient, exposed as ProseioWhoCanMessage",
+  DiscoverySettings: "one boolean; iOS sends it from a private request type in BipeAPIClient",
+  MessagingSetting: "one enum field; iOS decodes it in a private MessagingSetting type in BipeAPIClient, exposed as BipeWhoCanMessage",
   ExperimentEvent: "web only (headline test)",
   WaitlistRequest: "web only",
   InviterStats: "staff page on the site only (ADR 0056)",

@@ -189,7 +189,7 @@
       "pt": {
         "name": "Seu @",
         "title": "Seu @, não seu número.",
-        "summary": "Escolha um nome de usuário e passe só ele. Quem tem o link proseio.com.br/@você abre a conversa direto, sem ver o seu número.",
+        "summary": "Escolha um nome de usuário e passe só ele. Quem tem o link bipe.chat/@você abre a conversa direto, sem ver o seu número.",
         "points": [
           "Link e QR code do seu perfil, prontos pra compartilhar.",
           "Nomes que só mudam um detalhe, como ana.souza e anasouza, contam como o mesmo nome. Ninguém pega um quase igual ao seu.",
@@ -205,7 +205,7 @@
       "en": {
         "name": "Your @",
         "title": "Your @, not your number.",
-        "summary": "Pick a username and share only that. Anyone with the link proseio.com.br/@you opens a chat with you without seeing your phone number.",
+        "summary": "Pick a username and share only that. Anyone with the link bipe.chat/@you opens a chat with you without seeing your phone number.",
         "points": [
           "A link and a QR code for your profile, ready to share.",
           "Names that differ by one detail, like ana.souza and anasouza, count as the same name. Nobody can take one that looks almost like yours.",
@@ -740,7 +740,7 @@
       },
       "pt": {
         "name": "Link e QR code",
-        "body": "proseio.com.br/@você abre a conversa direto no app.",
+        "body": "bipe.chat/@você abre a conversa direto no app.",
         "points": [
           "Com o app instalado, o link abre direto na conversa.",
           "O QR code faz o mesmo: a pessoa aponta a câmera e fala com você.",
@@ -749,7 +749,7 @@
       },
       "en": {
         "name": "Link and QR code",
-        "body": "proseio.com.br/@you opens a chat in the app.",
+        "body": "bipe.chat/@you opens a chat in the app.",
         "points": [
           "With the app installed, the link opens the chat directly.",
           "The QR code does the same: the person points the camera and talks to you.",

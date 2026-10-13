@@ -1,12 +1,12 @@
 # proseio-shared
 
-Single source of truth for Proseio logic that iOS, Android, the API and the website share. Plain JSON and contracts; zero dependencies. Each surface generates code from here and must pass the same test vectors ([ADR 0031](https://github.com/bipe-chat/proseio/blob/main/docs/adr/0031-platform-lockstep.md): generate, never copy).
+Single source of truth for Bipe logic that iOS, Android, the API and the website share. Plain JSON and contracts; zero dependencies. Each surface generates code from here and must pass the same test vectors ([ADR 0031](https://github.com/bipe-chat/proseio/blob/main/docs/adr/0031-platform-lockstep.md): generate, never copy).
 
 | Path | Content |
 |---|---|
 | `registries/` | Reserved names, family terms, scam patterns, homoglyphs, handle rules, invite-code rule |
-| `strings/pt-BR.json`, `strings/en.json` | Proseio-owned UI strings (Element strings stay on Localazy). Draft copy. |
-| `api/openapi.yaml` | Proseio API contract (sign-up, invites, handles, verification, badges) |
+| `strings/pt-BR.json`, `strings/en.json` | Bipe-owned UI strings (Element strings stay on Localazy). Draft copy. |
+| `api/openapi.yaml` | Bipe API contract (sign-up, invites, handles, verification, badges) |
 | `docs/badge-attestation.md` | Signed badge format and verification order |
 | `test-vectors/` | Cases every platform must pass: badges, normalisation, scam detection, scam warnings, handles (generated), invite codes (hand-written, checked against the reference) |
 | `product/` | Promise, features with status per platform, download links. Feeds proseio-web and `proseio/docs/product.md` |
@@ -18,7 +18,7 @@ Single source of truth for Proseio logic that iOS, Android, the API and the webs
 node tools/gen.mjs
 ```
 
-Writes `ProseioRegistries.swift` and `ProseioStrings.swift` into `../proseio-ios/Components/ProseioKit/Sources/ProseioKit/Generated`, `ProseioRegistries.kt` plus `res/values*/proseio_strings.xml` into `../proseio-android/libraries/proseio/src/main`, and the registries with the reference library into `../proseio-api/src/generated`. Pass `--swift`, `--kotlin` or `--api <dir>` to override.
+Writes `BipeRegistries.swift` and `BipeStrings.swift` into `../proseio-ios/Components/BipeKit/Sources/BipeKit/Generated`, `BipeRegistries.kt` plus `res/values*/bipe_strings.xml` into `../proseio-android/libraries/bipe/src/main`, and the registries with the reference library into `../proseio-api/src/generated`. Pass `--swift`, `--kotlin` or `--api <dir>` to override.
 
 ```bash
 node tools/gen-test-vectors.mjs
@@ -41,17 +41,17 @@ Regenerates everything into a temporary folder and compares it with the generate
 ### Hook and CI
 
 - Pre-commit hook (`.githooks/pre-commit`): runs the contract check and the drift check. Enable it once per clone: `git config core.hooksPath .githooks`.
-- CI (`.github/workflows/checks.yml`): the same checks against every repo's `main`, on push, pull request and daily. It needs the repository secret `PROSEIO_REPOS_TOKEN` (read access to the private sibling repos).
+- CI (`.github/workflows/checks.yml`): the same checks against every repo's `main`, on push, pull request and daily. It needs the repository secret `BIPE_REPOS_TOKEN` (read access to the private sibling repos).
 
 ## Where the vectors run
 
 | Surface | Command | Suite |
 |---|---|---|
 | Reference (Node) | `node tools/gen-test-vectors.mjs` | Writes the generated vectors; checks invite codes |
-| iOS | `swift test` in `proseio-ios/Components/ProseioKit` | `Tests/ProseioKitTests/SharedVectorTests.swift` |
-| Android | `./gradlew :libraries:proseio:testDebugUnitTest` in `proseio-android` | `libraries/proseio/src/test/.../SharedVectorTest.kt` (not run yet: no JDK on the dev Mac) |
+| iOS | `swift test` in `proseio-ios/Components/BipeKit` | `Tests/BipeKitTests/SharedVectorTests.swift` |
+| Android | `./gradlew :libraries:bipe:testDebugUnitTest` in `proseio-android` | `libraries/bipe/src/test/.../SharedVectorTest.kt` (not run yet: no JDK on the dev Mac) |
 
-Both app suites read the JSON files here directly. `PROSEIO_SHARED=<path>` points them at another checkout.
+Both app suites read the JSON files here directly. `BIPE_SHARED=<path>` points them at another checkout.
 
 ## Rules
 
@@ -66,4 +66,4 @@ Design tokens (colours, trust states) are not here. They live in the `proseio-to
 
 ## Licence and contributing
 
-AGPL-3.0-only, see [LICENSE](LICENSE). Contributions need a DCO sign-off (`git commit -s`): see the [Proseio contributing guide](https://github.com/bipe-chat/.github/blob/main/CONTRIBUTING.md). The Proseio name and logo are not covered by the licence: see [TRADEMARKS.md](https://github.com/bipe-chat/.github/blob/main/TRADEMARKS.md).
+AGPL-3.0-only, see [LICENSE](LICENSE). Contributions need a DCO sign-off (`git commit -s`): see the [Bipe contributing guide](https://github.com/bipe-chat/.github/blob/main/CONTRIBUTING.md). The Bipe name and logo are not covered by the licence: see [TRADEMARKS.md](https://github.com/bipe-chat/.github/blob/main/TRADEMARKS.md).

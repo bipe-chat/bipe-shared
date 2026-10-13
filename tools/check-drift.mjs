@@ -19,7 +19,7 @@ const against = option("--against", "worktree");
 if (!["worktree", "head"].includes(against)) throw new Error(`--against must be worktree or head, not ${against}`);
 const reposDir = resolve(option("--repos", join(root, "..")));
 
-const tmp = mkdtempSync(join(tmpdir(), "proseio-drift-"));
+const tmp = mkdtempSync(join(tmpdir(), "bipe-drift-"));
 const node = (script, ...scriptArgs) => execFileSync(process.execPath, [join(root, "tools", script), ...scriptArgs], { stdio: "pipe" });
 
 // Where gen.mjs writes, mirrored in tmp. `generatedOnly` folders hold nothing but generated files,
@@ -27,15 +27,15 @@ const node = (script, ...scriptArgs) => execFileSync(process.execPath, [join(roo
 const TARGETS = [
   {
     repo: "proseio-ios",
-    tmpBase: join(tmp, "ios/Sources/ProseioKit"),
-    repoBase: "Components/ProseioKit/Sources/ProseioKit",
+    tmpBase: join(tmp, "ios/Sources/BipeKit"),
+    repoBase: "Components/BipeKit/Sources/BipeKit",
     generatedOnly: ["Generated"],
   },
   {
     repo: "proseio-android",
     tmpBase: join(tmp, "android/src/main"),
-    repoBase: "libraries/proseio/src/main",
-    generatedOnly: ["kotlin/io/element/android/libraries/proseio/generated"],
+    repoBase: "libraries/bipe/src/main",
+    generatedOnly: ["kotlin/io/element/android/libraries/bipe/generated"],
   },
   {
     repo: "proseio-api",
@@ -75,7 +75,7 @@ const problems = [];
 const warnings = [];
 try {
   mkdirSync(join(tmp, "api/src"), { recursive: true }); // gen.mjs writes the API copy only when ../.. exists
-  node("gen.mjs", "--swift", join(tmp, "ios/Sources/ProseioKit/Generated"), "--kotlin", join(tmp, "android/src/main"), "--api", join(tmp, "api/src/generated"));
+  node("gen.mjs", "--swift", join(tmp, "ios/Sources/BipeKit/Generated"), "--kotlin", join(tmp, "android/src/main"), "--api", join(tmp, "api/src/generated"));
   node("gen-test-vectors.mjs", "--out", join(tmp, "test-vectors"));
   node("gen-product-doc.mjs", "--out", join(tmp, "product.md"));
 

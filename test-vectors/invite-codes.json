@@ -6,11 +6,11 @@
     { "input": "ABCDEFGHJKMN", "code": "ABCD-EFGH-JKMN" },
     { "input": "  abcd efgh jkmn  ", "code": "ABCD-EFGH-JKMN" },
     { "input": "ABCD–EFGH—JKMN", "code": "ABCD-EFGH-JKMN" },
-    { "input": "https://proseio.com.br/convite/ABCD-EFGH-JKMN", "code": "ABCD-EFGH-JKMN" },
+    { "input": "https://bipe.chat/convite/ABCD-EFGH-JKMN", "code": "ABCD-EFGH-JKMN" },
     { "input": "https://www.proseio.com.br/convite/abcd-efgh-jkmn/", "code": "ABCD-EFGH-JKMN" },
-    { "input": "proseio.com.br/convite/ABCDEFGHJKMN?utm_source=whatsapp", "code": "ABCD-EFGH-JKMN" },
-    { "input": "Entra no Proseio comigo: https://proseio.com.br/convite/Q7RM-2XKP-9HTV", "code": "Q7RM-2XKP-9HTV" },
-    { "input": "Join me on Proseio: https://proseio.com.br/convite/Q7RM-2XKP-9HTV\n", "code": "Q7RM-2XKP-9HTV" },
+    { "input": "bipe.chat/convite/ABCDEFGHJKMN?utm_source=whatsapp", "code": "ABCD-EFGH-JKMN" },
+    { "input": "Entra no Bipe comigo: https://bipe.chat/convite/Q7RM-2XKP-9HTV", "code": "Q7RM-2XKP-9HTV" },
+    { "input": "Join me on Bipe: https://bipe.chat/convite/Q7RM-2XKP-9HTV\n", "code": "Q7RM-2XKP-9HTV" },
     { "input": "", "code": null },
     { "input": "hello", "code": null },
     { "input": "ABCD-EFGH-JKM", "code": null },
@@ -18,7 +18,7 @@
     { "input": "ABCD-EFGH-JKM0", "code": null },
     { "input": "OBCD-EFGH-JKMN", "code": null },
     { "input": "ABCD--EFGH-JKMN", "code": null },
-    { "input": "https://proseio.com.br/@ana.souza", "code": null },
+    { "input": "https://bipe.chat/@ana.souza", "code": null },
     { "input": "XABCD-EFGH-JKMN", "code": null }
   ]
 }

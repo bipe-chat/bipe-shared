@@ -28,7 +28,7 @@ const publicKeys = { [KID]: rawPublicKey(testKey) };
 
 const NOW = 1791720000; // 2026-10-11T12:00:00Z
 const basePayload = {
-  sub: "@ana:proseio.com.br",
+  sub: "@ana:bipe.net.br",
   lvl: "pix",
   name: "Ana Souza",
   dev: "dGVzdC1kZXZpY2Uta2V5LWZpbmdlcnByaW50",
@@ -58,7 +58,7 @@ write("badges.json", {
     { name: "expired", envelope: envelope({ ...basePayload, exp: NOW - 1 }), ...context, expect: "expired" },
     { name: "not yet valid", envelope: envelope({ ...basePayload, iat: NOW + 60 }), ...context, expect: "not_yet_valid" },
     { name: "missing name", envelope: envelope((({ name, ...rest }) => rest)(basePayload)), ...context, expect: "malformed" },
-    { name: "subject mismatch", envelope: valid, sender: "@mallory:proseio.com.br", senderDevice: basePayload.dev, expect: "subject_mismatch" },
+    { name: "subject mismatch", envelope: valid, sender: "@mallory:bipe.net.br", senderDevice: basePayload.dev, expect: "subject_mismatch" },
     { name: "device mismatch (new device, badge suspended)", envelope: valid, sender: basePayload.sub, senderDevice: "bmV3LWRldmljZQ", expect: "device_mismatch" },
   ],
 });
@@ -68,7 +68,7 @@ write("badges.json", {
 const reservedSet = new Map();
 for (const [cat, names] of Object.entries(reg.reserved.categories)) for (const n of names) reservedSet.set(n, cat);
 
-const nameCases = ["Itaú", "ІТАÚ", "Nubаnk", "Banco  do   Brasil", "B4nco do Br4sil", "Receita Federal", "Proseio Oficial", "Maria Souza", "Ana", "gov.br", "Caixa Tem"];
+const nameCases = ["Itaú", "ІТАÚ", "Nubаnk", "Banco  do   Brasil", "B4nco do Br4sil", "Receita Federal", "Bipe Oficial", "Maria Souza", "Ana", "gov.br", "Caixa Tem"];
 write("normalization.json", {
   $comment: "normalize(): NFKD, strip combining marks, lowercase, fold homoglyphs (registries/homoglyphs.json), collapse whitespace. reserved: category if the normalised name is in registries/reserved-names.json.",
   vectors: nameCases.map((input) => {
@@ -155,7 +155,7 @@ console.log(`wrote test vectors to ${out}`);
 const handleInputs = [
   "ana.souza", "ana_souza", "anasouza", "a1b", "ab", "a".repeat(30), "a".repeat(31),
   "Ana", "ana..souza", ".ana", "ana.", "ana_", "_ana", "ana-souza", "ana souza", "anã",
-  "itau", "1tau", "it.au", "b4nco.inter", "proseio", "pr0seio", "suporte.proseio",
+  "itau", "1tau", "it.au", "b4nco.inter", "bipe", "b1pe", "suporte.bipe",
 ];
 write("handles.json", {
   description: "Handle validation and skeletons. problem is null when valid. Equal skeletons collide.",

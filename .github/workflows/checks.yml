@@ -1,5 +1,5 @@
 # ADR 0031: the shared rules, the generated code in every repo and the API clients stay in step.
-# Needs the secret PROSEIO_REPOS_TOKEN: a fine-grained token with read access to contents of
+# Needs the secret BIPE_REPOS_TOKEN: a fine-grained token with read access to contents of
 # proseio, proseio-ios, proseio-android and proseio-api (the repos are private).
 name: Checks
 
@@ -24,26 +24,26 @@ jobs:
       - uses: actions/checkout@v4
         with:
           repository: bipe-chat/proseio
-          token: ${{ secrets.PROSEIO_REPOS_TOKEN }}
+          token: ${{ secrets.BIPE_REPOS_TOKEN }}
           path: proseio
       - uses: actions/checkout@v4
         with:
           repository: bipe-chat/proseio-ios
-          token: ${{ secrets.PROSEIO_REPOS_TOKEN }}
+          token: ${{ secrets.BIPE_REPOS_TOKEN }}
           path: proseio-ios
           lfs: false
           submodules: false
       - uses: actions/checkout@v4
         with:
           repository: bipe-chat/proseio-android
-          token: ${{ secrets.PROSEIO_REPOS_TOKEN }}
+          token: ${{ secrets.BIPE_REPOS_TOKEN }}
           path: proseio-android
           lfs: false
           submodules: false
       - uses: actions/checkout@v4
         with:
           repository: bipe-chat/proseio-api
-          token: ${{ secrets.PROSEIO_REPOS_TOKEN }}
+          token: ${{ secrets.BIPE_REPOS_TOKEN }}
           path: proseio-api
       - uses: actions/setup-node@v4
         with:

@@ -102,19 +102,19 @@
       "skeleton": "bancointer"
     },
     {
-      "input": "proseio",
+      "input": "bipe",
       "problem": "reserved",
-      "skeleton": "proseio"
+      "skeleton": "bipe"
     },
     {
-      "input": "pr0seio",
+      "input": "b1pe",
       "problem": "reserved",
-      "skeleton": "proseio"
+      "skeleton": "bipe"
     },
     {
-      "input": "suporte.proseio",
+      "input": "suporte.bipe",
       "problem": "reserved",
-      "skeleton": "suporteproseio"
+      "skeleton": "suportebipe"
     }
   ]
 }

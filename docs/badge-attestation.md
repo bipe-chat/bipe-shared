@@ -1,6 +1,6 @@
 # Badge attestation format (v1)
 
-A verified badge is a statement signed by the Proseio verification service. Apps verify the signature locally against public keys that ship in the app. Apps never read a badge from a Matrix profile field, display name or room state (security rule 2).
+A verified badge is a statement signed by the Bipe verification service. Apps verify the signature locally against public keys that ship in the app. Apps never read a badge from a Matrix profile field, display name or room state (security rule 2).
 
 ## Envelope
 
@@ -21,7 +21,7 @@ A verified badge is a statement signed by the Proseio verification service. Apps
 
 | Field | Type | Meaning |
 |---|---|---|
-| `sub` | string | Matrix user ID, e.g. `@ana:proseio.com.br` |
+| `sub` | string | Matrix user ID, e.g. `@ana:bipe.net.br` |
 | `lvl` | `"pix"` \| `"govbr"` \| `"institution"` | Verification level |
 | `name` | string | Verified legal name (or institution name) |
 | `cnpj` | string, institution only | Institution CNPJ, digits only |

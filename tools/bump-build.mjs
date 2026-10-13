@@ -1,4 +1,4 @@
-// Takes the next build number for a tester upload (ADR 0072), then regenerates the apps.
+// Takes the next build number for a tester upload (ADR 0076), then regenerates the apps.
 // Usage: node tools/bump-build.mjs [--version YY.MM.N]
 //   Adds 1 to build in product/version.json. --version also sets the version name; it must not go down.
 // Then commit and push bipe-shared, bipe-ios and bipe-android. The push to bipe-shared main claims the number.

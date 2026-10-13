@@ -1,7 +1,7 @@
 // Drift check (ADR 0031, rule 5): regenerates everything bipe-shared generates into a temporary
 // folder and compares it with the generated files in the sibling repos (Swift, Kotlin, API copy,
 // app version files, bipe/docs/product.md) and with test-vectors/. It also checks that
-// MARKETING_VERSION in bipe-ios/project.yml is the version in product/version.json (ADR 0072).
+// MARKETING_VERSION in bipe-ios/project.yml is the version in product/version.json (ADR 0076).
 // Usage: node tools/check-drift.mjs [--against worktree|head] [--repos <dir>]
 //   worktree (default): compare with the files on disk. The pre-commit hook uses this.
 //   head: compare with each repo's committed HEAD. CI uses this.
@@ -45,7 +45,7 @@ const TARGETS = [
     repoBase: "src/generated",
     generatedOnly: ["."],
   },
-  // App version name and build number (ADR 0072). The folders also hold hand-written files.
+  // App version name and build number (ADR 0076). The folders also hold hand-written files.
   { repo: "bipe-ios", tmpBase: join(tmp, "ios-version"), repoBase: "Tools/Bipe", generatedOnly: [] },
   { repo: "bipe-android", tmpBase: join(tmp, "android-version"), repoBase: "plugins/src/main/kotlin", generatedOnly: [] },
 ];

@@ -9,7 +9,7 @@ Single source of truth for Bipe logic that iOS, Android, the API and the website
 | `api/openapi.yaml` | Bipe API contract (sign-up, invites, handles, verification, badges) |
 | `docs/badge-attestation.md` | Signed badge format and verification order |
 | `test-vectors/` | Cases every platform must pass: badges, normalisation, scam detection, scam warnings, handles (generated), invite codes (hand-written, checked against the reference) |
-| `product/` | Promise, features with status per platform, download links. Feeds bipe-web and `bipe/docs/product.md`. `version.json`: the app version name and the one build number for iOS and Android (ADR 0072) |
+| `product/` | Promise, features with status per platform, download links. Feeds bipe-web and `bipe/docs/product.md`. `version.json`: the app version name and the one build number for iOS and Android (ADR 0076) |
 | `tools/` | Generators and checks (Node 24, no npm packages). `tools/lib/registries.mjs` is the reference implementation |
 
 ## Commands
@@ -24,7 +24,7 @@ Writes `BipeRegistries.swift` and `BipeStrings.swift` into `../bipe-ios/Componen
 node tools/bump-build.mjs [--version YY.MM.N]
 ```
 
-Before each tester upload, on any platform (ADR 0072): adds 1 to `build` in `product/version.json`, sets the version name if given (it must not go down), then runs `gen.mjs`. That writes `bipe-ios/Tools/Bipe/version.env` (read by `testflight.sh`) and `bipe-android/plugins/src/main/kotlin/BipeVersion.kt` (read by `Versions.kt`). Commit and push bipe-shared, bipe-ios and bipe-android. The push to bipe-shared `main` claims the number: if it is rejected, pull and bump again. After `--version`, also set `MARKETING_VERSION` in `bipe-ios/project.yml` and run `xcodegen`; the drift check compares them.
+Before each tester upload, on any platform (ADR 0076): adds 1 to `build` in `product/version.json`, sets the version name if given (it must not go down), then runs `gen.mjs`. That writes `bipe-ios/Tools/Bipe/version.env` (read by `testflight.sh`) and `bipe-android/plugins/src/main/kotlin/BipeVersion.kt` (read by `Versions.kt`). Commit and push bipe-shared, bipe-ios and bipe-android. The push to bipe-shared `main` claims the number: if it is rejected, pull and bump again. After `--version`, also set `MARKETING_VERSION` in `bipe-ios/project.yml` and run `xcodegen`; the drift check compares them.
 
 ```bash
 node tools/gen-test-vectors.mjs

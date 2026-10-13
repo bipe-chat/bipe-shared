@@ -2287,12 +2287,12 @@
     "pt": {
       "nav": "Tecnologia",
       "title": "Feito sobre o Matrix",
-      "lede": "Protocolo aberto, apps nativos, servidores no Brasil. Código aberto, AGPL-3.0."
+      "lede": "Protocolo aberto, apps nativos, servidores no Brasil. O código vai ser público em breve, com licença AGPL-3.0."
     },
     "en": {
       "nav": "Technology",
       "title": "Built on Matrix",
-      "lede": "Open protocol, native apps, servers in Brazil. Open source, AGPL-3.0."
+      "lede": "Open protocol, native apps, servers in Brazil. The code will be public soon, under AGPL-3.0."
     },
     "groups": [
       {

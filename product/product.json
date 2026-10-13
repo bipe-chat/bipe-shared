@@ -1996,39 +1996,50 @@
     }
   },
   "business": {
-    "$comment": "The /empresas/ page. Source: bipe/docs/business-messaging.md (exploration, issue #93). Everything here is a proposal: nothing is built or for sale. Keep that visible on the page. Decided so far: ADR 0035 (the business decrypts), ADR 0036 (own-domain links), ADR 0037 (flat fee per CNPJ, no Pix fee; categories decided but not published here).",
+    "$comment": "The /empresas/ page. Source: bipe/docs/business-track.md and bipe/docs/business-messaging.md (issue #93). Everything here is a proposal: nothing is built or for sale. Keep that visible on the page. Decided: ADR 0035 (the business decrypts), ADR 0036 (own-domain links), ADR 0037 (categories, not published here), ADR 0069 (one inbox for Bipe and WhatsApp, keys with the company), ADR 0070 (flat fee per CNPJ plus agent seats; amounts open).",
     "pt": {
       "nav": "Empresas",
-      "title": "Fale com seus clientes num lugar onde ninguém se passa por você.",
-      "lede": "O Bipe é gratuito para as pessoas. A ideia é que ele se pague com empresas e instituições que querem falar com os clientes com segurança. Esta página explica a proposta. Ela ainda está em estudo, e nada aqui está à venda.",
+      "title": "Atenda seus clientes num lugar onde ninguém se passa por você.",
+      "lede": "O Bipe é gratuito para as pessoas e se paga com empresas. Sua equipe atende o WhatsApp e o Bipe numa caixa de entrada só, com o selo de CNPJ verificado. Esta página explica a proposta. Ela ainda está em estudo, e nada aqui está à venda.",
       "label": "Proposta em estudo",
       "sections": [
         {
-          "heading": "Por que uma empresa estaria aqui",
+          "heading": "Por que sua empresa estaria aqui",
           "points": [
-            "Só a sua empresa usa o seu nome. Nome de banco, loja ou órgão público fica reservado para conta com CNPJ verificado, e o falso atendente não consegue se passar por você.",
+            "Só a sua empresa usa o seu nome. Nome de banco, loja ou órgão público fica reservado para a conta com CNPJ verificado, e o falso atendente não consegue se passar por você.",
             "O cliente vê o selo e o CNPJ em toda conversa com você.",
-            "Uma cobrança por Pix mostra o CNPJ que vai receber antes de o cliente pagar.",
-            "Os dados e os servidores ficam no Brasil, sob a lei brasileira.",
-            "O Bipe não é de uma plataforma só. A ideia é uma infraestrutura comum, sustentada por várias organizações, sem um dono que mude as regras sozinho."
+            "Sua equipe atende o WhatsApp e o Bipe na mesma caixa de entrada. Você não troca de número.",
+            "No Bipe não tem preço por mensagem. Cada conversa que vem para o Bipe sai da conta do WhatsApp.",
+            "Os dados e os servidores ficam no Brasil, sob a lei brasileira."
+          ]
+        },
+        {
+          "heading": "Uma caixa de entrada para a equipe toda",
+          "points": [
+            "Uma fila só para WhatsApp e Bipe. Cada conversa mostra de onde veio.",
+            "Atribua, transfira e assuma conversas. Cada conversa tem um responsável.",
+            "Notas internas que o cliente não vê, respostas prontas e modelos aprovados.",
+            "Para quem gerencia: equipes, filas, horário de atendimento, tempo de resposta e avaliação do cliente.",
+            "As conversas do Bipe só abrem nos aparelhos da sua equipe. Nem o Bipe lê."
+          ]
+        },
+        {
+          "heading": "Do WhatsApp para o Bipe, sem parar o atendimento",
+          "points": [
+            "Seu número do WhatsApp continua. A API do WhatsApp entra na mesma caixa de entrada.",
+            "Quem já usa a API do WhatsApp troca o endereço e a chave de acesso, não o código.",
+            "Seus modelos e respostas prontas vêm junto.",
+            "O atendente manda um link na conversa do WhatsApp. O cliente toca e continua a mesma conversa no Bipe, com o mesmo atendente.",
+            "Empresas menores podem usar um parceiro que instala e roda tudo para elas."
           ]
         },
         {
           "heading": "Como o Bipe se pagaria",
           "points": [
             "Quem usa o Bipe para conversar nunca paga.",
-            "A empresa paga um valor mensal fixo por CNPJ verificado. Ele cobre a verificação, o nome reservado e a API.",
-            "No começo, não tem preço por mensagem.",
-            "O Bipe não cobra taxa sobre Pix."
-          ]
-        },
-        {
-          "heading": "Uma API para o sistema da empresa",
-          "points": [
-            "A empresa liga o próprio sistema ao Bipe: manda avisos, recebe respostas e atende pelo programa que já usa.",
-            "A conversa é descriptografada no sistema da empresa, não nos servidores do Bipe. Empresas menores podem usar um parceiro que roda isso para elas.",
-            "A gente quer que seja fácil mudar para quem já usa a API do WhatsApp.",
-            "A API ainda não existe."
+            "A empresa paga um valor mensal fixo por CNPJ verificado, com um atendente incluído, e um valor por atendente a mais.",
+            "No Bipe não tem preço por mensagem.",
+            "O Bipe não vende anúncio. A empresa paga pela estrutura, e a conversa fica limpa."
           ]
         },
         {
@@ -2036,15 +2047,16 @@
           "points": [
             "A empresa só manda mensagem para quem aceitou receber.",
             "O app mostra quando quem responde é um programa.",
-            "Link em mensagem de empresa só abre se for do site da própria empresa. Pagamento só pelo Pix dentro do app.",
+            "Link em mensagem de empresa só abre se for do site da própria empresa.",
             "Empresa que recebe muito bloqueio e denúncia passa a poder mandar menos."
           ]
         },
         {
           "heading": "O que ainda está em aberto",
           "points": [
-            "O valor da mensalidade.",
-            "Quais setores entram primeiro: bancos, serviços públicos, escolas e condomínios, ou lojas."
+            "O valor da mensalidade e do atendente a mais.",
+            "Quais empresas entram primeiro no piloto.",
+            "A caixa de entrada e a API ainda não existem."
           ]
         }
       ],
@@ -2054,36 +2066,47 @@
     },
     "en": {
       "nav": "Business",
-      "title": "Talk to your customers where nobody can pretend to be you.",
-      "lede": "Bipe is free for people. The idea is that it pays for itself through companies and institutions that want to talk to their customers safely. This page explains the proposal. It is still under study, and nothing here is for sale.",
+      "title": "Serve your customers where nobody can pretend to be you.",
+      "lede": "Bipe is free for people and pays for itself through companies. Your team answers WhatsApp and Bipe in one inbox, with the verified CNPJ seal. This page explains the proposal. It is still under study, and nothing here is for sale.",
       "label": "Proposal under study",
       "sections": [
         {
-          "heading": "Why a company would be here",
+          "heading": "Why your company would be here",
           "points": [
             "Only your company uses your name. Bank, shop and government names are kept for the account with a verified CNPJ, so fake support cannot copy you.",
             "Customers see the seal and the CNPJ in every chat with you.",
-            "A Pix charge shows the CNPJ that receives the money before the customer pays.",
-            "Data and servers stay in Brazil, under Brazilian law.",
-            "Bipe does not belong to one platform. The idea is common infrastructure, carried by several organisations, with no single owner that changes the rules alone."
+            "Your team answers WhatsApp and Bipe in the same inbox. You keep your number.",
+            "Bipe has no price per message. Every chat that moves to Bipe comes off your WhatsApp bill.",
+            "Data and servers stay in Brazil, under Brazilian law."
+          ]
+        },
+        {
+          "heading": "One inbox for the whole team",
+          "points": [
+            "One queue for WhatsApp and Bipe. Each chat shows where it came from.",
+            "Assign, transfer and take chats. Each chat has one owner.",
+            "Internal notes the customer never sees, saved replies and approved templates.",
+            "For managers: teams, queues, opening hours, response time and customer ratings.",
+            "Bipe chats open only on your team's devices. Not even Bipe can read them."
+          ]
+        },
+        {
+          "heading": "From WhatsApp to Bipe without stopping service",
+          "points": [
+            "Your WhatsApp number stays. The WhatsApp API comes into the same inbox.",
+            "If you already use the WhatsApp API, you change the address and the access key, not your code.",
+            "Your templates and saved replies come along.",
+            "The agent sends a link in the WhatsApp chat. The customer taps it and continues the same chat on Bipe, with the same agent.",
+            "Smaller companies can use a partner that installs and runs it for them."
           ]
         },
         {
           "heading": "How Bipe would pay for itself",
           "points": [
             "People who use Bipe to chat never pay.",
-            "A company pays a flat monthly fee per verified CNPJ. It covers verification, the reserved name and the API.",
-            "At the start there is no price per message.",
-            "Bipe takes no fee on Pix."
-          ]
-        },
-        {
-          "heading": "An API for the company's system",
-          "points": [
-            "A company connects its own system to Bipe: it sends notices, receives replies and answers from the software it already uses.",
-            "The chat is decrypted on the company's system, not on Bipe's servers. Smaller companies can use a partner that runs this for them.",
-            "We want the move to be easy for companies that already use the WhatsApp API.",
-            "The API does not exist yet."
+            "A company pays a flat monthly fee per verified CNPJ, with one agent included, and a fee for each extra agent.",
+            "Bipe has no price per message.",
+            "Bipe sells no ads. Companies pay for the infrastructure, and chats stay clean."
           ]
         },
         {
@@ -2091,15 +2114,16 @@
           "points": [
             "A company only messages people who agreed to receive messages.",
             "The app shows when a program is answering.",
-            "A link in a company's message opens only if it points to the company's own site. Payment only through Pix inside the app.",
+            "A link in a company's message opens only if it points to the company's own site.",
             "A company that gets many blocks and reports can send less."
           ]
         },
         {
           "heading": "What is still open",
           "points": [
-            "The amount of the monthly fee.",
-            "Which sectors come first: banks, public services, schools and condomínios, or shops."
+            "The monthly fee and the fee per extra agent.",
+            "Which companies join the pilot first.",
+            "The inbox and the API do not exist yet."
           ]
         }
       ],

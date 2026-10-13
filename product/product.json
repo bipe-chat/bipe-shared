@@ -1996,7 +1996,7 @@
     }
   },
   "business": {
-    "$comment": "The /empresas/ page. Source: bipe/docs/business-track.md and bipe/docs/business-messaging.md (issue #93). Everything here is a proposal: nothing is built or for sale. Keep that visible on the page. Decided: ADR 0035 (the business decrypts), ADR 0036 (own-domain links), ADR 0037 (categories, not published here), ADR 0069 (one inbox for Bipe and WhatsApp, keys with the company), ADR 0070 (flat fee per CNPJ plus agent seats; amounts open).",
+    "$comment": "The /empresas/ page. Source: bipe/docs/business-track.md and bipe/docs/business-messaging.md (issue #93). Everything here is a proposal: nothing is built or for sale. Keep that visible on the page. Decided: ADR 0035 (the business decrypts), ADR 0036 (own-domain links), ADR 0037 (categories, not published here), ADR 0069 (one inbox for Bipe and WhatsApp, keys with the company), ADR 0070 (flat fee per CNPJ plus agent seats; amounts open), ADR 0078 (Pix charge cards for verified companies, planned), ADR 0079 (structured questions).",
     "pt": {
       "nav": "Empresas",
       "title": "Atenda seus clientes num lugar onde ninguém se passa por você.",
@@ -2008,6 +2008,7 @@
           "points": [
             "Só a sua empresa usa o seu nome. Nome de banco, loja ou órgão público fica reservado para a conta com CNPJ verificado, e o falso atendente não consegue se passar por você.",
             "O cliente vê o selo e o CNPJ em toda conversa com você.",
+            "Uma cobrança por Pix mostra o nome e o CNPJ verificados de quem vai receber. O cliente paga no app do banco. Planejado.",
             "Sua equipe atende o WhatsApp e o Bipe na mesma caixa de entrada. Você não troca de número.",
             "No Bipe não tem preço por mensagem. Cada conversa que vem para o Bipe sai da conta do WhatsApp.",
             "Os dados e os servidores ficam no Brasil, sob a lei brasileira."
@@ -2019,6 +2020,7 @@
             "Uma fila só para WhatsApp e Bipe. Cada conversa mostra de onde veio.",
             "Atribua, transfira e assuma conversas. Cada conversa tem um responsável.",
             "Notas internas que o cliente não vê, respostas prontas e modelos aprovados.",
+            "Perguntas com opções: o cliente toca na resposta, sem digitar 1 ou 2. Pela API também, no mesmo formato do WhatsApp.",
             "Para quem gerencia: equipes, filas, horário de atendimento, tempo de resposta e avaliação do cliente.",
             "As conversas do Bipe só abrem nos aparelhos da sua equipe. Nem o Bipe lê."
           ]
@@ -2075,6 +2077,7 @@
           "points": [
             "Only your company uses your name. Bank, shop and government names are kept for the account with a verified CNPJ, so fake support cannot copy you.",
             "Customers see the seal and the CNPJ in every chat with you.",
+            "A Pix charge shows the verified name and CNPJ of who receives the money. The customer pays in the bank app. Planned.",
             "Your team answers WhatsApp and Bipe in the same inbox. You keep your number.",
             "Bipe has no price per message. Every chat that moves to Bipe comes off your WhatsApp bill.",
             "Data and servers stay in Brazil, under Brazilian law."
@@ -2086,6 +2089,7 @@
             "One queue for WhatsApp and Bipe. Each chat shows where it came from.",
             "Assign, transfer and take chats. Each chat has one owner.",
             "Internal notes the customer never sees, saved replies and approved templates.",
+            "Questions with options: the customer taps an answer instead of typing 1 or 2. Through the API too, in the same format as WhatsApp.",
             "For managers: teams, queues, opening hours, response time and customer ratings.",
             "Bipe chats open only on your team's devices. Not even Bipe can read them."
           ]

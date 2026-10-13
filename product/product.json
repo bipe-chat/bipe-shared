@@ -406,6 +406,7 @@
         "en": "message-requests"
       },
       "figures": [
+        "pedidos",
         "numero-novo"
       ],
       "pt": {
@@ -439,6 +440,7 @@
         "en": "pause-before-paying"
       },
       "figures": [
+        "pausa-pix",
         "nome-diferente"
       ],
       "pt": {
@@ -471,6 +473,9 @@
         "pt": "sem-codigo-por-sms",
         "en": "no-sms-codes"
       },
+      "figures": [
+        "noSms"
+      ],
       "pt": {
         "name": "Sem código por SMS",
         "body": "Quem pega seu chip não pega sua conta. No Bipe não tem código por SMS pra pedir.",
@@ -502,6 +507,7 @@
         "en": "account-on-your-phone"
       },
       "figures": [
+        "handoff",
         "aparelho-novo"
       ],
       "pt": {
@@ -537,6 +543,7 @@
         "en": "new-phone"
       },
       "figures": [
+        "handoff",
         "aparelho-novo"
       ],
       "pt": {
@@ -574,6 +581,7 @@
         "en": "verified-seal"
       },
       "figures": [
+        "verificacao-pix",
         "verificado",
         "levels"
       ],
@@ -610,7 +618,8 @@
         "en": "business-seal"
       },
       "figures": [
-        "instituicao"
+        "instituicao",
+        "nome-reservado"
       ],
       "pt": {
         "name": "Selo de CNPJ",
@@ -643,6 +652,7 @@
         "en": "reserved-names"
       },
       "figures": [
+        "nome-reservado",
         "instituicao",
         "identity"
       ],
@@ -677,6 +687,7 @@
         "en": "lookalike-letters"
       },
       "figures": [
+        "letra-disfarcada",
         "handle"
       ],
       "pt": {
@@ -710,6 +721,7 @@
         "en": "is-that-really-mom"
       },
       "figures": [
+        "mae-outro-nome",
         "mae",
         "nome-diferente"
       ],
@@ -778,6 +790,7 @@
         "en": "link-and-qr-code"
       },
       "figures": [
+        "qr-conversa",
         "handle"
       ],
       "pt": {
@@ -811,6 +824,7 @@
         "en": "public-profile"
       },
       "figures": [
+        "qr-conversa",
         "handle"
       ],
       "pt": {
@@ -843,6 +857,9 @@
         "pt": "convites",
         "en": "invites"
       },
+      "figures": [
+        "convite"
+      ],
       "pt": {
         "name": "Convites",
         "body": "Mande um link de convite e traga alguém pro Bipe.",
@@ -873,6 +890,9 @@
         "pt": "ache-seus-contatos",
         "en": "find-your-contacts"
       },
+      "figures": [
+        "contatos"
+      ],
       "pt": {
         "name": "Ache seus contatos",
         "body": "Quem você já conhece aparece no Bipe desde o primeiro dia, se essa pessoa quiser.",
@@ -903,6 +923,9 @@
         "pt": "ponta-a-ponta",
         "en": "end-to-end"
       },
+      "figures": [
+        "e2ee"
+      ],
       "pt": {
         "name": "Ponta a ponta",
         "body": "Toda conversa nova é protegida de ponta a ponta.",
@@ -999,6 +1022,9 @@
         "pt": "servidor-no-brasil",
         "en": "servers-in-brazil"
       },
+      "figures": [
+        "brazil"
+      ],
       "pt": {
         "name": "Servidor no Brasil",
         "body": "As conversas ficam em servidores no Brasil, de empresas brasileiras.",
@@ -1029,6 +1055,9 @@
         "pt": "codigo-aberto",
         "en": "open-source"
       },
+      "figures": [
+        "openSource"
+      ],
       "pt": {
         "name": "Código aberto",
         "body": "O código vai ser público em breve, pra qualquer pessoa conferir.",
@@ -1094,6 +1123,7 @@
         "en": "business-pix-charges"
       },
       "figures": [
+        "cobranca",
         "business"
       ],
       "pt": {
@@ -1126,6 +1156,9 @@
         "pt": "stickers",
         "en": "stickers"
       },
+      "figures": [
+        "stickers"
+      ],
       "pt": {
         "name": "Stickers",
         "body": "Mande stickers, transforme uma foto em sticker e traga seus pacotes.",
@@ -1191,6 +1224,7 @@
         "en": "polls"
       },
       "figures": [
+        "avisos",
         "groups"
       ],
       "pt": {
@@ -1224,6 +1258,7 @@
         "en": "communities"
       },
       "figures": [
+        "avisos",
         "condominio",
         "igreja"
       ],
@@ -1258,6 +1293,7 @@
         "en": "verified-only-groups"
       },
       "figures": [
+        "grupo-verificados",
         "falso-pastor"
       ],
       "pt": {

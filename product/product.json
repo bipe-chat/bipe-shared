@@ -83,6 +83,19 @@
       }
     }
   ],
+  "realFake": {
+    "$comment": "Homepage section: the fake message next to the real one from the institution it copies (bipe-web RealVsFake, pairs in src/sim/scenes.ts). The institution seal is cnpj-badge, still planned: the copy says 'em breve'.",
+    "pt": {
+      "title": "O golpista se passa por empresa. No Bipe, dá para ver a diferença.",
+      "lede": "Banco, escola, loja, entrega, igreja: o golpe copia o nome e o logo. No Bipe, a conta falsa chega como pedido e a mensagem com cara de golpe vem com aviso. Em breve, a empresa de verdade aparece com selo e CNPJ, e só ela cobra no nome dela.",
+      "caption": "Simulação com empresas fictícias. O selo de empresa ainda não está no app de testes."
+    },
+    "en": {
+      "title": "Scammers pose as companies. On Bipe, you can tell the difference.",
+      "lede": "Bank, school, shop, delivery, church: the scam copies the name and the logo. On Bipe, the fake account arrives as a request and a message that looks like a scam comes with a warning. Soon, the real company shows a seal and its CNPJ, and only it can charge in its own name.",
+      "caption": "Simulation with fictional companies. The company seal is not in the test app yet."
+    }
+  },
   "tentpoles": [
     {
       "id": "trust",

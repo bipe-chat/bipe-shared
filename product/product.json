@@ -1401,12 +1401,12 @@
     "pt": {
       "nav": "Pessoas e grupos",
       "title": "Para quem é o Bipe",
-      "lede": "O Bipe é um app de mensagens para todo mundo. Estas páginas mostram como ele serve grupos diferentes, com o que já funciona e o que ainda vem."
+      "lede": "Como o Bipe serve cada grupo, com o que já funciona e o que ainda vem."
     },
     "en": {
       "nav": "People and groups",
       "title": "Who Bipe is for",
-      "lede": "Bipe is a messenger for everyone. These pages show how it serves different groups, with what already works and what is still coming."
+      "lede": "How Bipe serves each group, with what already works and what is still coming."
     }
   },
   "audiences": [
@@ -2185,6 +2185,27 @@
       "card": {
         "title": "Um app de mensagens que o Brasil sustenta junto.",
         "line": "Para organizações que querem ser parceiras do Bipe."
+      },
+      "form": {
+        "organisation": "Organização",
+        "name": "Seu nome",
+        "email": "E-mail",
+        "kind": "Tipo de organização",
+        "kinds": {
+          "funder": "Financiador ou fundação",
+          "tech": "Tecnologia ou telecomunicações",
+          "bank": "Banco ou fintech",
+          "research": "Universidade ou pesquisa",
+          "civil": "Sociedade civil",
+          "public": "Órgão público",
+          "other": "Outro"
+        },
+        "message": "Como vocês querem ajudar? (opcional)",
+        "submit": "Enviar",
+        "done": "Recebemos. A gente responde por e-mail.",
+        "error": "Não deu para enviar. Tente de novo ou escreva para o e-mail abaixo.",
+        "note": "Usamos esses dados só para responder. Eles são apagados depois de um ano.",
+        "orEmail": "Prefere e-mail?"
       }
     },
     "en": {
@@ -2238,6 +2259,27 @@
       "card": {
         "title": "A messenger Brazil carries together.",
         "line": "For organisations that want to partner with Bipe."
+      },
+      "form": {
+        "organisation": "Organisation",
+        "name": "Your name",
+        "email": "Email",
+        "kind": "Kind of organisation",
+        "kinds": {
+          "funder": "Funder or foundation",
+          "tech": "Technology or telecom",
+          "bank": "Bank or fintech",
+          "research": "University or research",
+          "civil": "Civil society",
+          "public": "Public body",
+          "other": "Other"
+        },
+        "message": "How would you like to help? (optional)",
+        "submit": "Send",
+        "done": "Got it. We will answer by email.",
+        "error": "Could not send. Try again or write to the address below.",
+        "note": "We use this only to answer you. It is deleted after one year.",
+        "orEmail": "Prefer email?"
       }
     }
   },

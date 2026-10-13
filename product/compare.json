@@ -5,7 +5,7 @@
   "pt": {
     "nav": "Comparar",
     "title": "Bipe e outros apps contra golpe",
-    "lede": "Cada app entende segurança de um jeito. O Signal cuida da sua privacidade. O Telegram mostra quem te escreve, mas guarda a conversa no servidor. O WhatsApp e o iMessage têm proteções que você precisa ligar. O RCS confere golpe, mas a conta é o seu número. O Bipe quer que você saiba com quem está falando.",
+    "description": "O que o Bipe, o WhatsApp, o Signal, o Telegram, o iMessage e o RCS fazem contra cada golpe.",
     "bipe": "No Bipe",
     "appsTitle": "Compare com cada app",
     "more": "Ver a comparação",
@@ -26,7 +26,7 @@
   "en": {
     "nav": "Compare",
     "title": "Bipe and other apps against scams",
-    "lede": "Each app means something different by security. Signal guards your privacy. Telegram shows who is writing to you, but keeps the chat on its server. WhatsApp and iMessage have protections you need to turn on. RCS checks for scams, but your number is the account. Bipe wants you to know who you are talking to.",
+    "description": "What Bipe, WhatsApp, Signal, Telegram, iMessage and RCS do against each scam.",
     "bipe": "On Bipe",
     "appsTitle": "Compare with each app",
     "more": "See the comparison",
@@ -143,7 +143,7 @@
       "name": "WhatsApp",
       "pt": {
         "title": "Bipe e WhatsApp contra golpe",
-        "lede": "O WhatsApp também tem proteção contra golpe. Veja, golpe por golpe, o que cada um faz hoje. O que o Bipe ainda não tem aparece como Em breve.",
+        "lede": "O WhatsApp tem proteção contra golpe, mas a maior parte precisa ser ligada.",
         "line": "O app que todo mundo usa. A maior parte das proteções contra golpe precisa ser ligada.",
         "on": "No WhatsApp",
         "ahead": [
@@ -156,7 +156,7 @@
       },
       "en": {
         "title": "Bipe and WhatsApp against scams",
-        "lede": "WhatsApp has scam protection too. Here is what each one does today, scam by scam. What Bipe does not have yet shows as Coming soon.",
+        "lede": "WhatsApp has scam protection, but you need to turn most of it on.",
         "line": "The app everyone uses. Most of its scam protection has to be turned on.",
         "on": "On WhatsApp",
         "ahead": [
@@ -244,7 +244,7 @@
       "name": "Signal",
       "pt": {
         "title": "Bipe e Signal contra golpe",
-        "lede": "O Signal é referência em privacidade. Contra golpe, ele usa pedido de conversa e um aviso de que o nome não é verificado. Veja, golpe por golpe, o que cada um faz hoje.",
+        "lede": "O Signal é referência em privacidade. Contra golpe, usa pedido de conversa e avisa que o nome não é verificado.",
         "line": "Referência em privacidade. Protege a conversa, mas não mostra quem está do outro lado.",
         "on": "No Signal",
         "ahead": [
@@ -256,7 +256,7 @@
       },
       "en": {
         "title": "Bipe and Signal against scams",
-        "lede": "Signal is the reference for privacy. Against scams, it uses message requests and a notice that a name is not verified. Here is what each one does today, scam by scam.",
+        "lede": "Signal is the reference for privacy. Against scams, it uses message requests and a notice that a name is not verified.",
         "line": "The reference for privacy. It protects the chat, but does not show who is on the other side.",
         "on": "On Signal",
         "ahead": [
@@ -339,7 +339,7 @@
       "name": "Telegram",
       "pt": {
         "title": "Bipe e Telegram contra golpe",
-        "lede": "O Telegram tem boas ferramentas para conferir quem te escreve. Mas a conversa comum fica guardada no servidor dele, sem proteção de ponta a ponta. Veja, golpe por golpe, o que cada um faz hoje.",
+        "lede": "O Telegram tem boas ferramentas para conferir quem te escreve. Mas a conversa comum fica guardada no servidor dele, sem proteção de ponta a ponta.",
         "line": "Mostra uma ficha de quem te escreve. A conversa comum fica no servidor, sem ponta a ponta.",
         "on": "No Telegram",
         "ahead": [
@@ -351,7 +351,7 @@
       },
       "en": {
         "title": "Bipe and Telegram against scams",
-        "lede": "Telegram has good tools to check who is writing to you. But a normal chat is stored on its server, without end-to-end encryption. Here is what each one does today, scam by scam.",
+        "lede": "Telegram has good tools to check who is writing to you. But a normal chat is stored on its server, without end-to-end encryption.",
         "line": "Shows a profile card of who writes to you. Normal chats sit on its server, not end-to-end encrypted.",
         "on": "On Telegram",
         "ahead": [
@@ -429,7 +429,7 @@
       "name": "iMessage",
       "pt": {
         "title": "Bipe e iMessage contra golpe",
-        "lede": "O iMessage só funciona entre iPhones, e no Brasil a maioria das pessoas usa Android. Veja, golpe por golpe, o que cada um faz hoje.",
+        "lede": "O iMessage só funciona entre iPhones, e no Brasil a maioria das pessoas usa Android.",
         "line": "Só no iPhone. Protegido de ponta a ponta, com filtro de desconhecidos que vem desligado.",
         "on": "No iMessage",
         "ahead": [
@@ -441,7 +441,7 @@
       },
       "en": {
         "title": "Bipe and iMessage against scams",
-        "lede": "iMessage works only between iPhones, and most people in Brazil use Android. Here is what each one does today, scam by scam.",
+        "lede": "iMessage works only between iPhones, and most people in Brazil use Android.",
         "line": "iPhone only. End-to-end encrypted, with an unknown-sender filter that starts off.",
         "on": "On iMessage",
         "ahead": [
@@ -532,7 +532,7 @@
       "name": "RCS",
       "pt": {
         "title": "Bipe e RCS contra golpe",
-        "lede": "RCS é a mensagem que já vem no celular, no lugar do SMS. No Android, o app é o Google Mensagens. Veja, golpe por golpe, o que cada um faz hoje.",
+        "lede": "RCS é a mensagem que já vem no celular, no lugar do SMS. No Android, o app é o Google Mensagens.",
         "line": "Já vem no celular. Confere golpe com IA, mas a conta é o seu número.",
         "on": "No RCS",
         "ahead": [
@@ -543,7 +543,7 @@
       },
       "en": {
         "title": "Bipe and RCS against scams",
-        "lede": "RCS is the messaging built into the phone, replacing SMS. On Android, the app is Google Messages. Here is what each one does today, scam by scam.",
+        "lede": "RCS is the messaging built into the phone, replacing SMS. On Android, the app is Google Messages.",
         "line": "Built into the phone. Checks for scams with AI, but your number is the account.",
         "on": "On RCS",
         "ahead": [

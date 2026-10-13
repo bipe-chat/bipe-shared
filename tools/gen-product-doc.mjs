@@ -108,7 +108,7 @@ for (const r of dist.source.repos) {
 // features that carry its status; every competitor cell belongs to a known threat.
 const cmp = JSON.parse(readFileSync(join(root, "product/compare.json"), "utf8"));
 if (cmp.version !== 1 || !/^\d{4}-\d{2}-\d{2}$/.test(cmp.date)) fail("compare: version or date");
-for (const l of ["pt", "en"]) for (const k of ["nav", "title", "lede", "bipe", "appsTitle", "more", "aheadTitle", "limitTitle", "limit", "sourcesTitle", "sourcesNote", "tableTitle", "threatCol"]) if (!cmp[l]?.[k]) fail(`compare.${l}.${k}`);
+for (const l of ["pt", "en"]) for (const k of ["nav", "title", "description", "bipe", "appsTitle", "more", "aheadTitle", "limitTitle", "limit", "sourcesTitle", "sourcesNote", "tableTitle", "threatCol"]) if (!cmp[l]?.[k]) fail(`compare.${l}.${k}`);
 const LEVELS = ["on", "setting", "limited", "none"];
 for (const l of ["pt", "en"]) for (const k of LEVELS) if (!cmp[l]?.levels?.[k]) fail(`compare.${l}.levels.${k}`);
 const threatIds = new Set();

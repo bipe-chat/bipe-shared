@@ -2181,7 +2181,11 @@
       ],
       "cta": "Sua organização quer construir o Bipe junto? Fale com a gente.",
       "ctaSubject": "Bipe: parceria",
-      "aboutLink": "Sua organização quer ajudar a sustentar o Bipe? Veja como ser parceira."
+      "aboutLink": "Sua organização quer ajudar a sustentar o Bipe? Veja como ser parceira.",
+      "card": {
+        "title": "Um app de mensagens que o Brasil sustenta junto.",
+        "line": "Para organizações que querem ser parceiras do Bipe."
+      }
     },
     "en": {
       "nav": "Partners",
@@ -2230,7 +2234,11 @@
       ],
       "cta": "Does your organisation want to build Bipe with us? Write to us.",
       "ctaSubject": "Bipe: partnership",
-      "aboutLink": "Does your organisation want to help carry Bipe? See how to partner."
+      "aboutLink": "Does your organisation want to help carry Bipe? See how to partner.",
+      "card": {
+        "title": "A messenger Brazil carries together.",
+        "line": "For organisations that want to partner with Bipe."
+      }
     }
   },
   "technical": {

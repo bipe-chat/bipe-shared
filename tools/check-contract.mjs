@@ -27,14 +27,22 @@ const MODELS = {
   PublicProfile: { ios: "BipePublicProfile", android: "BipePublicProfile" },
   MyProfile: { ios: "BipeMyProfile", android: "BipeMyProfile" },
   ProfileUpdate: { ios: "BipeProfileUpdate", android: "BipeProfileUpdate" },
+  // Device-first accounts (ADR 0057): the app work is bipe-chat/bipe#153 (iOS) and #154 (Android). See DEVICE_FIRST_GAPS.
+  AccountStatus: { ios: null, android: null },
+  Recovery: { ios: null, android: null },
+  Credentials: { ios: null, android: null },
+  RecoveryStarted: { ios: null, android: null },
+  RecoveryClaim: { ios: null, android: null },
 };
 
 // Contract enum -> client enum per platform. "Error.error" is the enum on the error property of Error.
+// null: the platform has no such enum yet (see gaps).
 const ENUMS = {
   InviteStatus: { ios: "BipeInviteStatus", android: "BipeInviteStatus" },
   HandleProblem: { ios: "BipeHandleProblem", android: "BipeHandleProblem" },
   ProfileProblem: { ios: "BipeProfileProblem", android: "BipeProfileProblem" },
   "Error.error": { ios: "BipeAPIErrorCode", android: "BipeApiErrorCode" },
+  PinProblem: { ios: null, android: null },
 };
 
 // Schemas the apps do not model, with the reason.
@@ -66,6 +74,15 @@ const GAPS = {
   "android:Error.error.cnpj_taken": "bipe-chat/bipe#115 (business UI in the apps)",
   "android:Error.error.signature_invalid": "bipe-chat/bipe#115 (business UI in the apps)",
 };
+
+// Device-first accounts (ADR 0057, ADR 0059): contract first, apps in bipe-chat/bipe#153 (iOS) and #154 (Android).
+const DEVICE_FIRST_ISSUE = { ios: "bipe-chat/bipe#153 (iOS device-first accounts)", android: "bipe-chat/bipe#154 (Android device-first accounts)" };
+const DEVICE_FIRST_GAPS = [
+  "AccountStatus", "Recovery", "Credentials", "RecoveryStarted", "RecoveryClaim", "PinProblem",
+  "SignupRequest.pin", "SignupRequest.lang", "SignupResponse.password", "SignupResponse.recovery_token",
+  ...["pin_weak", "pin_wrong", "pin_blocked", "pin_not_set", "recovery_invalid", "email_unavailable"].map((e) => `Error.error.${e}`),
+];
+for (const [platform, issue] of Object.entries(DEVICE_FIRST_ISSUE)) for (const g of DEVICE_FIRST_GAPS) GAPS[`${platform}:${g}`] = issue;
 
 // --- openapi.yaml: schema names, property names, enums ----------------------
 
@@ -202,6 +219,7 @@ for (const [ref, types] of Object.entries(ENUMS)) {
   if (!values) { problems.push(`ENUMS.${ref}: no enum in the contract`); continue; }
   for (const [platform, type] of Object.entries(types)) {
     const p = PLATFORMS[platform];
+    if (type === null) { if (!gap(`${platform}:${ref}`)) problems.push(`${platform}: no enum for ${ref}`); continue; }
     const have = p.enumValues(p.text, type);
     if (!have) { problems.push(`${platform}: enum ${type} (for ${ref}) not found`); continue; }
     for (const v of values) if (!have.has(v) && !gap(`${platform}:${ref}.${v}`)) problems.push(`${platform}: ${type} has no case for ${ref} "${v}"`);

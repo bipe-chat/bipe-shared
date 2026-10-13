@@ -78,10 +78,21 @@ paths:
     post:
       summary: Create an account (docs/usernames.md option A)
       description: >
-        No auth. The server creates a random Matrix localpart, sets the password and
-        the email through the MAS admin API, consumes one invite use when a code is
-        given and, if given, reserves the handle. The client then signs in through MAS
-        with the email and password. Rate-limited per IP and globally per hour.
+        No auth. The server creates a random Matrix localpart through the MAS admin API,
+        consumes one invite use when a code is given and, if given, reserves the handle.
+        Rate-limited per IP and globally per hour. Two modes.
+        Device-first (ADR 0057, ADR 0059): the request has no password. The server makes a
+        random password of 32 bytes, sets it through the MAS admin API and returns it once,
+        with a recovery token of 32 bytes. The server stores neither in clear: it never stores
+        the password, and it keeps only the SHA-256 of the token. The app keeps the password on
+        this device only (iOS Keychain ThisDeviceOnly, Android storage without backup), syncs the
+        token (iCloud Keychain, Block Store), and signs in with m.login.password (user_id and
+        password). An optional pin is set at once (pinProblem() in registries/accounts.json).
+        An optional email is a recovery fallback, never a login: it is not given to MAS, and
+        the server sends a link to confirm it (when outgoing email is on).
+        Legacy (beta apps): email and password both given. The server sets both in MAS as before
+        and the client signs in through MAS with them. A password without an email is bad_request.
+        The response has cache-control no-store.
       requestBody:
         required: true
         content:
@@ -96,6 +107,288 @@ paths:
         "400": { $ref: "#/components/responses/Error" }
         "403": { $ref: "#/components/responses/Error" }
         "409": { $ref: "#/components/responses/Error" }
+        "429": { $ref: "#/components/responses/Error" }
+  /v1/me/account:
+    get:
+      summary: The caller's device-first account state (ADR 0057)
+      description: >
+        PIN state, the recovery email, the recovery token and the recoveries that are running or
+        ended in the last 7 days. Apps read it when they come to the foreground: a recovery in
+        state waiting is the alert for the old devices (they show it and offer cancel); a
+        completed token recovery tells that the account signed in on a new device.
+      security: [{ matrix: [] }]
+      responses:
+        "200":
+          description: State
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/AccountStatus" }
+        "401": { $ref: "#/components/responses/Error" }
+  /v1/me/pin:
+    put:
+      summary: Set or change the caller's PIN
+      description: >
+        A signed-in device sets the PIN after a biometric check on the device (client side, ADR
+        0057). No old PIN is needed. The PIN must pass pinProblem() (400 pin_weak, reason: a
+        PinProblem id). Setting the PIN unblocks it, sets the wrong-try count to 0 and cancels
+        every waiting PIN reset. The server sends a notice to the verified recovery email.
+      security: [{ matrix: [] }]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [pin]
+              properties:
+                pin: { type: string, maxLength: 64 }
+      responses:
+        "204": { description: Saved }
+        "400": { $ref: "#/components/responses/Error" }
+        "401": { $ref: "#/components/responses/Error" }
+        "429": { $ref: "#/components/responses/Error" }
+  /v1/me/pin/check:
+    post:
+      summary: Check the caller's PIN (for a PIN reminder)
+      description: >
+        A wrong PIN counts against the account like on the recovery paths: 403 pin_wrong with
+        tries_left, then 403 pin_blocked after pinMaxWrongTries in total. A correct PIN sets the
+        count to 0. 409 pin_not_set when the account has no PIN. The app lock does not use this
+        route: it checks on the device.
+      security: [{ matrix: [] }]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [pin]
+              properties:
+                pin: { type: string, maxLength: 64 }
+      responses:
+        "204": { description: Correct }
+        "401": { $ref: "#/components/responses/Error" }
+        "403": { $ref: "#/components/responses/Error" }
+        "409": { $ref: "#/components/responses/Error" }
+        "429": { $ref: "#/components/responses/Error" }
+  /v1/me/device-first:
+    post:
+      summary: Move a beta account (email and own password) to a hidden password
+      description: >
+        For accounts made before ADR 0057. Needs a PIN first (409 pin_not_set). The server sets a
+        new random password through the MAS admin API and issues a new recovery token, and
+        returns both once. The user's own password stops working. The MAS email stays (it does
+        not sign in without the password); to use email for recovery, the app adds it with PUT
+        /v1/me/email. Also for a device-first account whose app lost the stored password.
+      security: [{ matrix: [] }]
+      responses:
+        "200":
+          description: New credentials, shown once
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/Credentials" }
+        "401": { $ref: "#/components/responses/Error" }
+        "409": { $ref: "#/components/responses/Error" }
+        "429": { $ref: "#/components/responses/Error" }
+  /v1/me/recovery-token:
+    post:
+      summary: Issue a new recovery token for the caller
+      description: >
+        Returned once. The old token stops working. For an app that lost the synced token, or
+        after a suspected leak.
+      security: [{ matrix: [] }]
+      responses:
+        "200":
+          description: The new token
+          content:
+            application/json:
+              schema:
+                type: object
+                required: [recovery_token]
+                properties:
+                  recovery_token: { type: string, description: "base64url, 32 random bytes." }
+        "401": { $ref: "#/components/responses/Error" }
+        "429": { $ref: "#/components/responses/Error" }
+  /v1/me/email:
+    put:
+      summary: Add or change the caller's recovery email
+      description: >
+        The server sends a link to confirm the address (emailVerifyLinkHours). The current
+        verified address stays in use until the new one is confirmed. 503 email_unavailable when
+        outgoing email is off. 409 email_taken when another account uses the address.
+      security: [{ matrix: [] }]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [email]
+              properties:
+                email: { type: string, format: email, maxLength: 254 }
+                lang: { type: string, enum: [pt, en], default: pt, description: "Language of the emails Bipe sends to this address." }
+      responses:
+        "202": { description: Link sent }
+        "400": { $ref: "#/components/responses/Error" }
+        "401": { $ref: "#/components/responses/Error" }
+        "409": { $ref: "#/components/responses/Error" }
+        "429": { $ref: "#/components/responses/Error" }
+        "503": { $ref: "#/components/responses/Error" }
+    delete:
+      summary: Remove the caller's recovery email (verified and pending)
+      description: The server sends a notice to the removed verified address.
+      security: [{ matrix: [] }]
+      responses:
+        "204": { description: Removed }
+        "401": { $ref: "#/components/responses/Error" }
+  /v1/email/verify:
+    post:
+      summary: Confirm a recovery email with the token from the link
+      description: >
+        No auth: the token proves the inbox. The link is PUBLIC_SITE_URL/confirmar-email/#<token>,
+        so the token stays out of server logs; the app or the web page reads it from the fragment.
+        CORS allows PUBLIC_SITE_URL. 403 recovery_invalid when the token is unknown or expired.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [token]
+              properties:
+                token: { type: string, maxLength: 128 }
+      responses:
+        "204": { description: Confirmed }
+        "403": { $ref: "#/components/responses/Error" }
+        "409": { $ref: "#/components/responses/Error" }
+        "429": { $ref: "#/components/responses/Error" }
+  /v1/me/recoveries/{recoveryId}/cancel:
+    post:
+      summary: Cancel a waiting recovery of the caller's account (old device)
+      description: Any signed-in device of the account can cancel. 404 when the recovery is not waiting.
+      security: [{ matrix: [] }]
+      parameters:
+        - { name: recoveryId, in: path, required: true, schema: { type: string, maxLength: 64 } }
+      responses:
+        "204": { description: Cancelled }
+        "401": { $ref: "#/components/responses/Error" }
+        "404": { $ref: "#/components/responses/Error" }
+  /v1/recovery/token:
+    post:
+      summary: Get back in with the synced recovery token and the PIN (ADR 0059)
+      description: >
+        No auth. Rate-limited per IP. The server finds the account by the token first, and only
+        then checks the PIN, so nobody can use up the tries without the token. Wrong PIN: 403
+        pin_wrong with tries_left; blocked PIN: 403 pin_blocked (reset by email, guardians or
+        CPF). Unknown token: 403 recovery_invalid. On success the server sets a new random
+        password through the MAS admin API, issues a new token (the old one stops working),
+        records a completed recovery that the old devices see in GET /v1/me/account, and
+        sends a notice to the verified recovery email. No delay. Message history still needs
+        approval from an old device or the recovery key.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [recovery_token, pin]
+              properties:
+                recovery_token: { type: string, maxLength: 128 }
+                pin: { type: string, maxLength: 64 }
+      responses:
+        "200":
+          description: New credentials, shown once
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/Credentials" }
+        "400": { $ref: "#/components/responses/Error" }
+        "403": { $ref: "#/components/responses/Error" }
+        "429": { $ref: "#/components/responses/Error" }
+  /v1/recovery/email:
+    post:
+      summary: Ask for a recovery link by email (ADR 0057)
+      description: >
+        No auth. Always 202 for a well-formed request, so the route never tells whether an
+        address is known. When a verified recovery email matches, the server sends a link
+        PUBLIC_SITE_URL/recuperar/#<token>, valid for recoveryLinkMinutes. The app on the new
+        device opens it and calls POST /v1/recovery/email/confirm. Rate-limited per IP and per
+        address. 503 email_unavailable when outgoing email is off.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [email]
+              properties:
+                email: { type: string, format: email, maxLength: 254 }
+      responses:
+        "202": { description: Accepted }
+        "400": { $ref: "#/components/responses/Error" }
+        "429": { $ref: "#/components/responses/Error" }
+        "503": { $ref: "#/components/responses/Error" }
+  /v1/recovery/email/confirm:
+    post:
+      summary: Start the delay with the email link and the PIN, or a new PIN
+      description: >
+        No auth. Exactly one of pin and new_pin. With pin (access): the server checks the link
+        first and then the PIN (403 pin_wrong with tries_left, 403 pin_blocked). With new_pin
+        (forgotten or blocked PIN): no old PIN; new_pin must pass pinProblem() (400 pin_weak).
+        Then the delay starts (recoveryDelayHours.email), the old devices see the recovery in
+        GET /v1/me/account and can cancel, and the server sends a notice to the recovery email.
+        The response carries a claim secret, shown once; the new device keeps it and calls
+        POST /v1/recovery/{recoveryId}/claim. The link works once. 403 recovery_invalid for an
+        unknown, used or expired link.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [token]
+              properties:
+                token: { type: string, maxLength: 128 }
+                pin: { type: string, maxLength: 64 }
+                new_pin: { type: string, maxLength: 64 }
+      responses:
+        "201":
+          description: Delay started
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/RecoveryStarted" }
+        "400": { $ref: "#/components/responses/Error" }
+        "403": { $ref: "#/components/responses/Error" }
+        "429": { $ref: "#/components/responses/Error" }
+  /v1/recovery/{recoveryId}/claim:
+    post:
+      summary: Poll a recovery, and collect the result when the delay has ended
+      description: >
+        No auth; the claim secret from RecoveryStarted proves the device. Before ready_at:
+        state waiting. After ready_at: for purpose access the server sets a new random password
+        through the MAS admin API and issues a new recovery token, and returns user_id, password
+        and recovery_token once; for purpose pin_reset the new PIN takes effect (unblocked, count
+        0). State completed after that. A completed access recovery can be claimed again for one
+        hour (a lost response): each claim sets a new password and token. Cancelled and expired
+        recoveries return their state. After the delay the device has recoveryClaimDays to claim.
+        403 recovery_invalid for an unknown recovery or a wrong secret.
+      parameters:
+        - { name: recoveryId, in: path, required: true, schema: { type: string, maxLength: 64 } }
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [claim_secret]
+              properties:
+                claim_secret: { type: string, maxLength: 128 }
+      responses:
+        "200":
+          description: State, and the credentials when completed now
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/RecoveryClaim" }
+        "403": { $ref: "#/components/responses/Error" }
         "429": { $ref: "#/components/responses/Error" }
   /v1/invites/{code}:
     get:
@@ -713,11 +1006,12 @@ components:
         website: { type: string, maxLength: 200, description: "Honeypot. People leave it empty; a non-empty value is accepted and dropped." }
     SignupRequest:
       type: object
-      required: [email, password]
       properties:
         invite_code: { type: string, maxLength: 2048, description: "Optional while the server runs with SIGNUP_INVITE_REQUIRED=false (beta). A code, an invite link or a whole pasted message; the server extracts the code (test-vectors/invite-codes.json). A given code must be valid." }
-        email: { type: string, format: email, maxLength: 254 }
-        password: { type: string, minLength: 8, maxLength: 256 }
+        email: { type: string, format: email, maxLength: 254, description: "Device-first: optional recovery fallback, confirmed by a link. Legacy: the login, required with password." }
+        password: { type: string, minLength: 8, maxLength: 256, description: "Legacy only. Absent: device-first, the server makes the password." }
+        pin: { type: string, maxLength: 64, description: "Device-first only, optional: the PIN, set at once. Must pass pinProblem() (400 pin_weak)." }
+        lang: { type: string, enum: [pt, en], default: pt, description: "Language of the emails Bipe sends to the recovery email." }
         handle: { type: string, description: "Optional. Without @." }
         display_name: { type: string, maxLength: 100 }
         attestation: { $ref: "#/components/schemas/Attestation" }
@@ -741,6 +1035,8 @@ components:
         user_id: { type: string, description: "Random Matrix ID, e.g. @k7q2m9x4tpab:bipe.net.br" }
         handle: { type: string }
         inviter_user_id: { type: string, description: "Present when a personal invite was used. The app can offer a chat with the inviter." }
+        password: { type: string, description: "Device-first only. The hidden MAS password, shown once. Keep it on this device only." }
+        recovery_token: { type: string, description: "Device-first only. base64url, 32 random bytes, shown once. Sync it (iCloud Keychain, Block Store)." }
     DiscoverySettings:
       type: object
       required: [by_phone]
@@ -846,14 +1142,69 @@ components:
       type: string
       enum: [name_empty, name_too_long, name_reserved, bio_too_long, bio_too_many_lines, no_handle]
       description: Same ids as bipe-shared profileProblem(), plus no_handle from the server.
+    PinProblem:
+      type: string
+      enum: [not_digits, wrong_length, repeated_digit, sequence, date]
+      description: Same ids as bipe-shared pinProblem() (registries/accounts.json, test-vectors/pins.json).
+    Credentials:
+      type: object
+      required: [user_id, password, recovery_token]
+      description: Shown once. The app keeps the password on this device only and syncs the recovery token. Sign in with m.login.password.
+      properties:
+        user_id: { type: string }
+        password: { type: string, description: "base64url, 32 random bytes." }
+        recovery_token: { type: string, description: "base64url, 32 random bytes." }
+    Recovery:
+      type: object
+      required: [id, method, purpose, state, created_at]
+      properties:
+        id: { type: string }
+        method: { type: string, enum: [token, email, guardian, cpf], description: "guardian and cpf are not built yet." }
+        purpose: { type: string, enum: [access, pin_reset] }
+        state: { type: string, enum: [waiting, completed, cancelled, expired] }
+        created_at: { type: string, format: date-time }
+        ready_at: { type: string, format: date-time, description: "When the delay ends." }
+        ended_at: { type: string, format: date-time }
+    RecoveryStarted:
+      type: object
+      required: [recovery_id, claim_secret, purpose, ready_at]
+      properties:
+        recovery_id: { type: string }
+        claim_secret: { type: string, description: "Shown once. Keep it on the new device." }
+        purpose: { type: string, enum: [access, pin_reset] }
+        ready_at: { type: string, format: date-time }
+    RecoveryClaim:
+      type: object
+      required: [state, purpose]
+      properties:
+        state: { type: string, enum: [waiting, completed, cancelled, expired] }
+        purpose: { type: string, enum: [access, pin_reset] }
+        ready_at: { type: string, format: date-time }
+        user_id: { type: string, description: "Access, completed by this call only." }
+        password: { type: string, description: "Access, completed by this call only. Shown once." }
+        recovery_token: { type: string, description: "Access, completed by this call only. Shown once." }
+    AccountStatus:
+      type: object
+      required: [user_id, pin_set, pin_blocked, pin_tries_left, device_first, recovery_token_set, recoveries]
+      properties:
+        user_id: { type: string }
+        pin_set: { type: boolean }
+        pin_blocked: { type: boolean }
+        pin_tries_left: { type: integer }
+        device_first: { type: boolean, description: "False for a beta account that still signs in with its own password (POST /v1/me/device-first)." }
+        recovery_token_set: { type: boolean }
+        email: { type: string, description: "The verified recovery email. Absent when none." }
+        email_pending: { type: string, description: "An address waiting for its link. Absent when none." }
+        recoveries: { type: array, items: { $ref: "#/components/schemas/Recovery" }, description: "Waiting ones, and ones that ended in the last 7 days. Newest first." }
     Error:
       type: object
       required: [error]
       properties:
         error:
           type: string
-          enum: [bad_request, invite_invalid, invite_quota_exhausted, email_taken, handle_invalid, handle_taken, handle_cooldown, password_weak, attestation_invalid, profile_invalid, photo_invalid, unauthorized, not_found, rate_limited, internal, cnpj_invalid, cnpj_not_active, cnpj_taken, signature_invalid]
-        reason: { type: string, description: "Detail, e.g. a HandleProblem id." }
+          enum: [bad_request, invite_invalid, invite_quota_exhausted, email_taken, handle_invalid, handle_taken, handle_cooldown, password_weak, attestation_invalid, profile_invalid, photo_invalid, unauthorized, not_found, rate_limited, internal, cnpj_invalid, cnpj_not_active, cnpj_taken, signature_invalid, pin_weak, pin_wrong, pin_blocked, pin_not_set, recovery_invalid, email_unavailable]
+        reason: { type: string, description: "Detail, e.g. a HandleProblem or PinProblem id." }
+        tries_left: { type: integer, description: "With pin_wrong: wrong PINs left before the PIN blocks." }
     BadgeEnvelope:
       type: object
       required: [v, kid, payload, sig]

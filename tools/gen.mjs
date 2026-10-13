@@ -125,6 +125,19 @@ public enum BipeRegistries {
     public static let phoneMaxInputLength = ${reg.phones.maxInputLength}
     public static let phoneInternationalMinDigits = ${reg.phones.internationalMinDigits}
     public static let phoneInternationalMaxDigits = ${reg.phones.internationalMaxDigits}
+
+    /// Device-first accounts (ADR 0057, ADR 0059; registries/accounts.json). Check PINs with the rule there;
+    /// test-vectors/pins.json has the cases. The server is the authority.
+    public static let pinLength = ${reg.accounts.pinLength}
+    public static let pinMaxWrongTries = ${reg.accounts.pinMaxWrongTries}
+    public static let pinDateYearMin = ${reg.accounts.pinDateYearMin}
+    public static let pinDateYearMax = ${reg.accounts.pinDateYearMax}
+    public static let recoveryDelayHoursEmail = ${reg.accounts.recoveryDelayHours.email}
+    public static let recoveryDelayHoursGuardian = ${reg.accounts.recoveryDelayHours.guardian}
+    public static let recoveryDelayHoursCpf = ${reg.accounts.recoveryDelayHours.cpf}
+    public static let guardianApprovalsMax = ${reg.accounts.guardianApprovalsMax}
+    public static let recoveryLinkMinutes = ${reg.accounts.recoveryLinkMinutes}
+    public static let emailVerifyLinkHours = ${reg.accounts.emailVerifyLinkHours}
 }
 `;
 }
@@ -133,7 +146,7 @@ public enum BipeRegistries {
 const appleStrings = (strings) =>
   HEADER.replace(/^\/\//gm, "/*").replace(/\n/g, " */\n") +
   Object.entries(strings).map(([k, v]) => {
-    const esc = v.replace(/\\/g, "\\\\").replace(/"/g, '\\"').replace(/%(\d+)\$s/g, "%$1$$@");
+    const esc = v.replace(/\\/g, "\\\\").replace(/"/g, '\\"').replace(/\n/g, "\\n").replace(/%(\d+)\$s/g, "%$1$$@");
     return `"${k}" = "${esc}";`;
   }).join("\n") + "\n";
 
@@ -282,6 +295,21 @@ object BipeRegistries {
     const val PHONE_MAX_INPUT_LENGTH = ${reg.phones.maxInputLength}
     const val PHONE_INTERNATIONAL_MIN_DIGITS = ${reg.phones.internationalMinDigits}
     const val PHONE_INTERNATIONAL_MAX_DIGITS = ${reg.phones.internationalMaxDigits}
+
+    /**
+     * Device-first accounts (ADR 0057, ADR 0059; registries/accounts.json). Check PINs with the rule there;
+     * test-vectors/pins.json has the cases. The server is the authority.
+     */
+    const val PIN_LENGTH = ${reg.accounts.pinLength}
+    const val PIN_MAX_WRONG_TRIES = ${reg.accounts.pinMaxWrongTries}
+    const val PIN_DATE_YEAR_MIN = ${reg.accounts.pinDateYearMin}
+    const val PIN_DATE_YEAR_MAX = ${reg.accounts.pinDateYearMax}
+    const val RECOVERY_DELAY_HOURS_EMAIL = ${reg.accounts.recoveryDelayHours.email}
+    const val RECOVERY_DELAY_HOURS_GUARDIAN = ${reg.accounts.recoveryDelayHours.guardian}
+    const val RECOVERY_DELAY_HOURS_CPF = ${reg.accounts.recoveryDelayHours.cpf}
+    const val GUARDIAN_APPROVALS_MAX = ${reg.accounts.guardianApprovalsMax}
+    const val RECOVERY_LINK_MINUTES = ${reg.accounts.recoveryLinkMinutes}
+    const val EMAIL_VERIFY_LINK_HOURS = ${reg.accounts.emailVerifyLinkHours}
 }
 `;
 }

@@ -2108,6 +2108,107 @@
       "figureCaption": "Illustration with sample data. The proposal is still under study."
     }
   },
+  "partners": {
+    "$comment": "The /parceiros/ page: organisations that want to help carry Bipe. ADR 0067 (steward, not owner) and ADR 0071 (the Pix analogy is allowed here, not elsewhere). Name no prospective partner, funder or institution until there is a signed agreement. Promise no seats, governance or equity. Issue bipe#177.",
+    "pt": {
+      "nav": "Parceiros",
+      "label": "Ideia em construção",
+      "title": "Um app de mensagens que o Brasil sustenta junto.",
+      "lede": "O Bipe é um experimento. A ideia é que ele vire uma infraestrutura comum, um Pix das conversas: todo mundo usa, várias organizações sustentam, nenhuma empresa é dona. A Envisioning começou o Bipe e cuida dele, mas não quer tocar ele sozinha. Por isso a gente procura parceiros.",
+      "sections": [
+        {
+          "heading": "Por que ser parceiro",
+          "points": [
+            "Os dados e os servidores ficam no Brasil, sob a lei brasileira.",
+            "Golpe por mensagem custa caro pra todo mundo: pra quem perde o dinheiro, pro banco que atende, pra loja que tem o nome usado. Um app feito contra golpe sai mais barato junto do que sozinho.",
+            "Ninguém é dono. Nenhum parceiro, nem a Envisioning, muda as regras sozinho.",
+            "O código e o protocolo são abertos. O que você ajuda a construir fica público e não fica preso a ninguém.",
+            "Os custos e os riscos são divididos. Jurídico, moderação e servidores não ficam nas costas de uma organização só."
+          ]
+        },
+        {
+          "heading": "Quem a gente procura",
+          "points": [
+            "Quem financia infraestrutura de interesse público.",
+            "Empresas de tecnologia e de telecomunicações.",
+            "Bancos e fintechs que sofrem com o golpe do falso atendente.",
+            "Universidades e grupos de pesquisa.",
+            "Organizações da sociedade civil."
+          ]
+        },
+        {
+          "heading": "Como dá pra ajudar",
+          "points": [
+            "Dinheiro pra manter o serviço no ar.",
+            "Servidores e hospedagem no Brasil.",
+            "Gente pra cuidar da parte jurídica e da moderação.",
+            "Pesquisa sobre golpes, segurança e como as pessoas usam o app.",
+            "Levar o Bipe pra quem mais precisa dele."
+          ]
+        },
+        {
+          "heading": "O que ainda está em aberto",
+          "points": [
+            "A forma da instituição. Uma associação é uma das opções.",
+            "Quem decide o quê, e como os custos se dividem.",
+            "Nada disso está acordado. A ideia é desenhar junto com os primeiros parceiros."
+          ]
+        }
+      ],
+      "cta": "Sua organização quer construir o Bipe junto? Fale com a gente.",
+      "ctaSubject": "Bipe: parceria",
+      "aboutLink": "Sua organização quer ajudar a sustentar o Bipe? Veja como ser parceira."
+    },
+    "en": {
+      "nav": "Partners",
+      "label": "Idea in progress",
+      "title": "A messenger Brazil carries together.",
+      "lede": "Bipe is an experiment. The idea is that it becomes common infrastructure, a Pix for conversations: everyone uses it, several organisations carry it, no company owns it. Envisioning started Bipe and looks after it, but does not want to run it alone. That is why we are looking for partners.",
+      "sections": [
+        {
+          "heading": "Why partner",
+          "points": [
+            "Data and servers stay in Brazil, under Brazilian law.",
+            "Scams by message cost everyone: the person who loses the money, the bank that handles the case, the shop whose name is used. A messenger built against scams costs less together than alone.",
+            "Nobody owns it. No partner, not even Envisioning, changes the rules alone.",
+            "The code and the protocol are open. What you help build stays public and is not locked to anyone.",
+            "Costs and risks are shared. Legal work, moderation and servers do not rest on one organisation."
+          ]
+        },
+        {
+          "heading": "Who we are looking for",
+          "points": [
+            "Funders of public-interest infrastructure.",
+            "Technology and telecom companies.",
+            "Banks and fintechs hit by the fake-support scam.",
+            "Universities and research groups.",
+            "Civil-society organisations."
+          ]
+        },
+        {
+          "heading": "How you can help",
+          "points": [
+            "Money to keep the service running.",
+            "Servers and hosting in Brazil.",
+            "People for legal work and moderation.",
+            "Research on scams, security and how people use the app.",
+            "Bringing Bipe to the people who need it most."
+          ]
+        },
+        {
+          "heading": "What is still open",
+          "points": [
+            "The form of the institution. An association is one option.",
+            "Who decides what, and how costs are split.",
+            "None of this is agreed. The idea is to design it with the first partners."
+          ]
+        }
+      ],
+      "cta": "Does your organisation want to build Bipe with us? Write to us.",
+      "ctaSubject": "Bipe: partnership",
+      "aboutLink": "Does your organisation want to help carry Bipe? See how to partner."
+    }
+  },
   "technical": {
     "pt": {
       "nav": "Tecnologia",

@@ -1996,7 +1996,7 @@
     }
   },
   "business": {
-    "$comment": "The /empresas/ page. Source: bipe/docs/business-track.md and bipe/docs/business-messaging.md (issue #93). Everything here is a proposal: nothing is built or for sale. Keep that visible on the page. Decided: ADR 0035 (the business decrypts), ADR 0036 (own-domain links), ADR 0037 (categories, not published here), ADR 0069 (one inbox for Bipe and WhatsApp, keys with the company), ADR 0070 (flat fee per CNPJ plus agent seats; amounts open), ADR 0078 (Pix charge cards for verified companies, planned), ADR 0079 (structured questions).",
+    "$comment": "The /empresas/ page. Source: bipe/docs/business-track.md and bipe/docs/business-messaging.md (issue #93). Everything here is a proposal: nothing is built or for sale. Keep that visible on the page. Decided: ADR 0035 (the business decrypts), ADR 0036 (own-domain links), ADR 0037 (categories, not published here), ADR 0069 (one inbox for Bipe and WhatsApp, keys with the company), ADR 0070 (flat fee per CNPJ plus agent seats; amounts open), ADR 0080 (Pix charge cards for verified companies, planned), ADR 0081 (structured questions).",
     "pt": {
       "nav": "Empresas",
       "title": "Atenda seus clientes num lugar onde ninguém se passa por você.",

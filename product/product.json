@@ -2218,9 +2218,8 @@
         "message": "Como vocês querem ajudar? (opcional)",
         "submit": "Enviar",
         "done": "Recebemos. A gente responde por e-mail.",
-        "error": "Não deu para enviar. Tente de novo ou escreva para o e-mail abaixo.",
-        "note": "Usamos esses dados só para responder. Eles são apagados depois de um ano.",
-        "orEmail": "Prefere e-mail?"
+        "error": "Não deu para enviar. Tente de novo daqui a pouco.",
+        "note": "Usamos esses dados só para responder. Eles são apagados depois de um ano."
       }
     },
     "en": {
@@ -2292,9 +2291,8 @@
         "message": "How would you like to help? (optional)",
         "submit": "Send",
         "done": "Got it. We will answer by email.",
-        "error": "Could not send. Try again or write to the address below.",
-        "note": "We use this only to answer you. It is deleted after one year.",
-        "orEmail": "Prefer email?"
+        "error": "Could not send. Try again in a moment.",
+        "note": "We use this only to answer you. It is deleted after one year."
       }
     }
   },

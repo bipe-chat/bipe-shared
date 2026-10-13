@@ -1440,7 +1440,7 @@
           "Ameaçam cortar o serviço ou bloquear a conta hoje."
         ],
         "todo": [
-          "Não passe código, senha nem dados do cartão.",
+          "Não passe código, senha nem dados do cartão. Ninguém do Bipe pede a sua senha.",
           "Feche a conversa e procure o suporte pelo app ou pelo site oficial.",
           "Passou dados? Troque a senha, fale com o banco e faça o boletim de ocorrência."
         ],
@@ -1463,7 +1463,7 @@
           "They threaten to cut the service or block the account today."
         ],
         "todo": [
-          "Do not pass on a code, PIN or card details.",
+          "Do not pass on a code, PIN or card details. Nobody from Bipe asks for your PIN.",
           "Close the chat and find support through the official app or site.",
           "Gave data? Change your PIN, talk to your bank and file a police report."
         ],
@@ -2748,6 +2748,7 @@
       "Alguém pediu dinheiro por mensagem? Ligue para a pessoa num número que você já tinha antes de pagar.",
       "Banco não liga pedindo senha, código ou transferência. Desligue e ligue você para o número que está atrás do cartão.",
       "O código que chega por SMS é só seu. Não passe para ninguém, nem para quem diz ser do app.",
+      "Ninguém do Bipe pede a sua senha de 8 números, nem por mensagem, nem por ligação. Quem pede não é do Bipe.",
       "Print de comprovante não prova pagamento. Confira no app do seu banco se o dinheiro caiu.",
       "Preço bom demais numa loja que você não conhece costuma ser golpe.",
       "Caiu num golpe com Pix? Fale com o seu banco na hora e peça o MED, o mecanismo de devolução do Pix. Depois faça o boletim de ocorrência."
@@ -2795,6 +2796,7 @@
       "Someone asked for money by message? Call them on a number you already had before you pay.",
       "Banks do not call asking for a password, a code or a transfer. Hang up and call the number on the back of your card yourself.",
       "The code you get by SMS is yours alone. Do not give it to anyone, not even someone who says they are from the app.",
+      "Nobody from Bipe asks for your 8-digit PIN, not by message and not by phone call. Whoever asks is not from Bipe.",
       "A screenshot of a receipt does not prove payment. Check in your bank app that the money arrived.",
       "A price too good to be true, from a shop you do not know, is usually a scam.",
       "Fell for a Pix scam? Talk to your bank at once and ask for MED, the Pix refund mechanism. Then file a police report."

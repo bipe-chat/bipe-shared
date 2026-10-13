@@ -816,6 +816,55 @@ paths:
         "401": { $ref: "#/components/responses/Error" }
         "409": { $ref: "#/components/responses/Error" }
         "429": { $ref: "#/components/responses/Error" }
+    delete:
+      summary: Remove the caller's handle (ADR 0066)
+      description: >
+        Allowed at any time. The old handle is held 90 days, as on a change. The removal does not
+        reset the cooldown: changeable_at is 30 days after the last set. The API records the removal
+        in the handle change history.
+      security: [{ matrix: [] }]
+      responses:
+        "200":
+          description: Handle removed (also when the caller had none). No handle field.
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/MyHandle" }
+        "401": { $ref: "#/components/responses/Error" }
+  /v1/handle-changes:
+    post:
+      summary: Handle change history for Matrix IDs the caller shares rooms with (ADR 0066)
+      description: >
+        The app sends the Matrix IDs of the members of its joined rooms (1:1 and groups). The API
+        does not check room membership. It returns first sets, changes and removals from the last
+        365 days (at most the last 20 per account), oldest first. Each change becomes a local
+        timeline line at "at" in every room the person is a member of: old and new set is
+        bipe_handle_changed (name, new, old); only new is bipe_handle_set (name, new); only old is
+        bipe_handle_removed (name, old). The name is the person's display name in that room.
+        A handle chosen at sign-up is not a change. Holds and cooldowns are never in the history.
+      security: [{ matrix: [] }]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [user_ids]
+              properties:
+                user_ids: { type: array, maxItems: 100, items: { type: string } }
+                since: { type: string, format: date-time, description: "Only changes after this time. The app sends the latest at it already has." }
+      responses:
+        "200":
+          description: Changes for the given IDs. IDs without changes are absent.
+          content:
+            application/json:
+              schema:
+                type: object
+                required: [changes]
+                properties:
+                  changes: { type: array, items: { $ref: "#/components/schemas/HandleChange" } }
+        "400": { $ref: "#/components/responses/Error" }
+        "401": { $ref: "#/components/responses/Error" }
+        "429": { $ref: "#/components/responses/Error" }
   /v1/profiles/{handle}:
     get:
       summary: Public profile by exact handle (ADR 0041)
@@ -1112,6 +1161,14 @@ components:
         user_id: { type: string }
         handle: { type: string }
         changeable_at: { type: string, format: date-time, description: "Absent when a change is allowed now." }
+    HandleChange:
+      type: object
+      required: [user_id, at]
+      properties:
+        user_id: { type: string }
+        old: { type: string, description: "Handle before the change, without @. Absent on a first set." }
+        new: { type: string, description: "Handle after the change, without @. Absent on a removal." }
+        at: { type: string, format: date-time }
     PublicProfile:
       type: object
       required: [handle, name]

@@ -33,6 +33,8 @@ const MODELS = {
   Credentials: { ios: null, android: null },
   RecoveryStarted: { ios: null, android: null },
   RecoveryClaim: { ios: null, android: null },
+  // Handle change history (ADR 0066): the timeline line is bipe-chat/bipe#166, built with #153 (iOS) and #154 (Android).
+  HandleChange: { ios: null, android: null },
 };
 
 // Contract enum -> client enum per platform. "Error.error" is the enum on the error property of Error.
@@ -83,6 +85,11 @@ const DEVICE_FIRST_GAPS = [
   ...["pin_weak", "pin_wrong", "pin_blocked", "pin_not_set", "recovery_invalid", "email_unavailable"].map((e) => `Error.error.${e}`),
 ];
 for (const [platform, issue] of Object.entries(DEVICE_FIRST_ISSUE)) for (const g of DEVICE_FIRST_GAPS) GAPS[`${platform}:${g}`] = issue;
+
+// Handle changes in chats (ADR 0066): contract first, the timeline line in the apps follows.
+const HANDLE_CHANGE_ISSUE = { ios: "bipe-chat/bipe#166 (iOS handle change line, with #153)", android: "bipe-chat/bipe#166 (Android handle change line, with #154)" };
+const HANDLE_CHANGE_GAPS = ["HandleChange"];
+for (const [platform, issue] of Object.entries(HANDLE_CHANGE_ISSUE)) for (const g of HANDLE_CHANGE_GAPS) GAPS[`${platform}:${g}`] = issue;
 
 // --- openapi.yaml: schema names, property names, enums ----------------------
 

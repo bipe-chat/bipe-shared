@@ -10,7 +10,7 @@
     "appsTitle": "Compare com cada app",
     "more": "Ver a comparação",
     "limitTitle": "O que o Bipe não resolve sozinho",
-    "limit": "O Bipe só protege as conversas que acontecem no Bipe. Se a sua mãe ainda usa o WhatsApp, um golpista pode escrever pra ela lá. Funciona melhor quando a família conversa pelo Bipe. Aí um pedido de dinheiro que chega por outro app já chama atenção.",
+    "limit": "O Bipe só protege as conversas que acontecem no Bipe. Se a sua mãe ainda usa o WhatsApp, um golpista pode escrever para ela lá. Funciona melhor quando a família conversa pelo Bipe. Aí um pedido de dinheiro que chega por outro app já chama atenção.",
     "sourcesTitle": "De onde vêm essas informações",
     "sourcesNote": "Pesquisa feita em 12 de outubro de 2026, com base no que cada empresa publicou e no que a imprensa noticiou. Os apps mudam rápido. A gente atualiza esta página quando muda.",
     "aheadTitle": "Onde o {app} está na frente",
@@ -83,7 +83,7 @@
       ],
       "pt": {
         "threat": "Clonagem pelo código SMS",
-        "bipe": "O Bipe não usa código por SMS pra entrar. Quem pega seu chip não pega sua conta."
+        "bipe": "O Bipe não usa código por SMS para entrar. Quem pega seu chip não pega sua conta."
       },
       "en": {
         "threat": "Account cloning by SMS code",
@@ -147,7 +147,7 @@
         "line": "O app que todo mundo usa. A maior parte das proteções contra golpe precisa ser ligada.",
         "on": "No WhatsApp",
         "ahead": [
-          "Chave de acesso pra entrar na conta. O Bipe ainda usa e-mail e senha; a conta no celular com senha de 8 números vem em breve.",
+          "Chave de acesso para entrar na conta. O Bipe ainda usa e-mail e senha; a conta no celular com senha de 8 números vem em breve.",
           "Aviso quando alguém tenta conectar sua conta num aparelho estranho.",
           "Um resumo do grupo quando um desconhecido te adiciona.",
           "Antes de atender um número desconhecido, mostra o país e os grupos em comum.",
@@ -180,17 +180,17 @@
         },
         "codigo-sms": {
           "level": "setting",
-          "pt": "A conta é o seu número. Dá pra proteger com a verificação em duas etapas e a chave de acesso, se você ativar.",
+          "pt": "A conta é o seu número. Dá para proteger com a verificação em duas etapas e a chave de acesso, se você ativar.",
           "en": "Your number is the account. Two-step verification and passkeys protect it, if you turn them on."
         },
         "pix": {
           "level": "limited",
-          "pt": "O alerta em teste vale aqui também, só pra quem não está nos seus contatos.",
+          "pt": "O alerta em teste vale aqui também, só para quem não está nos seus contatos.",
           "en": "The alert in test covers this too, only for people not in your contacts."
         },
         "numero": {
           "level": "limited",
-          "pt": "Os nomes de usuário estão chegando aos poucos desde junho de 2026. Pra criar a conta, ainda precisa de número.",
+          "pt": "Os nomes de usuário estão chegando aos poucos desde junho de 2026. Para criar a conta, ainda precisa de número.",
           "en": "Usernames have been arriving slowly since June 2026. You still need a number to create an account."
         },
         "dados": {
@@ -289,7 +289,7 @@
         },
         "numero": {
           "level": "on",
-          "pt": "Desde 2024 tem nome de usuário, e seu número fica escondido por padrão. Pra criar a conta, ainda precisa de número.",
+          "pt": "Desde 2024 tem nome de usuário, e seu número fica escondido por padrão. Para criar a conta, ainda precisa de número.",
           "en": "Usernames since 2024, and your number is hidden by default. You still need a number to create an account."
         },
         "dados": {
@@ -339,13 +339,13 @@
       "name": "Telegram",
       "pt": {
         "title": "Bipe e Telegram contra golpe",
-        "lede": "O Telegram tem boas ferramentas pra conferir quem te escreve. Mas a conversa comum fica guardada no servidor dele, sem proteção de ponta a ponta. Veja, golpe por golpe, o que cada um faz hoje.",
+        "lede": "O Telegram tem boas ferramentas para conferir quem te escreve. Mas a conversa comum fica guardada no servidor dele, sem proteção de ponta a ponta. Veja, golpe por golpe, o que cada um faz hoje.",
         "line": "Mostra uma ficha de quem te escreve. A conversa comum fica no servidor, sem ponta a ponta.",
         "on": "No Telegram",
         "ahead": [
           "Uma ficha de quem te escreve pela primeira vez: país do número, quando entrou, grupos em comum e quando trocou foto ou nome.",
-          "Chave de acesso pra entrar na conta, desde dezembro de 2025.",
-          "Selo pra contas oficiais e verificação feita por organizações, desde janeiro de 2025.",
+          "Chave de acesso para entrar na conta, desde dezembro de 2025.",
+          "Selo para contas oficiais e verificação feita por organizações, desde janeiro de 2025.",
           "Quando sua conta entra num aparelho novo, seus outros aparelhos perguntam se foi você."
         ]
       },
@@ -374,12 +374,12 @@
         },
         "codigo-sms": {
           "level": "setting",
-          "pt": "O código de entrada chega por SMS ou dentro do app. Dá pra proteger com senha em duas etapas e, desde dezembro de 2025, com chave de acesso.",
+          "pt": "O código de entrada chega por SMS ou dentro do app. Dá para proteger com senha em duas etapas e, desde dezembro de 2025, com chave de acesso.",
           "en": "The sign-in code arrives by SMS or inside the app. Two-step verification and, since December 2025, passkeys protect it."
         },
         "numero": {
           "level": "on",
-          "pt": "Seu número aparece só pra quem já salvou ele, e dá pra conversar pelo @. Dá até pra criar conta sem chip, com um número comprado no Fragment.",
+          "pt": "Seu número aparece só para quem já salvou ele, e dá para conversar pelo @. Dá até para criar conta sem chip, com um número comprado no Fragment.",
           "en": "Your number shows only to people who saved it, and you can chat by @. You can even sign up without a SIM, with a number bought on Fragment."
         },
         "dados": {
@@ -433,10 +433,10 @@
         "line": "Só no iPhone. Protegido de ponta a ponta, com filtro de desconhecidos que vem desligado.",
         "on": "No iMessage",
         "ahead": [
-          "Proteção pra celular roubado: algumas ações pedem Face ID sem senha de reserva, e trocar a senha da conta longe de casa espera uma hora.",
-          "Chave de segurança física pra entrar na conta.",
+          "Proteção para celular roubado: algumas ações pedem Face ID sem senha de reserva, e trocar a senha da conta longe de casa espera uma hora.",
+          "Chave de segurança física para entrar na conta.",
           "Criptografia pós-quântica desde 2024.",
-          "Spam vai pra uma pasta separada, com os links desligados, e o filtro roda no próprio iPhone."
+          "Spam vai para uma pasta separada, com os links desligados, e o filtro roda no próprio iPhone."
         ]
       },
       "en": {
@@ -454,7 +454,7 @@
       "cells": {
         "falso-parente": {
           "level": "setting",
-          "pt": "Desde o iOS 26, dá pra separar mensagem de desconhecido numa pasta própria. O filtro vem desligado. No Brasil, dá pra silenciar a notificação de desconhecidos.",
+          "pt": "Desde o iOS 26, dá para separar mensagem de desconhecido numa pasta própria. O filtro vem desligado. No Brasil, dá para silenciar a notificação de desconhecidos.",
           "en": "Since iOS 26, messages from unknown senders can go to their own folder. The filter starts off. In Brazil, you can silence notifications from unknown senders."
         },
         "contato-invadido": {
@@ -464,17 +464,17 @@
         },
         "codigo-sms": {
           "level": "limited",
-          "pt": "A conta Apple usa dois fatores, com código num aparelho de confiança ou por SMS. Dá pra exigir uma chave de segurança física.",
+          "pt": "A conta Apple usa dois fatores, com código num aparelho de confiança ou por SMS. Dá para exigir uma chave de segurança física.",
           "en": "The Apple Account uses two-factor authentication, with a code on a trusted device or by SMS. You can require a physical security key."
         },
         "pix": {
           "level": "limited",
-          "pt": "O iOS 26 manda spam pra uma pasta e desliga os links dessas mensagens. O filtro roda no iPhone.",
+          "pt": "O iOS 26 manda spam para uma pasta e desliga os links dessas mensagens. O filtro roda no iPhone.",
           "en": "iOS 26 moves spam to a folder and turns off links in those messages. The filter runs on the iPhone."
         },
         "numero": {
           "level": "setting",
-          "pt": "Dá pra escolher se o iMessage usa seu número ou seu e-mail.",
+          "pt": "Dá para escolher se o iMessage usa seu número ou seu e-mail.",
           "en": "You can choose whether iMessage uses your number or your email."
         },
         "dados": {
@@ -560,7 +560,7 @@
         },
         "contato-invadido": {
           "level": "setting",
-          "pt": "Dá pra conferir as chaves de criptografia de um contato com um QR code. A conferência pode cair quando o contato troca de celular ou de chip.",
+          "pt": "Dá para conferir as chaves de criptografia de um contato com um QR code. A conferência pode cair quando o contato troca de celular ou de chip.",
           "en": "You can check a contact's encryption keys with a QR code. The check can lapse when the contact gets a new phone or SIM."
         },
         "codigo-sms": {
@@ -570,7 +570,7 @@
         },
         "pix": {
           "level": "limited",
-          "pt": "A detecção de golpe cobre emprego, entrega, falso banco, prêmio e investimento, pra quem não está nos seus contatos. Links suspeitos são bloqueados.",
+          "pt": "A detecção de golpe cobre emprego, entrega, falso banco, prêmio e investimento, para quem não está nos seus contatos. Links suspeitos são bloqueados.",
           "en": "Scam detection covers job, delivery, fake bank, prize and investment scams, for people not in your contacts. Suspicious links are blocked."
         },
         "numero": {

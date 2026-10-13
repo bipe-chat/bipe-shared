@@ -45,7 +45,7 @@
     },
     {
       "id": "cloned", "source": "vitimizacao2025",
-      "pt": { "value": "8,7%", "label": "tiveram o número usado por outra pessoa pra aplicar golpe (cerca de 14,7 milhões de pessoas)", "period": "jul. 2024 a jun. 2025" },
+      "pt": { "value": "8,7%", "label": "tiveram o número usado por outra pessoa para aplicar golpe (cerca de 14,7 milhões de pessoas)", "period": "jul. 2024 a jun. 2025" },
       "en": { "value": "8.7%", "label": "had their number used by someone else to scam people (about 14.7 million people)", "period": "Jul 2024 to Jun 2025" }
     },
     {
@@ -85,7 +85,7 @@
     }
 ,
     { "id": "whatsappBanks", "source": "febraban2025", "pt": {"value": "73 mil", "label": "relatos de \"golpe do WhatsApp\" aos bancos", "period": "1º semestre de 2025"}, "en": {"value": "73,000", "label": "reports of the \"WhatsApp scam\" to banks", "period": "first half of 2025"}},
-    { "id": "clonedLoss", "source": "vitimizacao2025", "pt": {"value": "R$ 815", "label": "foi a perda média de quem teve o número usado por outra pessoa pra aplicar golpe", "period": "jul. 2024 a jun. 2025"}, "en": {"value": "R$ 815", "label": "was the mean loss of people whose number someone else used to scam people", "period": "Jul 2024 to Jun 2025"}},
+    { "id": "clonedLoss", "source": "vitimizacao2025", "pt": {"value": "R$ 815", "label": "foi a perda média de quem teve o número usado por outra pessoa para aplicar golpe", "period": "jul. 2024 a jun. 2025"}, "en": {"value": "R$ 815", "label": "was the mean loss of people whose number someone else used to scam people", "period": "Jul 2024 to Jun 2025"}},
     { "id": "profileTaken", "source": "vitimizacao2025", "pt": {"value": "7,0%", "label": "tiveram um perfil de rede social ou de app de mensagem tomado por outra pessoa", "period": "jul. 2024 a jun. 2025"}, "en": {"value": "7.0%", "label": "had a social media or messaging profile taken over by someone else", "period": "Jul 2024 to Jun 2025"}},
     { "id": "posedAs", "source": "vitimizacao2025", "pt": {"value": "11,4%", "label": "tiveram alguém se passando por eles na internet", "period": "jul. 2024 a jun. 2025"}, "en": {"value": "11.4%", "label": "had someone pose as them online", "period": "Jul 2024 to Jun 2025"}},
     { "id": "fakeCallAttempts", "source": "vitimizacao2025", "pt": {"value": "46,4 milhões", "label": "de pessoas, na estimativa da pesquisa, tiveram tentativa de golpe por app de mensagem ou por ligação de falsa central de banco", "period": "jul. 2024 a jun. 2025"}, "en": {"value": "46.4 million", "label": "people, as the survey estimates, had a scam attempt on a messaging app or by a fake bank call centre", "period": "Jul 2024 to Jun 2025"}},
@@ -158,7 +158,7 @@
     },
     {
       "id": "ages", "form": "bars", "sources": ["datasenado2024"],
-      "pt": { "title": "Golpe pega gente de toda idade", "note": "Idade de quem perdeu dinheiro com crime digital nos 12 meses antes de junho de 2024. Entre parênteses, quanto cada faixa é da população. As fatias ficam parecidas, então não dá pra dizer que uma idade cai mais que outra." },
+      "pt": { "title": "Golpe pega gente de toda idade", "note": "Idade de quem perdeu dinheiro com crime digital nos 12 meses antes de junho de 2024. Entre parênteses, quanto cada faixa é da população. As fatias ficam parecidas, então não dá para dizer que uma idade cai mais que outra." },
       "en": { "title": "Scams hit people of every age", "note": "Age of people who lost money to a digital crime in the 12 months before June 2024. In brackets, each group's share of the population. The shares are close, so no age group falls for scams more than another." },
       "rows": [
         { "id": "16-29", "value": 27, "pt": { "label": "16 a 29 anos (27% da população)", "value": "27%" }, "en": { "label": "16 to 29 (27% of the population)", "value": "27%" } },
@@ -196,17 +196,17 @@
         "how": [
           "O golpista pega nome e foto de alguém da sua família nas redes sociais ou em dados vazados.",
           "Manda mensagem de um número novo: \"Oi, mãe, troquei de número. Salva esse aqui.\"",
-          "Conversa um pouco pra ganhar confiança, às vezes com detalhes de verdade da família.",
-          "Aí pede um Pix pra pagar uma conta urgente, quase sempre pra conta de outra pessoa."
+          "Conversa um pouco para ganhar confiança, às vezes com detalhes de verdade da família.",
+          "Aí pede um Pix para pagar uma conta urgente, quase sempre para a conta de outra pessoa."
         ],
         "signs": [
           "A pessoa diz que trocou de número e logo pede dinheiro.",
-          "O Pix vai pra uma conta no nome de outra pessoa.",
+          "O Pix vai para uma conta no nome de outra pessoa.",
           "A pessoa não pode atender ligação nem mandar áudio.",
           "Tem pressa: a conta vence hoje, o app do banco travou, é só até amanhã."
         ],
         "todo": [
-          "Ligue pra pessoa no número antigo, aquele que você já tinha salvo, antes de pagar.",
+          "Ligue para a pessoa no número antigo, aquele que você já tinha salvo, antes de pagar.",
           "Faça uma pergunta que só a pessoa sabe responder.",
           "Já pagou? Fale com o seu banco na hora e peça o MED, o mecanismo de devolução do Pix. Depois faça o boletim de ocorrência.",
           "Avise a família e a pessoa que teve o nome e a foto usados."
@@ -260,12 +260,12 @@
         "body": "O golpista pega o código de acesso do seu app de mensagem, ou clona o número, e passa a falar com os seus contatos como se fosse você. Quem recebe confia, porque a mensagem vem de um contato salvo.",
         "title": "Número clonado e conta tomada: como funciona o golpe e o que fazer",
         "headline": "Número clonado: quando o golpista fala como se fosse você",
-        "lede": "O golpista pega o código de acesso do seu app de mensagem, ou clona o seu número, e passa a pedir dinheiro pros seus contatos. Quem recebe confia, porque a mensagem vem de um contato salvo.",
+        "lede": "O golpista pega o código de acesso do seu app de mensagem, ou clona o seu número, e passa a pedir dinheiro para os seus contatos. Quem recebe confia, porque a mensagem vem de um contato salvo.",
         "how": [
           "Alguém te procura dizendo ser de uma loja, de um site de vendas ou de uma pesquisa e pede o código que acabou de chegar por SMS.",
-          "Com esse código, o golpista entra na sua conta em outro celular. Em outra versão, ele passa o seu número pra um chip dele.",
-          "Você perde o acesso, e ele começa a escrever pros seus contatos e grupos como se fosse você.",
-          "Pede Pix com pressa, pra várias pessoas ao mesmo tempo."
+          "Com esse código, o golpista entra na sua conta em outro celular. Em outra versão, ele passa o seu número para um chip dele.",
+          "Você perde o acesso, e ele começa a escrever para os seus contatos e grupos como se fosse você.",
+          "Pede Pix com pressa, para várias pessoas ao mesmo tempo."
         ],
         "signs": [
           "Chegou um código por SMS que você não pediu.",
@@ -274,9 +274,9 @@
           "Amigos contam que você pediu dinheiro, e não foi você."
         ],
         "todo": [
-          "Não passe o código que chega por SMS pra ninguém, nem pra quem diz ser do app.",
+          "Não passe o código que chega por SMS para ninguém, nem para quem diz ser do app.",
           "Ligue a confirmação em duas etapas no seu app de mensagem.",
-          "Perdeu a conta? Avise seus contatos por outro caminho e peça pra ninguém mandar dinheiro.",
+          "Perdeu a conta? Avise seus contatos por outro caminho e peça para ninguém mandar dinheiro.",
           "Se o chip parou de funcionar do nada, fale com a operadora na hora. Depois faça o boletim de ocorrência."
         ]
       },
@@ -323,24 +323,24 @@
       ],
       "pt": {
         "heading": "Falsa central do banco",
-        "body": "Alguém liga ou manda mensagem dizendo que é do banco e que tem uma compra estranha na sua conta. Pra \"proteger\" o dinheiro, pede senha, código ou uma transferência. Banco nenhum pede isso.",
+        "body": "Alguém liga ou manda mensagem dizendo que é do banco e que tem uma compra estranha na sua conta. Para \"proteger\" o dinheiro, pede senha, código ou uma transferência. Banco nenhum pede isso.",
         "title": "Golpe da falsa central do banco: como funciona e o que fazer",
         "headline": "Golpe da falsa central: banco não liga pedindo senha",
-        "lede": "Alguém liga ou manda mensagem dizendo que é do banco e que tem uma compra estranha na sua conta. Pra \"proteger\" o dinheiro, pede senha, código ou uma transferência. Banco nenhum pede isso.",
+        "lede": "Alguém liga ou manda mensagem dizendo que é do banco e que tem uma compra estranha na sua conta. Para \"proteger\" o dinheiro, pede senha, código ou uma transferência. Banco nenhum pede isso.",
         "how": [
           "Você recebe uma ligação ou mensagem de alguém que diz ser da central do banco. O número pode até parecer o do banco.",
           "A pessoa sabe seu nome, seu CPF ou parte do cartão, e fala de uma compra que você não fez.",
-          "Pra cancelar a compra, pede senha, o código do SMS, que você instale um app ou que transfira o dinheiro pra uma \"conta segura\".",
+          "Para cancelar a compra, pede senha, o código do SMS, que você instale um app ou que transfira o dinheiro para uma \"conta segura\".",
           "Com isso, o golpista tira o dinheiro da sua conta."
         ],
         "signs": [
           "Pedem senha, código, transferência ou que você instale um app.",
           "Falam de \"conta segura\" ou de devolver o dinheiro por Pix.",
           "Tem pressa: se não fizer agora, o dinheiro some.",
-          "Pedem pra você não desligar e não contar pra ninguém."
+          "Pedem para você não desligar e não contar para ninguém."
         ],
         "todo": [
-          "Desligue e ligue você pro número que está atrás do cartão ou no app do banco.",
+          "Desligue e ligue você para o número que está atrás do cartão ou no app do banco.",
           "Não instale nenhum app que pedirem por ligação ou mensagem.",
           "Já passou dados ou dinheiro? Fale com o banco na hora, bloqueie o cartão e faça o boletim de ocorrência."
         ]
@@ -388,26 +388,26 @@
       ],
       "pt": {
         "heading": "Pix e boleto falso",
-        "body": "O boleto parece de verdade, mas o dinheiro vai pra conta do golpista. No Pix, a chave ou o QR code é trocado. Um print de comprovante também não prova que o dinheiro caiu.",
+        "body": "O boleto parece de verdade, mas o dinheiro vai para a conta do golpista. No Pix, a chave ou o QR code é trocado. Um print de comprovante também não prova que o dinheiro caiu.",
         "title": "Golpe do Pix e boleto falso: como funciona e o que fazer",
         "headline": "Golpe do Pix e do boleto falso",
-        "lede": "O boleto parece de verdade, mas o dinheiro vai pra conta do golpista. No Pix, a chave ou o QR code é trocado. E um print de comprovante não prova que o dinheiro caiu.",
+        "lede": "O boleto parece de verdade, mas o dinheiro vai para a conta do golpista. No Pix, a chave ou o QR code é trocado. E um print de comprovante não prova que o dinheiro caiu.",
         "how": [
           "O golpista manda um boleto falso por mensagem ou e-mail, ou troca a chave Pix ou o QR code de uma cobrança.",
-          "Em outra versão, diz que mandou um Pix por engano e pede pra você devolver.",
+          "Em outra versão, diz que mandou um Pix por engano e pede para você devolver.",
           "Também pode mandar um print de comprovante de um pagamento que nunca aconteceu.",
           "O Pix cai na hora, então o dinheiro some rápido da conta do golpista."
         ],
         "signs": [
           "O nome que aparece na hora de pagar não é o de quem cobrou.",
           "Chega por mensagem um boleto que você não esperava.",
-          "Alguém pede pra devolver um Pix \"enviado por engano\".",
+          "Alguém pede para devolver um Pix \"enviado por engano\".",
           "A única prova de que pagaram é um print."
         ],
         "todo": [
           "Antes de pagar, confira o nome e o banco que aparecem na tela.",
           "Confira no app do seu banco se o dinheiro caiu. Print não prova pagamento.",
-          "Recebeu um Pix por engano? Devolva só pelo botão de devolução no app do banco, nunca pra outra chave.",
+          "Recebeu um Pix por engano? Devolva só pelo botão de devolução no app do banco, nunca para outra chave.",
           "Caiu no golpe? Fale com o seu banco na hora e peça o MED, o mecanismo de devolução do Pix. Depois faça o boletim de ocorrência."
         ]
       },
@@ -463,13 +463,13 @@
         "how": [
           "O golpista cria uma loja, um perfil ou um anúncio com produtos baratos demais.",
           "Às vezes copia o nome e o visual de uma loja conhecida.",
-          "Pede pagamento por Pix ou boleto, fora do site de vendas, pra dar \"desconto\".",
+          "Pede pagamento por Pix ou boleto, fora do site de vendas, para dar \"desconto\".",
           "Depois do pagamento, some ou para de responder."
         ],
         "signs": [
           "O preço está muito abaixo do normal.",
-          "Só aceita Pix, e pra conta de pessoa física.",
-          "Pede pra fechar a compra fora do site ou do app de vendas.",
+          "Só aceita Pix, e para conta de pessoa física.",
+          "Pede para fechar a compra fora do site ou do app de vendas.",
           "O perfil é novo, tem poucos seguidores ou os comentários estão desligados."
         ],
         "todo": [
@@ -525,19 +525,19 @@
         "lede": "Com seus dados ou os da sua família em mãos, o criminoso liga ou escreve fazendo ameaça e pede dinheiro. Ter os seus dados não prova que a ameaça é real.",
         "how": [
           "O criminoso junta seus dados: nome, endereço, CPF, nomes de parentes. Muitos vêm de vazamentos.",
-          "Liga ou manda mensagem citando esses dados, pra parecer que sabe tudo de você.",
+          "Liga ou manda mensagem citando esses dados, para parecer que sabe tudo de você.",
           "Faz uma ameaça contra você ou alguém da família, ou diz que um parente foi sequestrado.",
           "Pede dinheiro na hora, por Pix."
         ],
         "signs": [
           "Uma ligação de número desconhecido cita seus dados.",
           "A ameaça vem com prazo curto.",
-          "Pedem pra você não desligar e não falar com ninguém.",
-          "Pedem Pix pra conta de outra pessoa."
+          "Pedem para você não desligar e não falar com ninguém.",
+          "Pedem Pix para a conta de outra pessoa."
         ],
         "todo": [
           "Desligue. Ter os seus dados não prova que a ameaça é real.",
-          "Ligue pro parente citado num número que você já tinha.",
+          "Ligue para o parente citado num número que você já tinha.",
           "Não pague. Faça o boletim de ocorrência e, se tiver risco, ligue 190."
         ]
       },
@@ -571,14 +571,14 @@
     { "feature": "scam-alerts", "pt": "Aparece um aviso embaixo da mensagem com cara de golpe, como Pix com pressa, troca de número ou boleto. Vem ligado, sem precisar mexer em nada.", "en": "A warning shows under a message that looks like a scam, such as a rushed Pix, a new number or a boleto. It is on by default, with nothing to set up." },
     { "feature": "requests", "pt": "Quem não está nos seus contatos chega como pedido. Uma mensagem de número novo não cai direto na sua lista de conversas.", "en": "People who are not in your contacts arrive as a request. A message from a new number does not land straight in your chat list." },
     { "feature": "no-sms", "pt": "Você entra com e-mail e senha. Quem pega seu chip não pega sua conta.", "en": "You sign in with e-mail and a password. Whoever takes your SIM card does not get your account." },
-    { "feature": "money-pause", "pt": "Num pedido de dinheiro suspeito, copiar e pagar ficam travados por 5 segundos, pra quebrar a pressa do golpe.", "en": "On a suspicious money request, copy and pay stay locked for 5 seconds, to break the scam's rush." },
-    { "feature": "verified-badge", "pt": "Um selo com o nome verificado pelo Pix ou pelo gov.br. Aí dá pra saber quem está do outro lado.", "en": "A seal with a name verified through Pix or gov.br, so you know who is on the other side." },
+    { "feature": "money-pause", "pt": "Num pedido de dinheiro suspeito, copiar e pagar ficam travados por 5 segundos, para quebrar a pressa do golpe.", "en": "On a suspicious money request, copy and pay stay locked for 5 seconds, to break the scam's rush." },
+    { "feature": "verified-badge", "pt": "Um selo com o nome verificado pelo Pix ou pelo gov.br. Aí dá para saber quem está do outro lado.", "en": "A seal with a name verified through Pix or gov.br, so you know who is on the other side." },
     { "feature": "family-check", "pt": "Se o contato salvo como Mãe tem outro nome verificado, o app pergunta se é a mesma pessoa.", "en": "If the contact saved as Mum has a different verified name, the app asks if it is the same person." }
   ],
   "pt": {
     "title": "Golpes no Brasil em números",
     "headline": "Golpe no Brasil: mais de 2 milhões de registros num ano",
-    "lede": "Em 2025, a polícia registrou 2,26 milhões de golpes, cinco vezes mais que em 2018. E isso é só quem foi à polícia. Os canais mais citados pra tentativa de golpe são o app de mensagem e a ligação. Aqui estão os números, com a fonte de cada um.",
+    "lede": "Em 2025, a polícia registrou 2,26 milhões de golpes, cinco vezes mais que em 2018. E isso é só quem foi à polícia. Os canais mais citados para tentativa de golpe são o app de mensagem e a ligação. Aqui estão os números, com a fonte de cada um.",
     "numbersTitle": "Os números principais",
     "channelsTitle": "Quanto golpe passa pelo app de mensagem",
     "channelsBody": "O golpe chega por vários caminhos ao mesmo tempo, mas o app de mensagem aparece na frente. Numa pesquisa oficial, 84% de quem teve tentativa de golpe com os próprios dados foi procurado por app de mensagem, e 79% por ligação. Numa pesquisa internacional com brasileiros, o WhatsApp é a plataforma mais citada, bem à frente das outras. Nenhuma das pesquisas mede em que canal cada golpe começou, só por onde as pessoas foram procuradas.",
@@ -595,16 +595,16 @@
     "protectTitle": "O que protege você",
     "protectLede": "Golpista sempre tem pressa. O que mais protege é parar e conferir por outro caminho.",
     "advice": [
-      "Alguém pediu dinheiro por mensagem? Ligue pra pessoa num número que você já tinha antes de pagar.",
-      "Banco não liga pedindo senha, código ou transferência. Desligue e ligue você pro número que está atrás do cartão.",
-      "O código que chega por SMS é só seu. Não passe pra ninguém, nem pra quem diz ser do app.",
+      "Alguém pediu dinheiro por mensagem? Ligue para a pessoa num número que você já tinha antes de pagar.",
+      "Banco não liga pedindo senha, código ou transferência. Desligue e ligue você para o número que está atrás do cartão.",
+      "O código que chega por SMS é só seu. Não passe para ninguém, nem para quem diz ser do app.",
       "Print de comprovante não prova pagamento. Confira no app do seu banco se o dinheiro caiu.",
       "Preço bom demais numa loja que você não conhece costuma ser golpe.",
       "Caiu num golpe com Pix? Fale com o seu banco na hora e peça o MED, o mecanismo de devolução do Pix. Depois faça o boletim de ocorrência."
     ],
     "bipeTitle": "Como o Bipe ajuda",
-    "bipeLede": "O Bipe foi feito pra você saber quem está do outro lado. Nem tudo está pronto: cada item mostra em que pé está no iPhone e no Android.",
-    "limit": "O Bipe só protege as conversas que acontecem no Bipe. Se alguém da família ainda usa outro app, o golpista pode escrever pra essa pessoa lá.",
+    "bipeLede": "O Bipe foi feito para você saber quem está do outro lado. Nem tudo está pronto: cada item mostra em que pé está no iPhone e no Android.",
+    "limit": "O Bipe só protege as conversas que acontecem no Bipe. Se alguém da família ainda usa outro app, o golpista pode escrever para essa pessoa lá.",
     "sourcesTitle": "De onde vêm esses números",
     "sourcesNote": "Pesquisa feita em 12 de outubro de 2026. A gente só usa número que tem fonte. Pesquisa de empresa ou de associação privada aparece marcada como tal.",
     "source": "Fonte",

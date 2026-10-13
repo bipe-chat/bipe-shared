@@ -116,10 +116,10 @@
       "pt": {
         "name": "Segurança",
         "title": "Um aviso quando alguém tenta te dar um golpe.",
-        "summary": "Quando uma mensagem tem cara de golpe, aparece um aviso embaixo dela dizendo o que fazer. Quem não está nos seus contatos chega como pedido. Em breve, um selo mostra quem é quem, e nome de banco fica só pro banco.",
+        "summary": "Quando uma mensagem tem cara de golpe, aparece um aviso embaixo dela dizendo o que fazer. Quem não está nos seus contatos chega como pedido. Em breve, um selo mostra quem é quem, e nome de banco fica só para o banco.",
         "points": [
           "A checagem roda no seu celular, e a mensagem não sai dali.",
-          "O aviso diz o que fazer: ligar pra pessoa, conferir no app do banco.",
+          "O aviso diz o que fazer: ligar para a pessoa, conferir no app do banco.",
           "Em breve: selo com o nome verificado, gratuito e opcional. Trocar um O por 0 não engana a checagem de nome."
         ],
         "demos": [
@@ -189,11 +189,11 @@
       "pt": {
         "name": "Seu @",
         "title": "Seu @, não seu número.",
-        "summary": "Escolha um nome de usuário e passe só ele. Quem tem o link bipe.chat/@você abre a conversa direto, sem ver o seu número.",
+        "summary": "Escolha um nome de usuário e passe só o @. Quem tem o link bipe.chat/@você abre a conversa direto, sem ver o seu número.",
         "points": [
-          "Link e QR code do seu perfil, prontos pra compartilhar.",
+          "Link e QR code do seu perfil, prontos para compartilhar.",
           "Nomes que só mudam um detalhe, como ana.souza e anasouza, contam como o mesmo nome. Ninguém pega um quase igual ao seu.",
-          "Quem troca de @ espera 30 dias pra trocar de novo. O @ antigo fica guardado por 90 dias."
+          "Quem troca de @ espera 30 dias para trocar de novo. O @ antigo fica guardado por 90 dias."
         ],
         "demos": [
           {
@@ -245,9 +245,9 @@
       "pt": {
         "name": "Sem anúncio",
         "title": "Sem anúncio. Seus dados não estão à venda.",
-        "summary": "O Bipe não vive de anúncio, então não tem motivo pra juntar dados sobre você. É gratuito e vai continuar assim. As conversas ficam em servidores no Brasil, protegidas de ponta a ponta.",
+        "summary": "O Bipe não vive de anúncio, então não tem motivo para juntar dados sobre você. É gratuito e vai continuar assim. As conversas ficam em servidores no Brasil, protegidas de ponta a ponta.",
         "points": [
-          "Você nunca paga pra usar o Bipe.",
+          "Você nunca paga para usar o Bipe.",
           "Nenhum anúncio, em nenhuma aba. Ninguém compra informação sobre você.",
           "Servidores no Brasil, de empresas brasileiras.",
           "Conversas protegidas de ponta a ponta desde a primeira mensagem."
@@ -293,9 +293,9 @@
         "bipe/docs/phone-link.md"
       ],
       "pt": {
-        "name": "Pra sua turma",
+        "name": "Para sua turma",
         "title": "O grupo só te chama quando é com você.",
-        "summary": "O celular toca quando alguém te marca, te responde ou abre uma enquete. O resto chega em silêncio. Quando você abre o grupo, o que era pra você aparece no topo.",
+        "summary": "O celular toca quando alguém te marca, te responde ou abre uma enquete. O resto chega em silêncio. Quando você abre o grupo, o que era para você aparece no topo.",
         "points": [
           "Abriu o grupo depois de um tempo? Quem te marcou e as enquetes que você ainda não votou aparecem primeiro.",
           "Enquetes, mensagens fixadas e respostas em tópico já funcionam no app de testes.",
@@ -303,7 +303,7 @@
         ],
         "demos": [
           {
-            "title": "Pra sua turma",
+            "title": "Para sua turma",
             "caption": "Em breve no app. Ilustração com dados de exemplo."
           }
         ]
@@ -379,8 +379,8 @@
         "name": "Aviso de golpe",
         "body": "Aparece um aviso embaixo da mensagem com cara de golpe: Pix com pressa, troca de número, boleto, comprovante.",
         "points": [
-          "A checagem roda no seu celular. A mensagem não sai dali pra ser conferida.",
-          "O aviso diz o que fazer: ligar pra pessoa no número que você já tem, conferir no app do banco se o dinheiro caiu.",
+          "A checagem roda no seu celular. A mensagem não sai dali para ser conferida.",
+          "O aviso diz o que fazer: ligar para a pessoa no número que você já tem, conferir no app do banco se o dinheiro caiu.",
           "Pega os golpes mais comuns no Brasil: Pix com pressa, chave Pix colada na conversa, boleto, print de comprovante, número novo e link falso de banco, de loja ou do governo."
         ]
       },
@@ -478,9 +478,9 @@
       ],
       "pt": {
         "name": "Sem código por SMS",
-        "body": "Quem pega seu chip não pega sua conta. No Bipe não tem código por SMS pra pedir.",
+        "body": "Quem pega seu chip não pega sua conta. No Bipe não tem código por SMS para pedir.",
         "points": [
-          "Golpista rouba conta de WhatsApp pedindo o código do SMS ou clonando o chip. No Bipe não tem código por SMS pra pedir.",
+          "Golpista rouba conta de WhatsApp pedindo o código do SMS ou clonando o chip. No Bipe não tem código por SMS para pedir.",
           "Seu número não é sua conta.",
           "Trocar de chip não muda nada na sua conta."
         ]
@@ -514,8 +514,8 @@
         "name": "Sua conta fica no celular",
         "body": "Sem e-mail obrigatório e sem senha difícil de lembrar. Você escolhe uma senha de 8 números, como a do banco.",
         "points": [
-          "Pra criar a conta, basta seu nome. O @ e o e-mail são opcionais.",
-          "A senha de 8 números trava o app e protege a volta pra sua conta. Sequência fácil, como 12345678, não passa.",
+          "Para criar a conta, basta seu nome. O @ e o e-mail são opcionais.",
+          "A senha de 8 números trava o app e protege a volta para sua conta. Sequência fácil, como 12345678, não passa.",
           "Só a senha não abre sua conta. Também precisa do seu celular, do seu e-mail ou dos seus guardiões.",
           "Errou a senha 5 vezes, ela trava até você trocar."
         ]
@@ -548,13 +548,13 @@
       ],
       "pt": {
         "name": "Celular novo, mesma conta",
-        "body": "Trocou de celular ou perdeu o seu? Tem mais de um jeito de voltar pra sua conta, e nenhum passa por código SMS.",
+        "body": "Trocou de celular ou perdeu o seu? Tem mais de um jeito de voltar para sua conta, e nenhum passa por código SMS.",
         "points": [
-          "Com o celular antigo na mão, aponte a câmera do novo pro QR code que aparece no antigo.",
+          "Com o celular antigo na mão, aponte a câmera do novo para o QR code que aparece no antigo.",
           "Perdeu o antigo? Se a conta estava no iCloud ou no Google, ela volta no celular novo com sua senha de 8 números.",
-          "Sem isso, dá pra voltar pelo e-mail ou com a ajuda dos seus guardiões. Aí tem uma espera de 24 horas.",
+          "Sem isso, dá para voltar pelo e-mail ou com a ajuda dos seus guardiões. Aí tem uma espera de 24 horas.",
           "Durante a espera, seus outros aparelhos recebem um aviso e podem cancelar.",
-          "O Bipe nunca pede pra você ler um QR code que outra pessoa mandou."
+          "O Bipe nunca pede para você ler um QR code que outra pessoa mandou."
         ]
       },
       "en": {
@@ -589,7 +589,7 @@
         "name": "Selo verificado",
         "body": "Verificação gratuita pelo Pix ou pelo gov.br. O selo vem com o nome verificado.",
         "points": [
-          "Você paga um Pix de R$0,01 da sua própria conta. O banco já conferiu seu nome, então o selo vem com o nome que o banco tem.",
+          "Você paga um Pix de R$ 0,01 da sua própria conta. O banco já conferiu seu nome, então o selo vem com o nome que o banco tem.",
           "Outro caminho em estudo: assinar com a sua conta gov.br.",
           "O Bipe guarda só o resultado. O CPF não fica salvo, e um CPF verifica uma conta só.",
           "É opcional. Conta sem selo funciona normal."
@@ -599,7 +599,7 @@
         "name": "Verified seal",
         "body": "Free verification through Pix or gov.br. The seal comes with the verified name.",
         "points": [
-          "You pay a R$0.01 Pix from your own account. Your bank already checked your name, so the seal carries the name your bank has.",
+          "You pay a R$ 0.01 Pix from your own account. Your bank already checked your name, so the seal carries the name your bank has.",
           "Another route under study: sign with your gov.br account.",
           "Bipe keeps only the result. Your CPF is not stored, and one CPF verifies one account only.",
           "It is optional. An account without a seal works as normal."
@@ -627,7 +627,7 @@
         "points": [
           "O CNPJ precisa estar ativo na Receita Federal.",
           "A prova é uma assinatura com o certificado e-CNPJ da instituição.",
-          "Com o selo, um nome reservado pode ficar só pra ela."
+          "Com o selo, um nome reservado pode ficar só para ela."
         ]
       },
       "en": {
@@ -658,7 +658,7 @@
       ],
       "pt": {
         "name": "Nomes reservados",
-        "body": "Nome de banco, de órgão público e do Bipe fica só pra conta verificada da instituição.",
+        "body": "Nome de banco, de órgão público e do Bipe fica só para a conta verificada da instituição.",
         "points": [
           "A lista tem bancos, órgãos públicos e o próprio Bipe.",
           "A checagem compara a forma simplificada do nome, sem acento e sem letra disfarçada.",
@@ -696,7 +696,7 @@
         "points": [
           "O app simplifica o nome antes de comparar: tira acento, troca número por letra e troca letra de outro alfabeto pela nossa.",
           "Assim, @itau, @ltau e @1tau contam como o mesmo nome.",
-          "Vale pro nome de usuário e pro nome que aparece na conversa."
+          "Vale para o nome de usuário e para o nome que aparece na conversa."
         ]
       },
       "en": {
@@ -765,7 +765,7 @@
         "points": [
           "Tem de 3 a 30 caracteres: letras, números, ponto e sublinhado.",
           "Não tem lista nem busca. Só te acha quem sabe o seu @ exato ou tem o seu link.",
-          "Dá pra trocar a cada 30 dias. O @ que você largou fica guardado por 90 dias, pra ninguém pegar e se passar por você."
+          "Dá para trocar a cada 30 dias. O @ que você largou fica guardado por 90 dias, para ninguém pegar e se passar por você."
         ]
       },
       "en": {
@@ -862,11 +862,11 @@
       ],
       "pt": {
         "name": "Convites",
-        "body": "Mande um link de convite e traga alguém pro Bipe.",
+        "body": "Mande um link de convite e traga alguém para o Bipe.",
         "points": [
-          "Cada convite vale pra uma pessoa só.",
+          "Cada convite vale para uma pessoa só.",
           "Quem entra pelo seu convite chega direto na sua conversa, sem passar por pedido.",
-          "Hoje o Bipe abre por convite, pra crescer no ritmo que dá pra cuidar bem de cada conta."
+          "Hoje o Bipe abre por convite, para crescer no ritmo que dá para cuidar bem de cada conta."
         ]
       },
       "en": {
@@ -898,8 +898,8 @@
         "body": "Quem você já conhece aparece no Bipe desde o primeiro dia, se essa pessoa quiser.",
         "points": [
           "Você escolhe se quer ser encontrado pelo número.",
-          "Quem já tem seu número na agenda só fica sabendo que você está no Bipe. Seu número não aparece pra mais ninguém.",
-          "O servidor não guarda o número como texto, só uma versão embaralhada que serve pra comparar."
+          "Quem já tem seu número na agenda só fica sabendo que você está no Bipe. Seu número não aparece para mais ninguém.",
+          "O servidor não guarda o número como texto, só uma versão embaralhada que serve para comparar."
         ]
       },
       "en": {
@@ -931,7 +931,7 @@
         "body": "Toda conversa nova é protegida de ponta a ponta.",
         "points": [
           "Só quem está na conversa lê as mensagens. O Bipe não lê.",
-          "Vale pra conversa a dois e pra grupo.",
+          "Vale para conversa a dois e para grupo.",
           "Usa a criptografia do Matrix, um padrão aberto que qualquer pessoa pode conferir."
         ]
       },
@@ -964,7 +964,7 @@
         "body": "Nenhum anúncio em nenhuma tela. Seus dados não estão à venda.",
         "points": [
           "Não tem anúncio na conversa, nos grupos nem em aba nenhuma.",
-          "O Bipe não monta perfil seu pra vender anúncio.",
+          "O Bipe não monta perfil seu para vender anúncio.",
           "Ninguém compra acesso a você aqui."
         ]
       },
@@ -994,10 +994,10 @@
       ],
       "pt": {
         "name": "Gratuito",
-        "body": "Você nunca paga pra usar o Bipe.",
+        "body": "Você nunca paga para usar o Bipe.",
         "points": [
-          "Não tem plano pago nem recurso só pra quem paga.",
-          "O selo verificado também é gratuito. Só tem o Pix de R$0,01 que prova que a conta é sua.",
+          "Não tem plano pago nem recurso só para quem paga.",
+          "O selo verificado também é gratuito. Só tem o Pix de R$ 0,01 que prova que a conta é sua.",
           "Também não tem anúncio: o Bipe não ganha dinheiro com seus dados."
         ]
       },
@@ -1006,7 +1006,7 @@
         "body": "You never pay to use Bipe.",
         "points": [
           "No paid plan and no feature only for paying users.",
-          "The verified seal is free too. The only cost is the R$0.01 Pix that proves the account is yours.",
+          "The verified seal is free too. The only cost is the R$ 0.01 Pix that proves the account is yours.",
           "No ads either: Bipe makes no money from your data."
         ]
       }
@@ -1060,11 +1060,11 @@
       ],
       "pt": {
         "name": "Código aberto",
-        "body": "O código vai ser público em breve, pra qualquer pessoa conferir.",
+        "body": "O código vai ser público em breve, para qualquer pessoa conferir.",
         "points": [
           "O código dos apps, do servidor e das regras de golpe vai ser público.",
           "Qualquer pessoa pode conferir que o app faz o que diz.",
-          "A licença é livre: dá pra estudar, mudar e rodar o seu."
+          "A licença é livre: dá para estudar, mudar e rodar o seu."
         ]
       },
       "en": {
@@ -1098,7 +1098,7 @@
         "points": [
           "Só conta verificada manda pedido de Pix.",
           "O cartão traz o nome verificado de quem pede e o valor.",
-          "Você toca no cartão, o código vai pro app do seu banco, e o banco mostra o nome de quem recebe. Se não for o mesmo nome, não pague."
+          "Você toca no cartão, o código vai para o app do seu banco, e o banco mostra o nome de quem recebe. Se não for o mesmo nome, não pague."
         ]
       },
       "en": {
@@ -1128,7 +1128,7 @@
       ],
       "pt": {
         "name": "Cobrança com CNPJ",
-        "body": "Uma instituição verificada cobra pelo Pix dentro da conversa. O cartão mostra o CNPJ que recebe e muda pra pago quando o banco confirma.",
+        "body": "Uma instituição verificada cobra pelo Pix dentro da conversa. O cartão mostra o CNPJ que recebe e muda para pago quando o banco confirma.",
         "points": [
           "Só conta com selo de CNPJ cria cobrança.",
           "O cartão não tem link. Você paga só pelo Pix, no app do seu banco.",
@@ -1229,7 +1229,7 @@
       ],
       "pt": {
         "name": "Enquetes",
-        "body": "Pergunte pro grupo e cada um vota com um toque. Bom pra marcar o dia do encontro ou decidir quem leva o quê.",
+        "body": "Pergunte para o grupo e cada um vota com um toque. Bom para marcar o dia do encontro ou decidir quem leva o quê.",
         "points": [
           "Todo mundo do grupo vê o resultado.",
           "Quem criou a enquete encerra quando quiser.",
@@ -1266,7 +1266,7 @@
         "name": "Comunidades",
         "body": "Vários grupos debaixo de um nome só, com uma sala de avisos onde só quem cuida posta. Cada pessoa entra só nos grupos que quer.",
         "points": [
-          "Bom pra quem tem muita gente e muitos assuntos: escola, time, associação, igreja.",
+          "Bom para quem tem muita gente e muitos assuntos: escola, time, associação, igreja.",
           "Os avisos ficam fora da conversa, então ninguém perde o recado no meio das mensagens.",
           "Um grupo que já existe pode entrar na comunidade depois."
         ]
@@ -1298,10 +1298,10 @@
       ],
       "pt": {
         "name": "Grupo só com verificados",
-        "body": "O grupo pode aceitar só quem tem selo verificado. Quem pede pra entrar sem selo recebe um aviso e não entra.",
+        "body": "O grupo pode aceitar só quem tem selo verificado. Quem pede para entrar sem selo recebe um aviso e não entra.",
         "points": [
           "Quem quer entrar pede, e quem cuida do grupo aprova.",
-          "O pedido chega pra quem cuida já marcado como verificado.",
+          "O pedido chega para quem cuida já marcado como verificado.",
           "O Bipe confere o selo sem ler nada do grupo."
         ]
       },
@@ -1397,7 +1397,7 @@
     "pt": {
       "nav": "Pessoas e grupos",
       "title": "Para quem é o Bipe",
-      "lede": "O Bipe é um app de mensagens pra todo mundo. Estas páginas mostram como ele serve grupos diferentes, com o que já funciona e o que ainda vem."
+      "lede": "O Bipe é um app de mensagens para todo mundo. Estas páginas mostram como ele serve grupos diferentes, com o que já funciona e o que ainda vem."
     },
     "en": {
       "nav": "People and groups",
@@ -1457,7 +1457,7 @@
         "name": "Devs e criativos",
         "title": "Bipe para devs e criativos",
         "headline": "Seu @ no lugar do número. Grupo que só toca quando é com você.",
-        "lede": "Pra quem escolhe app pelo jeito que ele funciona: protegido de ponta a ponta, sem anúncio, sem código por SMS e com servidores no Brasil. O Bipe está em teste no iPhone, e cada retorno muda o app.",
+        "lede": "Para quem escolhe app pelo jeito que ele funciona: protegido de ponta a ponta, sem anúncio, sem código por SMS e com servidores no Brasil. O Bipe está em teste no iPhone, e cada retorno muda o app.",
         "sections": [
           {
             "heading": "Passe o @, não o número",
@@ -1465,10 +1465,10 @@
           },
           {
             "heading": "Grupo de trabalho que não te interrompe",
-            "body": "Grupo novo só toca quando alguém te marca, responde você ou abre uma enquete. Quando você volta, o que era pra você aparece primeiro. E quem não está nos seus contatos chega como pedido."
+            "body": "Grupo novo só toca quando alguém te marca, responde você ou abre uma enquete. Quando você volta, o que era para você aparece primeiro. E quem não está nos seus contatos chega como pedido."
           },
           {
-            "heading": "Dá pra conferir",
+            "heading": "Dá para conferir",
             "body": "A criptografia é a do Matrix, um padrão aberto. O código do app, do servidor e das regras de golpe vai ser público, com licença livre. Os servidores ficam no Brasil, numa nuvem de empresa brasileira."
           },
           {
@@ -1477,7 +1477,7 @@
           },
           {
             "heading": "Teste e ajude a construir",
-            "body": "Hoje o Bipe abre por convite, no iPhone. Traga seu grupo, conte o que quebrou e o que faltou. Quando o código abrir, dá pra mandar código também."
+            "body": "Hoje o Bipe abre por convite, no iPhone. Traga seu grupo, conte o que quebrou e o que faltou. Quando o código abrir, dá para mandar código também."
           }
         ],
         "note": "No iPhone, o Bipe está em teste pelo TestFlight. No Android, ainda não tem. Cada recurso mostra em que pé está.",
@@ -1587,10 +1587,10 @@
           },
           {
             "heading": "Conta que não pede senha difícil",
-            "body": "Pai e mãe não precisam de e-mail nem de senha complicada. A conta fica no celular, com uma senha de 8 números, como a do banco. Se o celular quebrar ou sumir, tem mais de um jeito de voltar pra conta, e alguém da família pode ajudar."
+            "body": "Pai e mãe não precisam de e-mail nem de senha complicada. A conta fica no celular, com uma senha de 8 números, como a do banco. Se o celular quebrar ou sumir, tem mais de um jeito de voltar para a conta, e alguém da família pode ajudar."
           },
           {
-            "heading": "Pagar pro nome certo",
+            "heading": "Pagar para o nome certo",
             "body": "O pedido de Pix mostra o nome que o banco vai mostrar. Se aparecer outro nome, não pague."
           },
           {
@@ -1690,7 +1690,7 @@
           },
           {
             "heading": "De qualquer lugar, com a mesma conta",
-            "body": "A conta fica no seu celular, não no seu número. Trocou de aparelho, de chip ou de país, você volta pra conta sem código por SMS. Toda conversa é protegida de ponta a ponta, e os servidores ficam no Brasil."
+            "body": "A conta fica no seu celular, não no seu número. Trocou de aparelho, de chip ou de país, você volta para a conta sem código por SMS. Toda conversa é protegida de ponta a ponta, e os servidores ficam no Brasil."
           }
         ],
         "note": "No iPhone, o Bipe está em teste pelo TestFlight. No Android, ainda não tem. O selo verificado ainda vem.",
@@ -1767,11 +1767,11 @@
         "name": "Grupos e comunidades",
         "title": "Bipe para grupos e comunidades",
         "headline": "Grupo grande sem bagunça, e ninguém se passa por quem organiza.",
-        "lede": "Igreja, associação, time, torcida, coletivo, turma: grupo com gente que organiza e muita gente participando. No Bipe, cada grupo só te chama quando é com você, os avisos ficam num lugar só, e ninguém se passa pela organização pra pedir Pix.",
+        "lede": "Igreja, associação, time, torcida, coletivo, turma: grupo com gente que organiza e muita gente participando. No Bipe, cada grupo só te chama quando é com você, os avisos ficam num lugar só, e ninguém se passa pela organização para pedir Pix.",
         "sections": [
           {
             "heading": "Ninguém se passa por quem organiza",
-            "body": "Golpista copia nome e foto de quem organiza, seja pastor, padre, técnico ou presidente da associação, pra pedir Pix. No Bipe, o selo mostra o nome verificado de cada pessoa, e a organização com CNPJ verificado ganha um selo com o nome que está na Receita."
+            "body": "Golpista copia nome e foto de quem organiza, seja pastor, padre, técnico ou presidente da associação, para pedir Pix. No Bipe, o selo mostra o nome verificado de cada pessoa, e a organização com CNPJ verificado ganha um selo com o nome que está na Receita."
           },
           {
             "heading": "Cada grupo no seu lugar, os avisos num lugar só",
@@ -1779,10 +1779,10 @@
           },
           {
             "heading": "Quem entra no grupo",
-            "body": "Dá pra deixar um grupo só pra quem tem selo verificado. Quem não está nos seus contatos chega como pedido, e ninguém precisa mostrar o número pro grupo todo."
+            "body": "Dá para deixar um grupo só para quem tem selo verificado. Quem não está nos seus contatos chega como pedido, e ninguém precisa mostrar o número para o grupo todo."
           },
           {
-            "heading": "Mensalidade, dízimo e vaquinha pro nome certo",
+            "heading": "Mensalidade, dízimo e vaquinha para o nome certo",
             "body": "A cobrança por Pix mostra o CNPJ da organização no cartão, e o banco mostra o nome de quem recebe antes de você pagar. O Bipe não cobra taxa sobre a cobrança."
           }
         ],
@@ -1860,7 +1860,7 @@
         "name": "Profissionais",
         "title": "Bipe para profissionais",
         "headline": "O cliente fala com você pelo @, não pelo seu número pessoal.",
-        "lede": "Médica, advogado, professora, terapeuta, corretor: muita gente passa o número pessoal pra cliente. No Bipe, você passa um link, quem não está nos seus contatos chega como pedido, e o seu número fica com você.",
+        "lede": "Médica, advogado, professora, terapeuta, corretor: muita gente passa o número pessoal para cliente. No Bipe, você passa um link, quem não está nos seus contatos chega como pedido, e o seu número fica com você.",
         "sections": [
           {
             "heading": "Um link no lugar do número",
@@ -1872,14 +1872,14 @@
           },
           {
             "heading": "Seu nome não vira golpe",
-            "body": "Golpista usa nome de profissional pra pedir Pix a cliente. O selo mostra o seu nome verificado, e trocar uma letra não engana a checagem."
+            "body": "Golpista usa nome de profissional para pedir Pix a cliente. O selo mostra o seu nome verificado, e trocar uma letra não engana a checagem."
           },
           {
             "heading": "Sem chip e sem anúncio",
             "body": "Você não entra por código de SMS, então quem clona o seu chip não leva a conta. E não tem anúncio em tela nenhuma."
           }
         ],
-        "note": "O Bipe é um app de mensagens pra pessoas. Empresas que falam com muitos clientes têm uma página própria. No iPhone, o Bipe está em teste. No Android, ainda não tem.",
+        "note": "O Bipe é um app de mensagens para pessoas. Empresas que falam com muitos clientes têm uma página própria. No iPhone, o Bipe está em teste. No Android, ainda não tem.",
         "cta": "Atende cliente pelo celular? Fale com a gente.",
         "ctaSubject": "Bipe para profissionais"
       },
@@ -1915,10 +1915,10 @@
   "about": {
     "pt": {
       "title": "Por que o Bipe existe",
-      "lede": "Pro Brasil ter uma saída: um app de mensagens aberto, com os dados no Brasil, que não é de uma empresa só.",
+      "lede": "Para o Brasil ter uma saída: um app de mensagens aberto, com os dados no Brasil, que não é de uma empresa só.",
       "sections": [
         {
-          "heading": "Não precisa ganhar pra valer a pena",
+          "heading": "Não precisa ganhar para valer a pena",
           "body": "O sucesso do Bipe não se mede por quanta gente sai do WhatsApp. O app precisa existir, ser confiável e estar pronto no dia em que as pessoas procurarem outra opção. É assim que se avalia o Signal e a Wikipédia."
         },
         {
@@ -1927,11 +1927,11 @@
         },
         {
           "heading": "Um experimento, por enquanto",
-          "body": "O Bipe é um experimento. Ele testa se dá pra ter um app de mensagens feito contra os golpes que acontecem aqui, com os dados no Brasil. Quem começou e cuida do Bipe é a Envisioning, um instituto de pesquisa que estuda desde 2010 como as instituições se adaptam à tecnologia. Hoje ela faz o app e roda os servidores no Brasil. Mas ela não quer ser dona do Bipe, nem tocar ele sozinha."
+          "body": "O Bipe é um experimento. Ele testa se dá para ter um app de mensagens feito contra os golpes que acontecem aqui, com os dados no Brasil. Quem começou e cuida do Bipe é a Envisioning, um instituto de pesquisa que estuda desde 2010 como as instituições se adaptam à tecnologia. Hoje ela faz o app e roda os servidores no Brasil. Mas ela não quer ser dona do Bipe, nem tocar ele sozinha."
         },
         {
           "heading": "Um Pix das conversas",
-          "body": "A ideia é que o Bipe vire uma infraestrutura comum, como o Pix é pros pagamentos: todo banco usa, nenhum banco é dono. Várias organizações sustentariam o Bipe, e nenhuma seria dona dele. Por enquanto isso é uma ideia, não um acordo. O código vai ser público em breve e a rede é aberta, então, se a Envisioning parar, outras pessoas podem continuar. As regras de moderação saem no lançamento."
+          "body": "A ideia é que o Bipe vire uma infraestrutura comum, como o Pix é para os pagamentos: todo banco usa, nenhum banco é dono. Várias organizações sustentariam o Bipe, e nenhuma seria dona dele. Por enquanto isso é uma ideia, não um acordo. O código vai ser público em breve e a rede é aberta, então, se a Envisioning parar, outras pessoas podem continuar. As regras de moderação saem no lançamento."
         },
         {
           "heading": "Quem paga",
@@ -1996,13 +1996,13 @@
     "pt": {
       "nav": "Empresas",
       "title": "Fale com seus clientes num lugar onde ninguém se passa por você.",
-      "lede": "O Bipe é gratuito pras pessoas. A ideia é que ele se pague com empresas e instituições que querem falar com os clientes com segurança. Esta página explica a proposta. Ela ainda está em estudo, e nada aqui está à venda.",
+      "lede": "O Bipe é gratuito para as pessoas. A ideia é que ele se pague com empresas e instituições que querem falar com os clientes com segurança. Esta página explica a proposta. Ela ainda está em estudo, e nada aqui está à venda.",
       "label": "Proposta em estudo",
       "sections": [
         {
           "heading": "Por que uma empresa estaria aqui",
           "points": [
-            "Só a sua empresa usa o seu nome. Nome de banco, loja ou órgão público fica reservado pra conta com CNPJ verificado, e o falso atendente não consegue se passar por você.",
+            "Só a sua empresa usa o seu nome. Nome de banco, loja ou órgão público fica reservado para conta com CNPJ verificado, e o falso atendente não consegue se passar por você.",
             "O cliente vê o selo e o CNPJ em toda conversa com você.",
             "Uma cobrança por Pix mostra o CNPJ que vai receber antes de o cliente pagar.",
             "Os dados e os servidores ficam no Brasil, sob a lei brasileira.",
@@ -2012,25 +2012,25 @@
         {
           "heading": "Como o Bipe se pagaria",
           "points": [
-            "Quem usa o Bipe pra conversar nunca paga.",
+            "Quem usa o Bipe para conversar nunca paga.",
             "A empresa paga um valor mensal fixo por CNPJ verificado. Ele cobre a verificação, o nome reservado e a API.",
             "No começo, não tem preço por mensagem.",
             "O Bipe não cobra taxa sobre Pix."
           ]
         },
         {
-          "heading": "Uma API pro sistema da empresa",
+          "heading": "Uma API para o sistema da empresa",
           "points": [
             "A empresa liga o próprio sistema ao Bipe: manda avisos, recebe respostas e atende pelo programa que já usa.",
-            "A conversa é descriptografada no sistema da empresa, não nos servidores do Bipe. Empresas menores podem usar um parceiro que roda isso pra elas.",
-            "A gente quer que seja fácil mudar pra quem já usa a API do WhatsApp.",
+            "A conversa é descriptografada no sistema da empresa, não nos servidores do Bipe. Empresas menores podem usar um parceiro que roda isso para elas.",
+            "A gente quer que seja fácil mudar para quem já usa a API do WhatsApp.",
             "A API ainda não existe."
           ]
         },
         {
           "heading": "As regras que protegem o cliente",
           "points": [
-            "A empresa só manda mensagem pra quem aceitou receber.",
+            "A empresa só manda mensagem para quem aceitou receber.",
             "O app mostra quando quem responde é um programa.",
             "Link em mensagem de empresa só abre se for do site da própria empresa. Pagamento só pelo Pix dentro do app.",
             "Empresa que recebe muito bloqueio e denúncia passa a poder mandar menos."
@@ -2185,7 +2185,7 @@
             "repo": "shared",
             "pt": {
               "name": "Regras compartilhadas",
-              "body": "Nomes reservados, padrões de golpe e textos num repositório só, gerados pra cada app."
+              "body": "Nomes reservados, padrões de golpe e textos num repositório só, gerados para cada app."
             },
             "en": {
               "name": "Shared rules",
@@ -2332,7 +2332,7 @@
             "repo": "web",
             "pt": {
               "name": "Este site",
-              "body": "React e Vite, gerado antes de ir pro ar. Cada página também em Markdown."
+              "body": "React e Vite, gerado antes de ir para o ar. Cada página também em Markdown."
             },
             "en": {
               "name": "This site",

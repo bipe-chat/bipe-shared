@@ -778,7 +778,7 @@
           "Ligue para o parente citado num número que você já tinha.",
           "Não pague. Faça o boletim de ocorrência e, se tiver risco, ligue 190."
         ],
-        "limit": "O vazamento dos seus dados aconteceu em outro lugar. O Bipe não apaga esses dados."
+        "limit": "O vazamento dos seus dados aconteceu em outro lugar, e o Bipe não apaga esses dados. O aviso aparece quando a mensagem ameaça e pede dinheiro."
       },
       "en": {
         "heading": "Threats with your data",
@@ -803,7 +803,7 @@
           "Call the relative they named on a number you already had.",
           "Do not pay. File a police report and, if there is a risk, call 190."
         ],
-        "limit": "Your data leaked somewhere else. Bipe cannot erase it."
+        "limit": "Your data leaked somewhere else, and Bipe cannot erase it. The warning shows when a message makes a threat and asks for money."
       }
     },
     {
@@ -1196,7 +1196,7 @@
           "Valores a receber só se consultam em valoresareceber.bcb.gov.br. INSS só pelo Meu INSS ou pelo 135.",
           "Passou dados ou pagou? Fale com o seu banco e faça o boletim de ocorrência."
         ],
-        "limit": "A maioria chega por SMS e e-mail, fora do Bipe. No Bipe, nome de órgão público fica reservado e o aviso aparece em link com cara de golpe."
+        "limit": "A maioria chega por SMS e e-mail, fora do Bipe. No Bipe, nome de órgão público fica reservado, e o aviso aparece em link que usa bcb, gov, inss, receita ou detran sem ser o site oficial."
       },
       "en": {
         "heading": "Fake government body",
@@ -1219,7 +1219,7 @@
           "Check money to claim only at valoresareceber.bcb.gov.br. INSS only through Meu INSS or 135.",
           "Gave data or paid? Talk to your bank and file a police report."
         ],
-        "limit": "Most of these arrive by SMS and e-mail, outside Bipe. On Bipe, public bodies' names are reserved and the warning shows on links that look like a scam."
+        "limit": "Most of these arrive by SMS and e-mail, outside Bipe. On Bipe, public bodies' names are reserved, and the warning shows on links that use bcb, gov, inss, receita or detran without being the official site."
       }
     },
     {
@@ -1444,7 +1444,7 @@
           "Feche a conversa e procure o suporte pelo app ou pelo site oficial.",
           "Passou dados? Troque a senha, fale com o banco e faça o boletim de ocorrência."
         ],
-        "limit": "No Bipe, ninguém usa o nome Bipe sem ser o Bipe. O app ainda não diz em todo lugar que o Bipe nunca pede a sua senha de 8 números."
+        "limit": "No Bipe, ninguém usa o nome Bipe sem ser o Bipe. As telas de senha dizem que o Bipe nunca pede a sua senha, e o aviso aparece quando uma mensagem pede. Por ligação, fora do Bipe, alguém ainda pode tentar."
       },
       "en": {
         "heading": "Fake support",
@@ -1467,7 +1467,7 @@
           "Close the chat and find support through the official app or site.",
           "Gave data? Change your PIN, talk to your bank and file a police report."
         ],
-        "limit": "On Bipe, nobody but Bipe can use the name Bipe. The app does not yet say everywhere that Bipe never asks for your 8-digit PIN."
+        "limit": "On Bipe, nobody but Bipe can use the name Bipe. The PIN screens say that Bipe never asks for your PIN, and the warning shows when a message asks for it. On a phone call, outside Bipe, someone can still try."
       }
     },
     {
@@ -2033,7 +2033,7 @@
           "Pague só para conta no nome da empresa registrada.",
           "Caiu? Guarde tudo, fale com o seu banco e faça o boletim de ocorrência. Denuncie à CVM."
         ],
-        "limit": "O Bipe ainda não confere o CNPJ no cadastro da CVM. O aviso aparece em promessa de retorno garantido."
+        "limit": "O Bipe ainda não confere o CNPJ no cadastro da CVM. A proposta está escrita e espera decisão. O aviso aparece em promessa de retorno garantido."
       },
       "en": {
         "heading": "Fake investment",
@@ -2056,7 +2056,7 @@
           "Pay only to an account in the registered company's name.",
           "Fell for it? Keep everything, talk to your bank and file a police report. Report it to the CVM."
         ],
-        "limit": "Bipe does not check a CNPJ against the CVM register yet. The warning shows on promises of guaranteed returns."
+        "limit": "Bipe does not check a CNPJ against the CVM register yet. A proposal is written and waits for a decision. The warning shows on promises of guaranteed returns."
       }
     },
     {
@@ -2199,7 +2199,7 @@
           "Nunca digite senha ou código numa página que chegou por mensagem.",
           "Digitou? Troque a senha, fale com o banco e faça o boletim de ocorrência."
         ],
-        "limit": "O Bipe avisa quando o link imita um banco, um órgão do governo ou uma empresa conhecida. Ainda não confere domínio novo nem domínio parecido com qualquer site."
+        "limit": "O Bipe avisa quando o link imita um banco, um órgão do governo ou uma empresa conhecida, também com siglas como bcb, gov e inss no endereço. Ainda não confere se o domínio é novo."
       },
       "en": {
         "heading": "Fake link",
@@ -2222,7 +2222,7 @@
           "Never type a password or code on a page that came by message.",
           "Typed it? Change your password, talk to your bank and file a police report."
         ],
-        "limit": "Bipe warns when a link copies a bank, a government body or a well-known company. It does not yet check new domains or domains that look like any site."
+        "limit": "Bipe warns when a link copies a bank, a government body or a well-known company, also with short names like bcb, gov and inss in the address. It does not check yet whether a domain is new."
       }
     },
     {
@@ -2280,7 +2280,7 @@
           "Já instalou? Desligue a internet, apague o app e fale com o banco por outro celular.",
           "Depois, restaure o celular e faça o boletim de ocorrência."
         ],
-        "limit": "Depois que o app está instalado, o golpe acontece fora da conversa. O Bipe ainda não tem um aviso específico para pedido de instalar app de acesso remoto."
+        "limit": "Depois que o app está instalado, o golpe acontece fora da conversa. O aviso aparece quando a mensagem pede para instalar um app de acesso remoto, mas o Bipe não impede a instalação."
       },
       "en": {
         "heading": "Phantom hand and fake app",
@@ -2303,7 +2303,7 @@
           "Already installed? Turn off the internet, delete the app and call the bank from another phone.",
           "Then reset the phone and file a police report."
         ],
-        "limit": "Once the app is installed, the scam happens outside the chat. Bipe has no specific warning yet for a request to install a remote-access app."
+        "limit": "Once the app is installed, the scam happens outside the chat. The warning shows when a message asks you to install a remote-access app, but Bipe cannot stop the install."
       }
     },
     {
@@ -2524,7 +2524,7 @@
           "Guarde as provas, bloqueie e denuncie o perfil.",
           "Peça ajuda no canal da SaferNet e faça o boletim de ocorrência."
         ],
-        "limit": "O Bipe ainda não indica a SaferNet no aviso. A ameaça pode vir de outro app, onde as imagens foram trocadas."
+        "limit": "O aviso indica a SaferNet quando a mensagem ameaça e pede dinheiro. A ameaça pode vir de outro app, onde as imagens foram trocadas."
       },
       "en": {
         "heading": "Sextortion",
@@ -2547,7 +2547,7 @@
           "Keep the evidence, block and report the profile.",
           "Ask SaferNet's helpline for help and file a police report."
         ],
-        "limit": "Bipe does not point to SaferNet in the warning yet. The threat can come from another app, where the images were shared."
+        "limit": "The warning points to SaferNet when a message makes a threat and asks for money. The threat can come from another app, where the images were shared."
       }
     },
     {

@@ -135,7 +135,7 @@ if (/n[ãa]o ach(ou|amos)|found nothing/i.test(cmpText)) fail("compare: state wh
 // number has a source with an https URL and a date; pt copy follows language.md (golpe, not fraude; no fear words).
 const scams = JSON.parse(readFileSync(join(root, "product/scams.json"), "utf8"));
 if (scams.version !== 1 || !/^\d{4}-\d{2}-\d{2}$/.test(scams.date)) fail("scams: version or date");
-const KINDS = ["primary", "secondary", "press"];
+const KINDS = ["primary", "secondary", "company", "press"];
 const scamSources = new Set();
 for (const s of scams.sources) {
   if (!/^[a-z0-9]+$/i.test(s.id) || scamSources.has(s.id)) fail(`scams source ${s.id}: id`);

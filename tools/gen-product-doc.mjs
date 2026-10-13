@@ -24,6 +24,20 @@ for (const a of ht.arms) {
   if (!/^h[1-9]$/.test(a.id) || armIds.has(a.id) || retired.has(a.id) || !a.pt || !a.en) fail(`headlineTest arm ${a.id}`);
   armIds.add(a.id);
 }
+// Figure ids (tentpole demos, feature figures, bipe#176): the phone scenes and the SIMS list in
+// bipe-web/src/sim/scenes.ts. Fails closed when the file or the list is missing.
+function figureIds() {
+  const src = readFileSync(join(root, "../bipe-web/src/sim/scenes.ts"), "utf8");
+  const sims = /^export const SIMS = \[([^\]]*)\] as const;$/m.exec(src);
+  const start = src.indexOf("export const scenes = {");
+  const end = src.indexOf("} satisfies Record<string, Scene>;", start);
+  if (!sims || start < 0 || end < 0) fail("figures: SIMS or scenes not found in bipe-web/src/sim/scenes.ts");
+  const ids = [...src.slice(start, end).matchAll(/^ {2}"?([a-z0-9-]+)"?: \{/gm)].map((m) => m[1]);
+  const simIds = [...sims[1].matchAll(/"([A-Za-z0-9-]+)"/g)].map((m) => m[1]);
+  if (!ids.length || !simIds.length || simIds.some((id) => ids.includes(id))) fail("figures: scene and sim ids must be found and distinct");
+  return new Set([...ids, ...simIds]);
+}
+const FIGURES = figureIds();
 const featureIds = new Set(product.features.map((f) => f.id));
 const areaIds = new Set(product.areas.map((a) => a.id));
 // Every feature has its own page on the site (/recursos/<slug>/): a slug per language and points that say how it works.
@@ -39,6 +53,10 @@ for (const f of product.features) {
     featureSlugs.add(`${l}/${slug}`);
   }
   if (f.pt.points.length !== f.en.points.length) fail(`feature ${f.id}: points pt and en differ`);
+  if (f.figures !== undefined) {
+    if (!Array.isArray(f.figures) || !f.figures.length || new Set(f.figures).size !== f.figures.length) fail(`feature ${f.id}: figures must be a list of distinct ids`);
+    for (const id of f.figures) if (!FIGURES.has(id)) fail(`feature ${f.id}: unknown figure ${id}`);
+  }
 }
 // ICP register (ADR 0060): every ICP cites an ADR file in ../bipe/docs/adr; exactly one step is current.
 const adrDir = join(root, "../bipe/docs/adr");
@@ -59,6 +77,7 @@ for (const a of product.audiences) {
   if (!icpIds.has(a.icp)) fail(`audience ${a.id}: icp ${a.icp} is not in the register (ADR 0058)`);
   if (!a.sections.length) fail(`audience ${a.id}: no sections`);
   for (const s of a.sections) for (const id of s.features) if (!featureIds.has(id)) fail(`audience ${a.id}: unknown feature ${id}`);
+  for (const s of a.sections) if (s.scene !== undefined && !FIGURES.has(s.scene)) fail(`audience ${a.id}: unknown scene ${s.scene}`);
   for (const l of ["pt", "en"]) {
     for (const k of ["name", "title", "headline", "lede", "note", "cta", "ctaSubject"]) if (!a[l]?.[k]) fail(`audience ${a.id}: ${l}.${k}`);
     if (a[l].sections.length !== a.sections.length || a[l].sections.some((s) => !s.heading || !s.body)) fail(`audience ${a.id}: ${l}.sections`);
@@ -77,6 +96,7 @@ for (const s of product.sides) {
 for (const t of product.tentpoles) {
   if (!STATUSES.includes(t.status)) fail(`tentpole ${t.id}: status`);
   for (const id of t.features) if (!featureIds.has(id)) fail(`tentpole ${t.id}: unknown feature ${id}`);
+  for (const id of t.demos) if (!FIGURES.has(id)) fail(`tentpole ${t.id}: unknown demo ${id}`);
 }
 if (!dist.source?.org?.startsWith("https://github.com/bipe-chat")) fail("source.org");
 for (const r of dist.source.repos) {

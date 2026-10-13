@@ -370,6 +370,11 @@
         "pt": "aviso-de-golpe",
         "en": "scam-warnings"
       },
+      "figures": [
+        "numero-novo",
+        "falso-suporte",
+        "renda-extra"
+      ],
       "pt": {
         "name": "Aviso de golpe",
         "body": "Aparece um aviso embaixo da mensagem com cara de golpe: Pix com pressa, troca de número, boleto, comprovante.",
@@ -400,6 +405,9 @@
         "pt": "pedidos-de-conversa",
         "en": "message-requests"
       },
+      "figures": [
+        "numero-novo"
+      ],
       "pt": {
         "name": "Pedidos de conversa",
         "body": "Quem não está nos seus contatos chega como pedido. Você aceita ou ignora.",
@@ -430,6 +438,9 @@
         "pt": "pausa-antes-de-pagar",
         "en": "pause-before-paying"
       },
+      "figures": [
+        "nome-diferente"
+      ],
       "pt": {
         "name": "Pausa antes de pagar",
         "body": "Num pedido de dinheiro suspeito, copiar e pagar ficam travados por 5 segundos. A pausa quebra a pressa do golpe.",
@@ -490,6 +501,9 @@
         "pt": "conta-no-celular",
         "en": "account-on-your-phone"
       },
+      "figures": [
+        "aparelho-novo"
+      ],
       "pt": {
         "name": "Sua conta fica no celular",
         "body": "Sem e-mail obrigatório e sem senha difícil de lembrar. Você escolhe uma senha de 8 números, como a do banco.",
@@ -522,6 +536,9 @@
         "pt": "celular-novo",
         "en": "new-phone"
       },
+      "figures": [
+        "aparelho-novo"
+      ],
       "pt": {
         "name": "Celular novo, mesma conta",
         "body": "Trocou de celular ou perdeu o seu? Tem mais de um jeito de voltar pra sua conta, e nenhum passa por código SMS.",
@@ -556,6 +573,10 @@
         "pt": "selo-verificado",
         "en": "verified-seal"
       },
+      "figures": [
+        "verificado",
+        "levels"
+      ],
       "pt": {
         "name": "Selo verificado",
         "body": "Verificação gratuita pelo Pix ou pelo gov.br. O selo vem com o nome verificado.",
@@ -588,6 +609,9 @@
         "pt": "selo-de-cnpj",
         "en": "business-seal"
       },
+      "figures": [
+        "instituicao"
+      ],
       "pt": {
         "name": "Selo de CNPJ",
         "body": "Empresa, escola ou associação prova o CNPJ e ganha um selo com o nome que está na Receita.",
@@ -618,6 +642,10 @@
         "pt": "nomes-reservados",
         "en": "reserved-names"
       },
+      "figures": [
+        "instituicao",
+        "identity"
+      ],
       "pt": {
         "name": "Nomes reservados",
         "body": "Nome de banco, de órgão público e do Bipe fica só pra conta verificada da instituição.",
@@ -648,6 +676,9 @@
         "pt": "letras-disfarcadas",
         "en": "lookalike-letters"
       },
+      "figures": [
+        "handle"
+      ],
       "pt": {
         "name": "Letras disfarçadas",
         "body": "Trocar um O por 0, ou por uma letra parecida de outro alfabeto, não engana a checagem de nome.",
@@ -678,6 +709,10 @@
         "pt": "e-a-mae-mesmo",
         "en": "is-that-really-mom"
       },
+      "figures": [
+        "mae",
+        "nome-diferente"
+      ],
       "pt": {
         "name": "É a Mãe mesmo?",
         "body": "Se o contato salvo como Mãe tem outro nome verificado, o app pergunta se é a mesma pessoa.",
@@ -708,6 +743,10 @@
         "pt": "nome-de-usuario",
         "en": "usernames"
       },
+      "figures": [
+        "handle",
+        "identity"
+      ],
       "pt": {
         "name": "Nome de usuário",
         "body": "Converse pelo @, sem passar o seu número.",
@@ -738,6 +777,9 @@
         "pt": "link-e-qr-code",
         "en": "link-and-qr-code"
       },
+      "figures": [
+        "handle"
+      ],
       "pt": {
         "name": "Link e QR code",
         "body": "bipe.chat/@você abre a conversa direto no app.",
@@ -768,6 +810,9 @@
         "pt": "perfil-publico",
         "en": "public-profile"
       },
+      "figures": [
+        "handle"
+      ],
       "pt": {
         "name": "Perfil público",
         "body": "Se quiser, seu link mostra nome, foto e bio. Você liga e desliga. Ninguém acha seu perfil por busca.",
@@ -888,6 +933,9 @@
         "pt": "sem-anuncio",
         "en": "no-ads"
       },
+      "figures": [
+        "noAds"
+      ],
       "pt": {
         "name": "Sem anúncio",
         "body": "Nenhum anúncio em nenhuma tela. Seus dados não estão à venda.",
@@ -918,6 +966,9 @@
         "pt": "gratuito",
         "en": "free"
       },
+      "figures": [
+        "noAds"
+      ],
       "pt": {
         "name": "Gratuito",
         "body": "Você nunca paga pra usar o Bipe.",
@@ -1008,6 +1059,10 @@
         "pt": "pedido-de-pix",
         "en": "pix-requests"
       },
+      "figures": [
+        "pix",
+        "verificado"
+      ],
       "pt": {
         "name": "Pedido de Pix",
         "body": "O cartão de pedido traz o nome que o seu banco vai mostrar. Se aparecer outro nome, não pague.",
@@ -1038,6 +1093,9 @@
         "pt": "cobranca-com-cnpj",
         "en": "business-pix-charges"
       },
+      "figures": [
+        "business"
+      ],
       "pt": {
         "name": "Cobrança com CNPJ",
         "body": "Uma instituição verificada cobra pelo Pix dentro da conversa. O cartão mostra o CNPJ que recebe e muda pra pago quando o banco confirma.",
@@ -1098,6 +1156,10 @@
         "pt": "grupos-sem-barulho",
         "en": "quiet-groups"
       },
+      "figures": [
+        "groups",
+        "grupo"
+      ],
       "pt": {
         "name": "Grupos sem barulho",
         "body": "Só toca quando é com você. Na volta, aparece primeiro quem te marcou ou respondeu e as enquetes que faltam você votar.",
@@ -1128,6 +1190,9 @@
         "pt": "enquetes",
         "en": "polls"
       },
+      "figures": [
+        "groups"
+      ],
       "pt": {
         "name": "Enquetes",
         "body": "Pergunte pro grupo e cada um vota com um toque. Bom pra marcar o dia do encontro ou decidir quem leva o quê.",
@@ -1158,6 +1223,10 @@
         "pt": "comunidades",
         "en": "communities"
       },
+      "figures": [
+        "condominio",
+        "igreja"
+      ],
       "pt": {
         "name": "Comunidades",
         "body": "Vários grupos debaixo de um nome só, com uma sala de avisos onde só quem cuida posta. Cada pessoa entra só nos grupos que quer.",
@@ -1188,6 +1257,9 @@
         "pt": "grupo-so-com-verificados",
         "en": "verified-only-groups"
       },
+      "figures": [
+        "falso-pastor"
+      ],
       "pt": {
         "name": "Grupo só com verificados",
         "body": "O grupo pode aceitar só quem tem selo verificado. Quem pede pra entrar sem selo recebe um aviso e não entra.",

@@ -90,12 +90,33 @@ public enum BipeRegistries {
     /// Brand names for the "lookalike link" kind, matched in a folded link host without dots and hyphens.
     public static let lookalikeBrandTokens: [String] = ${swiftArray(reg.scam.lookalikeBrandTokens.map(swiftString))}
 
+    /// Short public-body and bank names for the "lookalike link" kind, matched as a whole label of a folded link host.
+    public static let lookalikeHostLabels: Set<String> = ${swiftArray(reg.scam.lookalikeHostLabels.map(swiftString))}
+
     /// Real domains of those brands. A host that is one of them, or a subdomain of one, is not a lookalike.
     public static let officialDomains: [String] = ${swiftArray(reg.scam.officialDomains.map(swiftString))}
+
+    /// App store hosts. An install link to one of them, or a subdomain of one, does not count for the "remote app" kind.
+    public static let appStoreDomains: [String] = ${swiftArray(reg.scam.appStoreDomains.map(swiftString))}
 
     /// Normalised words for the "bank alert" kind. It needs a link and an entry from each of the two lists.
     public static let bankAlertSubjectWords: [String] = ${swiftArray(reg.scam.bankAlertSubjectWords.map(swiftString))}
     public static let bankAlertThreatWords: [String] = ${swiftArray(reg.scam.bankAlertThreatWords.map(swiftString))}
+
+    /// Normalised substrings for the "extortion" kind: a threat phrase and a payment demand.
+    public static let extortionThreatPhrases: [String] = ${swiftArray(reg.scam.extortionThreatPhrases.map(swiftString))}
+    public static let extortionDemandWords: [String] = ${swiftArray(reg.scam.extortionDemandWords.map(swiftString))}
+
+    /// The "remote app" kind: an install word (whole word) and an app name (whole word), or a link that is not
+    /// official or an app store and a bank word (substring).
+    public static let remoteAppInstallWords: Set<String> = ${swiftArray(reg.scam.remoteAppInstallWords.map(swiftString))}
+    public static let remoteAppNames: Set<String> = ${swiftArray(reg.scam.remoteAppNames.map(swiftString))}
+    public static let remoteAppBankWords: [String] = ${swiftArray(reg.scam.remoteAppBankWords.map(swiftString))}
+
+    /// The "PIN request" kind: an ask phrase (substring), a secret (whole word) and a support word (whole word).
+    public static let pinRequestAskPhrases: [String] = ${swiftArray(reg.scam.pinRequestAskPhrases.map(swiftString))}
+    public static let pinRequestSecretWords: Set<String> = ${swiftArray(reg.scam.pinRequestSecretWords.map(swiftString))}
+    public static let pinRequestSupportWords: Set<String> = ${swiftArray(reg.scam.pinRequestSupportWords.map(swiftString))}
 
     /// Scam warning kind raw values, most actionable first. The first kind whose rule applies wins.
     public static let scamWarningKindPriority: [String] = ${swiftArray(reg.scam.warningKindPriority.map(swiftString))}
@@ -259,12 +280,35 @@ object BipeRegistries {
     /** Brand names for the "lookalike link" kind, matched in a folded link host without dots and hyphens. */
     val lookalikeBrandTokens: List<String> = ${kotlinList("listOf", reg.scam.lookalikeBrandTokens.map(kotlinString))}
 
+    /** Short public-body and bank names for the "lookalike link" kind, matched as a whole label of a folded link host. */
+    val lookalikeHostLabels: Set<String> = ${kotlinList("setOf", reg.scam.lookalikeHostLabels.map(kotlinString))}
+
     /** Real domains of those brands. A host that is one of them, or a subdomain of one, is not a lookalike. */
     val officialDomains: List<String> = ${kotlinList("listOf", reg.scam.officialDomains.map(kotlinString))}
+
+    /** App store hosts. An install link to one of them, or a subdomain of one, does not count for the "remote app" kind. */
+    val appStoreDomains: List<String> = ${kotlinList("listOf", reg.scam.appStoreDomains.map(kotlinString))}
 
     /** Normalised words for the "bank alert" kind. It needs a link and an entry from each of the two lists. */
     val bankAlertSubjectWords: List<String> = ${kotlinList("listOf", reg.scam.bankAlertSubjectWords.map(kotlinString))}
     val bankAlertThreatWords: List<String> = ${kotlinList("listOf", reg.scam.bankAlertThreatWords.map(kotlinString))}
+
+    /** Normalised substrings for the "extortion" kind: a threat phrase and a payment demand. */
+    val extortionThreatPhrases: List<String> = ${kotlinList("listOf", reg.scam.extortionThreatPhrases.map(kotlinString))}
+    val extortionDemandWords: List<String> = ${kotlinList("listOf", reg.scam.extortionDemandWords.map(kotlinString))}
+
+    /**
+     * The "remote app" kind: an install word (whole word) and an app name (whole word), or a link that is not
+     * official or an app store and a bank word (substring).
+     */
+    val remoteAppInstallWords: Set<String> = ${kotlinList("setOf", reg.scam.remoteAppInstallWords.map(kotlinString))}
+    val remoteAppNames: Set<String> = ${kotlinList("setOf", reg.scam.remoteAppNames.map(kotlinString))}
+    val remoteAppBankWords: List<String> = ${kotlinList("listOf", reg.scam.remoteAppBankWords.map(kotlinString))}
+
+    /** The "PIN request" kind: an ask phrase (substring), a secret (whole word) and a support word (whole word). */
+    val pinRequestAskPhrases: List<String> = ${kotlinList("listOf", reg.scam.pinRequestAskPhrases.map(kotlinString))}
+    val pinRequestSecretWords: Set<String> = ${kotlinList("setOf", reg.scam.pinRequestSecretWords.map(kotlinString))}
+    val pinRequestSupportWords: Set<String> = ${kotlinList("setOf", reg.scam.pinRequestSupportWords.map(kotlinString))}
 
     /** Scam warning kind ids, most actionable first. The first kind whose rule applies wins. */
     val scamWarningKindPriority: List<String> = ${kotlinList("listOf", reg.scam.warningKindPriority.map(kotlinString))}

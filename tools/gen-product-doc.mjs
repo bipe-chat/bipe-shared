@@ -108,7 +108,7 @@ for (const r of dist.source.repos) {
 // features that carry its status; every competitor cell belongs to a known threat.
 const cmp = JSON.parse(readFileSync(join(root, "product/compare.json"), "utf8"));
 if (cmp.version !== 1 || !/^\d{4}-\d{2}-\d{2}$/.test(cmp.date)) fail("compare: version or date");
-for (const l of ["pt", "en"]) for (const k of ["nav", "title", "lede", "bipe", "appsTitle", "more", "aheadTitle", "limitTitle", "limit", "sourcesTitle", "sourcesNote", "tableTitle", "threatCol"]) if (!cmp[l]?.[k]) fail(`compare.${l}.${k}`);
+for (const l of ["pt", "en"]) for (const k of ["nav", "title", "description", "bipe", "appsTitle", "more", "aheadTitle", "limitTitle", "limit", "sourcesTitle", "sourcesNote", "tableTitle", "threatCol"]) if (!cmp[l]?.[k]) fail(`compare.${l}.${k}`);
 const LEVELS = ["on", "setting", "limited", "none"];
 for (const l of ["pt", "en"]) for (const k of LEVELS) if (!cmp[l]?.levels?.[k]) fail(`compare.${l}.levels.${k}`);
 const threatIds = new Set();
@@ -148,6 +148,7 @@ const scamStats = new Set();
 for (const s of scams.stats) {
   if (scamStats.has(s.id) || !scamSources.has(s.source)) fail(`scams stat ${s.id}: duplicate id or unknown source ${s.source}`);
   for (const l of ["pt", "en"]) for (const k of ["value", "label", "period"]) if (!s[l]?.[k]) fail(`scams stat ${s.id}: ${l}.${k}`);
+  for (const id of s.also ?? []) if (!scamSources.has(id)) fail(`scams stat ${s.id}: unknown also source ${id}`);
   scamStats.add(s.id);
 }
 for (const id of [...scams.hero, ...scams.more, ...scams.types.flatMap((t) => t.stats ?? [])]) if (!scamStats.has(id)) fail(`scams: unknown stat ${id}`);
@@ -167,6 +168,7 @@ for (const t of scams.types) {
   if (!GROUPS.includes(t.group)) fail(`scams type ${t.id}: group ${t.group}`);
   if (!t.channels?.length || t.channels.some((c) => !CHANNELS.includes(c))) fail(`scams type ${t.id}: channels`);
   if (!FIGURES.has(t.scene)) fail(`scams type ${t.id}: unknown scene ${t.scene}`);
+  if (t.realScene !== undefined && !FIGURES.has(t.realScene)) fail(`scams type ${t.id}: unknown realScene ${t.realScene}`);
   if (!t.describedBy?.length) fail(`scams type ${t.id}: describedBy needs an official source`);
   for (const id of t.describedBy) {
     const src = scams.sources.find((x) => x.id === id);
@@ -297,7 +299,7 @@ const lines = [
   "",
   "| Number | What it is | Period | Source |",
   "|---|---|---|---|",
-  ...scams.hero.map((id) => scams.stats.find((s) => s.id === id)).map((s) => { const src = scams.sources.find((x) => x.id === s.source); return `| ${s.en.value} | ${s.en.label} | ${s.en.period} | [${src.publisher}](${src.url}) |`; }),
+  ...scams.hero.map((id) => scams.stats.find((s) => s.id === id)).map((s) => { const srcs = [s.source, ...(s.also ?? [])].map((id) => scams.sources.find((x) => x.id === id)); return `| ${s.en.value} | ${s.en.label} | ${s.en.period} | ${srcs.map((x) => `[${x.publisher}](${x.url})`).join("; ")} |`; }),
   "",
   `Charts: ${scams.charts.map((c) => `${c.en.title} (${c.sources.join(", ")})`).join("; ")}. Bipe features named: ${scams.protect.map((p) => p.feature).join(", ")}.`,
   "",

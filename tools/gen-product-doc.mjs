@@ -108,7 +108,7 @@ for (const r of dist.source.repos) {
 // features that carry its status; every competitor cell belongs to a known threat.
 const cmp = JSON.parse(readFileSync(join(root, "product/compare.json"), "utf8"));
 if (cmp.version !== 1 || !/^\d{4}-\d{2}-\d{2}$/.test(cmp.date)) fail("compare: version or date");
-for (const l of ["pt", "en"]) for (const k of ["nav", "title", "lede", "bipe", "appsTitle", "more", "aheadTitle", "limitTitle", "limit", "sourcesTitle", "sourcesNote", "tableTitle", "threatCol"]) if (!cmp[l]?.[k]) fail(`compare.${l}.${k}`);
+for (const l of ["pt", "en"]) for (const k of ["nav", "title", "description", "bipe", "appsTitle", "more", "aheadTitle", "limitTitle", "limit", "sourcesTitle", "sourcesNote", "tableTitle", "threatCol"]) if (!cmp[l]?.[k]) fail(`compare.${l}.${k}`);
 const LEVELS = ["on", "setting", "limited", "none"];
 for (const l of ["pt", "en"]) for (const k of LEVELS) if (!cmp[l]?.levels?.[k]) fail(`compare.${l}.levels.${k}`);
 const threatIds = new Set();
@@ -167,6 +167,7 @@ for (const t of scams.types) {
   if (!GROUPS.includes(t.group)) fail(`scams type ${t.id}: group ${t.group}`);
   if (!t.channels?.length || t.channels.some((c) => !CHANNELS.includes(c))) fail(`scams type ${t.id}: channels`);
   if (!FIGURES.has(t.scene)) fail(`scams type ${t.id}: unknown scene ${t.scene}`);
+  if (t.realScene !== undefined && !FIGURES.has(t.realScene)) fail(`scams type ${t.id}: unknown realScene ${t.realScene}`);
   if (!t.describedBy?.length) fail(`scams type ${t.id}: describedBy needs an official source`);
   for (const id of t.describedBy) {
     const src = scams.sources.find((x) => x.id === id);

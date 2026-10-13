@@ -466,6 +466,7 @@
         ]
       },
       "scene": "falso-suporte",
+      "realScene": "banco-real",
       "stats": [
         "fakeCall",
         "fakeCallAttempts"
@@ -651,6 +652,7 @@
         ]
       },
       "scene": "loja-falsa",
+      "realScene": "loja-real",
       "stats": [
         "fakeShopShare",
         "fakeSale",
@@ -778,7 +780,7 @@
           "Ligue para o parente citado num número que você já tinha.",
           "Não pague. Faça o boletim de ocorrência e, se tiver risco, ligue 190."
         ],
-        "limit": "O vazamento dos seus dados aconteceu em outro lugar. O Bipe não apaga esses dados."
+        "limit": "O vazamento dos seus dados aconteceu em outro lugar, e o Bipe não apaga esses dados. O aviso aparece quando a mensagem ameaça e pede dinheiro."
       },
       "en": {
         "heading": "Threats with your data",
@@ -803,7 +805,7 @@
           "Call the relative they named on a number you already had.",
           "Do not pay. File a police report and, if there is a risk, call 190."
         ],
-        "limit": "Your data leaked somewhere else. Bipe cannot erase it."
+        "limit": "Your data leaked somewhere else, and Bipe cannot erase it. The warning shows when a message makes a threat and asks for money."
       }
     },
     {
@@ -1076,6 +1078,7 @@
         ]
       },
       "scene": "falso-advogado",
+      "realScene": "advogado-real",
       "stats": [
         "oabsp"
       ],
@@ -1196,7 +1199,7 @@
           "Valores a receber só se consultam em valoresareceber.bcb.gov.br. INSS só pelo Meu INSS ou pelo 135.",
           "Passou dados ou pagou? Fale com o seu banco e faça o boletim de ocorrência."
         ],
-        "limit": "A maioria chega por SMS e e-mail, fora do Bipe. No Bipe, nome de órgão público fica reservado e o aviso aparece em link com cara de golpe."
+        "limit": "A maioria chega por SMS e e-mail, fora do Bipe. No Bipe, nome de órgão público fica reservado, e o aviso aparece em link que usa bcb, gov, inss, receita ou detran sem ser o site oficial."
       },
       "en": {
         "heading": "Fake government body",
@@ -1219,7 +1222,7 @@
           "Check money to claim only at valoresareceber.bcb.gov.br. INSS only through Meu INSS or 135.",
           "Gave data or paid? Talk to your bank and file a police report."
         ],
-        "limit": "Most of these arrive by SMS and e-mail, outside Bipe. On Bipe, public bodies' names are reserved and the warning shows on links that look like a scam."
+        "limit": "Most of these arrive by SMS and e-mail, outside Bipe. On Bipe, public bodies' names are reserved, and the warning shows on links that use bcb, gov, inss, receita or detran without being the official site."
       }
     },
     {
@@ -1247,6 +1250,7 @@
         ]
       },
       "scene": "taxa-correios",
+      "realScene": "entrega-real",
       "stats": [],
       "describedBy": [
         "correiosFalsas",
@@ -1440,11 +1444,11 @@
           "Ameaçam cortar o serviço ou bloquear a conta hoje."
         ],
         "todo": [
-          "Não passe código, senha nem dados do cartão.",
+          "Não passe código, senha nem dados do cartão. Ninguém do Bipe pede a sua senha.",
           "Feche a conversa e procure o suporte pelo app ou pelo site oficial.",
           "Passou dados? Troque a senha, fale com o banco e faça o boletim de ocorrência."
         ],
-        "limit": "No Bipe, ninguém usa o nome Bipe sem ser o Bipe. O app ainda não diz em todo lugar que o Bipe nunca pede a sua senha de 8 números."
+        "limit": "No Bipe, ninguém usa o nome Bipe sem ser o Bipe. As telas de senha dizem que o Bipe nunca pede a sua senha, e o aviso aparece quando uma mensagem pede. Por ligação, fora do Bipe, alguém ainda pode tentar."
       },
       "en": {
         "heading": "Fake support",
@@ -1463,11 +1467,11 @@
           "They threaten to cut the service or block the account today."
         ],
         "todo": [
-          "Do not pass on a code, PIN or card details.",
+          "Do not pass on a code, PIN or card details. Nobody from Bipe asks for your PIN.",
           "Close the chat and find support through the official app or site.",
           "Gave data? Change your PIN, talk to your bank and file a police report."
         ],
-        "limit": "On Bipe, nobody but Bipe can use the name Bipe. The app does not yet say everywhere that Bipe never asks for your 8-digit PIN."
+        "limit": "On Bipe, nobody but Bipe can use the name Bipe. The PIN screens say that Bipe never asks for your PIN, and the warning shows when a message asks for it. On a phone call, outside Bipe, someone can still try."
       }
     },
     {
@@ -1663,6 +1667,7 @@
         ]
       },
       "scene": "aluguel",
+      "realScene": "pousada-real",
       "stats": [],
       "describedBy": [
         "pcprAluguel",
@@ -1828,6 +1833,7 @@
         ]
       },
       "scene": "boleto",
+      "realScene": "escola-real",
       "stats": [
         "pixShare"
       ],
@@ -1912,6 +1918,7 @@
         ]
       },
       "scene": "emprestimo",
+      "realScene": "credito-real",
       "stats": [],
       "describedBy": [
         "febEmprestimo",
@@ -2033,7 +2040,7 @@
           "Pague só para conta no nome da empresa registrada.",
           "Caiu? Guarde tudo, fale com o seu banco e faça o boletim de ocorrência. Denuncie à CVM."
         ],
-        "limit": "O Bipe ainda não confere o CNPJ no cadastro da CVM. O aviso aparece em promessa de retorno garantido."
+        "limit": "O Bipe ainda não confere o CNPJ no cadastro da CVM. A proposta está escrita e espera decisão. O aviso aparece em promessa de retorno garantido."
       },
       "en": {
         "heading": "Fake investment",
@@ -2056,7 +2063,7 @@
           "Pay only to an account in the registered company's name.",
           "Fell for it? Keep everything, talk to your bank and file a police report. Report it to the CVM."
         ],
-        "limit": "Bipe does not check a CNPJ against the CVM register yet. The warning shows on promises of guaranteed returns."
+        "limit": "Bipe does not check a CNPJ against the CVM register yet. A proposal is written and waits for a decision. The warning shows on promises of guaranteed returns."
       }
     },
     {
@@ -2199,7 +2206,7 @@
           "Nunca digite senha ou código numa página que chegou por mensagem.",
           "Digitou? Troque a senha, fale com o banco e faça o boletim de ocorrência."
         ],
-        "limit": "O Bipe avisa quando o link imita um banco, um órgão do governo ou uma empresa conhecida. Ainda não confere domínio novo nem domínio parecido com qualquer site."
+        "limit": "O Bipe avisa quando o link imita um banco, um órgão do governo ou uma empresa conhecida, também com siglas como bcb, gov e inss no endereço. Ainda não confere se o domínio é novo."
       },
       "en": {
         "heading": "Fake link",
@@ -2222,7 +2229,7 @@
           "Never type a password or code on a page that came by message.",
           "Typed it? Change your password, talk to your bank and file a police report."
         ],
-        "limit": "Bipe warns when a link copies a bank, a government body or a well-known company. It does not yet check new domains or domains that look like any site."
+        "limit": "Bipe warns when a link copies a bank, a government body or a well-known company, also with short names like bcb, gov and inss in the address. It does not check yet whether a domain is new."
       }
     },
     {
@@ -2280,7 +2287,7 @@
           "Já instalou? Desligue a internet, apague o app e fale com o banco por outro celular.",
           "Depois, restaure o celular e faça o boletim de ocorrência."
         ],
-        "limit": "Depois que o app está instalado, o golpe acontece fora da conversa. O Bipe ainda não tem um aviso específico para pedido de instalar app de acesso remoto."
+        "limit": "Depois que o app está instalado, o golpe acontece fora da conversa. O aviso aparece quando a mensagem pede para instalar um app de acesso remoto, mas o Bipe não impede a instalação."
       },
       "en": {
         "heading": "Phantom hand and fake app",
@@ -2303,7 +2310,7 @@
           "Already installed? Turn off the internet, delete the app and call the bank from another phone.",
           "Then reset the phone and file a police report."
         ],
-        "limit": "Once the app is installed, the scam happens outside the chat. Bipe has no specific warning yet for a request to install a remote-access app."
+        "limit": "Once the app is installed, the scam happens outside the chat. The warning shows when a message asks you to install a remote-access app, but Bipe cannot stop the install."
       }
     },
     {
@@ -2524,7 +2531,7 @@
           "Guarde as provas, bloqueie e denuncie o perfil.",
           "Peça ajuda no canal da SaferNet e faça o boletim de ocorrência."
         ],
-        "limit": "O Bipe ainda não indica a SaferNet no aviso. A ameaça pode vir de outro app, onde as imagens foram trocadas."
+        "limit": "O aviso indica a SaferNet quando a mensagem ameaça e pede dinheiro. A ameaça pode vir de outro app, onde as imagens foram trocadas."
       },
       "en": {
         "heading": "Sextortion",
@@ -2547,7 +2554,7 @@
           "Keep the evidence, block and report the profile.",
           "Ask SaferNet's helpline for help and file a police report."
         ],
-        "limit": "Bipe does not point to SaferNet in the warning yet. The threat can come from another app, where the images were shared."
+        "limit": "The warning points to SaferNet when a message makes a threat and asks for money. The threat can come from another app, where the images were shared."
       }
     },
     {
@@ -2654,6 +2661,7 @@
         ]
       },
       "scene": "vaquinha",
+      "realScene": "doacao-real",
       "stats": [],
       "describedBy": [
         "glossario2025"
@@ -2748,12 +2756,13 @@
       "Alguém pediu dinheiro por mensagem? Ligue para a pessoa num número que você já tinha antes de pagar.",
       "Banco não liga pedindo senha, código ou transferência. Desligue e ligue você para o número que está atrás do cartão.",
       "O código que chega por SMS é só seu. Não passe para ninguém, nem para quem diz ser do app.",
+      "Ninguém do Bipe pede a sua senha de 8 números, nem por mensagem, nem por ligação. Quem pede não é do Bipe.",
       "Print de comprovante não prova pagamento. Confira no app do seu banco se o dinheiro caiu.",
       "Preço bom demais numa loja que você não conhece costuma ser golpe.",
       "Caiu num golpe com Pix? Fale com o seu banco na hora e peça o MED, o mecanismo de devolução do Pix. Depois faça o boletim de ocorrência."
     ],
     "bipeTitle": "Como o Bipe ajuda",
-    "bipeLede": "O Bipe foi feito para você saber quem está do outro lado. Nem tudo está pronto: cada item mostra em que pé está no iPhone e no Android.",
+    "bipeLede": "Cada item mostra em que pé está no iPhone e no Android.",
     "limit": "O Bipe só protege as conversas que acontecem no Bipe. Se alguém da família ainda usa outro app, o golpista pode escrever para essa pessoa lá.",
     "sourcesTitle": "De onde vêm esses números",
     "sourcesNote": "Pesquisa feita em 13 de outubro de 2026. A gente só usa número que tem fonte. Pesquisa de empresa ou de associação privada aparece marcada como tal.",
@@ -2765,8 +2774,10 @@
     "typeDescribedByNote": "Páginas oficiais com o roteiro do golpe e o que fazer.",
     "typeLimitTitle": "O que o Bipe não resolve aqui",
     "typeScene": "Como chega no Bipe",
+    "typeReal": "A mensagem de verdade",
+    "typeRealLede": "A empresa de verdade não pede código, senha nem Pix para chave pessoal. No Bipe, ela vai aparecer com o selo e o CNPJ (em breve).",
     "outsideTitle": "Golpes que começam fora da conversa",
-    "outsideLede": "O Bipe cuida da conversa. Estes golpes começam fora dela, por ligação ou pessoalmente.",
+    "outsideLede": "Estes golpes começam fora da conversa, por ligação ou pessoalmente.",
     "outsideMore": "Como se proteger",
     "groups": { "pessoa": "Alguém se passa por quem você conhece", "instituicao": "Alguém se passa por banco, órgão público ou empresa", "compra": "Compra e venda", "dinheiro": "Pix, boleto, empréstimo e investimento", "conta": "Conta e celular", "grupo": "Grupos e ameaças" },
     "channels": { "messaging": "app de mensagem", "sms": "SMS", "call": "ligação", "email": "e-mail", "ad": "anúncio", "social": "rede social", "marketplace": "site de vendas", "dating": "app de namoro", "carrier": "operadora do celular", "inPerson": "pessoalmente" },
@@ -2795,12 +2806,13 @@
       "Someone asked for money by message? Call them on a number you already had before you pay.",
       "Banks do not call asking for a password, a code or a transfer. Hang up and call the number on the back of your card yourself.",
       "The code you get by SMS is yours alone. Do not give it to anyone, not even someone who says they are from the app.",
+      "Nobody from Bipe asks for your 8-digit PIN, not by message and not by phone call. Whoever asks is not from Bipe.",
       "A screenshot of a receipt does not prove payment. Check in your bank app that the money arrived.",
       "A price too good to be true, from a shop you do not know, is usually a scam.",
       "Fell for a Pix scam? Talk to your bank at once and ask for MED, the Pix refund mechanism. Then file a police report."
     ],
     "bipeTitle": "How Bipe helps",
-    "bipeLede": "Bipe is made so you know who is on the other side. Not everything is ready: each item shows where it stands on iPhone and Android.",
+    "bipeLede": "Each item shows where it stands on iPhone and Android.",
     "limit": "Bipe only protects the chats that happen in Bipe. If someone in the family still uses another app, a scammer can write to them there.",
     "sourcesTitle": "Where these numbers come from",
     "sourcesNote": "Researched on 13 October 2026. We only use numbers that have a source. Surveys by a company or a private association are marked as such.",
@@ -2812,8 +2824,10 @@
     "typeDescribedByNote": "Official pages with the scam's script and what to do.",
     "typeLimitTitle": "What Bipe does not solve here",
     "typeScene": "How it arrives on Bipe",
+    "typeReal": "The real message",
+    "typeRealLede": "The real company never asks for a code, a password or a Pix to a personal key. On Bipe, it will show the seal and its CNPJ (coming soon).",
     "outsideTitle": "Scams that start outside the chat",
-    "outsideLede": "Bipe looks after the chat. These scams start outside it, by phone call or in person.",
+    "outsideLede": "These scams start outside the chat, by phone call or in person.",
     "outsideMore": "How to protect yourself",
     "groups": { "pessoa": "Someone poses as a person you know", "instituicao": "Someone poses as a bank, a public body or a company", "compra": "Buying and selling", "dinheiro": "Pix, boleto, loans and investment", "conta": "Account and phone", "grupo": "Groups and threats" },
     "channels": { "messaging": "messaging app", "sms": "SMS", "call": "phone call", "email": "e-mail", "ad": "ad", "social": "social media", "marketplace": "marketplace", "dating": "dating app", "carrier": "phone carrier", "inPerson": "in person" },

@@ -83,6 +83,19 @@
       }
     }
   ],
+  "realFake": {
+    "$comment": "Homepage section: the fake message next to the real one from the institution it copies (bipe-web RealVsFake, pairs in src/sim/scenes.ts). The institution seal is cnpj-badge, still planned: the copy says 'em breve'.",
+    "pt": {
+      "title": "O golpista se passa por empresa. No Bipe, dá para ver a diferença.",
+      "lede": "Banco, escola, loja, entrega, igreja: o golpe copia o nome e o logo. No Bipe, a conta falsa chega como pedido e a mensagem com cara de golpe vem com aviso. Em breve, a empresa de verdade aparece com selo e CNPJ, e só ela cobra no nome dela.",
+      "caption": "Simulação com empresas fictícias. O selo de empresa ainda não está no app de testes."
+    },
+    "en": {
+      "title": "Scammers pose as companies. On Bipe, you can tell the difference.",
+      "lede": "Bank, school, shop, delivery, church: the scam copies the name and the logo. On Bipe, the fake account arrives as a request and a message that looks like a scam comes with a warning. Soon, the real company shows a seal and its CNPJ, and only it can charge in its own name.",
+      "caption": "Simulation with fictional companies. The company seal is not in the test app yet."
+    }
+  },
   "tentpoles": [
     {
       "id": "trust",
@@ -1401,12 +1414,12 @@
     "pt": {
       "nav": "Pessoas e grupos",
       "title": "Para quem é o Bipe",
-      "lede": "O Bipe é um app de mensagens para todo mundo. Estas páginas mostram como ele serve grupos diferentes, com o que já funciona e o que ainda vem."
+      "lede": "Como o Bipe serve cada grupo, com o que já funciona e o que ainda vem."
     },
     "en": {
       "nav": "People and groups",
       "title": "Who Bipe is for",
-      "lede": "Bipe is a messenger for everyone. These pages show how it serves different groups, with what already works and what is still coming."
+      "lede": "How Bipe serves each group, with what already works and what is still coming."
     }
   },
   "audiences": [
@@ -1996,41 +2009,42 @@
     }
   },
   "business": {
-    "$comment": "The /empresas/ page. Source: bipe/docs/business-track.md and bipe/docs/business-messaging.md (issue #93). Everything here is a proposal: nothing is built or for sale. Keep that visible on the page. Decided: ADR 0035 (the business decrypts), ADR 0036 (own-domain links), ADR 0037 (categories, not published here), ADR 0069 (one inbox for Bipe and WhatsApp, keys with the company), ADR 0070 (flat fee per CNPJ plus agent seats; amounts open).",
+    "$comment": "The /empresas/ page. Source: bipe/docs/business-track.md and bipe/docs/business-messaging.md (issue #93). Everything here is a proposal: nothing is for sale. Keep that visible on the page. Decided: ADR 0035 (the business decrypts), ADR 0036 (own-domain links), ADR 0037 (categories, not published here), ADR 0069 (the inbox, keys with the company), ADR 0070 (flat fee per CNPJ plus agent seats; amounts open), ADR 0080 (Pix charge cards for verified companies, planned), ADR 0081 (structured questions), ADR 0082 (the inbox carries the Bipe channel only; Bipe's API is its own design; claim no compatibility with another platform's API).",
     "pt": {
       "nav": "Empresas",
       "title": "Atenda seus clientes num lugar onde ninguém se passa por você.",
-      "lede": "O Bipe é gratuito para as pessoas e se paga com empresas. Sua equipe atende o WhatsApp e o Bipe numa caixa de entrada só, com o selo de CNPJ verificado. Esta página explica a proposta. Ela ainda está em estudo, e nada aqui está à venda.",
+      "lede": "O Bipe é gratuito para as pessoas e se paga com empresas. Os dados e os servidores ficam no Brasil. Sua empresa tem o selo de CNPJ verificado, um nome que ninguém copia e uma caixa de entrada para a equipe toda. Esta página explica a proposta. Ela ainda está em estudo, e nada aqui está à venda.",
       "label": "Proposta em estudo",
       "sections": [
         {
           "heading": "Por que sua empresa estaria aqui",
           "points": [
+            "Os dados e os servidores ficam no Brasil, sob a lei brasileira.",
             "Só a sua empresa usa o seu nome. Nome de banco, loja ou órgão público fica reservado para a conta com CNPJ verificado, e o falso atendente não consegue se passar por você.",
             "O cliente vê o selo e o CNPJ em toda conversa com você.",
-            "Sua equipe atende o WhatsApp e o Bipe na mesma caixa de entrada. Você não troca de número.",
-            "No Bipe não tem preço por mensagem. Cada conversa que vem para o Bipe sai da conta do WhatsApp.",
-            "Os dados e os servidores ficam no Brasil, sob a lei brasileira."
+            "Uma cobrança por Pix mostra o nome e o CNPJ verificados de quem vai receber. O cliente paga no app do banco. Planejado.",
+            "No Bipe não tem preço por mensagem."
           ]
         },
         {
           "heading": "Uma caixa de entrada para a equipe toda",
           "points": [
-            "Uma fila só para WhatsApp e Bipe. Cada conversa mostra de onde veio.",
+            "A equipe toda atende na mesma fila.",
             "Atribua, transfira e assuma conversas. Cada conversa tem um responsável.",
             "Notas internas que o cliente não vê, respostas prontas e modelos aprovados.",
+            "Perguntas com opções: o cliente toca na resposta, sem digitar 1 ou 2.",
             "Para quem gerencia: equipes, filas, horário de atendimento, tempo de resposta e avaliação do cliente.",
-            "As conversas do Bipe só abrem nos aparelhos da sua equipe. Nem o Bipe lê."
+            "As conversas só abrem nos aparelhos da sua equipe. Nem o Bipe lê."
           ]
         },
         {
-          "heading": "Do WhatsApp para o Bipe, sem parar o atendimento",
+          "heading": "Seus sistemas e seus clientes",
           "points": [
-            "Seu número do WhatsApp continua. A API do WhatsApp entra na mesma caixa de entrada.",
-            "Quem já usa a API do WhatsApp troca o endereço e a chave de acesso, não o código.",
-            "Seus modelos e respostas prontas vêm junto.",
-            "O atendente manda um link na conversa do WhatsApp. O cliente toca e continua a mesma conversa no Bipe, com o mesmo atendente.",
-            "Empresas menores podem usar um parceiro que instala e roda tudo para elas."
+            "A API do Bipe liga os seus sistemas: um endereço para enviar mensagens, modelos e perguntas, e um aviso de volta quando o cliente escreve ou responde.",
+            "Suas respostas prontas e seus modelos entram por um arquivo.",
+            "Se você usa uma plataforma de atendimento, ela pode trazer o Bipe como mais um canal pela mesma API.",
+            "Empresas menores podem usar um parceiro que instala e roda tudo para elas.",
+            "O cliente chega pelo seu site, pela nota ou por um QR code no balcão, e escreve primeiro."
           ]
         },
         {
@@ -2045,7 +2059,7 @@
         {
           "heading": "As regras que protegem o cliente",
           "points": [
-            "A empresa só manda mensagem para quem aceitou receber.",
+            "A empresa só manda mensagem para quem escreveu para ela antes.",
             "O app mostra quando quem responde é um programa.",
             "Link em mensagem de empresa só abre se for do site da própria empresa.",
             "Empresa que recebe muito bloqueio e denúncia passa a poder mandar menos."
@@ -2056,7 +2070,7 @@
           "points": [
             "O valor da mensalidade e do atendente a mais.",
             "Quais empresas entram primeiro no piloto.",
-            "A caixa de entrada e a API ainda não existem."
+            "A caixa de entrada e a API ainda não estão no ar."
           ]
         }
       ],
@@ -2067,37 +2081,38 @@
     "en": {
       "nav": "Business",
       "title": "Serve your customers where nobody can pretend to be you.",
-      "lede": "Bipe is free for people and pays for itself through companies. Your team answers WhatsApp and Bipe in one inbox, with the verified CNPJ seal. This page explains the proposal. It is still under study, and nothing here is for sale.",
+      "lede": "Bipe is free for people and pays for itself through companies. Data and servers stay in Brazil. Your company gets the verified CNPJ seal, a name nobody can copy and one inbox for the whole team. This page explains the proposal. It is still under study, and nothing here is for sale.",
       "label": "Proposal under study",
       "sections": [
         {
           "heading": "Why your company would be here",
           "points": [
+            "Data and servers stay in Brazil, under Brazilian law.",
             "Only your company uses your name. Bank, shop and government names are kept for the account with a verified CNPJ, so fake support cannot copy you.",
             "Customers see the seal and the CNPJ in every chat with you.",
-            "Your team answers WhatsApp and Bipe in the same inbox. You keep your number.",
-            "Bipe has no price per message. Every chat that moves to Bipe comes off your WhatsApp bill.",
-            "Data and servers stay in Brazil, under Brazilian law."
+            "A Pix charge shows the verified name and CNPJ of who receives the money. The customer pays in the bank app. Planned.",
+            "Bipe has no price per message."
           ]
         },
         {
           "heading": "One inbox for the whole team",
           "points": [
-            "One queue for WhatsApp and Bipe. Each chat shows where it came from.",
+            "The whole team answers in the same queue.",
             "Assign, transfer and take chats. Each chat has one owner.",
             "Internal notes the customer never sees, saved replies and approved templates.",
+            "Questions with options: the customer taps an answer instead of typing 1 or 2.",
             "For managers: teams, queues, opening hours, response time and customer ratings.",
-            "Bipe chats open only on your team's devices. Not even Bipe can read them."
+            "Chats open only on your team's devices. Not even Bipe can read them."
           ]
         },
         {
-          "heading": "From WhatsApp to Bipe without stopping service",
+          "heading": "Your systems and your customers",
           "points": [
-            "Your WhatsApp number stays. The WhatsApp API comes into the same inbox.",
-            "If you already use the WhatsApp API, you change the address and the access key, not your code.",
-            "Your templates and saved replies come along.",
-            "The agent sends a link in the WhatsApp chat. The customer taps it and continues the same chat on Bipe, with the same agent.",
-            "Smaller companies can use a partner that installs and runs it for them."
+            "Bipe's API connects your systems: one address to send messages, templates and questions, and a notice back when the customer writes or answers.",
+            "Your saved replies and templates come in from a file.",
+            "If you use a customer service platform, it can add Bipe as one more channel through the same API.",
+            "Smaller companies can use a partner that installs and runs it for them.",
+            "Customers come from your site, your receipts or a QR code at the counter, and they write first."
           ]
         },
         {
@@ -2112,7 +2127,7 @@
         {
           "heading": "The rules that protect customers",
           "points": [
-            "A company only messages people who agreed to receive messages.",
+            "A company only messages people who wrote to it first.",
             "The app shows when a program is answering.",
             "A link in a company's message opens only if it points to the company's own site.",
             "A company that gets many blocks and reports can send less."
@@ -2123,7 +2138,7 @@
           "points": [
             "The monthly fee and the fee per extra agent.",
             "Which companies join the pilot first.",
-            "The inbox and the API do not exist yet."
+            "The inbox and the API are not live yet."
           ]
         }
       ],
@@ -2181,7 +2196,32 @@
       ],
       "cta": "Sua organização quer construir o Bipe junto? Fale com a gente.",
       "ctaSubject": "Bipe: parceria",
-      "aboutLink": "Sua organização quer ajudar a sustentar o Bipe? Veja como ser parceira."
+      "aboutLink": "Sua organização quer ajudar a sustentar o Bipe? Veja como ser parceira.",
+      "card": {
+        "title": "Um app de mensagens que o Brasil sustenta junto.",
+        "line": "Para organizações que querem ser parceiras do Bipe."
+      },
+      "form": {
+        "organisation": "Organização",
+        "name": "Seu nome",
+        "email": "E-mail",
+        "kind": "Tipo de organização",
+        "kinds": {
+          "funder": "Financiador ou fundação",
+          "tech": "Tecnologia ou telecomunicações",
+          "bank": "Banco ou fintech",
+          "research": "Universidade ou pesquisa",
+          "civil": "Sociedade civil",
+          "public": "Órgão público",
+          "other": "Outro"
+        },
+        "message": "Como vocês querem ajudar? (opcional)",
+        "submit": "Enviar",
+        "done": "Recebemos. A gente responde por e-mail.",
+        "error": "Não deu para enviar. Tente de novo ou escreva para o e-mail abaixo.",
+        "note": "Usamos esses dados só para responder. Eles são apagados depois de um ano.",
+        "orEmail": "Prefere e-mail?"
+      }
     },
     "en": {
       "nav": "Partners",
@@ -2230,19 +2270,44 @@
       ],
       "cta": "Does your organisation want to build Bipe with us? Write to us.",
       "ctaSubject": "Bipe: partnership",
-      "aboutLink": "Does your organisation want to help carry Bipe? See how to partner."
+      "aboutLink": "Does your organisation want to help carry Bipe? See how to partner.",
+      "card": {
+        "title": "A messenger Brazil carries together.",
+        "line": "For organisations that want to partner with Bipe."
+      },
+      "form": {
+        "organisation": "Organisation",
+        "name": "Your name",
+        "email": "Email",
+        "kind": "Kind of organisation",
+        "kinds": {
+          "funder": "Funder or foundation",
+          "tech": "Technology or telecom",
+          "bank": "Bank or fintech",
+          "research": "University or research",
+          "civil": "Civil society",
+          "public": "Public body",
+          "other": "Other"
+        },
+        "message": "How would you like to help? (optional)",
+        "submit": "Send",
+        "done": "Got it. We will answer by email.",
+        "error": "Could not send. Try again or write to the address below.",
+        "note": "We use this only to answer you. It is deleted after one year.",
+        "orEmail": "Prefer email?"
+      }
     }
   },
   "technical": {
     "pt": {
       "nav": "Tecnologia",
       "title": "Feito sobre o Matrix",
-      "lede": "Protocolo aberto, apps nativos, servidores no Brasil. Código aberto, AGPL-3.0."
+      "lede": "Protocolo aberto, apps nativos, servidores no Brasil. O código vai ser público em breve, com licença AGPL-3.0."
     },
     "en": {
       "nav": "Technology",
       "title": "Built on Matrix",
-      "lede": "Open protocol, native apps, servers in Brazil. Open source, AGPL-3.0."
+      "lede": "Open protocol, native apps, servers in Brazil. The code will be public soon, under AGPL-3.0."
     },
     "groups": [
       {

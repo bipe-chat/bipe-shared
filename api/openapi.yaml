@@ -444,6 +444,24 @@ paths:
         "202": { description: Accepted }
         "400": { $ref: "#/components/responses/Error" }
         "429": { $ref: "#/components/responses/Error" }
+  /v1/partners:
+    post:
+      summary: Ask to partner with Bipe (organisations)
+      description: >
+        No auth. Called from the partner page on the public site (CORS allows https://bipe.chat).
+        Rate-limited per IP and globally. Always answers 202 for a well-formed request, the
+        honeypot included. The API stores the request and emails a notice to the partner inbox
+        (BIPE_PARTNERS_TO) when outgoing email is on. Requests are deleted after 365 days or on
+        request. ADR 0067, issue bipe#177.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: { $ref: "#/components/schemas/PartnerRequest" }
+      responses:
+        "202": { description: Accepted }
+        "400": { $ref: "#/components/responses/Error" }
+        "429": { $ref: "#/components/responses/Error" }
   /v1/me/invites:
     get:
       summary: The caller's personal invites and quota
@@ -1052,6 +1070,17 @@ components:
         platform: { type: string, enum: [android, ios, other], description: "The platform the person waits for." }
         lang: { type: string, enum: [pt, en], default: pt, description: "Language of the one email Bipe sends." }
         source: { type: string, maxLength: 64, pattern: "^[a-z0-9:/_.-]*$", description: "Where the form was: the page path, plus ':' and the headline arm when a test runs (issue #77), for example /baixar/ or /:h2." }
+        website: { type: string, maxLength: 200, description: "Honeypot. People leave it empty; a non-empty value is accepted and dropped." }
+    PartnerRequest:
+      type: object
+      required: [organisation, name, email, kind]
+      properties:
+        organisation: { type: string, minLength: 1, maxLength: 200 }
+        name: { type: string, minLength: 1, maxLength: 120, description: "The contact person." }
+        email: { type: string, format: email, maxLength: 254 }
+        kind: { type: string, enum: [funder, tech, bank, research, civil, public, other], description: "Kind of organisation, as listed on the partner page." }
+        message: { type: string, maxLength: 2000, description: "How the organisation wants to help. Optional." }
+        lang: { type: string, enum: [pt, en], default: pt }
         website: { type: string, maxLength: 200, description: "Honeypot. People leave it empty; a non-empty value is accepted and dropped." }
     SignupRequest:
       type: object

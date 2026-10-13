@@ -9,6 +9,7 @@
     { "id": "cetic2025", "name": "Privacidade e proteção de dados pessoais 2025, resumo executivo", "publisher": "Cetic.br, NIC.br e CGI.br", "url": "https://cetic.br/media/docs/publicacoes/2/pt-br/20260831092525/PRIVACIDADE_2025_RE%20PT.pdf", "date": "2026-08-31", "kind": "primary" },
     { "id": "datasenado2024", "name": "Panorama Político 2024: golpes digitais atingem 24% dos brasileiros", "publisher": "Instituto DataSenado", "url": "https://www12.senado.leg.br/institucional/datasenado/publicacaodatasenado?id=golpes-digitais-atingem-24-dos-brasileiros-aponta-21a-edicao-da-pesquisa-panorama-politico", "date": "2024-10-01", "kind": "primary" },
     { "id": "febraban2025", "name": "Golpe da Falsa Venda é o mais aplicado contra clientes bancários no 1º semestre do ano", "publisher": "Febraban", "url": "https://portal.febraban.org.br/noticia/4381/pt-br/", "date": "2025-11-11", "kind": "primary" },
+    { "id": "ibgePib2024", "name": "PIB cresce 3,4% em 2024 e fecha o ano em R$ 11,7 trilhões", "publisher": "IBGE", "url": "https://agenciadenoticias.ibge.gov.br/agencia-sala-de-imprensa/42774-pib-cresce-3-4-em-2024-e-fecha-o-ano-em-r-11-7-trilhoes.html", "date": "2025-03-07", "kind": "primary" },
     { "id": "gasa2026", "name": "State of Scams in Brazil 2026", "publisher": "Global Anti-Scam Alliance", "url": "https://gasa.org/knowledge-base/reports/state-of-scams-in-brazil-2026", "date": "2026-08-06", "kind": "secondary" },
     { "id": "glossario2025", "name": "Glossário de Tipologias de Fraudes e Golpes Digitais", "publisher": "Ministério da Justiça e Segurança Pública e Febraban (Aliança Nacional de Combate a Fraudes Bancárias Digitais)", "url": "https://www.gov.br/mj/pt-br/assuntos/alianca-nacional-de-combate-a-fraudes-bancarias-digitais/glossario_final_iniciativa_1-8_v10.pdf", "date": "2025-10", "kind": "primary" },
     { "id": "febWhatsapp", "name": "Golpe do Whatsapp", "publisher": "Febraban", "url": "https://portal.febraban.org.br/DetalheAntifraude/7/pt-br/", "date": "2025-01-21", "kind": "primary" },
@@ -60,7 +61,7 @@
     { "id": "aenAmor", "name": "Dia dos Namorados: PCPR alerta para golpes amorosos e orienta sobre formas de prevenção", "publisher": "Governo do Paraná (Polícia Civil do Paraná)", "url": "https://www.parana.pr.gov.br/aen/Noticia/Dia-dos-Namorados-PCPR-alerta-para-golpes-amorosos-e-orienta-sobre-formas-de-prevencao", "date": "2026-06-12", "kind": "primary" },
     { "id": "pcspPerguntas", "name": "Delitos praticados por meios eletrônicos: perguntas e respostas", "publisher": "Polícia Civil do Estado de São Paulo", "url": "https://www.policiacivil.sp.gov.br/portal/imagens/CRIMES%20CIBERN%C3%89TICOS%20-%20PERGUNTAS%20E%20RESPOSTAS%20V2.pdf", "date": "2021-01", "kind": "primary" }
   ],
-  "hero": ["records2025", "lostMoney", "messagingApps", "pixLoss", "noCourt"],
+  "hero": ["records2025", "lostMoney", "messagingApps", "digitalLoss", "noCourt"],
   "stats": [
     {
       "id": "records2025", "source": "anuario2026",
@@ -76,6 +77,12 @@
       "id": "messagingApps", "source": "cetic2025",
       "pt": { "value": "84%", "label": "de quem teve tentativa de golpe com os próprios dados foi procurado por app de mensagem", "period": "2025" },
       "en": { "value": "84%", "label": "of people who had a scam attempt with their own data were approached on a messaging app", "period": "2025" }
+    },
+    {
+      "id": "digitalLoss", "source": "vitimizacao2025", "also": ["ibgePib2024"],
+      "$comment": "Sum of the five totals in Quadro 6 (Pix or boleto, card, undelivered purchase, investment, bank account): R$ 111.930.090.182. Against the 2024 GDP of R$ 11,7 trilhões (IBGE) that is 0,96%.",
+      "pt": { "value": "R$ 111,9 bilhões", "label": "perdidos em golpes digitais em um ano, na estimativa da pesquisa. É cerca de 1% do PIB do Brasil", "period": "jul. 2024 a jun. 2025" },
+      "en": { "value": "R$ 111.9 billion", "label": "lost to digital scams in one year, as the survey estimates. That is about 1% of Brazil's GDP", "period": "Jul 2024 to Jun 2025" }
     },
     {
       "id": "pixLoss", "source": "vitimizacao2025",

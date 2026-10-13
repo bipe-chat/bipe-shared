@@ -1934,8 +1934,8 @@
           "body": "O Bipe é um experimento. Ele testa se dá para ter um app de mensagens feito contra os golpes que acontecem aqui, com os dados no Brasil. Quem começou e cuida do Bipe é a Envisioning, um instituto de pesquisa que estuda desde 2010 como as instituições se adaptam à tecnologia. Hoje ela faz o app e roda os servidores no Brasil. Mas ela não quer ser dona do Bipe, nem tocar ele sozinha."
         },
         {
-          "heading": "Um Pix das conversas",
-          "body": "A ideia é que o Bipe vire uma infraestrutura comum, como o Pix é para os pagamentos: todo banco usa, nenhum banco é dono. Várias organizações sustentariam o Bipe, e nenhuma seria dona dele. Por enquanto isso é uma ideia, não um acordo. O código vai ser público em breve e a rede é aberta, então, se a Envisioning parar, outras pessoas podem continuar. As regras de moderação saem no lançamento."
+          "heading": "Feito pra não ter dono",
+          "body": "A ideia é que o Bipe vire uma infraestrutura comum: várias organizações sustentam, nenhuma é dona, nenhuma muda as regras sozinha. Por enquanto isso é uma ideia, não um acordo. O código vai ser público em breve e a rede é aberta, então, se a Envisioning parar, outras pessoas podem continuar. As regras de moderação saem no lançamento."
         },
         {
           "heading": "Quem paga",
@@ -1960,8 +1960,8 @@
           "body": "Bipe is an experiment. It tests whether Brazil can have a messenger built against the scams that happen here, with the data in Brazil. Envisioning started Bipe and looks after it. Envisioning is a research institute that has studied since 2010 how institutions adapt to technology. Today it makes the app and runs the servers in Brazil. But it does not want to own Bipe or run it alone."
         },
         {
-          "heading": "Shared, like Pix",
-          "body": "The idea is that Bipe becomes common infrastructure, the way Pix is for payments: every bank uses it, no bank owns it. Several organisations would carry Bipe, and none would own it. For now this is an idea, not an agreement. The code goes public soon and the network is open, so others can carry on if Envisioning stops. The moderation rules come out at launch."
+          "heading": "Built to have no owner",
+          "body": "The idea is that Bipe becomes common infrastructure: several organisations carry it, none owns it, none changes the rules alone. For now this is an idea, not an agreement. The code goes public soon and the network is open, so others can carry on if Envisioning stops. The moderation rules come out at launch."
         },
         {
           "heading": "Who pays",

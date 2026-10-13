@@ -106,7 +106,7 @@
     "bipe_scam_warning_receipt": "The message mentions a payment receipt. A screenshot of a receipt does not prove payment. Check in your bank app that the money arrived.",
     "bipe_scam_warning_new_number": "Scammers often pretend to be family and say they have a new number or account. Call the number you already have for the person and check that it is them.",
     "bipe_scam_warning_urgency": "Rush and money requests show up a lot in scams. Before you do anything, check with the person another way.",
-    "bipe_signup_invite_code": "Invite code (optional)",
+    "bipe_signup_invite_code": "Invite code",
     "bipe_signup_invited_by": "Invited by @%1$s",
     "bipe_invite_already_signed_in": "You already have an account. Invites are for people not on Bipe yet.",
     "bipe_invites_title": "Invite people",
@@ -297,6 +297,15 @@
     "bipe_mail_notice_new_device": "Your Bipe account signed in on a new device with the iCloud or Google backup and your PIN.\n\nIf it was not you, open Bipe on one of your devices, change your PIN and sign out of the devices you do not know.",
     "bipe_mail_notice_pin_changed": "The 8-digit PIN of your Bipe account changed.\n\nIf it was not you, open Bipe on one of your devices and change the PIN.",
     "bipe_mail_notice_email_removed": "This email no longer gets you back into your Bipe account.\n\nIf it was not you, open Bipe on one of your devices and check the recovery email.",
-    "bipe_mail_footer": "This email is from Bipe. Do not reply, because nobody reads this mailbox. Bipe never asks for your PIN by email."
+    "bipe_mail_footer": "This email is from Bipe. Do not reply, because nobody reads this mailbox. Bipe never asks for your PIN by email.",
+    "bipe_start_begin": "Get started",
+    "bipe_start_have_account": "I already have an account",
+    "bipe_start_join_invite": "Join with @%1$s's invite",
+    "bipe_signup_invite_title": "Do you have an invite?",
+    "bipe_signup_invite_body": "For now, Bipe is invite only. Paste the link or the code you got.",
+    "bipe_signup_invite_none": "I don't have an invite",
+    "bipe_signup_invite_none_body": "Ask someone who already uses Bipe for an invite. Everyone has invites to send.",
+    "bipe_signup_name_title": "What's your name?",
+    "bipe_signup_creating": "Creating your account…"
   }
 }

@@ -106,7 +106,7 @@
     "bipe_scam_warning_receipt": "A mensagem fala de comprovante. Print de comprovante não prova pagamento. Confira no app do seu banco se o dinheiro caiu.",
     "bipe_scam_warning_new_number": "Golpista costuma se passar por alguém da família e dizer que está com número ou conta nova. Ligue para o número que você já tem da pessoa e confirme que é ela.",
     "bipe_scam_warning_urgency": "Pressa e pedido de dinheiro aparecem muito em golpes. Antes de fazer qualquer coisa, confirme com a pessoa por outro meio.",
-    "bipe_signup_invite_code": "Código de convite (opcional)",
+    "bipe_signup_invite_code": "Código de convite",
     "bipe_signup_invited_by": "Convite de @%1$s",
     "bipe_invite_already_signed_in": "Você já tem uma conta. O convite é para quem ainda não está no Bipe.",
     "bipe_invites_title": "Convidar pessoas",
@@ -297,6 +297,15 @@
     "bipe_mail_notice_new_device": "Sua conta do Bipe entrou num aparelho novo com o backup do iCloud ou do Google e a sua senha.\n\nSe não foi você, abra o Bipe num dos seus aparelhos, troque a senha e saia dos aparelhos que você não conhece.",
     "bipe_mail_notice_pin_changed": "A senha de 8 números da sua conta do Bipe mudou.\n\nSe não foi você, abra o Bipe num dos seus aparelhos e troque a senha.",
     "bipe_mail_notice_email_removed": "Este e-mail não serve mais para voltar para sua conta do Bipe.\n\nSe não foi você, abra o Bipe num dos seus aparelhos e confira o e-mail de recuperação.",
-    "bipe_mail_footer": "Este e-mail é do Bipe. Não responda, porque ninguém lê esta caixa. O Bipe nunca pede sua senha por e-mail."
+    "bipe_mail_footer": "Este e-mail é do Bipe. Não responda, porque ninguém lê esta caixa. O Bipe nunca pede sua senha por e-mail.",
+    "bipe_start_begin": "Começar",
+    "bipe_start_have_account": "Já tenho conta",
+    "bipe_start_join_invite": "Entrar com o convite de @%1$s",
+    "bipe_signup_invite_title": "Tem um convite?",
+    "bipe_signup_invite_body": "Por enquanto, o Bipe é só com convite. Cole o link ou o código que você recebeu.",
+    "bipe_signup_invite_none": "Não tenho convite",
+    "bipe_signup_invite_none_body": "Peça um convite para alguém que já usa o Bipe. Cada pessoa tem convites para mandar.",
+    "bipe_signup_name_title": "Como você se chama?",
+    "bipe_signup_creating": "Criando sua conta…"
   }
 }

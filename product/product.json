@@ -1807,7 +1807,7 @@
   "about": {
     "pt": {
       "title": "Por que o Bipe existe",
-      "lede": "Pro Brasil ter uma saída: um app de mensagens aberto, brasileiro e independente, que funciona quando as pessoas precisam.",
+      "lede": "Pro Brasil ter uma saída: um app de mensagens aberto, com os dados no Brasil, que não é de uma empresa só.",
       "sections": [
         {
           "heading": "Não precisa ganhar pra valer a pena",
@@ -1818,18 +1818,22 @@
           "body": "O Bipe roda sobre o Matrix, um protocolo aberto de mensagens. Nenhuma empresa e nenhum governo é dono da rede. Os servidores ficam no Brasil, em empresas brasileiras."
         },
         {
-          "heading": "Quem faz",
-          "body": "O Bipe é um projeto da Envisioning, um instituto de pesquisa que estuda desde 2010 como as instituições se adaptam à tecnologia. A Envisioning faz o app, roda os servidores no Brasil e responde pelo serviço. Mas ela não é dona da rede: o Bipe usa o Matrix, um protocolo aberto, e o código vai ser público em breve. Com o código aberto, se a Envisioning parar, outras pessoas podem continuar. As regras de moderação saem no lançamento."
+          "heading": "Um experimento, por enquanto",
+          "body": "O Bipe é um experimento. Ele testa se dá pra ter um app de mensagens feito contra os golpes que acontecem aqui, com os dados no Brasil. Quem começou e cuida do Bipe é a Envisioning, um instituto de pesquisa que estuda desde 2010 como as instituições se adaptam à tecnologia. Hoje ela faz o app e roda os servidores no Brasil. Mas ela não quer ser dona do Bipe, nem tocar ele sozinha."
+        },
+        {
+          "heading": "Um Pix das conversas",
+          "body": "A ideia é que o Bipe vire uma infraestrutura comum, como o Pix é pros pagamentos: todo banco usa, nenhum banco é dono. Várias organizações sustentariam o Bipe, e nenhuma seria dona dele. Por enquanto isso é uma ideia, não um acordo. O código vai ser público em breve e a rede é aberta, então, se a Envisioning parar, outras pessoas podem continuar. As regras de moderação saem no lançamento."
         },
         {
           "heading": "Quem paga",
-          "body": "Quem usa, nunca. Como o Bipe vai se pagar ainda está em aberto. A ideia é que empresas paguem uma mensalidade fixa pela conta verificada. O Bipe não cobra taxa sobre Pix."
+          "body": "Quem usa, nunca. Como o Bipe vai se pagar ainda está em aberto. A ideia é dividir os custos entre quem sustenta o Bipe, e que empresas paguem uma mensalidade fixa pela conta verificada. O Bipe não cobra taxa sobre Pix."
         }
       ]
     },
     "en": {
       "title": "Why Bipe exists",
-      "lede": "So Brazil has a way out: an open, Brazilian, independent messenger that works when people need it.",
+      "lede": "So Brazil has a way out: an open messenger, with its data in Brazil, that no single company owns.",
       "sections": [
         {
           "heading": "It does not need to win to be worth it",
@@ -1840,12 +1844,16 @@
           "body": "Underneath, Bipe uses Matrix, an open messaging protocol. No company and no government owns the network. The servers are in Brazil, run by Brazilian companies."
         },
         {
-          "heading": "Who makes it",
-          "body": "Bipe is a project by Envisioning, a research institute that has studied since 2010 how institutions adapt to technology. Envisioning builds the app, runs the servers in Brazil and answers for the service. It does not own the network: Bipe uses Matrix, an open protocol, and the code goes public soon. With the code open, others can carry on if Envisioning stops. The moderation rules come out at launch."
+          "heading": "An experiment, for now",
+          "body": "Bipe is an experiment. It tests whether Brazil can have a messenger built against the scams that happen here, with the data in Brazil. Envisioning started Bipe and looks after it. Envisioning is a research institute that has studied since 2010 how institutions adapt to technology. Today it makes the app and runs the servers in Brazil. But it does not want to own Bipe or run it alone."
+        },
+        {
+          "heading": "Shared, like Pix",
+          "body": "The idea is that Bipe becomes common infrastructure, the way Pix is for payments: every bank uses it, no bank owns it. Several organisations would carry Bipe, and none would own it. For now this is an idea, not an agreement. The code goes public soon and the network is open, so others can carry on if Envisioning stops. The moderation rules come out at launch."
         },
         {
           "heading": "Who pays",
-          "body": "Users, never. How Bipe is funded is still open. The idea is that businesses pay a flat monthly fee for a verified account. Bipe takes no fee on Pix."
+          "body": "Users, never. How Bipe is funded is still open. The idea is to share the costs among the organisations that carry Bipe, and that businesses pay a flat monthly fee for a verified account. Bipe takes no fee on Pix."
         }
       ]
     }
@@ -1868,11 +1876,11 @@
   "origin": {
     "pt": {
       "title": "Brasileiro, aberto e independente",
-      "body": "Os servidores ficam no Brasil, em empresas brasileiras. O Bipe roda sobre uma rede aberta que nenhuma empresa controla sozinha. O código vai ser público em breve."
+      "body": "Os servidores ficam no Brasil, em empresas brasileiras. O Bipe roda sobre uma rede aberta e começou como um experimento que não quer ter dono: a ideia é que ele seja de todo mundo, não de uma empresa só. O código vai ser público em breve."
     },
     "en": {
       "title": "Brazilian, open and independent",
-      "body": "The servers are in Brazil, run by Brazilian companies. Underneath, Bipe uses an open network that no single company controls. The code goes public soon."
+      "body": "The servers are in Brazil, run by Brazilian companies. Bipe runs on an open network and started as an experiment that wants no single owner: the idea is that it belongs to everyone, not to one company. The code goes public soon."
     }
   },
   "business": {
@@ -1889,7 +1897,8 @@
             "Só a sua empresa usa o seu nome. Nome de banco, loja ou órgão público fica reservado pra conta com CNPJ verificado, e o falso atendente não consegue se passar por você.",
             "O cliente vê o selo e o CNPJ em toda conversa com você.",
             "Uma cobrança por Pix mostra o CNPJ que vai receber antes de o cliente pagar.",
-            "Os dados e os servidores ficam no Brasil, sob a lei brasileira."
+            "Os dados e os servidores ficam no Brasil, sob a lei brasileira.",
+            "O Bipe não é de uma plataforma só. A ideia é uma infraestrutura comum, sustentada por várias organizações, sem um dono que mude as regras sozinho."
           ]
         },
         {
@@ -1943,7 +1952,8 @@
             "Only your company uses your name. Bank, shop and government names are kept for the account with a verified CNPJ, so fake support cannot copy you.",
             "Customers see the seal and the CNPJ in every chat with you.",
             "A Pix charge shows the CNPJ that receives the money before the customer pays.",
-            "Data and servers stay in Brazil, under Brazilian law."
+            "Data and servers stay in Brazil, under Brazilian law.",
+            "Bipe does not belong to one platform. The idea is common infrastructure, carried by several organisations, with no single owner that changes the rules alone."
           ]
         },
         {

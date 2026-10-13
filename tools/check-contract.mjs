@@ -27,14 +27,14 @@ const MODELS = {
   PublicProfile: { ios: "BipePublicProfile", android: "BipePublicProfile" },
   MyProfile: { ios: "BipeMyProfile", android: "BipeMyProfile" },
   ProfileUpdate: { ios: "BipeProfileUpdate", android: "BipeProfileUpdate" },
-  // Device-first accounts (ADR 0057): the app work is bipe-chat/bipe#153 (iOS) and #154 (Android). See DEVICE_FIRST_GAPS.
-  AccountStatus: { ios: null, android: null },
-  Recovery: { ios: null, android: null },
-  Credentials: { ios: null, android: null },
-  RecoveryStarted: { ios: null, android: null },
-  RecoveryClaim: { ios: null, android: null },
+  // Device-first accounts (ADR 0057): iOS done in bipe-chat/bipe#153; Android is #154. See DEVICE_FIRST_GAPS.
+  AccountStatus: { ios: "BipeAccountStatus", android: null },
+  Recovery: { ios: "BipeRecovery", android: null },
+  Credentials: { ios: "BipeCredentials", android: null },
+  RecoveryStarted: { ios: "BipeRecoveryStarted", android: null },
+  RecoveryClaim: { ios: "BipeRecoveryClaim", android: null },
   // Handle change history (ADR 0066): the timeline line is bipe-chat/bipe#166, built with #153 (iOS) and #154 (Android).
-  HandleChange: { ios: null, android: null },
+  HandleChange: { ios: "BipeHandleChange", android: null },
 };
 
 // Contract enum -> client enum per platform. "Error.error" is the enum on the error property of Error.
@@ -44,7 +44,7 @@ const ENUMS = {
   HandleProblem: { ios: "BipeHandleProblem", android: "BipeHandleProblem" },
   ProfileProblem: { ios: "BipeProfileProblem", android: "BipeProfileProblem" },
   "Error.error": { ios: "BipeAPIErrorCode", android: "BipeApiErrorCode" },
-  PinProblem: { ios: null, android: null },
+  PinProblem: { ios: "BipePinProblem", android: null },
 };
 
 // Schemas the apps do not model, with the reason.
@@ -78,7 +78,8 @@ const GAPS = {
 };
 
 // Device-first accounts (ADR 0057, ADR 0059): contract first, apps in bipe-chat/bipe#153 (iOS) and #154 (Android).
-const DEVICE_FIRST_ISSUE = { ios: "bipe-chat/bipe#153 (iOS device-first accounts)", android: "bipe-chat/bipe#154 (Android device-first accounts)" };
+// iOS closed these gaps (bipe-chat/bipe#153); Android still has them.
+const DEVICE_FIRST_ISSUE = { android: "bipe-chat/bipe#154 (Android device-first accounts)" };
 const DEVICE_FIRST_GAPS = [
   "AccountStatus", "Recovery", "Credentials", "RecoveryStarted", "RecoveryClaim", "PinProblem",
   "SignupRequest.pin", "SignupRequest.lang", "SignupResponse.password", "SignupResponse.recovery_token",
@@ -87,7 +88,8 @@ const DEVICE_FIRST_GAPS = [
 for (const [platform, issue] of Object.entries(DEVICE_FIRST_ISSUE)) for (const g of DEVICE_FIRST_GAPS) GAPS[`${platform}:${g}`] = issue;
 
 // Handle changes in chats (ADR 0066): contract first, the timeline line in the apps follows.
-const HANDLE_CHANGE_ISSUE = { ios: "bipe-chat/bipe#166 (iOS handle change line, with #153)", android: "bipe-chat/bipe#166 (Android handle change line, with #154)" };
+// iOS closed this gap (bipe-chat/bipe#166, with #153); Android still has it.
+const HANDLE_CHANGE_ISSUE = { android: "bipe-chat/bipe#166 (Android handle change line, with #154)" };
 const HANDLE_CHANGE_GAPS = ["HandleChange"];
 for (const [platform, issue] of Object.entries(HANDLE_CHANGE_ISSUE)) for (const g of HANDLE_CHANGE_GAPS) GAPS[`${platform}:${g}`] = issue;
 

@@ -2,7 +2,7 @@
 // Usage: node tools/gen.mjs [--swift <dir>] [--kotlin <dir>] [--api <dir>] [--ios-version <dir>] [--android-version <dir>]
 //   Default Swift output: ../bipe-ios/Components/BipeKit/Sources/BipeKit/Generated
 //   Default Kotlin output: ../bipe-android/libraries/bipe/src/main (kotlin/ and res/ below it)
-//   Default version output (ADR 0076): ../bipe-ios/Tools/Bipe/version.env, ../bipe-android/plugins/src/main/kotlin/BipeVersion.kt
+//   Default version output (ADR 0088): ../bipe-ios/Tools/Bipe/version.env, ../bipe-android/plugins/src/main/kotlin/BipeVersion.kt
 import { copyFileSync, existsSync, mkdirSync, readdirSync, writeFileSync } from "node:fs";
 import { dirname, join, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
@@ -364,7 +364,7 @@ if (existsSync(resolve(apiOut, "../.."))) {
   console.log(`wrote API registries to ${apiOut}`);
 }
 
-// App version and build number (ADR 0076). Written when the flag is given or the sibling repo exists.
+// App version and build number (ADR 0088). Written when the flag is given or the sibling repo exists.
 const version = loadVersion(root);
 for (const [flag, fallback, repoDepth, file, render] of [
   ["--ios-version", "../bipe-ios/Tools/Bipe", "../..", "version.env", iosVersionEnv],

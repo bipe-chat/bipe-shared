@@ -550,8 +550,20 @@
     {
       "id": "pix-check",
       "name": "Conferir no Bipe",
-      "ios": "planned",
-      "android": "planned",
+      "ios": {
+        "status": "built",
+        "evidence": [
+          "bipe-ios/Components/BipeKit/Sources/BipeKit/PixCheck.swift",
+          "bipe-ios/ShareExtension/Sources/View/BipePixCheckView.swift"
+        ]
+      },
+      "android": {
+        "status": "built",
+        "evidence": [
+          "bipe-android/libraries/bipe/src/main/kotlin/io/element/android/libraries/bipe/PixCheck.kt",
+          "bipe-android/libraries/bipe/src/main/kotlin/io/element/android/libraries/bipe/pix/BipePixCheckView.kt"
+        ]
+      },
       "web": {
         "status": "n/a",
         "reason": "A share target on the phone"
@@ -1141,6 +1153,13 @@
       "ios": "A flag on the device (once per device)",
       "android": "The poll rule in the account's push rules (once per account)",
       "reason": "Android has no per-session store in libraries/bipe; same result for the user",
+      "kind": "idiom"
+    },
+    {
+      "area": "Conferir no Bipe: close",
+      "ios": "Back to the app that shared",
+      "android": "Back to Bipe",
+      "reason": "The iOS check runs in the share extension; Android shows it in the app (ADR 0091)",
       "kind": "idiom"
     }
   ]

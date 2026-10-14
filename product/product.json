@@ -409,7 +409,13 @@
           "The warning says what to do: call the person on the number you already have, check in your bank app that the money arrived.",
           "It catches the most common scams in Brazil: a rushed Pix, a Pix key pasted in the chat, a boleto, a receipt screenshot, a new number and a fake link that copies a bank, a store or the government."
         ]
-      }
+      },
+      "code": [
+        "scam-patterns",
+        "scam-ios",
+        "scam-android",
+        "scam-model"
+      ]
     },
     {
       "id": "requests",
@@ -621,7 +627,11 @@
           "Bipe keeps only the result. Your CPF is not stored, and one CPF verifies one account only.",
           "It is optional. An account without a seal works as normal."
         ]
-      }
+      },
+      "code": [
+        "badge-ios",
+        "badge-android"
+      ]
     },
     {
       "id": "cnpj-badge",
@@ -655,7 +665,10 @@
           "The proof is a signature with the institution's e-CNPJ certificate.",
           "With the seal, a reserved name can belong to it alone."
         ]
-      }
+      },
+      "code": [
+        "cnpj-api"
+      ]
     },
     {
       "id": "reserved-names",
@@ -690,7 +703,10 @@
           "The check compares the simplified form of the name, with no accents and no disguised letters.",
           "Only the account with the right CNPJ and the seal can use the name."
         ]
-      }
+      },
+      "code": [
+        "reserved-names"
+      ]
     },
     {
       "id": "lookalikes",
@@ -724,7 +740,12 @@
           "So @itau, @1tau and @it4u count as the same name.",
           "It applies to usernames and to the name shown in the chat."
         ]
-      }
+      },
+      "code": [
+        "homoglyphs",
+        "names-ios",
+        "names-android"
+      ]
     },
     {
       "id": "family-check",
@@ -759,7 +780,10 @@
           "If the verified name doesn't match, the app asks once whether it is the same person. The answer stays on your phone.",
           "If the account's verified name changes, the question comes back."
         ]
-      }
+      },
+      "code": [
+        "family-terms"
+      ]
     },
     {
       "id": "handles",
@@ -793,7 +817,13 @@
           "There is no list and no search. Only people who know your exact @ or have your link can find you.",
           "You can change it every 30 days. A handle you drop is held for 90 days, so nobody can take it and pose as you."
         ]
-      }
+      },
+      "code": [
+        "handles-rules",
+        "handles-ios",
+        "handles-android",
+        "handles-api"
+      ]
     },
     {
       "id": "profile-links",
@@ -827,7 +857,11 @@
           "The QR code does the same: the person points the camera and talks to you.",
           "Your number does not show in the link or in the QR code."
         ]
-      }
+      },
+      "code": [
+        "links-ios",
+        "links-android"
+      ]
     },
     {
       "id": "public-profile",
@@ -861,7 +895,11 @@
           "It shows only your name, photo and bio. Your number never shows.",
           "It shows up in no search. Only people with your link see it."
         ]
-      }
+      },
+      "code": [
+        "public-profile-ios",
+        "public-profile-android"
+      ]
     },
     {
       "id": "invites",
@@ -894,7 +932,13 @@
           "Someone who joins with your invite lands straight in your chat, with no request step.",
           "Bipe opens by invite for now, so it grows at a pace where every account gets proper care."
         ]
-      }
+      },
+      "code": [
+        "invite-rules",
+        "invites-ios",
+        "invites-android",
+        "invites-api"
+      ]
     },
     {
       "id": "phone-discovery",
@@ -1065,8 +1109,8 @@
       "id": "open-source",
       "area": "privacy",
       "status": {
-        "ios": "planned",
-        "android": "planned"
+        "ios": "policy",
+        "android": "policy"
       },
       "slug": {
         "pt": "codigo-aberto",
@@ -1077,18 +1121,18 @@
       ],
       "pt": {
         "name": "Código aberto",
-        "body": "O código vai ser público em breve, para qualquer pessoa conferir.",
+        "body": "O código é público, para qualquer pessoa conferir.",
         "points": [
-          "O código dos apps, do servidor e das regras de golpe vai ser público.",
+          "O código dos apps, do servidor e das regras de golpe é público, no GitHub.",
           "Qualquer pessoa pode conferir que o app faz o que diz.",
           "A licença é livre: dá para estudar, mudar e rodar o seu."
         ]
       },
       "en": {
         "name": "Open source",
-        "body": "The code goes public soon, so anyone can check it.",
+        "body": "The code is public, so anyone can check it.",
         "points": [
-          "The code of the apps, the server and the scam rules will be public.",
+          "The code of the apps, the server and the scam rules is public, on GitHub.",
           "Anyone can check that the app does what it says.",
           "The licence is free: you can study it, change it and run your own."
         ]
@@ -1225,7 +1269,11 @@
           "Bring the packs you already use in other apps.",
           "Works in one-to-one chats and in groups."
         ]
-      }
+      },
+      "code": [
+        "stickers-ios",
+        "stickers-android"
+      ]
     },
     {
       "id": "group-types",
@@ -1259,7 +1307,10 @@
           "When you come back, a block at the top shows what you missed: mentions, replies, polls and pinned messages.",
           "All of this runs on your phone. The server can't read the group."
         ]
-      }
+      },
+      "code": [
+        "quiet-groups-android"
+      ]
     },
     {
       "id": "polls",
@@ -1518,7 +1569,7 @@
           },
           {
             "heading": "Dá para conferir",
-            "body": "A criptografia é a do Matrix, um padrão aberto. O código do app, do servidor e das regras de golpe vai ser público, com licença livre. Os servidores ficam no Brasil, numa nuvem de empresa brasileira."
+            "body": "A criptografia é a do Matrix, um padrão aberto. O código do app, do servidor e das regras de golpe é público, com licença livre. Os servidores ficam no Brasil, numa nuvem de empresa brasileira."
           },
           {
             "heading": "Conta sem SMS e sem anúncio",
@@ -1549,7 +1600,7 @@
           },
           {
             "heading": "You can check it",
-            "body": "The encryption is Matrix, an open standard. The code of the app, the server and the scam rules will be public under a free licence. The servers are in Brazil, in a Brazilian company's cloud."
+            "body": "The encryption is Matrix, an open standard. The code of the app, the server and the scam rules is public under a free licence. The servers are in Brazil, in a Brazilian company's cloud."
           },
           {
             "heading": "An account with no SMS and no ads",
@@ -1980,7 +2031,7 @@
         },
         {
           "heading": "Feito para não ter dono",
-          "body": "A ideia é que o Bipe vire uma infraestrutura comum: várias organizações sustentam, nenhuma é dona, nenhuma muda as regras sozinha. Por enquanto isso é uma ideia, não um acordo. O código vai ser público em breve e a rede é aberta, então, se a Envisioning parar, outras pessoas podem continuar. As regras de moderação saem no lançamento."
+          "body": "A ideia é que o Bipe vire uma infraestrutura comum: várias organizações sustentam, nenhuma é dona, nenhuma muda as regras sozinha. Por enquanto isso é uma ideia, não um acordo. O código é público e a rede é aberta, então, se a Envisioning parar, outras pessoas podem continuar. As regras de moderação saem no lançamento."
         },
         {
           "heading": "Quem paga",
@@ -2006,7 +2057,7 @@
         },
         {
           "heading": "Built to have no owner",
-          "body": "The idea is that Bipe becomes common infrastructure: several organisations carry it, none owns it, none changes the rules alone. For now this is an idea, not an agreement. The code goes public soon and the network is open, so others can carry on if Envisioning stops. The moderation rules come out at launch."
+          "body": "The idea is that Bipe becomes common infrastructure: several organisations carry it, none owns it, none changes the rules alone. For now this is an idea, not an agreement. The code is public and the network is open, so others can carry on if Envisioning stops. The moderation rules come out at launch."
         },
         {
           "heading": "Who pays",
@@ -2033,11 +2084,11 @@
   "origin": {
     "pt": {
       "title": "Brasileiro, aberto e independente",
-      "body": "Os servidores ficam no Brasil, em empresas brasileiras. O Bipe roda sobre uma rede aberta e começou como um experimento que não quer ter dono: a ideia é que ele seja de todo mundo, não de uma empresa só. O código vai ser público em breve."
+      "body": "Os servidores ficam no Brasil, em empresas brasileiras. O Bipe roda sobre uma rede aberta e começou como um experimento que não quer ter dono: a ideia é que ele seja de todo mundo, não de uma empresa só. O código é público."
     },
     "en": {
       "title": "Brazilian, open and independent",
-      "body": "The servers are in Brazil, run by Brazilian companies. Bipe runs on an open network and started as an experiment that wants no single owner: the idea is that it belongs to everyone, not to one company. The code goes public soon."
+      "body": "The servers are in Brazil, run by Brazilian companies. Bipe runs on an open network and started as an experiment that wants no single owner: the idea is that it belongs to everyone, not to one company. The code is public."
     }
   },
   "business": {
@@ -2332,12 +2383,12 @@
     "pt": {
       "nav": "Tecnologia",
       "title": "Feito sobre o Matrix",
-      "lede": "Protocolo aberto, apps nativos, servidores no Brasil. O código vai ser público em breve, com licença AGPL-3.0."
+      "lede": "Protocolo aberto, apps nativos, servidores no Brasil. O código é público, com licença AGPL-3.0."
     },
     "en": {
       "nav": "Technology",
       "title": "Built on Matrix",
-      "lede": "Open protocol, native apps, servers in Brazil. The code will be public soon, under AGPL-3.0."
+      "lede": "Open protocol, native apps, servers in Brazil. The code is public, under AGPL-3.0."
     },
     "groups": [
       {
@@ -2414,7 +2465,10 @@
             "en": {
               "name": "Shared rules",
               "body": "Reserved names, scam patterns and app text in one repository, generated for each app."
-            }
+            },
+            "code": [
+              "strings"
+            ]
           }
         ]
       },
@@ -2449,7 +2503,12 @@
             "en": {
               "name": "Local scam warning",
               "body": "The check runs on the phone, after decryption. Nothing leaves the device."
-            }
+            },
+            "code": [
+              "scam-patterns",
+              "scam-ios",
+              "scam-android"
+            ]
           },
           {
             "id": "ids",
@@ -2519,7 +2578,10 @@
             "en": {
               "name": "Bipe API",
               "body": "TypeScript and Postgres. Invites, handles and CNPJ checks."
-            }
+            },
+            "code": [
+              "api-contract"
+            ]
           },
           {
             "id": "hosting",

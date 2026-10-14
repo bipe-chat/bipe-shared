@@ -30,7 +30,7 @@
     }
   },
   "source": {
-    "$comment": "Source code. A repo appears on the site only when public is true. Flip public when the GitHub repo is public (ADR 0024).",
+    "$comment": "Source code. A repo appears on the site only when public is true (ADR 0024). code: deep links to files, by id. product.json features and technical parts name them in code. A path ending in / is a folder. bipe-web's build fails when a linked path is missing in the sibling repo.",
     "org": "https://github.com/bipe-chat",
     "repos": [
       {
@@ -88,6 +88,239 @@
         "public": true,
         "pt": "Ponte e caixa de entrada para empresas",
         "en": "Business bridge and inbox"
+      }
+    ],
+    "code": [
+      {
+        "id": "scam-patterns",
+        "repo": "shared",
+        "path": "registries/scam-patterns.json",
+        "pt": "Padrões de golpe",
+        "en": "Scam patterns"
+      },
+      {
+        "id": "scam-ios",
+        "repo": "ios",
+        "path": "Components/BipeKit/Sources/BipeKit/ScamDetector.swift",
+        "pt": "Detector de golpe no iPhone",
+        "en": "Scam detector on iPhone"
+      },
+      {
+        "id": "scam-android",
+        "repo": "android",
+        "path": "libraries/bipe/src/main/kotlin/io/element/android/libraries/bipe/ScamDetector.kt",
+        "pt": "Detector de golpe no Android",
+        "en": "Scam detector on Android"
+      },
+      {
+        "id": "scam-model",
+        "repo": "ml",
+        "path": "",
+        "pt": "Modelo de golpes em português",
+        "en": "Portuguese scam model"
+      },
+      {
+        "id": "handles-rules",
+        "repo": "shared",
+        "path": "registries/handles.json",
+        "pt": "Regras do @",
+        "en": "Username rules"
+      },
+      {
+        "id": "handles-ios",
+        "repo": "ios",
+        "path": "Components/BipeKit/Sources/BipeKit/BipeHandle.swift",
+        "pt": "@ no iPhone",
+        "en": "Usernames on iPhone"
+      },
+      {
+        "id": "handles-android",
+        "repo": "android",
+        "path": "libraries/bipe/src/main/kotlin/io/element/android/libraries/bipe/BipeHandle.kt",
+        "pt": "@ no Android",
+        "en": "Usernames on Android"
+      },
+      {
+        "id": "handles-api",
+        "repo": "api",
+        "path": "src/handles.ts",
+        "pt": "Diretório de @ no servidor",
+        "en": "Username directory on the server"
+      },
+      {
+        "id": "reserved-names",
+        "repo": "shared",
+        "path": "registries/reserved-names.json",
+        "pt": "Nomes reservados",
+        "en": "Reserved names"
+      },
+      {
+        "id": "homoglyphs",
+        "repo": "shared",
+        "path": "registries/homoglyphs.json",
+        "pt": "Letras disfarçadas",
+        "en": "Disguised letters"
+      },
+      {
+        "id": "names-ios",
+        "repo": "ios",
+        "path": "Components/BipeKit/Sources/BipeKit/NameNormalizer.swift",
+        "pt": "Comparação de nomes no iPhone",
+        "en": "Name matching on iPhone"
+      },
+      {
+        "id": "names-android",
+        "repo": "android",
+        "path": "libraries/bipe/src/main/kotlin/io/element/android/libraries/bipe/NameNormalizer.kt",
+        "pt": "Comparação de nomes no Android",
+        "en": "Name matching on Android"
+      },
+      {
+        "id": "family-terms",
+        "repo": "shared",
+        "path": "registries/family-terms.json",
+        "pt": "Palavras de família",
+        "en": "Family words"
+      },
+      {
+        "id": "links-ios",
+        "repo": "ios",
+        "path": "Components/BipeKit/Sources/BipeKit/BipeProfileLink.swift",
+        "pt": "Links de perfil no iPhone",
+        "en": "Profile links on iPhone"
+      },
+      {
+        "id": "links-android",
+        "repo": "android",
+        "path": "libraries/bipe/src/main/kotlin/io/element/android/libraries/bipe/BipeLinks.kt",
+        "pt": "Links de perfil no Android",
+        "en": "Profile links on Android"
+      },
+      {
+        "id": "public-profile-ios",
+        "repo": "ios",
+        "path": "Components/BipeKit/Sources/BipeKit/BipePublicProfile.swift",
+        "pt": "Perfil público no iPhone",
+        "en": "Public profile on iPhone"
+      },
+      {
+        "id": "public-profile-android",
+        "repo": "android",
+        "path": "libraries/bipe/src/main/kotlin/io/element/android/libraries/bipe/BipePublicProfile.kt",
+        "pt": "Perfil público no Android",
+        "en": "Public profile on Android"
+      },
+      {
+        "id": "invite-rules",
+        "repo": "shared",
+        "path": "registries/invite-codes.json",
+        "pt": "Regras dos convites",
+        "en": "Invite rules"
+      },
+      {
+        "id": "invites-ios",
+        "repo": "ios",
+        "path": "Components/BipeKit/Sources/BipeKit/BipeInviteLink.swift",
+        "pt": "Convites no iPhone",
+        "en": "Invites on iPhone"
+      },
+      {
+        "id": "invites-android",
+        "repo": "android",
+        "path": "libraries/bipe/src/main/kotlin/io/element/android/libraries/bipe/invites/",
+        "pt": "Convites no Android",
+        "en": "Invites on Android"
+      },
+      {
+        "id": "invites-api",
+        "repo": "api",
+        "path": "src/invites.ts",
+        "pt": "Convites no servidor",
+        "en": "Invites on the server"
+      },
+      {
+        "id": "badge-ios",
+        "repo": "ios",
+        "path": "Components/BipeKit/Sources/BipeKit/BadgeVerifier.swift",
+        "pt": "Conferência do selo no iPhone",
+        "en": "Seal check on iPhone"
+      },
+      {
+        "id": "badge-android",
+        "repo": "android",
+        "path": "libraries/bipe/src/main/kotlin/io/element/android/libraries/bipe/BadgeVerifier.kt",
+        "pt": "Conferência do selo no Android",
+        "en": "Seal check on Android"
+      },
+      {
+        "id": "cnpj-api",
+        "repo": "api",
+        "path": "src/ecnpj.ts",
+        "pt": "Certificado de CNPJ no servidor",
+        "en": "CNPJ certificate on the server"
+      },
+      {
+        "id": "stickers-ios",
+        "repo": "ios",
+        "path": "Components/BipeKit/Sources/BipeKit/StickerMaker.swift",
+        "pt": "Figurinhas no iPhone",
+        "en": "Stickers on iPhone"
+      },
+      {
+        "id": "stickers-android",
+        "repo": "android",
+        "path": "libraries/bipe/src/main/kotlin/io/element/android/libraries/bipe/stickers/",
+        "pt": "Figurinhas no Android",
+        "en": "Stickers on Android"
+      },
+      {
+        "id": "quiet-groups-android",
+        "repo": "android",
+        "path": "libraries/bipe/src/main/kotlin/io/element/android/libraries/bipe/groups/BipeQuietGroups.kt",
+        "pt": "Grupos quietos no Android",
+        "en": "Quiet groups on Android"
+      },
+      {
+        "id": "api-contract",
+        "repo": "shared",
+        "path": "api/openapi.yaml",
+        "pt": "Contrato da API",
+        "en": "API contract"
+      },
+      {
+        "id": "strings",
+        "repo": "shared",
+        "path": "strings/",
+        "pt": "Textos dos apps",
+        "en": "App text"
+      },
+      {
+        "id": "data-register",
+        "repo": "shared",
+        "path": "product/data.json",
+        "pt": "Registro de dados (LGPD)",
+        "en": "Data register (LGPD)"
+      },
+      {
+        "id": "scams-data",
+        "repo": "shared",
+        "path": "product/scams.json",
+        "pt": "Dados e fontes dos golpes",
+        "en": "Scam figures and sources"
+      },
+      {
+        "id": "business-bridge",
+        "repo": "business",
+        "path": "packages/bridge/",
+        "pt": "Ponte da empresa",
+        "en": "Company bridge"
+      },
+      {
+        "id": "business-inbox",
+        "repo": "business",
+        "path": "packages/inbox/",
+        "pt": "Caixa de entrada da empresa",
+        "en": "Company inbox"
       }
     ]
   },

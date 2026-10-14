@@ -516,8 +516,8 @@
     {
       "id": "open-source",
       "name": "Open source",
-      "ios": "planned",
-      "android": "planned",
+      "ios": "policy",
+      "android": "policy",
       "web": "policy",
       "server": "policy"
     },

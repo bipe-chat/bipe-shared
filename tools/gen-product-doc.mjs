@@ -105,6 +105,19 @@ for (const r of dist.source.repos) {
   if (typeof r.public !== "boolean") fail(`source ${r.id}: public must be true or false`);
   if (!r.pt || !r.en) fail(`source ${r.id}: pt and en labels`);
 }
+// Deep links into the code (ADR 0028). Features and technical parts name them by id. bipe-web's
+// build checks that each path exists in the sibling repo.
+const repoIds = new Set(dist.source.repos.map((r) => r.id));
+const codeIds = new Set();
+for (const c of dist.source.code ?? []) {
+  if (!/^[a-z0-9-]+$/.test(c.id) || codeIds.has(c.id)) fail(`source code ${c.id}: id`);
+  codeIds.add(c.id);
+  if (!repoIds.has(c.repo)) fail(`source code ${c.id}: unknown repo ${c.repo}`);
+  if (typeof c.path !== "string" || c.path.startsWith("/") || c.path.includes("..")) fail(`source code ${c.id}: path`);
+  if (!c.pt || !c.en) fail(`source code ${c.id}: pt and en labels`);
+}
+const parts = product.technical.groups.flatMap((g) => g.parts);
+for (const x of [...product.features, ...parts]) for (const id of x.code ?? []) if (!codeIds.has(id)) fail(`${x.id}: unknown code link ${id}`);
 // Comparison register (product/compare.json, bipe/docs/vs-whatsapp.md): every Bipe claim names the
 // features that carry its status; every competitor cell belongs to a known threat.
 const cmp = JSON.parse(readFileSync(join(root, "product/compare.json"), "utf8"));

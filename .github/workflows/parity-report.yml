@@ -1,0 +1,59 @@
+# ADR 0092: each week, write the platform parity report into the pinned issue bipe-chat/bipe#298.
+# Needs the secret BIPE_REPOS_TOKEN with read access to the code repos (see checks.yml) and
+# Issues read and write on bipe-chat/bipe.
+name: Parity report
+
+on:
+  schedule:
+    - cron: "0 11 * * 1" # Mondays, 08:00 in São Paulo
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  report:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          path: bipe-shared
+          fetch-depth: 0 # the report dates each gap from the ledger's history
+      - uses: actions/checkout@v4
+        with:
+          repository: bipe-chat/bipe-ios
+          token: ${{ secrets.BIPE_REPOS_TOKEN }}
+          path: bipe-ios
+          lfs: false
+          submodules: false
+      - uses: actions/checkout@v4
+        with:
+          repository: bipe-chat/bipe-android
+          token: ${{ secrets.BIPE_REPOS_TOKEN }}
+          path: bipe-android
+          lfs: false
+          submodules: false
+      - uses: actions/checkout@v4
+        with:
+          repository: bipe-chat/bipe-api
+          token: ${{ secrets.BIPE_REPOS_TOKEN }}
+          path: bipe-api
+      - uses: actions/checkout@v4
+        with:
+          repository: bipe-chat/bipe-web
+          token: ${{ secrets.BIPE_REPOS_TOKEN }}
+          path: bipe-web
+      - uses: actions/checkout@v4
+        with:
+          repository: bipe-chat/bipe-infra
+          token: ${{ secrets.BIPE_REPOS_TOKEN }}
+          path: bipe-infra
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+      - name: Report
+        env:
+          GH_TOKEN: ${{ secrets.BIPE_REPOS_TOKEN }}
+        run: |
+          node bipe-shared/tools/parity.mjs --against head --repos "$GITHUB_WORKSPACE" --report > report.md
+          gh issue edit 298 -R bipe-chat/bipe --body-file report.md

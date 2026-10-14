@@ -1,6 +1,7 @@
 #!/bin/sh
-# bipe-shared pre-commit (ADR 0031): registries validate, vectors and generated files match, clients match the contract.
+# bipe-shared pre-commit (ADR 0031, ADR 0092): registries validate, vectors and generated files match, clients match the contract, the parity ledger holds.
 # Enable once per clone: git config core.hooksPath .githooks
 set -e
 node tools/check-contract.mjs
 node tools/check-drift.mjs --against worktree
+node tools/parity.mjs

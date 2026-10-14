@@ -1,0 +1,1147 @@
+{
+  "$comment": "Parity ledger (ADR 0092). One item per capability that can differ between surfaces, with a status on ios, android, web (bipe-web) and server (bipe-api, bipe-infra): planned, built (merged, not in a tester build), testing (in a tester build), policy, or n/a with a reason. built and testing need evidence: paths that start with the surface's repo name. When iOS and Android differ, issue names the open issue that closes the gap. differences: deliberate behaviour differences between the apps; kind idiom, gap or undecided (gap and undecided need an issue). The Differences tables in both BIPE.md files are generated from it. Check: node tools/parity.mjs. Write the tables: --write. Report: --report.",
+  "version": 1,
+  "items": [
+    {
+      "id": "scam-alerts",
+      "name": "Scam warnings",
+      "ios": {
+        "status": "testing",
+        "evidence": [
+          "bipe-ios/Components/BipeKit/Sources/BipeKit/ScamDetector.swift",
+          "bipe-ios/ElementX/Sources/Screens/Timeline/View/TimelineItemViews/BipeScamWarningView.swift"
+        ]
+      },
+      "android": {
+        "status": "built",
+        "evidence": [
+          "bipe-android/libraries/bipe/src/main/kotlin/io/element/android/libraries/bipe/ScamDetector.kt",
+          "bipe-android/libraries/bipe/src/main/kotlin/io/element/android/libraries/bipe/ui/BipeScamWarningView.kt"
+        ]
+      },
+      "web": {
+        "status": "n/a",
+        "reason": "No web chat (ADR 0004); the site shows a demo at most"
+      },
+      "server": {
+        "status": "n/a",
+        "reason": "Runs on the device only"
+      },
+      "issue": 43
+    },
+    {
+      "id": "requests",
+      "name": "Message requests",
+      "ios": {
+        "status": "testing",
+        "evidence": [
+          "bipe-ios/ElementX/Sources/Screens/HomeScreen/View/BipeRequestsRow.swift",
+          "bipe-ios/ElementX/Sources/Screens/BipeMessagingScreen/View/BipeMessagingScreen.swift"
+        ]
+      },
+      "android": {
+        "status": "built",
+        "evidence": [
+          "bipe-android/libraries/bipe/src/main/kotlin/io/element/android/libraries/bipe/ui/BipeRequestsRow.kt",
+          "bipe-android/features/joinroom/impl/src/main/kotlin/io/element/android/features/joinroom/impl/JoinRoomView.kt"
+        ]
+      },
+      "web": {
+        "status": "n/a",
+        "reason": "No web chat (ADR 0004); the site shows a demo at most"
+      },
+      "server": {
+        "status": "built",
+        "evidence": [
+          "bipe-api/src/messaging.ts",
+          "bipe-infra/compose/synapse-modules/bipe_messaging.py"
+        ]
+      },
+      "issue": 43
+    },
+    {
+      "id": "money-pause",
+      "name": "A pause before paying",
+      "ios": "planned",
+      "android": "planned",
+      "web": {
+        "status": "n/a",
+        "reason": "No web chat (ADR 0004); the site shows a demo at most"
+      },
+      "server": {
+        "status": "n/a",
+        "reason": "Runs on the device only"
+      }
+    },
+    {
+      "id": "no-sms",
+      "name": "No SMS codes",
+      "ios": {
+        "status": "testing",
+        "evidence": [
+          "bipe-ios/ElementX/Sources/Screens/BipeSignupScreen/View/BipeSignupScreen.swift"
+        ]
+      },
+      "android": {
+        "status": "built",
+        "evidence": [
+          "bipe-android/features/login/impl/src/main/kotlin/io/element/android/features/login/impl/screens/bipesignup/BipeSignupPresenter.kt"
+        ]
+      },
+      "web": {
+        "status": "n/a",
+        "reason": "Sign-up is in the apps"
+      },
+      "server": {
+        "status": "built",
+        "evidence": [
+          "bipe-api/src/signup.ts"
+        ]
+      },
+      "issue": 43
+    },
+    {
+      "id": "phone-account",
+      "name": "Your account lives on your phone",
+      "ios": "planned",
+      "android": "planned",
+      "web": {
+        "status": "n/a",
+        "reason": "Sign-up is in the apps"
+      },
+      "server": {
+        "status": "built",
+        "evidence": [
+          "bipe-api/src/accounts.ts"
+        ]
+      },
+      "note": "Code is merged on both apps (BipeCredentialStore, BipeAccountVault); product.json still says planned"
+    },
+    {
+      "id": "new-phone",
+      "name": "New phone, same account",
+      "ios": "planned",
+      "android": "planned",
+      "web": {
+        "status": "built",
+        "evidence": [
+          "bipe-web/src/sim/AccountLinks.tsx"
+        ]
+      },
+      "server": {
+        "status": "built",
+        "evidence": [
+          "bipe-api/src/accounts.ts"
+        ]
+      },
+      "note": "Token, PIN, QR and e-mail recovery are merged on both apps; guardians and CPF recovery are not"
+    },
+    {
+      "id": "verified-badge",
+      "name": "Verified seal",
+      "ios": "planned",
+      "android": "planned",
+      "web": {
+        "status": "n/a",
+        "reason": "No web chat (ADR 0004); the site shows a demo at most"
+      },
+      "server": "planned",
+      "note": "BadgeVerifier exists on both apps, nothing shows a seal"
+    },
+    {
+      "id": "cnpj-badge",
+      "name": "Business seal",
+      "ios": "planned",
+      "android": "planned",
+      "web": {
+        "status": "n/a",
+        "reason": "No web chat (ADR 0004); the site shows a demo at most"
+      },
+      "server": {
+        "status": "built",
+        "evidence": [
+          "bipe-api/src/business.ts",
+          "bipe-api/src/ecnpj.ts"
+        ]
+      },
+      "issue": 252
+    },
+    {
+      "id": "reserved-names",
+      "name": "Reserved names",
+      "ios": "planned",
+      "android": "planned",
+      "web": {
+        "status": "n/a",
+        "reason": "No web chat (ADR 0004); the site shows a demo at most"
+      },
+      "server": {
+        "status": "built",
+        "evidence": [
+          "bipe-api/src/registry.ts",
+          "bipe-api/src/handles.ts"
+        ]
+      },
+      "note": "Both apps check public profile names (BipePublicProfile); product.json still says planned"
+    },
+    {
+      "id": "lookalikes",
+      "name": "Disguised letters",
+      "ios": "planned",
+      "android": "planned",
+      "web": {
+        "status": "n/a",
+        "reason": "No web chat (ADR 0004); the site shows a demo at most"
+      },
+      "server": {
+        "status": "built",
+        "evidence": [
+          "bipe-api/src/registry.ts"
+        ]
+      },
+      "note": "NameNormalizer runs on both apps for reserved names and link hosts; no lookalike warning on user names"
+    },
+    {
+      "id": "family-check",
+      "name": "Is that really Mom?",
+      "ios": "planned",
+      "android": "planned",
+      "web": {
+        "status": "n/a",
+        "reason": "No web chat (ADR 0004); the site shows a demo at most"
+      },
+      "server": {
+        "status": "n/a",
+        "reason": "Runs on the device only"
+      }
+    },
+    {
+      "id": "handles",
+      "name": "Usernames",
+      "ios": {
+        "status": "testing",
+        "evidence": [
+          "bipe-ios/ElementX/Sources/Screens/BipeHandleScreen/View/BipeHandleScreen.swift",
+          "bipe-ios/Components/BipeKit/Sources/BipeKit/BipeHandleResolver.swift"
+        ]
+      },
+      "android": {
+        "status": "built",
+        "evidence": [
+          "bipe-android/libraries/bipe/src/main/kotlin/io/element/android/libraries/bipe/handle/BipeHandleView.kt",
+          "bipe-android/libraries/bipe/src/main/kotlin/io/element/android/libraries/bipe/BipeHandleResolver.kt"
+        ]
+      },
+      "web": {
+        "status": "n/a",
+        "reason": "No web chat (ADR 0004); the site shows a demo at most"
+      },
+      "server": {
+        "status": "built",
+        "evidence": [
+          "bipe-api/src/handles.ts"
+        ]
+      },
+      "issue": 43
+    },
+    {
+      "id": "profile-links",
+      "name": "Link and QR code",
+      "ios": {
+        "status": "testing",
+        "evidence": [
+          "bipe-ios/Components/BipeKit/Sources/BipeKit/BipeProfileLink.swift"
+        ]
+      },
+      "android": {
+        "status": "built",
+        "evidence": [
+          "bipe-android/libraries/bipe/src/main/kotlin/io/element/android/libraries/bipe/BipeLinks.kt",
+          "bipe-android/libraries/bipe/src/main/kotlin/io/element/android/libraries/bipe/handle/BipeHandleView.kt"
+        ]
+      },
+      "web": {
+        "status": "built",
+        "evidence": [
+          "bipe-web/src/sim/LinkPages.tsx"
+        ]
+      },
+      "server": {
+        "status": "built",
+        "evidence": [
+          "bipe-infra/compose/Caddyfile",
+          "bipe-infra/compose/site/.well-known/assetlinks.json"
+        ]
+      },
+      "issue": 43
+    },
+    {
+      "id": "profile-link-routing",
+      "name": "A bipe.chat/@handle link opens the profile in the app",
+      "ios": {
+        "status": "built",
+        "evidence": [
+          "bipe-ios/ElementX/Sources/Application/Navigation/AppRoutes.swift"
+        ]
+      },
+      "android": "planned",
+      "web": {
+        "status": "built",
+        "evidence": [
+          "bipe-web/src/sim/LinkPages.tsx"
+        ]
+      },
+      "server": {
+        "status": "built",
+        "evidence": [
+          "bipe-infra/compose/site/.well-known/apple-app-site-association",
+          "bipe-infra/compose/site/.well-known/assetlinks.json"
+        ]
+      },
+      "issue": 299
+    },
+    {
+      "id": "public-profile",
+      "name": "Public profile",
+      "ios": {
+        "status": "built",
+        "evidence": [
+          "bipe-ios/ElementX/Sources/Screens/BipePublicProfileScreen/View/BipePublicProfileScreen.swift"
+        ]
+      },
+      "android": {
+        "status": "built",
+        "evidence": [
+          "bipe-android/libraries/bipe/src/main/kotlin/io/element/android/libraries/bipe/profile/BipePublicProfileView.kt"
+        ]
+      },
+      "web": {
+        "status": "built",
+        "evidence": [
+          "bipe-web/src/sim/LinkPages.tsx"
+        ]
+      },
+      "server": {
+        "status": "built",
+        "evidence": [
+          "bipe-api/src/profiles.ts"
+        ]
+      }
+    },
+    {
+      "id": "invites",
+      "name": "Invites",
+      "ios": {
+        "status": "testing",
+        "evidence": [
+          "bipe-ios/ElementX/Sources/Screens/BipeInvitesScreen/View/BipeInvitesScreen.swift",
+          "bipe-ios/Components/BipeKit/Sources/BipeKit/BipeInviteLink.swift"
+        ]
+      },
+      "android": {
+        "status": "built",
+        "evidence": [
+          "bipe-android/libraries/bipe/src/main/kotlin/io/element/android/libraries/bipe/invites/BipeInvitesView.kt"
+        ]
+      },
+      "web": {
+        "status": "built",
+        "evidence": [
+          "bipe-web/src/sim/LinkPages.tsx",
+          "bipe-web/src/admin/InviterReport.tsx"
+        ]
+      },
+      "server": {
+        "status": "built",
+        "evidence": [
+          "bipe-api/src/invites.ts"
+        ]
+      },
+      "issue": 43
+    },
+    {
+      "id": "invite-qr",
+      "name": "QR code for an invite",
+      "ios": {
+        "status": "built",
+        "evidence": [
+          "bipe-ios/ElementX/Sources/Screens/BipeInvitesScreen/View/BipeInvitesScreen.swift"
+        ]
+      },
+      "android": {
+        "status": "built",
+        "evidence": [
+          "bipe-android/libraries/bipe/src/main/kotlin/io/element/android/libraries/bipe/qrcode/BipeQrCodeContent.kt"
+        ]
+      },
+      "web": {
+        "status": "n/a",
+        "reason": "The QR code holds the /convite link"
+      },
+      "server": {
+        "status": "n/a",
+        "reason": "Drawn on the device"
+      }
+    },
+    {
+      "id": "deferred-invite",
+      "name": "The invite survives the store install",
+      "ios": "planned",
+      "android": "planned",
+      "web": {
+        "status": "built",
+        "evidence": [
+          "bipe-web/src/sim/LinkPages.tsx"
+        ]
+      },
+      "server": {
+        "status": "n/a",
+        "reason": "Clipboard and install referrer are on the device"
+      },
+      "issue": 197
+    },
+    {
+      "id": "phone-discovery",
+      "name": "Find your contacts",
+      "ios": "planned",
+      "android": "planned",
+      "web": {
+        "status": "n/a",
+        "reason": "No web chat (ADR 0004); the site shows a demo at most"
+      },
+      "server": {
+        "status": "built",
+        "evidence": [
+          "bipe-api/src/phones.ts"
+        ]
+      },
+      "note": "iOS has address-book match merged (BipeContactsScreen), Android has nothing; product.json says planned for both",
+      "issue": 162
+    },
+    {
+      "id": "e2ee",
+      "name": "End to end",
+      "ios": {
+        "status": "testing",
+        "evidence": [
+          "bipe-ios/ElementX/Sources/Services/Client/ClientProxy.swift"
+        ]
+      },
+      "android": {
+        "status": "built",
+        "evidence": [
+          "bipe-android/features/createroom/impl/src/main/kotlin/io/element/android/features/createroom/impl/configureroom/ConfigureRoomPresenter.kt"
+        ]
+      },
+      "web": {
+        "status": "n/a",
+        "reason": "No web chat (ADR 0004); the site shows a demo at most"
+      },
+      "server": {
+        "status": "built",
+        "evidence": [
+          "bipe-infra/compose/templates/synapse-bipe.yaml"
+        ]
+      },
+      "issue": 43
+    },
+    {
+      "id": "e2ee-only-rooms",
+      "name": "No unencrypted rooms",
+      "ios": "planned",
+      "android": {
+        "status": "built",
+        "evidence": [
+          "bipe-android/features/createroom/impl/src/main/kotlin/io/element/android/features/createroom/impl/configureroom/ConfigureRoomPresenter.kt"
+        ]
+      },
+      "web": {
+        "status": "n/a",
+        "reason": "No web chat (ADR 0004); the site shows a demo at most"
+      },
+      "server": {
+        "status": "built",
+        "evidence": [
+          "bipe-infra/compose/templates/synapse-bipe.yaml"
+        ]
+      },
+      "issue": 78
+    },
+    {
+      "id": "attestation",
+      "name": "Device check at sign-up",
+      "ios": {
+        "status": "built",
+        "evidence": [
+          "bipe-ios/Components/BipeKit/Sources/BipeKit/BipeAppAttest.swift"
+        ]
+      },
+      "android": "planned",
+      "web": {
+        "status": "n/a",
+        "reason": "Sign-up is in the apps"
+      },
+      "server": {
+        "status": "built",
+        "evidence": [
+          "bipe-api/src/attest.ts"
+        ]
+      },
+      "issue": 92
+    },
+    {
+      "id": "no-ads",
+      "name": "No ads",
+      "ios": "policy",
+      "android": "policy",
+      "web": "policy",
+      "server": "policy"
+    },
+    {
+      "id": "free",
+      "name": "Free",
+      "ios": "policy",
+      "android": "policy",
+      "web": "policy",
+      "server": "policy"
+    },
+    {
+      "id": "brazil-servers",
+      "name": "Servers in Brazil",
+      "ios": "policy",
+      "android": "policy",
+      "web": "policy",
+      "server": "policy"
+    },
+    {
+      "id": "open-source",
+      "name": "Open source",
+      "ios": "planned",
+      "android": "planned",
+      "web": "policy",
+      "server": "policy"
+    },
+    {
+      "id": "pix-cards",
+      "name": "Pix requests",
+      "ios": "planned",
+      "android": "planned",
+      "web": {
+        "status": "n/a",
+        "reason": "No web chat (ADR 0004); the site shows a demo at most"
+      },
+      "server": {
+        "status": "n/a",
+        "reason": "Plain Matrix events; no Bipe server code"
+      }
+    },
+    {
+      "id": "pix-charges",
+      "name": "Business Pix charges",
+      "ios": "planned",
+      "android": "planned",
+      "web": {
+        "status": "n/a",
+        "reason": "No web chat (ADR 0004); the site shows a demo at most"
+      },
+      "server": "planned",
+      "issue": 261
+    },
+    {
+      "id": "pix-check",
+      "name": "Conferir no Bipe",
+      "ios": "planned",
+      "android": "planned",
+      "web": {
+        "status": "n/a",
+        "reason": "A share target on the phone"
+      },
+      "server": {
+        "status": "n/a",
+        "reason": "Runs on the device only"
+      },
+      "issue": 294
+    },
+    {
+      "id": "stickers",
+      "name": "Stickers",
+      "ios": {
+        "status": "built",
+        "evidence": [
+          "bipe-ios/ElementX/Sources/Screens/BipeStickerPickerScreen/View/BipeStickerPickerScreen.swift",
+          "bipe-ios/Components/BipeKit/Sources/BipeKit/StickerImport.swift"
+        ]
+      },
+      "android": {
+        "status": "built",
+        "evidence": [
+          "bipe-android/features/messages/impl/src/main/kotlin/io/element/android/features/messages/impl/messagecomposer/BipeStickerPicker.kt",
+          "bipe-android/libraries/bipe/src/main/kotlin/io/element/android/libraries/bipe/stickers/StickerImport.kt"
+        ]
+      },
+      "web": {
+        "status": "n/a",
+        "reason": "No web chat (ADR 0004); the site shows a demo at most"
+      },
+      "server": {
+        "status": "n/a",
+        "reason": "Plain Matrix events; no Bipe server code"
+      }
+    },
+    {
+      "id": "group-types",
+      "name": "Quiet groups",
+      "ios": {
+        "status": "built",
+        "evidence": [
+          "bipe-ios/ElementX/Sources/Application/BipeQuietGroups.swift"
+        ]
+      },
+      "android": {
+        "status": "built",
+        "evidence": [
+          "bipe-android/libraries/bipe/src/main/kotlin/io/element/android/libraries/bipe/groups/BipeQuietGroups.kt"
+        ]
+      },
+      "web": {
+        "status": "n/a",
+        "reason": "No web chat (ADR 0004); the site shows a demo at most"
+      },
+      "server": "planned",
+      "issue": 97,
+      "note": "Inert until Synapse pushes encrypted events (#118)"
+    },
+    {
+      "id": "polls",
+      "name": "Polls",
+      "ios": {
+        "status": "testing",
+        "evidence": [
+          "bipe-ios/ElementX/Sources/Screens/CreatePollScreen/View/PollFormScreen.swift"
+        ]
+      },
+      "android": {
+        "status": "built",
+        "evidence": [
+          "bipe-android/features/poll/impl/src/main/kotlin/io/element/android/features/poll/impl/create/CreatePollView.kt"
+        ]
+      },
+      "web": {
+        "status": "n/a",
+        "reason": "No web chat (ADR 0004); the site shows a demo at most"
+      },
+      "server": {
+        "status": "n/a",
+        "reason": "Plain Matrix events; no Bipe server code"
+      },
+      "issue": 43
+    },
+    {
+      "id": "question-card",
+      "name": "Bipe question card",
+      "ios": "planned",
+      "android": "planned",
+      "web": {
+        "status": "n/a",
+        "reason": "No web chat (ADR 0004); the site shows a demo at most"
+      },
+      "server": {
+        "status": "n/a",
+        "reason": "Plain Matrix events; no Bipe server code"
+      },
+      "issue": 244
+    },
+    {
+      "id": "communities",
+      "name": "Communities",
+      "ios": "planned",
+      "android": "planned",
+      "web": {
+        "status": "n/a",
+        "reason": "No web chat (ADR 0004); the site shows a demo at most"
+      },
+      "server": "planned"
+    },
+    {
+      "id": "verified-groups",
+      "name": "Verified-only groups",
+      "ios": "planned",
+      "android": "planned",
+      "web": {
+        "status": "n/a",
+        "reason": "No web chat (ADR 0004); the site shows a demo at most"
+      },
+      "server": "planned"
+    },
+    {
+      "id": "voice-transcript-display",
+      "name": "Voice transcript shown and checked for scams",
+      "ios": {
+        "status": "built",
+        "evidence": [
+          "bipe-ios/ElementX/Sources/Screens/Timeline/View/TimelineItemViews/BipeVoiceTranscriptView.swift"
+        ]
+      },
+      "android": {
+        "status": "built",
+        "evidence": [
+          "bipe-android/libraries/bipe/src/main/kotlin/io/element/android/libraries/bipe/ui/BipeVoiceTranscriptView.kt"
+        ]
+      },
+      "web": {
+        "status": "n/a",
+        "reason": "No web chat (ADR 0004); the site shows a demo at most"
+      },
+      "server": {
+        "status": "n/a",
+        "reason": "Runs on the device only"
+      }
+    },
+    {
+      "id": "voice-transcript-send",
+      "name": "Sender-side voice transcript, pause and resume",
+      "ios": {
+        "status": "built",
+        "evidence": [
+          "bipe-ios/Components/BipeKit/Sources/BipeKit/VoiceTranscriber.swift",
+          "bipe-ios/ElementX/Sources/Screens/RoomScreen/ComposerToolbar/View/BipeRecordingPauseButton.swift"
+        ]
+      },
+      "android": "planned",
+      "web": {
+        "status": "n/a",
+        "reason": "No web chat (ADR 0004); the site shows a demo at most"
+      },
+      "server": {
+        "status": "n/a",
+        "reason": "Runs on the device only"
+      },
+      "issue": 80
+    },
+    {
+      "id": "app-lock",
+      "name": "App lock with the account PIN",
+      "ios": {
+        "status": "built",
+        "evidence": [
+          "bipe-ios/ElementX/Sources/Services/AppLock/AppLockService.swift"
+        ]
+      },
+      "android": {
+        "status": "built",
+        "evidence": [
+          "bipe-android/features/lockscreen/impl/src/main/kotlin/io/element/android/features/lockscreen/impl/pin/BipeAppLockImpl.kt"
+        ]
+      },
+      "web": {
+        "status": "n/a",
+        "reason": "No web chat (ADR 0004); the site shows a demo at most"
+      },
+      "server": {
+        "status": "n/a",
+        "reason": "Runs on the device only"
+      }
+    },
+    {
+      "id": "multi-account",
+      "name": "Two accounts on one phone",
+      "ios": "planned",
+      "android": "planned",
+      "web": {
+        "status": "n/a",
+        "reason": "No web chat (ADR 0004); the site shows a demo at most"
+      },
+      "server": {
+        "status": "n/a",
+        "reason": "No server change (ADR 0086)"
+      },
+      "issue": 265
+    },
+    {
+      "id": "theft-protection",
+      "name": "Stolen phone: guardians and the theft mark",
+      "ios": "planned",
+      "android": "planned",
+      "web": {
+        "status": "n/a",
+        "reason": "No web chat (ADR 0004); the site shows a demo at most"
+      },
+      "server": "planned",
+      "issue": 124
+    },
+    {
+      "id": "handle-change-notice",
+      "name": "Handle changes in chats",
+      "ios": {
+        "status": "built",
+        "evidence": [
+          "bipe-ios/Components/BipeKit/Sources/BipeKit/BipeHandleChanges.swift"
+        ]
+      },
+      "android": {
+        "status": "built",
+        "evidence": [
+          "bipe-android/libraries/bipe/src/main/kotlin/io/element/android/libraries/bipe/BipeHandleChanges.kt",
+          "bipe-android/libraries/bipe/src/main/kotlin/io/element/android/libraries/bipe/ui/BipeHandleChangeLine.kt"
+        ]
+      },
+      "web": {
+        "status": "n/a",
+        "reason": "No web chat (ADR 0004); the site shows a demo at most"
+      },
+      "server": {
+        "status": "built",
+        "evidence": [
+          "bipe-api/src/handles.ts"
+        ]
+      },
+      "issue": 166
+    },
+    {
+      "id": "profile-change-facts",
+      "name": "Account age and profile change facts",
+      "ios": "planned",
+      "android": "planned",
+      "web": {
+        "status": "n/a",
+        "reason": "No web chat (ADR 0004); the site shows a demo at most"
+      },
+      "server": "planned",
+      "issue": 142
+    },
+    {
+      "id": "photo-match",
+      "name": "Warning when a stranger uses a contact's photo",
+      "ios": "planned",
+      "android": "planned",
+      "web": {
+        "status": "n/a",
+        "reason": "No web chat (ADR 0004); the site shows a demo at most"
+      },
+      "server": {
+        "status": "n/a",
+        "reason": "Runs on the device only"
+      },
+      "issue": 143
+    },
+    {
+      "id": "business-chats",
+      "name": "Business chats in the app",
+      "ios": "planned",
+      "android": "planned",
+      "web": {
+        "status": "n/a",
+        "reason": "No web chat (ADR 0004); the site shows a demo at most"
+      },
+      "server": "planned",
+      "issue": 115
+    },
+    {
+      "id": "onboarding-welcome",
+      "name": "Bipe welcome screen",
+      "ios": {
+        "status": "built",
+        "evidence": [
+          "bipe-ios/ElementX/Sources/Screens/Authentication/StartScreen/View/BipeWelcomeView.swift"
+        ]
+      },
+      "android": {
+        "status": "built",
+        "evidence": [
+          "bipe-android/libraries/bipe/src/main/kotlin/io/element/android/libraries/bipe/ui/BipeWelcomeView.kt"
+        ]
+      },
+      "web": {
+        "status": "n/a",
+        "reason": "Sign-up is in the apps"
+      },
+      "server": {
+        "status": "n/a",
+        "reason": "No server part"
+      }
+    },
+    {
+      "id": "onboarding-two-step-signup",
+      "name": "Sign-up in two steps (name, then PIN)",
+      "ios": "planned",
+      "android": {
+        "status": "built",
+        "evidence": [
+          "bipe-android/features/login/impl/src/main/kotlin/io/element/android/features/login/impl/screens/bipesignup/BipeSignupView.kt"
+        ]
+      },
+      "web": {
+        "status": "n/a",
+        "reason": "Sign-up is in the apps"
+      },
+      "server": {
+        "status": "built",
+        "evidence": [
+          "bipe-api/src/signup.ts"
+        ]
+      },
+      "issue": 196
+    },
+    {
+      "id": "onboarding-no-element-crypto",
+      "name": "No Element crypto screens for Bipe users",
+      "ios": "planned",
+      "android": "planned",
+      "web": {
+        "status": "n/a",
+        "reason": "Sign-up is in the apps"
+      },
+      "server": {
+        "status": "n/a",
+        "reason": "No server part"
+      },
+      "issue": 201
+    },
+    {
+      "id": "help-links",
+      "name": "Help links go to Bipe, not element.io",
+      "ios": {
+        "status": "built",
+        "evidence": [
+          "bipe-ios/Components/BipeKit/Sources/BipeKit/AttributedString+BipeLink.swift"
+        ]
+      },
+      "android": "planned",
+      "web": {
+        "status": "n/a",
+        "reason": "No web chat (ADR 0004); the site shows a demo at most"
+      },
+      "server": {
+        "status": "n/a",
+        "reason": "No server part"
+      },
+      "issue": 205
+    },
+    {
+      "id": "app-icon",
+      "name": "Bipe app icon",
+      "ios": {
+        "status": "built",
+        "evidence": [
+          "bipe-ios/ElementX/Resources/AppIcon.icon/Assets/AppIcon.png"
+        ]
+      },
+      "android": {
+        "status": "built",
+        "evidence": [
+          "bipe-android/appicon/element/src/main/res/mipmap-anydpi/ic_launcher_foreground.xml"
+        ]
+      },
+      "web": {
+        "status": "n/a",
+        "reason": "The site has its own mark"
+      },
+      "server": {
+        "status": "n/a",
+        "reason": "No server part"
+      },
+      "issue": 25,
+      "note": "Placeholder on both until the final artwork"
+    },
+    {
+      "id": "waitlist",
+      "name": "Waitlist and invites in batches",
+      "ios": {
+        "status": "n/a",
+        "reason": "Web and server only"
+      },
+      "android": {
+        "status": "n/a",
+        "reason": "Web and server only"
+      },
+      "web": {
+        "status": "built",
+        "evidence": [
+          "bipe-web/src/sim/WaitlistForm.tsx"
+        ]
+      },
+      "server": {
+        "status": "built",
+        "evidence": [
+          "bipe-api/src/waitlist.ts"
+        ]
+      }
+    },
+    {
+      "id": "version-sync",
+      "name": "One version and build number",
+      "ios": {
+        "status": "built",
+        "evidence": [
+          "bipe-ios/Tools/Bipe/version.env"
+        ]
+      },
+      "android": {
+        "status": "built",
+        "evidence": [
+          "bipe-android/plugins/src/main/kotlin/BipeVersion.kt"
+        ]
+      },
+      "web": {
+        "status": "n/a",
+        "reason": "Not an app build"
+      },
+      "server": {
+        "status": "n/a",
+        "reason": "Not an app build"
+      }
+    }
+  ],
+  "differences": [
+    {
+      "area": "Dev app ID",
+      "ios": "`chat.bipe.app.dev`",
+      "android": "`chat.bipe.app.debug`",
+      "reason": "Element's build-type suffix on each platform",
+      "kind": "idiom"
+    },
+    {
+      "area": "OAuth redirect",
+      "ios": "`<bundle id>:/oauth/callback`",
+      "android": "`<application id>:/`",
+      "reason": "Element's default per platform; both are reverse-domain private-use schemes",
+      "kind": "idiom"
+    },
+    {
+      "area": "Push",
+      "ios": "APNs through Sygnal",
+      "android": "FCM through Sygnal; UnifiedPush optional",
+      "reason": "OS push channel (#89, #90, #91)",
+      "kind": "idiom"
+    },
+    {
+      "area": "Sign-up attestation",
+      "ios": "App Attest",
+      "android": "None yet",
+      "reason": "Play Integrity not built on Android (#92)",
+      "kind": "gap",
+      "issue": 92
+    },
+    {
+      "area": "Synced recovery token",
+      "ios": "iCloud Keychain",
+      "android": "Block Store (gplay); none in the F-Droid build",
+      "reason": "Platform credential store (ADR 0059). F-Droid has no Google Play services",
+      "kind": "idiom"
+    },
+    {
+      "area": "App lock",
+      "ios": "Element's lock screen, the account PIN, biometrics on",
+      "android": "Element's lock screen, 8-digit account PIN, biometric option",
+      "reason": "Element X lock screen per platform",
+      "kind": "idiom"
+    },
+    {
+      "area": "Check before a PIN change",
+      "ios": "Biometrics or the phone's passcode",
+      "android": "Biometrics or the phone's screen lock; else the app lock PIN",
+      "reason": "`LAContext` on iOS, `BiometricPrompt` with `DEVICE_CREDENTIAL` on Android",
+      "kind": "idiom"
+    },
+    {
+      "area": "Invite code input",
+      "ios": "Paste button",
+      "android": "Pasted text collapses to the code in the field",
+      "reason": "Platform idiom",
+      "kind": "idiom"
+    },
+    {
+      "area": "Voice messages",
+      "ios": "Sender-side transcription, pause and resume",
+      "android": "Shows the transcript and checks it for scams; no sender-side transcription",
+      "reason": "On-device recognition on low-end Android unmeasured (#80, #81)",
+      "kind": "gap",
+      "issue": 80
+    },
+    {
+      "area": "Help links",
+      "ios": "Hidden",
+      "android": "Still point to element.io",
+      "reason": "Not done on Android (#205)",
+      "kind": "gap",
+      "issue": 205
+    },
+    {
+      "area": "Unencrypted room option",
+      "ios": "Still offered",
+      "android": "Removed",
+      "reason": "Not done on iOS (#78)",
+      "kind": "gap",
+      "issue": 78
+    },
+    {
+      "area": "Sign-up form",
+      "ios": "One form",
+      "android": "Name, then PIN",
+      "reason": "Not done on iOS (#196)",
+      "kind": "gap",
+      "issue": 196
+    },
+    {
+      "area": "bipe.chat/@handle link",
+      "ios": "Opens the profile",
+      "android": "Opens the app, goes nowhere",
+      "reason": "Not done on Android (#299)",
+      "kind": "gap",
+      "issue": 299
+    },
+    {
+      "area": "Sticker from a photo",
+      "ios": "Subject cut-out (Vision)",
+      "android": "Centred square crop",
+      "reason": "Cut-out needs ML Kit, not decided (#101)",
+      "kind": "undecided",
+      "issue": 101
+    },
+    {
+      "area": "Sticker import",
+      "ios": "Chat export ZIP or files",
+      "android": "Chat export ZIP or files; picker opens in WhatsApp's stickers folder",
+      "reason": "iOS apps cannot read WhatsApp's files",
+      "kind": "idiom"
+    },
+    {
+      "area": "Signed-device isolation",
+      "ios": "User preference, default on",
+      "android": "Fixed on",
+      "reason": "Undecided (#102)",
+      "kind": "undecided",
+      "issue": 102
+    },
+    {
+      "area": "Language fallback",
+      "ios": "pt-BR for other device languages",
+      "android": "Bipe strings pt-BR, Element strings en",
+      "reason": "Undecided (#102)",
+      "kind": "undecided",
+      "issue": 102
+    },
+    {
+      "area": "Handle lookup",
+      "ios": "Start chat only",
+      "android": "Every user search",
+      "reason": "Undecided (#102)",
+      "kind": "undecided",
+      "issue": 102
+    },
+    {
+      "area": "Search",
+      "ios": "Search tab (iOS 26+), inline before iOS 26",
+      "android": "Search button in the top bar of Conversas and Grupos",
+      "reason": "Platform idiom (ADR 0053)",
+      "kind": "idiom"
+    },
+    {
+      "area": "Quiet groups \"done\" marker",
+      "ios": "A flag on the device (once per device)",
+      "android": "The poll rule in the account's push rules (once per account)",
+      "reason": "Android has no per-session store in libraries/bipe; same result for the user",
+      "kind": "idiom"
+    }
+  ]
+}

@@ -11,7 +11,7 @@ Single source of truth for Bipe logic that iOS, Android, the API and the website
 | `docs/trust-facts.md` | Independent trust facts, adapter inputs, invalidation and generated platform rules |
 | `test-vectors/` | Cases every platform must pass: badges, normalisation, scam detection, scam warnings, handles (generated), invite codes (hand-written, checked against the reference) |
 | `fixtures/trust-facts.json` | Hand-authored expected outcomes checked before trust vectors are generated |
-| `product/` | Promise, features with status per platform, download links. Feeds bipe-web and `bipe/docs/product.md`. `version.json`: the app version name and the one build number for iOS and Android (ADR 0088) |
+| `product/` | Promise, features with status per platform, the parity ledger (`parity.json`), download links. Feeds bipe-web and `bipe/docs/product.md`. `version.json`: the app version name and the one build number for iOS and Android (ADR 0088) |
 | `tools/` | Generators and checks (Node 24, no npm packages). `tools/lib/registries.mjs` is the reference implementation |
 
 ## Commands
@@ -46,9 +46,15 @@ node tools/check-drift.mjs
 
 Regenerates everything into a temporary folder and compares it with the generated files in bipe-ios, bipe-android, bipe-api and `bipe/docs/product.md`, and with `test-vectors/`. Also checks `MARKETING_VERSION` in `bipe-ios/project.yml` against `product/version.json`. Default: the files on disk. `--against head`: the committed files (CI). Fails on any difference, and on stale files in generated-only folders.
 
+```bash
+node tools/parity.mjs [--write] [--report]
+```
+
+The parity ledger (ADR 0092). `product/parity.json` holds each capability's status on iOS, Android, web and server, with evidence paths, the issue that closes each gap between the apps, and the deliberate differences between the apps. The check fails on a missing evidence path, a gap without an issue, a `product.json` status that disagrees, or an out-of-date Differences table in `bipe-ios/BIPE.md` or `bipe-android/BIPE.md`. `--write` writes those tables. `--report` prints the gap report; a weekly job (`.github/workflows/parity-report.yml`) writes it into the pinned issue bipe-chat/bipe#298.
+
 ### Hook and CI
 
-- Pre-commit hook (`.githooks/pre-commit`): runs the contract check and the drift check. Enable it once per clone: `git config core.hooksPath .githooks`.
+- Pre-commit hook (`.githooks/pre-commit`): runs the contract check, the drift check and the parity check. Enable it once per clone: `git config core.hooksPath .githooks`.
 - CI (`.github/workflows/checks.yml`): the same checks against every repo's `main`, on push, pull request and daily. It needs the repository secret `BIPE_REPOS_TOKEN` (read access to the private sibling repos).
 
 ## Where the vectors run

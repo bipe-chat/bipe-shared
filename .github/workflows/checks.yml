@@ -1,6 +1,6 @@
-# ADR 0031: the shared rules, the generated code in every repo and the API clients stay in step.
+# ADR 0031, ADR 0092: the shared rules, the generated code in every repo, the API clients and the parity ledger stay in step.
 # Needs the secret BIPE_REPOS_TOKEN: a fine-grained token with read access to contents of
-# bipe, bipe-ios, bipe-android and bipe-api (the repos are private).
+# bipe, bipe-ios, bipe-android, bipe-api, bipe-web and bipe-infra.
 name: Checks
 
 on:
@@ -54,6 +54,16 @@ jobs:
           repository: bipe-chat/bipe-api
           token: ${{ secrets.BIPE_REPOS_TOKEN }}
           path: bipe-api
+      - uses: actions/checkout@v4
+        with:
+          repository: bipe-chat/bipe-web
+          token: ${{ secrets.BIPE_REPOS_TOKEN }}
+          path: bipe-web
+      - uses: actions/checkout@v4
+        with:
+          repository: bipe-chat/bipe-infra
+          token: ${{ secrets.BIPE_REPOS_TOKEN }}
+          path: bipe-infra
       - uses: actions/setup-node@v4
         with:
           node-version: 24
@@ -61,3 +71,5 @@ jobs:
         run: node bipe-shared/tools/check-contract.mjs
       - name: Drift
         run: node bipe-shared/tools/check-drift.mjs --against head --repos "$GITHUB_WORKSPACE"
+      - name: Parity
+        run: node bipe-shared/tools/parity.mjs --against head --repos "$GITHUB_WORKSPACE"

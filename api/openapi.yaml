@@ -112,6 +112,18 @@ paths:
         "403": { $ref: "#/components/responses/Error" }
         "409": { $ref: "#/components/responses/Error" }
         "429": { $ref: "#/components/responses/Error" }
+  /v1/signup/config:
+    get:
+      summary: The sign-up mode (ADR 0072, bipe#232)
+      description: >
+        No auth. The apps read it before the invite field and follow it with no new build. An app that
+        cannot read it treats invite_required as true. Cache-Control max-age 300.
+      responses:
+        "200":
+          description: The sign-up mode
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/SignupConfig" }
   /v1/signup/resume:
     post:
       summary: Get the answer of a device-first sign-up again (ADR 0094)
@@ -1126,6 +1138,11 @@ components:
         display_name: { type: string, maxLength: 100 }
         attestation: { $ref: "#/components/schemas/Attestation" }
         signup_key: { type: string, pattern: "^[A-Za-z0-9_-]{43}$", description: "Device-first only, recommended: 32 random bytes as base64url, made by the app before the first try and kept on this device until the credentials are stored. Same key again: the same account (ADR 0094). Ignored in legacy mode." }
+    SignupConfig:
+      type: object
+      required: [invite_required]
+      properties:
+        invite_required: { type: boolean, description: "true: POST /v1/signup without a valid invite_code fails with invite_invalid (SIGNUP_INVITE_REQUIRED)." }
     Attestation:
       type: object
       required: [key_id, attestation_object, challenge]

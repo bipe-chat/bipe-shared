@@ -17,6 +17,7 @@ const MODELS = {
   SignupRequest: { ios: "BipeSignupRequest", android: "BipeSignupRequest" },
   Attestation: { ios: "BipeAttestation", android: null },
   SignupResponse: { ios: "BipeSignupResponse", android: "BipeSignupResponse" },
+  SignupConfig: { ios: "BipeSignupConfig", android: "BipeSignupConfig" },
   InvitePreview: { ios: "BipeInvitePreview", android: "BipeInvitePreview" },
   Invite: { ios: "BipeInvite", android: "BipeInvite" },
   MyInvites: { ios: "BipeMyInvites", android: "BipeMyInvites" },

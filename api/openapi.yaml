@@ -93,6 +93,10 @@ paths:
         Legacy (beta apps): email and password both given. The server sets both in MAS as before
         and the client signs in through MAS with them. A password without an email is bad_request.
         The response has cache-control no-store.
+        Retry (device-first, ADR 0094): the app sends signup_key and keeps it until it has stored the
+        credentials. A second request with the same key returns the same account and credentials,
+        and creates nothing. While the first request with a key still runs, a second one gets 429
+        rate_limited with reason signup_in_progress; the app retries after a few seconds.
       requestBody:
         required: true
         content:
@@ -107,6 +111,34 @@ paths:
         "400": { $ref: "#/components/responses/Error" }
         "403": { $ref: "#/components/responses/Error" }
         "409": { $ref: "#/components/responses/Error" }
+        "429": { $ref: "#/components/responses/Error" }
+  /v1/signup/resume:
+    post:
+      summary: Get the answer of a device-first sign-up again (ADR 0094)
+      description: >
+        No auth. For an app that sent POST /v1/signup with signup_key and lost the answer (no
+        network, app closed). Returns the same body as that sign-up. 404 not_found when no account
+        was made with the key, when 7 days passed, or when the account already signed in and read
+        GET /v1/me/account (the server then deletes its sealed copy). The server keeps only the
+        SHA-256 of the key and the credentials sealed with a key derived from it, so the database
+        alone cannot open them. Rate-limited per IP. The response has cache-control no-store.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [signup_key]
+              properties:
+                signup_key: { type: string, pattern: "^[A-Za-z0-9_-]{43}$" }
+      responses:
+        "200":
+          description: The earlier sign-up
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/SignupResponse" }
+        "400": { $ref: "#/components/responses/Error" }
+        "404": { $ref: "#/components/responses/Error" }
         "429": { $ref: "#/components/responses/Error" }
   /v1/me/account:
     get:
@@ -1093,6 +1125,7 @@ components:
         handle: { type: string, description: "Optional. Without @." }
         display_name: { type: string, maxLength: 100 }
         attestation: { $ref: "#/components/schemas/Attestation" }
+        signup_key: { type: string, pattern: "^[A-Za-z0-9_-]{43}$", description: "Device-first only, recommended: 32 random bytes as base64url, made by the app before the first try and kept on this device until the credentials are stored. Same key again: the same account (ADR 0094). Ignored in legacy mode." }
     Attestation:
       type: object
       required: [key_id, attestation_object, challenge]

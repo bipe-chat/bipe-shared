@@ -1,0 +1,286 @@
+{
+  "version": 1,
+  "date": "2026-10-14",
+  "encarregado": null,
+  "pt": {
+    "nav": "LGPD",
+    "title": "Seus dados no Bipe (LGPD)",
+    "meta": "Bipe, versão de testes. Atualizada em 14 de outubro de 2026.",
+    "lede": "Cada dado que o Bipe guarda, para quê, com qual base da LGPD, por quanto tempo e onde fica. A página é gerada do mesmo registro que a equipe usa para cuidar dos dados.",
+    "policy": "O texto corrido está na [política de privacidade](/privacidade/).",
+    "itemsTitle": "O que a gente guarda",
+    "labels": { "what": "O que", "why": "Para quê", "basis": "Base legal", "retention": "Por quanto tempo", "where": "Onde fica" },
+    "brazil": { "yes": "no Brasil", "no": "fora do Brasil", "unknown": "país a confirmar" },
+    "outsideTitle": "O que passa por fora do Brasil",
+    "outsideLede": "Quase tudo fica no servidor do Bipe, em São Paulo. Estes são os casos em que um dado passa por outro serviço:",
+    "deviceTitle": "O que fica só no seu celular",
+    "deviceLede": "Isto o Bipe faz no aparelho. Nada disso vai para o servidor.",
+    "notPersonal": "No site, a gente testa qual título da página inicial funciona melhor. O servidor só soma visitas e cliques por versão e por dia. Não guarda IP nem nada que identifique quem visitou.",
+    "rightsTitle": "Seus direitos",
+    "rights": [
+      "Saber se a gente trata dados seus e ver quais são.",
+      "Corrigir dado errado ou desatualizado.",
+      "Pedir para apagar seus dados e sua conta.",
+      "Receber seus dados em formato aberto.",
+      "Saber com quem a gente compartilha seus dados.",
+      "Retirar o consentimento, quando a base legal for o consentimento.",
+      "Reclamar na Autoridade Nacional de Proteção de Dados (ANPD)."
+    ],
+    "rightsHow": "Para qualquer pedido, [fale com a gente](/parceiros/#form). Durante os testes, a conta é apagada por pedido.",
+    "controllerTitle": "Quem cuida dos seus dados",
+    "controller": "Durante os testes, o Bipe é tocado pela Envisioning, que é a controladora dos dados.",
+    "encarregadoMissing": "O encarregado de dados ainda não foi nomeado. Até lá, os pedidos chegam pelo mesmo contato."
+  },
+  "en": {
+    "nav": "LGPD",
+    "title": "Your data on Bipe (LGPD)",
+    "meta": "Bipe, test version. Updated 14 October 2026.",
+    "lede": "Every piece of data Bipe keeps, what it is for, its LGPD legal basis, how long we keep it and where it lives. The page is built from the same record the team uses to manage the data. The Portuguese version is the reference text.",
+    "policy": "The plain-language text is in the [privacy policy](/en/privacy/).",
+    "itemsTitle": "What we keep",
+    "labels": { "what": "What", "why": "Why", "basis": "Legal basis", "retention": "How long", "where": "Where it lives" },
+    "brazil": { "yes": "in Brazil", "no": "outside Brazil", "unknown": "country to be confirmed" },
+    "outsideTitle": "What passes outside Brazil",
+    "outsideLede": "Almost everything stays on the Bipe server in São Paulo. These are the cases where data passes through another service:",
+    "deviceTitle": "What stays on your phone",
+    "deviceLede": "Bipe does these on the device. None of it goes to the server.",
+    "notPersonal": "On the site, we test which home page headline works best. The server only counts visits and clicks per version and per day. It keeps no IP address and nothing that identifies a visitor.",
+    "rightsTitle": "Your rights",
+    "rights": [
+      "Know whether we process your data and see what it is.",
+      "Correct data that is wrong or out of date.",
+      "Ask us to delete your data and your account.",
+      "Get your data in an open format.",
+      "Know who we share your data with.",
+      "Withdraw consent, where consent is the legal basis.",
+      "Complain to the Brazilian data protection authority (ANPD)."
+    ],
+    "rightsHow": "For any request, [contact us](/en/partners/#form). During testing, accounts are deleted on request.",
+    "controllerTitle": "Who looks after your data",
+    "controller": "During testing, Bipe is run by Envisioning, the data controller.",
+    "encarregadoMissing": "The data protection officer (encarregado) is not yet named. Until then, requests go to the same contact."
+  },
+  "bases": [
+    { "id": "consent", "article": "art. 7, I", "pt": "Consentimento", "en": "Consent" },
+    { "id": "legal-obligation", "article": "art. 7, II", "pt": "Obrigação legal", "en": "Legal obligation" },
+    { "id": "contract", "article": "art. 7, V", "pt": "Execução do serviço que você pediu", "en": "Performing the service you asked for" },
+    { "id": "legitimate-interest", "article": "art. 7, IX", "pt": "Interesse legítimo", "en": "Legitimate interest" }
+  ],
+  "places": [
+    { "id": "server", "brazil": true, "pt": "Servidor do Bipe em São Paulo", "en": "Bipe server in São Paulo" },
+    { "id": "apple-push", "brazil": false, "pt": "Apple, serviço de notificações do iPhone", "en": "Apple, the iPhone notification service" },
+    { "id": "email-relay", "brazil": null, "pt": "Serviço que entrega os e-mails do Bipe", "en": "The service that delivers Bipe's emails" },
+    { "id": "team-inbox", "brazil": null, "pt": "Caixa de e-mail da equipe", "en": "The team's email inbox" }
+  ],
+  "items": [
+    {
+      "id": "account",
+      "basis": "contract",
+      "places": ["server"],
+      "pt": {
+        "name": "Sua conta",
+        "what": "Nome de usuário, nome de exibição, os aparelhos conectados, as chaves de criptografia e quem pode te mandar mensagem.",
+        "why": "Criar a conta, entregar suas mensagens e aplicar suas escolhas.",
+        "retention": "Enquanto a conta existir."
+      },
+      "en": {
+        "name": "Your account",
+        "what": "Username, display name, the connected devices, the encryption keys and who may message you.",
+        "why": "To create the account, deliver your messages and apply your choices.",
+        "retention": "As long as the account exists."
+      }
+    },
+    {
+      "id": "access",
+      "basis": "contract",
+      "places": ["server"],
+      "pt": {
+        "name": "PIN e acesso",
+        "what": "Uma versão protegida do seu PIN, da senha que o app cria sozinho e do código de recuperação, e quantas vezes o PIN foi digitado errado. O PIN e a senha em si, a gente nunca vê.",
+        "why": "Deixar você entrar e proteger a conta de quem tenta adivinhar o PIN.",
+        "retention": "Enquanto a conta existir."
+      },
+      "en": {
+        "name": "PIN and access",
+        "what": "A protected form of your PIN, of the password the app makes by itself and of the recovery code, and how many times the PIN was entered wrong. We never see the PIN or the password itself.",
+        "why": "To let you sign in and to protect the account from someone guessing the PIN.",
+        "retention": "As long as the account exists."
+      }
+    },
+    {
+      "id": "recovery-email",
+      "basis": "contract",
+      "places": ["server", "email-relay"],
+      "pt": {
+        "name": "E-mail de recuperação (opcional)",
+        "what": "O e-mail que você escolher, o idioma e os pedidos de recuperação de acesso.",
+        "why": "Te ajudar a voltar para a conta e avisar quando algo muda nela, como PIN trocado ou aparelho novo. Nada de propaganda.",
+        "retention": "Até você tirar o e-mail da conta."
+      },
+      "en": {
+        "name": "Recovery email (optional)",
+        "what": "The email you choose, your language and your account recovery requests.",
+        "why": "To help you get back into the account and to tell you when something changes in it, such as a new PIN or a new device. No marketing.",
+        "retention": "Until you remove the email from the account."
+      }
+    },
+    {
+      "id": "handle",
+      "basis": "contract",
+      "places": ["server"],
+      "pt": {
+        "name": "Seu @",
+        "what": "O @ que você escolher. Quando você solta um @, ele fica reservado para você por 90 dias.",
+        "why": "As pessoas te acharem pelo @ sem ver seu telefone.",
+        "retention": "Até você tirar o @. A reserva dura 90 dias."
+      },
+      "en": {
+        "name": "Your @handle",
+        "what": "The @handle you choose. When you release a handle, it stays reserved for you for 90 days.",
+        "why": "So people find you by @handle without seeing your phone number.",
+        "retention": "Until you remove the handle. The reservation lasts 90 days."
+      }
+    },
+    {
+      "id": "handle-history",
+      "basis": "legitimate-interest",
+      "places": ["server"],
+      "pt": {
+        "name": "Histórico de @",
+        "what": "As trocas de @ de cada conta, com a data.",
+        "why": "Avisar quem conversa com você que o @ mudou há pouco. É um sinal comum de golpe.",
+        "retention": "Um ano, e no máximo as últimas 20 trocas."
+      },
+      "en": {
+        "name": "Handle history",
+        "what": "Each account's handle changes, with the date.",
+        "why": "To tell the people you talk to that a handle changed recently. That is a common scam sign.",
+        "retention": "One year, and at most the last 20 changes."
+      }
+    },
+    {
+      "id": "invites",
+      "basis": "legitimate-interest",
+      "places": ["server"],
+      "pt": {
+        "name": "Convites",
+        "what": "Quem convidou quem, e uma versão protegida de cada código de convite.",
+        "why": "Durante os testes, só entra quem tem convite. O registro ajuda a achar contas falsas e abuso.",
+        "retention": "Ainda sem prazo definido."
+      },
+      "en": {
+        "name": "Invites",
+        "what": "Who invited whom, and a protected form of each invite code.",
+        "why": "During testing, only people with an invite can join. The record helps find fake accounts and abuse.",
+        "retention": "No time limit set yet."
+      }
+    },
+    {
+      "id": "messages",
+      "basis": "contract",
+      "places": ["server"],
+      "pt": {
+        "name": "Mensagens",
+        "what": "Conversas privadas são criptografadas de ponta a ponta: o servidor guarda tudo embaralhado e não consegue ler. Em salas sem criptografia, o servidor guarda o texto. Em todas, o servidor sabe quem está em cada conversa, quando cada mensagem chegou, o nome e a foto da sala.",
+        "why": "Entregar as mensagens em todos os seus aparelhos.",
+        "retention": "Enquanto a conversa existir no servidor."
+      },
+      "en": {
+        "name": "Messages",
+        "what": "Private conversations are end-to-end encrypted: the server stores them scrambled and cannot read them. In rooms without encryption, the server stores the text. In all rooms, the server knows who is in each conversation, when each message arrived, and the room's name and photo.",
+        "why": "To deliver messages to all your devices.",
+        "retention": "As long as the conversation exists on the server."
+      }
+    },
+    {
+      "id": "media",
+      "basis": "contract",
+      "places": ["server"],
+      "pt": {
+        "name": "Fotos e arquivos",
+        "what": "O que você envia, até 50 MB por arquivo. Em conversas criptografadas, o arquivo também fica embaralhado.",
+        "why": "Quem recebe conseguir baixar.",
+        "retention": "Enquanto a conversa existir no servidor."
+      },
+      "en": {
+        "name": "Photos and files",
+        "what": "What you send, up to 50 MB per file. In encrypted conversations, the file is scrambled too.",
+        "why": "So the people who receive it can download it.",
+        "retention": "As long as the conversation exists on the server."
+      }
+    },
+    {
+      "id": "connection-logs",
+      "basis": "legal-obligation",
+      "places": ["server"],
+      "pt": {
+        "name": "Registros de conexão",
+        "what": "Endereço IP, data e hora de cada conexão.",
+        "why": "O Marco Civil da Internet (artigo 15) obriga a guardar estes registros.",
+        "retention": "6 meses."
+      },
+      "en": {
+        "name": "Connection logs",
+        "what": "IP address, date and time of each connection.",
+        "why": "Brazil's Marco Civil da Internet (article 15) requires us to keep these logs.",
+        "retention": "6 months."
+      }
+    },
+    {
+      "id": "push",
+      "basis": "contract",
+      "places": ["server", "apple-push"],
+      "pt": {
+        "name": "Notificações no iPhone",
+        "what": "O endereço de notificação do seu aparelho e os códigos da conversa e da mensagem nova. O texto da mensagem não vai junto: o app busca o conteúdo direto no servidor do Bipe.",
+        "why": "Te avisar que chegou mensagem.",
+        "retention": "Enquanto as notificações estiverem ligadas naquele aparelho."
+      },
+      "en": {
+        "name": "iPhone notifications",
+        "what": "Your device's notification address and the IDs of the conversation and the new message. The message text does not go with it: the app fetches the content directly from the Bipe server.",
+        "why": "To tell you a message arrived.",
+        "retention": "As long as notifications are on for that device."
+      }
+    },
+    {
+      "id": "waitlist",
+      "basis": "consent",
+      "places": ["server", "email-relay"],
+      "pt": {
+        "name": "Lista de espera",
+        "what": "Seu e-mail, o sistema do celular, o idioma, a página do site onde você se inscreveu e a versão do título que você viu.",
+        "why": "Mandar seu convite quando chegar a sua vez. Mais nada.",
+        "retention": "Até o convite ser usado ou vencer. Antes disso, se você pedir."
+      },
+      "en": {
+        "name": "Waitlist",
+        "what": "Your email, your phone's system, your language, the site page where you signed up and the headline version you saw.",
+        "why": "To send your invite when your turn comes. Nothing else.",
+        "retention": "Until the invite is used or expires. Earlier, if you ask."
+      }
+    },
+    {
+      "id": "partner-requests",
+      "basis": "legitimate-interest",
+      "places": ["server", "email-relay", "team-inbox"],
+      "pt": {
+        "name": "Pedido de parceria",
+        "what": "Nome e tipo da organização, nome e e-mail de quem escreveu, a mensagem e o idioma.",
+        "why": "Responder ao pedido. A equipe recebe uma cópia por e-mail.",
+        "retention": "Um ano. Antes disso, se você pedir."
+      },
+      "en": {
+        "name": "Partner request",
+        "what": "The organisation's name and type, the name and email of the person who wrote, the message and the language.",
+        "why": "To answer the request. The team gets a copy by email.",
+        "retention": "One year. Earlier, if you ask."
+      }
+    }
+  ],
+  "device": [
+    { "id": "scam-warnings", "pt": "Os avisos de golpe e a checagem de links. Nenhum texto, resultado ou pontuação sai do celular.", "en": "Scam warnings and link checks. No text, match or score leaves the phone." },
+    { "id": "voice-transcripts", "pt": "A transcrição de mensagens de voz. O texto só sai do celular como legenda da mensagem, com a mesma proteção dela.", "en": "Voice message transcripts. The text leaves the phone only as the message caption, with the same protection as the message." },
+    { "id": "access-vault", "pt": "A senha que o app cria sozinho. Ela fica guardada no cofre do aparelho.", "en": "The password the app makes by itself. It stays in the device's secure storage." }
+  ]
+}

@@ -1,4 +1,5 @@
-// Writes bipe/docs/product.md from product/product.json and product/distribution.json.
+// Writes bipe/docs/product.md from product/product.json and product/distribution.json. Also validates
+// product/compare.json, product/scams.json and product/data.json.
 // Usage: node tools/gen-product-doc.mjs [--out <file>]
 import { readdirSync, readFileSync, writeFileSync } from "node:fs";
 import { dirname, join, resolve } from "node:path";
@@ -218,7 +219,43 @@ if (/[–—]/.test(JSON.stringify({ ...scams, $comment: undefined }))) fail("sc
 if (/!/.test(scamsCopy.replace(/https:\/\/[^"]*/g, ""))) fail("scams: no exclamation marks");
 const scamsPt = JSON.stringify([scams.pt, scams.stats.map((s) => s.pt), scams.charts.map((c) => [c.pt, c.rows.map((r) => r.pt)]), scams.protect.map((p) => p.pt), scams.types.map((t) => [t.pt, t.aliases.pt]), scams.outside.map((o) => o.pt)]);
 if (/\b(fraudes?|fraudador\w*|perigo\w*|alerta\w*|aten[çc][ãa]o)\b/i.test(scamsPt)) fail("scams: pt copy says golpe, not fraude, and uses no fear words (language.md)");
-const text = JSON.stringify(product) + JSON.stringify(dist);
+// Data register (product/data.json): the LGPD record of processing (art. 37) and the /lgpd/ page.
+// Fails closed: every item names a known legal basis, at least one known place (the Bipe server first),
+// a retention period and copy in both languages. A place says brazil true, false or null (not yet confirmed).
+const data = JSON.parse(readFileSync(join(root, "product/data.json"), "utf8"));
+if (data.version !== 1 || !/^\d{4}-\d{2}-\d{2}$/.test(data.date)) fail("data: version or date");
+if (data.encarregado !== null && !(data.encarregado?.name && data.encarregado?.contact)) fail("data: encarregado is null or has name and contact");
+for (const l of ["pt", "en"]) {
+  const c = data[l];
+  for (const k of ["nav", "title", "meta", "lede", "policy", "itemsTitle", "outsideTitle", "outsideLede", "deviceTitle", "deviceLede", "notPersonal", "rightsTitle", "rightsHow", "controllerTitle", "controller", "encarregadoMissing"]) if (!c?.[k]) fail(`data.${l}.${k}`);
+  for (const k of ["what", "why", "basis", "retention", "where"]) if (!c.labels?.[k]) fail(`data.${l}.labels.${k}`);
+  for (const k of ["yes", "no", "unknown"]) if (!c.brazil?.[k]) fail(`data.${l}.brazil.${k}`);
+  if (!c.rights?.length || c.rights.some((x) => !x)) fail(`data.${l}.rights`);
+}
+if (data.pt.rights.length !== data.en.rights.length) fail("data: rights pt and en differ");
+const basisIds = new Set();
+for (const b of data.bases) {
+  if (!/^[a-z-]+$/.test(b.id) || basisIds.has(b.id) || !/^art\. 7, [IVX]+$/.test(b.article) || !b.pt || !b.en) fail(`data basis ${b.id}`);
+  basisIds.add(b.id);
+}
+const placeIds = new Set();
+for (const p of data.places) {
+  if (!/^[a-z-]+$/.test(p.id) || placeIds.has(p.id) || ![true, false, null].includes(p.brazil) || !p.pt || !p.en) fail(`data place ${p.id}`);
+  placeIds.add(p.id);
+}
+if (data.places[0]?.id !== "server" || data.places[0].brazil !== true) fail("data: the first place is the Bipe server, in Brazil");
+const dataIds = new Set();
+for (const i of [...data.items, ...data.device]) {
+  if (!/^[a-z-]+$/.test(i.id) || dataIds.has(i.id)) fail(`data item ${i.id}: id`);
+  dataIds.add(i.id);
+}
+for (const i of data.items) {
+  if (!basisIds.has(i.basis)) fail(`data item ${i.id}: unknown basis ${i.basis}`);
+  if (!i.places?.length || i.places.some((p) => !placeIds.has(p))) fail(`data item ${i.id}: places`);
+  for (const l of ["pt", "en"]) for (const k of ["name", "what", "why", "retention"]) if (!i[l]?.[k]) fail(`data item ${i.id}: ${l}.${k}`);
+}
+for (const d of data.device) if (!d.pt || !d.en) fail(`data device ${d.id}`);
+const text = JSON.stringify(product) + JSON.stringify(dist) + JSON.stringify(data);
 if (/[–—]/.test(text)) fail("rendered copy must not contain em or en dashes");
 
 const label = { testing: "TestFlight", built: "Built", planned: "Planned", policy: "Policy" };

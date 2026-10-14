@@ -1163,6 +1163,38 @@
       }
     },
     {
+      "id": "pix-check",
+      "area": "payments",
+      "status": {
+        "ios": "built",
+        "android": "built"
+      },
+      "slug": {
+        "pt": "conferir-pix",
+        "en": "pix-check"
+      },
+      "pt": {
+        "name": "Conferir no Bipe",
+        "body": "Recebeu um pedido de Pix em outro app? Compartilhe com o Bipe e veja o que o código diz antes de pagar.",
+        "points": [
+          "Funciona com chave Pix, código copia e cola e print de QR code, vindos do WhatsApp ou de qualquer outro app.",
+          "Mostra o nome, o valor e a chave que estão no código, e avisa se o código foi alterado.",
+          "A conferência roda no seu celular. Nada sai dali, e não precisa de conta.",
+          "Na hora de pagar, o seu banco mostra o nome de quem recebe. Se não for quem você espera, não pague."
+        ]
+      },
+      "en": {
+        "name": "Check it in Bipe",
+        "body": "Got a Pix request in another app? Share it to Bipe and see what the code says before you pay.",
+        "points": [
+          "Works with a Pix key, a copy-and-paste code or a QR code screenshot, from WhatsApp or any other app.",
+          "Shows the name, the amount and the key in the code, and warns you if the code was changed.",
+          "The check runs on your phone. Nothing leaves it, and you don't need an account.",
+          "When you pay, your bank shows who receives the money. If it is not who you expect, don't pay."
+        ]
+      }
+    },
+    {
       "id": "stickers",
       "area": "chat",
       "status": {

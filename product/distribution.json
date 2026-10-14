@@ -16,16 +16,17 @@
     }
   },
   "android": {
-    "status": "waitlist",
+    "status": "available",
     "channel": "apk",
-    "url": null,
+    "url": "https://bipe.chat/baixar/android/bipe.apk",
+    "minOS": "Android 7.0",
     "pt": {
-      "label": "Android: em breve",
-      "note": "A versão para Android ainda não começou. Deixe seu e-mail e a gente avisa quando sair."
+      "label": "Baixar para Android",
+      "note": "Versão de testes. Baixe o arquivo e abra no celular. O Android pede para você permitir a instalação. As notificações ainda não funcionam."
     },
     "en": {
-      "label": "Android: coming soon",
-      "note": "The Android version has not started yet. Leave your email and we will tell you when it is out."
+      "label": "Download for Android",
+      "note": "Test version. Download the file and open it on your phone. Android asks you to allow the install. Notifications do not work yet."
     }
   },
   "source": {
@@ -35,44 +36,58 @@
       {
         "id": "ios",
         "url": "https://github.com/bipe-chat/bipe-ios",
-        "public": false,
+        "public": true,
         "pt": "App para iPhone",
         "en": "iPhone app"
       },
       {
         "id": "android",
         "url": "https://github.com/bipe-chat/bipe-android",
-        "public": false,
+        "public": true,
         "pt": "App para Android",
         "en": "Android app"
       },
       {
         "id": "shared",
         "url": "https://github.com/bipe-chat/bipe-shared",
-        "public": false,
+        "public": true,
         "pt": "Regras e textos dos apps",
         "en": "App rules and text"
       },
       {
         "id": "api",
         "url": "https://github.com/bipe-chat/bipe-api",
-        "public": false,
+        "public": true,
         "pt": "Convites e diretório de @",
         "en": "Invites and @ directory"
       },
       {
         "id": "web",
         "url": "https://github.com/bipe-chat/bipe-web",
-        "public": false,
+        "public": true,
         "pt": "Este site",
         "en": "This site"
       },
       {
         "id": "tokens",
         "url": "https://github.com/bipe-chat/compound-design-tokens",
-        "public": false,
+        "public": true,
         "pt": "Cores e estilos",
         "en": "Colours and styles"
+      },
+      {
+        "id": "ml",
+        "url": "https://github.com/bipe-chat/bipe-ml",
+        "public": true,
+        "pt": "Modelo de golpes que roda no celular",
+        "en": "On-device scam model"
+      },
+      {
+        "id": "business",
+        "url": "https://github.com/bipe-chat/bipe-business",
+        "public": true,
+        "pt": "Ponte e caixa de entrada para empresas",
+        "en": "Business bridge and inbox"
       }
     ]
   },

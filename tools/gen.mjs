@@ -7,6 +7,7 @@ import { copyFileSync, existsSync, mkdirSync, readdirSync, writeFileSync } from 
 import { dirname, join, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
 import { hostHomoglyphs, loadRegistries } from "./lib/registries.mjs";
+import { generateTrust } from "./lib/gen-trust.mjs";
 import { iosVersionEnv, kotlinVersion, loadVersion } from "./lib/version.mjs";
 
 const root = join(dirname(fileURLToPath(import.meta.url)), "..");
@@ -195,6 +196,7 @@ ${members.join("\n\n")}
 
 mkdirSync(swiftOut, { recursive: true });
 writeFileSync(join(swiftOut, "BipeRegistries.swift"), swiftRegistries());
+writeFileSync(join(swiftOut, "BipeTrustFacts.swift"), generateTrust(reg.trust, "swift", HEADER));
 writeFileSync(join(swiftOut, "BipeStrings.swift"), swiftStrings());
 const resources = resolve(swiftOut, "../../../Sources/BipeKit/Resources");
 for (const [locale, strings] of [["pt-BR", reg.strings.strings], ["en", reg.stringsEn.strings]]) {
@@ -386,6 +388,7 @@ if (kotlinIndex >= 0 || existsSync(resolve(kotlinOut, "../../.."))) {
   const kotlinDir = join(kotlinOut, "kotlin", ...KOTLIN_PACKAGE.split("."));
   mkdirSync(kotlinDir, { recursive: true });
   writeFileSync(join(kotlinDir, "BipeRegistries.kt"), kotlinRegistries());
+  writeFileSync(join(kotlinDir, "BipeTrustFacts.kt"), generateTrust(reg.trust, "kotlin", HEADER));
   // pt-BR is the default language, so it fills values/. en is the alternative.
   for (const [dir, strings, comment] of [
     ["values", reg.strings.strings, "pt-BR (default). DRAFT copy: not yet through the humanizer pass."],
@@ -405,6 +408,7 @@ if (existsSync(resolve(apiOut, "../.."))) {
   for (const f of readdirSync(join(root, "registries"))) copyFileSync(join(root, "registries", f), join(apiOut, "registries", f));
   for (const f of ["pt-BR.json", "en.json"]) copyFileSync(join(root, "strings", f), join(apiOut, "strings", f));
   copyFileSync(join(root, "tools/lib/registries.mjs"), join(apiOut, "lib/registries.mjs"));
+  copyFileSync(join(root, "tools/lib/trust.mjs"), join(apiOut, "lib/trust.mjs"));
   console.log(`wrote API registries to ${apiOut}`);
 }
 

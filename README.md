@@ -11,7 +11,7 @@ Single source of truth for Bipe logic that iOS, Android, the API and the website
 | `docs/trust-facts.md` | Independent trust facts, adapter inputs, invalidation and generated platform rules |
 | `test-vectors/` | Cases every platform must pass: badges, normalisation, scam detection, scam warnings, handles (generated), invite codes (hand-written, checked against the reference) |
 | `fixtures/trust-facts.json` | Hand-authored expected outcomes checked before trust vectors are generated |
-| `product/` | Promise, features with status per platform, download links. Feeds bipe-web and `bipe/docs/product.md` |
+| `product/` | Promise, features with status per platform, download links. Feeds bipe-web and `bipe/docs/product.md`. `version.json`: the app version name and the one build number for iOS and Android (ADR 0088) |
 | `tools/` | Generators and checks (Node 24, no npm packages). `tools/lib/registries.mjs` is the reference implementation |
 
 ## Commands
@@ -21,6 +21,12 @@ node tools/gen.mjs
 ```
 
 Writes `BipeRegistries.swift` and `BipeStrings.swift` into `../bipe-ios/Components/BipeKit/Sources/BipeKit/Generated`, `BipeRegistries.kt` plus `res/values*/bipe_strings.xml` into `../bipe-android/libraries/bipe/src/main`, and the registries with the reference library into `../bipe-api/src/generated`. Pass `--swift`, `--kotlin` or `--api <dir>` to override.
+
+```bash
+node tools/bump-build.mjs [--version YY.MM.N]
+```
+
+Before each tester upload, on any platform (ADR 0088): adds 1 to `build` in `product/version.json`, sets the version name if given (it must not go down), then runs `gen.mjs`. That writes `bipe-ios/Tools/Bipe/version.env` (read by `testflight.sh`) and `bipe-android/plugins/src/main/kotlin/BipeVersion.kt` (read by `Versions.kt`). Commit and push bipe-shared, bipe-ios and bipe-android. The push to bipe-shared `main` claims the number: if it is rejected, pull and bump again. After `--version`, also set `MARKETING_VERSION` in `bipe-ios/project.yml` and run `xcodegen`; the drift check compares them.
 
 ```bash
 node tools/gen-test-vectors.mjs
@@ -38,7 +44,7 @@ Checks the hand-written API clients (Swift in bipe-ios, Kotlin in bipe-android) 
 node tools/check-drift.mjs
 ```
 
-Regenerates everything into a temporary folder and compares it with the generated files in bipe-ios, bipe-android, bipe-api and `bipe/docs/product.md`, and with `test-vectors/`. Default: the files on disk. `--against head`: the committed files (CI). Fails on any difference, and on stale files in generated-only folders.
+Regenerates everything into a temporary folder and compares it with the generated files in bipe-ios, bipe-android, bipe-api and `bipe/docs/product.md`, and with `test-vectors/`. Also checks `MARKETING_VERSION` in `bipe-ios/project.yml` against `product/version.json`. Default: the files on disk. `--against head`: the committed files (CI). Fails on any difference, and on stale files in generated-only folders.
 
 ### Hook and CI
 

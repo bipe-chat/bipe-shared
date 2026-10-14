@@ -9,6 +9,8 @@
     { "id": "cetic2025", "name": "Privacidade e proteção de dados pessoais 2025, resumo executivo", "publisher": "Cetic.br, NIC.br e CGI.br", "url": "https://cetic.br/media/docs/publicacoes/2/pt-br/20260831092525/PRIVACIDADE_2025_RE%20PT.pdf", "date": "2026-08-31", "kind": "primary" },
     { "id": "datasenado2024", "name": "Panorama Político 2024: golpes digitais atingem 24% dos brasileiros", "publisher": "Instituto DataSenado", "url": "https://www12.senado.leg.br/institucional/datasenado/publicacaodatasenado?id=golpes-digitais-atingem-24-dos-brasileiros-aponta-21a-edicao-da-pesquisa-panorama-politico", "date": "2024-10-01", "kind": "primary" },
     { "id": "febraban2025", "name": "Golpe da Falsa Venda é o mais aplicado contra clientes bancários no 1º semestre do ano", "publisher": "Febraban", "url": "https://portal.febraban.org.br/noticia/4381/pt-br/", "date": "2025-11-11", "kind": "primary" },
+    { "id": "ibgePib2024", "name": "PIB cresce 3,4% em 2024 e fecha o ano em R$ 11,7 trilhões", "publisher": "IBGE", "url": "https://agenciadenoticias.ibge.gov.br/agencia-sala-de-imprensa/42774-pib-cresce-3-4-em-2024-e-fecha-o-ano-em-r-11-7-trilhoes.html", "date": "2025-03-07", "kind": "primary" },
+    { "id": "silverguard2025", "name": "Estudo Golpes com Pix 2025", "publisher": "Silverguard e SOS Golpe", "url": "https://uploads.finsidersbrasil.com.br/2025/10/Silverguard-Estudo_Golpes_com_Pix_2025.pdf", "date": "2025-10", "kind": "company" },
     { "id": "gasa2026", "name": "State of Scams in Brazil 2026", "publisher": "Global Anti-Scam Alliance", "url": "https://gasa.org/knowledge-base/reports/state-of-scams-in-brazil-2026", "date": "2026-08-06", "kind": "secondary" },
     { "id": "glossario2025", "name": "Glossário de Tipologias de Fraudes e Golpes Digitais", "publisher": "Ministério da Justiça e Segurança Pública e Febraban (Aliança Nacional de Combate a Fraudes Bancárias Digitais)", "url": "https://www.gov.br/mj/pt-br/assuntos/alianca-nacional-de-combate-a-fraudes-bancarias-digitais/glossario_final_iniciativa_1-8_v10.pdf", "date": "2025-10", "kind": "primary" },
     { "id": "febWhatsapp", "name": "Golpe do Whatsapp", "publisher": "Febraban", "url": "https://portal.febraban.org.br/DetalheAntifraude/7/pt-br/", "date": "2025-01-21", "kind": "primary" },
@@ -60,8 +62,14 @@
     { "id": "aenAmor", "name": "Dia dos Namorados: PCPR alerta para golpes amorosos e orienta sobre formas de prevenção", "publisher": "Governo do Paraná (Polícia Civil do Paraná)", "url": "https://www.parana.pr.gov.br/aen/Noticia/Dia-dos-Namorados-PCPR-alerta-para-golpes-amorosos-e-orienta-sobre-formas-de-prevencao", "date": "2026-06-12", "kind": "primary" },
     { "id": "pcspPerguntas", "name": "Delitos praticados por meios eletrônicos: perguntas e respostas", "publisher": "Polícia Civil do Estado de São Paulo", "url": "https://www.policiacivil.sp.gov.br/portal/imagens/CRIMES%20CIBERN%C3%89TICOS%20-%20PERGUNTAS%20E%20RESPOSTAS%20V2.pdf", "date": "2021-01", "kind": "primary" }
   ],
-  "hero": ["records2025", "lostMoney", "messagingApps", "pixLoss", "noCourt"],
+  "hero": ["records2025", "lostMoney", "messagingApps", "digitalLoss", "noCourt"],
   "stats": [
+    { "id": "falsoParente60", "source": "silverguard2025", "pt": { "value": "21%", "label": "das vítimas de 60 anos ou mais atendidas pela central SOS Golpe caíram no golpe do conhecido pedindo dinheiro, o mais comum nessa idade", "period": "jan. a jun. 2025" }, "en": { "value": "21%", "label": "of victims aged 60 or older helped by the SOS Golpe helpline fell for a known contact asking for money, the most common scam at that age", "period": "Jan to Jun 2025" } },
+    { "id": "falsoParenteWhats", "source": "silverguard2025", "pt": { "value": "95,3%", "label": "dos golpes do conhecido pedindo dinheiro começaram no WhatsApp, quase sempre com número novo e a foto de um filho ou filha", "period": "jan. a jun. 2025" }, "en": { "value": "95.3%", "label": "of scams where a known contact asks for money started on WhatsApp, almost always from a new number with a photo of a son or daughter", "period": "Jan to Jun 2025" } },
+    { "id": "falsoParenteLoss", "source": "silverguard2025", "pt": { "value": "R$ 2.800", "label": "foi a perda média no golpe do conhecido pedindo dinheiro", "period": "jan. a jun. 2025" }, "en": { "value": "R$ 2,800", "label": "was the mean loss when a known contact asks for money", "period": "Jan to Jun 2025" } },
+    { "id": "pixMeanLoss", "source": "silverguard2025", "pt": { "value": "R$ 2.540", "label": "foi a perda média das vítimas de golpe com Pix atendidas pela central SOS Golpe. Quem tem 60 anos ou mais perdeu R$ 4.820, cinco vezes mais que quem tem de 18 a 24 anos", "period": "jan. a jun. 2025" }, "en": { "value": "R$ 2,540", "label": "was the mean loss of Pix scam victims helped by the SOS Golpe helpline. People aged 60 or older lost R$ 4,820, five times more than people aged 18 to 24", "period": "Jan to Jun 2025" } },
+    { "id": "pixToCompany", "source": "silverguard2025", "pt": { "value": "65%", "label": "dos golpes com Pix denunciados à central SOS Golpe mandaram o dinheiro para conta de empresa (CNPJ). Um ano antes eram 42%", "period": "jun. 2025" }, "en": { "value": "65%", "label": "of Pix scams reported to the SOS Golpe helpline sent the money to a company account (CNPJ). One year before it was 42%", "period": "Jun 2025" } },
+    { "id": "medAccepted", "source": "silverguard2025", "pt": { "value": "24%", "label": "dos pedidos de devolução pelo MED foram aceitos pelo banco que recebeu o Pix, na projeção para 2025. Em 2022 eram 73%", "period": "2025 (projeção)" }, "en": { "value": "24%", "label": "of MED refund requests were accepted by the bank that received the Pix, as projected for 2025. In 2022 it was 73%", "period": "2025 (projection)" } },
     {
       "id": "records2025", "source": "anuario2026",
       "pt": { "value": "2,26 milhões", "label": "de golpes registrados na polícia em 2025, cinco vezes mais que em 2018", "period": "2025" },
@@ -76,6 +84,12 @@
       "id": "messagingApps", "source": "cetic2025",
       "pt": { "value": "84%", "label": "de quem teve tentativa de golpe com os próprios dados foi procurado por app de mensagem", "period": "2025" },
       "en": { "value": "84%", "label": "of people who had a scam attempt with their own data were approached on a messaging app", "period": "2025" }
+    },
+    {
+      "id": "digitalLoss", "source": "vitimizacao2025", "also": ["ibgePib2024"],
+      "$comment": "Sum of the five totals in Quadro 6 (Pix or boleto, card, undelivered purchase, investment, bank account): R$ 111.930.090.182. Against the 2024 GDP of R$ 11,7 trilhões (IBGE) that is 0,96%.",
+      "pt": { "value": "R$ 111,9 bilhões", "label": "perdidos com golpes digitais, cartão clonado e conta de banco invadida em um ano, na estimativa da pesquisa. É cerca de 1% do PIB do Brasil", "period": "jul. 2024 a jun. 2025" },
+      "en": { "value": "R$ 111.9 billion", "label": "lost to digital scams, cloned cards and hacked bank accounts in one year, as the survey estimates. That is about 1% of Brazil's GDP", "period": "Jul 2024 to Jun 2025" }
     },
     {
       "id": "pixLoss", "source": "vitimizacao2025",
@@ -181,8 +195,19 @@
     }
   ],
   "more": ["datasenado24", "medo158", "fear"],
-  "channelCharts": ["channels", "platforms"],
+  "channelCharts": ["channels", "platforms", "pixStart"],
   "charts": [
+    {"id": "pixStart", "form": "bars", "sources": ["silverguard2025"], "pt": {"title": "Onde começou o golpe com Pix", "note": "Primeiro contato do golpista, em 12.197 denúncias de vítimas à central SOS Golpe. Somando WhatsApp, Instagram e Facebook, 2 em cada 3 golpes começaram num app da Meta. Quem procura a central não representa toda a população."}, "en": {"title": "Where the Pix scam started", "note": "The scammer's first contact, in 12,197 reports from victims to the SOS Golpe helpline. WhatsApp, Instagram and Facebook together make 2 in 3: those scams started in a Meta app. People who contact the helpline do not represent the whole population."}, "rows": [
+      {"id": "messaging", "value": 41.6, "highlight": true, "pt": {"label": "App de mensagem", "value": "41,6%"}, "en": {"label": "Messaging app", "value": "41.6%"}},
+      {"id": "social", "value": 36.4, "pt": {"label": "Rede social", "value": "36,4%"}, "en": {"label": "Social network", "value": "36.4%"}},
+      {"id": "games", "value": 3.6, "pt": {"label": "App de jogo", "value": "3,6%"}, "en": {"label": "Gaming app", "value": "3.6%"}},
+      {"id": "search", "value": 3.6, "pt": {"label": "Buscador", "value": "3,6%"}, "en": {"label": "Search engine", "value": "3.6%"}},
+      {"id": "content", "value": 3.5, "pt": {"label": "Site de conteúdo", "value": "3,5%"}, "en": {"label": "Content site", "value": "3.5%"}},
+      {"id": "marketplace", "value": 3.4, "pt": {"label": "Marketplace", "value": "3,4%"}, "en": {"label": "Marketplace", "value": "3.4%"}},
+      {"id": "call", "value": 1.8, "pt": {"label": "Ligação", "value": "1,8%"}, "en": {"label": "Phone call", "value": "1.8%"}},
+      {"id": "email", "value": 1.8, "pt": {"label": "E-mail", "value": "1,8%"}, "en": {"label": "E-mail", "value": "1.8%"}},
+      {"id": "sms", "value": 0.7, "pt": {"label": "SMS", "value": "0,7%"}, "en": {"label": "SMS", "value": "0.7%"}}
+    ]},
     {
       "id": "channels", "form": "bars", "sources": ["cetic2025"],
       "pt": { "title": "Por onde chega a tentativa de golpe", "note": "Usuários de internet com 16 anos ou mais que passaram por uma tentativa de golpe com os próprios dados, em 2025. Cada pessoa pode citar mais de um canal, por isso a soma passa de 100%." },
@@ -228,6 +253,12 @@
         { "id": "2025", "value": 2261055, "pt": { "label": "2025", "value": "2,26 milhões" }, "en": { "label": "2025", "value": "2.26M" } }
       ]
     },
+    {"id": "med", "form": "columns", "sources": ["silverguard2025"], "pt": {"title": "Pix contestado e aceito como golpe, por ano", "note": "Valor dos Pix contestados pelo MED, o mecanismo de devolução do Banco Central, que o banco de destino aceitou como golpe. Conta só o que a vítima contestou. Dados do Banco Central, pedidos pela Lei de Acesso à Informação. *2025 é projeção."}, "en": {"title": "Pix disputed and accepted as a scam, per year", "note": "Value of Pix payments disputed through MED, the Banco Central refund mechanism, that the receiving bank accepted as a scam. It counts only what victims disputed. Banco Central data, obtained under the access to information law. *2025 is a projection."}, "rows": [
+      {"id": "2022", "value": 3054620019, "pt": {"label": "2022", "value": "R$ 3,05 bi"}, "en": {"label": "2022", "value": "R$ 3.05B"}},
+      {"id": "2023", "value": 4359376586, "pt": {"label": "2023", "value": "R$ 4,36 bi"}, "en": {"label": "2023", "value": "R$ 4.36B"}},
+      {"id": "2024", "value": 6743978896, "pt": {"label": "2024", "value": "R$ 6,74 bi"}, "en": {"label": "2024", "value": "R$ 6.74B"}},
+      {"id": "2025", "value": 7675420858, "pt": {"label": "2025*", "value": "R$ 7,68 bi"}, "en": {"label": "2025*", "value": "R$ 7.68B"}}
+    ]},
     {
       "id": "types", "form": "bars", "sources": ["vitimizacao2025"],
       "pt": { "title": "Que golpe tirou dinheiro das pessoas", "note": "Brasileiros de 16 anos ou mais que perderam dinheiro em cada tipo de golpe, entre julho de 2024 e junho de 2025. Uma pessoa pode ter caído em mais de um." },
@@ -280,7 +311,10 @@
       "stats": [
         "familyData",
         "whatsappBanks",
-        "messagingApps"
+        "messagingApps",
+        "falsoParente60",
+        "falsoParenteWhats",
+        "falsoParenteLoss"
       ],
       "describedBy": [
         "glossario2025",
@@ -466,6 +500,7 @@
         ]
       },
       "scene": "falso-suporte",
+      "realScene": "banco-real",
       "stats": [
         "fakeCall",
         "fakeCallAttempts"
@@ -560,7 +595,10 @@
         "pixAverage",
         "pixShare",
         "pixLoss",
-        "pixAttempts"
+        "pixAttempts",
+        "pixMeanLoss",
+        "pixToCompany",
+        "medAccepted"
       ],
       "describedBy": [
         "bcbPix",
@@ -651,6 +689,7 @@
         ]
       },
       "scene": "loja-falsa",
+      "realScene": "loja-real",
       "stats": [
         "fakeShopShare",
         "fakeSale",
@@ -1076,6 +1115,7 @@
         ]
       },
       "scene": "falso-advogado",
+      "realScene": "advogado-real",
       "stats": [
         "oabsp"
       ],
@@ -1247,6 +1287,7 @@
         ]
       },
       "scene": "taxa-correios",
+      "realScene": "entrega-real",
       "stats": [],
       "describedBy": [
         "correiosFalsas",
@@ -1663,6 +1704,7 @@
         ]
       },
       "scene": "aluguel",
+      "realScene": "pousada-real",
       "stats": [],
       "describedBy": [
         "pcprAluguel",
@@ -1828,6 +1870,7 @@
         ]
       },
       "scene": "boleto",
+      "realScene": "escola-real",
       "stats": [
         "pixShare"
       ],
@@ -1912,6 +1955,7 @@
         ]
       },
       "scene": "emprestimo",
+      "realScene": "credito-real",
       "stats": [],
       "describedBy": [
         "febEmprestimo",
@@ -2654,6 +2698,7 @@
         ]
       },
       "scene": "vaquinha",
+      "realScene": "doacao-real",
       "stats": [],
       "describedBy": [
         "glossario2025"
@@ -2766,12 +2811,14 @@
     "typeDescribedByNote": "Páginas oficiais com o roteiro do golpe e o que fazer.",
     "typeLimitTitle": "O que o Bipe não resolve aqui",
     "typeScene": "Como chega no Bipe",
+    "typeReal": "A mensagem de verdade",
+    "typeRealLede": "A empresa de verdade não pede código, senha nem Pix para chave pessoal. No Bipe, ela vai aparecer com o selo e o CNPJ (em breve).",
     "outsideTitle": "Golpes que começam fora da conversa",
     "outsideLede": "Estes golpes começam fora da conversa, por ligação ou pessoalmente.",
     "outsideMore": "Como se proteger",
     "groups": { "pessoa": "Alguém se passa por quem você conhece", "instituicao": "Alguém se passa por banco, órgão público ou empresa", "compra": "Compra e venda", "dinheiro": "Pix, boleto, empréstimo e investimento", "conta": "Conta e celular", "grupo": "Grupos e ameaças" },
     "channels": { "messaging": "app de mensagem", "sms": "SMS", "call": "ligação", "email": "e-mail", "ad": "anúncio", "social": "rede social", "marketplace": "site de vendas", "dating": "app de namoro", "carrier": "operadora do celular", "inPerson": "pessoalmente" },
-    "kinds": { "primary": "fonte oficial", "secondary": "pesquisa de associação privada", "press": "como noticiado pela imprensa" }
+    "kinds": { "primary": "fonte oficial", "secondary": "pesquisa de associação privada", "company": "estudo de empresa privada", "press": "como noticiado pela imprensa" }
   },
   "en": {
     "title": "Scams in Brazil in numbers",
@@ -2814,11 +2861,13 @@
     "typeDescribedByNote": "Official pages with the scam's script and what to do.",
     "typeLimitTitle": "What Bipe does not solve here",
     "typeScene": "How it arrives on Bipe",
+    "typeReal": "The real message",
+    "typeRealLede": "The real company never asks for a code, a password or a Pix to a personal key. On Bipe, it will show the seal and its CNPJ (coming soon).",
     "outsideTitle": "Scams that start outside the chat",
     "outsideLede": "These scams start outside the chat, by phone call or in person.",
     "outsideMore": "How to protect yourself",
     "groups": { "pessoa": "Someone poses as a person you know", "instituicao": "Someone poses as a bank, a public body or a company", "compra": "Buying and selling", "dinheiro": "Pix, boleto, loans and investment", "conta": "Account and phone", "grupo": "Groups and threats" },
     "channels": { "messaging": "messaging app", "sms": "SMS", "call": "phone call", "email": "e-mail", "ad": "ad", "social": "social media", "marketplace": "marketplace", "dating": "dating app", "carrier": "phone carrier", "inPerson": "in person" },
-    "kinds": { "primary": "official source", "secondary": "private association survey", "press": "as reported by the press" }
+    "kinds": { "primary": "official source", "secondary": "private association survey", "company": "private company study", "press": "as reported by the press" }
   }
 }

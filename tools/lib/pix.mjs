@@ -10,10 +10,10 @@ const UUID = /^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a
 // Warning kinds the check screen does not repeat: the screen itself is the Pix explanation.
 export const PIX_CHECK_SKIPPED_WARNINGS = ["pixCode", "pixKey"];
 
-/** CRC-16/CCITT-FALSE (poly 0x1021, init 0xFFFF) over the UTF-8 bytes, as 4 uppercase hex digits. */
+/** CRC-16/CCITT-FALSE (poly 0x1021, init 0xFFFF) over the UTF-8 bytes, as 4 uppercase hex digits. TextEncoder, not Buffer: bipe-web runs this in the browser. */
 export function crc16(text) {
   let crc = 0xffff;
-  for (const byte of Buffer.from(text, "utf8")) {
+  for (const byte of new TextEncoder().encode(text)) {
     crc ^= byte << 8;
     for (let i = 0; i < 8; i++) crc = crc & 0x8000 ? ((crc << 1) ^ 0x1021) & 0xffff : (crc << 1) & 0xffff;
   }

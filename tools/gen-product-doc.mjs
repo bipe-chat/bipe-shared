@@ -54,10 +54,10 @@ for (const f of product.features) {
     featureSlugs.add(`${l}/${slug}`);
   }
   if (f.pt.points.length !== f.en.points.length) fail(`feature ${f.id}: points pt and en differ`);
-  if (f.figures !== undefined) {
-    if (!Array.isArray(f.figures) || !f.figures.length || new Set(f.figures).size !== f.figures.length) fail(`feature ${f.id}: figures must be a list of distinct ids`);
-    for (const id of f.figures) if (!FIGURES.has(id)) fail(`feature ${f.id}: unknown figure ${id}`);
-  }
+  // Every feature page shows an in-app mockup, planned features too (MZ, 15 October 2026).
+  if (f.figures === undefined) fail(`feature ${f.id}: figures required (a mockup of the app)`);
+  if (!Array.isArray(f.figures) || !f.figures.length || new Set(f.figures).size !== f.figures.length) fail(`feature ${f.id}: figures must be a list of distinct ids`);
+  for (const id of f.figures) if (!FIGURES.has(id)) fail(`feature ${f.id}: unknown figure ${id}`);
 }
 // ICP register (ADR 0060): every ICP cites an ADR file in ../bipe/docs/adr; exactly one step is current.
 const adrDir = join(root, "../bipe/docs/adr");

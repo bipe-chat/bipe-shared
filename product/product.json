@@ -1424,6 +1424,9 @@
         "pt": "conferir-pix",
         "en": "pix-check"
       },
+      "figures": [
+        "conferir-pix"
+      ],
       "pt": {
         "name": "Conferir no Bipe",
         "body": "Recebeu um pedido de Pix em outro app? Compartilhe com o Bipe e veja o que o código diz antes de pagar.",

@@ -1042,8 +1042,1464 @@ paths:
                   inviters: { type: array, items: { $ref: "#/components/schemas/InviterStats" } }
         "401": { $ref: "#/components/responses/Error" }
         "404": { $ref: "#/components/responses/Error" }
+  /v1/me/business/catalog:
+    get:
+      summary: "Read the owner catalogue, including inactive items"
+      operationId: "getV1MeBusinessCatalog"
+      tags:
+        - "Catálogo"
+      security:
+        -
+          matrix: []
+      description: "Only a device of the company account may call this route. Any company account can use it; no verified CNPJ or paid tier is required."
+      responses:
+        "200":
+          description: "Success"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Catalog"
+        default: { $ref: "#/components/responses/AgendaError" }
+  /v1/me/business/catalog/items:
+    post:
+      summary: "Create a catalogue item"
+      operationId: "postV1MeBusinessCatalogItems"
+      tags:
+        - "Catálogo"
+      security:
+        -
+          matrix: []
+      description: "Only a device of the company account may call this route. Any company account can use it; no verified CNPJ or paid tier is required."
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CatalogItemInput"
+      responses:
+        "201":
+          description: "Success"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/CatalogItem"
+        default: { $ref: "#/components/responses/AgendaError" }
+  /v1/me/business/catalog/items/{itemId}:
+    put:
+      summary: "Replace a catalogue item"
+      operationId: "putV1MeBusinessCatalogItemsItemId"
+      tags:
+        - "Catálogo"
+      security:
+        -
+          matrix: []
+      description: "Only a device of the company account may call this route. Any company account can use it; no verified CNPJ or paid tier is required. Deletion archives an item referenced by bookings or other business records."
+      parameters:
+        -
+          name: "itemId"
+          in: "path"
+          required: true
+          schema:
+            type: "string"
+            minLength: 1
+            maxLength: 128
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CatalogItemInput"
+      responses:
+        "200":
+          description: "Success"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/CatalogItem"
+        default: { $ref: "#/components/responses/AgendaError" }
+    delete:
+      summary: "Remove a catalogue item from public use"
+      operationId: "deleteV1MeBusinessCatalogItemsItemId"
+      tags:
+        - "Catálogo"
+      security:
+        -
+          matrix: []
+      description: "Only a device of the company account may call this route. Any company account can use it; no verified CNPJ or paid tier is required. Deletion archives an item referenced by bookings or other business records."
+      parameters:
+        -
+          name: "itemId"
+          in: "path"
+          required: true
+          schema:
+            type: "string"
+            minLength: 1
+            maxLength: 128
+      responses:
+        "204":
+          description: "Success; no response body."
+        default: { $ref: "#/components/responses/AgendaError" }
+  /v1/me/business/catalog/order:
+    put:
+      summary: "Reorder catalogue items"
+      operationId: "putV1MeBusinessCatalogOrder"
+      tags:
+        - "Catálogo"
+      security:
+        -
+          matrix: []
+      description: "Only a device of the company account may call this route. Any company account can use it; no verified CNPJ or paid tier is required."
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CatalogOrder"
+      responses:
+        "200":
+          description: "Success"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Catalog"
+        default: { $ref: "#/components/responses/AgendaError" }
+  /v1/businesses/{handle}/catalog:
+    get:
+      summary: "Read the public catalogue"
+      operationId: "getV1BusinessesHandleCatalog"
+      tags:
+        - "Catálogo"
+      security: []
+      description: "Public with CORS for PUBLIC_SITE_URL, rate limited per IP. Active items only, ordered by sort then ID. No business-wide search. Links in descriptions must not be clickable."
+      parameters:
+        -
+          name: "handle"
+          in: "path"
+          required: true
+          schema:
+            type: "string"
+            minLength: 1
+            maxLength: 128
+      responses:
+        "200":
+          description: "Success"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Catalog"
+        default: { $ref: "#/components/responses/AgendaError" }
+  /v1/me/business/catalog/items/{itemId}/photo:
+    put:
+      summary: "Replace an item photo"
+      operationId: "putV1MeBusinessCatalogItemsItemIdPhoto"
+      tags:
+        - "Catálogo"
+      security:
+        -
+          matrix: []
+      description: "Only a device of the company account may call this route. Any company account can use it; no verified CNPJ or paid tier is required. Use the profile photo size limit and JPEG stripping. Reject non-JPEG input; remove APPn and COM metadata before storage."
+      parameters:
+        -
+          name: "itemId"
+          in: "path"
+          required: true
+          schema:
+            type: "string"
+            minLength: 1
+            maxLength: 128
+      responses:
+        "200":
+          description: "Success"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/CatalogItem"
+        default: { $ref: "#/components/responses/AgendaError" }
+      requestBody:
+        required: true
+        content:
+          image/jpeg:
+            schema:
+              type: "string"
+              format: "binary"
+    delete:
+      summary: "Remove an item photo"
+      operationId: "deleteV1MeBusinessCatalogItemsItemIdPhoto"
+      tags:
+        - "Catálogo"
+      security:
+        -
+          matrix: []
+      description: "Only a device of the company account may call this route. Any company account can use it; no verified CNPJ or paid tier is required."
+      parameters:
+        -
+          name: "itemId"
+          in: "path"
+          required: true
+          schema:
+            type: "string"
+            minLength: 1
+            maxLength: 128
+      responses:
+        "204":
+          description: "Success; no response body."
+        default: { $ref: "#/components/responses/AgendaError" }
+  /v1/me/business/agenda:
+    get:
+      summary: "Read the company scheduling state"
+      operationId: "getV1MeBusinessAgenda"
+      tags:
+        - "Agenda"
+      security:
+        -
+          matrix: []
+      description: "Only a device of the company account may call this route. Any company account can use it; no verified CNPJ or paid tier is required."
+      responses:
+        "200":
+          description: "Success"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AgendaState"
+        default: { $ref: "#/components/responses/AgendaError" }
+    put:
+      summary: "Publish or unpublish and set the business time zone"
+      operationId: "putV1MeBusinessAgenda"
+      tags:
+        - "Agenda"
+      security:
+        -
+          matrix: []
+      description: "Only a device of the company account may call this route. Any company account can use it; no verified CNPJ or paid tier is required. Publishing requires an active service with complete scheduling fields and an active agenda. No payment request is created."
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/AgendaSettings"
+      responses:
+        "200":
+          description: "Success"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AgendaState"
+        default: { $ref: "#/components/responses/AgendaError" }
+  /v1/me/business/agenda/activate:
+    post:
+      summary: "Activate from an agenda template"
+      operationId: "postV1MeBusinessAgendaActivate"
+      tags:
+        - "Agenda"
+      security:
+        -
+          matrix: []
+      description: "Only a device of the company account may call this route. Any company account can use it; no verified CNPJ or paid tier is required. Creates services as catalogue items. Never creates a second service table or duplicates an existing item."
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/AgendaActivation"
+      responses:
+        "201":
+          description: "Success"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AgendaState"
+        default: { $ref: "#/components/responses/AgendaError" }
+  /v1/me/business/agenda/agendas:
+    get:
+      summary: "List owner agendas"
+      operationId: "getV1MeBusinessAgendaAgendas"
+      tags:
+        - "Agenda"
+      security:
+        -
+          matrix: []
+      description: "Only a device of the company account may call this route. Any company account can use it; no verified CNPJ or paid tier is required."
+      responses:
+        "200":
+          description: "Success"
+          content:
+            application/json:
+              schema:
+                type: "object"
+                additionalProperties: false
+                required:
+                  - "agendas"
+                properties:
+                  agendas:
+                    type: "array"
+                    items:
+                      $ref: "#/components/schemas/Agenda"
+        default: { $ref: "#/components/responses/AgendaError" }
+    post:
+      summary: "Add a person or station"
+      operationId: "postV1MeBusinessAgendaAgendas"
+      tags:
+        - "Agenda"
+      security:
+        -
+          matrix: []
+      description: "Only a device of the company account may call this route. Any company account can use it; no verified CNPJ or paid tier is required. An agenda is not a seat and needs no Bipe account."
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/AgendaInput"
+      responses:
+        "201":
+          description: "Success"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Agenda"
+        default: { $ref: "#/components/responses/AgendaError" }
+  /v1/me/business/agenda/agendas/{agendaId}:
+    put:
+      summary: "Replace a person or station"
+      operationId: "putV1MeBusinessAgendaAgendasAgendaId"
+      tags:
+        - "Agenda"
+      security:
+        -
+          matrix: []
+      description: "Only a device of the company account may call this route. Any company account can use it; no verified CNPJ or paid tier is required."
+      parameters:
+        -
+          name: "agendaId"
+          in: "path"
+          required: true
+          schema:
+            type: "string"
+            minLength: 1
+            maxLength: 128
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/AgendaInput"
+      responses:
+        "200":
+          description: "Success"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Agenda"
+        default: { $ref: "#/components/responses/AgendaError" }
+    delete:
+      summary: "Deactivate an agenda"
+      operationId: "deleteV1MeBusinessAgendaAgendasAgendaId"
+      tags:
+        - "Agenda"
+      security:
+        -
+          matrix: []
+      description: "Only a device of the company account may call this route. Any company account can use it; no verified CNPJ or paid tier is required. Preserve referenced bookings and history."
+      parameters:
+        -
+          name: "agendaId"
+          in: "path"
+          required: true
+          schema:
+            type: "string"
+            minLength: 1
+            maxLength: 128
+      responses:
+        "204":
+          description: "Success; no response body."
+        default: { $ref: "#/components/responses/AgendaError" }
+  /v1/me/business/agenda/agendas/{agendaId}/availability:
+    get:
+      summary: "Read weekly hours"
+      operationId: "getV1MeBusinessAgendaAgendasAgendaIdAvailability"
+      tags:
+        - "Agenda"
+      security:
+        -
+          matrix: []
+      description: "Only a device of the company account may call this route. Any company account can use it; no verified CNPJ or paid tier is required. Local times; several ranges per weekday are allowed."
+      parameters:
+        -
+          name: "agendaId"
+          in: "path"
+          required: true
+          schema:
+            type: "string"
+            minLength: 1
+            maxLength: 128
+      responses:
+        "200":
+          description: "Success"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AvailabilityRules"
+        default: { $ref: "#/components/responses/AgendaError" }
+    put:
+      summary: "Replace weekly hours"
+      operationId: "putV1MeBusinessAgendaAgendasAgendaIdAvailability"
+      tags:
+        - "Agenda"
+      security:
+        -
+          matrix: []
+      description: "Only a device of the company account may call this route. Any company account can use it; no verified CNPJ or paid tier is required. Local times; several ranges per weekday are allowed."
+      parameters:
+        -
+          name: "agendaId"
+          in: "path"
+          required: true
+          schema:
+            type: "string"
+            minLength: 1
+            maxLength: 128
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/AvailabilityRules"
+      responses:
+        "200":
+          description: "Success"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AvailabilityRules"
+        default: { $ref: "#/components/responses/AgendaError" }
+  /v1/me/business/agenda/overrides:
+    get:
+      summary: "List date overrides"
+      operationId: "getV1MeBusinessAgendaOverrides"
+      tags:
+        - "Agenda"
+      security:
+        -
+          matrix: []
+      description: "Only a device of the company account may call this route. Any company account can use it; no verified CNPJ or paid tier is required."
+      parameters:
+        -
+          name: "date_from"
+          in: "query"
+          required: true
+          schema:
+            type: "string"
+            format: "date"
+        -
+          name: "date_to"
+          in: "query"
+          required: true
+          schema:
+            type: "string"
+            format: "date"
+      responses:
+        "200":
+          description: "Success"
+          content:
+            application/json:
+              schema:
+                type: "object"
+                additionalProperties: false
+                required:
+                  - "overrides"
+                properties:
+                  overrides:
+                    type: "array"
+                    items:
+                      $ref: "#/components/schemas/Override"
+        default: { $ref: "#/components/responses/AgendaError" }
+    post:
+      summary: "Override hours or close dates"
+      operationId: "postV1MeBusinessAgendaOverrides"
+      tags:
+        - "Agenda"
+      security:
+        -
+          matrix: []
+      description: "Only a device of the company account may call this route. Any company account can use it; no verified CNPJ or paid tier is required."
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/OverrideInput"
+      responses:
+        "201":
+          description: "Success"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Override"
+        default: { $ref: "#/components/responses/AgendaError" }
+  /v1/me/business/agenda/overrides/{overrideId}:
+    put:
+      summary: "Replace a date override"
+      operationId: "putV1MeBusinessAgendaOverridesOverrideId"
+      tags:
+        - "Agenda"
+      security:
+        -
+          matrix: []
+      description: "Only a device of the company account may call this route. Any company account can use it; no verified CNPJ or paid tier is required."
+      parameters:
+        -
+          name: "overrideId"
+          in: "path"
+          required: true
+          schema:
+            type: "string"
+            minLength: 1
+            maxLength: 128
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/OverrideInput"
+      responses:
+        "200":
+          description: "Success"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Override"
+        default: { $ref: "#/components/responses/AgendaError" }
+    delete:
+      summary: "Remove an override and restore weekly hours"
+      operationId: "deleteV1MeBusinessAgendaOverridesOverrideId"
+      tags:
+        - "Agenda"
+      security:
+        -
+          matrix: []
+      description: "Only a device of the company account may call this route. Any company account can use it; no verified CNPJ or paid tier is required."
+      parameters:
+        -
+          name: "overrideId"
+          in: "path"
+          required: true
+          schema:
+            type: "string"
+            minLength: 1
+            maxLength: 128
+      responses:
+        "204":
+          description: "Success; no response body."
+        default: { $ref: "#/components/responses/AgendaError" }
+  /v1/me/business/agenda/blocks:
+    post:
+      summary: "Block an interval"
+      operationId: "postV1MeBusinessAgendaBlocks"
+      tags:
+        - "Agenda"
+      security:
+        -
+          matrix: []
+      description: "Only a device of the company account may call this route. Any company account can use it; no verified CNPJ or paid tier is required."
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/AgendaBlock"
+      responses:
+        "201":
+          description: "Success"
+          content:
+            application/json:
+              schema:
+                type: "object"
+                additionalProperties: false
+                required:
+                  - "overrides"
+                properties:
+                  overrides:
+                    type: "array"
+                    items:
+                      $ref: "#/components/schemas/Override"
+        default: { $ref: "#/components/responses/AgendaError" }
+  /v1/me/business/agenda/close-day:
+    post:
+      summary: "Close a local day"
+      operationId: "postV1MeBusinessAgendaCloseDay"
+      tags:
+        - "Agenda"
+      security:
+        -
+          matrix: []
+      description: "Only a device of the company account may call this route. Any company account can use it; no verified CNPJ or paid tier is required. The client may offer the shared message text for the owner to edit and send through the encrypted chat."
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/AgendaCloseDay"
+      responses:
+        "201":
+          description: "Success"
+          content:
+            application/json:
+              schema:
+                type: "object"
+                additionalProperties: false
+                required:
+                  - "overrides"
+                properties:
+                  overrides:
+                    type: "array"
+                    items:
+                      $ref: "#/components/schemas/Override"
+        default: { $ref: "#/components/responses/AgendaError" }
+  /v1/me/business/agenda/services:
+    get:
+      summary: "List schedulable catalogue services"
+      operationId: "getV1MeBusinessAgendaServices"
+      tags:
+        - "Agenda"
+      security:
+        -
+          matrix: []
+      description: "Only a device of the company account may call this route. Any company account can use it; no verified CNPJ or paid tier is required. IDs and fields are the same as in the catalogue."
+      responses:
+        "200":
+          description: "Success"
+          content:
+            application/json:
+              schema:
+                type: "object"
+                additionalProperties: false
+                required:
+                  - "services"
+                properties:
+                  services:
+                    type: "array"
+                    items:
+                      $ref: "#/components/schemas/Service"
+        default: { $ref: "#/components/responses/AgendaError" }
+    post:
+      summary: "Add a service to the catalogue and agenda"
+      operationId: "postV1MeBusinessAgendaServices"
+      tags:
+        - "Agenda"
+      security:
+        -
+          matrix: []
+      description: "Only a device of the company account may call this route. Any company account can use it; no verified CNPJ or paid tier is required."
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ServiceInput"
+      responses:
+        "201":
+          description: "Success"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Service"
+        default: { $ref: "#/components/responses/AgendaError" }
+  /v1/me/business/agenda/services/{serviceId}:
+    put:
+      summary: "Replace a scheduled catalogue service"
+      operationId: "putV1MeBusinessAgendaServicesServiceId"
+      tags:
+        - "Agenda"
+      security:
+        -
+          matrix: []
+      description: "Only a device of the company account may call this route. Any company account can use it; no verified CNPJ or paid tier is required. Updates the same catalogue item; historical booking times remain unchanged."
+      parameters:
+        -
+          name: "serviceId"
+          in: "path"
+          required: true
+          schema:
+            type: "string"
+            minLength: 1
+            maxLength: 128
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ServiceInput"
+      responses:
+        "200":
+          description: "Success"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Service"
+        default: { $ref: "#/components/responses/AgendaError" }
+    delete:
+      summary: "Deactivate a catalogue service"
+      operationId: "deleteV1MeBusinessAgendaServicesServiceId"
+      tags:
+        - "Agenda"
+      security:
+        -
+          matrix: []
+      description: "Only a device of the company account may call this route. Any company account can use it; no verified CNPJ or paid tier is required. Preserve referenced bookings and history."
+      parameters:
+        -
+          name: "serviceId"
+          in: "path"
+          required: true
+          schema:
+            type: "string"
+            minLength: 1
+            maxLength: 128
+      responses:
+        "204":
+          description: "Success; no response body."
+        default: { $ref: "#/components/responses/AgendaError" }
+  /v1/me/business/agenda/policy:
+    get:
+      summary: "Read booking policy"
+      operationId: "getV1MeBusinessAgendaPolicy"
+      tags:
+        - "Agenda"
+      security:
+        -
+          matrix: []
+      description: "Only a device of the company account may call this route. Any company account can use it; no verified CNPJ or paid tier is required."
+      responses:
+        "200":
+          description: "Success"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Policy"
+        default: { $ref: "#/components/responses/AgendaError" }
+    put:
+      summary: "Replace booking policy"
+      operationId: "putV1MeBusinessAgendaPolicy"
+      tags:
+        - "Agenda"
+      security:
+        -
+          matrix: []
+      description: "Only a device of the company account may call this route. Any company account can use it; no verified CNPJ or paid tier is required."
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Policy"
+      responses:
+        "200":
+          description: "Success"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Policy"
+        default: { $ref: "#/components/responses/AgendaError" }
+  /v1/me/business/agenda/bookings:
+    get:
+      summary: "Read owner bookings"
+      operationId: "getV1MeBusinessAgendaBookings"
+      tags:
+        - "Agenda"
+      security:
+        -
+          matrix: []
+      description: "Only a device of the company account may call this route. Any company account can use it; no verified CNPJ or paid tier is required. Dates are inclusive in the business time zone."
+      parameters:
+        -
+          name: "date_from"
+          in: "query"
+          required: true
+          schema:
+            type: "string"
+            format: "date"
+        -
+          name: "date_to"
+          in: "query"
+          required: true
+          schema:
+            type: "string"
+            format: "date"
+        -
+          name: "agenda_id"
+          in: "query"
+          required: false
+          schema:
+            type: "string"
+            minLength: 1
+            maxLength: 128
+      responses:
+        "200":
+          description: "Success"
+          content:
+            application/json:
+              schema:
+                type: "object"
+                additionalProperties: false
+                required:
+                  - "bookings"
+                properties:
+                  bookings:
+                    type: "array"
+                    items:
+                      $ref: "#/components/schemas/Booking"
+        default: { $ref: "#/components/responses/AgendaError" }
+    post:
+      summary: "Add an encaixe booking"
+      operationId: "postV1MeBusinessAgendaBookings"
+      tags:
+        - "Agenda"
+      security:
+        -
+          matrix: []
+      description: "Only a device of the company account may call this route. Any company account can use it; no verified CNPJ or paid tier is required. Source is owner. Name-only customers receive no reminders or chat card."
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/OwnerBooking"
+      responses:
+        "201":
+          description: "Success"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Booking"
+        default: { $ref: "#/components/responses/AgendaError" }
+  /v1/me/business/agenda/bookings/{bookingId}/move:
+    post:
+      summary: "Move an owner booking"
+      operationId: "postV1MeBusinessAgendaBookingsBookingIdMove"
+      tags:
+        - "Agenda"
+      security:
+        -
+          matrix: []
+      description: "Only a device of the company account may call this route. Any company account can use it; no verified CNPJ or paid tier is required. Every lookup is scoped to this company. Accept/refuse apply only to requested bookings (slice 2); no-show applies after the start time. Moves and cancellations notify the signed-in customer by push, never by a server device in encrypted chat."
+      parameters:
+        -
+          name: "bookingId"
+          in: "path"
+          required: true
+          schema:
+            type: "string"
+            minLength: 1
+            maxLength: 128
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/BookingMove"
+      responses:
+        "200":
+          description: "Success"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Booking"
+        default: { $ref: "#/components/responses/AgendaError" }
+  /v1/me/business/agenda/bookings/{bookingId}/cancel:
+    post:
+      summary: "Cancel an owner booking"
+      operationId: "postV1MeBusinessAgendaBookingsBookingIdCancel"
+      tags:
+        - "Agenda"
+      security:
+        -
+          matrix: []
+      description: "Only a device of the company account may call this route. Any company account can use it; no verified CNPJ or paid tier is required. Every lookup is scoped to this company. Accept/refuse apply only to requested bookings (slice 2); no-show applies after the start time. Moves and cancellations notify the signed-in customer by push, never by a server device in encrypted chat."
+      parameters:
+        -
+          name: "bookingId"
+          in: "path"
+          required: true
+          schema:
+            type: "string"
+            minLength: 1
+            maxLength: 128
+      responses:
+        "200":
+          description: "Success"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Booking"
+        default: { $ref: "#/components/responses/AgendaError" }
+  /v1/me/business/agenda/bookings/{bookingId}/no-show:
+    post:
+      summary: "No-show an owner booking"
+      operationId: "postV1MeBusinessAgendaBookingsBookingIdNoShow"
+      tags:
+        - "Agenda"
+      security:
+        -
+          matrix: []
+      description: "Only a device of the company account may call this route. Any company account can use it; no verified CNPJ or paid tier is required. Every lookup is scoped to this company. Accept/refuse apply only to requested bookings (slice 2); no-show applies after the start time. Moves and cancellations notify the signed-in customer by push, never by a server device in encrypted chat."
+      parameters:
+        -
+          name: "bookingId"
+          in: "path"
+          required: true
+          schema:
+            type: "string"
+            minLength: 1
+            maxLength: 128
+      responses:
+        "200":
+          description: "Success"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Booking"
+        default: { $ref: "#/components/responses/AgendaError" }
+  /v1/me/business/agenda/bookings/{bookingId}/accept:
+    post:
+      summary: "Accept an owner booking"
+      operationId: "postV1MeBusinessAgendaBookingsBookingIdAccept"
+      tags:
+        - "Agenda"
+      security:
+        -
+          matrix: []
+      description: "Only a device of the company account may call this route. Any company account can use it; no verified CNPJ or paid tier is required. Every lookup is scoped to this company. Accept/refuse apply only to requested bookings (slice 2); no-show applies after the start time. Moves and cancellations notify the signed-in customer by push, never by a server device in encrypted chat."
+      parameters:
+        -
+          name: "bookingId"
+          in: "path"
+          required: true
+          schema:
+            type: "string"
+            minLength: 1
+            maxLength: 128
+      responses:
+        "200":
+          description: "Success"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Booking"
+        default: { $ref: "#/components/responses/AgendaError" }
+  /v1/me/business/agenda/bookings/{bookingId}/refuse:
+    post:
+      summary: "Refuse an owner booking"
+      operationId: "postV1MeBusinessAgendaBookingsBookingIdRefuse"
+      tags:
+        - "Agenda"
+      security:
+        -
+          matrix: []
+      description: "Only a device of the company account may call this route. Any company account can use it; no verified CNPJ or paid tier is required. Every lookup is scoped to this company. Accept/refuse apply only to requested bookings (slice 2); no-show applies after the start time. Moves and cancellations notify the signed-in customer by push, never by a server device in encrypted chat."
+      parameters:
+        -
+          name: "bookingId"
+          in: "path"
+          required: true
+          schema:
+            type: "string"
+            minLength: 1
+            maxLength: 128
+      responses:
+        "200":
+          description: "Success"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Booking"
+        default: { $ref: "#/components/responses/AgendaError" }
+  /v1/me/business/agenda/agendas/{agendaId}/feed:
+    post:
+      summary: "Issue or rotate the secret ICS feed URL"
+      operationId: "postV1MeBusinessAgendaAgendasAgendaIdFeed"
+      tags:
+        - "Agenda"
+      security:
+        -
+          matrix: []
+      description: "Only a device of the company account may call this route. Any company account can use it; no verified CNPJ or paid tier is required."
+      parameters:
+        -
+          name: "agendaId"
+          in: "path"
+          required: true
+          schema:
+            type: "string"
+            minLength: 1
+            maxLength: 128
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/AgendaFeedOptions"
+      responses:
+        "201":
+          description: "Success"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AgendaFeed"
+        default: { $ref: "#/components/responses/AgendaError" }
+    delete:
+      summary: "Revoke the ICS feed token"
+      operationId: "deleteV1MeBusinessAgendaAgendasAgendaIdFeed"
+      tags:
+        - "Agenda"
+      security:
+        -
+          matrix: []
+      description: "Only a device of the company account may call this route. Any company account can use it; no verified CNPJ or paid tier is required."
+      parameters:
+        -
+          name: "agendaId"
+          in: "path"
+          required: true
+          schema:
+            type: "string"
+            minLength: 1
+            maxLength: 128
+      responses:
+        "204":
+          description: "Success; no response body."
+        default: { $ref: "#/components/responses/AgendaError" }
+  /v1/me/business/agenda/agendas/{agendaId}/busy-imports:
+    get:
+      summary: "List busy-calendar imports"
+      operationId: "getV1MeBusinessAgendaAgendasAgendaIdBusyImports"
+      tags:
+        - "Agenda"
+      security:
+        -
+          matrix: []
+      description: "Only a device of the company account may call this route. Any company account can use it; no verified CNPJ or paid tier is required."
+      parameters:
+        -
+          name: "agendaId"
+          in: "path"
+          required: true
+          schema:
+            type: "string"
+            minLength: 1
+            maxLength: 128
+      responses:
+        "200":
+          description: "Success"
+          content:
+            application/json:
+              schema:
+                type: "object"
+                additionalProperties: false
+                required:
+                  - "imports"
+                properties:
+                  imports:
+                    type: "array"
+                    items:
+                      $ref: "#/components/schemas/BusyImport"
+        default: { $ref: "#/components/responses/AgendaError" }
+    post:
+      summary: "Add a secret ICS busy-calendar import"
+      operationId: "postV1MeBusinessAgendaAgendasAgendaIdBusyImports"
+      tags:
+        - "Agenda"
+      security:
+        -
+          matrix: []
+      description: "Only a device of the company account may call this route. Any company account can use it; no verified CNPJ or paid tier is required. Validate the URL and every resolved destination before fetching; store only busy start and end times."
+      parameters:
+        -
+          name: "agendaId"
+          in: "path"
+          required: true
+          schema:
+            type: "string"
+            minLength: 1
+            maxLength: 128
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/BusyImportInput"
+      responses:
+        "201":
+          description: "Success"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/BusyImport"
+        default: { $ref: "#/components/responses/AgendaError" }
+  /v1/me/business/agenda/agendas/{agendaId}/busy-imports/{importId}:
+    delete:
+      summary: "Remove an import and its busy blocks"
+      operationId: "deleteV1MeBusinessAgendaAgendasAgendaIdBusyImportsImportId"
+      tags:
+        - "Agenda"
+      security:
+        -
+          matrix: []
+      description: "Only a device of the company account may call this route. Any company account can use it; no verified CNPJ or paid tier is required."
+      parameters:
+        -
+          name: "agendaId"
+          in: "path"
+          required: true
+          schema:
+            type: "string"
+            minLength: 1
+            maxLength: 128
+        -
+          name: "importId"
+          in: "path"
+          required: true
+          schema:
+            type: "string"
+            minLength: 1
+            maxLength: 128
+      responses:
+        "204":
+          description: "Success; no response body."
+        default: { $ref: "#/components/responses/AgendaError" }
+  /v1/businesses/{handle}/agenda/services:
+    get:
+      summary: "Read published catalogue services"
+      operationId: "getV1BusinessesHandleAgendaServices"
+      tags:
+        - "Agenda"
+      security: []
+      description: "Public with CORS for PUBLIC_SITE_URL and a rate limit per IP. Requires a published agenda. Never returns booked times or customer data."
+      parameters:
+        -
+          name: "handle"
+          in: "path"
+          required: true
+          schema:
+            type: "string"
+            minLength: 1
+            maxLength: 128
+      responses:
+        "200":
+          description: "Success"
+          content:
+            application/json:
+              schema:
+                type: "object"
+                additionalProperties: false
+                required:
+                  - "services"
+                properties:
+                  services:
+                    type: "array"
+                    items:
+                      $ref: "#/components/schemas/Service"
+        default: { $ref: "#/components/responses/AgendaError" }
+  /v1/businesses/{handle}/agenda/agendas:
+    get:
+      summary: "Read published people or stations"
+      operationId: "getV1BusinessesHandleAgendaAgendas"
+      tags:
+        - "Agenda"
+      security: []
+      description: "Public with CORS for PUBLIC_SITE_URL and a rate limit per IP. Requires a published agenda. Never returns booked times or customer data."
+      parameters:
+        -
+          name: "handle"
+          in: "path"
+          required: true
+          schema:
+            type: "string"
+            minLength: 1
+            maxLength: 128
+        -
+          name: "service_id"
+          in: "query"
+          required: false
+          schema:
+            type: "string"
+            minLength: 1
+            maxLength: 128
+      responses:
+        "200":
+          description: "Success"
+          content:
+            application/json:
+              schema:
+                type: "object"
+                additionalProperties: false
+                required:
+                  - "agendas"
+                properties:
+                  agendas:
+                    type: "array"
+                    items:
+                      $ref: "#/components/schemas/Agenda"
+        default: { $ref: "#/components/responses/AgendaError" }
+  /v1/businesses/{handle}/agenda/slots:
+    get:
+      summary: "Read free slots grouped by local date"
+      operationId: "getV1BusinessesHandleAgendaSlots"
+      tags:
+        - "Agenda"
+      security: []
+      description: "Public with CORS for PUBLIC_SITE_URL and a rate limit per IP. Requires a published agenda. Never returns booked times or customer data. Inclusive date range. Apply weekly rules, overrides, buffered active bookings, imported busy blocks, service duration and buffers, slot step, notice and horizon. Exclude expired holds; held/requested/confirmed block. Empty days remain in the response."
+      parameters:
+        -
+          name: "handle"
+          in: "path"
+          required: true
+          schema:
+            type: "string"
+            minLength: 1
+            maxLength: 128
+        -
+          name: "service_id"
+          in: "query"
+          required: true
+          schema:
+            type: "string"
+            minLength: 1
+            maxLength: 128
+        -
+          name: "agenda_id"
+          in: "query"
+          required: false
+          schema:
+            type: "string"
+            default: "any"
+        -
+          name: "date_from"
+          in: "query"
+          required: true
+          schema:
+            type: "string"
+            format: "date"
+        -
+          name: "date_to"
+          in: "query"
+          required: true
+          schema:
+            type: "string"
+            format: "date"
+      responses:
+        "200":
+          description: "Success"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/SlotDays"
+        default: { $ref: "#/components/responses/AgendaError" }
+  /v1/businesses/{handle}/agenda/hold:
+    post:
+      summary: "Hold a slot for five minutes"
+      operationId: "postV1BusinessesHandleAgendaHold"
+      tags:
+        - "Agenda"
+      security:
+        -
+          matrix: []
+      description: "Signed-in customer only. Derive the customer from the bearer token. Pick any agenda at hold time (least booked that local day, then sort and ID); enforce the per-agenda exclusion constraint including buffers. Enforce max open bookings and per-user rate limits. Unpublished agendas cannot be booked. A collision returns slot_taken (409). No verified CNPJ is needed."
+      parameters:
+        -
+          name: "handle"
+          in: "path"
+          required: true
+          schema:
+            type: "string"
+            minLength: 1
+            maxLength: 128
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/BookingHold"
+      responses:
+        "201":
+          description: "Success"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Booking"
+        default: { $ref: "#/components/responses/AgendaError" }
+  /v1/businesses/{handle}/agenda/bookings/{bookingId}/confirm:
+    post:
+      summary: "Confirm the caller booking"
+      operationId: "postV1BusinessesHandleAgendaBookingsBookingIdConfirm"
+      tags:
+        - "Agenda"
+      security:
+        -
+          matrix: []
+      description: "Only the authenticated customer of this booking may act; scope to this business too. Confirm before hold_expires_at only, atomically: auto mode becomes confirmed; request mode becomes requested (slice 2). Expired holds return hold_expired (409). Cancel/move enforce the cancellation window. A failed move preserves the original booking. Never accept a customer ID, name, status, end time or free text from this request."
+      parameters:
+        -
+          name: "handle"
+          in: "path"
+          required: true
+          schema:
+            type: "string"
+            minLength: 1
+            maxLength: 128
+        -
+          name: "bookingId"
+          in: "path"
+          required: true
+          schema:
+            type: "string"
+            minLength: 1
+            maxLength: 128
+      responses:
+        "200":
+          description: "Success"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Booking"
+        default: { $ref: "#/components/responses/AgendaError" }
+  /v1/businesses/{handle}/agenda/bookings/{bookingId}/cancel:
+    post:
+      summary: "Cancel the caller booking"
+      operationId: "postV1BusinessesHandleAgendaBookingsBookingIdCancel"
+      tags:
+        - "Agenda"
+      security:
+        -
+          matrix: []
+      description: "Only the authenticated customer of this booking may act; scope to this business too. Confirm before hold_expires_at only, atomically: auto mode becomes confirmed; request mode becomes requested (slice 2). Expired holds return hold_expired (409). Cancel/move enforce the cancellation window. A failed move preserves the original booking. Never accept a customer ID, name, status, end time or free text from this request."
+      parameters:
+        -
+          name: "handle"
+          in: "path"
+          required: true
+          schema:
+            type: "string"
+            minLength: 1
+            maxLength: 128
+        -
+          name: "bookingId"
+          in: "path"
+          required: true
+          schema:
+            type: "string"
+            minLength: 1
+            maxLength: 128
+      responses:
+        "200":
+          description: "Success"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Booking"
+        default: { $ref: "#/components/responses/AgendaError" }
+  /v1/businesses/{handle}/agenda/bookings/{bookingId}/move:
+    post:
+      summary: "Move the caller booking"
+      operationId: "postV1BusinessesHandleAgendaBookingsBookingIdMove"
+      tags:
+        - "Agenda"
+      security:
+        -
+          matrix: []
+      description: "Only the authenticated customer of this booking may act; scope to this business too. Confirm before hold_expires_at only, atomically: auto mode becomes confirmed; request mode becomes requested (slice 2). Expired holds return hold_expired (409). Cancel/move enforce the cancellation window. A failed move preserves the original booking. Never accept a customer ID, name, status, end time or free text from this request."
+      parameters:
+        -
+          name: "handle"
+          in: "path"
+          required: true
+          schema:
+            type: "string"
+            minLength: 1
+            maxLength: 128
+        -
+          name: "bookingId"
+          in: "path"
+          required: true
+          schema:
+            type: "string"
+            minLength: 1
+            maxLength: 128
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/BookingMove"
+      responses:
+        "200":
+          description: "Success"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Booking"
+        default: { $ref: "#/components/responses/AgendaError" }
+  /v1/me/bookings:
+    get:
+      summary: "Read upcoming bookings for the caller"
+      operationId: "getV1MeBookings"
+      tags:
+        - "Agenda"
+      security:
+        -
+          matrix: []
+      description: "For a personal account, upcoming bookings for this customer. For a company account, upcoming bookings of this company. Never another account. Exclude cancelled/no_show and expired holds; order by start then ID. Apps draw the card from this response; it is not an encrypted room event."
+      responses:
+        "200":
+          description: "Success"
+          content:
+            application/json:
+              schema:
+                type: "object"
+                additionalProperties: false
+                required:
+                  - "bookings"
+                properties:
+                  bookings:
+                    type: "array"
+                    items:
+                      $ref: "#/components/schemas/Booking"
+        default: { $ref: "#/components/responses/AgendaError" }
+  /v1/agenda/feeds/{token}.ics:
+    get:
+      summary: "Read a secret agenda ICS subscription"
+      operationId: "getV1AgendaFeedsToken.ics"
+      tags:
+        - "Agenda"
+      security: []
+      description: "No bearer header. Validate the hash of the 32-byte random token, and scope to its agenda. Invalid and revoked tokens return the same 404. Default SUMMARY is Agendado; first names only with the owner opt-in. Never include customer IDs, notes, descriptions or chat content. Redact the token from access/error logs. Return Cache-Control: no-store."
+      parameters:
+        -
+          name: "token"
+          in: "path"
+          required: true
+          schema:
+            type: "string"
+            pattern: "^[A-Za-z0-9_-]{43}$"
+      responses:
+        "200":
+          description: "Calendar subscription, UTC event times."
+          headers:
+            Cache-Control:
+              schema:
+                type: "string"
+                const: "no-store"
+          content:
+            text/calendar:
+              schema:
+                type: "string"
+        default: { $ref: "#/components/responses/AgendaError" }
 components:
   responses:
+    AgendaError:
+      description: Invalid input (400), unauthorised (401), not found (404), slot or hold conflict (409), policy failure (422), rate limit (429), or server failure (500).
+      content:
+        application/json:
+          schema: { $ref: "#/components/schemas/AgendaError" }
     Error:
       description: Error
       content:
@@ -1364,3 +2820,73 @@ components:
         verificationId: { type: string }
         state: { type: string, enum: [pending, verified, rejected, expired] }
         badge: { $ref: "#/components/schemas/BadgeEnvelope" }
+
+    # Business schemas are JSON Schema 2020-12; gen.mjs emits the API types from the same definitions.
+    CatalogPrice:
+      $ref: "./business-schemas.json#/$defs/CatalogPrice"
+    CatalogItemInput:
+      $ref: "./business-schemas.json#/$defs/CatalogItemInput"
+    CatalogItem:
+      $ref: "./business-schemas.json#/$defs/CatalogItem"
+    Catalog:
+      $ref: "./business-schemas.json#/$defs/Catalog"
+    CatalogOrder:
+      $ref: "./business-schemas.json#/$defs/CatalogOrder"
+    Service:
+      $ref: "./business-schemas.json#/$defs/Service"
+    ServiceInput:
+      $ref: "./business-schemas.json#/$defs/ServiceInput"
+    AgendaInput:
+      $ref: "./business-schemas.json#/$defs/AgendaInput"
+    Agenda:
+      $ref: "./business-schemas.json#/$defs/Agenda"
+    Availability:
+      $ref: "./business-schemas.json#/$defs/Availability"
+    AvailabilityRules:
+      $ref: "./business-schemas.json#/$defs/AvailabilityRules"
+    TimeRange:
+      $ref: "./business-schemas.json#/$defs/TimeRange"
+    OverrideInput:
+      $ref: "./business-schemas.json#/$defs/OverrideInput"
+    Override:
+      $ref: "./business-schemas.json#/$defs/Override"
+    AgendaBlock:
+      $ref: "./business-schemas.json#/$defs/AgendaBlock"
+    AgendaCloseDay:
+      $ref: "./business-schemas.json#/$defs/AgendaCloseDay"
+    Policy:
+      $ref: "./business-schemas.json#/$defs/Policy"
+    AgendaSettings:
+      $ref: "./business-schemas.json#/$defs/AgendaSettings"
+    AgendaActivation:
+      $ref: "./business-schemas.json#/$defs/AgendaActivation"
+    AgendaState:
+      $ref: "./business-schemas.json#/$defs/AgendaState"
+    BookingStatus:
+      $ref: "./business-schemas.json#/$defs/BookingStatus"
+    BookingCustomer:
+      $ref: "./business-schemas.json#/$defs/BookingCustomer"
+    Booking:
+      $ref: "./business-schemas.json#/$defs/Booking"
+    BookingHold:
+      $ref: "./business-schemas.json#/$defs/BookingHold"
+    OwnerBooking:
+      $ref: "./business-schemas.json#/$defs/OwnerBooking"
+    BookingMove:
+      $ref: "./business-schemas.json#/$defs/BookingMove"
+    Slot:
+      $ref: "./business-schemas.json#/$defs/Slot"
+    SlotDay:
+      $ref: "./business-schemas.json#/$defs/SlotDay"
+    SlotDays:
+      $ref: "./business-schemas.json#/$defs/SlotDays"
+    AgendaFeedOptions:
+      $ref: "./business-schemas.json#/$defs/AgendaFeedOptions"
+    AgendaFeed:
+      $ref: "./business-schemas.json#/$defs/AgendaFeed"
+    BusyImportInput:
+      $ref: "./business-schemas.json#/$defs/BusyImportInput"
+    BusyImport:
+      $ref: "./business-schemas.json#/$defs/BusyImport"
+    AgendaError:
+      $ref: "./business-schemas.json#/$defs/AgendaError"

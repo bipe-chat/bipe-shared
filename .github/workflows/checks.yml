@@ -22,8 +22,8 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: 24
-      - name: Trust facts
-        run: node --test tools/trust-facts.test.mjs
+      - name: Shared rules and contract types
+        run: node --test tools/*.test.mjs
   lockstep:
     runs-on: ubuntu-latest
     steps:

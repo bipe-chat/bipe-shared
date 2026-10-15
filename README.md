@@ -6,7 +6,8 @@ Single source of truth for Bipe logic that iOS, Android, the API and the website
 |---|---|
 | `registries/` | Reserved names, family terms, scam patterns, homoglyphs, handle rules, invite-code rule |
 | `strings/pt-BR.json`, `strings/en.json` | Bipe-owned UI strings (Element strings stay on Localazy). Draft copy. |
-| `api/openapi.yaml` | Bipe API contract (sign-up, invites, handles, verification, badges) |
+| `api/openapi.yaml` | Bipe API contract, including Agenda and Catálogo routes |
+| `api/business-schemas.json` | JSON Schema 2020-12 definitions referenced by OpenAPI and used to generate API TypeScript types |
 | `docs/badge-attestation.md` | Signed badge format and verification order |
 | `docs/trust-facts.md` | Independent trust facts, adapter inputs, invalidation and generated platform rules |
 | `test-vectors/` | Cases every platform must pass: badges, normalisation, scam detection, scam warnings, handles (generated), invite codes (hand-written, checked against the reference) |
@@ -20,7 +21,7 @@ Single source of truth for Bipe logic that iOS, Android, the API and the website
 node tools/gen.mjs
 ```
 
-Writes `BipeRegistries.swift` and `BipeStrings.swift` into `../bipe-ios/Components/BipeKit/Sources/BipeKit/Generated`, `BipeRegistries.kt` plus `res/values*/bipe_strings.xml` into `../bipe-android/libraries/bipe/src/main`, and the registries with the reference library into `../bipe-api/src/generated`. Pass `--swift`, `--kotlin` or `--api <dir>` to override.
+Writes `BipeRegistries.swift` and `BipeStrings.swift` into `../bipe-ios/Components/BipeKit/Sources/BipeKit/Generated`, `BipeRegistries.kt` plus `res/values*/bipe_strings.xml` into `../bipe-android/libraries/bipe/src/main`, and the registries with the reference library and `business-api.ts` into `../bipe-api/src/generated`. The business types come from the JSON Schema definitions referenced by OpenAPI. They describe the contract; they do not mean a route is live. Pass `--swift`, `--kotlin` or `--api <dir>` to override.
 
 ```bash
 node tools/bump-build.mjs [--version YY.MM.N]
@@ -38,7 +39,7 @@ Regenerates `test-vectors/` from the registries and the reference implementation
 node tools/check-contract.mjs
 ```
 
-Checks the hand-written API clients (Swift in bipe-ios, Kotlin in bipe-android) against `api/openapi.yaml`: every field of every schema the apps use, and the error, invite-status and handle-problem enums. A new schema must be mapped in the script or listed as not used by the apps. Known gaps are listed with their issue. Fails closed.
+Checks the hand-written API clients (Swift in bipe-ios, Kotlin in bipe-android) against `api/openapi.yaml`: every field of every schema the apps use, and the error, invite-status and handle-problem enums. A new schema must be mapped in the script or listed as not used by the apps. Known gaps are listed with their issue. The Agenda and Catálogo app models remain tracked in #321 to #324 and #329/#330. The check also resolves business schema references and verifies their type generation. Fails closed.
 
 ```bash
 node tools/check-drift.mjs

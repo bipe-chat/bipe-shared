@@ -5,6 +5,7 @@
 import { existsSync, readdirSync, readFileSync, statSync } from "node:fs";
 import { dirname, join, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
+import { loadBusinessSchemas, generateApiTypes } from "./lib/api-types.mjs";
 
 const root = join(dirname(fileURLToPath(import.meta.url)), "..");
 const args = process.argv.slice(2);
@@ -50,6 +51,15 @@ const ENUMS = {
 
 // Schemas the apps do not model, with the reason.
 const NOT_IN_APPS = {
+  ...Object.fromEntries([
+    "CatalogPrice", "CatalogItemInput", "CatalogItem", "Catalog", "CatalogOrder",
+  ].map((name) => [name, "contract first (bipe#327); app clients follow in bipe#329 and bipe#330"])),
+  ...Object.fromEntries([
+    "Service", "ServiceInput", "AgendaInput", "Agenda", "Availability", "AvailabilityRules", "TimeRange",
+    "OverrideInput", "Override", "AgendaBlock", "AgendaCloseDay", "Policy", "AgendaSettings", "AgendaActivation", "AgendaState",
+    "BookingStatus", "BookingCustomer", "Booking", "BookingHold", "OwnerBooking", "BookingMove", "Slot", "SlotDay", "SlotDays",
+    "AgendaFeedOptions", "AgendaFeed", "BusyImportInput", "BusyImport", "AgendaError",
+  ].map((name) => [name, "contract first (bipe#315); app clients follow in bipe#321 to bipe#324"])),
   DiscoverySettings: "one boolean; iOS sends it from a private request type in BipeAPIClient",
   MessagingSetting: "one enum field; iOS decodes it in a private MessagingSetting type in BipeAPIClient, exposed as BipeWhoCanMessage",
   ExperimentEvent: "web only (headline test)",
@@ -198,8 +208,16 @@ const PLATFORMS = {
 
 // --- Check ---------------------------------------------------------------------
 
-const schemas = readSchemas(readFileSync(join(root, "api/openapi.yaml"), "utf8"));
+const contract = readFileSync(join(root, "api/openapi.yaml"), "utf8");
+const schemas = readSchemas(contract);
 const problems = [];
+const businessSchemas = loadBusinessSchemas(root);
+generateApiTypes(businessSchemas);
+for (const name of Object.keys(businessSchemas)) {
+  if (!contract.includes(`    ${name}:\n      $ref: "./business-schemas.json#/$defs/${name}"`)) {
+    problems.push(`business schema ${name} is not referenced by openapi.yaml`);
+  }
+}
 const gapsUsed = new Set();
 const gap = (key) => (GAPS[key] ? (gapsUsed.add(key), true) : false);
 

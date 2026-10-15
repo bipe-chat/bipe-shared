@@ -244,6 +244,23 @@
       }
     },
     {
+      "id": "site-visits",
+      "basis": "legitimate-interest",
+      "places": ["server"],
+      "pt": {
+        "name": "Visitas ao site",
+        "what": "Página visitada, site de origem, tipo de aparelho e de navegador, idioma e cidade aproximada. Sem cookie, sem IP e sem nada que diga quem visitou.",
+        "why": "Saber quais páginas e campanhas trazem gente para o Bipe.",
+        "retention": "13 meses."
+      },
+      "en": {
+        "name": "Site visits",
+        "what": "The page visited, the site you came from, device and browser type, language and approximate city. No cookies, no IP address and nothing that says who visited.",
+        "why": "To know which pages and campaigns bring people to Bipe.",
+        "retention": "13 months."
+      }
+    },
+    {
       "id": "waitlist",
       "basis": "consent",
       "places": ["server", "email-relay"],

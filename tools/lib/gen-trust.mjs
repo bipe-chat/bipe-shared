@@ -61,13 +61,7 @@ ${outputs}
     }
 }
 `;
-  return `/*
- * Copyright 2026 Bipe.
- *
- * SPDX-License-Identifier: AGPL-3.0-only
- */
-
-${header}
+  return `${header}
 package io.element.android.libraries.bipe.generated
 
 import kotlinx.serialization.Serializable

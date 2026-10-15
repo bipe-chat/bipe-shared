@@ -5,6 +5,7 @@ import { mkdirSync, readFileSync, writeFileSync } from "node:fs";
 import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
 import { buildBrCode, crc16, pixCheck } from "./lib/pix.mjs";
+import { loadSchedulingVectors, writeSchedulingApiFixture } from "./lib/scheduling-vectors.mjs";
 import { extractInviteCode, handleProblem, pinProblem, normalizeCnpj, normalizePhone, handleSkeleton, loadRegistries, normalize, scamMatchIDs, scamWarningKind, trustFacts } from "./lib/registries.mjs";
 
 const root = join(dirname(fileURLToPath(import.meta.url)), "..");
@@ -12,6 +13,10 @@ const reg = loadRegistries(root);
 // --out <dir> writes elsewhere (tools/check-drift.mjs compares the result with test-vectors/).
 const outIndex = process.argv.indexOf("--out");
 const out = outIndex >= 0 ? process.argv[outIndex + 1] : join(root, "test-vectors");
+const apiIndex = process.argv.indexOf("--api-test-vectors");
+const apiVectors = apiIndex >= 0 ? process.argv[apiIndex + 1] : outIndex >= 0 ? null : join(root, "../bipe-api/test/fixtures");
+if (apiVectors) writeSchedulingApiFixture(root, apiVectors);
+else loadSchedulingVectors(root);
 mkdirSync(out, { recursive: true });
 const write = (name, data) => writeFileSync(join(out, name), JSON.stringify(data, null, 2) + "\n");
 

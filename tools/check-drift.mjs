@@ -48,6 +48,7 @@ const TARGETS = [
   // App version name and build number (ADR 0088). The folders also hold hand-written files.
   { repo: "bipe-ios", tmpBase: join(tmp, "ios-version"), repoBase: "Tools/Bipe", generatedOnly: [] },
   { repo: "bipe-android", tmpBase: join(tmp, "android-version"), repoBase: "plugins/src/main/kotlin", generatedOnly: [] },
+  { repo: "bipe-api", tmpBase: join(tmp, "api/test/fixtures"), repoBase: "test/fixtures", generatedOnly: [] },
 ];
 
 function walk(dir) {
@@ -82,7 +83,7 @@ try {
   mkdirSync(join(tmp, "api/src"), { recursive: true }); // gen.mjs writes the API copy only when ../.. exists
   node("gen.mjs", "--swift", join(tmp, "ios/Sources/BipeKit/Generated"), "--kotlin", join(tmp, "android/src/main"), "--api", join(tmp, "api/src/generated"),
     "--ios-version", join(tmp, "ios-version"), "--android-version", join(tmp, "android-version"));
-  node("gen-test-vectors.mjs", "--out", join(tmp, "test-vectors"));
+  node("gen-test-vectors.mjs", "--out", join(tmp, "test-vectors"), "--api-test-vectors", join(tmp, "api/test/fixtures"));
   node("gen-product-doc.mjs", "--out", join(tmp, "product.md"));
 
   for (const target of TARGETS) {

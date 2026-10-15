@@ -1217,6 +1217,11 @@
         "pt": "agenda",
         "en": "bookings"
       },
+      "figures": [
+        "agenda-marcar",
+        "agenda-dono",
+        "agenda-lembrete"
+      ],
       "pt": {
         "name": "Agenda",
         "body": "O cliente escolhe o serviço, a pessoa e o horário, e marca direto com a empresa no Bipe. A agenda é gratuita para qualquer conta de empresa.",
@@ -1235,12 +1240,12 @@
         "body": "Customers pick a service, a person and a time, and book with the business right in Bipe. The agenda is free for any company account.",
         "points": [
           "Agenda data stays on Bipe's servers in Brazil.",
-          "No monthly fee, no commission and no limit on bookings, on any plan.",
+          "There is no monthly fee, commission or booking limit on any plan.",
           "Any company account can open an agenda, with or without a verified CNPJ. Customers see whether the business has the seal.",
           "To book, the customer needs a Bipe account.",
           "Each booking shows as a card in the chat with the business, with the service, the person, the day and the time.",
           "A notification reminds the customer one day before and two hours before.",
-          "If they want, the team can see the agenda in a Google, Apple or Outlook calendar. That calendar gets the time. The customer's name goes too only if the business chooses."
+          "Staff who want to can see the agenda in their Google, Apple or Outlook calendar. That calendar gets the time. The customer's name goes too only if the business chooses."
         ]
       }
     },
@@ -2152,7 +2157,6 @@
             "Só a sua empresa usa o seu nome. Nome de banco, loja ou órgão público fica reservado para a conta com CNPJ verificado, e o falso atendente não consegue se passar por você.",
             "O cliente vê o selo e o CNPJ em toda conversa com você.",
             "Uma cobrança por Pix mostra o nome e o CNPJ verificados de quem vai receber. O cliente paga no app do banco. Planejado.",
-            "Uma agenda gratuita: o cliente marca o horário com você no Bipe e recebe o lembrete no celular. Planejado.",
             "No Bipe não tem preço por mensagem."
           ]
         },
@@ -2175,6 +2179,16 @@
             "Se você usa uma plataforma de atendimento, ela pode trazer o Bipe como mais um canal pela mesma API.",
             "Empresas menores podem usar um parceiro que instala e roda tudo para elas.",
             "O cliente chega pelo seu site, pela nota ou por um QR code no balcão, e escreve primeiro."
+          ]
+        },
+        {
+          "heading": "Uma agenda gratuita, no celular",
+          "points": [
+            "O cliente escolhe o serviço, a pessoa e o horário, e marca direto no Bipe.",
+            "Você monta a agenda no celular: horários, serviços e quem atende. Quem atende não precisa de conta no Bipe.",
+            "O horário marcado aparece num cartão na conversa com o cliente.",
+            "O Bipe lembra o cliente por notificação, um dia antes e duas horas antes.",
+            "Gratuita em todos os planos, sem comissão. Planejado."
           ]
         },
         {
@@ -2221,7 +2235,6 @@
             "Only your company uses your name. Bank, shop and government names are kept for the account with a verified CNPJ, so fake support cannot copy you.",
             "Customers see the seal and the CNPJ in every chat with you.",
             "A Pix charge shows the verified name and CNPJ of who receives the money. The customer pays in the bank app. Planned.",
-            "A free agenda: customers book a time with you in Bipe and get a reminder on their phone. Planned.",
             "Bipe has no price per message."
           ]
         },
@@ -2244,6 +2257,16 @@
             "If you use a customer service platform, it can add Bipe as one more channel through the same API.",
             "Smaller companies can use a partner that installs and runs it for them.",
             "Customers come from your site, your receipts or a QR code at the counter, and they write first."
+          ]
+        },
+        {
+          "heading": "A free agenda, on your phone",
+          "points": [
+            "Customers pick a service, a person and a time, and book right in Bipe.",
+            "You set up the agenda on your phone: hours, services and who does the work. Staff need no Bipe account.",
+            "Each booking shows as a card in the chat with the customer.",
+            "Bipe reminds the customer by notification, one day before and two hours before.",
+            "Free on every plan, with no commission. Planned."
           ]
         },
         {

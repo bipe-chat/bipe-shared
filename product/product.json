@@ -1207,6 +1207,44 @@
       }
     },
     {
+      "id": "agenda",
+      "area": "chat",
+      "status": {
+        "ios": "planned",
+        "android": "planned"
+      },
+      "slug": {
+        "pt": "agenda",
+        "en": "bookings"
+      },
+      "pt": {
+        "name": "Agenda",
+        "body": "O cliente escolhe o serviço, a pessoa e o horário, e marca direto com a empresa no Bipe. A agenda é gratuita para qualquer conta de empresa.",
+        "points": [
+          "Os dados da agenda ficam nos servidores do Bipe, no Brasil.",
+          "Não tem mensalidade, comissão nem limite de horários, em nenhum plano.",
+          "Qualquer conta de empresa pode abrir a agenda, com ou sem CNPJ verificado. O cliente vê se a empresa tem o selo.",
+          "Para marcar, o cliente precisa de uma conta no Bipe.",
+          "O horário marcado aparece num cartão na conversa com a empresa, com o serviço, a pessoa, o dia e a hora.",
+          "Uma notificação lembra o cliente um dia antes e duas horas antes.",
+          "Se quiser, a equipe vê a agenda no calendário do Google, da Apple ou do Outlook. Esse calendário recebe o horário. O nome do cliente vai junto só se a empresa escolher."
+        ]
+      },
+      "en": {
+        "name": "Bookings",
+        "body": "Customers pick a service, a person and a time, and book with the business right in Bipe. The agenda is free for any company account.",
+        "points": [
+          "Agenda data stays on Bipe's servers in Brazil.",
+          "No monthly fee, no commission and no limit on bookings, on any plan.",
+          "Any company account can open an agenda, with or without a verified CNPJ. Customers see whether the business has the seal.",
+          "To book, the customer needs a Bipe account.",
+          "Each booking shows as a card in the chat with the business, with the service, the person, the day and the time.",
+          "A notification reminds the customer one day before and two hours before.",
+          "If they want, the team can see the agenda in a Google, Apple or Outlook calendar. That calendar gets the time. The customer's name goes too only if the business chooses."
+        ]
+      }
+    },
+    {
       "id": "pix-check",
       "area": "payments",
       "status": {
@@ -2114,6 +2152,7 @@
             "Só a sua empresa usa o seu nome. Nome de banco, loja ou órgão público fica reservado para a conta com CNPJ verificado, e o falso atendente não consegue se passar por você.",
             "O cliente vê o selo e o CNPJ em toda conversa com você.",
             "Uma cobrança por Pix mostra o nome e o CNPJ verificados de quem vai receber. O cliente paga no app do banco. Planejado.",
+            "Uma agenda gratuita: o cliente marca o horário com você no Bipe e recebe o lembrete no celular. Planejado.",
             "No Bipe não tem preço por mensagem."
           ]
         },
@@ -2182,6 +2221,7 @@
             "Only your company uses your name. Bank, shop and government names are kept for the account with a verified CNPJ, so fake support cannot copy you.",
             "Customers see the seal and the CNPJ in every chat with you.",
             "A Pix charge shows the verified name and CNPJ of who receives the money. The customer pays in the bank app. Planned.",
+            "A free agenda: customers book a time with you in Bipe and get a reminder on their phone. Planned.",
             "Bipe has no price per message."
           ]
         },

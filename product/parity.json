@@ -558,6 +558,14 @@
       "issue": 261
     },
     {
+      "id": "agenda",
+      "name": "Agenda (bookings)",
+      "ios": "planned",
+      "android": "planned",
+      "web": "planned",
+      "server": "planned"
+    },
+    {
       "id": "pix-check",
       "name": "Conferir no Bipe",
       "ios": {

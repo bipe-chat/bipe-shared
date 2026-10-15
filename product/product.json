@@ -4,35 +4,23 @@
   "promise": {
     "pt": {
       "title": "Saiba com quem está falando.",
-      "lede": "Seu número fica escondido. Quem fala com você, não. O Bipe é um app de mensagens brasileiro, gratuito e sem anúncio. Avisa quando uma mensagem tem cara de golpe, e quem você não conhece chega como pedido."
+      "lede": "Seu número fica escondido. Você escolhe com quem conversar. O Bipe é um app de mensagens brasileiro, gratuito e sem anúncio. A checagem procura sinais de golpe nas mensagens, e quem você não conhece chega como pedido."
     },
     "en": {
       "title": "Know who you are talking to.",
-      "lede": "Your number stays hidden. The person talking to you doesn't. Bipe is a free Brazilian messenger with no ads. It warns you when a message looks like a scam, and people you don't know arrive as a request."
+      "lede": "Your number stays hidden. You choose who to talk to. Bipe is a free Brazilian messenger with no ads. Its checks look for scam signals in messages, and people you don't know arrive as a request."
     }
   },
   "headlineTest": {
-    "$comment": "Issue #77 (ADR 0032, ADR 0047). The home page (pt-BR only) shows one arm per browser, chosen at random and kept. h0 is the control: promise.pt.title. The lede and everything else stay the same. active false shows promise.title to everyone. An arm id is never reused: retired ids stay in retired, so old counts never mix with a new headline.",
+    "$comment": "Issue #77 (ADR 0032, ADR 0047). The home page (pt-BR only) shows one arm per browser, chosen at random and kept. h0 is the control: promise.pt.title. The lede and everything else stay the same. active false shows promise.title to everyone. An arm id is never reused: retired ids stay in retired, so old counts never mix with a new headline. Copy review 2026-10-15 (bipe#230): h2/h4 retired; h0/h3 headline text and experiment ID unchanged. Surrounding safety copy changed on this date; compare daily counts with that boundary in mind.",
     "experiment": "headline-77",
     "active": true,
     "arms": [
-      {
-        "id": "h2",
-        "angle": "anti-impersonation",
-        "pt": "Ninguém se passa por você.",
-        "en": "Nobody can pretend to be you."
-      },
       {
         "id": "h3",
         "angle": "no-ads",
         "pt": "Sem anúncio. Seus dados não estão à venda.",
         "en": "No ads. Your data is not for sale."
-      },
-      {
-        "id": "h4",
-        "angle": "scam-warning",
-        "pt": "Golpe aqui chega com aviso.",
-        "en": "Here, a scam comes with a warning."
       }
     ],
     "retired": [
@@ -42,6 +30,22 @@
         "pt": "O mensageiro brasileiro.",
         "date": "2026-10-12",
         "why": "ADR 0047: sovereignty is proof, not the pitch"
+      },
+      {
+        "id": "h2",
+        "angle": "anti-impersonation",
+        "pt": "Ninguém se passa por você.",
+        "en": "Nobody can pretend to be you.",
+        "date": "2026-10-15",
+        "why": "ADR 0074 / bipe#230: absolute impersonation or detection guarantee; preserve the original text and counts."
+      },
+      {
+        "id": "h4",
+        "angle": "scam-warning",
+        "pt": "Golpe aqui chega com aviso.",
+        "en": "Here, a scam comes with a warning.",
+        "date": "2026-10-15",
+        "why": "ADR 0074 / bipe#230: absolute impersonation or detection guarantee; preserve the original text and counts."
       }
     ]
   },
@@ -57,11 +61,11 @@
       ],
       "pt": {
         "name": "Quem fala com você",
-        "line": "Golpe chega com aviso, e quem você não conhece chega como pedido. Em breve, um selo mostra o nome verificado."
+        "line": "A checagem procura sinais de golpe, e quem você não conhece chega como pedido. Em breve, um selo mostra o nome verificado."
       },
       "en": {
         "name": "Who is talking to you",
-        "line": "A scam comes with a warning, and people you don't know arrive as a request. Soon, a seal shows the verified name."
+        "line": "Checks look for scam signals, and people you don't know arrive as a request. Soon, a seal will show the verified name."
       }
     },
     {
@@ -86,13 +90,13 @@
   "realFake": {
     "$comment": "Homepage section: the fake message next to the real one from the institution it copies (bipe-web RealVsFake, pairs in src/sim/scenes.ts). The institution seal is cnpj-badge, still planned: the copy says 'em breve'.",
     "pt": {
-      "title": "O golpista se passa por empresa. No Bipe, dá para ver a diferença.",
-      "lede": "Banco, escola, loja, entrega, igreja: o golpe copia o nome e o logo. No Bipe, a conta falsa chega como pedido e a mensagem com cara de golpe vem com aviso. Em breve, a empresa de verdade aparece com selo e CNPJ, e só ela cobra no nome dela.",
+      "title": "Nome e logo podem ser copiados. Confira o selo.",
+      "lede": "Um golpe pode copiar o nome e o logo de uma empresa. Quem não está nos seus contatos chega como pedido, e a checagem pode mostrar um aviso. Em breve, o selo de CNPJ mostra o nome da empresa verificada. Uma conta com selo também pode ser usada num golpe.",
       "caption": "Simulação com empresas fictícias. O selo de empresa ainda não está no app de testes."
     },
     "en": {
-      "title": "Scammers pose as companies. On Bipe, you can tell the difference.",
-      "lede": "Bank, school, shop, delivery, church: the scam copies the name and the logo. On Bipe, the fake account arrives as a request and a message that looks like a scam comes with a warning. Soon, the real company shows a seal and its CNPJ, and only it can charge in its own name.",
+      "title": "Names and logos can be copied. Check the seal.",
+      "lede": "A scam can copy a company's name and logo. People outside your contacts arrive as a request, and checks may show a warning. Soon, a CNPJ seal will show the verified business name. An account with a seal can still be used for a scam.",
       "caption": "Simulation with fictional companies. The company seal is not in the test app yet."
     }
   },
@@ -129,12 +133,12 @@
       ],
       "pt": {
         "name": "Segurança",
-        "title": "Um aviso quando alguém tenta te dar um golpe.",
-        "summary": "Quando uma mensagem tem cara de golpe, aparece um aviso embaixo dela dizendo o que fazer. Quem não está nos seus contatos chega como pedido. Em breve, um selo mostra quem é quem, e nome de banco fica só para o banco.",
+        "title": "Avisos para conferir antes de agir.",
+        "summary": "Quando a checagem encontra sinais de golpe, aparece um aviso com uma orientação. Quem não está nos seus contatos chega como pedido. Em breve, um selo mostra o nome verificado. Nenhuma dessas checagens garante que uma mensagem é segura.",
         "points": [
           "A checagem roda no seu celular, e a mensagem não sai dali.",
           "O aviso diz o que fazer: ligar para a pessoa, conferir no app do banco.",
-          "Em breve: selo com o nome verificado, gratuito e opcional. Trocar um O por 0 não engana a checagem de nome."
+          "Em breve: selo com o nome verificado, gratuito e opcional. A checagem trata algumas letras parecidas, como O e 0, como a mesma letra."
         ],
         "demos": [
           {
@@ -142,7 +146,7 @@
             "caption": "Simulação com mensagens de exemplo. O aviso usa a mesma regra do app."
           },
           {
-            "title": "Ninguém se passa por você",
+            "title": "Confira o nome verificado",
             "caption": "Em breve no app. A simulação usa a mesma regra de nomes que o app vai usar."
           },
           {
@@ -157,12 +161,12 @@
       },
       "en": {
         "name": "Trust",
-        "title": "A warning when someone tries to scam you.",
-        "summary": "When a message looks like a scam, a warning shows up right under it and tells you what to do. People who aren't in your contacts arrive as a request. Soon, a seal shows who is who, and a bank's name stays with the bank.",
+        "title": "Warnings to check before you act.",
+        "summary": "When checks find scam signals, a warning appears with advice. People outside your contacts arrive as a request. Soon, a seal will show the verified name. None of these checks guarantees that a message is safe.",
         "points": [
           "The check runs on your phone, so the message never leaves it.",
           "The warning says what to do: call the person, check your bank app.",
-          "Coming soon: a seal with the verified name, free and optional. Swapping an O for a 0 won't fool the name check."
+          "Coming soon: a free, optional seal with the verified name. The name check treats some lookalikes, such as O and 0, as the same letter."
         ],
         "demos": [
           {
@@ -170,7 +174,7 @@
             "caption": "Simulation with sample messages. The warning uses the same rules as the app."
           },
           {
-            "title": "Nobody can pretend to be you",
+            "title": "Check the verified name",
             "caption": "Coming to the app. The simulation uses the same name rules the app will use."
           },
           {
@@ -206,7 +210,7 @@
         "summary": "Escolha um nome de usuário e passe só o @. Quem tem o link bipe.chat/@você abre a conversa direto, sem ver o seu número.",
         "points": [
           "Link e QR code do seu perfil, prontos para compartilhar.",
-          "Nomes que só mudam um detalhe, como ana.souza e anasouza, contam como o mesmo nome. Ninguém pega um quase igual ao seu.",
+          "A checagem compara ana.souza e anasouza como o mesmo @. Outros nomes parecidos podem passar.",
           "Quem troca de @ espera 30 dias para trocar de novo. O @ antigo fica guardado por 90 dias."
         ],
         "demos": [
@@ -222,7 +226,7 @@
         "summary": "Pick a username and share only that. Anyone with the link bipe.chat/@you opens a chat with you without seeing your phone number.",
         "points": [
           "A link and a QR code for your profile, ready to share.",
-          "Names that differ by one detail, like ana.souza and anasouza, count as the same name. Nobody can take one that looks almost like yours.",
+          "The check treats ana.souza and anasouza as the same @. Other similar names may pass.",
           "After you change your @, you wait 30 days to change it again. Your old @ stays held for 90 days."
         ],
         "demos": [
@@ -395,20 +399,22 @@
       ],
       "pt": {
         "name": "Aviso de golpe",
-        "body": "Aparece um aviso embaixo da mensagem com cara de golpe: Pix com pressa, troca de número, boleto, comprovante.",
+        "body": "Se a checagem encontra sinais como Pix com pressa ou troca de número, aparece um aviso embaixo da mensagem.",
         "points": [
           "A checagem roda no seu celular. A mensagem não sai dali para ser conferida.",
           "O aviso diz o que fazer: ligar para a pessoa no número que você já tem, conferir no app do banco se o dinheiro caiu.",
-          "Pega os golpes mais comuns no Brasil: Pix com pressa, chave Pix colada na conversa, boleto, print de comprovante, número novo e link falso de banco, de loja ou do governo."
+          "Procura sinais como chave Pix colada na conversa, boleto, print de comprovante, número novo e alguns links que imitam empresas.",
+          "A checagem pode deixar golpes passar ou avisar numa conversa legítima. Sem aviso não quer dizer que é seguro. Antes de pagar, confira por outro meio."
         ]
       },
       "en": {
         "name": "Scam warnings",
-        "body": "A warning appears under a message that looks like a scam: a rushed Pix, a new number, a boleto, a receipt.",
+        "body": "If checks find signals such as a rushed Pix or a new number, a warning appears under the message.",
         "points": [
           "The check runs on your phone. The message never leaves it to be checked.",
           "The warning says what to do: call the person on the number you already have, check in your bank app that the money arrived.",
-          "It catches the most common scams in Brazil: a rushed Pix, a Pix key pasted in the chat, a boleto, a receipt screenshot, a new number and a fake link that copies a bank, a store or the government."
+          "Looks for signals such as a Pix key pasted into a conversation, a boleto, a receipt screenshot, a new number and some links that imitate businesses.",
+          "Checks can miss scams or warn about a legitimate conversation. No warning does not mean it is safe. Before paying, check through another channel."
         ]
       },
       "code": [
@@ -615,8 +621,10 @@
         "points": [
           "Você paga um Pix de R$ 0,01 da sua própria conta. O banco já conferiu seu nome, então o selo vem com o nome que o banco tem.",
           "Outro caminho em estudo: assinar com a sua conta gov.br.",
-          "O Bipe guarda só o resultado. O CPF não fica salvo, e um CPF verifica uma conta só.",
-          "É opcional. Conta sem selo funciona normal."
+          "O Bipe guarda o resultado, o nome verificado e um hash do CPF para limitar a uma conta verificada por CPF. O hash não é anônimo: quem tiver a chave pode testar CPFs até achar uma correspondência.",
+          "É opcional. Conta sem selo funciona normal.",
+          "O selo mostra o nome da comprovação. Não mostra que você conhece a pessoa nem que a mensagem é segura. Uma pessoa verificada pode aplicar golpes, e a conta pode ser invadida.",
+          "Ao verificar, o nome da comprovação aparece para quem conversa com você, mesmo que você use outro nome no perfil."
         ]
       },
       "en": {
@@ -625,8 +633,10 @@
         "points": [
           "You pay a R$ 0.01 Pix from your own account. Your bank already checked your name, so the seal carries the name your bank has.",
           "Another route under study: sign with your gov.br account.",
-          "Bipe keeps only the result. Your CPF is not stored, and one CPF verifies one account only.",
-          "It is optional. An account without a seal works as normal."
+          "Bipe keeps the result, verified name and a CPF hash to limit each CPF to one verified account. The hash is not anonymous: someone with the key can test CPF values until finding a match.",
+          "It is optional. An account without a seal works as normal.",
+          "The seal shows the name from the identity proof. It does not show that you know the person or that a message is safe. A verified person can run a scam, and the account can be taken over.",
+          "Verification makes the name from your proof visible to people you talk to, even if you use another name on your profile."
         ]
       },
       "code": [
@@ -655,7 +665,8 @@
         "points": [
           "O CNPJ precisa estar ativo na Receita Federal.",
           "A prova é uma assinatura com o certificado e-CNPJ da instituição.",
-          "Com o selo, um nome reservado pode ficar só para ela."
+          "Com o selo, um nome reservado pode ficar só para ela.",
+          "O selo registra a prova de controle da empresa. Não aprova uma oferta nem garante que a conta não foi invadida."
         ]
       },
       "en": {
@@ -664,7 +675,8 @@
         "points": [
           "The CNPJ must be active at Receita Federal.",
           "The proof is a signature with the institution's e-CNPJ certificate.",
-          "With the seal, a reserved name can belong to it alone."
+          "With the seal, a reserved name can belong to it alone.",
+          "The seal records proof of control of the business. It does not approve an offer or guarantee that the account has not been taken over."
         ]
       },
       "code": [
@@ -726,7 +738,7 @@
       ],
       "pt": {
         "name": "Letras disfarçadas",
-        "body": "Trocar um O por 0, ou por uma letra parecida de outro alfabeto, não engana a checagem de nome.",
+        "body": "A checagem compara algumas letras parecidas, como O e 0, como a mesma letra. Isso não cobre todo nome parecido.",
         "points": [
           "O app simplifica o nome antes de comparar: tira acento, troca número por letra e troca letra de outro alfabeto pela nossa.",
           "Assim, @itau, @1tau e @it4u contam como o mesmo nome.",
@@ -735,7 +747,7 @@
       },
       "en": {
         "name": "Disguised letters",
-        "body": "Swapping an O for a 0, or for a lookalike letter from another alphabet, won't fool the name check.",
+        "body": "The name check treats some lookalikes, such as O and 0, as the same letter. It does not cover every similar name.",
         "points": [
           "The app simplifies a name before it compares: it drops accents, turns digits into letters and turns letters from other alphabets into ours.",
           "So @itau, @1tau and @it4u count as the same name.",
@@ -770,7 +782,9 @@
         "points": [
           "Funciona com contato salvo como mãe, pai, filho, vó e outros nomes de família.",
           "Se o nome verificado não bate, o app pergunta uma vez se é a mesma pessoa. A resposta fica só no seu celular.",
-          "Se a conta troca de nome verificado, a pergunta volta."
+          "Se a conta troca de nome verificado, a pergunta volta.",
+          "Confirmar alguém pessoalmente é um passo separado do selo de identidade. Um convite também não vale como confirmação pessoal.",
+          "Se a identidade ou o aparelho mudar, a confirmação precisa ser conferida de novo. O aviso sobre uma mensagem continua separado."
         ]
       },
       "en": {
@@ -779,7 +793,9 @@
         "points": [
           "It works with contacts saved as mom, dad, son, grandma and other family names.",
           "If the verified name doesn't match, the app asks once whether it is the same person. The answer stays on your phone.",
-          "If the account's verified name changes, the question comes back."
+          "If the account's verified name changes, the question comes back.",
+          "Confirming someone in person is separate from their identity seal. An invite does not count as in-person confirmation either.",
+          "If the identity or device changes, confirmation needs to be checked again. A message warning remains a separate fact."
         ]
       },
       "code": [
@@ -807,7 +823,7 @@
         "points": [
           "Tem de 3 a 30 caracteres: letras, números, ponto e sublinhado.",
           "Não tem lista nem busca. Só te acha quem sabe o seu @ exato ou tem o seu link.",
-          "Dá para trocar a cada 30 dias. O @ que você largou fica guardado por 90 dias, para ninguém pegar e se passar por você."
+          "Dá para trocar a cada 30 dias. O @ antigo fica guardado por 90 dias; depois pode ser usado por outra conta."
         ]
       },
       "en": {
@@ -816,7 +832,7 @@
         "points": [
           "3 to 30 characters: letters, digits, dot and underscore.",
           "There is no list and no search. Only people who know your exact @ or have your link can find you.",
-          "You can change it every 30 days. A handle you drop is held for 90 days, so nobody can take it and pose as you."
+          "You can change it every 30 days. The old @ is held for 90 days; after that another account may use it."
         ]
       },
       "code": [
@@ -1889,12 +1905,12 @@
       "pt": {
         "name": "Famílias",
         "title": "Bipe para famílias",
-        "headline": "Ninguém se passa por você com a sua mãe.",
-        "lede": "O golpe do falso parente começa com uma foto e um número novo. No Bipe, quem não está nos contatos chega como pedido, a mensagem com cara de golpe vem com aviso, e o selo vai mostrar quem é quem.",
+        "headline": "Avisos para sua família conferir antes de pagar.",
+        "lede": "O golpe do falso parente pode começar com uma foto e um número novo. No Bipe, quem não está nos contatos chega como pedido, e a checagem procura sinais suspeitos. Em breve, o selo mostra o nome verificado. Mesmo com selo, confira um pedido de dinheiro por outro meio.",
         "sections": [
           {
             "heading": "Um aviso antes do Pix",
-            "body": "Pix com pressa, troca de número, boleto, print de comprovante: o aviso aparece embaixo da mensagem e diz o que fazer. Num pedido de dinheiro suspeito, copiar e pagar ficam travados por 5 segundos."
+            "body": "Se a checagem encontra sinais suspeitos, o aviso aparece embaixo da mensagem e orienta o que conferir. A pausa de 5 segundos dá tempo para pensar; não confirma se o pedido é verdadeiro."
           },
           {
             "heading": "Quem é quem",
@@ -1924,12 +1940,12 @@
       "en": {
         "name": "Families",
         "title": "Bipe for families",
-        "headline": "Nobody can pose as you with your mom.",
-        "lede": "The fake-relative scam starts with a photo and a new number. On Bipe, people who aren't in your contacts arrive as a request, a message that looks like a scam comes with a warning, and the seal will show who is who.",
+        "headline": "Warnings to help your family check before paying.",
+        "lede": "A fake-relative scam can start with a photo and a new number. On Bipe, people outside your contacts arrive as a request, and checks look for suspicious signals. Soon, the seal will show the verified name. Even with a seal, check a money request through another channel.",
         "sections": [
           {
             "heading": "A warning before the Pix",
-            "body": "A rushed Pix, a new number, a boleto, a receipt screenshot: the warning appears under the message and says what to do. On a suspicious money request, copy and pay stay locked for 5 seconds."
+            "body": "If checks find suspicious signals, a warning appears under the message and suggests what to check. The five-second pause gives you time to think; it does not prove the request is real."
           },
           {
             "heading": "Who is who",
@@ -1996,15 +2012,15 @@
       "pt": {
         "name": "Brasileiros no exterior",
         "title": "Bipe para brasileiros no exterior",
-        "headline": "Longe de casa, e ninguém usa o seu nome com a sua família.",
-        "lede": "Quem mora fora troca de número e passa dias sem falar com casa. O golpista aproveita: diz que é você, com número novo. No Bipe, o seu @ não muda quando o chip muda, e a sua família sabe com quem está falando.",
+        "headline": "Seu @ continua o mesmo quando você muda de país.",
+        "lede": "Quem mora fora troca de número e pode passar dias sem falar com casa. O golpista pode aproveitar e dizer que é você. Seu @ não muda com o chip. Os pedidos de conversa e as checagens ajudam sua família a conferir quem escreveu.",
         "sections": [
           {
             "heading": "Seu @ não muda com o chip",
             "body": "Você troca de país e de chip, e o seu @ continua o mesmo. Quem tem o seu link fala com você em qualquer lugar."
           },
           {
-            "heading": "Sua família sabe que é você",
+            "heading": "Sua família confere o nome",
             "body": "O selo vem com o seu nome verificado. Se alguém usa a sua foto com outro número, a mensagem chega como pedido, e o aviso aparece quando tem pedido de Pix com pressa."
           },
           {
@@ -2019,15 +2035,15 @@
       "en": {
         "name": "Brazilians abroad",
         "title": "Bipe for Brazilians abroad",
-        "headline": "Far from home, and nobody uses your name with your family.",
-        "lede": "People who live abroad change numbers and go days without calling home. Scammers use that: they say they are you, with a new number. On Bipe, your @ stays the same when your SIM changes, and your family knows who they are talking to.",
+        "headline": "Your @ stays the same when you move abroad.",
+        "lede": "People abroad change numbers and may go days without talking to family. A scammer can exploit that and claim to be you. Your @ does not change with your SIM. Message requests and checks help your family check who wrote.",
         "sections": [
           {
             "heading": "Your @ doesn't change with the SIM",
             "body": "You change country and SIM, and your @ stays the same. Anyone with your link can reach you anywhere."
           },
           {
-            "heading": "Your family knows it's you",
+            "heading": "Your family checks the name",
             "body": "The seal carries your verified name. If someone uses your photo with another number, the message arrives as a request, and a warning appears on a rushed Pix request."
           },
           {
@@ -2085,11 +2101,11 @@
       "pt": {
         "name": "Grupos e comunidades",
         "title": "Bipe para grupos e comunidades",
-        "headline": "Grupo grande sem bagunça, e ninguém se passa por quem organiza.",
-        "lede": "Igreja, associação, time, torcida, coletivo, turma: grupo com gente que organiza e muita gente participando. No Bipe, cada grupo só te chama quando é com você, os avisos ficam num lugar só, e ninguém se passa pela organização para pedir Pix.",
+        "headline": "Um nome verificado para quem organiza.",
+        "lede": "Igreja, associação, time ou coletivo: quem organiza também pode ter nome e foto copiados. Em breve, o selo mostra o nome verificado da pessoa ou da organização. Ele não garante que um pedido de Pix é legítimo.",
         "sections": [
           {
-            "heading": "Ninguém se passa por quem organiza",
+            "heading": "Confira o nome de quem organiza",
             "body": "Golpista copia nome e foto de quem organiza, seja pastor, padre, técnico ou presidente da associação, para pedir Pix. No Bipe, o selo mostra o nome verificado de cada pessoa, e a organização com CNPJ verificado ganha um selo com o nome que está na Receita."
           },
           {
@@ -2112,11 +2128,11 @@
       "en": {
         "name": "Groups and communities",
         "title": "Bipe for groups and communities",
-        "headline": "Big groups without the mess, and nobody poses as the organisers.",
-        "lede": "Churches, associations, teams, fan clubs, collectives, classes: groups with people who organise and many who take part. On Bipe, each group only calls you when it's about you, notices stay in one place, and nobody can pose as the organisers to ask for a Pix.",
+        "headline": "A verified name for the organisers.",
+        "lede": "Church, association, team or collective: an organiser's name and photo can be copied too. Soon, a seal will show the verified person or organisation name. It does not guarantee that a Pix request is legitimate.",
         "sections": [
           {
-            "heading": "Nobody poses as the organisers",
+            "heading": "Check the organiser’s name",
             "body": "Scammers copy an organiser's name and photo, a pastor, a priest, a coach or an association's president, to ask for a Pix. On Bipe, the seal shows each person's verified name, and an organisation with a verified CNPJ gets a seal with its name from the federal register."
           },
           {
@@ -2314,8 +2330,8 @@
     "$comment": "The /empresas/ page. Source: bipe/docs/business-track.md and bipe/docs/business-messaging.md (issue #93). Everything here is a proposal: nothing is for sale. Keep that visible on the page. Decided: ADR 0035 (the business decrypts), ADR 0036 (own-domain links), ADR 0037 (categories, not published here), ADR 0069 (the inbox, keys with the company), ADR 0070 (flat fee per CNPJ plus agent seats; amounts open), ADR 0080 (Pix charge cards for verified companies, planned), ADR 0081 (structured questions), ADR 0082 (the inbox carries the Bipe channel only; Bipe's API is its own design; claim no compatibility with another platform's API).",
     "pt": {
       "nav": "Empresas",
-      "title": "Atenda seus clientes num lugar onde ninguém se passa por você.",
-      "lede": "O Bipe é gratuito para as pessoas e se paga com empresas. Os dados e os servidores ficam no Brasil. Sua empresa tem o selo de CNPJ verificado, um nome que ninguém copia e uma caixa de entrada para a equipe toda. Esta página explica a proposta. Ela ainda está em estudo, e nada aqui está à venda.",
+      "title": "Atenda seus clientes com a identidade da empresa à vista.",
+      "lede": "O Bipe é gratuito para as pessoas e se paga com empresas. Os dados e os servidores ficam no Brasil. A proposta inclui selo de CNPJ verificado, reserva de alguns nomes e uma caixa de entrada para a equipe. O selo mostra a prova de controle da empresa; não garante uma oferta nem impede uma conta invadida. Esta página explica a proposta. Ela ainda está em estudo, e nada aqui está à venda.",
       "label": "Proposta em estudo",
       "sections": [
         {
@@ -2396,8 +2412,8 @@
     },
     "en": {
       "nav": "Business",
-      "title": "Serve your customers where nobody can pretend to be you.",
-      "lede": "Bipe is free for people and pays for itself through companies. Data and servers stay in Brazil. Your company gets the verified CNPJ seal, a name nobody can copy and one inbox for the whole team. This page explains the proposal. It is still under study, and nothing here is for sale.",
+      "title": "Serve customers with your business identity in view.",
+      "lede": "Bipe is free for people and pays for itself through companies. Data and servers stay in Brazil. The proposal includes a verified CNPJ seal, reservations for some names and an inbox for the team. The seal shows proof of control of the business; it does not guarantee an offer or prevent account takeover. This page explains the proposal. It is still under study, and nothing here is for sale.",
       "label": "Proposal under study",
       "sections": [
         {

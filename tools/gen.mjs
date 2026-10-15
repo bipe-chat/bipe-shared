@@ -10,6 +10,7 @@ import { hostHomoglyphs, loadRegistries } from "./lib/registries.mjs";
 import { generateTrust } from "./lib/gen-trust.mjs";
 import { iosVersionEnv, kotlinVersion, loadVersion } from "./lib/version.mjs";
 import { generateApiTypes, loadBusinessSchemas } from "./lib/api-types.mjs";
+import { generateAgendaTemplates } from "./lib/agenda-templates.mjs";
 
 const root = join(dirname(fileURLToPath(import.meta.url)), "..");
 const args = process.argv.slice(2);
@@ -198,6 +199,7 @@ ${members.join("\n\n")}
 mkdirSync(swiftOut, { recursive: true });
 writeFileSync(join(swiftOut, "BipeRegistries.swift"), swiftRegistries());
 writeFileSync(join(swiftOut, "BipeTrustFacts.swift"), generateTrust(reg.trust, "swift", HEADER));
+writeFileSync(join(swiftOut, "BipeAgendaTemplates.swift"), generateAgendaTemplates(reg, "swift", HEADER));
 writeFileSync(join(swiftOut, "BipeStrings.swift"), swiftStrings());
 const resources = resolve(swiftOut, "../../../Sources/BipeKit/Resources");
 for (const [locale, strings] of [["pt-BR", reg.strings.strings], ["en", reg.stringsEn.strings]]) {
@@ -390,6 +392,7 @@ if (kotlinIndex >= 0 || existsSync(resolve(kotlinOut, "../../.."))) {
   mkdirSync(kotlinDir, { recursive: true });
   writeFileSync(join(kotlinDir, "BipeRegistries.kt"), kotlinRegistries());
   writeFileSync(join(kotlinDir, "BipeTrustFacts.kt"), generateTrust(reg.trust, "kotlin", HEADER));
+  writeFileSync(join(kotlinDir, "BipeAgendaTemplates.kt"), generateAgendaTemplates(reg, "kotlin", HEADER));
   // pt-BR is the default language, so it fills values/. en is the alternative.
   for (const [dir, strings, comment] of [
     ["values", reg.strings.strings, "pt-BR (default). DRAFT copy: not yet through the humanizer pass."],
@@ -410,6 +413,7 @@ if (existsSync(resolve(apiOut, "../.."))) {
   for (const f of ["pt-BR.json", "en.json"]) copyFileSync(join(root, "strings", f), join(apiOut, "strings", f));
   copyFileSync(join(root, "tools/lib/registries.mjs"), join(apiOut, "lib/registries.mjs"));
   copyFileSync(join(root, "tools/lib/trust.mjs"), join(apiOut, "lib/trust.mjs"));
+  copyFileSync(join(root, "tools/lib/agenda-templates.mjs"), join(apiOut, "lib/agenda-templates.mjs"));
   writeFileSync(join(apiOut, "business-api.ts"), generateApiTypes(loadBusinessSchemas(root)));
   console.log(`wrote API registries to ${apiOut}`);
 }

@@ -118,7 +118,8 @@
         "cnpj-badge",
         "reserved-names",
         "lookalikes",
-        "family-check"
+        "family-check",
+        "pix-check"
       ],
       "docs": [
         "bipe/docs/security.md",

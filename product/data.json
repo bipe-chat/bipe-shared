@@ -70,7 +70,8 @@
     { "id": "server", "brazil": true, "pt": "Servidor do Bipe em São Paulo", "en": "Bipe server in São Paulo" },
     { "id": "apple-push", "brazil": false, "pt": "Apple, serviço de notificações do iPhone", "en": "Apple, the iPhone notification service" },
     { "id": "email-relay", "brazil": null, "pt": "Serviço que entrega os e-mails do Bipe", "en": "The service that delivers Bipe's emails" },
-    { "id": "team-inbox", "brazil": null, "pt": "Caixa de e-mail da equipe", "en": "The team's email inbox" }
+    { "id": "team-inbox", "brazil": null, "pt": "Caixa de e-mail da equipe", "en": "The team's email inbox" },
+    { "id": "icloud-keychain", "brazil": null, "pt": "Chaveiro do iCloud, na sua conta Apple", "en": "iCloud Keychain, in your Apple account" }
   ],
   "items": [
     {
@@ -105,6 +106,23 @@
         "what": "A protected form of your PIN, of the password the app makes by itself and of the recovery code, and how many times the PIN was entered wrong. We never see the PIN or the password itself.",
         "why": "To let you sign in and to protect the account from someone guessing the PIN.",
         "retention": "As long as the account exists."
+      }
+    },
+    {
+      "id": "recovery-token",
+      "basis": "contract",
+      "places": ["icloud-keychain"],
+      "pt": {
+        "name": "Código para voltar à conta (iPhone)",
+        "what": "Um código que o app cria e guarda no Chaveiro do iCloud, na sua conta Apple. O Bipe não recebe uma cópia dele.",
+        "why": "Num iPhone novo com a mesma conta Apple, o código te leva de volta para a conta. Ele não abre as mensagens antigas.",
+        "retention": "Enquanto ele estiver no seu Chaveiro do iCloud."
+      },
+      "en": {
+        "name": "Code to get back into your account (iPhone)",
+        "what": "A code the app makes and keeps in iCloud Keychain, in your Apple account. Bipe gets no copy of it.",
+        "why": "On a new iPhone with the same Apple account, the code takes you back into your account. It does not open old messages.",
+        "retention": "As long as it stays in your iCloud Keychain."
       }
     },
     {

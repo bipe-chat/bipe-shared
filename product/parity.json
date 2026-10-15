@@ -284,7 +284,12 @@
           "bipe-ios/ElementX/Sources/Application/Navigation/AppRoutes.swift"
         ]
       },
-      "android": "planned",
+      "android": {
+        "status": "built",
+        "evidence": [
+          "bipe-android/appnav/src/main/kotlin/io/element/android/appnav/intent/IntentResolver.kt"
+        ]
+      },
       "web": {
         "status": "built",
         "evidence": [
@@ -880,7 +885,12 @@
     {
       "id": "onboarding-two-step-signup",
       "name": "Sign-up in two steps (name, then PIN)",
-      "ios": "planned",
+      "ios": {
+        "status": "built",
+        "evidence": [
+          "bipe-ios/ElementX/Sources/Screens/BipeSignupScreen/View/BipeSignupScreen.swift"
+        ]
+      },
       "android": {
         "status": "built",
         "evidence": [
@@ -1082,22 +1092,6 @@
       "reason": "Not done on Android (#205)",
       "kind": "gap",
       "issue": 205
-    },
-    {
-      "area": "Sign-up form",
-      "ios": "One form",
-      "android": "Name, then PIN",
-      "reason": "Not done on iOS (#196)",
-      "kind": "gap",
-      "issue": 196
-    },
-    {
-      "area": "bipe.chat/@handle link",
-      "ios": "Opens the profile",
-      "android": "Opens the app, goes nowhere",
-      "reason": "Not done on Android (#299)",
-      "kind": "gap",
-      "issue": 299
     },
     {
       "area": "Sticker from a photo",

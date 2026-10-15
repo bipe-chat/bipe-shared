@@ -161,6 +161,12 @@ public enum BipeRegistries {
     public static let recoveryDelayHoursEmail = ${reg.accounts.recoveryDelayHours.email}
     public static let recoveryDelayHoursGuardian = ${reg.accounts.recoveryDelayHours.guardian}
     public static let recoveryDelayHoursCpf = ${reg.accounts.recoveryDelayHours.cpf}
+    /// Linked providers are recovery factors only (ADR 0096).
+    public static let linkedRecoveryProviders: [String] = ${swiftArray(reg.accounts.linkedRecovery.providers.map(swiftString))}
+    public static let linkedRecoveryDelayHours = ${reg.accounts.linkedRecovery.delayHours}
+    public static let linkedRecoveryRequiresPin = ${reg.accounts.linkedRecovery.requiresPin}
+    public static let linkedRecoveryAllowsPinReset = ${reg.accounts.linkedRecovery.allowsPinReset}
+    public static let linkedRecoveryMaxAccountsPerProvider = ${reg.accounts.linkedRecovery.maxAccountsPerProvider}
     public static let guardianApprovalsMax = ${reg.accounts.guardianApprovalsMax}
     public static let recoveryLinkMinutes = ${reg.accounts.recoveryLinkMinutes}
     public static let emailVerifyLinkHours = ${reg.accounts.emailVerifyLinkHours}
@@ -358,6 +364,12 @@ object BipeRegistries {
     const val RECOVERY_DELAY_HOURS_EMAIL = ${reg.accounts.recoveryDelayHours.email}
     const val RECOVERY_DELAY_HOURS_GUARDIAN = ${reg.accounts.recoveryDelayHours.guardian}
     const val RECOVERY_DELAY_HOURS_CPF = ${reg.accounts.recoveryDelayHours.cpf}
+    // Linked providers are recovery factors only (ADR 0096).
+    val LINKED_RECOVERY_PROVIDERS: List<String> = listOf(${reg.accounts.linkedRecovery.providers.map(kotlinString).join(", ")})
+    const val LINKED_RECOVERY_DELAY_HOURS = ${reg.accounts.linkedRecovery.delayHours}
+    const val LINKED_RECOVERY_REQUIRES_PIN = ${reg.accounts.linkedRecovery.requiresPin}
+    const val LINKED_RECOVERY_ALLOWS_PIN_RESET = ${reg.accounts.linkedRecovery.allowsPinReset}
+    const val LINKED_RECOVERY_MAX_ACCOUNTS_PER_PROVIDER = ${reg.accounts.linkedRecovery.maxAccountsPerProvider}
     const val GUARDIAN_APPROVALS_MAX = ${reg.accounts.guardianApprovalsMax}
     const val RECOVERY_LINK_MINUTES = ${reg.accounts.recoveryLinkMinutes}
     const val EMAIL_VERIFY_LINK_HOURS = ${reg.accounts.emailVerifyLinkHours}

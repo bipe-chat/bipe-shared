@@ -9,6 +9,7 @@ import { fileURLToPath } from "node:url";
 import { hostHomoglyphs, loadRegistries } from "./lib/registries.mjs";
 import { generateTrust } from "./lib/gen-trust.mjs";
 import { iosVersionEnv, kotlinVersion, loadVersion } from "./lib/version.mjs";
+import { generateApiTypes, loadBusinessSchemas } from "./lib/api-types.mjs";
 
 const root = join(dirname(fileURLToPath(import.meta.url)), "..");
 const args = process.argv.slice(2);
@@ -409,6 +410,7 @@ if (existsSync(resolve(apiOut, "../.."))) {
   for (const f of ["pt-BR.json", "en.json"]) copyFileSync(join(root, "strings", f), join(apiOut, "strings", f));
   copyFileSync(join(root, "tools/lib/registries.mjs"), join(apiOut, "lib/registries.mjs"));
   copyFileSync(join(root, "tools/lib/trust.mjs"), join(apiOut, "lib/trust.mjs"));
+  writeFileSync(join(apiOut, "business-api.ts"), generateApiTypes(loadBusinessSchemas(root)));
   console.log(`wrote API registries to ${apiOut}`);
 }
 

@@ -4,7 +4,7 @@ Single source of truth for Bipe logic that iOS, Android, the API and the website
 
 | Path | Content |
 |---|---|
-| `registries/` | Reserved names, family terms, scam patterns, homoglyphs, handle rules, invite-code rule |
+| `registries/` | Reserved names, family terms, scam patterns, homoglyphs, handle rules, invite-code rule, and editable Agenda setup templates |
 | `strings/pt-BR.json`, `strings/en.json` | Bipe-owned UI strings (Element strings stay on Localazy). Draft copy. |
 | `api/openapi.yaml` | Bipe API contract, including Agenda and Catálogo routes |
 | `api/business-schemas.json` | JSON Schema 2020-12 definitions referenced by OpenAPI and used to generate API TypeScript types |
@@ -82,3 +82,7 @@ Design tokens (colours, trust states) are not here. They live in the `bipe-token
 ## Licence and contributing
 
 AGPL-3.0-only, see [LICENSE](LICENSE). Contributions need a DCO sign-off (`git commit -s`): see the [Bipe contributing guide](https://github.com/bipe-chat/.github/blob/main/CONTRIBUTING.md). The Bipe name and logo are not covered by the licence: see [TRADEMARKS.md](https://github.com/bipe-chat/.github/blob/main/TRADEMARKS.md).
+
+## Agenda setup templates
+
+`registries/agenda-templates.json` holds six setup suggestions with stable IDs. Service names and template titles refer to keys in both string files. Durations, buffers and weekly hours are editable before publication; prices start on request. The loader rejects duplicate IDs, invalid times, overlapping hours and missing translations. `gen.mjs` emits `BipeAgendaTemplates.swift`, `BipeAgendaTemplates.kt` and the API registry copy.

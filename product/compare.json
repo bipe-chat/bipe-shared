@@ -55,11 +55,11 @@
       ],
       "pt": {
         "threat": "Golpe do falso parente",
-        "bipe": "Quem não está nos seus contatos chega como pedido. O aviso de golpe já vem ligado. Com o selo, o nome verificado aparece do lado do nome da pessoa, e golpista não tem como copiar."
+        "bipe": "Quem não está nos seus contatos chega como pedido. A checagem procura sinais de golpe. Em breve, o selo mostra o nome verificado, mas não confirma a relação com você nem a segurança de um pedido."
       },
       "en": {
         "threat": "Fake relative scam",
-        "bipe": "People who are not in your contacts arrive as a request. Scam warnings are on from the start. With the seal, the verified name shows next to the person's name, and a scammer cannot copy it."
+        "bipe": "People outside your contacts arrive as a request. Checks look for scam signals. Soon, the seal will show the verified name, but it does not confirm a relationship with you or the safety of a request."
       }
     },
     {
@@ -69,11 +69,11 @@
       ],
       "pt": {
         "threat": "Conta de um contato invadida",
-        "bipe": "O aviso de golpe confere toda mensagem que chega, também a de quem está nos seus contatos."
+        "bipe": "A checagem procura sinais de golpe também em mensagens de contatos. Pode deixar um golpe passar; uma conta conhecida ou verificada pode ser invadida."
       },
       "en": {
         "threat": "A contact's account taken over",
-        "bipe": "Scam warnings check every message you get, also from people in your contacts."
+        "bipe": "Checks look for scam signals in contacts' messages too. They can miss a scam; a known or verified account can be taken over."
       }
     },
     {
@@ -98,11 +98,11 @@
       ],
       "pt": {
         "threat": "Pedido de Pix, boleto e comprovante",
-        "bipe": "Código Pix, chave Pix, boleto e conversa de comprovante na mensagem recebem um aviso que diz o que fazer antes de pagar."
+        "bipe": "Quando a checagem encontra sinais como um código Pix ou boleto, mostra um aviso. A pausa ajuda a conferir, mas não prova quem recebe nem se houve pagamento."
       },
       "en": {
         "threat": "Pix, boleto and receipt scams",
-        "bipe": "A Pix code, Pix key, boleto or talk of a receipt in a message gets a warning that says what to do before you pay."
+        "bipe": "When checks find signals such as a Pix code or boleto, they show a warning. The pause helps you check, but does not prove who receives the money or that a payment happened."
       }
     },
     {

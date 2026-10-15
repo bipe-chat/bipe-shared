@@ -448,7 +448,12 @@
     {
       "id": "e2ee-only-rooms",
       "name": "No unencrypted rooms",
-      "ios": "planned",
+      "ios": {
+        "status": "built",
+        "evidence": [
+          "bipe-ios/ElementX/Sources/Services/Client/ClientProxy.swift"
+        ]
+      },
       "android": {
         "status": "built",
         "evidence": [
@@ -1077,14 +1082,6 @@
       "reason": "Not done on Android (#205)",
       "kind": "gap",
       "issue": 205
-    },
-    {
-      "area": "Unencrypted room option",
-      "ios": "Still offered",
-      "android": "Removed",
-      "reason": "Not done on iOS (#78)",
-      "kind": "gap",
-      "issue": 78
     },
     {
       "area": "Sign-up form",

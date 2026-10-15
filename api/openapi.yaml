@@ -2493,8 +2493,1200 @@ paths:
               schema:
                 type: "string"
         default: { $ref: "#/components/responses/AgendaError" }
+  /v1/me/business/queue:
+    get:
+      summary: "Read today’s owner queue"
+      operationId: "getV1MeBusinessQueue"
+      tags:
+        - "Agenda"
+      security:
+        -
+          matrix: []
+      description: "Only a device of this company account may act. Every lookup is scoped to this business; no paid tier or verified CNPJ is needed except for a Pix charge."
+      responses:
+        "200":
+          description: "Success"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Queue"
+        default:
+          $ref: "#/components/responses/BusinessToolError"
+  /v1/me/business/queue/open:
+    post:
+      summary: "Open today’s queue"
+      operationId: "postV1MeBusinessQueueOpen"
+      tags:
+        - "Agenda"
+      security:
+        -
+          matrix: []
+      description: "Only a device of this company account may act. Every lookup is scoped to this business; no paid tier or verified CNPJ is needed except for a Pix charge. Reuse today’s queue; do not duplicate it. No previous-day places survive the daily reset."
+      responses:
+        "200":
+          description: "Success"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Queue"
+        default:
+          $ref: "#/components/responses/BusinessToolError"
+  /v1/me/business/queue/close:
+    post:
+      summary: "Close today’s queue to new joins"
+      operationId: "postV1MeBusinessQueueClose"
+      tags:
+        - "Agenda"
+      security:
+        -
+          matrix: []
+      description: "Only a device of this company account may act. Every lookup is scoped to this business; no paid tier or verified CNPJ is needed except for a Pix charge. Existing places remain until served, left or marked no-show."
+      responses:
+        "200":
+          description: "Success"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Queue"
+        default:
+          $ref: "#/components/responses/BusinessToolError"
+  /v1/me/business/queue/policy:
+    put:
+      summary: "Set the queue no-show window"
+      operationId: "putV1MeBusinessQueuePolicy"
+      tags:
+        - "Agenda"
+      security:
+        -
+          matrix: []
+      description: "Only a device of this company account may act. Every lookup is scoped to this business; no paid tier or verified CNPJ is needed except for a Pix charge."
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/QueuePolicy"
+      responses:
+        "200":
+          description: "Success"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Queue"
+        default:
+          $ref: "#/components/responses/BusinessToolError"
+  /v1/me/business/queue/places:
+    get:
+      summary: "Read owner queue places"
+      operationId: "getV1MeBusinessQueuePlaces"
+      tags:
+        - "Agenda"
+      security:
+        -
+          matrix: []
+      description: "Only a device of this company account may act. Every lookup is scoped to this business; no paid tier or verified CNPJ is needed except for a Pix charge. This is the only list that exposes other customers. No customer location is collected."
+      responses:
+        "200":
+          description: "Success"
+          content:
+            application/json:
+              schema:
+                type: "object"
+                additionalProperties: false
+                required:
+                  - "places"
+                properties:
+                  places:
+                    type: "array"
+                    items:
+                      $ref: "#/components/schemas/QueuePlace"
+        default:
+          $ref: "#/components/responses/BusinessToolError"
+    post:
+      summary: "Add a walk-in by name or account"
+      operationId: "postV1MeBusinessQueuePlaces"
+      tags:
+        - "Agenda"
+      security:
+        -
+          matrix: []
+      description: "Only a device of this company account may act. Every lookup is scoped to this business; no paid tier or verified CNPJ is needed except for a Pix charge."
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/OwnerQueuePlace"
+      responses:
+        "201":
+          description: "Success"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/QueuePlace"
+        default:
+          $ref: "#/components/responses/BusinessToolError"
+  /v1/me/business/queue/call-next:
+    post:
+      summary: "Call the next eligible place"
+      operationId: "postV1MeBusinessQueueCallNext"
+      tags:
+        - "Agenda"
+      security:
+        -
+          matrix: []
+      description: "Only a device of this company account may act. Every lookup is scoped to this business; no paid tier or verified CNPJ is needed except for a Pix charge. Atomically choose a waiting place; respect bookings due now. Push uses shared strings only."
+      responses:
+        "200":
+          description: "Success"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/QueuePlace"
+        default:
+          $ref: "#/components/responses/BusinessToolError"
+  /v1/me/business/queue/places/{placeId}/served:
+    post:
+      summary: "Served a queue place"
+      operationId: "postV1MeBusinessQueuePlacesPlaceIdServed"
+      tags:
+        - "Agenda"
+      security:
+        -
+          matrix: []
+      description: "Only a device of this company account may act. Every lookup is scoped to this business; no paid tier or verified CNPJ is needed except for a Pix charge. Recall restarts the called timer. A called place becomes no_show after the configured window (default ten minutes)."
+      parameters:
+        -
+          name: "placeId"
+          in: "path"
+          required: true
+          schema:
+            type: "string"
+            minLength: 1
+            maxLength: 128
+      responses:
+        "200":
+          description: "Success"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/QueuePlace"
+        default:
+          $ref: "#/components/responses/BusinessToolError"
+  /v1/me/business/queue/places/{placeId}/no-show:
+    post:
+      summary: "No-show a queue place"
+      operationId: "postV1MeBusinessQueuePlacesPlaceIdNoShow"
+      tags:
+        - "Agenda"
+      security:
+        -
+          matrix: []
+      description: "Only a device of this company account may act. Every lookup is scoped to this business; no paid tier or verified CNPJ is needed except for a Pix charge. Recall restarts the called timer. A called place becomes no_show after the configured window (default ten minutes)."
+      parameters:
+        -
+          name: "placeId"
+          in: "path"
+          required: true
+          schema:
+            type: "string"
+            minLength: 1
+            maxLength: 128
+      responses:
+        "200":
+          description: "Success"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/QueuePlace"
+        default:
+          $ref: "#/components/responses/BusinessToolError"
+  /v1/me/business/queue/places/{placeId}/recall:
+    post:
+      summary: "Recall a queue place"
+      operationId: "postV1MeBusinessQueuePlacesPlaceIdRecall"
+      tags:
+        - "Agenda"
+      security:
+        -
+          matrix: []
+      description: "Only a device of this company account may act. Every lookup is scoped to this business; no paid tier or verified CNPJ is needed except for a Pix charge. Recall restarts the called timer. A called place becomes no_show after the configured window (default ten minutes)."
+      parameters:
+        -
+          name: "placeId"
+          in: "path"
+          required: true
+          schema:
+            type: "string"
+            minLength: 1
+            maxLength: 128
+      responses:
+        "200":
+          description: "Success"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/QueuePlace"
+        default:
+          $ref: "#/components/responses/BusinessToolError"
+  /v1/businesses/{handle}/queue:
+    get:
+      summary: "Read whether the public queue is open"
+      operationId: "getV1BusinessesHandleQueue"
+      tags:
+        - "Agenda"
+      security: []
+      description: "Public CORS for PUBLIC_SITE_URL. Returns queue metadata only, no people or places."
+      parameters:
+        -
+          name: "handle"
+          in: "path"
+          required: true
+          schema:
+            type: "string"
+            minLength: 1
+            maxLength: 128
+      responses:
+        "200":
+          description: "Success"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Queue"
+        default:
+          $ref: "#/components/responses/BusinessToolError"
+  /v1/businesses/{handle}/queue/join:
+    post:
+      summary: "Join today’s open queue"
+      operationId: "postV1BusinessesHandleQueueJoin"
+      tags:
+        - "Agenda"
+      security:
+        -
+          matrix: []
+      description: "Signed-in customer only; derive identity from authentication and scope every lookup to this caller and business. Rate and new-account reach limits apply. One active place per customer per business. Reject a closed queue; collect no location or free text."
+      parameters:
+        -
+          name: "handle"
+          in: "path"
+          required: true
+          schema:
+            type: "string"
+            minLength: 1
+            maxLength: 128
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/QueueJoin"
+      responses:
+        "201":
+          description: "Success"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/QueuePosition"
+        default:
+          $ref: "#/components/responses/BusinessToolError"
+  /v1/businesses/{handle}/queue/me:
+    get:
+      summary: "Read my queue position and wait range"
+      operationId: "getV1BusinessesHandleQueueMe"
+      tags:
+        - "Agenda"
+      security:
+        -
+          matrix: []
+      description: "Signed-in customer only; derive identity from authentication and scope every lookup to this caller and business. Rate and new-account reach limits apply. Push when two people are ahead and when called. An absent estimate is shown as unknown, never zero."
+      parameters:
+        -
+          name: "handle"
+          in: "path"
+          required: true
+          schema:
+            type: "string"
+            minLength: 1
+            maxLength: 128
+      responses:
+        "200":
+          description: "Success"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/QueuePosition"
+        default:
+          $ref: "#/components/responses/BusinessToolError"
+  /v1/businesses/{handle}/queue/places/{placeId}/leave:
+    post:
+      summary: "Leave my queue place"
+      operationId: "postV1BusinessesHandleQueuePlacesPlaceIdLeave"
+      tags:
+        - "Agenda"
+      security:
+        -
+          matrix: []
+      description: "Signed-in customer only; derive identity from authentication and scope every lookup to this caller and business. Rate and new-account reach limits apply."
+      parameters:
+        -
+          name: "handle"
+          in: "path"
+          required: true
+          schema:
+            type: "string"
+            minLength: 1
+            maxLength: 128
+        -
+          name: "placeId"
+          in: "path"
+          required: true
+          schema:
+            type: "string"
+            minLength: 1
+            maxLength: 128
+      responses:
+        "200":
+          description: "Success"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/QueuePosition"
+        default:
+          $ref: "#/components/responses/BusinessToolError"
+  /v1/me/queue-places:
+    get:
+      summary: "Read my active queue places"
+      operationId: "getV1MeQueuePlaces"
+      tags:
+        - "Agenda"
+      security:
+        -
+          matrix: []
+      description: "Only this authenticated customer’s places, or this authenticated company’s places for its devices. No cross-company list for owners."
+      responses:
+        "200":
+          description: "Success"
+          content:
+            application/json:
+              schema:
+                type: "object"
+                additionalProperties: false
+                required:
+                  - "places"
+                properties:
+                  places:
+                    type: "array"
+                    items:
+                      $ref: "#/components/schemas/QueuePosition"
+        default:
+          $ref: "#/components/responses/BusinessToolError"
+  /v1/me/business/quotes/requests:
+    get:
+      summary: "Read quote requests for this business"
+      operationId: "getV1MeBusinessQuotesRequests"
+      tags:
+        - "Agenda"
+      security:
+        -
+          matrix: []
+      description: "Only a device of this company account may act. Every lookup is scoped to this business; no paid tier or verified CNPJ is needed except for a Pix charge."
+      responses:
+        "200":
+          description: "Success"
+          content:
+            application/json:
+              schema:
+                type: "object"
+                additionalProperties: false
+                required:
+                  - "requests"
+                properties:
+                  requests:
+                    type: "array"
+                    items:
+                      $ref: "#/components/schemas/QuoteRequest"
+        default:
+          $ref: "#/components/responses/BusinessToolError"
+  /v1/me/business/quotes/requests/{requestId}/quote:
+    post:
+      summary: "Answer a customer request with a quote"
+      operationId: "postV1MeBusinessQuotesRequestsRequestIdQuote"
+      tags:
+        - "Agenda"
+      security:
+        -
+          matrix: []
+      description: "Only a device of this company account may act. Every lookup is scoped to this business; no paid tier or verified CNPJ is needed except for a Pix charge. A request is required and belongs to this business and customer. Store business-authored lines only; calculate amounts server-side."
+      parameters:
+        -
+          name: "requestId"
+          in: "path"
+          required: true
+          schema:
+            type: "string"
+            minLength: 1
+            maxLength: 128
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/QuoteVersionInput"
+      responses:
+        "201":
+          description: "Success"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Quote"
+        default:
+          $ref: "#/components/responses/BusinessToolError"
+  /v1/me/business/quotes:
+    get:
+      summary: "Read owner quotes with their versions"
+      operationId: "getV1MeBusinessQuotes"
+      tags:
+        - "Agenda"
+      security:
+        -
+          matrix: []
+      description: "Only a device of this company account may act. Every lookup is scoped to this business; no paid tier or verified CNPJ is needed except for a Pix charge."
+      responses:
+        "200":
+          description: "Success"
+          content:
+            application/json:
+              schema:
+                type: "object"
+                additionalProperties: false
+                required:
+                  - "quotes"
+                properties:
+                  quotes:
+                    type: "array"
+                    items:
+                      $ref: "#/components/schemas/Quote"
+        default:
+          $ref: "#/components/responses/BusinessToolError"
+  /v1/me/business/quotes/{quoteId}:
+    get:
+      summary: "Read an owner quote"
+      operationId: "getV1MeBusinessQuotesQuoteId"
+      tags:
+        - "Agenda"
+      security:
+        -
+          matrix: []
+      description: "Only a device of this company account may act. Every lookup is scoped to this business; no paid tier or verified CNPJ is needed except for a Pix charge."
+      parameters:
+        -
+          name: "quoteId"
+          in: "path"
+          required: true
+          schema:
+            type: "string"
+            minLength: 1
+            maxLength: 128
+      responses:
+        "200":
+          description: "Success"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Quote"
+        default:
+          $ref: "#/components/responses/BusinessToolError"
+  /v1/me/business/quotes/{quoteId}/versions:
+    post:
+      summary: "Issue a new immutable quote version"
+      operationId: "postV1MeBusinessQuotesQuoteIdVersions"
+      tags:
+        - "Agenda"
+      security:
+        -
+          matrix: []
+      description: "Only a device of this company account may act. Every lookup is scoped to this business; no paid tier or verified CNPJ is needed except for a Pix charge. Increment the version atomically. Only an offered quote can be revised. Earlier versions remain readable; accepting an old version returns quote_version_changed."
+      parameters:
+        -
+          name: "quoteId"
+          in: "path"
+          required: true
+          schema:
+            type: "string"
+            minLength: 1
+            maxLength: 128
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/QuoteVersionInput"
+      responses:
+        "201":
+          description: "Success"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Quote"
+        default:
+          $ref: "#/components/responses/BusinessToolError"
+  /v1/me/business/quotes/{quoteId}/pix-charge:
+    post:
+      summary: "Attach a verified-company Pix charge to an accepted quote"
+      operationId: "postV1MeBusinessQuotesQuoteIdPixCharge"
+      tags:
+        - "Agenda"
+      security:
+        -
+          matrix: []
+      description: "Only a device of this company account may act. Every lookup is scoped to this business; no paid tier or verified CNPJ is needed except for a Pix charge. Accepted quotes only; a deposit or total. Check charge issuer and customer against this quote, amount against the accepted version, and the verified CNPJ. No Bipe money movement."
+      parameters:
+        -
+          name: "quoteId"
+          in: "path"
+          required: true
+          schema:
+            type: "string"
+            minLength: 1
+            maxLength: 128
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/PixChargeLink"
+      responses:
+        "200":
+          description: "Success"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Quote"
+        default:
+          $ref: "#/components/responses/BusinessToolError"
+  /v1/businesses/{handle}/quotes/requests:
+    post:
+      summary: "Request a quote without uploading chat content"
+      operationId: "postV1BusinessesHandleQuotesRequests"
+      tags:
+        - "Agenda"
+      security:
+        -
+          matrix: []
+      description: "Signed-in customer only; derive identity from authentication and scope every lookup to this caller and business. Rate and new-account reach limits apply. Only record business, caller and time. Customer details and photos stay in the encrypted chat."
+      parameters:
+        -
+          name: "handle"
+          in: "path"
+          required: true
+          schema:
+            type: "string"
+            minLength: 1
+            maxLength: 128
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/EmptyBusinessRequest"
+      responses:
+        "201":
+          description: "Success"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/QuoteRequest"
+        default:
+          $ref: "#/components/responses/BusinessToolError"
+  /v1/businesses/{handle}/quotes/{quoteId}:
+    get:
+      summary: "Read my quote and its readable versions"
+      operationId: "getV1BusinessesHandleQuotesQuoteId"
+      tags:
+        - "Agenda"
+      security:
+        -
+          matrix: []
+      description: "Signed-in customer only; derive identity from authentication and scope every lookup to this caller and business. Rate and new-account reach limits apply."
+      parameters:
+        -
+          name: "handle"
+          in: "path"
+          required: true
+          schema:
+            type: "string"
+            minLength: 1
+            maxLength: 128
+        -
+          name: "quoteId"
+          in: "path"
+          required: true
+          schema:
+            type: "string"
+            minLength: 1
+            maxLength: 128
+      responses:
+        "200":
+          description: "Success"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Quote"
+        default:
+          $ref: "#/components/responses/BusinessToolError"
+  /v1/businesses/{handle}/quotes/{quoteId}/accept:
+    post:
+      summary: "Accept the current quote version and convert it"
+      operationId: "postV1BusinessesHandleQuotesQuoteIdAccept"
+      tags:
+        - "Agenda"
+      security:
+        -
+          matrix: []
+      description: "Signed-in customer only; derive identity from authentication and scope every lookup to this caller and business. Rate and new-account reach limits apply. Reject expired, refused or accepted quotes and stale versions. Recheck prices, limits and availability. Conversion and acceptance are one atomic operation; a retry cannot create a second order or booking."
+      parameters:
+        -
+          name: "handle"
+          in: "path"
+          required: true
+          schema:
+            type: "string"
+            minLength: 1
+            maxLength: 128
+        -
+          name: "quoteId"
+          in: "path"
+          required: true
+          schema:
+            type: "string"
+            minLength: 1
+            maxLength: 128
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/QuoteAccept"
+      responses:
+        "200":
+          description: "Success"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Quote"
+        default:
+          $ref: "#/components/responses/BusinessToolError"
+  /v1/businesses/{handle}/quotes/{quoteId}/refuse:
+    post:
+      summary: "Refuse the current quote version"
+      operationId: "postV1BusinessesHandleQuotesQuoteIdRefuse"
+      tags:
+        - "Agenda"
+      security:
+        -
+          matrix: []
+      description: "Signed-in customer only; derive identity from authentication and scope every lookup to this caller and business. Rate and new-account reach limits apply."
+      parameters:
+        -
+          name: "handle"
+          in: "path"
+          required: true
+          schema:
+            type: "string"
+            minLength: 1
+            maxLength: 128
+        -
+          name: "quoteId"
+          in: "path"
+          required: true
+          schema:
+            type: "string"
+            minLength: 1
+            maxLength: 128
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/QuoteDecline"
+      responses:
+        "200":
+          description: "Success"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Quote"
+        default:
+          $ref: "#/components/responses/BusinessToolError"
+  /v1/me/quotes:
+    get:
+      summary: "Read my quotes"
+      operationId: "getV1MeQuotes"
+      tags:
+        - "Agenda"
+      security:
+        -
+          matrix: []
+      description: "Authenticated caller’s customer quotes or the authenticated company’s quotes. Apps render cards from this API; the API never posts to encrypted rooms."
+      responses:
+        "200":
+          description: "Success"
+          content:
+            application/json:
+              schema:
+                type: "object"
+                additionalProperties: false
+                required:
+                  - "quotes"
+                properties:
+                  quotes:
+                    type: "array"
+                    items:
+                      $ref: "#/components/schemas/Quote"
+        default:
+          $ref: "#/components/responses/BusinessToolError"
+  /v1/me/business/orders:
+    get:
+      summary: "Read owner orders, newest first"
+      operationId: "getV1MeBusinessOrders"
+      tags:
+        - "Agenda"
+      security:
+        -
+          matrix: []
+      description: "Only a device of this company account may act. Every lookup is scoped to this business; no paid tier or verified CNPJ is needed except for a Pix charge."
+      responses:
+        "200":
+          description: "Success"
+          content:
+            application/json:
+              schema:
+                type: "object"
+                additionalProperties: false
+                required:
+                  - "orders"
+                properties:
+                  orders:
+                    type: "array"
+                    items:
+                      $ref: "#/components/schemas/Order"
+        default:
+          $ref: "#/components/responses/BusinessToolError"
+    post:
+      summary: "Add an owner-entered order"
+      operationId: "postV1MeBusinessOrders"
+      tags:
+        - "Agenda"
+      security:
+        -
+          matrix: []
+      description: "Only a device of this company account may act. Every lookup is scoped to this business; no paid tier or verified CNPJ is needed except for a Pix charge. Name-only entries receive no push or chat card. Price and open-order checks still apply."
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/OwnerOrderInput"
+      responses:
+        "201":
+          description: "Success"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Order"
+        default:
+          $ref: "#/components/responses/BusinessToolError"
+  /v1/me/business/orders/policy:
+    get:
+      summary: "Read order opening days and cut-off"
+      operationId: "getV1MeBusinessOrdersPolicy"
+      tags:
+        - "Agenda"
+      security:
+        -
+          matrix: []
+      description: "Only a device of this company account may act. Every lookup is scoped to this business; no paid tier or verified CNPJ is needed except for a Pix charge."
+      responses:
+        "200":
+          description: "Success"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/OrderPolicy"
+        default:
+          $ref: "#/components/responses/BusinessToolError"
+    put:
+      summary: "Set order opening days and cut-off"
+      operationId: "putV1MeBusinessOrdersPolicy"
+      tags:
+        - "Agenda"
+      security:
+        -
+          matrix: []
+      description: "Only a device of this company account may act. Every lookup is scoped to this business; no paid tier or verified CNPJ is needed except for a Pix charge."
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/OrderPolicy"
+      responses:
+        "200":
+          description: "Success"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/OrderPolicy"
+        default:
+          $ref: "#/components/responses/BusinessToolError"
+  /v1/me/business/orders/{orderId}:
+    get:
+      summary: "Read an owner order"
+      operationId: "getV1MeBusinessOrdersOrderId"
+      tags:
+        - "Agenda"
+      security:
+        -
+          matrix: []
+      description: "Only a device of this company account may act. Every lookup is scoped to this business; no paid tier or verified CNPJ is needed except for a Pix charge."
+      parameters:
+        -
+          name: "orderId"
+          in: "path"
+          required: true
+          schema:
+            type: "string"
+            minLength: 1
+            maxLength: 128
+      responses:
+        "200":
+          description: "Success"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Order"
+        default:
+          $ref: "#/components/responses/BusinessToolError"
+  /v1/me/business/orders/{orderId}/accept:
+    post:
+      summary: "Accept an order"
+      operationId: "postV1MeBusinessOrdersOrderIdAccept"
+      tags:
+        - "Agenda"
+      security:
+        -
+          matrix: []
+      description: "Only a device of this company account may act. Every lookup is scoped to this business; no paid tier or verified CNPJ is needed except for a Pix charge. Allowed transitions: sent to accepted/refused/cancelled; accepted to ready/cancelled; ready to done/cancelled. Terminal states do not reopen. Each change sends the matching shared push; no free-text push body."
+      parameters:
+        -
+          name: "orderId"
+          in: "path"
+          required: true
+          schema:
+            type: "string"
+            minLength: 1
+            maxLength: 128
+      responses:
+        "200":
+          description: "Success"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Order"
+        default:
+          $ref: "#/components/responses/BusinessToolError"
+  /v1/me/business/orders/{orderId}/refuse:
+    post:
+      summary: "Refuse an order"
+      operationId: "postV1MeBusinessOrdersOrderIdRefuse"
+      tags:
+        - "Agenda"
+      security:
+        -
+          matrix: []
+      description: "Only a device of this company account may act. Every lookup is scoped to this business; no paid tier or verified CNPJ is needed except for a Pix charge. Allowed transitions: sent to accepted/refused/cancelled; accepted to ready/cancelled; ready to done/cancelled. Terminal states do not reopen. Each change sends the matching shared push; no free-text push body."
+      parameters:
+        -
+          name: "orderId"
+          in: "path"
+          required: true
+          schema:
+            type: "string"
+            minLength: 1
+            maxLength: 128
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/OrderRefusal"
+      responses:
+        "200":
+          description: "Success"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Order"
+        default:
+          $ref: "#/components/responses/BusinessToolError"
+  /v1/me/business/orders/{orderId}/ready:
+    post:
+      summary: "Ready an order"
+      operationId: "postV1MeBusinessOrdersOrderIdReady"
+      tags:
+        - "Agenda"
+      security:
+        -
+          matrix: []
+      description: "Only a device of this company account may act. Every lookup is scoped to this business; no paid tier or verified CNPJ is needed except for a Pix charge. Allowed transitions: sent to accepted/refused/cancelled; accepted to ready/cancelled; ready to done/cancelled. Terminal states do not reopen. Each change sends the matching shared push; no free-text push body."
+      parameters:
+        -
+          name: "orderId"
+          in: "path"
+          required: true
+          schema:
+            type: "string"
+            minLength: 1
+            maxLength: 128
+      responses:
+        "200":
+          description: "Success"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Order"
+        default:
+          $ref: "#/components/responses/BusinessToolError"
+  /v1/me/business/orders/{orderId}/done:
+    post:
+      summary: "Done an order"
+      operationId: "postV1MeBusinessOrdersOrderIdDone"
+      tags:
+        - "Agenda"
+      security:
+        -
+          matrix: []
+      description: "Only a device of this company account may act. Every lookup is scoped to this business; no paid tier or verified CNPJ is needed except for a Pix charge. Allowed transitions: sent to accepted/refused/cancelled; accepted to ready/cancelled; ready to done/cancelled. Terminal states do not reopen. Each change sends the matching shared push; no free-text push body."
+      parameters:
+        -
+          name: "orderId"
+          in: "path"
+          required: true
+          schema:
+            type: "string"
+            minLength: 1
+            maxLength: 128
+      responses:
+        "200":
+          description: "Success"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Order"
+        default:
+          $ref: "#/components/responses/BusinessToolError"
+  /v1/me/business/orders/{orderId}/cancel:
+    post:
+      summary: "Cancel an order"
+      operationId: "postV1MeBusinessOrdersOrderIdCancel"
+      tags:
+        - "Agenda"
+      security:
+        -
+          matrix: []
+      description: "Only a device of this company account may act. Every lookup is scoped to this business; no paid tier or verified CNPJ is needed except for a Pix charge. Allowed transitions: sent to accepted/refused/cancelled; accepted to ready/cancelled; ready to done/cancelled. Terminal states do not reopen. Each change sends the matching shared push; no free-text push body."
+      parameters:
+        -
+          name: "orderId"
+          in: "path"
+          required: true
+          schema:
+            type: "string"
+            minLength: 1
+            maxLength: 128
+      responses:
+        "200":
+          description: "Success"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Order"
+        default:
+          $ref: "#/components/responses/BusinessToolError"
+  /v1/me/business/orders/{orderId}/pix-charge:
+    post:
+      summary: "Attach a Pix charge for an accepted order total"
+      operationId: "postV1MeBusinessOrdersOrderIdPixCharge"
+      tags:
+        - "Agenda"
+      security:
+        -
+          matrix: []
+      description: "Only a device of this company account may act. Every lookup is scoped to this business; no paid tier or verified CNPJ is needed except for a Pix charge. Requires a verified CNPJ. Only after acceptance; issuer, customer and amount must match this order. Does not set paid status."
+      parameters:
+        -
+          name: "orderId"
+          in: "path"
+          required: true
+          schema:
+            type: "string"
+            minLength: 1
+            maxLength: 128
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/PixChargeLink"
+      responses:
+        "200":
+          description: "Success"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Order"
+        default:
+          $ref: "#/components/responses/BusinessToolError"
+  /v1/businesses/{handle}/orders:
+    post:
+      summary: "Order fixed-price products from this catalogue"
+      operationId: "postV1BusinessesHandleOrders"
+      tags:
+        - "Agenda"
+      security:
+        -
+          matrix: []
+      description: "Signed-in customer only; derive identity from authentication and scope every lookup to this caller and business. Rate and new-account reach limits apply. Enforce one open order per customer per business atomically, local order days/cut-off, active fixed-price products and server-calculated snapshots. Reject items with no numeric amount or a from/on_request price. Pix is available only with a verified CNPJ and a shipped charge path; in-person payment works before it. Address and notes stay in encrypted chat."
+      parameters:
+        -
+          name: "handle"
+          in: "path"
+          required: true
+          schema:
+            type: "string"
+            minLength: 1
+            maxLength: 128
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/OrderInput"
+      responses:
+        "201":
+          description: "Success"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Order"
+        default:
+          $ref: "#/components/responses/BusinessToolError"
+  /v1/businesses/{handle}/orders/{orderId}:
+    get:
+      summary: "Read my order"
+      operationId: "getV1BusinessesHandleOrdersOrderId"
+      tags:
+        - "Agenda"
+      security:
+        -
+          matrix: []
+      description: "Signed-in customer only; derive identity from authentication and scope every lookup to this caller and business. Rate and new-account reach limits apply."
+      parameters:
+        -
+          name: "handle"
+          in: "path"
+          required: true
+          schema:
+            type: "string"
+            minLength: 1
+            maxLength: 128
+        -
+          name: "orderId"
+          in: "path"
+          required: true
+          schema:
+            type: "string"
+            minLength: 1
+            maxLength: 128
+      responses:
+        "200":
+          description: "Success"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Order"
+        default:
+          $ref: "#/components/responses/BusinessToolError"
+  /v1/businesses/{handle}/orders/{orderId}/cancel:
+    post:
+      summary: "Cancel my open order"
+      operationId: "postV1BusinessesHandleOrdersOrderIdCancel"
+      tags:
+        - "Agenda"
+      security:
+        -
+          matrix: []
+      description: "Signed-in customer only; derive identity from authentication and scope every lookup to this caller and business. Rate and new-account reach limits apply. Only sent/accepted/ready can be cancelled. No changes to a completed, refused or cancelled record."
+      parameters:
+        -
+          name: "handle"
+          in: "path"
+          required: true
+          schema:
+            type: "string"
+            minLength: 1
+            maxLength: 128
+        -
+          name: "orderId"
+          in: "path"
+          required: true
+          schema:
+            type: "string"
+            minLength: 1
+            maxLength: 128
+      responses:
+        "200":
+          description: "Success"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Order"
+        default:
+          $ref: "#/components/responses/BusinessToolError"
+  /v1/me/orders:
+    get:
+      summary: "Read my orders"
+      operationId: "getV1MeOrders"
+      tags:
+        - "Agenda"
+      security:
+        -
+          matrix: []
+      description: "Authenticated caller’s customer orders or the authenticated company’s orders, newest first. Cards come from the API, never from a server device in encrypted chat."
+      responses:
+        "200":
+          description: "Success"
+          content:
+            application/json:
+              schema:
+                type: "object"
+                additionalProperties: false
+                required:
+                  - "orders"
+                properties:
+                  orders:
+                    type: "array"
+                    items:
+                      $ref: "#/components/schemas/Order"
+        default:
+          $ref: "#/components/responses/BusinessToolError"
 components:
   responses:
+    BusinessToolError:
+      description: Invalid input (400), unauthorised (401), not found (404), state conflict (409), policy failure (422), rate limit (429), or server failure (500).
+      content:
+        application/json:
+          schema: { $ref: "#/components/schemas/BusinessToolError" }
     AgendaError:
       description: Invalid input (400), unauthorised (401), not found (404), slot or hold conflict (409), policy failure (422), rate limit (429), or server failure (500).
       content:
@@ -2890,3 +4082,59 @@ components:
       $ref: "./business-schemas.json#/$defs/BusyImport"
     AgendaError:
       $ref: "./business-schemas.json#/$defs/AgendaError"
+    QueuePolicy:
+      $ref: "./business-schemas.json#/$defs/QueuePolicy"
+    OwnerOrderInput:
+      $ref: "./business-schemas.json#/$defs/OwnerOrderInput"
+    OrderLineInput:
+      $ref: "./business-schemas.json#/$defs/OrderLineInput"
+    QueueJoin:
+      $ref: "./business-schemas.json#/$defs/QueueJoin"
+    Queue:
+      $ref: "./business-schemas.json#/$defs/Queue"
+    EmptyBusinessRequest:
+      $ref: "./business-schemas.json#/$defs/EmptyBusinessRequest"
+    OrderRefuseReason:
+      $ref: "./business-schemas.json#/$defs/OrderRefuseReason"
+    OwnerQueuePlace:
+      $ref: "./business-schemas.json#/$defs/OwnerQueuePlace"
+    OrderPolicy:
+      $ref: "./business-schemas.json#/$defs/OrderPolicy"
+    QuoteRequest:
+      $ref: "./business-schemas.json#/$defs/QuoteRequest"
+    OrderRefusal:
+      $ref: "./business-schemas.json#/$defs/OrderRefusal"
+    QueueWaitRange:
+      $ref: "./business-schemas.json#/$defs/QueueWaitRange"
+    QuoteLine:
+      $ref: "./business-schemas.json#/$defs/QuoteLine"
+    BusinessToolError:
+      $ref: "./business-schemas.json#/$defs/BusinessToolError"
+    QueuePlace:
+      $ref: "./business-schemas.json#/$defs/QueuePlace"
+    QueuePosition:
+      $ref: "./business-schemas.json#/$defs/QueuePosition"
+    OrderInput:
+      $ref: "./business-schemas.json#/$defs/OrderInput"
+    QuoteDecline:
+      $ref: "./business-schemas.json#/$defs/QuoteDecline"
+    Quote:
+      $ref: "./business-schemas.json#/$defs/Quote"
+    QuoteVersionInput:
+      $ref: "./business-schemas.json#/$defs/QuoteVersionInput"
+    QuoteVersion:
+      $ref: "./business-schemas.json#/$defs/QuoteVersion"
+    QuoteAccept:
+      $ref: "./business-schemas.json#/$defs/QuoteAccept"
+    OrderStatus:
+      $ref: "./business-schemas.json#/$defs/OrderStatus"
+    QueuePlaceStatus:
+      $ref: "./business-schemas.json#/$defs/QueuePlaceStatus"
+    OrderLine:
+      $ref: "./business-schemas.json#/$defs/OrderLine"
+    QuoteLineInput:
+      $ref: "./business-schemas.json#/$defs/QuoteLineInput"
+    PixChargeLink:
+      $ref: "./business-schemas.json#/$defs/PixChargeLink"
+    Order:
+      $ref: "./business-schemas.json#/$defs/Order"

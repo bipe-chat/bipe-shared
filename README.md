@@ -6,7 +6,7 @@ Single source of truth for Bipe logic that iOS, Android, the API and the website
 |---|---|
 | `registries/` | Reserved names, family terms, scam patterns, homoglyphs, handle rules, invite-code rule, and editable Agenda setup templates |
 | `strings/pt-BR.json`, `strings/en.json` | Bipe-owned UI strings (Element strings stay on Localazy). Draft copy. |
-| `api/openapi.yaml` | Bipe API contract, including Agenda and Catálogo routes |
+| `api/openapi.yaml` | Bipe API contract, including Agenda, Catálogo, Fila virtual, Orçamento and Pedidos routes |
 | `api/business-schemas.json` | JSON Schema 2020-12 definitions referenced by OpenAPI and used to generate API TypeScript types |
 | `docs/badge-attestation.md` | Signed badge format and verification order |
 | `docs/trust-facts.md` | Independent trust facts, adapter inputs, invalidation and generated platform rules |
@@ -86,3 +86,7 @@ AGPL-3.0-only, see [LICENSE](LICENSE). Contributions need a DCO sign-off (`git c
 ## Agenda setup templates
 
 `registries/agenda-templates.json` holds six setup suggestions with stable IDs. Service names and template titles refer to keys in both string files. Durations, buffers and weekly hours are editable before publication; prices start on request. The loader rejects duplicate IDs, invalid times, overlapping hours and missing translations. `gen.mjs` emits `BipeAgendaTemplates.swift`, `BipeAgendaTemplates.kt` and the API registry copy.
+
+## Business tool contracts
+
+The queue, quote and order schemas use the Agenda card and push pattern (ADRs 0102 and 0105 to 0107). Customer requests never accept notes, photos or delivery addresses. Quote lines are business-authored and versioned. Order amounts and price snapshots are server-calculated. A catalogue fixed price can include `amount_cents` for BRL calculation; a customer order needs a fixed-price product with that value. Other prices need a quote. A payment choice or a linked Pix charge never establishes payment. All routes remain planned until their implementation issues land.

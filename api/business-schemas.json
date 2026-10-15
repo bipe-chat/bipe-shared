@@ -22,6 +22,12 @@
               "type": "string",
               "minLength": 1,
               "maxLength": 80
+            },
+            "amount_cents": {
+              "type": "integer",
+              "minimum": 0,
+              "maximum": 9007199254740991,
+              "description": "BRL amount for machine calculation. A fixed-price product needs this to be ordered. text remains the display price."
             }
           },
           "description": "Display price, for example R$ 40. No payment is made by this API."
@@ -1140,6 +1146,898 @@
           "type": "string"
         }
       }
+    },
+    "BusinessToolError": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "error"
+      ],
+      "properties": {
+        "error": {
+          "type": "string",
+          "enum": [
+            "bad_request",
+            "unauthorized",
+            "not_found",
+            "rate_limited",
+            "internal",
+            "slot_taken",
+            "hold_expired",
+            "too_many_open_bookings",
+            "outside_notice",
+            "outside_horizon",
+            "agenda_not_published",
+            "cancellation_window_closed",
+            "queue_closed",
+            "already_in_queue",
+            "place_not_active",
+            "quote_expired",
+            "quote_version_changed",
+            "quote_not_open",
+            "order_already_open",
+            "order_not_open",
+            "item_unavailable",
+            "price_not_fixed",
+            "orders_closed",
+            "payment_requires_verified_business",
+            "pix_charge_unavailable"
+          ]
+        },
+        "reason": {
+          "type": "string"
+        }
+      }
+    },
+    "EmptyBusinessRequest": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [],
+      "properties": {}
+    },
+    "PixChargeLink": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "charge_id"
+      ],
+      "properties": {
+        "charge_id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128
+        }
+      },
+      "description": "An existing Pix charge from this same verified company. The API checks issuer, amount, state and recipient; a client-supplied ID never proves payment."
+    },
+    "QueuePolicy": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "no_show_after_minutes"
+      ],
+      "properties": {
+        "no_show_after_minutes": {
+          "type": "integer",
+          "minimum": 1,
+          "default": 10
+        }
+      }
+    },
+    "Queue": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "business_id",
+        "date",
+        "time_zone",
+        "open",
+        "policy"
+      ],
+      "properties": {
+        "id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128
+        },
+        "business_id": {
+          "type": "string",
+          "pattern": "^@[^:]+:.+$"
+        },
+        "date": {
+          "type": "string",
+          "format": "date"
+        },
+        "time_zone": {
+          "type": "string",
+          "default": "America/Sao_Paulo"
+        },
+        "open": {
+          "type": "boolean"
+        },
+        "policy": {
+          "$ref": "#/$defs/QueuePolicy"
+        }
+      },
+      "description": "One queue per business per local day. Resets each day. Agenda bookings take priority at their booked time; the queue fills the gaps."
+    },
+    "QueuePlaceStatus": {
+      "type": "string",
+      "enum": [
+        "waiting",
+        "called",
+        "served",
+        "no_show",
+        "left"
+      ]
+    },
+    "QueuePlace": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "queue_id",
+        "business_id",
+        "customer",
+        "source",
+        "status",
+        "joined_at"
+      ],
+      "properties": {
+        "id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128
+        },
+        "queue_id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128
+        },
+        "business_id": {
+          "type": "string",
+          "pattern": "^@[^:]+:.+$"
+        },
+        "customer": {
+          "$ref": "#/$defs/BookingCustomer"
+        },
+        "source": {
+          "type": "string",
+          "enum": [
+            "customer",
+            "owner"
+          ]
+        },
+        "service_id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128
+        },
+        "status": {
+          "$ref": "#/$defs/QueuePlaceStatus"
+        },
+        "joined_at": {
+          "type": "string",
+          "format": "date-time",
+          "pattern": "Z$",
+          "description": "UTC, with a trailing Z."
+        },
+        "called_at": {
+          "type": "string",
+          "format": "date-time",
+          "pattern": "Z$",
+          "description": "UTC, with a trailing Z."
+        },
+        "served_at": {
+          "type": "string",
+          "format": "date-time",
+          "pattern": "Z$",
+          "description": "UTC, with a trailing Z."
+        }
+      },
+      "description": "No location, notes or customer description. Name-only entries are owner-created. Retain for 30 days after the queue day ends (ADR 0107)."
+    },
+    "QueueJoin": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [],
+      "properties": {
+        "service_id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128
+        }
+      },
+      "description": "The authenticated customer is derived from the token; one active place per customer per business. An optional catalogue service improves the estimate."
+    },
+    "OwnerQueuePlace": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "customer"
+      ],
+      "properties": {
+        "customer": {
+          "$ref": "#/$defs/BookingCustomer"
+        },
+        "service_id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128
+        }
+      }
+    },
+    "QueueWaitRange": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "min_minutes",
+        "max_minutes"
+      ],
+      "properties": {
+        "min_minutes": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "max_minutes": {
+          "type": "integer",
+          "minimum": 0
+        }
+      },
+      "description": "Upper bound must be at least the lower bound. Based on today’s served places or the service duration. An estimate, never an exact appointment time."
+    },
+    "QueuePosition": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "place",
+        "position"
+      ],
+      "properties": {
+        "place": {
+          "$ref": "#/$defs/QueuePlace"
+        },
+        "position": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "wait": {
+          "$ref": "#/$defs/QueueWaitRange"
+        }
+      },
+      "description": "Only this caller’s place. Position is zero when called; waiting positions start at one. Omit wait when there is insufficient data."
+    },
+    "QuoteRequest": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "business_id",
+        "customer_id",
+        "created_at"
+      ],
+      "properties": {
+        "id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128
+        },
+        "business_id": {
+          "type": "string",
+          "pattern": "^@[^:]+:.+$"
+        },
+        "customer_id": {
+          "type": "string",
+          "pattern": "^@[^:]+:.+$"
+        },
+        "created_at": {
+          "type": "string",
+          "format": "date-time",
+          "pattern": "Z$",
+          "description": "UTC, with a trailing Z."
+        }
+      },
+      "description": "Only the fact of a request. Job descriptions, addresses and photos stay in the encrypted conversation."
+    },
+    "QuoteLineInput": {
+      "oneOf": [
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "item_id",
+            "quantity",
+            "unit_amount_cents"
+          ],
+          "properties": {
+            "item_id": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 128
+            },
+            "quantity": {
+              "type": "number",
+              "exclusiveMinimum": 0
+            },
+            "unit_amount_cents": {
+              "type": "integer",
+              "minimum": 0,
+              "maximum": 9007199254740991
+            }
+          },
+          "description": "Owner chooses a catalogue item and its quoted unit price."
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "name",
+            "quantity",
+            "unit_amount_cents"
+          ],
+          "properties": {
+            "name": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 200
+            },
+            "quantity": {
+              "type": "number",
+              "exclusiveMinimum": 0
+            },
+            "unit_amount_cents": {
+              "type": "integer",
+              "minimum": 0,
+              "maximum": 9007199254740991
+            }
+          },
+          "description": "Business-authored text only, never a customer description."
+        }
+      ]
+    },
+    "QuoteLine": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "name",
+        "quantity",
+        "unit_amount_cents",
+        "total_amount_cents"
+      ],
+      "properties": {
+        "item_id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128
+        },
+        "name": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 200
+        },
+        "quantity": {
+          "type": "number",
+          "exclusiveMinimum": 0
+        },
+        "unit_amount_cents": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 9007199254740991
+        },
+        "total_amount_cents": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 9007199254740991
+        }
+      },
+      "description": "Immutable business-authored snapshot. Server calculates and rounds line totals to centavos, and rejects amounts outside safe integer range."
+    },
+    "QuoteVersionInput": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "lines",
+        "valid_until"
+      ],
+      "properties": {
+        "lines": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/QuoteLineInput"
+          },
+          "minItems": 1
+        },
+        "valid_until": {
+          "type": "string",
+          "format": "date-time",
+          "pattern": "Z$",
+          "description": "UTC, with a trailing Z."
+        },
+        "visit_service_id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128
+        }
+      },
+      "description": "Owner-only. Validity entered as a local date is converted to UTC at the end of that local day. Optional visit_service_id opens the booking flow for that catalogue service."
+    },
+    "QuoteVersion": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "version",
+        "created_at",
+        "valid_until",
+        "lines",
+        "total_amount_cents",
+        "currency"
+      ],
+      "properties": {
+        "version": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "created_at": {
+          "type": "string",
+          "format": "date-time",
+          "pattern": "Z$",
+          "description": "UTC, with a trailing Z."
+        },
+        "valid_until": {
+          "type": "string",
+          "format": "date-time",
+          "pattern": "Z$",
+          "description": "UTC, with a trailing Z."
+        },
+        "lines": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/QuoteLine"
+          },
+          "minItems": 1
+        },
+        "total_amount_cents": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 9007199254740991
+        },
+        "currency": {
+          "type": "string",
+          "const": "BRL"
+        },
+        "visit_service_id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128
+        }
+      },
+      "description": "Immutable; older versions stay readable. Total is calculated by the server."
+    },
+    "Quote": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "request_id",
+        "business_id",
+        "customer_id",
+        "status",
+        "current_version",
+        "versions"
+      ],
+      "properties": {
+        "id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128
+        },
+        "request_id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128
+        },
+        "business_id": {
+          "type": "string",
+          "pattern": "^@[^:]+:.+$"
+        },
+        "customer_id": {
+          "type": "string",
+          "pattern": "^@[^:]+:.+$"
+        },
+        "status": {
+          "type": "string",
+          "enum": [
+            "offered",
+            "accepted",
+            "refused",
+            "expired"
+          ]
+        },
+        "current_version": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "versions": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/QuoteVersion"
+          },
+          "minItems": 1
+        },
+        "booking_id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128
+        },
+        "order_id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128
+        },
+        "pix_charge_id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128
+        }
+      },
+      "description": "A business may issue a quote only after this customer requested one. No customer free text or photos. Never infer paid from a quote or a linked Pix charge."
+    },
+    "QuoteAccept": {
+      "oneOf": [
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "version",
+            "target",
+            "booking"
+          ],
+          "properties": {
+            "version": {
+              "type": "integer",
+              "minimum": 1
+            },
+            "target": {
+              "type": "string",
+              "const": "booking"
+            },
+            "booking": {
+              "$ref": "#/$defs/BookingHold"
+            }
+          },
+          "description": "Recheck availability and create the booking atomically with acceptance."
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "version",
+            "target",
+            "fulfilment",
+            "payment"
+          ],
+          "properties": {
+            "version": {
+              "type": "integer",
+              "minimum": 1
+            },
+            "target": {
+              "type": "string",
+              "const": "order"
+            },
+            "fulfilment": {
+              "type": "string",
+              "enum": [
+                "pickup",
+                "delivery"
+              ]
+            },
+            "payment": {
+              "type": "string",
+              "enum": [
+                "in_person",
+                "pix"
+              ]
+            }
+          },
+          "description": "Create an order from the accepted immutable lines. Pix requires a verified CNPJ and an available charge flow."
+        }
+      ],
+      "description": "Only the current, unexpired version can be accepted. A conversion failure leaves the quote unaccepted. Concurrent acceptances produce at most one resulting booking or order."
+    },
+    "QuoteDecline": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "version"
+      ],
+      "properties": {
+        "version": {
+          "type": "integer",
+          "minimum": 1
+        }
+      }
+    },
+    "OrderLineInput": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "item_id",
+        "quantity"
+      ],
+      "properties": {
+        "item_id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128
+        },
+        "quantity": {
+          "type": "integer",
+          "minimum": 1
+        }
+      }
+    },
+    "OrderLine": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "name",
+        "quantity",
+        "unit_amount_cents",
+        "total_amount_cents"
+      ],
+      "properties": {
+        "item_id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128
+        },
+        "name": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 200
+        },
+        "quantity": {
+          "type": "number",
+          "exclusiveMinimum": 0
+        },
+        "unit_amount_cents": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 9007199254740991
+        },
+        "total_amount_cents": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 9007199254740991
+        }
+      },
+      "description": "Immutable snapshot, calculated by the server. item_id may be absent only for a business-authored line converted from a quote."
+    },
+    "OrderInput": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "lines",
+        "fulfilment",
+        "payment"
+      ],
+      "properties": {
+        "lines": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/OrderLineInput"
+          },
+          "minItems": 1
+        },
+        "fulfilment": {
+          "type": "string",
+          "enum": [
+            "pickup",
+            "delivery"
+          ]
+        },
+        "payment": {
+          "type": "string",
+          "enum": [
+            "in_person",
+            "pix"
+          ]
+        }
+      },
+      "description": "Signed-in customer only. No customer ID, prices, total, address or notes. Fixed-price active products with amount_cents only; the server snapshots and calculates prices. from/on_request prices require a quote instead."
+    },
+    "OwnerOrderInput": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "lines",
+        "fulfilment",
+        "payment",
+        "customer"
+      ],
+      "properties": {
+        "lines": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/OrderLineInput"
+          },
+          "minItems": 1
+        },
+        "fulfilment": {
+          "type": "string",
+          "enum": [
+            "pickup",
+            "delivery"
+          ]
+        },
+        "payment": {
+          "type": "string",
+          "enum": [
+            "in_person",
+            "pix"
+          ]
+        },
+        "customer": {
+          "$ref": "#/$defs/BookingCustomer"
+        }
+      },
+      "description": "Owner-entered order; a name-only customer receives no push or chat card."
+    },
+    "OrderStatus": {
+      "type": "string",
+      "enum": [
+        "sent",
+        "accepted",
+        "refused",
+        "ready",
+        "done",
+        "cancelled"
+      ]
+    },
+    "OrderRefuseReason": {
+      "type": "string",
+      "enum": [
+        "unavailable",
+        "closed",
+        "cannot_deliver",
+        "cannot_fulfil"
+      ]
+    },
+    "OrderRefusal": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "reason"
+      ],
+      "properties": {
+        "reason": {
+          "$ref": "#/$defs/OrderRefuseReason"
+        }
+      },
+      "description": "Fixed reasons only. Free text goes in the encrypted chat."
+    },
+    "OrderPolicy": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "time_zone",
+        "weekdays",
+        "cutoff"
+      ],
+      "properties": {
+        "time_zone": {
+          "type": "string",
+          "default": "America/Sao_Paulo"
+        },
+        "weekdays": {
+          "type": "array",
+          "items": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 7
+          },
+          "uniqueItems": true
+        },
+        "cutoff": {
+          "type": "string",
+          "pattern": "^([01][0-9]|2[0-3]):[0-5][0-9]$",
+          "description": "Local wall time in the business time zone. Start is inclusive; end is exclusive."
+        }
+      },
+      "description": "Orders accepted only on these ISO weekdays and before the local cut-off time. An empty weekday list closes orders."
+    },
+    "Order": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "business_id",
+        "customer",
+        "source",
+        "created_at",
+        "lines",
+        "total_amount_cents",
+        "currency",
+        "fulfilment",
+        "payment",
+        "status"
+      ],
+      "properties": {
+        "id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128
+        },
+        "business_id": {
+          "type": "string",
+          "pattern": "^@[^:]+:.+$"
+        },
+        "customer": {
+          "$ref": "#/$defs/BookingCustomer"
+        },
+        "source": {
+          "type": "string",
+          "enum": [
+            "customer",
+            "owner"
+          ]
+        },
+        "created_at": {
+          "type": "string",
+          "format": "date-time",
+          "pattern": "Z$",
+          "description": "UTC, with a trailing Z."
+        },
+        "lines": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/OrderLine"
+          },
+          "minItems": 1
+        },
+        "total_amount_cents": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 9007199254740991
+        },
+        "currency": {
+          "type": "string",
+          "const": "BRL"
+        },
+        "fulfilment": {
+          "type": "string",
+          "enum": [
+            "pickup",
+            "delivery"
+          ]
+        },
+        "payment": {
+          "type": "string",
+          "enum": [
+            "in_person",
+            "pix"
+          ]
+        },
+        "status": {
+          "$ref": "#/$defs/OrderStatus"
+        },
+        "refuse_reason": {
+          "$ref": "#/$defs/OrderRefuseReason"
+        },
+        "pix_charge_id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128
+        },
+        "quote_id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128
+        }
+      },
+      "description": "Minimal order record. No address, notes or customer messages. One open order per customer per business; sent/accepted/ready are open. Payment choice and a charge link do not establish paid status. Retain for two years (ADR 0105)."
     }
   }
 }

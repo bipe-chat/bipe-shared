@@ -52,6 +52,12 @@ const ENUMS = {
 // Schemas the apps do not model, with the reason.
 const NOT_IN_APPS = {
   ...Object.fromEntries([
+    "BusinessToolError", "EmptyBusinessRequest", "PixChargeLink",
+    "Queue", "QueueJoin", "QueuePlace", "QueuePlaceStatus", "QueuePolicy", "QueuePosition", "QueueWaitRange", "OwnerQueuePlace",
+    "Quote", "QuoteAccept", "QuoteDecline", "QuoteLine", "QuoteLineInput", "QuoteRequest", "QuoteVersion", "QuoteVersionInput",
+    "Order", "OrderInput", "OrderLine", "OrderLineInput", "OrderPolicy", "OrderRefusal", "OrderRefuseReason", "OrderStatus", "OwnerOrderInput",
+  ].map((name) => [name, "contract first (bipe#332/#336/#340); app clients follow in bipe#334/#335, #338/#339 and #342/#343"])),
+  ...Object.fromEntries([
     "CatalogPrice", "CatalogItemInput", "CatalogItem", "Catalog", "CatalogOrder",
   ].map((name) => [name, "contract first (bipe#327); app clients follow in bipe#329 and bipe#330"])),
   ...Object.fromEntries([

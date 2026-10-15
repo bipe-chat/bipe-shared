@@ -1,5 +1,5 @@
 // Writes bipe/docs/product.md from product/product.json and product/distribution.json. Also validates
-// product/compare.json, product/scams.json and product/data.json.
+// product/compare.json, product/scams.json, product/data.json and product/privacy.json.
 // Usage: node tools/gen-product-doc.mjs [--out <file>]
 import { readdirSync, readFileSync, writeFileSync } from "node:fs";
 import { dirname, join, resolve } from "node:path";
@@ -268,7 +268,38 @@ for (const i of data.items) {
   for (const l of ["pt", "en"]) for (const k of ["name", "what", "why", "retention"]) if (!i[l]?.[k]) fail(`data item ${i.id}: ${l}.${k}`);
 }
 for (const d of data.device) if (!d.pt || !d.en) fail(`data device ${d.id}`);
-const text = JSON.stringify(product) + JSON.stringify(dist) + JSON.stringify(data);
+// Privacy register (product/privacy.json, ADR 0109): who can read what, for /quem-pode-ler/.
+const privacy = JSON.parse(readFileSync(join(root, "product/privacy.json"), "utf8"));
+if (privacy.version !== 1 || !/^\d{4}-\d{2}-\d{2}$/.test(privacy.date)) fail("privacy: version or date");
+if (!featureIds.has(privacy.feature)) fail(`privacy: unknown feature ${privacy.feature}`);
+if (!tentpoleIds.has(privacy.tentpole)) fail(`privacy: unknown tentpole ${privacy.tentpole}`);
+for (const l of ["pt", "en"]) if (!/^[a-z0-9-]+$/.test(privacy.slug?.[l] ?? "")) fail(`privacy: slug.${l}`);
+const privacyLevels = new Set(privacy.levels);
+const thingIds = new Set();
+for (const t of privacy.things) {
+  if (!/^[a-z-]+$/.test(t.id) || thingIds.has(t.id) || !t.pt || !t.en) fail(`privacy thing ${t.id}`);
+  if (!t.register?.length || t.register.some((id) => !dataIds.has(id))) fail(`privacy thing ${t.id}: register must name data.json items`);
+  thingIds.add(t.id);
+}
+const partyIds = new Set();
+for (const p of privacy.parties) {
+  if (!/^[a-z-]+$/.test(p.id) || partyIds.has(p.id)) fail(`privacy party ${p.id}: id`);
+  partyIds.add(p.id);
+  const keys = Object.keys(p.access ?? {});
+  if (keys.length !== thingIds.size || keys.some((k) => !thingIds.has(k))) fail(`privacy party ${p.id}: access must cover every thing`);
+  for (const v of Object.values(p.access)) if (!privacyLevels.has(v)) fail(`privacy party ${p.id}: unknown level ${v}`);
+  for (const l of ["pt", "en"]) if (!p[l]?.name || !p[l]?.note) fail(`privacy party ${p.id}: ${l} copy`);
+}
+for (const l of ["pt", "en"]) {
+  const c = privacy[l];
+  for (const k of ["nav", "title", "lede", "explainTitle", "rule", "tableTitle", "tableLede", "limitsTitle", "faqTitle", "more", "summaryTitle", "summaryLink"]) if (!c?.[k]) fail(`privacy.${l}.${k}`);
+  for (const v of privacyLevels) if (!c.levelLabels?.[v]) fail(`privacy.${l}.levelLabels.${v}`);
+  if (!c.explain?.length || c.explain.some((x) => !x.heading || !x.body)) fail(`privacy.${l}.explain`);
+  if (!c.limits?.length || c.limits.some((x) => !x)) fail(`privacy.${l}.limits`);
+  if (!c.faq?.length || c.faq.some((x) => !x.q || !x.a)) fail(`privacy.${l}.faq`);
+}
+for (const k of ["explain", "limits", "faq"]) if (privacy.pt[k].length !== privacy.en[k].length) fail(`privacy: ${k} pt and en differ`);
+const text = JSON.stringify(product) + JSON.stringify(dist) + JSON.stringify(data) + JSON.stringify(privacy);
 if (/[–—]/.test(text)) fail("rendered copy must not contain em or en dashes");
 
 const label = { testing: "TestFlight", built: "Built", planned: "Planned", policy: "Policy" };

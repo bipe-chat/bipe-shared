@@ -1,0 +1,231 @@
+{
+  "$comment": "Thing names start in lower case: pages put them after a level word. Who can read what (ADR 0109). Feeds /quem-pode-ler/ on bipe-web, its summary on the e2ee feature page and the privacy tentpole. Facts only from what runs today; each thing names the data.json items it explains. Source of the facts: bipe/docs/security.md rule 13 and 'Privacy: honest limits'. Validated by tools/gen-product-doc.mjs.",
+  "version": 1,
+  "date": "2026-10-15",
+  "feature": "e2ee",
+  "tentpole": "no-ads",
+  "slug": { "pt": "quem-pode-ler", "en": "who-can-read" },
+  "levels": ["yes", "partial", "no"],
+  "things": [
+    {
+      "id": "content",
+      "register": ["messages", "media"],
+      "pt": "o que você escreve, fotos, áudios e arquivos",
+      "en": "what you write, photos, voice messages and files"
+    },
+    {
+      "id": "room",
+      "register": ["messages"],
+      "pt": "nome e foto dos grupos",
+      "en": "group names and photos"
+    },
+    {
+      "id": "who-when",
+      "register": ["messages", "push"],
+      "pt": "quem está em cada conversa e quando cada mensagem chegou",
+      "en": "who is in each chat and when each message arrived"
+    },
+    {
+      "id": "connection",
+      "register": ["connection-logs"],
+      "pt": "seu IP e a hora em que você se conecta",
+      "en": "your IP address and when you connect"
+    }
+  ],
+  "parties": [
+    {
+      "id": "chat",
+      "access": { "content": "yes", "room": "yes", "who-when": "yes", "connection": "no" },
+      "pt": {
+        "name": "Você e quem está na conversa",
+        "note": "Os aparelhos de quem está na conversa têm a chave e abrem tudo. Quem recebe uma mensagem pode copiar, tirar print ou encaminhar, como em qualquer app."
+      },
+      "en": {
+        "name": "You and the people in the chat",
+        "note": "The devices of the people in the chat hold the key and open everything. Someone who receives a message can copy it, take a screenshot or forward it, as in any app."
+      }
+    },
+    {
+      "id": "bipe",
+      "access": { "content": "no", "room": "yes", "who-when": "yes", "connection": "yes" },
+      "pt": {
+        "name": "A equipe do Bipe",
+        "note": "A equipe cuida do servidor, mas não tem a chave das conversas. Ela vê o que o servidor precisa para entregar as mensagens. O registro de conexão fica 6 meses porque o Marco Civil da Internet manda guardar."
+      },
+      "en": {
+        "name": "The Bipe team",
+        "note": "The team runs the server but has no key to the chats. It sees what the server needs to deliver messages. Connection logs stay for 6 months because Brazil's Marco Civil da Internet requires it."
+      }
+    },
+    {
+      "id": "intruder",
+      "access": { "content": "no", "room": "yes", "who-when": "yes", "connection": "yes" },
+      "pt": {
+        "name": "Alguém que invada o servidor",
+        "note": "Leva o mesmo que está no servidor: mensagens embaralhadas, sem a chave para abrir."
+      },
+      "en": {
+        "name": "Someone who breaks into the server",
+        "note": "Gets what is on the server: scrambled messages, without the key to open them."
+      }
+    },
+    {
+      "id": "court",
+      "access": { "content": "no", "room": "yes", "who-when": "yes", "connection": "yes" },
+      "pt": {
+        "name": "Polícia ou Justiça, com ordem judicial",
+        "note": "O Bipe só consegue entregar o que tem. O que vocês escreveram fica trancado, e o Bipe não tem a chave para abrir."
+      },
+      "en": {
+        "name": "Police or courts, with a court order",
+        "note": "Bipe can only hand over what it has. What you wrote stays locked, and Bipe has no key to open it."
+      }
+    },
+    {
+      "id": "apple",
+      "access": { "content": "no", "room": "no", "who-when": "partial", "connection": "no" },
+      "pt": {
+        "name": "A Apple, que entrega as notificações do iPhone",
+        "note": "Recebe só um aviso de que chegou mensagem, com o código da conversa. O texto não passa pela Apple: o app busca a mensagem no servidor do Bipe e abre no celular."
+      },
+      "en": {
+        "name": "Apple, which delivers iPhone notifications",
+        "note": "Gets only a signal that a message arrived, with the chat's ID. The text does not pass through Apple: the app fetches the message from the Bipe server and opens it on the phone."
+      }
+    },
+    {
+      "id": "phone",
+      "access": { "content": "yes", "room": "yes", "who-when": "yes", "connection": "no" },
+      "pt": {
+        "name": "Quem pega seu celular desbloqueado",
+        "note": "A tranca protege a mensagem no caminho e no servidor. No seu celular, ela já está aberta para você ler. Por isso vale travar a tela."
+      },
+      "en": {
+        "name": "Someone who picks up your unlocked phone",
+        "note": "The lock protects the message on the way and on the server. On your phone it is already open for you to read. That is why a screen lock matters."
+      }
+    }
+  ],
+  "pt": {
+    "nav": "Quem pode ler",
+    "title": "Quem pode ler suas conversas",
+    "lede": "Seus dados ficam no Brasil, no servidor do Bipe em São Paulo. E as conversas chegam lá trancadas: só os aparelhos de quem está na conversa têm a chave. Esta página mostra quem lê o quê, sem letra miúda.",
+    "explainTitle": "O que quer dizer ponta a ponta",
+    "explain": [
+      {
+        "heading": "Seu celular tranca a mensagem",
+        "body": "Antes de a mensagem sair, o app tranca o texto, a foto ou o áudio com uma chave. Essa chave existe só nos aparelhos de quem está na conversa."
+      },
+      {
+        "heading": "O servidor carrega a caixa fechada",
+        "body": "O servidor do Bipe guarda a mensagem e entrega em cada aparelho. Ele não tem a chave, então o que fica lá é um embaralhado que ninguém consegue ler."
+      },
+      {
+        "heading": "Só quem está na conversa abre",
+        "body": "O celular de quem recebe destranca a mensagem e mostra na tela. Numa conversa a dois, são os seus aparelhos e os da outra pessoa. Num grupo, os de quem está no grupo."
+      },
+      {
+        "heading": "Aparelho novo só recebe a chave com a sua aprovação",
+        "body": "Um aparelho que você não aprovou não recebe as chaves. Assim, nem quem cuida do servidor consegue pôr um aparelho escondido na sua conta para ler as conversas."
+      }
+    ],
+    "rule": "Toda conversa nova é trancada. O servidor do Bipe exige isso, mesmo que algum app peça o contrário.",
+    "tableTitle": "Quem lê o quê",
+    "tableLede": "Cada bloco é alguém que poderia querer ler. Cada linha diz o que essa pessoa ou empresa consegue ver.",
+    "levelLabels": { "yes": "Vê", "partial": "Em parte", "no": "Não vê" },
+    "limitsTitle": "O que a ponta a ponta não esconde",
+    "limits": [
+      "O nome e a foto de um grupo ficam abertos no servidor. Se o grupo se chama \"Família Silva\", o servidor sabe esse nome.",
+      "O servidor sabe quem está em cada conversa e quando cada mensagem chegou. Ele precisa disso para entregar, e o Bipe não promete esconder quem fala com quem.",
+      "Quem recebe uma mensagem pode copiar, tirar print ou encaminhar. A tranca não muda isso.",
+      "Se você perder todos os seus aparelhos e também a chave de recuperação, as mensagens antigas se perdem. O Bipe não guarda cópia da sua chave, então não tem como devolver."
+    ],
+    "faqTitle": "Perguntas comuns",
+    "faq": [
+      {
+        "q": "O Bipe lê minhas mensagens?",
+        "a": "Não. O servidor guarda as mensagens trancadas, e a equipe do Bipe não tem a chave."
+      },
+      {
+        "q": "E se a Justiça pedir minhas conversas?",
+        "a": "O Bipe só entrega o que tem: os registros de conexão, quem está em cada conversa e quando, e o nome e a foto dos grupos. O que vocês escreveram, o Bipe não consegue abrir, então não tem como entregar."
+      },
+      {
+        "q": "E se eu trocar de celular?",
+        "a": "Você volta para a conta. Para ver as mensagens antigas, aprove o celular novo num aparelho antigo ou use sua chave de recuperação."
+      },
+      {
+        "q": "Algum dado sai do Brasil?",
+        "a": "O servidor fica em São Paulo. A notificação do iPhone passa pela Apple, só com um código e sem o texto da mensagem. A lista completa está na página da LGPD."
+      },
+      {
+        "q": "Que tranca é essa?",
+        "a": "É a criptografia do Matrix, um padrão aberto que qualquer pessoa pode conferir. O Bipe não mexe no código dela."
+      }
+    ],
+    "more": "Cada dado, para quê e por quanto tempo fica guardado está na [página da LGPD](/lgpd/). O texto corrido está na [política de privacidade](/privacidade/).",
+    "summaryTitle": "Quem pode ler",
+    "summaryLink": "Ver quem lê o quê"
+  },
+  "en": {
+    "nav": "Who can read",
+    "title": "Who can read your chats",
+    "lede": "Your data stays in Brazil, on the Bipe server in São Paulo. And chats arrive there locked: only the devices of the people in the chat hold the key. This page shows who can read what, with no fine print. The Portuguese version is the reference text.",
+    "explainTitle": "What end to end means",
+    "explain": [
+      {
+        "heading": "Your phone locks the message",
+        "body": "Before a message leaves, the app locks the text, photo or voice message with a key. That key exists only on the devices of the people in the chat."
+      },
+      {
+        "heading": "The server carries a closed box",
+        "body": "The Bipe server stores the message and delivers it to each device. It has no key, so what it keeps is scrambled and nobody can read it."
+      },
+      {
+        "heading": "Only the people in the chat open it",
+        "body": "The receiver's phone unlocks the message and shows it on screen. In a one-to-one chat, that is your devices and the other person's. In a group, the devices of the people in the group."
+      },
+      {
+        "heading": "A new device gets the key only if you approve it",
+        "body": "A device you did not approve gets no keys. So not even the people who run the server can slip a hidden device into your account to read your chats."
+      }
+    ],
+    "rule": "Every new chat is locked. The Bipe server requires it, even if an app asks otherwise.",
+    "tableTitle": "Who sees what",
+    "tableLede": "Each card is someone who might want to read. Each line says what that person or company can see.",
+    "levelLabels": { "yes": "Sees", "partial": "In part", "no": "Doesn't see" },
+    "limitsTitle": "What end to end does not hide",
+    "limits": [
+      "A group's name and photo are open on the server. If the group is called \"Silva Family\", the server knows that name.",
+      "The server knows who is in each chat and when each message arrived. It needs that to deliver, and Bipe does not promise to hide who talks to whom.",
+      "Someone who receives a message can copy it, take a screenshot or forward it. The lock does not change that.",
+      "If you lose all your devices and your recovery key too, old messages are gone. Bipe keeps no copy of your key, so it cannot give them back."
+    ],
+    "faqTitle": "Common questions",
+    "faq": [
+      {
+        "q": "Does Bipe read my messages?",
+        "a": "No. The server stores messages locked, and the Bipe team has no key."
+      },
+      {
+        "q": "What if a court asks for my chats?",
+        "a": "Bipe can only hand over what it has: connection logs, who is in each chat and when, and group names and photos. Bipe cannot open what you wrote, so it cannot hand it over."
+      },
+      {
+        "q": "What if I get a new phone?",
+        "a": "You get back into your account. To see old messages, approve the new phone on an old device or use your recovery key."
+      },
+      {
+        "q": "Does any data leave Brazil?",
+        "a": "The server is in São Paulo. iPhone notifications pass through Apple, with only an ID and without the message text. The full list is on the LGPD page."
+      },
+      {
+        "q": "What kind of lock is it?",
+        "a": "It is Matrix encryption, an open standard anyone can check. Bipe does not change its code."
+      }
+    ],
+    "more": "Each piece of data, what it is for and how long it is kept is on the [LGPD page](/en/lgpd/). The plain-language text is in the [privacy policy](/en/privacy/).",
+    "summaryTitle": "Who can read",
+    "summaryLink": "See who can read what"
+  }
+}

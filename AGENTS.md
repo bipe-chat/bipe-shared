@@ -16,6 +16,7 @@ Source of truth for registries, strings, API contract and test vectors shared by
 - Every feature page shows an in-app mockup (a scene or a sim). A planned feature gets one too, labelled as a simulation with the planned status. Every feature in `product/product.json` has `figures` (scene or sim ids from `../bipe-web/src/sim/scenes.ts`); `node tools/gen-product-doc.mjs` fails with "figures required (a mockup of the app)" otherwise. Add the scene in bipe-web before the feature.
 - `product/parity.json` is the parity ledger (ADR 0092): status per capability on iOS, Android, web and server, with evidence paths. A change that merges a capability on one surface sets its status there, with evidence, in the same change. A gap between the apps names its issue. A behaviour difference between the apps goes in `differences`, then `node tools/parity.mjs --write` regenerates both `BIPE.md` tables. `node tools/parity.mjs` must pass.
 - `product/data.json` is the LGPD record of processing (ADR 0090) and feeds `/lgpd/` on bipe-web. A new table, log or third-party service that holds personal data gets an item in the same change. List only what runs today. `node tools/gen-product-doc.mjs` validates it.
+- `product/privacy.json` is who can read what (ADR 0109) and feeds `/quem-pode-ler/` on bipe-web. When a fact about message data changes (a new party such as Google push, calls confirmed encrypted), change it with `data.json` in the same change. Thing names start in lower case.
 
 ## Decisions
 

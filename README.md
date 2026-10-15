@@ -10,7 +10,7 @@ Single source of truth for Bipe logic that iOS, Android, the API and the website
 | `api/business-schemas.json` | JSON Schema 2020-12 definitions referenced by OpenAPI and used to generate API TypeScript types |
 | `docs/badge-attestation.md` | Signed badge format and verification order |
 | `docs/trust-facts.md` | Independent trust facts, adapter inputs, invalidation and generated platform rules |
-| `test-vectors/` | Cases every platform must pass: badges, normalisation, scam detection, scam warnings, handles (generated), invite codes (hand-written, checked against the reference) |
+| `test-vectors/` | Shared cases: badges, normalisation, scam detection, scam warnings, handles (generated), invite codes and scheduling (hand-written). Scheduling currently runs on the API only. |
 | `fixtures/trust-facts.json` | Hand-authored expected outcomes checked before trust vectors are generated |
 | `product/` | Promise, features with status per platform, the parity ledger (`parity.json`), download links. Feeds bipe-web and `bipe/docs/product.md`. `version.json`: the app version name and the one build number for iOS and Android (ADR 0088) |
 | `tools/` | Generators and checks (Node 24, no npm packages). `tools/lib/registries.mjs` is the reference implementation |
@@ -33,7 +33,7 @@ Before each tester upload, on any platform (ADR 0088): adds 1 to `build` in `pro
 node tools/gen-test-vectors.mjs
 ```
 
-Regenerates `test-vectors/` from the registries and the reference implementation in `tools/lib/registries.mjs`, and checks the hand-written invite-code cases against it. Fails closed.
+Regenerates `test-vectors/` from the registries and the reference implementation in `tools/lib/registries.mjs`, and checks the hand-written invite-code cases against it. Validates the hand-written scheduling oracles and generates `../bipe-api/test/fixtures/scheduling.json` with a source SHA-256. Fails closed. `--out <dir>` redirects the generated shared vectors without writing to the API; `--api-test-vectors <dir>` explicitly selects an API fixture directory.
 
 ```bash
 node tools/check-contract.mjs
@@ -65,8 +65,35 @@ The parity ledger (ADR 0092). `product/parity.json` holds each capability's stat
 | Reference (Node) | `node tools/gen-test-vectors.mjs` | Writes the generated vectors; checks invite codes |
 | iOS | `swift test` in `bipe-ios/Components/BipeKit` | `Tests/BipeKitTests/SharedVectorTests.swift` |
 | Android | `./gradlew :libraries:bipe:testDebugUnitTest` in `bipe-android` | `libraries/bipe/src/test/.../SharedVectorTest.kt` (not run yet: no JDK on the dev Mac) |
+| API scheduling | `pnpm test:scheduling` in `bipe-api` | `test/scheduling.test.mjs`, using the generated fixture snapshot |
 
 Both app suites read the JSON files here directly. `BIPE_SHARED=<path>` points them at another checkout.
+
+## Scheduling vectors
+
+`test-vectors/scheduling.json` is version 1, with a `vectors` array. Each case has a stable `name`, one-line `description`, complete `input`, and `expected`. Expected slot clocks and agenda choices are hand-authored. Never obtain expected availability from the engine under test. The generator validates the oracle structure and time-only public output, then emits the API test snapshot. The drift check compares that snapshot with this source. API CI needs no cross-repository credential.
+
+Input fields:
+
+- `time_zone`, `now`, inclusive `date_from` and `date_to`, `service_id`, and `agenda_id` (an ID or `any`). Dates are business-local dates. Instants are UTC with `Z`.
+- `agendas`: ID, active flag, sort, and weekly `availability` rules. Weekdays follow ISO: Monday 1 to Sunday 7.
+- `services`: ID, active flag, eligible agenda IDs, duration and buffers in whole minutes.
+- `overrides`: agenda, inclusive date range, closed flag and replacement hours, using the contract's shape.
+- `policy`: minimum notice in minutes, horizon in days and slot step in minutes.
+- `bookings`: agenda, UTC start/end, status, optional hold expiry, and saved buffer lengths. These are booking-time buffer snapshots, independent of later service edits.
+- `busy_blocks`: agenda and UTC start/end only.
+
+`expected.slots` has the public `SlotDays` contract shape: time zone and every requested local day, with sorted UTC start/end pairs. Full and closed days have empty lists. No agenda, booking or customer information appears in a public slot. `expected.picks` separately tests the internal hold-time selector: UTC start and expected agenda ID, or `null` when unavailable.
+
+Boundary rules pinned by the vectors:
+
+- Hours and busy intervals are half-open. Exact adjacency is allowed. Touching hours form one continuous opening window. A new appointment and both of its buffers must fit inside that window and avoid existing buffered bookings and imported busy time.
+- The slot grid starts at local midnight. Busy intervals do not shift it. Durations and buffers measure elapsed minutes. Skipped local times produce no slot; repeated local times retain separate UTC instants.
+- Start times equal to `now + min_notice_minutes` or `now + horizon_days * 24 hours` are included. The horizon limits the start, not the end.
+- `held`, `requested` and `confirmed` block. A hold expires when its expiry is at or before `now`. A missing expiry continues to block conservatively. `done`, `cancelled` and `no_show` do not block.
+- `any` merges duplicate times across eligible active agendas. The internal selector prefers the fewest bookings starting that local day, then agenda sort, then ID in stable lexical order. Workload includes completed bookings, excludes cancelled/no-show bookings and expired holds, and counts all services.
+
+The pure engine accepts at most 366 days per calculation; callers can page longer ranges. Hold transactions must recalculate from a fresh snapshot and enforce database exclusion. Availability calculation alone never reserves a slot. The apps do not run this suite until they have a scheduling engine; server routes, storage and app flows remain tracked separately.
 
 ## Rules
 

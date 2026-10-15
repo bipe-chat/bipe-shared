@@ -566,6 +566,47 @@
       "server": "planned"
     },
     {
+      "id": "catalog",
+      "name": "Catálogo",
+      "ios": "planned",
+      "android": "planned",
+      "web": "planned",
+      "server": "planned"
+    },
+    {
+      "id": "orders",
+      "name": "Pedidos (orders)",
+      "ios": "planned",
+      "android": "planned",
+      "web": {
+        "status": "n/a",
+        "reason": "No web chat (ADR 0004); the site shows a demo at most"
+      },
+      "server": "planned"
+    },
+    {
+      "id": "quotes",
+      "name": "Orçamento (quotes)",
+      "ios": "planned",
+      "android": "planned",
+      "web": {
+        "status": "n/a",
+        "reason": "No web chat (ADR 0004); the site shows a demo at most"
+      },
+      "server": "planned"
+    },
+    {
+      "id": "queue",
+      "name": "Fila virtual (walk-in queue)",
+      "ios": "planned",
+      "android": "planned",
+      "web": {
+        "status": "n/a",
+        "reason": "No web chat (ADR 0004); the site shows a demo at most"
+      },
+      "server": "planned"
+    },
+    {
       "id": "pix-check",
       "name": "Conferir no Bipe",
       "ios": {

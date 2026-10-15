@@ -1250,6 +1250,170 @@
       }
     },
     {
+      "id": "catalog",
+      "area": "chat",
+      "status": {
+        "ios": "planned",
+        "android": "planned"
+      },
+      "slug": {
+        "pt": "catalogo",
+        "en": "catalog"
+      },
+      "figures": [
+        "catalogo"
+      ],
+      "pt": {
+        "name": "Catálogo",
+        "body": "Tudo o que a empresa vende, com o preço, numa lista no perfil dela. O cliente vê sem precisar pedir o cardápio.",
+        "points": [
+          "Os dados do catálogo ficam nos servidores do Bipe, no Brasil.",
+          "Serviços e produtos ficam na mesma lista. Os serviços são os mesmos da agenda.",
+          "O preço pode ser fixo, \"a partir de\" ou \"sob consulta\". Foto e descrição são opcionais.",
+          "A empresa monta o catálogo no celular: tira a foto, escreve o nome e o preço. Um toque marca um item como esgotado hoje.",
+          "O catálogo aparece no perfil da empresa, na conversa e no link bipe.chat/@ da empresa.",
+          "Link na descrição de um item não abre. O Bipe não tem busca entre empresas: o catálogo não é um marketplace.",
+          "É gratuito em todos os planos, para qualquer conta de empresa."
+        ]
+      },
+      "en": {
+        "name": "Catalog",
+        "body": "Everything the business sells, with prices, in one list on its profile. Customers see it without asking for the menu.",
+        "points": [
+          "Catalog data stays on Bipe's servers in Brazil.",
+          "Services and products are in the same list. The services are the same as in the agenda.",
+          "A price can be fixed, \"from\" or \"on request\". A photo and a description are optional.",
+          "The business builds the catalog on the phone: take a photo, type the name and the price. One tap marks an item as sold out today.",
+          "The catalog shows on the business profile, in the chat and on the business's bipe.chat/@ link.",
+          "Links in an item description do not open. Bipe has no search across businesses, so the catalog is not a marketplace.",
+          "It is free on every plan, for any company account."
+        ]
+      }
+    },
+    {
+      "id": "orders",
+      "area": "chat",
+      "status": {
+        "ios": "planned",
+        "android": "planned"
+      },
+      "slug": {
+        "pt": "pedidos",
+        "en": "orders"
+      },
+      "figures": [
+        "pedido"
+      ],
+      "pt": {
+        "name": "Pedidos",
+        "body": "O cliente monta o pedido pelo catálogo e manda para a empresa. Depois acompanha tudo num cartão na conversa.",
+        "points": [
+          "Os dados do pedido ficam nos servidores do Bipe, no Brasil.",
+          "O cliente escolhe os produtos, as quantidades, retirada ou entrega, e como vai pagar.",
+          "O endereço e os recados ficam na conversa, protegida de ponta a ponta. O pedido guarda só os itens, os valores e o status.",
+          "Cada mudança chega ao cliente por notificação: aceito, pronto, entregue.",
+          "Empresa com CNPJ verificado pode mandar uma cobrança por Pix com o total. As outras recebem na entrega ou na retirada.",
+          "O Bipe não toca no dinheiro e não cobra taxa sobre o pedido.",
+          "Para pedir, o cliente precisa de uma conta no Bipe."
+        ]
+      },
+      "en": {
+        "name": "Orders",
+        "body": "Customers build an order from the catalog and send it to the business. Then they follow it on a card in the chat.",
+        "points": [
+          "Order data stays on Bipe's servers in Brazil.",
+          "The customer picks the products, the quantities, pickup or delivery, and how to pay.",
+          "The address and notes stay in the chat, which is end-to-end encrypted. The order keeps only the items, the amounts and the status.",
+          "Each change reaches the customer as a notification: accepted, ready, delivered.",
+          "A business with a verified CNPJ can send a Pix charge for the total. Others take payment on delivery or pickup.",
+          "Bipe never touches the money and takes no fee on the order.",
+          "To order, the customer needs a Bipe account."
+        ]
+      }
+    },
+    {
+      "id": "quotes",
+      "area": "chat",
+      "status": {
+        "ios": "planned",
+        "android": "planned"
+      },
+      "slug": {
+        "pt": "orcamento",
+        "en": "quotes"
+      },
+      "figures": [
+        "orcamento"
+      ],
+      "pt": {
+        "name": "Orçamento",
+        "body": "O cliente conta na conversa o que precisa. A empresa responde com um cartão de orçamento, com os itens, o total e a validade.",
+        "points": [
+          "Os dados do orçamento ficam nos servidores do Bipe, no Brasil.",
+          "A descrição e as fotos do cliente ficam só na conversa, protegida de ponta a ponta. O Bipe guarda só que existe um pedido de orçamento.",
+          "A empresa monta o orçamento no celular, com itens do catálogo ou digitados, e uma data de validade.",
+          "O cliente toca em Aceitar ou Recusar. Orçamento vencido não pode ser aceito.",
+          "O orçamento aceito vira um horário na agenda ou um pedido. Empresa com CNPJ verificado pode cobrar um sinal por Pix.",
+          "Se o preço muda, a empresa manda uma versão nova. As versões antigas continuam visíveis para os dois lados.",
+          "É gratuito em todos os planos, para qualquer conta de empresa."
+        ]
+      },
+      "en": {
+        "name": "Quotes",
+        "body": "The customer explains in the chat what they need. The business answers with a quote card that shows the items, the total and how long it is valid.",
+        "points": [
+          "Quote data stays on Bipe's servers in Brazil.",
+          "The customer's description and photos stay in the chat, which is end-to-end encrypted. Bipe records only that a quote request exists.",
+          "The business builds the quote on the phone, with items from the catalog or typed in, and a valid-until date.",
+          "The customer taps Accept or Decline. An expired quote cannot be accepted.",
+          "An accepted quote becomes an agenda booking or an order. A business with a verified CNPJ can charge a deposit by Pix.",
+          "If the price changes, the business sends a new version. Both sides can still read the old versions.",
+          "It is free on every plan, for any company account."
+        ]
+      }
+    },
+    {
+      "id": "queue",
+      "area": "chat",
+      "status": {
+        "ios": "planned",
+        "android": "planned"
+      },
+      "slug": {
+        "pt": "fila-virtual",
+        "en": "queue"
+      },
+      "figures": [
+        "fila-virtual"
+      ],
+      "pt": {
+        "name": "Fila virtual",
+        "body": "O cliente entra na fila pelo QR code da porta e espera onde quiser. O Bipe avisa quando faltam duas pessoas e quando chega a vez.",
+        "points": [
+          "Os dados da fila ficam nos servidores do Bipe, no Brasil. O Bipe apaga cada lugar na fila 30 dias depois.",
+          "O cliente vê a posição, a espera estimada e o botão Sair da fila. A espera aparece como uma faixa de minutos, nunca como uma hora exata.",
+          "O Bipe nunca pede nem usa a localização do cliente.",
+          "A empresa abre e fecha a fila no celular, chama o próximo e põe na fila quem chegou sem o app.",
+          "Quem é chamado e não chega em 10 minutos perde a vez. A empresa pode chamar de novo.",
+          "Para entrar na fila, o cliente precisa de uma conta no Bipe.",
+          "É gratuita em todos os planos, para qualquer conta de empresa."
+        ]
+      },
+      "en": {
+        "name": "Virtual queue",
+        "body": "Customers join the queue from the QR code at the door and wait wherever they like. Bipe tells them when two people are ahead and when it is their turn.",
+        "points": [
+          "Queue data stays on Bipe's servers in Brazil. Bipe deletes each place in the queue after 30 days.",
+          "The customer sees their place, the estimated wait and a Leave the queue button. The wait shows as a range of minutes, never as an exact time.",
+          "Bipe never asks for or uses the customer's location.",
+          "The business opens and closes the queue on the phone, calls the next person and adds people who came without the app.",
+          "A customer who is called and does not arrive within 10 minutes loses their turn. The business can call them again.",
+          "To join the queue, the customer needs a Bipe account.",
+          "It is free on every plan, for any company account."
+        ]
+      }
+    },
+    {
       "id": "pix-check",
       "area": "payments",
       "status": {
@@ -2182,13 +2346,17 @@
           ]
         },
         {
-          "heading": "Uma agenda gratuita, no celular",
+          "heading": "Ferramentas gratuitas, no celular",
           "points": [
             "O cliente escolhe o serviço, a pessoa e o horário, e marca direto no Bipe.",
             "Você monta a agenda no celular: horários, serviços e quem atende. Quem atende não precisa de conta no Bipe.",
             "O horário marcado aparece num cartão na conversa com o cliente.",
             "O Bipe lembra o cliente por notificação, um dia antes e duas horas antes.",
-            "Gratuita em todos os planos, sem comissão. Planejado."
+            "Gratuita em todos os planos, sem comissão. Planejado.",
+            "Um catálogo com os serviços e os produtos, com preço, no perfil da empresa. Planejado.",
+            "O cliente faz o pedido pelo catálogo e acompanha num cartão na conversa. Planejado.",
+            "O orçamento chega num cartão com os itens, o total e a validade, e o cliente aceita com um toque. Planejado.",
+            "Na fila virtual, o cliente entra pelo QR code da porta e espera onde quiser. Planejado."
           ]
         },
         {
@@ -2260,13 +2428,17 @@
           ]
         },
         {
-          "heading": "A free agenda, on your phone",
+          "heading": "Free tools, on your phone",
           "points": [
             "Customers pick a service, a person and a time, and book right in Bipe.",
             "You set up the agenda on your phone: hours, services and who does the work. Staff need no Bipe account.",
             "Each booking shows as a card in the chat with the customer.",
             "Bipe reminds the customer by notification, one day before and two hours before.",
-            "Free on every plan, with no commission. Planned."
+            "Free on every plan, with no commission. Planned.",
+            "A catalog of services and products, with prices, on the business profile. Planned.",
+            "Customers order from the catalog and follow the order on a card in the chat. Planned.",
+            "A quote arrives as a card with the items, the total and a valid-until date, and the customer accepts it with one tap. Planned.",
+            "With the virtual queue, customers join from the QR code at the door and wait wherever they like. Planned."
           ]
         },
         {

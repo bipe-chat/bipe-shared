@@ -340,7 +340,8 @@
         "status": "testing",
         "evidence": [
           "bipe-ios/ElementX/Sources/Screens/BipeInvitesScreen/View/BipeInvitesScreen.swift",
-          "bipe-ios/Components/BipeKit/Sources/BipeKit/BipeInviteLink.swift"
+          "bipe-ios/Components/BipeKit/Sources/BipeKit/BipeInviteLink.swift",
+          "bipe-ios/Components/BipeKit/Sources/BipeKit/BipeInviteCreator.swift"
         ]
       },
       "android": {
@@ -1162,6 +1163,14 @@
       "reason": "On-device recognition on low-end Android unmeasured (#80, #81)",
       "kind": "gap",
       "issue": 80
+    },
+    {
+      "area": "Where invites live",
+      "ios": "Contatos e convites: invite buttons, people who joined with your invite, and unused invites in the contacts screen",
+      "android": "Convidar pessoas in settings",
+      "reason": "Android has no contacts screen yet (#162)",
+      "kind": "gap",
+      "issue": 162
     },
     {
       "area": "Help links",

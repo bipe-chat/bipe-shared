@@ -445,6 +445,8 @@ if (existsSync(resolve(apiOut, "../.."))) {
   copyFileSync(join(root, "tools/lib/registries.mjs"), join(apiOut, "lib/registries.mjs"));
   copyFileSync(join(root, "tools/lib/trust.mjs"), join(apiOut, "lib/trust.mjs"));
   copyFileSync(join(root, "tools/lib/agenda-templates.mjs"), join(apiOut, "lib/agenda-templates.mjs"));
+  // registries.mjs imports it for the settings validation.
+  copyFileSync(join(root, "tools/lib/gen-settings.mjs"), join(apiOut, "lib/gen-settings.mjs"));
   writeFileSync(join(apiOut, "business-api.ts"), generateApiTypes(loadBusinessSchemas(root)));
   console.log(`wrote API registries to ${apiOut}`);
 }

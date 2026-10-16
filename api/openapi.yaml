@@ -760,6 +760,26 @@ paths:
         "400": { $ref: "#/components/responses/Error" }
         "401": { $ref: "#/components/responses/Error" }
         "429": { $ref: "#/components/responses/Error" }
+  /v1/me/export:
+    get:
+      summary: A copy of everything the API stores about the caller (LGPD art. 18, ADR 0112)
+      description: >
+        One JSON file: account state, recovery email and recoveries, handle and its history,
+        public profile (photo as base64 JPEG), messaging and discovery settings, phone link
+        status, personal invites and invite connections, the CNPJ claim, terms acceptances and growth events. It
+        leaves out hashes, sealed secrets and the phone number (never stored). Messages are not
+        on the server. The app asks for a biometric check first. 3 per hour per account.
+      security: [{ matrix: [] }]
+      responses:
+        "200":
+          description: >
+            The export. Header content-disposition names the file
+            bipe-dados-YYYY-MM-DD.json. Apps save the body as it is and do not parse it.
+          content:
+            application/json:
+              schema: { type: object }
+        "401": { $ref: "#/components/responses/Error" }
+        "429": { $ref: "#/components/responses/Error" }
   /v1/me/business:
     get:
       summary: The caller's CNPJ claim (ADR 0042)

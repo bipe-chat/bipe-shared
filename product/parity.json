@@ -989,6 +989,32 @@
       "issue": 196
     },
     {
+      "id": "signup-terms-clickwrap",
+      "name": "Terms checkbox at sign-up, acceptance recorded (ADR 0113)",
+      "ios": {
+        "status": "built",
+        "evidence": [
+          "bipe-ios/ElementX/Sources/Screens/BipeSignupScreen/View/BipeSignupScreen.swift"
+        ]
+      },
+      "android": {
+        "status": "built",
+        "evidence": [
+          "bipe-android/features/login/impl/src/main/kotlin/io/element/android/features/login/impl/screens/bipesignup/BipeSignupView.kt"
+        ]
+      },
+      "web": {
+        "status": "n/a",
+        "reason": "Sign-up is in the apps"
+      },
+      "server": {
+        "status": "built",
+        "evidence": [
+          "bipe-api/src/terms.ts"
+        ]
+      }
+    },
+    {
       "id": "onboarding-no-element-crypto",
       "name": "No Element crypto screens for Bipe users",
       "ios": "planned",

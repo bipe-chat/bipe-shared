@@ -172,6 +172,13 @@ public enum BipeRegistries {
     public static let guardianApprovalsMax = ${reg.accounts.guardianApprovalsMax}
     public static let recoveryLinkMinutes = ${reg.accounts.recoveryLinkMinutes}
     public static let emailVerifyLinkHours = ${reg.accounts.emailVerifyLinkHours}
+
+    /// Terms and privacy accepted at sign-up (ADR 0113; registries/legal.json). Paths are on the public site.
+    public static let legalVersion = ${swiftString(reg.legal.legalVersion)}
+    public static let termsPath = ${swiftString(reg.legal.termsPath)}
+    public static let privacyPath = ${swiftString(reg.legal.privacyPath)}
+    public static let enTermsPath = ${swiftString(reg.legal.enTermsPath)}
+    public static let enPrivacyPath = ${swiftString(reg.legal.enPrivacyPath)}
 }
 `;
 }
@@ -375,6 +382,13 @@ object BipeRegistries {
     const val GUARDIAN_APPROVALS_MAX = ${reg.accounts.guardianApprovalsMax}
     const val RECOVERY_LINK_MINUTES = ${reg.accounts.recoveryLinkMinutes}
     const val EMAIL_VERIFY_LINK_HOURS = ${reg.accounts.emailVerifyLinkHours}
+
+    // Terms and privacy accepted at sign-up (ADR 0113; registries/legal.json). Paths are on the public site.
+    const val LEGAL_VERSION = ${kotlinString(reg.legal.legalVersion)}
+    const val TERMS_PATH = ${kotlinString(reg.legal.termsPath)}
+    const val PRIVACY_PATH = ${kotlinString(reg.legal.privacyPath)}
+    const val EN_TERMS_PATH = ${kotlinString(reg.legal.enTermsPath)}
+    const val EN_PRIVACY_PATH = ${kotlinString(reg.legal.enPrivacyPath)}
 }
 `;
 }

@@ -109,6 +109,23 @@
       }
     },
     {
+      "id": "terms-acceptance",
+      "basis": "contract",
+      "places": ["server"],
+      "pt": {
+        "name": "Aceite dos termos",
+        "what": "Qual versão dos Termos de uso e da Política de privacidade você aceitou, e quando.",
+        "why": "Mostrar que você concordou com os termos ao criar a conta ou depois de uma mudança.",
+        "retention": "Enquanto a conta existir."
+      },
+      "en": {
+        "name": "Terms acceptance",
+        "what": "Which version of the Terms of use and the Privacy policy you accepted, and when.",
+        "why": "To show that you agreed to the terms when you created the account or after a change.",
+        "retention": "As long as the account exists."
+      }
+    },
+    {
       "id": "recovery-token",
       "basis": "contract",
       "places": ["icloud-keychain"],

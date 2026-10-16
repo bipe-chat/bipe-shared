@@ -97,6 +97,10 @@ paths:
         credentials. A second request with the same key returns the same account and credentials,
         and creates nothing. While the first request with a key still runs, a second one gets 429
         rate_limited with reason signup_in_progress; the app retries after a few seconds.
+        Terms (ADR 0113): terms_version must be legalVersion in registries/legal.json. The app sends it only
+        after the person ticked the checkbox. Without it, or with an older version, the server answers 403
+        terms_required (reason missing or outdated) and creates nothing, unless SIGNUP_TERMS_REQUIRED=false.
+        A given terms_version is recorded with the account in the same transaction.
       requestBody:
         required: true
         content:
@@ -151,6 +155,25 @@ paths:
               schema: { $ref: "#/components/schemas/SignupResponse" }
         "400": { $ref: "#/components/responses/Error" }
         "404": { $ref: "#/components/responses/Error" }
+        "429": { $ref: "#/components/responses/Error" }
+  /v1/me/terms:
+    post:
+      summary: Record that the caller accepted the current terms (ADR 0113)
+      description: >
+        For accounts made before ADR 0113 and after a new legalVersion. The app sends it only after the
+        person ticked the checkbox on the re-accept screen. terms_version must be the current legalVersion,
+        else 403 terms_required with reason outdated. A repeat of the same version records nothing new.
+      security: [{ matrix: [] }]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: { $ref: "#/components/schemas/TermsAcceptance" }
+      responses:
+        "204": { description: Recorded }
+        "400": { $ref: "#/components/responses/Error" }
+        "401": { $ref: "#/components/responses/Error" }
+        "403": { $ref: "#/components/responses/Error" }
         "429": { $ref: "#/components/responses/Error" }
   /v1/me/account:
     get:
@@ -3804,11 +3827,13 @@ components:
         display_name: { type: string, maxLength: 100 }
         attestation: { $ref: "#/components/schemas/Attestation" }
         signup_key: { type: string, pattern: "^[A-Za-z0-9_-]{43}$", description: "Device-first only, recommended: 32 random bytes as base64url, made by the app before the first try and kept on this device until the credentials are stored. Same key again: the same account (ADR 0094). Ignored in legacy mode." }
+        terms_version: { type: string, pattern: "^\\d{4}-\\d{2}-\\d{2}$", description: "ADR 0113: the legalVersion the person accepted with the checkbox. Must be the current one." }
     SignupConfig:
       type: object
-      required: [invite_required]
+      required: [invite_required, terms_version]
       properties:
         invite_required: { type: boolean, description: "true: POST /v1/signup without a valid invite_code fails with invite_invalid (SIGNUP_INVITE_REQUIRED)." }
+        terms_version: { type: string, description: "The current legalVersion (ADR 0113). The only value POST /v1/signup and POST /v1/me/terms accept." }
     Attestation:
       type: object
       required: [key_id, attestation_object, challenge]
@@ -4031,13 +4056,19 @@ components:
         email: { type: string, description: "The verified recovery email. Absent when none." }
         email_pending: { type: string, description: "An address waiting for its link. Absent when none." }
         recoveries: { type: array, items: { $ref: "#/components/schemas/Recovery" }, description: "Waiting ones, and ones that ended in the last 7 days. Newest first." }
+        terms_version: { type: string, description: "ADR 0113: the last legalVersion this account accepted. Absent when none (accounts made before ADR 0113). An app shows the re-accept screen when it differs from legalVersion." }
+    TermsAcceptance:
+      type: object
+      required: [terms_version]
+      properties:
+        terms_version: { type: string, pattern: "^\\d{4}-\\d{2}-\\d{2}$", description: "The current legalVersion, sent only after the person accepted it." }
     Error:
       type: object
       required: [error]
       properties:
         error:
           type: string
-          enum: [bad_request, invite_invalid, invite_quota_exhausted, email_taken, handle_invalid, handle_taken, handle_cooldown, password_weak, attestation_invalid, profile_invalid, photo_invalid, unauthorized, not_found, rate_limited, internal, cnpj_invalid, cnpj_not_active, cnpj_taken, signature_invalid, pin_weak, pin_wrong, pin_blocked, pin_not_set, recovery_invalid, email_unavailable]
+          enum: [bad_request, invite_invalid, invite_quota_exhausted, email_taken, handle_invalid, handle_taken, handle_cooldown, password_weak, attestation_invalid, profile_invalid, photo_invalid, unauthorized, not_found, rate_limited, internal, cnpj_invalid, cnpj_not_active, cnpj_taken, signature_invalid, pin_weak, pin_wrong, pin_blocked, pin_not_set, recovery_invalid, email_unavailable, terms_required]
         reason: { type: string, description: "Detail, e.g. a HandleProblem or PinProblem id." }
         tries_left: { type: integer, description: "With pin_wrong: wrong PINs left before the PIN blocks." }
     BadgeEnvelope:

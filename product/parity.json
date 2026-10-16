@@ -1149,6 +1149,84 @@
         "status": "n/a",
         "reason": "Not an app build"
       }
+    },
+    {
+      "id": "settings-structure",
+      "name": "Settings grouped by the user's question (ADR 0112)",
+      "ios": {
+        "status": "built",
+        "evidence": [
+          "bipe-ios/ElementX/Sources/Screens/BipeSettingsGroupScreen/View/BipeSettingsGroupScreen.swift",
+          "bipe-ios/Components/BipeKit/Sources/BipeKit/Generated/BipeSettings.swift"
+        ]
+      },
+      "android": {
+        "status": "built",
+        "evidence": [
+          "bipe-android/features/preferences/impl/src/main/kotlin/io/element/android/features/preferences/impl/bipe/BipeSettingsGroupView.kt",
+          "bipe-android/libraries/bipe/src/main/kotlin/io/element/android/libraries/bipe/generated/BipeSettings.kt"
+        ]
+      },
+      "web": {
+        "status": "n/a",
+        "reason": "No web chat (ADR 0004); the site shows a demo at most"
+      },
+      "server": {
+        "status": "n/a",
+        "reason": "App screens; the order comes from registries/settings.json"
+      }
+    },
+    {
+      "id": "who-can-message",
+      "name": "Who can message me",
+      "ios": {
+        "status": "built",
+        "evidence": [
+          "bipe-ios/ElementX/Sources/Screens/BipeMessagingScreen/View/BipeMessagingScreen.swift"
+        ]
+      },
+      "android": {
+        "status": "built",
+        "evidence": [
+          "bipe-android/libraries/bipe/src/main/kotlin/io/element/android/libraries/bipe/settings/BipeMessagingScreen.kt"
+        ]
+      },
+      "web": {
+        "status": "n/a",
+        "reason": "No web chat (ADR 0004); the site shows a demo at most"
+      },
+      "server": {
+        "status": "built",
+        "evidence": [
+          "bipe-api/src/messaging.ts"
+        ]
+      }
+    },
+    {
+      "id": "data-export",
+      "name": "Download my data (LGPD art. 18)",
+      "ios": {
+        "status": "built",
+        "evidence": [
+          "bipe-ios/Components/BipeKit/Sources/BipeKit/BipeAPIClient.swift"
+        ]
+      },
+      "android": {
+        "status": "built",
+        "evidence": [
+          "bipe-android/libraries/bipe/src/main/kotlin/io/element/android/libraries/bipe/settings/BipeDataExport.kt"
+        ]
+      },
+      "web": {
+        "status": "n/a",
+        "reason": "In the apps only"
+      },
+      "server": {
+        "status": "built",
+        "evidence": [
+          "bipe-api/src/export.ts"
+        ]
+      }
     }
   ],
   "differences": [
@@ -1305,6 +1383,13 @@
       "ios": "Terms screen first, the alert right after Continue",
       "android": "Recovery alert first, then the terms screen",
       "reason": "On iOS a root alert cannot show over the full-screen terms cover; on Android the terms screen is an overlay that waits for the alert",
+      "kind": "idiom"
+    },
+    {
+      "area": "Settings: Idioma",
+      "ios": "Row that opens the iPhone Ajustes",
+      "android": "No row",
+      "reason": "iOS sets the app language in system settings; Android follows the system language",
       "kind": "idiom"
     }
   ]

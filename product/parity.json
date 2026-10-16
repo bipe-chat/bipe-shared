@@ -389,6 +389,35 @@
       }
     },
     {
+      "id": "inviter-prompt",
+      "name": "Prompt to message the inviter after sign-up",
+      "ios": {
+        "status": "built",
+        "evidence": [
+          "bipe-ios/ElementX/Sources/Application/BipeInviterGreeting.swift",
+          "bipe-ios/ElementX/Sources/Screens/HomeScreen/View/BipeInviterRow.swift",
+          "bipe-ios/ElementX/Sources/Screens/RoomScreen/View/BipeInviterHint.swift"
+        ]
+      },
+      "android": {
+        "status": "built",
+        "evidence": [
+          "bipe-android/libraries/bipe/src/main/kotlin/io/element/android/libraries/bipe/invites/BipeInviterGreeting.kt",
+          "bipe-android/libraries/bipe/src/main/kotlin/io/element/android/libraries/bipe/ui/BipeInviterPrompts.kt"
+        ]
+      },
+      "web": {
+        "status": "n/a",
+        "reason": "No web chat (ADR 0004)"
+      },
+      "server": {
+        "status": "built",
+        "evidence": [
+          "bipe-api/src/invites.ts"
+        ]
+      }
+    },
+    {
       "id": "deferred-invite",
       "name": "The invite survives the store install",
       "ios": "planned",

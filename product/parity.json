@@ -801,7 +801,7 @@
       "android": {
         "status": "built",
         "evidence": [
-          "bipe-android/features/lockscreen/impl/src/main/kotlin/io/element/android/features/lockscreen/impl/pin/DefaultBipeAppLock.kt"
+          "bipe-android/features/lockscreen/impl/src/main/kotlin/io/element/android/features/lockscreen/impl/pin/BipeAppLockImpl.kt"
         ]
       },
       "web": {

@@ -1042,6 +1042,24 @@ paths:
                   inviters: { type: array, items: { $ref: "#/components/schemas/InviterStats" } }
         "401": { $ref: "#/components/responses/Error" }
         "404": { $ref: "#/components/responses/Error" }
+  /v1/admin/visits:
+    get:
+      summary: Staff report of site visits in Brazil by state and city
+      description: >
+        Only for users that MAS marks admin (bipe/docs/adr ADR 0056); every other user gets 404 not_found.
+        Reads the Umami database (ADR 0098) for bipe.chat: country BR only. Umami takes the place from the visitor IP and keeps no IP.
+        Without UMAMI_DATABASE_URL the route answers 500 internal. CORS allows PUBLIC_SITE_URL.
+      security: [{ matrix: [] }]
+      parameters:
+        - { name: days, in: query, required: false, schema: { type: integer, minimum: 1, maximum: 400, default: 30 } }
+      responses:
+        "200":
+          description: Visits, most visitors first
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/VisitReport" }
+        "401": { $ref: "#/components/responses/Error" }
+        "404": { $ref: "#/components/responses/Error" }
   /v1/me/business/catalog:
     get:
       summary: "Read the owner catalogue, including inactive items"
@@ -3848,6 +3866,39 @@ components:
         downstream: { type: integer, description: "Everyone below the user in the invite tree, all levels." }
         depth: { type: integer, description: "Levels in the user's invite tree." }
         last_join: { type: [string, "null"], format: date-time }
+    VisitCount:
+      type: object
+      required: [visitors, views]
+      properties:
+        visitors: { type: integer, description: "Umami sessions." }
+        views: { type: integer, description: "Page views." }
+    VisitReport:
+      type: object
+      required: [days, brazil, other_countries, states, cities]
+      properties:
+        days: { type: integer }
+        brazil: { $ref: "#/components/schemas/VisitCount" }
+        other_countries: { $ref: "#/components/schemas/VisitCount" }
+        states:
+          type: array
+          items:
+            allOf:
+              - { $ref: "#/components/schemas/VisitCount" }
+              - type: object
+                required: [state]
+                properties:
+                  state: { type: [string, "null"], description: "UF code (SP, RJ). Null when Umami found no state." }
+        cities:
+          type: array
+          description: The 200 cities with the most visitors.
+          items:
+            allOf:
+              - { $ref: "#/components/schemas/VisitCount" }
+              - type: object
+                required: [state, city]
+                properties:
+                  state: { type: [string, "null"] }
+                  city: { type: string }
     MyInvites:
       type: object
       required: [quota, available, invites]

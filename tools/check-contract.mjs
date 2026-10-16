@@ -72,6 +72,8 @@ const NOT_IN_APPS = {
   WaitlistRequest: "web only",
   PartnerRequest: "web only",
   InviterStats: "staff page on the site only (ADR 0056)",
+  VisitCount: "staff page on the site only (ADR 0098)",
+  VisitReport: "staff page on the site only (ADR 0098)",
   Error: "clients read error and reason into their error type; the enum is checked as Error.error",
   BadgeEnvelope: "verified on device by BadgeVerifier; covered by test-vectors/badges.json",
   PixChallenge: "Pix verification is not built in the apps yet",

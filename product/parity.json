@@ -438,8 +438,20 @@
     {
       "id": "phone-discovery",
       "name": "Find your contacts",
-      "ios": "planned",
-      "android": "planned",
+      "ios": {
+        "status": "built",
+        "evidence": [
+          "bipe-ios/ElementX/Sources/Screens/BipeContactsScreen/View/BipeContactsScreen.swift",
+          "bipe-ios/Components/BipeKit/Sources/BipeKit/BipePhoneNumber.swift"
+        ]
+      },
+      "android": {
+        "status": "built",
+        "evidence": [
+          "bipe-android/libraries/bipe/src/main/kotlin/io/element/android/libraries/bipe/contacts/BipeContactsView.kt",
+          "bipe-android/libraries/bipe/src/main/kotlin/io/element/android/libraries/bipe/BipePhoneNumber.kt"
+        ]
+      },
       "web": {
         "status": "n/a",
         "reason": "No web chat (ADR 0004); the site shows a demo at most"
@@ -450,7 +462,7 @@
           "bipe-api/src/phones.ts"
         ]
       },
-      "note": "iOS has address-book match merged (BipeContactsScreen), Android has nothing; product.json says planned for both",
+      "note": "Address-book match in Contatos e convites on both apps. Phone linking (phone-account) decides who can be found",
       "issue": 162
     },
     {
@@ -1189,14 +1201,6 @@
       "reason": "On-device recognition on low-end Android unmeasured (#80, #81)",
       "kind": "gap",
       "issue": 80
-    },
-    {
-      "area": "Where invites live",
-      "ios": "Contatos e convites: invite buttons, people who joined with your invite, and unused invites in the contacts screen",
-      "android": "Convidar pessoas in settings",
-      "reason": "Android has no contacts screen yet (#162)",
-      "kind": "gap",
-      "issue": 162
     },
     {
       "area": "Help links",

@@ -961,8 +961,8 @@
       "id": "phone-discovery",
       "area": "chat",
       "status": {
-        "ios": "planned",
-        "android": "planned"
+        "ios": "built",
+        "android": "built"
       },
       "slug": {
         "pt": "ache-seus-contatos",

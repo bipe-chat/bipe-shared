@@ -1157,6 +1157,143 @@ paths:
             application/json:
               schema: { $ref: "#/components/schemas/MyProfile" }
         "401": { $ref: "#/components/responses/Error" }
+  /v1/me/support:
+    post:
+      summary: The caller's support room with the Bipe Support account
+      description: >
+        ADR 0114. The API, as the support account (SUPPORT_USER_ID, "Suporte Bipe"), makes one room per user on
+        first use and invites the caller. The room is end-to-end encrypted like every room; the bot has its own device
+        and reads it, and the topic says that the team reads the room. Later calls return the same room and invite the
+        caller again when they left. A DM invite to the support account becomes the support room when the user has none.
+        The app opens the room
+        (and joins it when the caller is only invited). Texts in the room go to the Bipe team's Starlings workspace;
+        images and files stay on the Bipe server. 503 support_unavailable when the support account is not set up.
+      security: [{ matrix: [] }]
+      responses:
+        "200":
+          description: The support room
+          content:
+            application/json:
+              schema:
+                type: object
+                required: [room_id]
+                properties:
+                  room_id: { type: string, description: Matrix room ID }
+        "401": { $ref: "#/components/responses/Error" }
+        "429": { $ref: "#/components/responses/Error" }
+        "503": { $ref: "#/components/responses/Error" }
+  /v1/bug-reports/submit:
+    post:
+      summary: In-app problem report (rageshake form)
+      description: >
+        ADR 0114, bipe#367. The Element "Report a problem" screen posts here (iOS RAGESHAKE_URL, Android BUG_REPORT_URL).
+        Needs a Matrix access token; the user comes from the token, never from a form field. Logs and screenshots
+        stay on the API host in Brazil for 90 days. The API sends text and metadata only to Starlings, with a
+        staff-only link, and the support bot posts a notice into the caller's support room.
+        Max 50 MB body, 20 logs, 10 screenshots, 10 labels. 10 per user per hour, 500 per hour in total.
+      security: [{ matrix: [] }]
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              required: [text]
+              properties:
+                text: { type: string, maxLength: 5000 }
+                user_agent: { type: string, description: 'iOS sends "iOS"; Android sends its user agent' }
+                version: { type: string, description: 'Android sends "Version"' }
+                build: { type: string }
+                os: { type: string }
+                label: { type: array, items: { type: string, maxLength: 40 } }
+                compressed-log: { type: array, items: { type: string, format: binary } }
+                file: { type: array, items: { type: string, format: binary }, description: Screenshots }
+      responses:
+        "200":
+          description: Stored
+          content:
+            application/json:
+              schema:
+                type: object
+                required: [report_id]
+                properties:
+                  report_id: { type: string, format: uuid }
+        "400": { $ref: "#/components/responses/Error" }
+        "401": { $ref: "#/components/responses/Error" }
+        "413": { $ref: "#/components/responses/Error" }
+        "429": { $ref: "#/components/responses/Error" }
+  /v1/support/starlings:
+    post:
+      summary: A Starlings member's reply, sent into the user's support room
+      description: >
+        ADR 0114, envisioning/starlings#1176. No Matrix auth. Headers X-Starlings-Timestamp (Unix ms) and
+        X-Starlings-Signature (hex HMAC-SHA256 with STARLINGS_APP_INTAKE_KEY over "reply." + timestamp + "." + raw body).
+        Refused when the timestamp is more than 5 minutes off. A repeat message_id sends nothing new.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [message_id, reporter_ref, text, author]
+              properties:
+                message_id: { type: string, maxLength: 255 }
+                reporter_ref: { type: string, maxLength: 255, description: Matrix user ID }
+                text: { type: string, maxLength: 10000 }
+                author:
+                  type: object
+                  required: [name]
+                  properties:
+                    name: { type: string, maxLength: 120 }
+      responses:
+        "204": { description: Sent (or already sent) }
+        "400": { $ref: "#/components/responses/Error" }
+        "401": { $ref: "#/components/responses/Error" }
+        "404": { $ref: "#/components/responses/Error" }
+        "503": { $ref: "#/components/responses/Error" }
+  /v1/admin/bug-reports:
+    get:
+      summary: Staff list of problem reports, newest first (no text)
+      description: Only for MAS admins (ADR 0056); everyone else gets 404. At most 200 rows.
+      security: [{ matrix: [] }]
+      responses:
+        "200":
+          description: The reports
+          content:
+            application/json:
+              schema:
+                type: object
+                required: [reports]
+                properties:
+                  reports: { type: array, items: { $ref: "#/components/schemas/BugReportSummary" } }
+        "401": { $ref: "#/components/responses/Error" }
+        "404": { $ref: "#/components/responses/Error" }
+  /v1/admin/bug-reports/{id}:
+    get:
+      summary: Staff view of one problem report
+      description: >
+        Only for MAS admins (ADR 0056); everyone else gets 404. The Starlings intake line links here.
+        /v1/admin/bug-reports/{id}/files/{name} returns one file as an attachment.
+      security: [{ matrix: [] }]
+      parameters:
+        - { name: id, in: path, required: true, schema: { type: string, format: uuid } }
+      responses:
+        "200":
+          description: The report
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: "#/components/schemas/BugReportSummary"
+                  - type: object
+                    required: [user_id, text, files]
+                    properties:
+                      user_id: { type: string }
+                      text: { type: string }
+                      os: { type: string, nullable: true }
+                      files: { type: array, items: { type: string } }
+        "401": { $ref: "#/components/responses/Error" }
+        "404": { $ref: "#/components/responses/Error" }
   /v1/admin/inviters:
     get:
       summary: Staff report of inviters ranked by joins
@@ -3987,6 +4124,19 @@ components:
       scheme: bearer
       description: Matrix access token from MAS. The API checks it with Synapse whoami.
   schemas:
+    BugReportSummary:
+      type: object
+      required: [id, created_at, platform, labels, log_count, screenshot_count, relayed]
+      properties:
+        id: { type: string, format: uuid }
+        created_at: { type: string, format: date-time }
+        platform: { type: string, enum: [ios, android, other] }
+        app_version: { type: string, nullable: true }
+        build: { type: integer, nullable: true }
+        labels: { type: array, items: { type: string } }
+        log_count: { type: integer }
+        screenshot_count: { type: integer }
+        relayed: { type: boolean, description: Starlings took the intake line }
     ExperimentEvent:
       type: object
       required: [experiment, arm, event]
@@ -4600,7 +4750,7 @@ components:
       properties:
         error:
           type: string
-          enum: [bad_request, invite_invalid, invite_quota_exhausted, email_taken, handle_invalid, handle_taken, handle_cooldown, password_weak, attestation_invalid, profile_invalid, photo_invalid, unauthorized, not_found, rate_limited, internal, cnpj_invalid, cnpj_not_active, cnpj_taken, signature_invalid, pin_weak, pin_wrong, pin_blocked, pin_not_set, recovery_invalid, email_unavailable, terms_required]
+          enum: [bad_request, invite_invalid, invite_quota_exhausted, email_taken, handle_invalid, handle_taken, handle_cooldown, password_weak, attestation_invalid, profile_invalid, photo_invalid, unauthorized, not_found, rate_limited, internal, cnpj_invalid, cnpj_not_active, cnpj_taken, signature_invalid, pin_weak, pin_wrong, pin_blocked, pin_not_set, recovery_invalid, email_unavailable, terms_required, support_unavailable]
         reason: { type: string, description: "Detail, e.g. a HandleProblem or PinProblem id." }
         tries_left: { type: integer, description: "With pin_wrong: wrong PINs left before the PIN blocks." }
     BadgeEnvelope:

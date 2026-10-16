@@ -50,11 +50,11 @@
       "access": { "content": "no", "room": "yes", "who-when": "yes", "connection": "yes" },
       "pt": {
         "name": "A equipe do Bipe",
-        "note": "A equipe cuida do servidor, mas não tem a chave das conversas. Ela vê o que o servidor precisa para entregar as mensagens. O registro de conexão fica 6 meses porque o Marco Civil da Internet manda guardar."
+        "note": "A equipe cuida do servidor, mas não tem a chave das conversas. Ela vê o que o servidor precisa para entregar as mensagens. O registro de conexão fica 6 meses porque o Marco Civil da Internet manda guardar. A exceção é a conversa com o Suporte Bipe: a equipe lê o que você escreve lá, numa ferramenta de atendimento."
       },
       "en": {
         "name": "The Bipe team",
-        "note": "The team runs the server but has no key to the chats. It sees what the server needs to deliver messages. Connection logs stay for 6 months because Brazil's Marco Civil da Internet requires it."
+        "note": "The team runs the server but has no key to the chats. It sees what the server needs to deliver messages. Connection logs stay for 6 months because Brazil's Marco Civil da Internet requires it. The exception is the chat with Bipe Support: the team reads what you write there, in a support tool."
       }
     },
     {

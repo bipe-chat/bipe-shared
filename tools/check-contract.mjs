@@ -52,7 +52,7 @@ const ENUMS = {
 // Schemas the apps do not model, with the reason.
 const NOT_IN_APPS = {
   ...Object.fromEntries([
-    "BusinessToolError", "EmptyBusinessRequest", "PixChargeLink",
+    "BusinessToolError", "EmptyBusinessRequest", "PixChargeLink", "BugReportSummary",
     "Queue", "QueueJoin", "QueuePlace", "QueuePlaceStatus", "QueuePolicy", "QueuePosition", "QueueWaitRange", "OwnerQueuePlace",
     "Quote", "QuoteAccept", "QuoteDecline", "QuoteLine", "QuoteLineInput", "QuoteRequest", "QuoteVersion", "QuoteVersionInput",
     "Order", "OrderInput", "OrderLine", "OrderLineInput", "OrderPolicy", "OrderRefusal", "OrderRefuseReason", "OrderStatus", "OwnerOrderInput",

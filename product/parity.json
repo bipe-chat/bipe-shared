@@ -1266,6 +1266,14 @@
           "bipe-api/src/export.ts"
         ]
       }
+    },
+    {
+      "id": "support-dm",
+      "name": "Support DM and problem reports (ADR 0114)",
+      "ios": { "status": "built", "evidence": ["bipe-ios/ElementX/Sources/FlowCoordinators/UserSessionFlowCoordinator.swift", "bipe-ios/Components/Secrets/Secrets.swift"] },
+      "android": { "status": "built", "evidence": ["bipe-android/libraries/bipe/src/main/kotlin/io/element/android/libraries/bipe/support/BipeSupportChat.kt", "bipe-android/plugins/src/main/kotlin/config/BuildTimeConfig.kt"] },
+      "web": { "status": "n/a", "reason": "Mobile only (ADR 0004)" },
+      "server": { "status": "built", "evidence": ["bipe-api/src/support.ts", "bipe-api/src/bug-reports.ts"] }
     }
   ],
   "differences": [

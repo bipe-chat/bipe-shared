@@ -1065,6 +1065,24 @@ paths:
                   inviters: { type: array, items: { $ref: "#/components/schemas/InviterStats" } }
         "401": { $ref: "#/components/responses/Error" }
         "404": { $ref: "#/components/responses/Error" }
+  /v1/admin/growth:
+    get:
+      summary: Staff growth funnel and retention by sign-up week
+      description: >
+        Only for users that MAS marks admin (ADR 0056); every other user gets 404 not_found.
+        Aggregates of the growth events (ADR 0098), never a pseudonymous user ID. A count of 1 or 2 is null,
+        and a sign-up week with fewer than 3 sign-ups shows only its week (bipe#371). CORS allows PUBLIC_SITE_URL.
+      security: [{ matrix: [] }]
+      parameters:
+        - { name: since, in: query, required: false, description: "First sign-up day. Default: 90 days ago.", schema: { type: string, format: date } }
+      responses:
+        "200":
+          description: Funnel, retention and event totals
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/GrowthReport" }
+        "401": { $ref: "#/components/responses/Error" }
+        "404": { $ref: "#/components/responses/Error" }
   /v1/admin/visits:
     get:
       summary: Staff report of site visits in Brazil by state and city
@@ -3891,6 +3909,47 @@ components:
         downstream: { type: integer, description: "Everyone below the user in the invite tree, all levels." }
         depth: { type: integer, description: "Levels in the user's invite tree." }
         last_join: { type: [string, "null"], format: date-time }
+    GrowthReport:
+      type: object
+      required: [since, min_cell, funnel, retention, totals]
+      properties:
+        since: { type: string, format: date }
+        min_cell: { type: integer, description: "Counts below this are null." }
+        funnel:
+          type: array
+          description: Funnel steps in registry order. A user counts at a step only with every earlier step.
+          items:
+            type: object
+            required: [step, users]
+            properties:
+              step: { type: string }
+              users: { type: [integer, "null"] }
+        retention:
+          type: array
+          items:
+            type: object
+            required: [week, signups, days]
+            properties:
+              week: { type: string, format: date, description: "Monday of the sign-up week." }
+              signups: { type: [integer, "null"], description: "Null when the week is below min_cell; days is then empty." }
+              days:
+                type: array
+                items:
+                  type: object
+                  required: [day, kept, due]
+                  properties:
+                    day: { type: integer }
+                    kept: { type: [integer, "null"], description: "Active on day N." }
+                    due: { type: integer, description: "Sign-ups whose day N is over." }
+        totals:
+          type: array
+          items:
+            type: object
+            required: [event, users, count]
+            properties:
+              event: { type: string }
+              users: { type: [integer, "null"] }
+              count: { type: [integer, "null"] }
     VisitCount:
       type: object
       required: [visitors, views]
@@ -3915,7 +3974,7 @@ components:
                   state: { type: [string, "null"], description: "UF code (SP, RJ). Null when Umami found no state." }
         cities:
           type: array
-          description: The 200 cities with the most visitors.
+          description: The 200 rows with the most visitors. Cities with fewer than 3 visitors fold into one row per state with city null (bipe#371).
           items:
             allOf:
               - { $ref: "#/components/schemas/VisitCount" }
@@ -3923,7 +3982,7 @@ components:
                 required: [state, city]
                 properties:
                   state: { type: [string, "null"] }
-                  city: { type: string }
+                  city: { type: [string, "null"], description: "Null: the other cities of the state together." }
     MyInvites:
       type: object
       required: [quota, available, invites]

@@ -1015,6 +1015,33 @@
       }
     },
     {
+      "id": "terms-reaccept",
+      "name": "Re-accept screen for old accounts and new terms versions (ADR 0113)",
+      "ios": {
+        "status": "built",
+        "evidence": [
+          "bipe-ios/ElementX/Sources/Screens/BipeTermsReacceptScreen/View/BipeTermsReacceptScreen.swift"
+        ]
+      },
+      "android": {
+        "status": "built",
+        "evidence": [
+          "bipe-android/libraries/bipe/src/main/kotlin/io/element/android/libraries/bipe/terms/BipeTermsReacceptView.kt"
+        ]
+      },
+      "web": {
+        "status": "n/a",
+        "reason": "Accounts are used in the apps"
+      },
+      "server": {
+        "status": "built",
+        "evidence": [
+          "bipe-api/src/terms.ts"
+        ]
+      },
+      "issue": 366
+    },
+    {
       "id": "onboarding-no-element-crypto",
       "name": "No Element crypto screens for Bipe users",
       "ios": "planned",
@@ -1271,6 +1298,13 @@
       "ios": "Native context menu on long press: reaction row, actions, the message as preview",
       "android": "Element's bottom sheet",
       "reason": "Platform idiom",
+      "kind": "idiom"
+    },
+    {
+      "area": "Terms screen and a recovery alert due together",
+      "ios": "Terms screen first, the alert right after Continue",
+      "android": "Recovery alert first, then the terms screen",
+      "reason": "On iOS a root alert cannot show over the full-screen terms cover; on Android the terms screen is an overlay that waits for the alert",
       "kind": "idiom"
     }
   ]

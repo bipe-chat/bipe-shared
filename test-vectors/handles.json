@@ -103,18 +103,100 @@
     },
     {
       "input": "bipe",
-      "problem": "reserved",
+      "problem": null,
       "skeleton": "bipe"
     },
     {
       "input": "b1pe",
-      "problem": "reserved",
+      "problem": null,
       "skeleton": "bipe"
     },
     {
       "input": "suporte.bipe",
       "problem": "reserved",
       "skeleton": "suportebipe"
+    },
+    {
+      "input": "suporte",
+      "problem": null,
+      "skeleton": "suporte"
+    },
+    {
+      "input": "suporte",
+      "claimant": "@suporte:bipe.net.br",
+      "problem": null,
+      "skeleton": "suporte"
+    },
+    {
+      "input": "suporte",
+      "claimant": "@ana:bipe.net.br",
+      "problem": "reserved",
+      "skeleton": "suporte"
+    },
+    {
+      "input": "suporte",
+      "claimant": "",
+      "problem": "reserved",
+      "skeleton": "suporte"
+    },
+    {
+      "input": "s.uporte",
+      "claimant": "@suporte:bipe.net.br",
+      "problem": null,
+      "skeleton": "suporte"
+    },
+    {
+      "input": "s.uporte",
+      "claimant": "@ana:bipe.net.br",
+      "problem": "reserved",
+      "skeleton": "suporte"
+    },
+    {
+      "input": "bipe",
+      "problem": null,
+      "skeleton": "bipe"
+    },
+    {
+      "input": "bipe",
+      "claimant": "@bipe:bipe.net.br",
+      "problem": null,
+      "skeleton": "bipe"
+    },
+    {
+      "input": "bipe",
+      "claimant": "@ana:bipe.net.br",
+      "problem": "reserved",
+      "skeleton": "bipe"
+    },
+    {
+      "input": "bipe",
+      "claimant": "",
+      "problem": "reserved",
+      "skeleton": "bipe"
+    },
+    {
+      "input": "b.ipe",
+      "claimant": "@bipe:bipe.net.br",
+      "problem": null,
+      "skeleton": "bipe"
+    },
+    {
+      "input": "b.ipe",
+      "claimant": "@ana:bipe.net.br",
+      "problem": "reserved",
+      "skeleton": "bipe"
+    },
+    {
+      "input": "novidades_bipe",
+      "claimant": "@ana:bipe.net.br",
+      "problem": "reserved",
+      "skeleton": "novidadesbipe"
+    },
+    {
+      "input": "novidades_do_bipe",
+      "claimant": "@ana:bipe.net.br",
+      "problem": "reserved",
+      "skeleton": "novidadesdobipe"
     },
     {
       "input": "mz",

@@ -404,8 +404,8 @@
         "status": "built",
         "evidence": [
           "bipe-android/libraries/bipe/src/main/kotlin/io/element/android/libraries/bipe/invites/BipeInviterGreeting.kt",
-          "bipe-android/libraries/bipe/src/main/kotlin/io/element/android/libraries/bipe/ui/BipeInviterRow.kt",
-          "bipe-android/libraries/bipe/src/main/kotlin/io/element/android/libraries/bipe/ui/BipeInviterHint.kt"
+          "bipe-android/libraries/bipe/src/main/kotlin/io/element/android/libraries/bipe/ui/BipeInviterHint.kt",
+          "bipe-android/libraries/bipe/src/main/kotlin/io/element/android/libraries/bipe/ui/BipeInviterRow.kt"
         ]
       },
       "web": {
@@ -1186,8 +1186,10 @@
         ]
       },
       "android": {
-        "status": "planned",
-        "note": "On bipe-android PR #13 (factory/358-settings-ia), not merged to main yet. Set back to built with evidence when it merges."
+        "status": "built",
+        "evidence": [
+          "bipe-android/libraries/bipe/src/main/kotlin/io/element/android/libraries/bipe/settings/BipeMessagingView.kt"
+        ]
       },
       "web": {
         "status": "n/a",
@@ -1211,8 +1213,10 @@
         ]
       },
       "android": {
-        "status": "planned",
-        "note": "On bipe-android PR #13 (factory/358-settings-ia), not merged to main yet. Set back to built with evidence when it merges."
+        "status": "built",
+        "evidence": [
+          "bipe-android/libraries/bipe/src/main/kotlin/io/element/android/libraries/bipe/settings/BipeDataExportRow.kt"
+        ]
       },
       "web": {
         "status": "n/a",

@@ -4564,6 +4564,7 @@ components:
         email_pending: { type: string, description: "An address waiting for its link. Absent when none." }
         recoveries: { type: array, items: { $ref: "#/components/schemas/Recovery" }, description: "Waiting ones, and ones that ended in the last 7 days. Newest first." }
         terms_version: { type: string, description: "ADR 0113: the last legalVersion this account accepted. Absent when none (accounts made before ADR 0113). An app shows the re-accept screen when it differs from legalVersion." }
+        max_accounts: { type: integer, minimum: 1, description: "ADR 0086: personal accounts one phone may hold. Company accounts do not count. Absent from an older server: the app uses maxPersonalAccounts in registries/accounts.json." }
     TermsAcceptance:
       type: object
       required: [terms_version]

@@ -588,20 +588,35 @@ paths:
         "202": { description: Accepted }
         "400": { $ref: "#/components/responses/Error" }
         "429": { $ref: "#/components/responses/Error" }
-  /v1/partners:
+  /v1/organisations:
     post:
-      summary: Ask to partner with Bipe (organisations)
+      summary: An organisation asks to use Bipe or to partner (organisation form)
       description: >
-        No auth. Called from the partner page on the public site (CORS allows https://bipe.chat).
+        No auth. Called from the organisation form on the public site (CORS allows https://bipe.chat).
         Rate-limited per IP and globally. Always answers 202 for a well-formed request, the
-        honeypot included. The API stores the request and emails a notice to the partner inbox
-        (BIPE_PARTNERS_TO) when outgoing email is on. Requests are deleted after 365 days or on
-        request. ADR 0067, issue bipe#177.
+        honeypot included. The API stores the request on the server in Brazil and sends no email.
+        Requests are deleted after 365 days or on request. ADR 0126, issue bipe#410.
       requestBody:
         required: true
         content:
           application/json:
-            schema: { $ref: "#/components/schemas/PartnerRequest" }
+            schema: { $ref: "#/components/schemas/OrganisationRequest" }
+      responses:
+        "202": { description: Accepted }
+        "400": { $ref: "#/components/responses/Error" }
+        "429": { $ref: "#/components/responses/Error" }
+  /v1/partners:
+    post:
+      deprecated: true
+      summary: Old name of POST /v1/organisations
+      description: >
+        The same route as POST /v1/organisations, with the same body, limits and answers. It stays
+        until the form moves to Starlings (bipe#273). ADR 0126.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: { $ref: "#/components/schemas/OrganisationRequest" }
       responses:
         "202": { description: Accepted }
         "400": { $ref: "#/components/responses/Error" }
@@ -4031,15 +4046,21 @@ components:
         lang: { type: string, enum: [pt, en], default: pt, description: "Language of the one email Bipe sends." }
         source: { type: string, maxLength: 64, pattern: "^[a-z0-9:/_.-]*$", description: "Where the form was: the page path, plus ':' and the headline arm when a test runs (issue #77), for example /baixar/ or /:h2." }
         website: { type: string, maxLength: 200, description: "Honeypot. People leave it empty; a non-empty value is accepted and dropped." }
-    PartnerRequest:
+    OrganisationRequest:
       type: object
       required: [organisation, name, email, kind]
       properties:
         organisation: { type: string, minLength: 1, maxLength: 200 }
         name: { type: string, minLength: 1, maxLength: 120, description: "The contact person." }
         email: { type: string, format: email, maxLength: 254 }
-        kind: { type: string, enum: [funder, tech, bank, research, civil, public, other], description: "Kind of organisation, as listed on the partner page." }
-        message: { type: string, maxLength: 2000, description: "How the organisation wants to help. Optional." }
+        role: { type: string, maxLength: 120, description: "The contact person's role. Optional." }
+        cnpj: { type: string, maxLength: 32, description: "Optional. Any input normalizeCnpj accepts (test-vectors/cnpj.json); a value that does not normalise is a 400. Stored as 14 characters." }
+        kind: { type: string, enum: [company, institution, association, public_body, partner, other], description: "Kind of organisation. partner: an organisation that wants to help carry Bipe (ADR 0067)." }
+        customers_band: { type: string, enum: [lt_100, 100_1k, 1k_10k, 10k_100k, gt_100k], description: "How many customers the organisation talks to per month. Optional." }
+        channels: { type: array, maxItems: 7, uniqueItems: true, items: { type: string, enum: [whatsapp_app, whatsapp_api, sms, email, phone, own_app, other] }, description: "Where the organisation talks to its customers today. Optional." }
+        spend_band: { type: string, enum: [zero, lt_500, 500_2k, 2k_10k, 10k_50k, gt_50k, unknown], description: "What the organisation pays per month today, in R$, to talk to customers on those channels. Optional." }
+        spend_note: { type: string, maxLength: 500, description: "Which platform and what it charges for. Optional." }
+        message: { type: string, maxLength: 2000, description: "Optional." }
         lang: { type: string, enum: [pt, en], default: pt }
         website: { type: string, maxLength: 200, description: "Honeypot. People leave it empty; a non-empty value is accepted and dropped." }
     SignupRequest:

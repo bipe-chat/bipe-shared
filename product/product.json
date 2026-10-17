@@ -2314,7 +2314,9 @@
     "/comparar/signal/": "/compare/signal/",
     "/comparar/telegram/": "/compare/telegram/",
     "/para/igrejas/": "/para/grupos-e-comunidades/",
-    "/en/for/churches/": "/en/for/groups-and-communities/"
+    "/en/for/churches/": "/en/for/groups-and-communities/",
+    "/parceiros/": "/organizacoes/",
+    "/en/partners/": "/en/organisations/"
   },
   "origin": {
     "pt": {
@@ -2686,152 +2688,170 @@
       }
     }
   },
-  "partners": {
-    "$comment": "The /parceiros/ page: organisations that want to help carry Bipe. ADR 0067 (steward, not owner) and ADR 0071 (the Pix analogy is allowed here, not elsewhere). Name no prospective partner, funder or institution until there is a signed agreement. Promise no seats, governance or equity. Issue bipe#177.",
+  "organisations": {
+    "$comment": "The /organizacoes/ page (/en/organisations/): organisations that want to talk to their customers on Bipe, and partners who want to help carry it. ADR 0126; the stewardship paragraph follows ADR 0067. The form posts to POST /v1/organisations (bipe#410). No Pix analogy here (ADR 0071). Name no prospective partner, funder or institution until there is a signed agreement.",
     "pt": {
-      "nav": "Parceiros",
-      "label": "Ideia em construção",
-      "title": "Um app de mensagens que o Brasil sustenta junto.",
-      "lede": "O Bipe é um experimento. A ideia é que ele vire uma infraestrutura comum, um Pix das conversas: todo mundo usa, várias organizações sustentam, nenhuma empresa é dona. Hoje a Envisioning faz o app e roda os servidores. Para chegar lá, o Bipe precisa de mais organizações. Por isso a gente procura parceiros.",
-      "sections": [
-        {
-          "heading": "Por que ser parceiro",
-          "points": [
-            "Os dados e os servidores ficam no Brasil, sob a lei brasileira.",
-            "Golpe por mensagem custa caro para todo mundo: para quem perde o dinheiro, para o banco que atende, para a loja que tem o nome usado. Um app feito contra golpe sai mais barato junto do que sozinho.",
-            "Ninguém é dono. Nenhum parceiro, nem a Envisioning, muda as regras sozinho.",
-            "O código e o protocolo são abertos. O que você ajuda a construir fica público e não fica preso a ninguém.",
-            "Os custos e os riscos são divididos. Jurídico, moderação e servidores não ficam nas costas de uma organização só."
-          ]
-        },
-        {
-          "heading": "Quem a gente procura",
-          "points": [
-            "Quem financia infraestrutura de interesse público.",
-            "Empresas de tecnologia e de telecomunicações.",
-            "Bancos e fintechs que sofrem com o golpe do falso atendente.",
-            "Universidades e grupos de pesquisa.",
-            "Organizações da sociedade civil."
-          ]
-        },
-        {
-          "heading": "Como dá para ajudar",
-          "points": [
-            "Dinheiro para manter o serviço no ar.",
-            "Servidores e hospedagem no Brasil.",
-            "Gente para cuidar da parte jurídica e da moderação.",
-            "Pesquisa sobre golpes, segurança e como as pessoas usam o app.",
-            "Levar o Bipe para quem mais precisa dele."
-          ]
-        },
-        {
-          "heading": "O que ainda está em aberto",
-          "points": [
-            "A forma da instituição. Uma associação é uma das opções.",
-            "Quem decide o quê, e como os custos se dividem.",
-            "Nada disso está acordado. A ideia é desenhar junto com os primeiros parceiros."
-          ]
-        }
-      ],
-      "cta": "Sua organização quer construir o Bipe junto? Fale com a gente.",
-      "ctaSubject": "Bipe: parceria",
-      "aboutLink": "Sua organização quer ajudar a sustentar o Bipe? Veja como ser parceira.",
+      "nav": "Para organizações",
+      "label": "Para organizações",
+      "title": "Fale com seus clientes no Bipe, com os dados no Brasil.",
+      "lede": "Os dados e os servidores do Bipe ficam no Brasil, sob a lei brasileira. Empresas, instituições, associações e órgãos públicos falam com o cliente com o nome verificado pelo CNPJ. O Bipe para organizações ainda está em estudo. Conte para a gente como vocês falam com os clientes hoje e quanto isso custa.",
+      "why": {
+        "heading": "Por que o Bipe",
+        "points": [
+          "Os dados e os servidores ficam no Brasil.",
+          "O cliente vê o selo e o CNPJ da sua organização em toda conversa.",
+          "Quem copia seu nome e sua foto não ganha o selo.",
+          "No Bipe não tem preço por mensagem.",
+          "O código é aberto. Qualquer pessoa pode conferir o que o app faz."
+        ]
+      },
+      "figureCaption": "Simulação: uma clínica com CNPJ verificado confirma uma consulta, e o cliente responde na mesma conversa.",
+      "ask": {
+        "heading": "Por que a gente pergunta quanto vocês pagam",
+        "body": "O formulário pergunta com quantos clientes vocês falam por mês, por quais canais e quanto isso custa hoje. Com essas respostas, a gente acerta o preço do Bipe para organizações. Só a equipe do Bipe vê o que você responde."
+      },
+      "steward": {
+        "heading": "Quem faz o Bipe",
+        "body": "O Bipe é um experimento. Por enquanto, a Envisioning faz o app e roda os servidores no Brasil. A ideia é que nenhuma empresa seja dona do Bipe. Se sua organização quer ajudar a sustentar o Bipe, use o mesmo formulário e escolha \"Parceria\" no tipo de organização."
+      },
+      "cta": "Conte como vocês falam com os clientes hoje.",
+      "aboutLink": "Sua organização quer falar com clientes no Bipe ou ajudar a sustentar o Bipe? Fale com a gente.",
       "card": {
-        "title": "Um app de mensagens que o Brasil sustenta junto.",
-        "line": "Para organizações que querem ser parceiras do Bipe."
+        "title": "Fale com seus clientes no Bipe.",
+        "line": "Os dados ficam no Brasil. Para empresas, instituições e órgãos públicos."
       },
       "form": {
         "organisation": "Organização",
         "name": "Seu nome",
         "email": "E-mail",
+        "role": "Seu cargo (opcional)",
+        "cnpj": "CNPJ (opcional)",
+        "cnpjInvalid": "Esse CNPJ não confere. Confira os números.",
         "kind": "Tipo de organização",
         "kinds": {
-          "funder": "Financiador ou fundação",
-          "tech": "Tecnologia ou telecomunicações",
-          "bank": "Banco ou fintech",
-          "research": "Universidade ou pesquisa",
-          "civil": "Sociedade civil",
-          "public": "Órgão público",
+          "company": "Empresa",
+          "institution": "Instituição: escola, clínica, universidade",
+          "association": "Associação, cooperativa ou ONG",
+          "public_body": "Órgão público",
+          "partner": "Parceria: quero ajudar a sustentar o Bipe",
           "other": "Outro"
         },
-        "message": "Como vocês querem ajudar? (opcional)",
+        "customers": "Com quantos clientes vocês falam por mês?",
+        "customersBands": {
+          "lt_100": "Menos de 100",
+          "100_1k": "De 100 a 1 mil",
+          "1k_10k": "De 1 mil a 10 mil",
+          "10k_100k": "De 10 mil a 100 mil",
+          "gt_100k": "Mais de 100 mil"
+        },
+        "channels": "Por onde vocês falam com eles hoje?",
+        "channelOptions": {
+          "whatsapp_app": "WhatsApp (o app)",
+          "whatsapp_api": "WhatsApp Business API",
+          "sms": "SMS",
+          "email": "E-mail",
+          "phone": "Telefone",
+          "own_app": "App próprio",
+          "other": "Outro"
+        },
+        "spend": "Quanto vocês pagam por mês, hoje, para falar com os clientes nesses canais?",
+        "spendBands": {
+          "zero": "Nada",
+          "lt_500": "Até R$ 500",
+          "500_2k": "De R$ 500 a R$ 2 mil",
+          "2k_10k": "De R$ 2 mil a R$ 10 mil",
+          "10k_50k": "De R$ 10 mil a R$ 50 mil",
+          "gt_50k": "Mais de R$ 50 mil",
+          "unknown": "Não sei"
+        },
+        "spendNote": "Qual plataforma vocês usam e o que ela cobra? (opcional)",
+        "message": "Quer contar mais alguma coisa? (opcional)",
         "submit": "Enviar",
         "done": "Recebemos. A gente responde por e-mail.",
         "error": "Não deu para enviar. Tente de novo daqui a pouco.",
-        "note": "Usamos esses dados só para responder. Eles são apagados depois de um ano."
+        "note": "Usamos esses dados só para responder e para entender quanto as organizações pagam hoje. Eles ficam no Brasil e são apagados depois de um ano."
       }
     },
     "en": {
-      "nav": "Partners",
-      "label": "Idea in progress",
-      "title": "A messenger Brazil carries together.",
-      "lede": "Bipe is an experiment. The idea is that it becomes common infrastructure, a Pix for conversations: everyone uses it, several organisations carry it, no company owns it. Today Envisioning makes the app and runs the servers. To get there, Bipe needs more organisations. That is why we are looking for partners.",
-      "sections": [
-        {
-          "heading": "Why partner",
-          "points": [
-            "Data and servers stay in Brazil, under Brazilian law.",
-            "Scams by message cost everyone: the person who loses the money, the bank that handles the case, the shop whose name is used. A messenger built against scams costs less together than alone.",
-            "Nobody owns it. No partner, not even Envisioning, changes the rules alone.",
-            "The code and the protocol are open. What you help build stays public and is not locked to anyone.",
-            "Costs and risks are shared. Legal work, moderation and servers do not rest on one organisation."
-          ]
-        },
-        {
-          "heading": "Who we are looking for",
-          "points": [
-            "Funders of public-interest infrastructure.",
-            "Technology and telecom companies.",
-            "Banks and fintechs hit by the fake-support scam.",
-            "Universities and research groups.",
-            "Civil-society organisations."
-          ]
-        },
-        {
-          "heading": "How you can help",
-          "points": [
-            "Money to keep the service running.",
-            "Servers and hosting in Brazil.",
-            "People for legal work and moderation.",
-            "Research on scams, security and how people use the app.",
-            "Bringing Bipe to the people who need it most."
-          ]
-        },
-        {
-          "heading": "What is still open",
-          "points": [
-            "The form of the institution. An association is one option.",
-            "Who decides what, and how costs are split.",
-            "None of this is agreed. The idea is to design it with the first partners."
-          ]
-        }
-      ],
-      "cta": "Does your organisation want to build Bipe with us? Write to us.",
-      "ctaSubject": "Bipe: partnership",
-      "aboutLink": "Does your organisation want to help carry Bipe? See how to partner.",
+      "nav": "For organisations",
+      "label": "For organisations",
+      "title": "Talk to your customers on Bipe, with the data in Brazil.",
+      "lede": "Bipe's data and servers stay in Brazil, under Brazilian law. Companies, institutions, associations and public bodies talk to their customers under a name verified by CNPJ. Bipe for organisations is still being studied. Tell us how you talk to your customers today and what it costs.",
+      "why": {
+        "heading": "Why Bipe",
+        "points": [
+          "Data and servers stay in Brazil.",
+          "Your customers see your organisation's seal and CNPJ in every chat.",
+          "Someone who copies your name and photo does not get the seal.",
+          "Bipe has no price per message.",
+          "The code is open. Anyone can check what the app does."
+        ]
+      },
+      "figureCaption": "Simulation: a clinic with a verified CNPJ confirms an appointment, and the customer answers in the same chat.",
+      "ask": {
+        "heading": "Why we ask what you pay",
+        "body": "The form asks how many customers you talk to each month, on which channels, and what that costs today. Your answers help us set the price of Bipe for organisations. Only the Bipe team sees what you answer."
+      },
+      "steward": {
+        "heading": "Who makes Bipe",
+        "body": "Bipe is an experiment. For now, Envisioning makes the app and runs the servers in Brazil. The idea is that no company owns Bipe. If your organisation wants to help carry Bipe, use the same form and pick \"Partnership\" as the kind of organisation."
+      },
+      "cta": "Tell us how you talk to your customers today.",
+      "aboutLink": "Does your organisation want to talk to customers on Bipe, or help carry Bipe? Write to us.",
       "card": {
-        "title": "A messenger Brazil carries together.",
-        "line": "For organisations that want to partner with Bipe."
+        "title": "Talk to your customers on Bipe.",
+        "line": "The data stays in Brazil. For companies, institutions and public bodies."
       },
       "form": {
         "organisation": "Organisation",
         "name": "Your name",
         "email": "Email",
+        "role": "Your role (optional)",
+        "cnpj": "CNPJ (optional)",
+        "cnpjInvalid": "This CNPJ does not check out. Look at the numbers again.",
         "kind": "Kind of organisation",
         "kinds": {
-          "funder": "Funder or foundation",
-          "tech": "Technology or telecom",
-          "bank": "Bank or fintech",
-          "research": "University or research",
-          "civil": "Civil society",
-          "public": "Public body",
+          "company": "Company",
+          "institution": "Institution: school, clinic, university",
+          "association": "Association, cooperative or NGO",
+          "public_body": "Public body",
+          "partner": "Partnership: I want to help carry Bipe",
           "other": "Other"
         },
-        "message": "How would you like to help? (optional)",
+        "customers": "How many customers do you talk to each month?",
+        "customersBands": {
+          "lt_100": "Fewer than 100",
+          "100_1k": "100 to 1,000",
+          "1k_10k": "1,000 to 10,000",
+          "10k_100k": "10,000 to 100,000",
+          "gt_100k": "More than 100,000"
+        },
+        "channels": "Where do you talk to them today?",
+        "channelOptions": {
+          "whatsapp_app": "WhatsApp (the app)",
+          "whatsapp_api": "WhatsApp Business API",
+          "sms": "SMS",
+          "email": "Email",
+          "phone": "Phone",
+          "own_app": "Your own app",
+          "other": "Other"
+        },
+        "spend": "What do you pay each month, today, to talk to customers on those channels?",
+        "spendBands": {
+          "zero": "Nothing",
+          "lt_500": "Up to R$ 500",
+          "500_2k": "R$ 500 to R$ 2,000",
+          "2k_10k": "R$ 2,000 to R$ 10,000",
+          "10k_50k": "R$ 10,000 to R$ 50,000",
+          "gt_50k": "More than R$ 50,000",
+          "unknown": "I don't know"
+        },
+        "spendNote": "Which platform do you use, and what does it charge for? (optional)",
+        "message": "Anything else you want to tell us? (optional)",
         "submit": "Send",
         "done": "Got it. We will answer by email.",
         "error": "Could not send. Try again in a moment.",
-        "note": "We use this only to answer you. It is deleted after one year."
+        "note": "We use this only to answer you and to learn what organisations pay today. It stays in Brazil and is deleted after one year."
       }
     }
   },

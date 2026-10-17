@@ -30,40 +30,25 @@ jobs:
       - uses: actions/checkout@v4
         with:
           path: bipe-shared
-      - uses: actions/checkout@v4
-        with:
-          repository: bipe-chat/bipe
-          token: ${{ secrets.BIPE_REPOS_TOKEN }}
-          path: bipe
-      - uses: actions/checkout@v4
-        with:
-          repository: bipe-chat/bipe-ios
-          token: ${{ secrets.BIPE_REPOS_TOKEN }}
-          path: bipe-ios
-          lfs: false
-          submodules: false
-      - uses: actions/checkout@v4
-        with:
-          repository: bipe-chat/bipe-android
-          token: ${{ secrets.BIPE_REPOS_TOKEN }}
-          path: bipe-android
-          lfs: false
-          submodules: false
-      - uses: actions/checkout@v4
-        with:
-          repository: bipe-chat/bipe-api
-          token: ${{ secrets.BIPE_REPOS_TOKEN }}
-          path: bipe-api
-      - uses: actions/checkout@v4
-        with:
-          repository: bipe-chat/bipe-web
-          token: ${{ secrets.BIPE_REPOS_TOKEN }}
-          path: bipe-web
-      - uses: actions/checkout@v4
-        with:
-          repository: bipe-chat/bipe-infra
-          token: ${{ secrets.BIPE_REPOS_TOKEN }}
-          path: bipe-infra
+      # A cross-repo change regenerates files in the sibling repos on a branch of the same name.
+      # On a pull request, check out that branch in each sibling where it exists, else the default
+      # branch. Without this, lockstep fails on every cross-repo PR until the siblings merge first.
+      - name: Check out the sibling repos
+        env:
+          TOKEN: ${{ secrets.BIPE_REPOS_TOKEN }}
+          BRANCH: ${{ github.head_ref }}
+          GIT_LFS_SKIP_SMUDGE: "1"
+        run: |
+          for repo in bipe bipe-ios bipe-android bipe-api bipe-web bipe-infra; do
+            url="https://x-access-token:${TOKEN}@github.com/bipe-chat/${repo}.git"
+            if [ -n "$BRANCH" ] && git ls-remote --exit-code --heads "$url" "$BRANCH" > /dev/null; then
+              echo "${repo}: ${BRANCH}"
+              git clone -q --depth 1 --branch "$BRANCH" "$url" "$repo"
+            else
+              echo "${repo}: default branch"
+              git clone -q --depth 1 "$url" "$repo"
+            fi
+          done
       - uses: actions/setup-node@v4
         with:
           node-version: 24

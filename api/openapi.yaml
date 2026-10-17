@@ -238,6 +238,68 @@ paths:
         "403": { $ref: "#/components/responses/Error" }
         "409": { $ref: "#/components/responses/Error" }
         "429": { $ref: "#/components/responses/Error" }
+  /v1/web-link/finish:
+    post:
+      summary: End the MAS browser sessions that a web sign-in approval made (ADR 0118)
+      description: >
+        The phone calls this after it approves a web sign-in in its private web view. The server
+        finishes, through the MAS admin API, every active MAS browser session of the caller that
+        started at or after `since` minus 60 seconds. Older sessions stay, so staff browser sessions
+        are not touched. 400 bad_request when `since` is more than 15 minutes in the past or in
+        the future.
+      security: [{ matrix: [] }]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [since]
+              properties:
+                since: { type: string, format: date-time, description: When the phone started the flow }
+      responses:
+        "200":
+          description: Done
+          content:
+            application/json:
+              schema:
+                type: object
+                required: [finished]
+                properties:
+                  finished: { type: integer, minimum: 0, description: Number of sessions finished }
+        "400": { $ref: "#/components/responses/Error" }
+        "401": { $ref: "#/components/responses/Error" }
+        "429": { $ref: "#/components/responses/Error" }
+  /v1/web-link/place:
+    get:
+      summary: Approximate place of a browser IP, for the web sign-in approval screen (ADR 0118)
+      description: >
+        Looks the IP up in a GeoIP city database on the Bipe server (IP Geolocation by DB-IP,
+        CC BY 4.0). The IP goes to no outside service and is not logged or stored. Every field is
+        optional; `{}` when the place is unknown or the database is not loaded. The app shows
+        "IP Geolocation by DB-IP" next to the place.
+      security: [{ matrix: [] }]
+      parameters:
+        - name: ip
+          in: query
+          required: true
+          schema: { type: string, maxLength: 45, description: IPv4 or IPv6 address }
+      responses:
+        "200":
+          description: Place
+          headers:
+            Cache-Control: { schema: { type: string, enum: [no-store] } }
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  city: { type: string }
+                  region: { type: string }
+                  country: { type: string, description: ISO 3166-1 alpha-2 }
+        "400": { $ref: "#/components/responses/Error" }
+        "401": { $ref: "#/components/responses/Error" }
+        "429": { $ref: "#/components/responses/Error" }
   /v1/me/device-first:
     post:
       summary: Move a beta account (email and own password) to a hidden password

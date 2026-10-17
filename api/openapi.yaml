@@ -1147,6 +1147,22 @@ paths:
                   inviters: { type: array, items: { $ref: "#/components/schemas/InviterStats" } }
         "401": { $ref: "#/components/responses/Error" }
         "404": { $ref: "#/components/responses/Error" }
+  /v1/admin/summary:
+    get:
+      summary: Staff index numbers, one small object per staff page
+      description: >
+        Only for users that MAS marks admin (ADR 0056); every other user gets 404 not_found. CORS allows PUBLIC_SITE_URL.
+        One call for the index bipe.chat/admin/ (bipe#394). Each page object is null when its source is off or fails;
+        the other pages still answer. Counts of people of 1 or 2 are null (bipe#371).
+      security: [{ matrix: [] }]
+      responses:
+        "200":
+          description: Numbers per page
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/StaffSummary" }
+        "401": { $ref: "#/components/responses/Error" }
+        "404": { $ref: "#/components/responses/Error" }
   /v1/admin/growth:
     get:
       summary: Staff growth funnel and retention by sign-up week
@@ -4213,6 +4229,57 @@ components:
               event: { type: string }
               users: { type: [integer, "null"] }
               count: { type: [integer, "null"] }
+    StaffSummary:
+      type: object
+      description: Keys are the page keys in bipe-web src/admin/staff-pages.ts. A null page object means its source is off or failed.
+      required: [min_cell, crescimento, convites, visitas, experimentos, espera, empresas, denuncias, lgpd]
+      properties:
+        min_cell: { type: integer, description: "Counts of people below this are null." }
+        crescimento:
+          type: [object, "null"]
+          required: [signups_7d]
+          properties:
+            signups_7d: { type: [integer, "null"], description: "Accounts created in the last 7 days." }
+        convites:
+          type: [object, "null"]
+          required: [joins_30d]
+          properties:
+            joins_30d: { type: [integer, "null"], description: "Sign-ups with a personal invite in the last 30 days." }
+        visitas:
+          type: [object, "null"]
+          description: Null without UMAMI_DATABASE_URL.
+          required: [brazil_7d]
+          properties:
+            brazil_7d: { type: [integer, "null"], description: "Umami sessions from Brazil in the last 7 days." }
+        experimentos:
+          type: [object, "null"]
+          description: Null when experiment_counts is empty.
+          required: [id, visitors]
+          properties:
+            id: { type: string, description: "The experiment with the most recent counts." }
+            visitors: { type: integer, description: "Assignments over all arms." }
+        espera:
+          type: [object, "null"]
+          required: [waiting]
+          properties:
+            waiting: { type: integer, description: "Waitlist entries without an invite, all platforms." }
+        empresas:
+          type: [object, "null"]
+          required: [awaiting_proof, verified]
+          properties:
+            awaiting_proof: { type: integer }
+            verified: { type: integer }
+        denuncias:
+          type: [object, "null"]
+          description: Null without SYNAPSE_DATABASE_URL.
+          required: [reports_7d]
+          properties:
+            reports_7d: { type: integer, description: "Synapse user reports in the last 7 days." }
+        lgpd:
+          type: [object, "null"]
+          required: [over]
+          properties:
+            over: { type: integer, description: "Rows past their limit, over all items of /v1/admin/retention." }
     VisitCount:
       type: object
       required: [visitors, views]

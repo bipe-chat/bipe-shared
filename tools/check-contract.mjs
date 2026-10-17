@@ -74,6 +74,7 @@ const NOT_IN_APPS = {
   PartnerRequest: "web only",
   InviterStats: "staff page on the site only (ADR 0056)",
   GrowthReport: "staff page on the site only (ADR 0098)",
+  StaffSummary: "staff page on the site only (bipe#394)",
   ExperimentsReport: "staff page on the site only (bipe#368)",
   WaitlistReport: "staff page on the site only (bipe#368)",
   BusinessReport: "staff page on the site only (bipe#368)",

@@ -57,10 +57,30 @@ function envelope(payload, key = testKey, { v = 1, kid = KID } = {}) {
 
 const valid = envelope(basePayload);
 const tampered = { ...valid, payload: b64url(Buffer.from(JSON.stringify({ ...basePayload, name: "Ana Souza Lima" }), "utf8")) };
-const context = { sender: basePayload.sub, senderDevice: basePayload.dev };
+// The sender's master key is ignored for a device-bound badge.
+const MASTER_KEY = "dGVzdC1jcm9zcy1zaWduaW5nLW1hc3Rlci1rZXktMDE";
+const context = { sender: basePayload.sub, senderDevice: basePayload.dev, senderMasterKey: MASTER_KEY };
+
+// A verified company (lvl "cnpj", bipe#399): bound to the account's cross-signing master key, not a device.
+const cnpjPayload = {
+  sub: "@lojadaana:bipe.net.br",
+  lvl: "cnpj",
+  name: "Doces da Ana",
+  cnpj: "11222333000181",
+  legal_name: "Ana Souza Doces Ltda",
+  trade_name: "Doces da Ana",
+  method: "ecnpj",
+  checked_month: "2026-09",
+  msk: MASTER_KEY,
+  iat: NOW - 3600,
+  exp: NOW - 3600 + reg.badgeKeys.lifeDays * 86400,
+};
+const cnpjContext = { sender: cnpjPayload.sub, senderDevice: "Y29tcGFueS1zZWNvbmQtc2VhdA", senderMasterKey: MASTER_KEY };
+const without = (key) => (({ [key]: _, ...rest }) => rest)(cnpjPayload);
+if (normalizeCnpj(cnpjPayload.cnpj) !== cnpjPayload.cnpj) throw new Error("badges: the cnpj vector is not a normalised CNPJ");
 
 write("badges.json", {
-  $comment: "TEST-ONLY key. Never trust kid test-only-* in a release build. See docs/badge-attestation.md for the verification order.",
+  $comment: "TEST-ONLY key. Never trust kid test-only-* in a release build. See docs/badge-attestation.md for the verification order. senderMasterKey is the sender's cross-signing master key as the Matrix SDK reports it (unpadded base64), or null when the app does not know it.",
   now: NOW,
   publicKeys,
   vectors: [
@@ -72,8 +92,29 @@ write("badges.json", {
     { name: "expired", envelope: envelope({ ...basePayload, exp: NOW - 1 }), ...context, expect: "expired" },
     { name: "not yet valid", envelope: envelope({ ...basePayload, iat: NOW + 60 }), ...context, expect: "not_yet_valid" },
     { name: "missing name", envelope: envelope((({ name, ...rest }) => rest)(basePayload)), ...context, expect: "malformed" },
-    { name: "subject mismatch", envelope: valid, sender: "@mallory:bipe.net.br", senderDevice: basePayload.dev, expect: "subject_mismatch" },
-    { name: "device mismatch (new device, badge suspended)", envelope: valid, sender: basePayload.sub, senderDevice: "bmV3LWRldmljZQ", expect: "device_mismatch" },
+    { name: "subject mismatch", envelope: valid, ...context, sender: "@mallory:bipe.net.br", expect: "subject_mismatch" },
+    { name: "device mismatch (new device, badge suspended)", envelope: valid, ...context, senderDevice: "bmV3LWRldmljZQ", expect: "device_mismatch" },
+    { name: "unknown level", envelope: envelope({ ...basePayload, lvl: "gold" }), ...context, expect: "malformed" },
+    { name: "cnpj: valid", envelope: envelope(cnpjPayload), ...cnpjContext, expect: "valid" },
+    { name: "cnpj: valid on any device of the account", envelope: envelope(cnpjPayload), ...cnpjContext, senderDevice: "b3duZXItcGhvbmU", expect: "valid" },
+    { name: "cnpj: valid without trade_name", envelope: envelope(without("trade_name")), ...cnpjContext, expect: "valid" },
+    { name: "cnpj: valid alphanumeric CNPJ", envelope: envelope({ ...cnpjPayload, cnpj: "12ABC34501DE35", method: "staff" }), ...cnpjContext, expect: "valid" },
+    { name: "cnpj: master key mismatch (identity reset)", envelope: envelope(cnpjPayload), ...cnpjContext, senderMasterKey: "bmV3LW1hc3Rlci1rZXk", expect: "master_key_mismatch" },
+    { name: "cnpj: sender master key unknown", envelope: envelope(cnpjPayload), ...cnpjContext, senderMasterKey: null, expect: "master_key_mismatch" },
+    { name: "cnpj: device-bound instead of msk", envelope: envelope({ ...without("msk"), dev: cnpjContext.senderDevice }), ...cnpjContext, expect: "malformed" },
+    { name: "cnpj: missing cnpj", envelope: envelope(without("cnpj")), ...cnpjContext, expect: "malformed" },
+    { name: "cnpj: cnpj with separators", envelope: envelope({ ...cnpjPayload, cnpj: "11.222.333/0001-81" }), ...cnpjContext, expect: "malformed" },
+    { name: "cnpj: lowercase cnpj", envelope: envelope({ ...cnpjPayload, cnpj: "12abc34501de35" }), ...cnpjContext, expect: "malformed" },
+    { name: "cnpj: missing legal_name", envelope: envelope(without("legal_name")), ...cnpjContext, expect: "malformed" },
+    { name: "cnpj: empty legal_name", envelope: envelope({ ...cnpjPayload, legal_name: "" }), ...cnpjContext, expect: "malformed" },
+    { name: "cnpj: missing method", envelope: envelope(without("method")), ...cnpjContext, expect: "malformed" },
+    { name: "cnpj: unknown method", envelope: envelope({ ...cnpjPayload, method: "email" }), ...cnpjContext, expect: "malformed" },
+    { name: "cnpj: missing checked_month", envelope: envelope(without("checked_month")), ...cnpjContext, expect: "malformed" },
+    { name: "cnpj: bad checked_month", envelope: envelope({ ...cnpjPayload, checked_month: "2026-13" }), ...cnpjContext, expect: "malformed" },
+    { name: "cnpj: empty msk", envelope: envelope({ ...cnpjPayload, msk: "" }), ...cnpjContext, expect: "malformed" },
+    { name: "cnpj: expired", envelope: envelope({ ...cnpjPayload, exp: NOW - 1 }), ...cnpjContext, expect: "expired" },
+    { name: "cnpj: subject mismatch", envelope: envelope(cnpjPayload), ...cnpjContext, sender: "@mallory:bipe.net.br", expect: "subject_mismatch" },
+    { name: "cnpj: signed by unknown key", envelope: envelope(cnpjPayload, otherKey), ...cnpjContext, expect: "invalid_signature" },
   ],
 });
 

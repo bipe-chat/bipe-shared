@@ -84,6 +84,7 @@ const NOT_IN_APPS = {
   VisitReport: "staff page on the site only (ADR 0098)",
   Error: "clients read error and reason into their error type; the enum is checked as Error.error",
   BadgeEnvelope: "verified on device by BadgeVerifier; covered by test-vectors/badges.json",
+  BadgeGone: "a 410 means no seal; the apps fetch badges in the seal work (bipe-chat/bipe#252)",
   PixChallenge: "Pix verification is not built in the apps yet",
   BusinessClaim: "CNPJ verification runs on the web console first; app UI is bipe-chat/bipe#115",
   CnpjRegistryRecord: "CNPJ verification runs on the web console first; app UI is bipe-chat/bipe#115",

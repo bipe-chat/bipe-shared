@@ -2493,6 +2493,199 @@
       "figureCaption": "Illustration with sample data. The proposal is still under study."
     }
   },
+  "pricing": {
+    "$comment": "The /precos/ page (/en/pricing/). Source: bipe ADRs 0070, 0075, 0083, 0099, 0104 to 0107. Tier ids are stable. `amount` is the price in BRL and is set only after the free pilot, by a new ADR (ADR 0075); a tier with no `amount` shows `pilotPrice`. `contact` adds the contact button. `tools` are feature ids in `features`.",
+    "tools": [
+      "agenda",
+      "catalog",
+      "orders",
+      "quotes",
+      "queue"
+    ],
+    "tiers": [
+      {
+        "id": "small",
+        "amount": 0
+      },
+      {
+        "id": "company"
+      },
+      {
+        "id": "institution",
+        "contact": true
+      },
+      {
+        "id": "public",
+        "contact": true
+      }
+    ],
+    "pt": {
+      "nav": "Preços",
+      "link": "Como o Bipe cobra das empresas",
+      "title": "Como o Bipe cobra das empresas",
+      "lede": "O Bipe se paga com as empresas e as instituições que atendem seus clientes no Bipe. O piloto é gratuito, e os valores de cada plano saem quando ele terminar. Esta página explica como a cobrança vai funcionar e por quê.",
+      "principles": {
+        "heading": "As regras que valem em todo plano",
+        "points": [
+          "Os dados e os servidores ficam no Brasil, sob a lei brasileira.",
+          "Nenhum plano cobra por mensagem.",
+          "O selo não está à venda. Dinheiro não compra selo, nível de verificação, análise mais rápida nem o nome de outra organização. O plano paga serviço: atendentes, suporte, monitoramento e condições de contrato.",
+          "Quem usa o Bipe para conversar nunca paga."
+        ]
+      },
+      "why": {
+        "heading": "Por que não tem preço por mensagem",
+        "points": [
+          "O que a empresa ganha no Bipe é um nome verificado que nenhum golpista consegue copiar.",
+          "Esse nome vale mais quanto mais gente pode ser enganada em nome da empresa. O número de mensagens não muda esse valor.",
+          "Cobrar por mensagem premia quem manda mais. É desse volume que vem o spam, e o Bipe não quer spam.",
+          "Instituições e órgãos públicos compram com orçamento anual e precisam de um preço fixo."
+        ]
+      },
+      "tiersHeading": "Quatro planos",
+      "freePrice": "R$ 0",
+      "pilotPrice": "Piloto gratuito",
+      "tiers": {
+        "small": {
+          "name": "Pequeno negócio",
+          "who": "MEI ativo ou microempresa (ME), pelos dados da Receita.",
+          "billing": "Sem mensalidade.",
+          "points": [
+            "Selo de CNPJ verificado e nome reservado.",
+            "Caixa de entrada com 2 atendentes.",
+            "Perguntas com opções e API.",
+            "Suporte pelas páginas de ajuda.",
+            "O selo segue as mesmas regras dos outros planos: o CPF verificado do dono precisa aparecer entre os sócios do CNPJ na Receita."
+          ]
+        },
+        "company": {
+          "name": "Empresa",
+          "who": "Qualquer outra empresa com CNPJ verificado, ou o pequeno negócio que precisa de um 3º atendente.",
+          "billing": "Um valor fixo por mês por CNPJ, com um atendente incluído, e um valor por atendente a mais. Pagamento mensal ou anual.",
+          "points": [
+            "Selo de CNPJ verificado e nome reservado.",
+            "Caixa de entrada com quantos atendentes a equipe precisar.",
+            "Perguntas com opções e API."
+          ]
+        },
+        "institution": {
+          "name": "Instituição",
+          "who": "Bancos, fintechs, seguradoras, concessionárias, redes de saúde e grandes varejistas.",
+          "billing": "Contrato anual. O valor segue o número de pessoas que a instituição atende, por faixa.",
+          "points": [
+            "Atendentes sem limite.",
+            "Todos os nomes reservados da marca, com monitoramento de nomes parecidos.",
+            "Os níveis de verificação que o setor pede.",
+            "Suporte com prazo de resposta em contrato."
+          ]
+        },
+        "public": {
+          "name": "Órgão público",
+          "who": "Órgãos do governo, com a verificação de órgão público.",
+          "billing": "Contrato anual. O valor segue o número de pessoas que o órgão atende, por faixa.",
+          "points": [
+            "O mesmo serviço do plano Instituição, com 50% de desconto."
+          ]
+        }
+      },
+      "nonprofit": "ONGs, igrejas e associações pagam metade do valor do plano Empresa.",
+      "tools": {
+        "heading": "Ferramentas de graça em todo plano",
+        "body": "Qualquer conta de empresa usa estas ferramentas de graça, em qualquer plano."
+      },
+      "pilot": {
+        "heading": "O piloto é gratuito",
+        "points": [
+          "As empresas do piloto não pagam.",
+          "No fim do piloto, cada empresa recebe uma proposta de preço.",
+          "A caixa de entrada, a API e o selo de CNPJ ainda não estão no ar."
+        ]
+      }
+    },
+    "en": {
+      "nav": "Pricing",
+      "link": "How Bipe charges companies",
+      "title": "How Bipe charges companies",
+      "lede": "Bipe pays for itself through the companies and institutions that serve their customers on Bipe. The pilot is free, and the price of each plan comes when it ends. This page explains how charging will work and why.",
+      "principles": {
+        "heading": "Rules for every plan",
+        "points": [
+          "Data and servers stay in Brazil, under Brazilian law.",
+          "No plan charges per message.",
+          "The seal is not for sale. Money does not buy a seal, a verification level, a faster review or another organisation's name. A plan pays for service: agents, support, monitoring and contract terms.",
+          "People who use Bipe to chat never pay."
+        ]
+      },
+      "why": {
+        "heading": "Why there is no price per message",
+        "points": [
+          "What a company gets from Bipe is a verified name that no scammer can copy.",
+          "That name is worth more the more people could be fooled in the company's name. The number of messages does not change that.",
+          "A price per message rewards whoever sends more. That volume is where spam comes from, and Bipe does not want spam.",
+          "Institutions and public bodies buy with a yearly budget and need a fixed price."
+        ]
+      },
+      "tiersHeading": "Four plans",
+      "freePrice": "R$ 0",
+      "pilotPrice": "Free pilot",
+      "tiers": {
+        "small": {
+          "name": "Small business",
+          "who": "An active MEI or a micro company (ME), from Receita's data.",
+          "billing": "No monthly fee.",
+          "points": [
+            "Verified CNPJ seal and reserved name.",
+            "Inbox with 2 agents.",
+            "Questions with options and the API.",
+            "Support through the help pages.",
+            "The seal follows the same rules as every other plan: the owner's verified CPF must be one of the partners in the CNPJ record at Receita."
+          ]
+        },
+        "company": {
+          "name": "Company",
+          "who": "Any other company with a verified CNPJ, or a small business that needs a 3rd agent.",
+          "billing": "A flat monthly fee per CNPJ, with one agent included, and a fee for each extra agent. Pay monthly or yearly.",
+          "points": [
+            "Verified CNPJ seal and reserved name.",
+            "Inbox with as many agents as the team needs.",
+            "Questions with options and the API."
+          ]
+        },
+        "institution": {
+          "name": "Institution",
+          "who": "Banks, fintechs, insurers, utilities, health networks and large retailers.",
+          "billing": "A yearly contract. The price follows the number of people the institution serves, in bands.",
+          "points": [
+            "Unlimited agents.",
+            "Every reserved name of the brand, with monitoring for lookalike names.",
+            "The verification levels its sector needs.",
+            "Support with response times in the contract."
+          ]
+        },
+        "public": {
+          "name": "Public body",
+          "who": "Government bodies, with public body verification.",
+          "billing": "A yearly contract. The price follows the number of people the body serves, in bands.",
+          "points": [
+            "The same service as the Institution plan, at 50% off."
+          ]
+        }
+      },
+      "nonprofit": "Nonprofits, churches and associations pay half the Company plan price.",
+      "tools": {
+        "heading": "Free tools on every plan",
+        "body": "Any company account uses these tools for free, on any plan."
+      },
+      "pilot": {
+        "heading": "The pilot is free",
+        "points": [
+          "Companies in the pilot pay nothing.",
+          "When the pilot ends, each company gets a price offer.",
+          "The inbox, the API and the CNPJ seal are not live yet."
+        ]
+      }
+    }
+  },
   "partners": {
     "$comment": "The /parceiros/ page: organisations that want to help carry Bipe. ADR 0067 (steward, not owner) and ADR 0071 (the Pix analogy is allowed here, not elsewhere). Name no prospective partner, funder or institution until there is a signed agreement. Promise no seats, governance or equity. Issue bipe#177.",
     "pt": {

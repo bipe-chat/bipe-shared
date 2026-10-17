@@ -1163,6 +1163,25 @@ paths:
               schema: { $ref: "#/components/schemas/StaffSummary" }
         "401": { $ref: "#/components/responses/Error" }
         "404": { $ref: "#/components/responses/Error" }
+  /v1/admin/metrics:
+    get:
+      summary: Staff dashboard, daily series and growth rates
+      description: >
+        Only for users that MAS marks admin (ADR 0056); every other user gets 404 not_found. CORS allows PUBLIC_SITE_URL.
+        For the dashboard on bipe.chat/admin/. Days are calendar days in Brazil time; windows end today and include today.
+        Rates come from the raw counts. Counts of 1 or 2 are null (bipe#371). A part is null when its source is off or fails;
+        `sources` says which series columns are live, so a null in a live column is a count below min_cell.
+      security: [{ matrix: [] }]
+      parameters:
+        - { name: days, in: query, required: false, schema: { type: integer, minimum: 14, maximum: 365, default: 90 } }
+      responses:
+        "200":
+          description: Rates and series
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/StaffMetrics" }
+        "401": { $ref: "#/components/responses/Error" }
+        "404": { $ref: "#/components/responses/Error" }
   /v1/admin/growth:
     get:
       summary: Staff growth funnel and retention by sign-up week
@@ -4229,6 +4248,88 @@ components:
               event: { type: string }
               users: { type: [integer, "null"] }
               count: { type: [integer, "null"] }
+    StaffWindow:
+      type: object
+      required: [now, before, change]
+      properties:
+        now: { type: [integer, "null"], description: "Count in the window that ends today." }
+        before: { type: [integer, "null"], description: "Count in the window of the same length before it." }
+        change: { type: [number, "null"], description: "Percent change from before to now, one decimal. Null when before is 0." }
+    StaffMetrics:
+      type: object
+      required: [min_cell, today, accounts, growth, engagement, site, waitlist, series, weeks, sources]
+      properties:
+        min_cell: { type: integer }
+        today: { type: string, format: date, description: "Today in Brazil time." }
+        accounts: { type: [integer, "null"], description: "All rows in signups." }
+        growth:
+          type: object
+          required: [signups_7d, signups_28d, accounts_weekly_pct, accounts_28d_pct, invite_share_28d_pct, joins_28d]
+          properties:
+            signups_7d: { $ref: "#/components/schemas/StaffWindow" }
+            signups_28d: { $ref: "#/components/schemas/StaffWindow" }
+            accounts_weekly_pct: { type: [number, "null"], description: "Average weekly growth of all accounts over the last 4 weeks, compounded." }
+            accounts_28d_pct: { type: [number, "null"], description: "Growth of all accounts over the last 28 days." }
+            invite_share_28d_pct: { type: [number, "null"], description: "Sign-ups with a personal invite, share of all sign-ups in 28 days." }
+            joins_28d: { $ref: "#/components/schemas/StaffWindow" }
+        engagement:
+          type: [object, "null"]
+          description: From growth events (active_day, first_message_sent). DAU is yesterday.
+          properties:
+            dau: { type: [integer, "null"] }
+            wau: { type: [integer, "null"] }
+            mau: { type: [integer, "null"] }
+            dau_mau_pct: { type: [number, "null"] }
+            wau_mau_pct: { type: [number, "null"] }
+            activation_28d_pct: { type: [number, "null"], description: "Sign-ups of the last 28 days with a first message." }
+        site:
+          type: [object, "null"]
+          description: Null without UMAMI_DATABASE_URL. Visitors are Umami sessions from Brazil, summed per day.
+          properties:
+            visitors_7d: { $ref: "#/components/schemas/StaffWindow" }
+            visitors_28d: { $ref: "#/components/schemas/StaffWindow" }
+            signup_per_visitor_28d_pct: { type: [number, "null"] }
+        waitlist:
+          type: [object, "null"]
+          properties:
+            joins_7d: { $ref: "#/components/schemas/StaffWindow" }
+            joins_28d: { $ref: "#/components/schemas/StaffWindow" }
+        series:
+          type: array
+          description: One row per day, oldest first.
+          items:
+            type: object
+            required: [day, signups, joins, waitlist, active, visitors]
+            properties:
+              day: { type: string, format: date }
+              signups: { type: [integer, "null"] }
+              joins: { type: [integer, "null"], description: "Sign-ups with a personal invite." }
+              waitlist: { type: [integer, "null"], description: "Waitlist entries still stored. The server deletes an entry after its invite is used." }
+              active: { type: [integer, "null"], description: "Distinct people with active_day." }
+              visitors: { type: [integer, "null"] }
+        weeks:
+          type: array
+          description: >
+            7-day windows that end today, 7 days back, and so on; oldest first. Sums of raw daily counts, then the cell rule.
+            No active column: a sum of daily active people counts a person once per day.
+          items:
+            type: object
+            required: [end, signups, joins, waitlist, visitors]
+            properties:
+              end: { type: string, format: date, description: "Last day of the window." }
+              signups: { type: [integer, "null"] }
+              joins: { type: [integer, "null"] }
+              waitlist: { type: [integer, "null"] }
+              visitors: { type: [integer, "null"] }
+        sources:
+          type: object
+          required: [signups, joins, waitlist, active, visitors]
+          properties:
+            signups: { type: boolean }
+            joins: { type: boolean }
+            waitlist: { type: boolean }
+            active: { type: boolean }
+            visitors: { type: boolean }
     StaffSummary:
       type: object
       description: Keys are the page keys in bipe-web src/admin/staff-pages.ts. A null page object means its source is off or failed.

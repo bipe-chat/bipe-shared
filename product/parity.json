@@ -1265,6 +1265,13 @@
       "android": "Back to Bipe",
       "reason": "The iOS check runs in the share extension; Android shows it in the app (ADR 0091)",
       "kind": "idiom"
+    },
+    {
+      "area": "Message actions",
+      "ios": "Native context menu on long press: reaction row, actions, the message as preview",
+      "android": "Element's bottom sheet",
+      "reason": "Platform idiom",
+      "kind": "idiom"
     }
   ]
 }

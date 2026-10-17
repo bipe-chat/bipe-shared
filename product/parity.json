@@ -404,7 +404,8 @@
         "status": "built",
         "evidence": [
           "bipe-android/libraries/bipe/src/main/kotlin/io/element/android/libraries/bipe/invites/BipeInviterGreeting.kt",
-          "bipe-android/libraries/bipe/src/main/kotlin/io/element/android/libraries/bipe/ui/BipeInviterPrompts.kt"
+          "bipe-android/libraries/bipe/src/main/kotlin/io/element/android/libraries/bipe/ui/BipeInviterRow.kt",
+          "bipe-android/libraries/bipe/src/main/kotlin/io/element/android/libraries/bipe/ui/BipeInviterHint.kt"
         ]
       },
       "web": {
@@ -831,7 +832,7 @@
       "android": {
         "status": "built",
         "evidence": [
-          "bipe-android/features/lockscreen/impl/src/main/kotlin/io/element/android/features/lockscreen/impl/pin/BipeAppLockImpl.kt"
+          "bipe-android/features/lockscreen/impl/src/main/kotlin/io/element/android/features/lockscreen/impl/pin/DefaultBipeAppLock.kt"
         ]
       },
       "web": {
@@ -1153,6 +1154,7 @@
     {
       "id": "settings-structure",
       "name": "Settings grouped by the user's question (ADR 0112)",
+      "issue": 358,
       "ios": {
         "status": "built",
         "evidence": [
@@ -1161,11 +1163,8 @@
         ]
       },
       "android": {
-        "status": "built",
-        "evidence": [
-          "bipe-android/features/preferences/impl/src/main/kotlin/io/element/android/features/preferences/impl/bipe/BipeSettingsGroupView.kt",
-          "bipe-android/libraries/bipe/src/main/kotlin/io/element/android/libraries/bipe/generated/BipeSettings.kt"
-        ]
+        "status": "planned",
+        "note": "On bipe-android PR #13 (factory/358-settings-ia), not merged to main yet. Set back to built with evidence when it merges."
       },
       "web": {
         "status": "n/a",
@@ -1179,6 +1178,7 @@
     {
       "id": "who-can-message",
       "name": "Who can message me",
+      "issue": 359,
       "ios": {
         "status": "built",
         "evidence": [
@@ -1186,10 +1186,8 @@
         ]
       },
       "android": {
-        "status": "built",
-        "evidence": [
-          "bipe-android/libraries/bipe/src/main/kotlin/io/element/android/libraries/bipe/settings/BipeMessagingScreen.kt"
-        ]
+        "status": "planned",
+        "note": "On bipe-android PR #13 (factory/358-settings-ia), not merged to main yet. Set back to built with evidence when it merges."
       },
       "web": {
         "status": "n/a",
@@ -1205,6 +1203,7 @@
     {
       "id": "data-export",
       "name": "Download my data (LGPD art. 18)",
+      "issue": 364,
       "ios": {
         "status": "built",
         "evidence": [
@@ -1212,10 +1211,8 @@
         ]
       },
       "android": {
-        "status": "built",
-        "evidence": [
-          "bipe-android/libraries/bipe/src/main/kotlin/io/element/android/libraries/bipe/settings/BipeDataExport.kt"
-        ]
+        "status": "planned",
+        "note": "On bipe-android PR #13 (factory/358-settings-ia), not merged to main yet. Set back to built with evidence when it merges."
       },
       "web": {
         "status": "n/a",

@@ -135,6 +135,9 @@ public enum BipeRegistries {
     public static let handleOwnerMinLength = ${reg.handles.ownerMinLength}
     public static let ownedHandles: Set<String> = ${Object.keys(reg.owners.handles).length ? swiftArray(Object.keys(reg.owners.handles).map(swiftString)) : "[]"}
 
+    /// Full Matrix user IDs of official Bipe accounts. Match exactly; names and handles are not proof.
+    public static let officialAccountIDs: Set<String> = ${swiftArray(Object.values(reg.officialAccounts.accounts).map((a) => swiftString(a.userId)))}
+
     /// Public profile rules (ADR 0041). Lengths count Unicode scalars. The server is the authority.
     public static let profileNameMaxLength = ${reg.profiles.nameMaxLength}
     public static let profileBioMaxLength = ${reg.profiles.bioMaxLength}
@@ -343,6 +346,9 @@ object BipeRegistries {
     /** Owned handles (ADR 0065): only these may be shorter than [HANDLE_MIN_LENGTH], down to [HANDLE_OWNER_MIN_LENGTH]. */
     const val HANDLE_OWNER_MIN_LENGTH = ${reg.handles.ownerMinLength}
     val ownedHandles: Set<String> = ${kotlinList("setOf", Object.keys(reg.owners.handles).map(kotlinString))}
+
+    /** Full Matrix user IDs of official Bipe accounts. Match exactly; names and handles are not proof. */
+    val officialAccountIds: Set<String> = ${kotlinList("setOf", Object.values(reg.officialAccounts.accounts).map((a) => kotlinString(a.userId)))}
 
     /** Public profile rules (ADR 0041). Lengths count code points. The server is the authority. */
     const val PROFILE_NAME_MAX_LENGTH = ${reg.profiles.nameMaxLength}

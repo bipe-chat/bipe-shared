@@ -5,6 +5,7 @@ Single source of truth for Bipe logic that iOS, Android, the API and the website
 | Path | Content |
 |---|---|
 | `registries/` | Reserved names, family terms, scam patterns, homoglyphs, handle rules, invite-code rule, and editable Agenda setup templates |
+| `registries/official-accounts.json` | Official support and news account IDs and their owned handles. The generated Swift and Kotlin sets contain full Matrix IDs for exact comparison. |
 | `strings/pt-BR.json`, `strings/en.json` | Bipe-owned UI strings (Element strings stay on Localazy). Draft copy. |
 | `api/openapi.yaml` | Bipe API contract, including Agenda, Catálogo, Fila virtual, Orçamento and Pedidos routes |
 | `api/business-schemas.json` | JSON Schema 2020-12 definitions referenced by OpenAPI and used to generate API TypeScript types |

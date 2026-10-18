@@ -123,7 +123,7 @@ write("badges.json", {
 const reservedSet = new Map();
 for (const [cat, names] of Object.entries(reg.reserved.categories)) for (const n of names) reservedSet.set(n, cat);
 
-const nameCases = ["Itaú", "ІТАÚ", "Nubаnk", "Banco  do   Brasil", "B4nco do Br4sil", "Receita Federal", "Bipe Oficial", "Maria Souza", "Ana", "gov.br", "Caixa Tem"];
+const nameCases = ["Itaú", "ІТАÚ", "Nubаnk", "Banco  do   Brasil", "B4nco do Br4sil", "Receita Federal", "Bipe Oficial", "Maria Souza", "Ana", "gov.br", "Caixa Tem", "Novidades do Bipe", "Novidades Bipe", "Nоvidades do Bіpe"];
 write("normalization.json", {
   $comment: "normalize(): NFKD, strip combining marks, lowercase, fold homoglyphs (registries/homoglyphs.json), collapse whitespace. reserved: category if the normalised name is in registries/reserved-names.json.",
   vectors: nameCases.map((input) => {
@@ -248,6 +248,16 @@ const handleInputs = [
 // lookup (shape only). The owner comes from registries/reserved-name-owners.json.
 const mzOwner = reg.owners.handles.mz;
 const claimCases = [
+  ...Object.values(reg.officialAccounts.accounts).flatMap(({ handle, userId }) => [
+    { input: handle },
+    { input: handle, claimant: userId },
+    { input: handle, claimant: "@ana:bipe.net.br" },
+    { input: handle, claimant: "" },
+    { input: `${handle[0]}.${handle.slice(1)}`, claimant: userId },
+    { input: `${handle[0]}.${handle.slice(1)}`, claimant: "@ana:bipe.net.br" },
+  ]),
+  { input: "novidades_bipe", claimant: "@ana:bipe.net.br" },
+  { input: "novidades_do_bipe", claimant: "@ana:bipe.net.br" },
   { input: "mz" },
   { input: "mz", claimant: mzOwner },
   { input: "mz", claimant: "@ana:bipe.net.br" },

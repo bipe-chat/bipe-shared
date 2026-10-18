@@ -55,6 +55,21 @@
       "input": "Caixa Tem",
       "normalized": "caixa tem",
       "reserved": "government"
+    },
+    {
+      "input": "Novidades do Bipe",
+      "normalized": "novidades do bipe",
+      "reserved": "bipe"
+    },
+    {
+      "input": "Novidades Bipe",
+      "normalized": "novidades bipe",
+      "reserved": "bipe"
+    },
+    {
+      "input": "Nоvidades do Bіpe",
+      "normalized": "novidades do bipe",
+      "reserved": "bipe"
     }
   ]
 }

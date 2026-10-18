@@ -19,6 +19,12 @@ Source of truth for registries, strings, API contract and test vectors shared by
 - `product/data.json` is the LGPD record of processing (ADR 0090) and feeds `/lgpd/` on bipe-web. A new table, log or third-party service that holds personal data gets an item in the same change. List only what runs today. `node tools/gen-product-doc.mjs` validates it.
 - `product/privacy.json` is who can read what (ADR 0109) and feeds `/quem-pode-ler/` on bipe-web. When a fact about message data changes (a new party such as Google push, calls confirmed encrypted), change it with `data.json` in the same change. Thing names start in lower case.
 
+## Before you push
+
+- CI must stay green. `scripts/verify` runs what the required checks of the `main` ruleset run. Run it before every push; the pre-push hook runs it when this clone has `git config core.hooksPath .githooks` (set it once per clone; worktrees share it).
+- A push with red local checks is not allowed. Never use `git push --no-verify`.
+- If CI still fails on your pull request, fix it before you start other work. Never leave a red pull request at the end of a run.
+
 ## Decisions
 
 Product and architecture decisions for all Bipe repos are ADRs in the umbrella repo: `../bipe/docs/adr/` (index: `README.md`). Check them before changing a decided behaviour. A new decision gets an ADR there, not a note in this repo.

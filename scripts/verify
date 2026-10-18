@@ -1,0 +1,16 @@
+#!/bin/sh
+# Runs what the required CI checks run (checks.yml: trust-facts, lockstep), against the sibling clones on disk.
+# The pre-push hook in .githooks calls it.
+# Usage: scripts/verify [--all]
+set -eu
+cd "$(git rev-parse --show-toplevel)"
+base=$(git merge-base HEAD origin/main 2>/dev/null || echo HEAD)
+if [ "${1:-}" != --all ] && [ -z "$(git diff --name-only "$base" HEAD | grep -v '\.md$' || true)" ]; then
+  echo "verify: only Markdown changed since origin/main, nothing to check (scripts/verify --all forces it)"
+  exit 0
+fi
+node --test tools/*.test.mjs
+node tools/check-contract.mjs
+node tools/check-drift.mjs --against worktree
+node tools/parity.mjs
+echo "verify: ok"

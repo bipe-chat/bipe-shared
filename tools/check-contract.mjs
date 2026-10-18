@@ -81,6 +81,8 @@ const NOT_IN_APPS = {
   WaitlistReport: "staff page on the site only (bipe#368)",
   BusinessReport: "staff page on the site only (bipe#368)",
   UserReports: "staff page on the site only (bipe#368)",
+  BugReportSummary: "staff view and Starlings link only (bipe#367); the apps send the rageshake form",
+  BugReport: "staff view and Starlings link only (bipe#367); the apps send the rageshake form",
   RetentionReport: "staff page on the site only (bipe#368)",
   VisitCount: "staff page on the site only (ADR 0098)",
   VisitReport: "staff page on the site only (ADR 0098)",

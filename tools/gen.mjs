@@ -11,6 +11,7 @@ import { generateTrust } from "./lib/gen-trust.mjs";
 import { KOTLIN_LICENSE, iosVersionEnv, kotlinVersion, loadVersion } from "./lib/version.mjs";
 import { generateApiTypes, loadBusinessSchemas } from "./lib/api-types.mjs";
 import { generateAgendaTemplates } from "./lib/agenda-templates.mjs";
+import { generateSettings } from "./lib/gen-settings.mjs";
 
 const root = join(dirname(fileURLToPath(import.meta.url)), "..");
 const args = process.argv.slice(2);
@@ -172,6 +173,18 @@ public enum BipeRegistries {
     public static let guardianApprovalsMax = ${reg.accounts.guardianApprovalsMax}
     public static let recoveryLinkMinutes = ${reg.accounts.recoveryLinkMinutes}
     public static let emailVerifyLinkHours = ${reg.accounts.emailVerifyLinkHours}
+    /// Personal accounts on one phone (ADR 0086). Fallback for max_accounts in GET /v1/me/account.
+    public static let maxPersonalAccounts = ${reg.accounts.maxPersonalAccounts}
+
+    /// Terms and privacy accepted at sign-up (ADR 0113; registries/legal.json). Paths are on the public site.
+    public static let legalVersion = ${swiftString(reg.legal.legalVersion)}
+    public static let termsPath = ${swiftString(reg.legal.termsPath)}
+    public static let privacyPath = ${swiftString(reg.legal.privacyPath)}
+    public static let enTermsPath = ${swiftString(reg.legal.enTermsPath)}
+    public static let enPrivacyPath = ${swiftString(reg.legal.enPrivacyPath)}
+
+    /// Badge signing keys a release build trusts (ADR 0123; registries/badge-keys.json): kid to raw Ed25519 public key, base64url.
+    public static let badgeKeys: [String: String] = ${Object.keys(reg.badgeKeys.keys).length ? swiftMap(reg.badgeKeys.keys) : "[:]"}
 }
 `;
 }
@@ -209,6 +222,7 @@ writeFileSync(join(swiftOut, "BipeRegistries.swift"), swiftRegistries());
 writeFileSync(join(swiftOut, "BipeTrustFacts.swift"), generateTrust(reg.trust, "swift", HEADER));
 writeFileSync(join(swiftOut, "BipeAgendaTemplates.swift"), generateAgendaTemplates(reg, "swift", HEADER));
 writeFileSync(join(swiftOut, "BipeStrings.swift"), swiftStrings());
+writeFileSync(join(swiftOut, "BipeSettings.swift"), generateSettings(reg.settings, "swift", HEADER, swiftString));
 const resources = resolve(swiftOut, "../../../Sources/BipeKit/Resources");
 for (const [locale, strings] of [["pt-BR", reg.strings.strings], ["en", reg.stringsEn.strings]]) {
   mkdirSync(join(resources, `${locale}.lproj`), { recursive: true });
@@ -375,6 +389,18 @@ object BipeRegistries {
     const val GUARDIAN_APPROVALS_MAX = ${reg.accounts.guardianApprovalsMax}
     const val RECOVERY_LINK_MINUTES = ${reg.accounts.recoveryLinkMinutes}
     const val EMAIL_VERIFY_LINK_HOURS = ${reg.accounts.emailVerifyLinkHours}
+    // Personal accounts on one phone (ADR 0086). Fallback for max_accounts in GET /v1/me/account.
+    const val MAX_PERSONAL_ACCOUNTS = ${reg.accounts.maxPersonalAccounts}
+
+    // Terms and privacy accepted at sign-up (ADR 0113; registries/legal.json). Paths are on the public site.
+    const val LEGAL_VERSION = ${kotlinString(reg.legal.legalVersion)}
+    const val TERMS_PATH = ${kotlinString(reg.legal.termsPath)}
+    const val PRIVACY_PATH = ${kotlinString(reg.legal.privacyPath)}
+    const val EN_TERMS_PATH = ${kotlinString(reg.legal.enTermsPath)}
+    const val EN_PRIVACY_PATH = ${kotlinString(reg.legal.enPrivacyPath)}
+
+    /** Badge signing keys a release build trusts (ADR 0123; registries/badge-keys.json): kid to raw Ed25519 public key, base64url. */
+    val badgeKeys: Map<String, String> = ${kotlinList("mapOf", Object.entries(reg.badgeKeys.keys).map(([k, v]) => `${kotlinString(k)} to ${kotlinString(v)}`))}
 }
 `;
 }
@@ -407,6 +433,7 @@ if (kotlinIndex >= 0 || existsSync(resolve(kotlinOut, "../../.."))) {
   writeFileSync(join(kotlinDir, "BipeRegistries.kt"), kotlinRegistries());
   writeFileSync(join(kotlinDir, "BipeTrustFacts.kt"), generateTrust(reg.trust, "kotlin", KOTLIN_HEADER));
   writeFileSync(join(kotlinDir, "BipeAgendaTemplates.kt"), generateAgendaTemplates(reg, "kotlin", KOTLIN_HEADER));
+  writeFileSync(join(kotlinDir, "BipeSettings.kt"), generateSettings(reg.settings, "kotlin", KOTLIN_HEADER, kotlinString));
   // pt-BR is the default language, so it fills values/. en is the alternative.
   for (const [dir, strings, comment] of [
     ["values", reg.strings.strings, "pt-BR (default). DRAFT copy: not yet through the humanizer pass."],
@@ -428,6 +455,8 @@ if (existsSync(resolve(apiOut, "../.."))) {
   copyFileSync(join(root, "tools/lib/registries.mjs"), join(apiOut, "lib/registries.mjs"));
   copyFileSync(join(root, "tools/lib/trust.mjs"), join(apiOut, "lib/trust.mjs"));
   copyFileSync(join(root, "tools/lib/agenda-templates.mjs"), join(apiOut, "lib/agenda-templates.mjs"));
+  // registries.mjs imports it for the settings validation.
+  copyFileSync(join(root, "tools/lib/gen-settings.mjs"), join(apiOut, "lib/gen-settings.mjs"));
   writeFileSync(join(apiOut, "business-api.ts"), generateApiTypes(loadBusinessSchemas(root)));
   console.log(`wrote API registries to ${apiOut}`);
 }

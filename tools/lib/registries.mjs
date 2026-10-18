@@ -4,6 +4,7 @@ import { readFileSync } from "node:fs";
 import { join } from "node:path";
 import { evaluateTrustFacts, validateTrustRegistry } from "./trust.mjs";
 import { validateAgendaTemplates } from "./agenda-templates.mjs";
+import { validateSettings } from "./gen-settings.mjs";
 
 export function loadRegistries(root) {
   const read = (p) => JSON.parse(readFileSync(join(root, p), "utf8"));
@@ -18,9 +19,12 @@ export function loadRegistries(root) {
     inviteCodes: read("registries/invite-codes.json"),
     phones: read("registries/phone-numbers.json"),
     accounts: read("registries/accounts.json"),
+    legal: read("registries/legal.json"),
     agendaTemplates: read("registries/agenda-templates.json"),
     growth: read("registries/growth-events.json"),
     trust: read("registries/trust-facts.json"),
+    settings: read("registries/settings.json"),
+    badgeKeys: read("registries/badge-keys.json"),
     strings: read("strings/pt-BR.json"),
     stringsEn: read("strings/en.json"),
   };
@@ -40,9 +44,21 @@ export function validateLinkedRecovery(accounts) {
   }
 }
 
+/** Release trust list (ADR 0123): prod-YYYY-MM kids only, each a raw 32-byte Ed25519 public key in base64url. */
+export function validateBadgeKeys(b) {
+  if (!b.keys || typeof b.keys !== "object" || Array.isArray(b.keys)) fail("badge-keys: keys must be an object");
+  for (const [kid, key] of Object.entries(b.keys)) {
+    if (!/^prod-\d{4}-(0[1-9]|1[0-2])$/.test(kid)) fail(`badge-keys: kid "${kid}" must be prod-YYYY-MM (never test-only-*)`);
+    if (typeof key !== "string" || !/^[A-Za-z0-9_-]{43}$/.test(key) || Buffer.from(key, "base64url").length !== 32) fail(`badge-keys: ${kid} is not a 32-byte base64url key`);
+  }
+  if (!(Number.isInteger(b.lifeDays) && b.lifeDays > 0)) fail("badge-keys: lifeDays");
+  if (!(Number.isInteger(b.renewDaysBeforeExpiry) && b.renewDaysBeforeExpiry > 0 && b.renewDaysBeforeExpiry < b.lifeDays)) fail("badge-keys: renewDaysBeforeExpiry must be below lifeDays");
+}
+
 function validate(reg) {
   validateTrustRegistry(reg.trust);
   validateAgendaTemplates(reg);
+  validateSettings(reg);
   for (const [name, r] of Object.entries(reg)) {
     if (r.version !== 1) fail(`${name}: version must be 1`);
   }
@@ -106,16 +122,21 @@ function validate(reg) {
   if (!/^[0-9]$/.test(ph.mobilePrefix)) fail("phones: mobilePrefix");
   if (!(Number.isInteger(ph.maxInputLength) && ph.maxInputLength > 0)) fail("phones: maxInputLength");
   if (!(Number.isInteger(ph.internationalMinDigits) && ph.internationalMinDigits > 0 && ph.internationalMaxDigits >= ph.internationalMinDigits)) fail("phones: international digit range");
+  validateBadgeKeys(reg.badgeKeys);
   const ac = reg.accounts;
   validateLinkedRecovery(ac);
   // DDMMYYYY and YYYYMMDD need exactly 8 digits.
   if (ac.pinLength !== 8) fail("accounts: pinLength must be 8 (the date check reads DDMMYYYY and YYYYMMDD)");
-  for (const k of ["pinMaxWrongTries", "pinDateYearMin", "pinDateYearMax", "guardianApprovalsMax", "recoveryLinkMinutes", "emailVerifyLinkHours", "recoveryClaimDays"]) {
+  for (const k of ["pinMaxWrongTries", "pinDateYearMin", "pinDateYearMax", "guardianApprovalsMax", "recoveryLinkMinutes", "emailVerifyLinkHours", "recoveryClaimDays", "maxPersonalAccounts"]) {
     if (!(Number.isInteger(ac[k]) && ac[k] > 0)) fail(`accounts: ${k}`);
   }
   if (!(ac.pinDateYearMin >= 1000 && ac.pinDateYearMax <= 9999 && ac.pinDateYearMin <= ac.pinDateYearMax)) fail("accounts: pin date years");
   if (Object.keys(ac.recoveryDelayHours).sort().join() !== "cpf,email,guardian,token") fail("accounts: recoveryDelayHours must have cpf, email, guardian and token");
   for (const [k, v] of Object.entries(ac.recoveryDelayHours)) if (!(Number.isInteger(v) && v >= 0)) fail(`accounts: recoveryDelayHours.${k}`);
+  // Terms and privacy (ADR 0113): one version for the pair, a real date.
+  const lg = reg.legal;
+  if (!/^\d{4}-\d{2}-\d{2}$/.test(lg.legalVersion) || Number.isNaN(Date.parse(`${lg.legalVersion}T00:00:00Z`))) fail("legal: legalVersion must be YYYY-MM-DD");
+  for (const k of ["termsPath", "privacyPath", "enTermsPath", "enPrivacyPath"]) if (!/^\/[a-z/-]+\/$/.test(lg[k] ?? "")) fail(`legal: ${k}`);
   // Growth events (ADR 0098): a fixed list, no content.
   const gr = reg.growth;
   const growthIds = new Set();

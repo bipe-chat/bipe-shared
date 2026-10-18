@@ -340,7 +340,8 @@
         "status": "testing",
         "evidence": [
           "bipe-ios/ElementX/Sources/Screens/BipeInvitesScreen/View/BipeInvitesScreen.swift",
-          "bipe-ios/Components/BipeKit/Sources/BipeKit/BipeInviteLink.swift"
+          "bipe-ios/Components/BipeKit/Sources/BipeKit/BipeInviteLink.swift",
+          "bipe-ios/Components/BipeKit/Sources/BipeKit/BipeInviteCreator.swift"
         ]
       },
       "android": {
@@ -386,6 +387,36 @@
       "server": {
         "status": "n/a",
         "reason": "Drawn on the device"
+      }
+    },
+    {
+      "id": "inviter-prompt",
+      "name": "Prompt to message the inviter after sign-up",
+      "ios": {
+        "status": "built",
+        "evidence": [
+          "bipe-ios/ElementX/Sources/Application/BipeInviterGreeting.swift",
+          "bipe-ios/ElementX/Sources/Screens/HomeScreen/View/BipeInviterRow.swift",
+          "bipe-ios/ElementX/Sources/Screens/RoomScreen/View/BipeInviterHint.swift"
+        ]
+      },
+      "android": {
+        "status": "built",
+        "evidence": [
+          "bipe-android/libraries/bipe/src/main/kotlin/io/element/android/libraries/bipe/invites/BipeInviterGreeting.kt",
+          "bipe-android/libraries/bipe/src/main/kotlin/io/element/android/libraries/bipe/ui/BipeInviterHint.kt",
+          "bipe-android/libraries/bipe/src/main/kotlin/io/element/android/libraries/bipe/ui/BipeInviterRow.kt"
+        ]
+      },
+      "web": {
+        "status": "n/a",
+        "reason": "No web chat (ADR 0004)"
+      },
+      "server": {
+        "status": "built",
+        "evidence": [
+          "bipe-api/src/invites.ts"
+        ]
       }
     },
     {
@@ -801,7 +832,7 @@
       "android": {
         "status": "built",
         "evidence": [
-          "bipe-android/features/lockscreen/impl/src/main/kotlin/io/element/android/features/lockscreen/impl/pin/BipeAppLockImpl.kt"
+          "bipe-android/features/lockscreen/impl/src/main/kotlin/io/element/android/features/lockscreen/impl/pin/DefaultBipeAppLock.kt"
         ]
       },
       "web": {
@@ -959,6 +990,59 @@
       "issue": 196
     },
     {
+      "id": "signup-terms-clickwrap",
+      "name": "Terms checkbox at sign-up, acceptance recorded (ADR 0113)",
+      "ios": {
+        "status": "built",
+        "evidence": [
+          "bipe-ios/ElementX/Sources/Screens/BipeSignupScreen/View/BipeSignupScreen.swift"
+        ]
+      },
+      "android": {
+        "status": "built",
+        "evidence": [
+          "bipe-android/features/login/impl/src/main/kotlin/io/element/android/features/login/impl/screens/bipesignup/BipeSignupView.kt"
+        ]
+      },
+      "web": {
+        "status": "n/a",
+        "reason": "Sign-up is in the apps"
+      },
+      "server": {
+        "status": "built",
+        "evidence": [
+          "bipe-api/src/terms.ts"
+        ]
+      }
+    },
+    {
+      "id": "terms-reaccept",
+      "name": "Re-accept screen for old accounts and new terms versions (ADR 0113)",
+      "ios": {
+        "status": "built",
+        "evidence": [
+          "bipe-ios/ElementX/Sources/Screens/BipeTermsReacceptScreen/View/BipeTermsReacceptScreen.swift"
+        ]
+      },
+      "android": {
+        "status": "built",
+        "evidence": [
+          "bipe-android/libraries/bipe/src/main/kotlin/io/element/android/libraries/bipe/terms/BipeTermsReacceptView.kt"
+        ]
+      },
+      "web": {
+        "status": "n/a",
+        "reason": "Accounts are used in the apps"
+      },
+      "server": {
+        "status": "built",
+        "evidence": [
+          "bipe-api/src/terms.ts"
+        ]
+      },
+      "issue": 366
+    },
+    {
       "id": "onboarding-no-element-crypto",
       "name": "No Element crypto screens for Bipe users",
       "ios": "planned",
@@ -1072,6 +1156,84 @@
         "status": "n/a",
         "reason": "Not an app build"
       }
+    },
+    {
+      "id": "settings-structure",
+      "name": "Settings grouped by the user's question (ADR 0112)",
+      "issue": 358,
+      "ios": {
+        "status": "built",
+        "evidence": [
+          "bipe-ios/ElementX/Sources/Screens/BipeSettingsGroupScreen/View/BipeSettingsGroupScreen.swift",
+          "bipe-ios/Components/BipeKit/Sources/BipeKit/Generated/BipeSettings.swift"
+        ]
+      },
+      "android": {
+        "status": "planned",
+        "note": "On bipe-android PR #13 (factory/358-settings-ia), not merged to main yet. Set back to built with evidence when it merges."
+      },
+      "web": {
+        "status": "n/a",
+        "reason": "No web chat (ADR 0004); the site shows a demo at most"
+      },
+      "server": {
+        "status": "n/a",
+        "reason": "App screens; the order comes from registries/settings.json"
+      }
+    },
+    {
+      "id": "who-can-message",
+      "name": "Who can message me",
+      "issue": 359,
+      "ios": {
+        "status": "built",
+        "evidence": [
+          "bipe-ios/ElementX/Sources/Screens/BipeMessagingScreen/View/BipeMessagingScreen.swift"
+        ]
+      },
+      "android": {
+        "status": "built",
+        "evidence": [
+          "bipe-android/libraries/bipe/src/main/kotlin/io/element/android/libraries/bipe/settings/BipeMessagingView.kt"
+        ]
+      },
+      "web": {
+        "status": "n/a",
+        "reason": "No web chat (ADR 0004); the site shows a demo at most"
+      },
+      "server": {
+        "status": "built",
+        "evidence": [
+          "bipe-api/src/messaging.ts"
+        ]
+      }
+    },
+    {
+      "id": "data-export",
+      "name": "Download my data (LGPD art. 18)",
+      "issue": 364,
+      "ios": {
+        "status": "built",
+        "evidence": [
+          "bipe-ios/Components/BipeKit/Sources/BipeKit/BipeAPIClient.swift"
+        ]
+      },
+      "android": {
+        "status": "built",
+        "evidence": [
+          "bipe-android/libraries/bipe/src/main/kotlin/io/element/android/libraries/bipe/settings/BipeDataExportRow.kt"
+        ]
+      },
+      "web": {
+        "status": "n/a",
+        "reason": "In the apps only"
+      },
+      "server": {
+        "status": "built",
+        "evidence": [
+          "bipe-api/src/export.ts"
+        ]
+      }
     }
   ],
   "differences": [
@@ -1101,6 +1263,14 @@
       "ios": "App Attest",
       "android": "None yet",
       "reason": "Play Integrity not built on Android (#92)",
+      "kind": "gap",
+      "issue": 92
+    },
+    {
+      "area": "Criar conta da empresa",
+      "ios": "In Sua conta on a phone with App Attest",
+      "android": "Not shown",
+      "reason": "A company account needs an attested device (ADR 0043, ADR 0087); Play Integrity not built on Android (#92)",
       "kind": "gap",
       "issue": 92
     },
@@ -1139,6 +1309,14 @@
       "reason": "On-device recognition on low-end Android unmeasured (#80, #81)",
       "kind": "gap",
       "issue": 80
+    },
+    {
+      "area": "Where invites live",
+      "ios": "Contatos e convites: invite buttons, people who joined with your invite, and unused invites in the contacts screen",
+      "android": "Convidar pessoas in settings",
+      "reason": "Android has no contacts screen yet (#401)",
+      "kind": "gap",
+      "issue": 401
     },
     {
       "area": "Sticker from a photo",
@@ -1198,6 +1376,27 @@
       "ios": "Back to the app that shared",
       "android": "Back to Bipe",
       "reason": "The iOS check runs in the share extension; Android shows it in the app (ADR 0091)",
+      "kind": "idiom"
+    },
+    {
+      "area": "Message actions",
+      "ios": "Native context menu on long press: reaction row, actions, the message as preview",
+      "android": "Element's bottom sheet",
+      "reason": "Platform idiom",
+      "kind": "idiom"
+    },
+    {
+      "area": "Terms screen and a recovery alert due together",
+      "ios": "Terms screen first, the alert right after Continue",
+      "android": "Recovery alert first, then the terms screen",
+      "reason": "On iOS a root alert cannot show over the full-screen terms cover; on Android the terms screen is an overlay that waits for the alert",
+      "kind": "idiom"
+    },
+    {
+      "area": "Settings: Idioma",
+      "ios": "Row that opens the iPhone Ajustes",
+      "android": "No row",
+      "reason": "iOS sets the app language in system settings; Android follows the system language",
       "kind": "idiom"
     }
   ]

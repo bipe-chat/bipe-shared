@@ -26,7 +26,7 @@
       "Retirar o consentimento, quando a base legal for o consentimento.",
       "Reclamar na Autoridade Nacional de Proteção de Dados (ANPD)."
     ],
-    "rightsHow": "Para qualquer pedido, [fale com a gente](/parceiros/#form). Durante os testes, a conta é apagada por pedido.",
+    "rightsHow": "Para qualquer pedido, [fale com a gente](/organizacoes/#form). Durante os testes, a conta é apagada por pedido.",
     "controllerTitle": "Quem cuida dos seus dados",
     "controller": "Durante os testes, o Bipe é tocado pela Envisioning, que é a controladora dos dados.",
     "encarregadoMissing": "O encarregado de dados ainda não foi nomeado. Até lá, os pedidos chegam pelo mesmo contato."
@@ -55,7 +55,7 @@
       "Withdraw consent, where consent is the legal basis.",
       "Complain to the Brazilian data protection authority (ANPD)."
     ],
-    "rightsHow": "For any request, [contact us](/en/partners/#form). During testing, accounts are deleted on request.",
+    "rightsHow": "For any request, [contact us](/en/organisations/#form). During testing, accounts are deleted on request.",
     "controllerTitle": "Who looks after your data",
     "controller": "During testing, Bipe is run by Envisioning, the data controller.",
     "encarregadoMissing": "The data protection officer (encarregado) is not yet named. Until then, requests go to the same contact."
@@ -70,7 +70,6 @@
     { "id": "server", "brazil": true, "pt": "Servidor do Bipe em São Paulo", "en": "Bipe server in São Paulo" },
     { "id": "apple-push", "brazil": false, "pt": "Apple, serviço de notificações do iPhone", "en": "Apple, the iPhone notification service" },
     { "id": "email-relay", "brazil": null, "pt": "Serviço que entrega os e-mails do Bipe", "en": "The service that delivers Bipe's emails" },
-    { "id": "team-inbox", "brazil": null, "pt": "Caixa de e-mail da equipe", "en": "The team's email inbox" },
     { "id": "icloud-keychain", "brazil": null, "pt": "Chaveiro do iCloud, na sua conta Apple", "en": "iCloud Keychain, in your Apple account" }
   ],
   "items": [
@@ -105,6 +104,23 @@
         "name": "PIN and access",
         "what": "A protected form of your PIN, of the password the app makes by itself and of the recovery code, and how many times the PIN was entered wrong. We never see the PIN or the password itself.",
         "why": "To let you sign in and to protect the account from someone guessing the PIN.",
+        "retention": "As long as the account exists."
+      }
+    },
+    {
+      "id": "terms-acceptance",
+      "basis": "contract",
+      "places": ["server"],
+      "pt": {
+        "name": "Aceite dos termos",
+        "what": "Qual versão dos Termos de uso e da Política de privacidade você aceitou, e quando.",
+        "why": "Mostrar que você concordou com os termos ao criar a conta ou depois de uma mudança.",
+        "retention": "Enquanto a conta existir."
+      },
+      "en": {
+        "name": "Terms acceptance",
+        "what": "Which version of the Terms of use and the Privacy policy you accepted, and when.",
+        "why": "To show that you agreed to the terms when you created the account or after a change.",
         "retention": "As long as the account exists."
       }
     },
@@ -284,13 +300,13 @@
       "places": ["server"],
       "pt": {
         "name": "Marcos de uso do app",
-        "what": "Por dia, quais marcos uma conta atingiu: conta criada, primeira entrada no app, primeira mensagem, contato verificado, convite enviado, convite usado, grupo criado, chamada iniciada e dia de uso. A conta aparece só como um código derivado dela, nunca pelo nome de usuário. Sem conteúdo, sem IP, sem sala e sem saber com quem a pessoa fala. O app não manda nada: o servidor tira isso do que ele já vê.",
+        "what": "Por dia, quais marcos uma conta atingiu: conta criada, primeira entrada no app, primeira mensagem, contato verificado, convite enviado, convite usado, grupo criado, chamada iniciada, dia de uso e onde a pessoa usou o Bipe: iOS, Android ou web. A conta aparece só como um código derivado dela, nunca pelo nome de usuário. Sem conteúdo, sem IP, sem modelo do aparelho, sem sala e sem saber com quem a pessoa fala. O app não manda nada: o servidor tira isso do que ele já vê.",
         "why": "Saber se o Bipe é útil para quem entra e em que passo as pessoas desistem.",
         "retention": "13 meses."
       },
       "en": {
         "name": "App milestones",
-        "what": "Per day, which milestones an account reached: account created, first sign-in, first message, contact verified, invite sent, invite used, group created, call started and day of use. The account shows only as a code derived from it, never by username. No content, no IP address, no room and nothing about who the person talks to. The app sends nothing: the server takes this from what it already sees.",
+        "what": "Per day, which milestones an account reached: account created, first sign-in, first message, contact verified, invite sent, invite used, group created, call started, day of use, and where the person used Bipe: iOS, Android or web. The account shows only as a code derived from it, never by username. No content, no IP address, no device model, no room and nothing about who the person talks to. The app sends nothing: the server takes this from what it already sees.",
         "why": "To know whether Bipe is useful to people who join and at which step people give up.",
         "retention": "13 months."
       }
@@ -313,19 +329,19 @@
       }
     },
     {
-      "id": "partner-requests",
+      "id": "organisation-requests",
       "basis": "legitimate-interest",
-      "places": ["server", "email-relay", "team-inbox"],
+      "places": ["server"],
       "pt": {
-        "name": "Pedido de parceria",
-        "what": "Nome e tipo da organização, nome e e-mail de quem escreveu, a mensagem e o idioma.",
-        "why": "Responder ao pedido. A equipe recebe uma cópia por e-mail.",
+        "name": "Pedido de organização",
+        "what": "Nome, tipo e CNPJ da organização, nome, cargo e e-mail de quem escreveu, quantos clientes ela atende, os canais que usa, quanto paga hoje para falar com os clientes, a mensagem e o idioma.",
+        "why": "Responder ao pedido e entender quanto as organizações pagam hoje para falar com os clientes.",
         "retention": "Um ano. Antes disso, se você pedir."
       },
       "en": {
-        "name": "Partner request",
-        "what": "The organisation's name and type, the name and email of the person who wrote, the message and the language.",
-        "why": "To answer the request. The team gets a copy by email.",
+        "name": "Organisation request",
+        "what": "The organisation's name, kind and CNPJ, the name, role and email of the person who wrote, how many customers it serves, the channels it uses, what it pays today to talk to customers, the message and the language.",
+        "why": "To answer the request and to learn what organisations pay today to talk to their customers.",
         "retention": "One year. Earlier, if you ask."
       }
     }

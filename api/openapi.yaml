@@ -12,11 +12,18 @@ paths:
   /v1/badges/{userId}:
     get:
       summary: Current badge envelope for a user
+      description: >
+        Public, no auth. The server signs on read (ADR 0123) and caches the envelope until
+        renewDaysBeforeExpiry before exp (registries/badge-keys.json). A verified company gets a
+        lvl "cnpj" badge bound to the account's cross-signing master key (msk), so it is valid on
+        every device of the account (bipe#399). Apps verify it locally (docs/badge-attestation.md)
+        and never trust the HTTP status alone. Fail closed: no master key on the homeserver gives 404.
       parameters:
         - name: userId
           in: path
           required: true
           schema: { type: string }
+          description: Matrix user ID, e.g. @lojadaana:bipe.net.br
       responses:
         "200":
           description: Badge envelope (verify locally, see docs/badge-attestation.md)
@@ -24,7 +31,15 @@ paths:
             application/json:
               schema: { $ref: "#/components/schemas/BadgeEnvelope" }
         "404":
-          description: User has no badge
+          description: No badge. No claim, a claim that is not verified, no cross-signing master key, or no signing key on the server.
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/Error" }
+        "410":
+          description: The account had a badge and its claim was revoked. Show no seal.
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/BadgeGone" }
   /v1/verifications/pix:
     post:
       summary: Start a Pix verification for the caller
@@ -97,6 +112,10 @@ paths:
         credentials. A second request with the same key returns the same account and credentials,
         and creates nothing. While the first request with a key still runs, a second one gets 429
         rate_limited with reason signup_in_progress; the app retries after a few seconds.
+        Terms (ADR 0113): terms_version must be legalVersion in registries/legal.json. The app sends it only
+        after the person ticked the checkbox. Without it, or with an older version, the server answers 403
+        terms_required (reason missing or outdated) and creates nothing, unless SIGNUP_TERMS_REQUIRED=false.
+        A given terms_version is recorded with the account in the same transaction.
       requestBody:
         required: true
         content:
@@ -151,6 +170,25 @@ paths:
               schema: { $ref: "#/components/schemas/SignupResponse" }
         "400": { $ref: "#/components/responses/Error" }
         "404": { $ref: "#/components/responses/Error" }
+        "429": { $ref: "#/components/responses/Error" }
+  /v1/me/terms:
+    post:
+      summary: Record that the caller accepted the current terms (ADR 0113)
+      description: >
+        For accounts made before ADR 0113 and after a new legalVersion. The app sends it only after the
+        person ticked the checkbox on the re-accept screen. terms_version must be the current legalVersion,
+        else 403 terms_required with reason outdated. A repeat of the same version records nothing new.
+      security: [{ matrix: [] }]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: { $ref: "#/components/schemas/TermsAcceptance" }
+      responses:
+        "204": { description: Recorded }
+        "400": { $ref: "#/components/responses/Error" }
+        "401": { $ref: "#/components/responses/Error" }
+        "403": { $ref: "#/components/responses/Error" }
         "429": { $ref: "#/components/responses/Error" }
   /v1/me/account:
     get:
@@ -214,6 +252,68 @@ paths:
         "401": { $ref: "#/components/responses/Error" }
         "403": { $ref: "#/components/responses/Error" }
         "409": { $ref: "#/components/responses/Error" }
+        "429": { $ref: "#/components/responses/Error" }
+  /v1/web-link/finish:
+    post:
+      summary: End the MAS browser sessions that a web sign-in approval made (ADR 0118)
+      description: >
+        The phone calls this after it approves a web sign-in in its private web view. The server
+        finishes, through the MAS admin API, every active MAS browser session of the caller that
+        started at or after `since` minus 60 seconds. Older sessions stay, so staff browser sessions
+        are not touched. 400 bad_request when `since` is more than 15 minutes in the past or in
+        the future.
+      security: [{ matrix: [] }]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [since]
+              properties:
+                since: { type: string, format: date-time, description: When the phone started the flow }
+      responses:
+        "200":
+          description: Done
+          content:
+            application/json:
+              schema:
+                type: object
+                required: [finished]
+                properties:
+                  finished: { type: integer, minimum: 0, description: Number of sessions finished }
+        "400": { $ref: "#/components/responses/Error" }
+        "401": { $ref: "#/components/responses/Error" }
+        "429": { $ref: "#/components/responses/Error" }
+  /v1/web-link/place:
+    get:
+      summary: Approximate place of a browser IP, for the web sign-in approval screen (ADR 0118)
+      description: >
+        Looks the IP up in a GeoIP city database on the Bipe server (IP Geolocation by DB-IP,
+        CC BY 4.0). The IP goes to no outside service and is not logged or stored. Every field is
+        optional; `{}` when the place is unknown or the database is not loaded. The app shows
+        "IP Geolocation by DB-IP" next to the place.
+      security: [{ matrix: [] }]
+      parameters:
+        - name: ip
+          in: query
+          required: true
+          schema: { type: string, maxLength: 45, description: IPv4 or IPv6 address }
+      responses:
+        "200":
+          description: Place
+          headers:
+            Cache-Control: { schema: { type: string, enum: [no-store] } }
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  city: { type: string }
+                  region: { type: string }
+                  country: { type: string, description: ISO 3166-1 alpha-2 }
+        "400": { $ref: "#/components/responses/Error" }
+        "401": { $ref: "#/components/responses/Error" }
         "429": { $ref: "#/components/responses/Error" }
   /v1/me/device-first:
     post:
@@ -488,20 +588,35 @@ paths:
         "202": { description: Accepted }
         "400": { $ref: "#/components/responses/Error" }
         "429": { $ref: "#/components/responses/Error" }
-  /v1/partners:
+  /v1/organisations:
     post:
-      summary: Ask to partner with Bipe (organisations)
+      summary: An organisation asks to use Bipe or to partner (organisation form)
       description: >
-        No auth. Called from the partner page on the public site (CORS allows https://bipe.chat).
+        No auth. Called from the organisation form on the public site (CORS allows https://bipe.chat).
         Rate-limited per IP and globally. Always answers 202 for a well-formed request, the
-        honeypot included. The API stores the request and emails a notice to the partner inbox
-        (BIPE_PARTNERS_TO) when outgoing email is on. Requests are deleted after 365 days or on
-        request. ADR 0067, issue bipe#177.
+        honeypot included. The API stores the request on the server in Brazil and sends no email.
+        Requests are deleted after 365 days or on request. ADR 0126, issue bipe#410.
       requestBody:
         required: true
         content:
           application/json:
-            schema: { $ref: "#/components/schemas/PartnerRequest" }
+            schema: { $ref: "#/components/schemas/OrganisationRequest" }
+      responses:
+        "202": { description: Accepted }
+        "400": { $ref: "#/components/responses/Error" }
+        "429": { $ref: "#/components/responses/Error" }
+  /v1/partners:
+    post:
+      deprecated: true
+      summary: Old name of POST /v1/organisations
+      description: >
+        The same route as POST /v1/organisations, with the same body, limits and answers. It stays
+        until the form moves to Starlings (bipe#273). ADR 0126.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: { $ref: "#/components/schemas/OrganisationRequest" }
       responses:
         "202": { description: Accepted }
         "400": { $ref: "#/components/responses/Error" }
@@ -735,6 +850,26 @@ paths:
             application/json:
               schema: { $ref: "#/components/schemas/MessagingSetting" }
         "400": { $ref: "#/components/responses/Error" }
+        "401": { $ref: "#/components/responses/Error" }
+        "429": { $ref: "#/components/responses/Error" }
+  /v1/me/export:
+    get:
+      summary: A copy of everything the API stores about the caller (LGPD art. 18, ADR 0112)
+      description: >
+        One JSON file: account state, recovery email and recoveries, handle and its history,
+        public profile (photo as base64 JPEG), messaging and discovery settings, phone link
+        status, personal invites and invite connections, the CNPJ claim, terms acceptances and growth events. It
+        leaves out hashes, sealed secrets and the phone number (never stored). Messages are not
+        on the server. The app asks for a biometric check first. 3 per hour per account.
+      security: [{ matrix: [] }]
+      responses:
+        "200":
+          description: >
+            The export. Header content-disposition names the file
+            bipe-dados-YYYY-MM-DD.json. Apps save the body as it is and do not parse it.
+          content:
+            application/json:
+              schema: { type: object }
         "401": { $ref: "#/components/responses/Error" }
         "429": { $ref: "#/components/responses/Error" }
   /v1/me/business:
@@ -1040,6 +1175,154 @@ paths:
                 required: [inviters]
                 properties:
                   inviters: { type: array, items: { $ref: "#/components/schemas/InviterStats" } }
+        "401": { $ref: "#/components/responses/Error" }
+        "404": { $ref: "#/components/responses/Error" }
+  /v1/admin/summary:
+    get:
+      summary: Staff index numbers, one small object per staff page
+      description: >
+        Only for users that MAS marks admin (ADR 0056); every other user gets 404 not_found. CORS allows PUBLIC_SITE_URL.
+        One call for the index bipe.chat/admin/ (bipe#394). Each page object is null when its source is off or fails;
+        the other pages still answer. Counts of people of 1 or 2 are null (bipe#371).
+      security: [{ matrix: [] }]
+      responses:
+        "200":
+          description: Numbers per page
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/StaffSummary" }
+        "401": { $ref: "#/components/responses/Error" }
+        "404": { $ref: "#/components/responses/Error" }
+  /v1/admin/metrics:
+    get:
+      summary: Staff dashboard, daily series and growth rates
+      description: >
+        Only for users that MAS marks admin (ADR 0056); every other user gets 404 not_found. CORS allows PUBLIC_SITE_URL.
+        For the dashboard on bipe.chat/admin/. Days are calendar days in Brazil time; windows end today and include today.
+        Rates come from the raw counts. Counts of 1 or 2 are null (bipe#371). A part is null when its source is off or fails;
+        `sources` says which series columns are live, so a null in a live column is a count below min_cell.
+      security: [{ matrix: [] }]
+      parameters:
+        - { name: days, in: query, required: false, schema: { type: integer, minimum: 14, maximum: 365, default: 90 } }
+      responses:
+        "200":
+          description: Rates and series
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/StaffMetrics" }
+        "401": { $ref: "#/components/responses/Error" }
+        "404": { $ref: "#/components/responses/Error" }
+  /v1/admin/growth:
+    get:
+      summary: Staff growth funnel and retention by sign-up week
+      description: >
+        Only for users that MAS marks admin (ADR 0056); every other user gets 404 not_found.
+        Aggregates of the growth events (ADR 0098), never a pseudonymous user ID. A count of 1 or 2 is null,
+        and a sign-up week with fewer than 3 sign-ups shows only its week (bipe#371). CORS allows PUBLIC_SITE_URL.
+      security: [{ matrix: [] }]
+      parameters:
+        - { name: since, in: query, required: false, description: "First sign-up day. Default: 90 days ago.", schema: { type: string, format: date } }
+      responses:
+        "200":
+          description: Funnel, retention and event totals
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/GrowthReport" }
+        "401": { $ref: "#/components/responses/Error" }
+        "404": { $ref: "#/components/responses/Error" }
+  /v1/admin/experiments:
+    get:
+      summary: Staff headline-test report
+      description: >
+        Only for users that MAS marks admin (ADR 0056); every other user gets 404 not_found. CORS allows PUBLIC_SITE_URL.
+        Every experiment in experiment_counts with its arms (ADR 0032). Waitlist sign-ups of 1 or 2 are null (bipe#371).
+      security: [{ matrix: [] }]
+      responses:
+        "200":
+          description: Report
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/ExperimentsReport" }
+        "401": { $ref: "#/components/responses/Error" }
+        "404": { $ref: "#/components/responses/Error" }
+  /v1/admin/waitlist:
+    get:
+      summary: Staff waitlist report
+      description: >
+        Only for users that MAS marks admin (ADR 0056); every other user gets 404 not_found. CORS allows PUBLIC_SITE_URL.
+        Waiting entries per platform and each released batch (ADR 0089). No email address.
+      security: [{ matrix: [] }]
+      responses:
+        "200":
+          description: Report
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/WaitlistReport" }
+        "401": { $ref: "#/components/responses/Error" }
+        "404": { $ref: "#/components/responses/Error" }
+  /v1/admin/business:
+    get:
+      summary: Staff CNPJ claim list
+      description: >
+        Only for users that MAS marks admin (ADR 0056); every other user gets 404 not_found. CORS allows PUBLIC_SITE_URL.
+        Every claim with registry match and domain counts (ADR 0042). Read only.
+      security: [{ matrix: [] }]
+      responses:
+        "200":
+          description: Report
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/BusinessReport" }
+        "401": { $ref: "#/components/responses/Error" }
+        "404": { $ref: "#/components/responses/Error" }
+  /v1/admin/reports:
+    get:
+      summary: Staff user reports
+      description: >
+        Only for users that MAS marks admin (ADR 0056); every other user gets 404 not_found. CORS allows PUBLIC_SITE_URL.
+        Synapse user reports, newest first, max 500: room, reason and score only. No reporter, no event, no content.
+      security: [{ matrix: [] }]
+      parameters:
+        - { name: days, in: query, required: false, schema: { type: integer, minimum: 1, maximum: 400, default: 90 } }
+      responses:
+        "200":
+          description: Report
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/UserReports" }
+        "401": { $ref: "#/components/responses/Error" }
+        "404": { $ref: "#/components/responses/Error" }
+  /v1/admin/retention:
+    get:
+      summary: Staff retention check
+      description: >
+        Only for users that MAS marks admin (ADR 0056); every other user gets 404 not_found. CORS allows PUBLIC_SITE_URL.
+        Per data item with a time limit (ADR 0090): rows, oldest row, rows past the limit. Counts only.
+      security: [{ matrix: [] }]
+      responses:
+        "200":
+          description: Report
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/RetentionReport" }
+        "401": { $ref: "#/components/responses/Error" }
+        "404": { $ref: "#/components/responses/Error" }
+  /v1/admin/visits:
+    get:
+      summary: Staff report of site visits in Brazil by state and city
+      description: >
+        Only for users that MAS marks admin (bipe/docs/adr ADR 0056); every other user gets 404 not_found.
+        Reads the Umami database (ADR 0098) for bipe.chat: country BR only. Umami takes the place from the visitor IP and keeps no IP.
+        Without UMAMI_DATABASE_URL the route answers 500 internal. CORS allows PUBLIC_SITE_URL.
+      security: [{ matrix: [] }]
+      parameters:
+        - { name: days, in: query, required: false, schema: { type: integer, minimum: 1, maximum: 400, default: 30 } }
+      responses:
+        "200":
+          description: Visits, most visitors first
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/VisitReport" }
         "401": { $ref: "#/components/responses/Error" }
         "404": { $ref: "#/components/responses/Error" }
   /v1/me/business/catalog:
@@ -3763,15 +4046,21 @@ components:
         lang: { type: string, enum: [pt, en], default: pt, description: "Language of the one email Bipe sends." }
         source: { type: string, maxLength: 64, pattern: "^[a-z0-9:/_.-]*$", description: "Where the form was: the page path, plus ':' and the headline arm when a test runs (issue #77), for example /baixar/ or /:h2." }
         website: { type: string, maxLength: 200, description: "Honeypot. People leave it empty; a non-empty value is accepted and dropped." }
-    PartnerRequest:
+    OrganisationRequest:
       type: object
       required: [organisation, name, email, kind]
       properties:
         organisation: { type: string, minLength: 1, maxLength: 200 }
         name: { type: string, minLength: 1, maxLength: 120, description: "The contact person." }
         email: { type: string, format: email, maxLength: 254 }
-        kind: { type: string, enum: [funder, tech, bank, research, civil, public, other], description: "Kind of organisation, as listed on the partner page." }
-        message: { type: string, maxLength: 2000, description: "How the organisation wants to help. Optional." }
+        role: { type: string, maxLength: 120, description: "The contact person's role. Optional." }
+        cnpj: { type: string, maxLength: 32, description: "Optional. Any input normalizeCnpj accepts (test-vectors/cnpj.json); a value that does not normalise is a 400. Stored as 14 characters." }
+        kind: { type: string, enum: [company, institution, association, public_body, partner, other], description: "Kind of organisation. partner: an organisation that wants to help carry Bipe (ADR 0067)." }
+        customers_band: { type: string, enum: [lt_100, 100_1k, 1k_10k, 10k_100k, gt_100k], description: "How many customers the organisation talks to per month. Optional." }
+        channels: { type: array, maxItems: 7, uniqueItems: true, items: { type: string, enum: [whatsapp_app, whatsapp_api, sms, email, phone, own_app, other] }, description: "Where the organisation talks to its customers today. Optional." }
+        spend_band: { type: string, enum: [zero, lt_500, 500_2k, 2k_10k, 10k_50k, gt_50k, unknown], description: "What the organisation pays per month today, in R$, to talk to customers on those channels. Optional." }
+        spend_note: { type: string, maxLength: 500, description: "Which platform and what it charges for. Optional." }
+        message: { type: string, maxLength: 2000, description: "Optional." }
         lang: { type: string, enum: [pt, en], default: pt }
         website: { type: string, maxLength: 200, description: "Honeypot. People leave it empty; a non-empty value is accepted and dropped." }
     SignupRequest:
@@ -3786,11 +4075,14 @@ components:
         display_name: { type: string, maxLength: 100 }
         attestation: { $ref: "#/components/schemas/Attestation" }
         signup_key: { type: string, pattern: "^[A-Za-z0-9_-]{43}$", description: "Device-first only, recommended: 32 random bytes as base64url, made by the app before the first try and kept on this device until the credentials are stored. Same key again: the same account (ADR 0094). Ignored in legacy mode." }
+        terms_version: { type: string, pattern: "^\\d{4}-\\d{2}-\\d{2}$", description: "ADR 0113: the legalVersion the person accepted with the checkbox. Must be the current one." }
+        account_type: { type: string, enum: [personal, company], description: "ADR 0087: company makes a company account (owner case). It needs a valid attestation (ADR 0043) and device-first mode. Default personal." }
     SignupConfig:
       type: object
-      required: [invite_required]
+      required: [invite_required, terms_version]
       properties:
         invite_required: { type: boolean, description: "true: POST /v1/signup without a valid invite_code fails with invite_invalid (SIGNUP_INVITE_REQUIRED)." }
+        terms_version: { type: string, description: "The current legalVersion (ADR 0113). The only value POST /v1/signup and POST /v1/me/terms accept." }
     Attestation:
       type: object
       required: [key_id, attestation_object, challenge]
@@ -3848,6 +4140,317 @@ components:
         downstream: { type: integer, description: "Everyone below the user in the invite tree, all levels." }
         depth: { type: integer, description: "Levels in the user's invite tree." }
         last_join: { type: [string, "null"], format: date-time }
+    ExperimentsReport:
+      type: object
+      required: [experiments]
+      properties:
+        experiments:
+          type: array
+          items:
+            type: object
+            required: [id, first_day, last_day, arms]
+            properties:
+              id: { type: string }
+              first_day: { type: string, format: date }
+              last_day: { type: string, format: date }
+              arms:
+                type: array
+                items:
+                  type: object
+                  required: [arm, visitors, install_clicks, waitlist]
+                  properties:
+                    arm: { type: string }
+                    visitors: { type: integer }
+                    install_clicks: { type: integer }
+                    waitlist: { type: [integer, "null"] }
+    WaitlistReport:
+      type: object
+      required: [platforms, batches]
+      properties:
+        platforms:
+          type: array
+          items:
+            type: object
+            required: [platform, waiting, invited, oldest]
+            properties:
+              platform: { type: string }
+              waiting: { type: integer }
+              invited: { type: integer, description: "Entries with an invite that is still open." }
+              oldest: { type: [string, "null"], format: date-time, description: "Oldest waiting entry." }
+        batches:
+          type: array
+          items:
+            type: object
+            required: [note, sent, joined, expired, revoked]
+            properties:
+              note: { type: string, description: "waitlist-YYYY-MM-DD" }
+              sent: { type: integer }
+              joined: { type: [integer, "null"] }
+              expired: { type: integer }
+              revoked: { type: integer }
+    BusinessReport:
+      type: object
+      required: [claims]
+      properties:
+        claims:
+          type: array
+          items:
+            type: object
+            required: [user_id, cnpj, status, created_at, domains, domains_verified]
+            properties:
+              user_id: { type: string }
+              cnpj: { type: string }
+              status: { type: string, enum: [registry_pending, awaiting_proof, verified, rejected, revoked] }
+              reason: { type: [string, "null"] }
+              method: { type: [string, "null"] }
+              created_at: { type: string, format: date-time }
+              verified_at: { type: [string, "null"], format: date-time }
+              ended_at: { type: [string, "null"], format: date-time }
+              legal_name: { type: [string, "null"] }
+              trade_name: { type: [string, "null"] }
+              registry_active: { type: [boolean, "null"] }
+              release_month: { type: [string, "null"] }
+              domains: { type: integer }
+              domains_verified: { type: integer }
+              last_checked: { type: [string, "null"], format: date-time }
+    UserReports:
+      type: object
+      required: [days, reports]
+      properties:
+        days: { type: integer }
+        reports:
+          type: array
+          items:
+            type: object
+            required: [id, received_at, room_id]
+            properties:
+              id: { type: integer }
+              received_at: { type: string, format: date-time }
+              room_id: { type: string }
+              reason: { type: [string, "null"] }
+              score: { type: [integer, "null"] }
+    RetentionReport:
+      type: object
+      required: [items]
+      properties:
+        items:
+          type: array
+          items:
+            type: object
+            required: [id, limit_days, rows, oldest, over]
+            properties:
+              id: { type: string, description: "Item id in bipe-shared product/data.json, or signup-replays." }
+              limit_days: { type: [integer, "null"], description: "Null: the limit is an event, not an age (waitlist)." }
+              rows: { type: integer }
+              oldest: { type: [string, "null"], format: date-time }
+              over: { type: integer, description: "Rows past the limit." }
+    GrowthReport:
+      type: object
+      required: [since, min_cell, funnel, retention, totals]
+      properties:
+        since: { type: string, format: date }
+        min_cell: { type: integer, description: "Counts below this are null." }
+        funnel:
+          type: array
+          description: Funnel steps in registry order. A user counts at a step only with every earlier step.
+          items:
+            type: object
+            required: [step, users]
+            properties:
+              step: { type: string }
+              users: { type: [integer, "null"] }
+        retention:
+          type: array
+          items:
+            type: object
+            required: [week, signups, days]
+            properties:
+              week: { type: string, format: date, description: "Monday of the sign-up week." }
+              signups: { type: [integer, "null"], description: "Null when the week is below min_cell; days is then empty." }
+              days:
+                type: array
+                items:
+                  type: object
+                  required: [day, kept, due]
+                  properties:
+                    day: { type: integer }
+                    kept: { type: [integer, "null"], description: "Active on day N." }
+                    due: { type: integer, description: "Sign-ups whose day N is over." }
+        totals:
+          type: array
+          items:
+            type: object
+            required: [event, users, count]
+            properties:
+              event: { type: string }
+              users: { type: [integer, "null"] }
+              count: { type: [integer, "null"] }
+    StaffWindow:
+      type: object
+      required: [now, before, change]
+      properties:
+        now: { type: [integer, "null"], description: "Count in the window that ends today." }
+        before: { type: [integer, "null"], description: "Count in the window of the same length before it." }
+        change: { type: [number, "null"], description: "Percent change from before to now, one decimal. Null when before is 0." }
+    StaffMetrics:
+      type: object
+      required: [min_cell, today, accounts, growth, engagement, site, waitlist, series, weeks, sources]
+      properties:
+        min_cell: { type: integer }
+        today: { type: string, format: date, description: "Today in Brazil time." }
+        accounts: { type: [integer, "null"], description: "All rows in signups." }
+        growth:
+          type: object
+          required: [signups_7d, signups_28d, accounts_weekly_pct, accounts_28d_pct, invite_share_28d_pct, joins_28d]
+          properties:
+            signups_7d: { $ref: "#/components/schemas/StaffWindow" }
+            signups_28d: { $ref: "#/components/schemas/StaffWindow" }
+            accounts_weekly_pct: { type: [number, "null"], description: "Average weekly growth of all accounts over the last 4 weeks, compounded." }
+            accounts_28d_pct: { type: [number, "null"], description: "Growth of all accounts over the last 28 days." }
+            invite_share_28d_pct: { type: [number, "null"], description: "Sign-ups with a personal invite, share of all sign-ups in 28 days." }
+            joins_28d: { $ref: "#/components/schemas/StaffWindow" }
+        engagement:
+          type: [object, "null"]
+          description: From growth events (active_day, first_message_sent). DAU is yesterday.
+          properties:
+            dau: { type: [integer, "null"] }
+            wau: { type: [integer, "null"] }
+            mau: { type: [integer, "null"] }
+            dau_mau_pct: { type: [number, "null"] }
+            wau_mau_pct: { type: [number, "null"] }
+            activation_28d_pct: { type: [number, "null"], description: "Sign-ups of the last 28 days with a first message." }
+        site:
+          type: [object, "null"]
+          description: Null without UMAMI_DATABASE_URL. Visitors are Umami sessions from Brazil, summed per day.
+          properties:
+            visitors_7d: { $ref: "#/components/schemas/StaffWindow" }
+            visitors_28d: { $ref: "#/components/schemas/StaffWindow" }
+            signup_per_visitor_28d_pct: { type: [number, "null"] }
+        waitlist:
+          type: [object, "null"]
+          properties:
+            joins_7d: { $ref: "#/components/schemas/StaffWindow" }
+            joins_28d: { $ref: "#/components/schemas/StaffWindow" }
+        series:
+          type: array
+          description: One row per day, oldest first.
+          items:
+            type: object
+            required: [day, signups, joins, waitlist, active, visitors]
+            properties:
+              day: { type: string, format: date }
+              signups: { type: [integer, "null"] }
+              joins: { type: [integer, "null"], description: "Sign-ups with a personal invite." }
+              waitlist: { type: [integer, "null"], description: "Waitlist entries still stored. The server deletes an entry after its invite is used." }
+              active: { type: [integer, "null"], description: "Distinct people with active_day." }
+              visitors: { type: [integer, "null"] }
+        weeks:
+          type: array
+          description: >
+            7-day windows that end today, 7 days back, and so on; oldest first. Sums of raw daily counts, then the cell rule.
+            No active column: a sum of daily active people counts a person once per day.
+          items:
+            type: object
+            required: [end, signups, joins, waitlist, visitors]
+            properties:
+              end: { type: string, format: date, description: "Last day of the window." }
+              signups: { type: [integer, "null"] }
+              joins: { type: [integer, "null"] }
+              waitlist: { type: [integer, "null"] }
+              visitors: { type: [integer, "null"] }
+        sources:
+          type: object
+          required: [signups, joins, waitlist, active, visitors]
+          properties:
+            signups: { type: boolean }
+            joins: { type: boolean }
+            waitlist: { type: boolean }
+            active: { type: boolean }
+            visitors: { type: boolean }
+    StaffSummary:
+      type: object
+      description: Keys are the page keys in bipe-web src/admin/staff-pages.ts. A null page object means its source is off or failed.
+      required: [min_cell, crescimento, convites, visitas, experimentos, espera, empresas, denuncias, lgpd]
+      properties:
+        min_cell: { type: integer, description: "Counts of people below this are null." }
+        crescimento:
+          type: [object, "null"]
+          required: [signups_7d]
+          properties:
+            signups_7d: { type: [integer, "null"], description: "Accounts created in the last 7 days." }
+        convites:
+          type: [object, "null"]
+          required: [joins_30d]
+          properties:
+            joins_30d: { type: [integer, "null"], description: "Sign-ups with a personal invite in the last 30 days." }
+        visitas:
+          type: [object, "null"]
+          description: Null without UMAMI_DATABASE_URL.
+          required: [brazil_7d]
+          properties:
+            brazil_7d: { type: [integer, "null"], description: "Umami sessions from Brazil in the last 7 days." }
+        experimentos:
+          type: [object, "null"]
+          description: Null when experiment_counts is empty.
+          required: [id, visitors]
+          properties:
+            id: { type: string, description: "The experiment with the most recent counts." }
+            visitors: { type: integer, description: "Assignments over all arms." }
+        espera:
+          type: [object, "null"]
+          required: [waiting]
+          properties:
+            waiting: { type: integer, description: "Waitlist entries without an invite, all platforms." }
+        empresas:
+          type: [object, "null"]
+          required: [awaiting_proof, verified]
+          properties:
+            awaiting_proof: { type: integer }
+            verified: { type: integer }
+        denuncias:
+          type: [object, "null"]
+          description: Null without SYNAPSE_DATABASE_URL.
+          required: [reports_7d]
+          properties:
+            reports_7d: { type: integer, description: "Synapse user reports in the last 7 days." }
+        lgpd:
+          type: [object, "null"]
+          required: [over]
+          properties:
+            over: { type: integer, description: "Rows past their limit, over all items of /v1/admin/retention." }
+    VisitCount:
+      type: object
+      required: [visitors, views]
+      properties:
+        visitors: { type: integer, description: "Umami sessions." }
+        views: { type: integer, description: "Page views." }
+    VisitReport:
+      type: object
+      required: [days, brazil, other_countries, states, cities]
+      properties:
+        days: { type: integer }
+        brazil: { $ref: "#/components/schemas/VisitCount" }
+        other_countries: { $ref: "#/components/schemas/VisitCount" }
+        states:
+          type: array
+          items:
+            allOf:
+              - { $ref: "#/components/schemas/VisitCount" }
+              - type: object
+                required: [state]
+                properties:
+                  state: { type: [string, "null"], description: "UF code (SP, RJ). Null when Umami found no state." }
+        cities:
+          type: array
+          description: The 200 rows with the most visitors. Cities with fewer than 3 visitors fold into one row per state with city null (bipe#371).
+          items:
+            allOf:
+              - { $ref: "#/components/schemas/VisitCount" }
+              - type: object
+                required: [state, city]
+                properties:
+                  state: { type: [string, "null"] }
+                  city: { type: [string, "null"], description: "Null: the other cities of the state together." }
     MyInvites:
       type: object
       required: [quota, available, invites]
@@ -3904,7 +4507,9 @@ components:
         name: { type: string }
         bio: { type: string, description: "Plain text. Absent when empty." }
         photo_url: { type: string, description: "Absolute URL of GET /v1/profiles/{handle}/photo with a version. Absent without a photo." }
-        badge: { $ref: "#/components/schemas/BadgeEnvelope" }
+        badge:
+          $ref: "#/components/schemas/BadgeEnvelope"
+          description: The same envelope as GET /v1/badges/{userId}. Absent when that call would not answer 200.
     MyProfile:
       type: object
       required: [enabled, name, bio, has_photo]
@@ -3980,13 +4585,21 @@ components:
         email: { type: string, description: "The verified recovery email. Absent when none." }
         email_pending: { type: string, description: "An address waiting for its link. Absent when none." }
         recoveries: { type: array, items: { $ref: "#/components/schemas/Recovery" }, description: "Waiting ones, and ones that ended in the last 7 days. Newest first." }
+        terms_version: { type: string, description: "ADR 0113: the last legalVersion this account accepted. Absent when none (accounts made before ADR 0113). An app shows the re-accept screen when it differs from legalVersion." }
+        max_accounts: { type: integer, minimum: 1, description: "ADR 0086: personal accounts one phone may hold. Company accounts do not count. Absent from an older server: the app uses maxPersonalAccounts in registries/accounts.json." }
+        account_type: { type: string, enum: [personal, company], description: "ADR 0087. Absent from an older server: personal." }
+    TermsAcceptance:
+      type: object
+      required: [terms_version]
+      properties:
+        terms_version: { type: string, pattern: "^\\d{4}-\\d{2}-\\d{2}$", description: "The current legalVersion, sent only after the person accepted it." }
     Error:
       type: object
       required: [error]
       properties:
         error:
           type: string
-          enum: [bad_request, invite_invalid, invite_quota_exhausted, email_taken, handle_invalid, handle_taken, handle_cooldown, password_weak, attestation_invalid, profile_invalid, photo_invalid, unauthorized, not_found, rate_limited, internal, cnpj_invalid, cnpj_not_active, cnpj_taken, signature_invalid, pin_weak, pin_wrong, pin_blocked, pin_not_set, recovery_invalid, email_unavailable]
+          enum: [bad_request, invite_invalid, invite_quota_exhausted, email_taken, handle_invalid, handle_taken, handle_cooldown, password_weak, attestation_invalid, profile_invalid, photo_invalid, unauthorized, not_found, rate_limited, internal, cnpj_invalid, cnpj_not_active, cnpj_taken, signature_invalid, pin_weak, pin_wrong, pin_blocked, pin_not_set, recovery_invalid, email_unavailable, terms_required]
         reason: { type: string, description: "Detail, e.g. a HandleProblem or PinProblem id." }
         tries_left: { type: integer, description: "With pin_wrong: wrong PINs left before the PIN blocks." }
     BadgeEnvelope:
@@ -3997,6 +4610,16 @@ components:
         kid: { type: string }
         payload: { type: string, description: "base64url JSON payload bytes" }
         sig: { type: string, description: "base64url Ed25519 signature" }
+    BadgeGone:
+      type: object
+      required: [reason]
+      properties:
+        reason:
+          type: string
+          enum: [revoked, not_active, not_found, staff]
+          description: >
+            not_active and not_found: a registry scan found the CNPJ no longer active or missing.
+            staff: staff revoked the claim. revoked: any other end of the verification.
     PixChallenge:
       type: object
       required: [verificationId, brcode, amountCents, expiresAt]

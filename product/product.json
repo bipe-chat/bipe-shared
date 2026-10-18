@@ -2496,7 +2496,7 @@
     }
   },
   "pricing": {
-    "$comment": "The /precos/ page (/en/pricing/). Source: bipe ADRs 0070, 0075, 0083, 0099, 0104 to 0107. Tier ids are stable. `amount` is the price in BRL and is set only after the free pilot, by a new ADR (ADR 0075); a tier with no `amount` shows `pilotPrice`. `contact` adds the contact button. `tools` are feature ids in `features`.",
+    "$comment": "The /precos/ page (/en/pricing/). Source: bipe ADRs 0070, 0075, 0083, 0099, 0104 to 0107. Tier ids are stable. `amount` is the price in BRL and is set only after the free pilot, by a new ADR (ADR 0075); a tier with no `amount` shows `pilotPrice`. `cta` picks the card's button: `app` (download the app) or `form` (the organisation form). `tools` are feature ids in `features`.",
     "tools": [
       "agenda",
       "catalog",
@@ -2507,18 +2507,20 @@
     "tiers": [
       {
         "id": "small",
-        "amount": 0
+        "amount": 0,
+        "cta": "app"
       },
       {
-        "id": "company"
+        "id": "company",
+        "cta": "form"
       },
       {
         "id": "institution",
-        "contact": true
+        "cta": "form"
       },
       {
         "id": "public",
-        "contact": true
+        "cta": "form"
       }
     ],
     "pt": {
@@ -2602,7 +2604,9 @@
           "No fim do piloto, cada empresa recebe uma proposta de preço.",
           "A caixa de entrada, a API e o selo de CNPJ ainda não estão no ar."
         ]
-      }
+      },
+      "ctaApp": "Baixar o app",
+      "ctaForm": "Quero usar o Bipe"
     },
     "en": {
       "nav": "Pricing",
@@ -2685,7 +2689,9 @@
           "When the pilot ends, each company gets a price offer.",
           "The inbox, the API and the CNPJ seal are not live yet."
         ]
-      }
+      },
+      "ctaApp": "Get the app",
+      "ctaForm": "I want to use Bipe"
     }
   },
   "organisations": {
@@ -2770,6 +2776,11 @@
         "done": "Recebemos. A gente responde por e-mail.",
         "error": "Não deu para enviar. Tente de novo daqui a pouco.",
         "note": "Usamos esses dados só para responder e para entender quanto as organizações pagam hoje. Eles ficam no Brasil e são apagados depois de um ano."
+      },
+      "small": {
+        "heading": "MEI ou microempresa?",
+        "body": "Você não precisa do formulário. Baixe o app e crie a conta da empresa em Você > Sua conta > Criar conta da empresa. O plano Pequeno negócio não tem mensalidade.",
+        "button": "Baixar o app"
       }
     },
     "en": {
@@ -2852,6 +2863,11 @@
         "done": "Got it. We will answer by email.",
         "error": "Could not send. Try again in a moment.",
         "note": "We use this only to answer you and to learn what organisations pay today. It stays in Brazil and is deleted after one year."
+      },
+      "small": {
+        "heading": "MEI or micro company?",
+        "body": "You don't need the form. Get the app and create the company account in You > Your account > Create a company account. The Small business plan has no monthly fee.",
+        "button": "Get the app"
       }
     }
   },

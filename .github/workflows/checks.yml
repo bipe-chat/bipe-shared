@@ -76,6 +76,9 @@ jobs:
               git -C "$repo" checkout -q -b "$BRANCH"
             fi
           done
+          # gen-product-doc.mjs reads bipe-web (figure ids in src/sim/scenes.ts, IconName in
+          # src/components/ui.tsx). Read only: no generated files go there.
+          git clone -q --depth 1 "https://x-access-token:${TOKEN}@github.com/bipe-chat/bipe-web.git" bipe-web
           node bipe-shared/tools/gen.mjs
           node bipe-shared/tools/gen-test-vectors.mjs
           node bipe-shared/tools/gen-product-doc.mjs

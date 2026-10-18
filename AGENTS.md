@@ -9,6 +9,7 @@ Source of truth for registries, strings, API contract and test vectors shared by
 - Generate, never copy (ADR 0031): a rule more than one surface uses lives in `registries/` and reaches Swift, Kotlin and the API through `tools/gen.mjs`.
 - After a contract change, run `node tools/check-contract.mjs`. After a registry or vector change, run `swift test` in `../bipe-ios/Components/BipeKit`.
 - A string, registry or product change is done only when `node tools/check-drift.mjs` passes: regenerate, then commit the generated files in every sibling repo. The pre-commit hook runs it (`git config core.hooksPath .githooks`).
+- Every change to `main` goes through a pull request; a ruleset blocks direct pushes. On a pull request, the `regen` job in `.github/workflows/checks.yml` pushes the generated files to a branch of the same name in bipe, bipe-ios, bipe-android and bipe-api and opens a "Regenerate from bipe-shared" pull request there. After the merge, the `land` job turns on auto-merge for those pull requests. Do not open them by hand. A sibling branch of the same name that you made yourself gets the generated commit on top.
 - No npm dependencies. Node built-ins only.
 - Write docs in ASD-STE100 style. pt-BR strings follow `../bipe/docs/design/linguagem.md` (ADR 0039). UI strings are draft until they pass the humanizer.
 - `product/version.json` is the app version name and the one build number for iOS and Android (ADR 0088). Change it only with `node tools/bump-build.mjs`, once before each tester upload.

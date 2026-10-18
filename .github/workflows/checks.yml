@@ -1,6 +1,16 @@
 # ADR 0031, ADR 0092: the shared rules, the generated code in every repo, the API clients and the parity ledger stay in step.
 # Needs the secret BIPE_REPOS_TOKEN: a fine-grained token with read access to contents of
 # bipe, bipe-ios, bipe-android, bipe-api, bipe-web and bipe-infra.
+# Needs the secret BIPE_REGEN_TOKEN: a fine-grained token with read and write access to contents and
+# pull requests of bipe, bipe-ios, bipe-android and bipe-api. Without it, regen and land do nothing.
+#
+# Flow for a pull request on branch B:
+#   regen    runs the generators and pushes the output to branch B in each sibling repo that changes,
+#            then opens a "Regenerate from bipe-shared" pull request there.
+#   lockstep checks the siblings on branch B, so the drift check sees the regenerated files.
+# After the merge to main:
+#   land     turns on auto-merge for those sibling pull requests. Each merges when its own checks pass.
+#   lockstep checks the siblings on branch B until they merge.
 name: Checks
 
 on:
@@ -24,21 +34,95 @@ jobs:
           node-version: 24
       - name: Shared rules and contract types
         run: node --test tools/*.test.mjs
-  lockstep:
+
+  regen:
+    if: github.event_name == 'pull_request' && github.event.pull_request.head.repo.full_name == github.repository
     runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          path: bipe-shared
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+      - name: Regenerate into the sibling repos on the same branch
+        env:
+          TOKEN: ${{ secrets.BIPE_REGEN_TOKEN }}
+          GH_TOKEN: ${{ secrets.BIPE_REGEN_TOKEN }}
+          BRANCH: ${{ github.head_ref }}
+          PR_NUMBER: ${{ github.event.pull_request.number }}
+          PR_URL: ${{ github.event.pull_request.html_url }}
+          GIT_LFS_SKIP_SMUDGE: "1"
+        run: |
+          if [ -z "$TOKEN" ]; then
+            echo "::warning::BIPE_REGEN_TOKEN is not set: sibling repos are not regenerated."
+            exit 0
+          fi
+          generated() {
+            case "$1" in
+              bipe) echo "docs/product.md" ;;
+              bipe-ios) echo "Components/BipeKit/Sources/BipeKit/Generated Tools/Bipe" ;;
+              bipe-android) echo "libraries/bipe/src/main plugins/src/main/kotlin" ;;
+              bipe-api) echo "src/generated test/fixtures" ;;
+            esac
+          }
+          repos="bipe bipe-ios bipe-android bipe-api"
+          for repo in $repos; do
+            url="https://x-access-token:${TOKEN}@github.com/bipe-chat/${repo}.git"
+            if git ls-remote --exit-code --heads "$url" "$BRANCH" > /dev/null; then
+              git clone -q --depth 1 --branch "$BRANCH" "$url" "$repo"
+            else
+              git clone -q --depth 1 "$url" "$repo"
+              git -C "$repo" checkout -q -b "$BRANCH"
+            fi
+          done
+          node bipe-shared/tools/gen.mjs
+          node bipe-shared/tools/gen-test-vectors.mjs
+          node bipe-shared/tools/gen-product-doc.mjs
+          for repo in $repos; do
+            # shellcheck disable=SC2046
+            git -C "$repo" add -A -- $(generated "$repo")
+            if git -C "$repo" diff --cached --quiet; then
+              echo "${repo}: up to date"
+              continue
+            fi
+            git -C "$repo" -c user.name="bipe-shared regen" -c user.email="regen@bipe.chat" \
+              commit -q -m "Regenerate from bipe-shared#${PR_NUMBER}" -m "Output of the bipe-shared generators for ${PR_URL}."
+            git -C "$repo" push -q origin "HEAD:refs/heads/${BRANCH}"
+            echo "${repo}: pushed ${BRANCH}"
+            if [ -z "$(gh pr list -R "bipe-chat/${repo}" --head "$BRANCH" --state open --json number --jq '.[].number')" ]; then
+              gh pr create -R "bipe-chat/${repo}" --base main --head "$BRANCH" \
+                --title "Regenerate from bipe-shared#${PR_NUMBER}" \
+                --body "Generated files for ${PR_URL}. Merges on its own after that pull request merges and the checks here pass."
+            fi
+          done
+
+  lockstep:
+    needs: regen
+    if: ${{ !failure() && !cancelled() }}
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      pull-requests: read
     steps:
       - uses: actions/checkout@v4
         with:
           path: bipe-shared
       # A cross-repo change regenerates files in the sibling repos on a branch of the same name.
       # On a pull request, check out that branch in each sibling where it exists, else the default
-      # branch. Without this, lockstep fails on every cross-repo PR until the siblings merge first.
+      # branch. On the push after a merge, use the branch of the merged pull request: the sibling
+      # pull requests merge a few minutes later. Without this, lockstep fails on every cross-repo
+      # change until the siblings merge first.
       - name: Check out the sibling repos
         env:
           TOKEN: ${{ secrets.BIPE_REPOS_TOKEN }}
+          GH_TOKEN: ${{ github.token }}
           BRANCH: ${{ github.head_ref }}
           GIT_LFS_SKIP_SMUDGE: "1"
         run: |
+          if [ -z "$BRANCH" ] && [ "$GITHUB_EVENT_NAME" = push ]; then
+            BRANCH=$(gh api "repos/${GITHUB_REPOSITORY}/commits/${GITHUB_SHA}/pulls" --jq '.[0].head.ref // empty')
+          fi
           for repo in bipe bipe-ios bipe-android bipe-api bipe-web bipe-infra; do
             url="https://x-access-token:${TOKEN}@github.com/bipe-chat/${repo}.git"
             if [ -n "$BRANCH" ] && git ls-remote --exit-code --heads "$url" "$BRANCH" > /dev/null; then
@@ -58,3 +142,39 @@ jobs:
         run: node bipe-shared/tools/check-drift.mjs --against head --repos "$GITHUB_WORKSPACE"
       - name: Parity
         run: node bipe-shared/tools/parity.mjs --against head --repos "$GITHUB_WORKSPACE"
+
+  land:
+    if: github.event_name == 'push'
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      pull-requests: read
+    steps:
+      - name: Auto-merge the sibling regen pull requests of the merged change
+        env:
+          TOKEN: ${{ secrets.BIPE_REGEN_TOKEN }}
+          READ_TOKEN: ${{ github.token }}
+        run: |
+          if [ -z "$TOKEN" ]; then
+            echo "::warning::BIPE_REGEN_TOKEN is not set: sibling regen pull requests are not merged."
+            exit 0
+          fi
+          BRANCH=$(GH_TOKEN="$READ_TOKEN" gh api "repos/${GITHUB_REPOSITORY}/commits/${GITHUB_SHA}/pulls" --jq '.[0].head.ref // empty')
+          if [ -z "$BRANCH" ]; then
+            echo "No merged pull request for ${GITHUB_SHA}."
+            exit 0
+          fi
+          for repo in bipe bipe-ios bipe-android bipe-api; do
+            numbers=$(GH_TOKEN="$TOKEN" gh pr list -R "bipe-chat/${repo}" --head "$BRANCH" --state open \
+              --json number,title --jq '.[] | select(.title | startswith("Regenerate from bipe-shared")) | .number')
+            for n in $numbers; do
+              # bipe is private on the free plan: no auto-merge and no required checks, so merge now.
+              if [ "$repo" = bipe ]; then
+                GH_TOKEN="$TOKEN" gh pr merge "$n" -R "bipe-chat/${repo}" --squash
+                echo "${repo}#${n}: merged"
+              else
+                GH_TOKEN="$TOKEN" gh pr merge "$n" -R "bipe-chat/${repo}" --auto --squash
+                echo "${repo}#${n}: auto-merge on"
+              fi
+            done
+          done

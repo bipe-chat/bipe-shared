@@ -71,7 +71,7 @@ const NOT_IN_APPS = {
   TermsAcceptance: "one string; the apps send it from a private request type in their API client (ADR 0113)",
   ExperimentEvent: "web only (headline test)",
   WaitlistRequest: "web only",
-  PartnerRequest: "web only",
+  OrganisationRequest: "web only",
   InviterStats: "staff page on the site only (ADR 0056)",
   GrowthReport: "staff page on the site only (ADR 0098)",
   StaffSummary: "staff page on the site only (bipe#394)",

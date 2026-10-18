@@ -12,6 +12,7 @@ import { KOTLIN_LICENSE, iosVersionEnv, kotlinVersion, loadVersion } from "./lib
 import { generateApiTypes, loadBusinessSchemas } from "./lib/api-types.mjs";
 import { generateAgendaTemplates } from "./lib/agenda-templates.mjs";
 import { generateSettings } from "./lib/gen-settings.mjs";
+import { generateOnboarding } from "./lib/gen-onboarding.mjs";
 
 const root = join(dirname(fileURLToPath(import.meta.url)), "..");
 const args = process.argv.slice(2);
@@ -226,6 +227,7 @@ writeFileSync(join(swiftOut, "BipeTrustFacts.swift"), generateTrust(reg.trust, "
 writeFileSync(join(swiftOut, "BipeAgendaTemplates.swift"), generateAgendaTemplates(reg, "swift", HEADER));
 writeFileSync(join(swiftOut, "BipeStrings.swift"), swiftStrings());
 writeFileSync(join(swiftOut, "BipeSettings.swift"), generateSettings(reg.settings, "swift", HEADER, swiftString));
+writeFileSync(join(swiftOut, "BipeOnboarding.swift"), generateOnboarding(reg.onboarding, "swift", HEADER, swiftString));
 const resources = resolve(swiftOut, "../../../Sources/BipeKit/Resources");
 for (const [locale, strings] of [["pt-BR", reg.strings.strings], ["en", reg.stringsEn.strings]]) {
   mkdirSync(join(resources, `${locale}.lproj`), { recursive: true });
@@ -440,6 +442,7 @@ if (kotlinIndex >= 0 || existsSync(resolve(kotlinOut, "../../.."))) {
   writeFileSync(join(kotlinDir, "BipeTrustFacts.kt"), generateTrust(reg.trust, "kotlin", KOTLIN_HEADER));
   writeFileSync(join(kotlinDir, "BipeAgendaTemplates.kt"), generateAgendaTemplates(reg, "kotlin", KOTLIN_HEADER));
   writeFileSync(join(kotlinDir, "BipeSettings.kt"), generateSettings(reg.settings, "kotlin", KOTLIN_HEADER, kotlinString));
+  writeFileSync(join(kotlinDir, "BipeOnboarding.kt"), generateOnboarding(reg.onboarding, "kotlin", KOTLIN_HEADER, kotlinString));
   // pt-BR is the default language, so it fills values/. en is the alternative.
   for (const [dir, strings, comment] of [
     ["values", reg.strings.strings, "pt-BR (default). DRAFT copy: not yet through the humanizer pass."],
@@ -461,8 +464,9 @@ if (existsSync(resolve(apiOut, "../.."))) {
   copyFileSync(join(root, "tools/lib/registries.mjs"), join(apiOut, "lib/registries.mjs"));
   copyFileSync(join(root, "tools/lib/trust.mjs"), join(apiOut, "lib/trust.mjs"));
   copyFileSync(join(root, "tools/lib/agenda-templates.mjs"), join(apiOut, "lib/agenda-templates.mjs"));
-  // registries.mjs imports it for the settings validation.
+  // registries.mjs imports these for the settings and onboarding validation.
   copyFileSync(join(root, "tools/lib/gen-settings.mjs"), join(apiOut, "lib/gen-settings.mjs"));
+  copyFileSync(join(root, "tools/lib/gen-onboarding.mjs"), join(apiOut, "lib/gen-onboarding.mjs"));
   writeFileSync(join(apiOut, "business-api.ts"), generateApiTypes(loadBusinessSchemas(root)));
   console.log(`wrote API registries to ${apiOut}`);
 }

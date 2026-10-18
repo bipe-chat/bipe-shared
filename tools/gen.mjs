@@ -176,6 +176,8 @@ public enum BipeRegistries {
     public static let guardianApprovalsMax = ${reg.accounts.guardianApprovalsMax}
     public static let recoveryLinkMinutes = ${reg.accounts.recoveryLinkMinutes}
     public static let emailVerifyLinkHours = ${reg.accounts.emailVerifyLinkHours}
+    /// Personal accounts on one phone (ADR 0086). Fallback for max_accounts in GET /v1/me/account.
+    public static let maxPersonalAccounts = ${reg.accounts.maxPersonalAccounts}
 
     /// Terms and privacy accepted at sign-up (ADR 0113; registries/legal.json). Paths are on the public site.
     public static let legalVersion = ${swiftString(reg.legal.legalVersion)}
@@ -183,6 +185,9 @@ public enum BipeRegistries {
     public static let privacyPath = ${swiftString(reg.legal.privacyPath)}
     public static let enTermsPath = ${swiftString(reg.legal.enTermsPath)}
     public static let enPrivacyPath = ${swiftString(reg.legal.enPrivacyPath)}
+
+    /// Badge signing keys a release build trusts (ADR 0123; registries/badge-keys.json): kid to raw Ed25519 public key, base64url.
+    public static let badgeKeys: [String: String] = ${Object.keys(reg.badgeKeys.keys).length ? swiftMap(reg.badgeKeys.keys) : "[:]"}
 }
 `;
 }
@@ -390,6 +395,8 @@ object BipeRegistries {
     const val GUARDIAN_APPROVALS_MAX = ${reg.accounts.guardianApprovalsMax}
     const val RECOVERY_LINK_MINUTES = ${reg.accounts.recoveryLinkMinutes}
     const val EMAIL_VERIFY_LINK_HOURS = ${reg.accounts.emailVerifyLinkHours}
+    // Personal accounts on one phone (ADR 0086). Fallback for max_accounts in GET /v1/me/account.
+    const val MAX_PERSONAL_ACCOUNTS = ${reg.accounts.maxPersonalAccounts}
 
     // Terms and privacy accepted at sign-up (ADR 0113; registries/legal.json). Paths are on the public site.
     const val LEGAL_VERSION = ${kotlinString(reg.legal.legalVersion)}
@@ -397,6 +404,9 @@ object BipeRegistries {
     const val PRIVACY_PATH = ${kotlinString(reg.legal.privacyPath)}
     const val EN_TERMS_PATH = ${kotlinString(reg.legal.enTermsPath)}
     const val EN_PRIVACY_PATH = ${kotlinString(reg.legal.enPrivacyPath)}
+
+    /** Badge signing keys a release build trusts (ADR 0123; registries/badge-keys.json): kid to raw Ed25519 public key, base64url. */
+    val badgeKeys: Map<String, String> = ${kotlinList("mapOf", Object.entries(reg.badgeKeys.keys).map(([k, v]) => `${kotlinString(k)} to ${kotlinString(v)}`))}
 }
 `;
 }

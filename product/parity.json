@@ -1261,6 +1261,14 @@
       "issue": 92
     },
     {
+      "area": "Criar conta da empresa",
+      "ios": "In Sua conta on a phone with App Attest",
+      "android": "Not shown",
+      "reason": "A company account needs an attested device (ADR 0043, ADR 0087); Play Integrity not built on Android (#92)",
+      "kind": "gap",
+      "issue": 92
+    },
+    {
       "area": "Synced recovery token",
       "ios": "iCloud Keychain",
       "android": "Block Store (gplay); none in the F-Droid build",
@@ -1300,9 +1308,9 @@
       "area": "Where invites live",
       "ios": "Contatos e convites: invite buttons, people who joined with your invite, and unused invites in the contacts screen",
       "android": "Convidar pessoas in settings",
-      "reason": "Android has no contacts screen yet (#162)",
+      "reason": "Android has no contacts screen yet (#401)",
       "kind": "gap",
-      "issue": 162
+      "issue": 401
     },
     {
       "area": "Help links",

@@ -39,6 +39,15 @@ function figureIds() {
   return new Set([...ids, ...simIds]);
 }
 const FIGURES = figureIds();
+// Icon names (Recursos cards, protect cards): the IconName union in bipe-web/src/components/ui.tsx.
+function iconNames() {
+  const src = readFileSync(join(root, "../bipe-web/src/components/ui.tsx"), "utf8");
+  const union = /^export type IconName = ([^;]*);$/m.exec(src);
+  if (!union) fail("icon: IconName not found in bipe-web/src/components/ui.tsx");
+  return new Set([...union[1].matchAll(/"([a-z-]+)"/g)].map((m) => m[1]));
+}
+const ICONS = iconNames();
+const featureIcons = new Set();
 const featureIds = new Set(product.features.map((f) => f.id));
 const areaIds = new Set(product.areas.map((a) => a.id));
 // Every feature has its own page on the site (/recursos/<slug>/): a slug per language and points that say how it works.
@@ -58,6 +67,10 @@ for (const f of product.features) {
   if (f.figures === undefined) fail(`feature ${f.id}: figures required (a mockup of the app)`);
   if (!Array.isArray(f.figures) || !f.figures.length || new Set(f.figures).size !== f.figures.length) fail(`feature ${f.id}: figures must be a list of distinct ids`);
   for (const id of f.figures) if (!FIGURES.has(id)) fail(`feature ${f.id}: unknown figure ${id}`);
+  // One glyph per feature, no glyph twice in the Recursos grid (identity.md, Icons).
+  if (!ICONS.has(f.icon)) fail(`feature ${f.id}: icon ${f.icon} is not an IconName in bipe-web`);
+  if (featureIcons.has(f.icon)) fail(`feature ${f.id}: icon ${f.icon} is used by another feature`);
+  featureIcons.add(f.icon);
 }
 // ICP register (ADR 0060): every ICP cites an ADR file in ../bipe/docs/adr; exactly one step is current.
 const adrDir = join(root, "../bipe/docs/adr");

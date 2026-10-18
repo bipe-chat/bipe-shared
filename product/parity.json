@@ -1066,7 +1066,13 @@
           "bipe-ios/Components/BipeKit/Sources/BipeKit/AttributedString+BipeLink.swift"
         ]
       },
-      "android": "planned",
+      "android": {
+        "status": "built",
+        "evidence": [
+          "bipe-android/appconfig/src/main/kotlin/io/element/android/appconfig/LearnMoreConfig.kt",
+          "bipe-android/libraries/designsystem/src/main/kotlin/io/element/android/libraries/designsystem/text/StringWithLink.kt"
+        ]
+      },
       "web": {
         "status": "n/a",
         "reason": "No web chat (ADR 0004); the site shows a demo at most"
@@ -1311,14 +1317,6 @@
       "reason": "Android has no contacts screen yet (#401)",
       "kind": "gap",
       "issue": 401
-    },
-    {
-      "area": "Help links",
-      "ios": "Hidden",
-      "android": "Still point to element.io",
-      "reason": "Not done on Android (#205)",
-      "kind": "gap",
-      "issue": 205
     },
     {
       "area": "Sticker from a photo",

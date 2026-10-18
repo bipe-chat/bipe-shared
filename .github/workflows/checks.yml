@@ -79,6 +79,13 @@ jobs:
           # gen-product-doc.mjs reads bipe-web (figure ids in src/sim/scenes.ts, IconName in
           # src/components/ui.tsx). Read only: no generated files go there.
           git clone -q --depth 1 "https://x-access-token:${TOKEN}@github.com/bipe-chat/bipe-web.git" bipe-web
+          # gen-product-doc reads figures from bipe-web (public, read only: nothing is pushed there).
+          web_url="https://github.com/bipe-chat/bipe-web.git"
+          if git ls-remote --exit-code --heads "$web_url" "$BRANCH" > /dev/null; then
+            git clone -q --depth 1 --branch "$BRANCH" "$web_url" bipe-web
+          else
+            git clone -q --depth 1 "$web_url" bipe-web
+          fi
           node bipe-shared/tools/gen.mjs
           node bipe-shared/tools/gen-test-vectors.mjs
           node bipe-shared/tools/gen-product-doc.mjs

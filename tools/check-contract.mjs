@@ -70,7 +70,7 @@ const NOT_IN_APPS = {
   MessagingSetting: "one enum field; iOS decodes it in a private MessagingSetting type in BipeAPIClient, exposed as BipeWhoCanMessage",
   TermsAcceptance: "one string; the apps send it from a private request type in their API client (ADR 0113)",
   ExperimentEvent: "web only (headline test)",
-  WaitlistRequest: "web only",
+  WaitlistRequest: "the site, and the apps' \"Não tem convite?\" sheet (bipe#415) from a private request type in their API client",
   OrganisationRequest: "web only",
   InviterStats: "staff page on the site only (ADR 0056)",
   GrowthReport: "staff page on the site only (ADR 0098)",

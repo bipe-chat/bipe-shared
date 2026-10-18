@@ -574,7 +574,8 @@ paths:
     post:
       summary: Join the waitlist for a platform that has no build yet
       description: >
-        No auth. Called from the public site (CORS allows https://bipe.chat).
+        No auth. Called from the public site (CORS allows https://bipe.chat) and from the
+        "Não tem convite?" sheet in the apps (source "app", bipe#415).
         Rate-limited per IP and globally. Always answers 202 for a well-formed request,
         also when the email is already on the list, so the endpoint never tells whether an
         address is known. Bipe emails the address once, when the platform ships, and

@@ -37,6 +37,8 @@ const MODELS = {
   RecoveryClaim: { ios: "BipeRecoveryClaim", android: "BipeRecoveryClaim" },
   // Handle change history (ADR 0066): the timeline line is bipe-chat/bipe#166, built with #153 (iOS) and #154 (Android).
   HandleChange: { ios: "BipeHandleChange", android: "BipeHandleChange" },
+  // Remote critical banner (ADR 0117): bipe-chat/bipe#386.
+  RemoteBanner: { ios: "BipeRemoteBanner", android: "BipeRemoteBanner" },
 };
 
 // Contract enum -> client enum per platform. "Error.error" is the enum on the error property of Error.

@@ -143,6 +143,27 @@ paths:
           content:
             application/json:
               schema: { $ref: "#/components/schemas/SignupConfig" }
+  /v1/banner:
+    get:
+      summary: The remote critical banner (ADR 0117, bipe#386)
+      description: >
+        No auth. One banner above the chat list for critical notices only: an outage, a forced update, a change of
+        terms. null when there is none or it is past expires_at. The apps fetch it on launch and on foreground and
+        decide with remoteBannerState() (test-vectors/remote-banner.json). Cache-Control max-age 60. 120 per IP per minute.
+      responses:
+        "200":
+          description: The banner, or null
+          content:
+            application/json:
+              schema:
+                type: object
+                required: [banner]
+                properties:
+                  banner:
+                    oneOf:
+                      - { $ref: "#/components/schemas/RemoteBanner" }
+                      - { type: "null" }
+        "429": { $ref: "#/components/responses/Error" }
   /v1/signup/resume:
     post:
       summary: Get the answer of a device-first sign-up again (ADR 0094)
@@ -4247,6 +4268,27 @@ components:
         signup_key: { type: string, pattern: "^[A-Za-z0-9_-]{43}$", description: "Device-first only, recommended: 32 random bytes as base64url, made by the app before the first try and kept on this device until the credentials are stored. Same key again: the same account (ADR 0094). Ignored in legacy mode." }
         terms_version: { type: string, pattern: "^\\d{4}-\\d{2}-\\d{2}$", description: "ADR 0113: the legalVersion the person accepted with the checkbox. Must be the current one." }
         account_type: { type: string, enum: [personal, company], description: "ADR 0087: company makes a company account (owner case). It needs a valid attestation (ADR 0043) and device-first mode. Default personal." }
+    RemoteBanner:
+      type: object
+      required: [id, title, text, link, expires_at]
+      description: >
+        Staff set it with the CLI `banner set <file>`; remoteBannerProblem() validates it. The text is pt-BR only.
+        With min_app_version, an app below that version shows the banner as an update: it opens update_links for its
+        platform and the person cannot dismiss it. Otherwise the banner opens link and the person can dismiss it by id.
+      properties:
+        id: { type: string, pattern: "^[a-z0-9][a-z0-9-]{0,63}$", description: "A new id shows the banner again to people who dismissed an older one" }
+        title: { type: string, minLength: 1, maxLength: 60 }
+        text: { type: string, minLength: 1, maxLength: 240 }
+        link: { type: string, format: uri, description: https only }
+        min_app_version: { type: string, pattern: "^\\d{1,4}(\\.\\d{1,4}){0,3}$" }
+        update_links:
+          type: object
+          required: [ios, android]
+          description: Required with min_app_version. Where each app gets the new version.
+          properties:
+            ios: { type: string, format: uri }
+            android: { type: string, format: uri }
+        expires_at: { type: string, format: date-time }
     SignupConfig:
       type: object
       required: [invite_required, terms_version]

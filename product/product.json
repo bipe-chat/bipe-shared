@@ -1756,10 +1756,10 @@
   ],
   "featuresHub": {
     "pt": {
-      "lede": "Todos os recursos do Bipe, com o status real de cada um. Aviso de golpe, servidores no Brasil, seu @ no lugar do número e nenhum anúncio."
+      "lede": "Todos os recursos do Bipe. Cada um tem sua página, com o status no iPhone e no Android. Aviso de golpe, servidores no Brasil, seu @ no lugar do número e nenhum anúncio."
     },
     "en": {
-      "lede": "Every Bipe feature, with its real status. Scam warnings, servers in Brazil, your @ instead of your number, and no ads."
+      "lede": "Every Bipe feature. Each one has its own page, with its status on iPhone and Android. Scam warnings, servers in Brazil, your @ instead of your number, and no ads."
     }
   },
   "audiencesHub": {

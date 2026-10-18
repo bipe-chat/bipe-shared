@@ -101,6 +101,38 @@
       "issue": 43
     },
     {
+      "id": "first-run",
+      "name": "Invite-first first run, same screens and order on both apps",
+      "ios": {
+        "status": "built",
+        "evidence": [
+          "bipe-ios/ElementX/Sources/Screens/Authentication/StartScreen/View/AuthenticationStartScreen.swift",
+          "bipe-ios/ElementX/Sources/Screens/BipeSignupScreen/View/BipeSignupScreen.swift",
+          "bipe-ios/ElementX/Sources/Screens/BipeRecoveryScreen/View/BipeRecoveryScreen.swift"
+        ]
+      },
+      "android": {
+        "status": "built",
+        "evidence": [
+          "bipe-android/features/login/impl/src/main/kotlin/io/element/android/features/login/impl/screens/onboarding/OnBoardingView.kt",
+          "bipe-android/features/login/impl/src/main/kotlin/io/element/android/features/login/impl/screens/bipesignup/BipeSignupView.kt",
+          "bipe-android/features/login/impl/src/main/kotlin/io/element/android/features/login/impl/screens/biperecovery/BipeRecoveryView.kt"
+        ]
+      },
+      "web": {
+        "status": "n/a",
+        "reason": "Sign-up is in the apps"
+      },
+      "server": {
+        "status": "built",
+        "evidence": [
+          "bipe-api/src/waitlist.ts",
+          "bipe-api/src/signup.ts"
+        ]
+      },
+      "issue": 415
+    },
+    {
       "id": "phone-account",
       "name": "Your account lives on your phone",
       "ios": "planned",

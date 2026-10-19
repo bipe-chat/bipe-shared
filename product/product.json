@@ -656,8 +656,8 @@
       "area": "identity",
       "icon": "bank",
       "status": {
-        "ios": "planned",
-        "android": "planned"
+        "ios": "built",
+        "android": "built"
       },
       "slug": {
         "pt": "selo-de-cnpj",
@@ -2785,7 +2785,7 @@
         "submit": "Enviar",
         "done": "Recebemos. A gente responde por e-mail.",
         "error": "Não deu para enviar. Tente de novo daqui a pouco.",
-        "note": "Usamos esses dados só para responder e para entender quanto as organizações pagam hoje. Eles ficam no Brasil e são apagados depois de um ano."
+        "note": "Usamos esses dados só para responder e para entender quanto as organizações pagam hoje. A gente guarda tudo no Starlings, o sistema de trabalho da Envisioning, em servidores na União Europeia, e apaga depois de um ano."
       },
       "small": {
         "heading": "MEI ou microempresa?",
@@ -2872,7 +2872,7 @@
         "submit": "Send",
         "done": "Got it. We will answer by email.",
         "error": "Could not send. Try again in a moment.",
-        "note": "We use this only to answer you and to learn what organisations pay today. It stays in Brazil and is deleted after one year."
+        "note": "We use this only to answer you and to learn what organisations pay today. We keep it in Starlings, Envisioning's work system, on servers in the European Union, and delete it after one year."
       },
       "small": {
         "heading": "MEI or micro company?",

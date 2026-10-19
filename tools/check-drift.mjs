@@ -1,7 +1,7 @@
 // Drift check (ADR 0031, rule 5): regenerates everything bipe-shared generates into a temporary
 // folder and compares it with the generated files in the sibling repos (Swift, Kotlin, API copy,
-// app version files, bipe/docs/product.md) and with test-vectors/. It also checks that
-// MARKETING_VERSION in bipe-ios/project.yml is the version in product/version.json (ADR 0088).
+// app version files, bipe/docs/product.md) and with test-vectors/. bipe-ios takes MARKETING_VERSION
+// from the generated Tools/Bipe/Version.xcconfig; a MARKETING_VERSION left in project.yml must match it (ADR 0088).
 // Usage: node tools/check-drift.mjs [--against worktree|head] [--repos <dir>]
 //   worktree (default): compare with the files on disk. The pre-commit hook uses this.
 //   head: compare with each repo's committed HEAD. CI uses this.
@@ -107,12 +107,13 @@ try {
     }
   }
 
-  // project.yml is hand-edited (xcodegen input), so only its MARKETING_VERSION line is checked.
+  // project.yml is hand-edited (xcodegen input). Version.xcconfig is checked above; a MARKETING_VERSION
+  // in project.yml overrides it, so one that is left there must match.
   const ios = join(reposDir, "bipe-ios");
   if (existsSync(ios)) {
     const { version } = loadVersion(root);
     const marketing = /^\s*MARKETING_VERSION:\s*"?([^"\s#]+)/m.exec(repoFile(ios, "project.yml") ?? "")?.[1];
-    if (marketing !== version) problems.push(`bipe-ios: project.yml MARKETING_VERSION is ${marketing ?? "missing"}, product/version.json says ${version} (edit project.yml, then xcodegen)`);
+    if (marketing !== undefined && marketing !== version) problems.push(`bipe-ios: project.yml MARKETING_VERSION is ${marketing}, product/version.json says ${version} (remove it from project.yml, Version.xcconfig sets it)`);
   }
 
   // bipe/docs/product.md is generated from product/.

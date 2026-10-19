@@ -9,6 +9,35 @@ info:
 servers:
   - url: https://api.bipe.net.br
 paths:
+  /v1/accounts/{userId}/type:
+    get:
+      summary: Account type of a Bipe account
+      description: >
+        Public, no auth, rate-limited per IP. The apps draw a company account's avatar as a rounded
+        square and a person's as a circle (ADR 0132). The type comes from sign-up and never from the
+        profile. Fail closed: 404 or a failed call gives a circle.
+      parameters:
+        - name: userId
+          in: path
+          required: true
+          schema: { type: string }
+          description: Matrix user ID, e.g. @lojadaana:bipe.net.br
+      responses:
+        "200":
+          description: The account type
+          content:
+            application/json:
+              schema:
+                type: object
+                required: [account_type]
+                properties:
+                  account_type: { type: string, enum: [personal, company] }
+        "404":
+          description: Not an account made through Bipe sign-up.
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/Error" }
+        "429": { $ref: "#/components/responses/Error" }
   /v1/badges/{userId}:
     get:
       summary: Current badge envelope for a user

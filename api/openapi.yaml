@@ -1232,6 +1232,41 @@ paths:
         "401": { $ref: "#/components/responses/Error" }
         "404": { $ref: "#/components/responses/Error" }
         "503": { $ref: "#/components/responses/Error" }
+  /v1/admin/research/messaging:
+    get:
+      summary: Staff-only messaging parity research and strategy
+      description: >
+        Only MAS admins may read this dated research snapshot. Other users get 404 not_found.
+        Returns platform profiles, sourced feature comparisons, strategic implications and the
+        captured Bipe implementation ledger. Types are in api/internal-research.d.ts.
+        This is research, not a release promise. Cache-Control is private, no-store.
+        CORS allows PUBLIC_SITE_URL. The public site must never bundle the research payload.
+      security: [{ matrix: [] }]
+      responses:
+        "200":
+          description: Dated research with claim-level source IDs and Bipe evidence
+          content:
+            application/json:
+              schema:
+                type: object
+                required: [version, reviewed, reviewAfter, title, summary, methodology, groups, platforms, strategy, priorities, watchlist, sources, features, snapshot]
+                properties:
+                  version: { type: integer }
+                  reviewed: { type: string, format: date }
+                  reviewAfter: { type: string, format: date }
+                  title: { type: string }
+                  summary: { type: string }
+                  methodology: { type: array, items: { type: string } }
+                  groups: { type: array, items: { type: object } }
+                  platforms: { type: array, items: { type: object } }
+                  strategy: { type: array, items: { type: object } }
+                  priorities: { type: array, items: { type: object } }
+                  watchlist: { type: array, items: { type: object } }
+                  sources: { type: array, items: { type: object } }
+                  features: { type: array, items: { type: object } }
+                  snapshot: { type: object }
+        "401": { $ref: "#/components/responses/Error" }
+        "404": { $ref: "#/components/responses/Error" }
   /v1/admin/inviters:
     get:
       summary: Staff report of inviters ranked by joins

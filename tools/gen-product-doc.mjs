@@ -162,6 +162,7 @@ if (/n[ãa]o ach(ou|amos)|found nothing/i.test(cmpText)) fail("compare: state wh
 // number has a source with an https URL and a date; pt copy follows language.md (golpe, not fraude; no fear words).
 const scams = JSON.parse(readFileSync(join(root, "product/scams.json"), "utf8"));
 if (scams.version !== 1 || !/^\d{4}-\d{2}-\d{2}$/.test(scams.date)) fail("scams: version or date");
+if (!/^\d{4}-\d{2}-\d{2}$/.test(scams.publishedDate) || scams.publishedDate > scams.date) fail("scams: publishedDate");
 const KINDS = ["primary", "secondary", "company", "press"];
 const scamSources = new Set();
 for (const s of scams.sources) {
@@ -231,12 +232,21 @@ for (const c of scams.charts) {
   scamCharts.add(c.id);
 }
 for (const id of scams.channelCharts) if (!scamCharts.has(id)) fail(`scams: unknown channel chart ${id}`);
+const methodIds = new Set();
+if (!scams.methodology?.length) fail("scams: methodology required");
+for (const m of scams.methodology) {
+  if (!/^[a-z][a-zA-Z]+$/.test(m.id) || methodIds.has(m.id)) fail(`scams methodology ${m.id}: id`);
+  methodIds.add(m.id);
+  if (!m.sources?.length || m.sources.some((id) => !scamSources.has(id))) fail(`scams methodology ${m.id}: sources`);
+  for (const l of ["pt", "en"]) for (const k of ["title", "body"]) if (!m[l]?.[k]) fail(`scams methodology ${m.id}: ${l}.${k}`);
+}
 for (const p of scams.protect) if (!featureIds.has(p.feature) || !p.pt || !p.en) fail(`scams protect ${p.feature}`);
 for (const l of ["pt", "en"]) {
   const c = scams[l];
   for (const k of ["title", "headline", "lede", "numbersTitle", "channelsTitle", "channelsBody", "chartsTitle", "typesTitle", "moreTitle", "moreBody", "protectTitle", "protectLede", "bipeTitle", "bipeLede", "limit", "sourcesTitle", "sourcesNote", "source", "table", "typeNumbers", "typeHow", "typeSigns", "typeTodo", "typeOthers", "typeMore", "typeAliases", "typeChannels", "typeDescribedBy", "typeDescribedByNote", "typeLimitTitle", "typeScene", "outsideTitle", "outsideLede", "outsideMore"]) if (!c?.[k]) fail(`scams.${l}.${k}`);
   for (const k of KINDS) if (!c.kinds?.[k]) fail(`scams.${l}.kinds.${k}`);
   if (!c.advice.length) fail(`scams.${l}.advice`);
+  if (!c.helpLink) fail(`scams.${l}.helpLink`);
 }
 if (scams.pt.advice.length !== scams.en.advice.length) fail("scams: advice pt and en differ");
 // Rendered copy: everything except $comment and the source titles, which quote the publisher.

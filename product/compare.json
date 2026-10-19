@@ -4,16 +4,16 @@
   "date": "2026-10-12",
   "pt": {
     "nav": "Comparar",
-    "title": "Bipe e outros apps contra golpe",
+    "title": "Segurança nos apps de mensagens",
     "description": "O que o Bipe, o WhatsApp, o Signal, o Telegram, o iMessage e o RCS fazem contra cada golpe.",
     "bipe": "No Bipe",
     "appsTitle": "Compare com cada app",
     "more": "Ver a comparação",
     "limitTitle": "O que o Bipe não resolve sozinho",
-    "limit": "O Bipe só protege as conversas que acontecem no Bipe. Se a sua mãe ainda usa o WhatsApp, um golpista pode escrever para ela lá. Funciona melhor quando a família conversa pelo Bipe. Aí um pedido de dinheiro que chega por outro app já chama atenção.",
+    "limit": "Os avisos do Bipe se aplicam às conversas no Bipe. Confira pedidos de dinheiro por um canal que você já conhece, mesmo quando a conta tem selo.",
     "sourcesTitle": "De onde vêm essas informações",
     "sourcesNote": "Pesquisa feita em 12 de outubro de 2026, com base no que cada empresa publicou e no que a imprensa noticiou. Os apps mudam rápido. A gente atualiza esta página quando muda.",
-    "aheadTitle": "Onde o {app} está na frente",
+    "aheadTitle": "Outros recursos do {app}",
     "tableTitle": "Resumo",
     "threatCol": "Risco",
     "levels": {
@@ -25,16 +25,16 @@
   },
   "en": {
     "nav": "Compare",
-    "title": "Bipe and other apps against scams",
+    "title": "Safety in messaging apps",
     "description": "What Bipe, WhatsApp, Signal, Telegram, iMessage and RCS do against each scam.",
     "bipe": "On Bipe",
     "appsTitle": "Compare with each app",
     "more": "See the comparison",
     "limitTitle": "What Bipe cannot fix alone",
-    "limit": "Bipe protects only the chats that happen in Bipe. If your mother still uses WhatsApp, a scammer can write to her there. It works best when the family talks on Bipe. Then a request for money that arrives in another app stands out.",
+    "limit": "Bipe warnings apply to chats in Bipe. Check requests for money through a channel you already know, even when an account has a seal.",
     "sourcesTitle": "Where this comes from",
     "sourcesNote": "Researched on 12 October 2026, from what each company published and the press reported. The apps change fast. We update this page when they do.",
-    "aheadTitle": "Where {app} is ahead",
+    "aheadTitle": "Other {app} features",
     "tableTitle": "Summary",
     "threatCol": "Risk",
     "levels": {
@@ -119,21 +119,6 @@
         "threat": "Your number on show",
         "bipe": "You create the account without giving your number. People find you by your @, and nobody sees your number."
       }
-    },
-    {
-      "id": "dados",
-      "features": [
-        "brazil-servers",
-        "e2ee"
-      ],
-      "pt": {
-        "threat": "Lei estrangeira sobre seus dados",
-        "bipe": "As conversas ficam em servidores no Brasil, de empresas brasileiras, e são protegidas de ponta a ponta."
-      },
-      "en": {
-        "threat": "Foreign law over your data",
-        "bipe": "Chats sit on servers in Brazil, run by Brazilian companies, and are end-to-end encrypted."
-      }
     }
   ],
   "apps": [
@@ -142,9 +127,9 @@
       "slug": "whatsapp",
       "name": "WhatsApp",
       "pt": {
-        "title": "Bipe e WhatsApp contra golpe",
-        "lede": "O WhatsApp tem proteção contra golpe, mas a maior parte precisa ser ligada.",
-        "line": "O app que todo mundo usa. A maior parte das proteções contra golpe precisa ser ligada.",
+        "title": "Bipe e WhatsApp: recursos de segurança",
+        "lede": "Recursos de segurança do WhatsApp e do Bipe, com fontes e opções de configuração.",
+        "line": "Recursos de segurança e configurações disponíveis.",
         "on": "No WhatsApp",
         "ahead": [
           "Chave de acesso para entrar na conta. O Bipe ainda usa e-mail e senha; a conta no celular com senha de 8 números vem em breve.",
@@ -155,9 +140,9 @@
         ]
       },
       "en": {
-        "title": "Bipe and WhatsApp against scams",
-        "lede": "WhatsApp has scam protection, but you need to turn most of it on.",
-        "line": "The app everyone uses. Most of its scam protection has to be turned on.",
+        "title": "Bipe and WhatsApp: safety features",
+        "lede": "Safety features in WhatsApp and Bipe, with sources and configuration options.",
+        "line": "Safety features and available settings.",
         "on": "On WhatsApp",
         "ahead": [
           "Passkeys to sign in. Bipe still uses email and a password; the account on your phone with an 8-digit PIN is coming soon.",
@@ -192,11 +177,6 @@
           "level": "limited",
           "pt": "Os nomes de usuário estão chegando aos poucos desde junho de 2026. Para criar a conta, ainda precisa de número.",
           "en": "Usernames have been arriving slowly since June 2026. You still need a number to create an account."
-        },
-        "dados": {
-          "level": "limited",
-          "pt": "A Meta é americana. Pela lei dos EUA (CLOUD Act), ela entrega ao governo americano os dados que guarda, mesmo fora dos EUA, quando ele pede. As conversas são protegidas de ponta a ponta.",
-          "en": "Meta is American. Under US law (the CLOUD Act), it hands the US government the data it holds, even outside the US, when asked. Chats are end-to-end encrypted."
         }
       },
       "sources": [
@@ -231,10 +211,6 @@
         {
           "name": "BleepingComputer: WhatsApp rolls out usernames to help users hide their phone number",
           "url": "https://bleepingcomputer.com/news/security/whatsapp-rolls-out-usernames-to-help-users-hide-their-phone-number"
-        },
-        {
-          "name": "US Department of Justice: CLOUD Act resources",
-          "url": "https://www.justice.gov/criminal/cloud-act-resources"
         }
       ]
     },
@@ -291,11 +267,6 @@
           "level": "on",
           "pt": "Desde 2024 tem nome de usuário, e seu número fica escondido por padrão. Para criar a conta, ainda precisa de número.",
           "en": "Usernames since 2024, and your number is hidden by default. You still need a number to create an account."
-        },
-        "dados": {
-          "level": "limited",
-          "pt": "O Signal é uma organização sem fins lucrativos dos EUA. Numa ordem judicial, diz que só tem a data de criação da conta e a última conexão.",
-          "en": "Signal is a US nonprofit. Under a court order, it says it has only the account creation date and the last connection."
         }
       },
       "sources": [
@@ -326,10 +297,6 @@
         {
           "name": "Signal: Government communication (court orders)",
           "url": "https://signal.org/bigbrother/"
-        },
-        {
-          "name": "US Department of Justice: CLOUD Act resources",
-          "url": "https://www.justice.gov/criminal/cloud-act-resources"
         }
       ]
     },
@@ -381,11 +348,6 @@
           "level": "on",
           "pt": "Seu número aparece só para quem já salvou ele, e dá para conversar pelo @. Dá até para criar conta sem chip, com um número comprado no Fragment.",
           "en": "Your number shows only to people who saved it, and you can chat by @. You can even sign up without a SIM, with a number bought on Fragment."
-        },
-        "dados": {
-          "level": "limited",
-          "pt": "A equipe fica em Dubai. A conversa comum fica guardada em data centers de vários países, sem proteção de ponta a ponta.",
-          "en": "The team is in Dubai. Normal chats are stored in data centres in several countries, without end-to-end encryption."
         }
       },
       "sources": [
@@ -476,11 +438,6 @@
           "level": "setting",
           "pt": "Dá para escolher se o iMessage usa seu número ou seu e-mail.",
           "en": "You can choose whether iMessage uses your number or your email."
-        },
-        "dados": {
-          "level": "limited",
-          "pt": "A Apple é americana e segue a mesma lei (CLOUD Act). As mensagens são protegidas de ponta a ponta.",
-          "en": "Apple is American and follows the same law (the CLOUD Act). Messages are end-to-end encrypted."
         }
       },
       "sources": [
@@ -519,10 +476,6 @@
         {
           "name": "MacMagazine: Brasileiros que têm iPhone (Opinion Box, Jul 2025)",
           "url": "https://macmagazine.com.br/post/2025/07/02/brasileiros-que-tem-iphones-priorizam-processamento-e-camera-ao-trocar-de-aparelho/"
-        },
-        {
-          "name": "US Department of Justice: CLOUD Act resources",
-          "url": "https://www.justice.gov/criminal/cloud-act-resources"
         }
       ]
     },
@@ -577,11 +530,6 @@
           "level": "none",
           "pt": "O RCS usa o seu número de telefone como identidade.",
           "en": "RCS uses your phone number as your identity."
-        },
-        "dados": {
-          "level": "limited",
-          "pt": "O Google é americano e segue a mesma lei (CLOUD Act). Entre usuários do Google Mensagens, a conversa é protegida de ponta a ponta.",
-          "en": "Google is American and follows the same law (the CLOUD Act). Between Google Messages users, chats are end-to-end encrypted."
         }
       },
       "sources": [
@@ -612,10 +560,6 @@
         {
           "name": "Google Messages help: Verified business senders",
           "url": "https://support.google.com/messages/answer/7513219"
-        },
-        {
-          "name": "US Department of Justice: CLOUD Act resources",
-          "url": "https://www.justice.gov/criminal/cloud-act-resources"
         }
       ]
     }

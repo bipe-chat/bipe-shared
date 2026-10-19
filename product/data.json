@@ -26,7 +26,7 @@
       "Retirar o consentimento, quando a base legal for o consentimento.",
       "Reclamar na Autoridade Nacional de Proteção de Dados (ANPD)."
     ],
-    "rightsHow": "Para qualquer pedido, [fale com a gente](/organizacoes/#form). Durante os testes, a conta é apagada por pedido.",
+    "rightsHow": "Para qualquer pedido, [fale com a gente](/ajuda/). Durante os testes, a conta é apagada por pedido.",
     "controllerTitle": "Quem cuida dos seus dados",
     "controller": "Durante os testes, o Bipe é tocado pela Envisioning, que é a controladora dos dados.",
     "encarregadoMissing": "O encarregado de dados ainda não foi nomeado. Até lá, os pedidos chegam pelo mesmo contato."
@@ -55,7 +55,7 @@
       "Withdraw consent, where consent is the legal basis.",
       "Complain to the Brazilian data protection authority (ANPD)."
     ],
-    "rightsHow": "For any request, [contact us](/en/organisations/#form). During testing, accounts are deleted on request.",
+    "rightsHow": "For any request, [contact us](/en/help/). During testing, accounts are deleted on request.",
     "controllerTitle": "Who looks after your data",
     "controller": "During testing, Bipe is run by Envisioning, the data controller.",
     "encarregadoMissing": "The data protection officer (encarregado) is not yet named. Until then, requests go to the same contact."

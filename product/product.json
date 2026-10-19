@@ -4,11 +4,11 @@
   "promise": {
     "pt": {
       "title": "Saiba com quem está falando.",
-      "lede": "Seu número fica escondido. Você escolhe com quem conversar. O Bipe é um app de mensagens brasileiro, gratuito e sem anúncio. A checagem procura sinais de golpe nas mensagens, e quem você não conhece chega como pedido."
+      "lede": "Um app de mensagens brasileiro, gratuito e sem anúncio. Converse pelo seu @, com avisos para conferir possíveis golpes."
     },
     "en": {
       "title": "Know who you are talking to.",
-      "lede": "Your number stays hidden. You choose who to talk to. Bipe is a free Brazilian messenger with no ads. Its checks look for scam signals in messages, and people you don't know arrive as a request."
+      "lede": "A free Brazilian messenger with no ads. Chat using your @, with warnings to help you check possible scams."
     }
   },
   "headlineTest": {
@@ -514,7 +514,7 @@
         "name": "Sem código por SMS",
         "body": "Quem pega seu chip não pega sua conta. No Bipe não tem código por SMS para pedir.",
         "points": [
-          "Golpista rouba conta de WhatsApp pedindo o código do SMS ou clonando o chip. No Bipe não tem código por SMS para pedir.",
+          "O Bipe não usa código por SMS para entrar na conta.",
           "Seu número não é sua conta.",
           "Trocar de chip não muda nada na sua conta."
         ]
@@ -523,7 +523,7 @@
         "name": "No SMS codes",
         "body": "Whoever takes your SIM does not get your account. Bipe has no SMS code to ask for.",
         "points": [
-          "Scammers take WhatsApp accounts by asking for the SMS code or cloning the SIM. Bipe has no SMS code to ask for.",
+          "Bipe does not use SMS codes to sign in.",
           "Your number is not your account.",
           "A new SIM changes nothing on your account."
         ]
@@ -1826,7 +1826,7 @@
         "name": "Devs e criativos",
         "title": "Bipe para devs e criativos",
         "headline": "Seu @ no lugar do número. Grupo que só toca quando é com você.",
-        "lede": "Para quem escolhe app pelo jeito que ele funciona: protegido de ponta a ponta, sem anúncio, sem código por SMS e com servidores no Brasil. O Bipe está em teste no iPhone, e cada retorno muda o app.",
+        "lede": "Para quem escolhe app pelo jeito que ele funciona: protegido de ponta a ponta, sem anúncio, sem código por SMS e com servidores no Brasil. O Bipe está em teste no iPhone e no Android, e cada retorno muda o app.",
         "sections": [
           {
             "heading": "Passe o @, não o número",
@@ -1846,10 +1846,10 @@
           },
           {
             "heading": "Teste e ajude a construir",
-            "body": "Hoje o Bipe abre por convite, no iPhone. Traga seu grupo, conte o que quebrou e o que faltou. Quando o código abrir, dá para mandar código também."
+            "body": "O Bipe abre por convite. Traga seu grupo, conte o que quebrou e o que faltou. O código é público, e você também pode contribuir."
           }
         ],
-        "note": "No iPhone, o Bipe está em teste pelo TestFlight. No Android, ainda não tem. Cada recurso mostra em que pé está.",
+        "note": "O Bipe está em testes no iPhone e no Android. Veja a disponibilidade na página de cada recurso.",
         "cta": "Quer testar com o seu grupo e dar retorno? Fale com a gente.",
         "ctaSubject": "Bipe para devs e criativos"
       },
@@ -1857,7 +1857,7 @@
         "name": "Builders",
         "title": "Bipe for builders",
         "headline": "Your @ instead of your number. Groups that only ring when it's about you.",
-        "lede": "For people who pick an app by how it works: end-to-end encrypted, no ads, no SMS codes and servers in Brazil. Bipe is in testing on iPhone, and every piece of feedback changes the app.",
+        "lede": "For people who pick an app by how it works: end-to-end encrypted, no ads, no SMS codes and servers in Brazil. Bipe is in testing on iPhone and Android, and every piece of feedback changes the app.",
         "sections": [
           {
             "heading": "Share your @, not your number",
@@ -1877,10 +1877,10 @@
           },
           {
             "heading": "Test it and help build it",
-            "body": "Bipe opens by invite for now, on iPhone. Bring your group, tell us what broke and what was missing. When the code opens, you can send code too."
+            "body": "Bipe opens by invite. Bring your group and tell us what broke or was missing. The code is public, and you can contribute too."
           }
         ],
-        "note": "On iPhone, Bipe is in testing through TestFlight. There is no Android version yet. Each feature shows where it stands.",
+        "note": "Bipe is in testing on iPhone and Android. Each feature page shows its availability.",
         "cta": "Want to test it with your group and give feedback? Talk to us.",
         "ctaSubject": "Bipe for builders"
       }
@@ -1967,7 +1967,7 @@
             "body": "Mande um convite, e quem entra chega direto na sua conversa. O grupo da família só toca quando é com você."
           }
         ],
-        "note": "No iPhone, o aviso de golpe e os pedidos de conversa já estão no app de testes. O selo e a pergunta sobre a Mãe ainda vêm. No Android, ainda não tem.",
+        "note": "O Bipe está em testes no iPhone e no Android. Veja a disponibilidade na página de cada recurso.",
         "cta": "Quer proteger a sua família desde o começo? Fale com a gente.",
         "ctaSubject": "Bipe para famílias"
       },
@@ -2002,7 +2002,7 @@
             "body": "Send an invite, and whoever joins lands straight in your chat. The family group only rings when it's about you."
           }
         ],
-        "note": "On iPhone, scam warnings and message requests are in the test app. The seal and the question about Mom are still coming. There is no Android version yet.",
+        "note": "Bipe is in testing on iPhone and Android. Each feature page shows its availability.",
         "cta": "Want to protect your family from the start? Talk to us.",
         "ctaSubject": "Bipe for families"
       }
@@ -2062,7 +2062,7 @@
             "body": "A conta fica no seu celular, não no seu número. Trocou de aparelho, de chip ou de país, você volta para a conta sem código por SMS. Toda conversa é protegida de ponta a ponta, e os servidores ficam no Brasil."
           }
         ],
-        "note": "No iPhone, o Bipe está em teste pelo TestFlight. No Android, ainda não tem. O selo verificado ainda vem.",
+        "note": "O Bipe está em testes no iPhone e no Android. Veja a disponibilidade na página de cada recurso.",
         "cta": "Mora fora e quer testar com a família? Fale com a gente.",
         "ctaSubject": "Bipe para brasileiros no exterior"
       },
@@ -2085,7 +2085,7 @@
             "body": "Your account lives on your phone, not on your number. New phone, new SIM or new country, you get back into your account with no SMS code. Every chat is end-to-end encrypted, and the servers are in Brazil."
           }
         ],
-        "note": "On iPhone, Bipe is in testing through TestFlight. There is no Android version yet. The verified seal is still coming.",
+        "note": "Bipe is in testing on iPhone and Android. Each feature page shows its availability.",
         "cta": "Live abroad and want to test with your family? Talk to us.",
         "ctaSubject": "Bipe for Brazilians abroad"
       }
@@ -2155,7 +2155,7 @@
             "body": "A cobrança por Pix mostra o CNPJ da organização no cartão, e o banco mostra o nome de quem recebe antes de você pagar. O Bipe não cobra taxa sobre a cobrança."
           }
         ],
-        "note": "Boa parte desta página ainda está em desenvolvimento. Cada recurso mostra se já está no app.",
+        "note": "O Bipe está em testes no iPhone e no Android. Veja a disponibilidade na página de cada recurso.",
         "cta": "Organiza um grupo grande? Fale com a gente.",
         "ctaSubject": "Bipe para grupos e comunidades"
       },
@@ -2182,7 +2182,7 @@
             "body": "A Pix charge shows the organisation's CNPJ on the card, and your bank shows who receives the money before you pay. Bipe takes no fee on the charge."
           }
         ],
-        "note": "Much of this page is still in development. Each feature shows whether it is in the app yet.",
+        "note": "Bipe is in testing on iPhone and Android. Each feature page shows its availability.",
         "cta": "Do you run a big group? Talk to us.",
         "ctaSubject": "Bipe for groups and communities"
       }
@@ -2248,7 +2248,7 @@
             "body": "Você não entra por código de SMS, então quem clona o seu chip não leva a conta. E não tem anúncio em tela nenhuma."
           }
         ],
-        "note": "O Bipe é um app de mensagens para pessoas. Empresas que falam com muitos clientes têm uma página própria. No iPhone, o Bipe está em teste. No Android, ainda não tem.",
+        "note": "O Bipe está em testes no iPhone e no Android. Veja a disponibilidade na página de cada recurso.",
         "cta": "Atende cliente pelo celular? Fale com a gente.",
         "ctaSubject": "Bipe para profissionais"
       },
@@ -2275,7 +2275,7 @@
             "body": "You don't sign in with an SMS code, so whoever clones your SIM doesn't get the account. And there are no ads on any screen."
           }
         ],
-        "note": "Bipe is a messenger for people. Companies that talk to many customers have their own page. On iPhone, Bipe is in testing. There is no Android version yet.",
+        "note": "Bipe is in testing on iPhone and Android. Each feature page shows its availability.",
         "cta": "Do you serve clients from your phone? Talk to us.",
         "ctaSubject": "Bipe for professionals"
       }
@@ -2283,54 +2283,30 @@
   ],
   "about": {
     "pt": {
-      "title": "Por que o Bipe existe",
-      "lede": "Para o Brasil ter uma saída: um app de mensagens aberto, com os dados no Brasil, que não é de uma empresa só.",
+      "title": "Sobre o Bipe",
+      "lede": "O Bipe é um app de mensagens brasileiro, gratuito e de código aberto. A Envisioning desenvolve o app e mantém os servidores no Brasil. O Bipe está em fase de testes.",
       "sections": [
         {
-          "heading": "Não precisa ganhar para valer a pena",
-          "body": "O sucesso do Bipe não se mede por quanta gente sai do WhatsApp. O app precisa existir, ser confiável e estar pronto no dia em que as pessoas procurarem outra opção. É assim que se avalia o Signal e a Wikipédia."
+          "heading": "Quem sustenta",
+          "body": "Quem usa para conversar nunca paga. A proposta é que organizações ajudem a sustentar o serviço e empresas paguem pelo atendimento a clientes. O modelo está em estudo."
         },
         {
-          "heading": "Uma rede que ninguém controla sozinho",
-          "body": "O Bipe roda sobre o Matrix, um protocolo aberto de mensagens. Nenhuma empresa e nenhum governo é dono da rede. Os servidores ficam no Brasil, em empresas brasileiras."
-        },
-        {
-          "heading": "Um experimento, por enquanto",
-          "body": "O Bipe é um experimento. Ele testa se dá para ter um app de mensagens feito contra os golpes que acontecem aqui, com os dados no Brasil. Quem começou e cuida do Bipe é a Envisioning, um instituto de pesquisa que estuda desde 2010 como as instituições se adaptam à tecnologia. Hoje ela faz o app e roda os servidores no Brasil."
-        },
-        {
-          "heading": "Feito para não ter dono",
-          "body": "A ideia é que o Bipe vire uma infraestrutura comum: várias organizações sustentam, nenhuma é dona, nenhuma muda as regras sozinha. Por enquanto isso é uma ideia, não um acordo. O código é público e a rede é aberta, então, se a Envisioning parar, outras pessoas podem continuar. As regras de moderação saem no lançamento."
-        },
-        {
-          "heading": "Quem paga",
-          "body": "Quem usa, nunca. Como o Bipe vai se pagar ainda está em aberto. A ideia é dividir os custos entre quem sustenta o Bipe, e que empresas paguem uma mensalidade fixa pela conta verificada. O Bipe não cobra taxa sobre Pix."
+          "heading": "Um experimento aberto",
+          "body": "O código é público. A ideia é que várias organizações cuidem do Bipe juntas. Por enquanto, a Envisioning cuida do desenvolvimento e dos servidores."
         }
       ]
     },
     "en": {
-      "title": "Why Bipe exists",
-      "lede": "So Brazil has a way out: an open messenger, with its data in Brazil, that no single company owns.",
+      "title": "About Bipe",
+      "lede": "Bipe is a free, open-source Brazilian messenger. Envisioning develops the app and runs the servers in Brazil. Bipe is in testing.",
       "sections": [
         {
-          "heading": "It does not need to win to be worth it",
-          "body": "Bipe does not measure success by pulling people off WhatsApp. It needs to exist, be trustworthy and be ready on the day people look for another option. Signal and Wikipedia are judged the same way."
+          "heading": "Who funds it",
+          "body": "People never pay to chat. The proposal is for organisations to help fund the service and for businesses to pay for customer service. The model is still being studied."
         },
         {
-          "heading": "A network nobody controls alone",
-          "body": "Underneath, Bipe uses Matrix, an open messaging protocol. No company and no government owns the network. The servers are in Brazil, run by Brazilian companies."
-        },
-        {
-          "heading": "An experiment, for now",
-          "body": "Bipe is an experiment. It tests whether Brazil can have a messenger built against the scams that happen here, with the data in Brazil. Envisioning started Bipe and looks after it. Envisioning is a research institute that has studied since 2010 how institutions adapt to technology. Today it makes the app and runs the servers in Brazil."
-        },
-        {
-          "heading": "Built to have no owner",
-          "body": "The idea is that Bipe becomes common infrastructure: several organisations carry it, none owns it, none changes the rules alone. For now this is an idea, not an agreement. The code is public and the network is open, so others can carry on if Envisioning stops. The moderation rules come out at launch."
-        },
-        {
-          "heading": "Who pays",
-          "body": "Users, never. How Bipe is funded is still open. The idea is to share the costs among the organisations that carry Bipe, and that businesses pay a flat monthly fee for a verified account. Bipe takes no fee on Pix."
+          "heading": "An open experiment",
+          "body": "The code is public. The idea is for several organisations to look after Bipe together. For now, Envisioning looks after development and the servers."
         }
       ]
     }
@@ -2354,12 +2330,12 @@
   },
   "origin": {
     "pt": {
-      "title": "Brasileiro, aberto e independente",
-      "body": "Os servidores ficam no Brasil, em empresas brasileiras. O Bipe roda sobre uma rede aberta e começou como um experimento que não quer ter dono: a ideia é que ele seja de todo mundo, não de uma empresa só. O código é público."
+      "title": "Um experimento da Envisioning",
+      "body": "A Envisioning desenvolve o Bipe e mantém os servidores no Brasil durante os testes. O código é público."
     },
     "en": {
-      "title": "Brazilian, open and independent",
-      "body": "The servers are in Brazil, run by Brazilian companies. Bipe runs on an open network and started as an experiment that wants no single owner: the idea is that it belongs to everyone, not to one company. The code is public."
+      "title": "An experiment by Envisioning",
+      "body": "Envisioning develops Bipe and runs the servers in Brazil during testing. The code is public."
     }
   },
   "business": {
@@ -2576,7 +2552,7 @@
         "points": [
           "O que a empresa ganha no Bipe é um nome verificado que nenhum golpista consegue copiar.",
           "Esse nome vale mais quanto mais gente pode ser enganada em nome da empresa. O número de mensagens não muda esse valor.",
-          "Cobrar por mensagem premia quem manda mais. É desse volume que vem o spam, e o Bipe não quer spam.",
+          "O preço fixo ajuda a empresa a planejar os custos de atendimento.",
           "Instituições e órgãos públicos compram com orçamento anual e precisam de um preço fixo."
         ]
       },
@@ -2661,7 +2637,7 @@
         "points": [
           "What a company gets from Bipe is a verified name that no scammer can copy.",
           "That name is worth more the more people could be fooled in the company's name. The number of messages does not change that.",
-          "A price per message rewards whoever sends more. That volume is where spam comes from, and Bipe does not want spam.",
+          "A fixed price helps businesses plan their customer service costs.",
           "Institutions and public bodies buy with a yearly budget and need a fixed price."
         ]
       },
@@ -3171,6 +3147,13 @@
           }
         ]
       }
+    ]
+  },
+  "home": {
+    "features": [
+      "handles",
+      "requests",
+      "e2ee"
     ]
   }
 }

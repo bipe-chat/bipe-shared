@@ -780,6 +780,28 @@ paths:
                   user_ids: { type: array, items: { type: string } }
         "401": { $ref: "#/components/responses/Error" }
   /v1/me/invites/{inviteId}:
+    put:
+      summary: Name one of the caller's invites
+      description: >
+        A name the caller gives an invite, so they know who it is for. Only the caller sees it.
+        Any status. An empty or blank name removes it. Foreign invites are not_found.
+      security: [{ matrix: [] }]
+      parameters:
+        - { name: inviteId, in: path, required: true, schema: { type: string } }
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [name]
+              properties:
+                name: { type: string, maxLength: 80 }
+      responses:
+        "204": { description: Saved }
+        "400": { $ref: "#/components/responses/Error" }
+        "401": { $ref: "#/components/responses/Error" }
+        "404": { $ref: "#/components/responses/Error" }
     delete:
       summary: Revoke one of the caller's pending invites
       description: The invite goes back to the caller's available count. Used invites cannot be revoked.
@@ -4375,6 +4397,7 @@ components:
         created_at: { type: string, format: date-time }
         expires_at: { type: string, format: date-time }
         joined_user_id: { type: string, description: "Only when status is used: the account created with this invite." }
+        name: { type: string, description: "The name the caller gave the invite. Absent when none." }
     InviterStats:
       type: object
       required: [user_id, sent, joined, downstream, depth]

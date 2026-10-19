@@ -10,7 +10,7 @@ const root = fileURLToPath(new URL("../", import.meta.url));
 const reg = loadRegistries(root);
 
 test("only the official owner can claim a Bipe handle or its skeleton", () => {
-  for (const [handle, owner] of [["bipe", "@bipe:bipe.net.br"], ["suporte", "@suporte:bipe.net.br"]]) {
+  for (const [handle, owner] of [["bipe", "@bipe:bipe.net.br"], ["suporte", "@suporte:bipe.net.br"], ["bipechat", "@r2vrihsgkqd5:bipe.net.br"]]) {
     for (const input of [handle, `${handle[0]}.${handle.slice(1)}`, `${handle[0]}_${handle.slice(1)}`]) {
       assert.equal(handleProblem(input, reg), null, `lookup ${input}`);
       assert.equal(handleProblem(input, reg, owner), null, `owner ${input}`);
@@ -19,6 +19,8 @@ test("only the official owner can claim a Bipe handle or its skeleton", () => {
       }
     }
   }
+  assert.equal(handleProblem("bipe.chat", reg, "@r2vrihsgkqd5:bipe.net.br"), null);
+  assert.equal(handleProblem("bipe.chat", reg, "@ana:bipe.net.br"), "reserved");
   assert.equal(handleProblem("banco_do_brasil", reg, "@bipe:bipe.net.br"), "reserved");
   assert.equal(handleProblem("novidades_bipe", reg, "@ana:bipe.net.br"), "reserved");
   assert.equal(handleProblem("novidades_do_bipe", reg, "@ana:bipe.net.br"), "reserved");

@@ -169,6 +169,23 @@
       "note": "Token, PIN, QR and e-mail recovery are merged on both apps; guardians and CPF recovery are not"
     },
     {
+      "id": "web-sign-in",
+      "name": "Link a computer by QR code",
+      "ios": "planned",
+      "android": "planned",
+      "web": {
+        "status": "n/a",
+        "reason": "Stock Element Web at chat.bipe.net.br shows the QR code (ADR 0116)"
+      },
+      "server": {
+        "status": "built",
+        "evidence": [
+          "bipe-api/src/weblink.ts"
+        ]
+      },
+      "issue": 391
+    },
+    {
       "id": "verified-badge",
       "name": "Verified seal",
       "ios": "planned",

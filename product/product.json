@@ -12,7 +12,7 @@
     }
   },
   "headlineTest": {
-    "$comment": "Issue #77 (ADR 0032, ADR 0047). The home page (pt-BR only) shows one arm per browser, chosen at random and kept. h0 is the control: promise.pt.title. The lede and everything else stay the same. active false shows promise.title to everyone. An arm id is never reused: retired ids stay in retired, so old counts never mix with a new headline. Copy review 2026-10-15 (bipe#230): h2/h4 retired; h0/h3 headline text and experiment ID unchanged. Surrounding safety copy changed on this date; compare daily counts with that boundary in mind.",
+    "$comment": "Issue #77 (ADR 0032, ADR 0047). The home page (pt-BR only) shows one arm per browser, chosen at random and kept. h0 is the control: promise.pt.title. The lede and everything else stay the same. active false shows promise.title to everyone. An arm id is never reused: retired ids stay in retired, so old counts never mix with a new headline. Copy review 2026-10-15 (bipe#230): h2/h4 retired; h0/h3 headline text and experiment ID unchanged. Surrounding safety copy changed on this date; compare daily counts with that boundary in mind. 2026-10-18: home shortened to four sections and lede updated (ADR 0129); preserve headline IDs and counts, and treat this as a new layout boundary.",
     "experiment": "headline-77",
     "active": true,
     "arms": [

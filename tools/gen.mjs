@@ -473,6 +473,7 @@ if (existsSync(resolve(apiOut, "../.."))) {
   copyFileSync(join(root, "tools/lib/gen-settings.mjs"), join(apiOut, "lib/gen-settings.mjs"));
   copyFileSync(join(root, "tools/lib/gen-onboarding.mjs"), join(apiOut, "lib/gen-onboarding.mjs"));
   writeFileSync(join(apiOut, "business-api.ts"), generateApiTypes(loadBusinessSchemas(root)));
+  copyFileSync(join(root, "api/internal-research.d.ts"), join(apiOut, "internal-research.d.ts"));
   console.log(`wrote API registries to ${apiOut}`);
 }
 

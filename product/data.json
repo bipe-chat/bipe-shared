@@ -347,6 +347,23 @@
       }
     },
     {
+      "id": "support-chat",
+      "basis": "contract",
+      "places": ["server", "support-tool"],
+      "pt": {
+        "name": "Conversa com o Suporte Bipe",
+        "what": "O que você escreve na conversa com o Suporte Bipe, seu ID no Bipe, seu nome de usuário e seu nome. Fotos e arquivos ficam só no servidor do Bipe.",
+        "why": "Responder você. O texto vai para a ferramenta de atendimento da equipe.",
+        "retention": "Enquanto a conversa existir. Antes disso, se você pedir."
+      },
+      "en": {
+        "name": "Chat with Bipe Support",
+        "what": "What you write in the chat with Bipe Support, your Bipe ID, your username and your name. Photos and files stay on the Bipe server only.",
+        "why": "To answer you. The text goes to the team's support tool.",
+        "retention": "While the chat exists. Earlier, if you ask."
+      }
+    },
+    {
       "id": "problem-reports",
       "basis": "consent",
       "places": ["server", "support-tool"],

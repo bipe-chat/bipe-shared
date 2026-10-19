@@ -656,8 +656,8 @@
       "area": "identity",
       "icon": "bank",
       "status": {
-        "ios": "planned",
-        "android": "planned"
+        "ios": "built",
+        "android": "built"
       },
       "slug": {
         "pt": "selo-de-cnpj",

@@ -61,7 +61,7 @@ jobs:
           generated() {
             case "$1" in
               bipe) echo "docs/product.md" ;;
-              bipe-ios) echo "Components/BipeKit/Sources/BipeKit/Generated Tools/Bipe" ;;
+              bipe-ios) echo "Components/BipeKit/Sources/BipeKit/Generated Components/BipeKit/Sources/BipeKit/Resources Tools/Bipe" ;;
               bipe-android) echo "libraries/bipe/src/main plugins/src/main/kotlin" ;;
               bipe-api) echo "src/generated test/fixtures" ;;
             esac

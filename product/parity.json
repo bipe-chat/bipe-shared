@@ -200,8 +200,8 @@
     {
       "id": "cnpj-badge",
       "name": "Business seal",
-      "ios": { "status": "built", "evidence": ["bipe-ios/Components/BipeKit/Sources/BipeKit/BipeCompanySeals.swift", "bipe-ios/ElementX/Sources/Other/SwiftUI/Views/BipeCompanySeal.swift"] },
-      "android": { "status": "built", "evidence": ["bipe-android/libraries/bipe/src/main/kotlin/io/element/android/libraries/bipe/company/BipeCompanySeals.kt", "bipe-android/libraries/bipe/src/main/kotlin/io/element/android/libraries/bipe/company/BipeCompanySeal.kt"] },
+      "ios": { "status": "planned", "note": "Open in bipe-ios#33; set built when it merges" },
+      "android": { "status": "planned", "note": "Open in bipe-android#35; set built when it merges" },
       "web": {
         "status": "built",
         "evidence": [

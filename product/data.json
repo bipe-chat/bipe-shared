@@ -1,11 +1,11 @@
 {
   "version": 1,
-  "date": "2026-10-14",
+  "date": "2026-10-18",
   "encarregado": null,
   "pt": {
     "nav": "LGPD",
     "title": "Seus dados no Bipe (LGPD)",
-    "meta": "Bipe, versão de testes. Atualizada em 14 de outubro de 2026.",
+    "meta": "Bipe, versão de testes. Atualizada em 18 de outubro de 2026.",
     "lede": "Cada dado que o Bipe guarda, para quê, com qual base da LGPD, por quanto tempo e onde fica. A página é gerada do mesmo registro que a equipe usa para cuidar dos dados.",
     "policy": "O texto corrido está na [política de privacidade](/privacidade/).",
     "itemsTitle": "O que a gente guarda",
@@ -34,7 +34,7 @@
   "en": {
     "nav": "LGPD",
     "title": "Your data on Bipe (LGPD)",
-    "meta": "Bipe, test version. Updated 14 October 2026.",
+    "meta": "Bipe, test version. Updated 18 October 2026.",
     "lede": "Every piece of data Bipe keeps, what it is for, its LGPD legal basis, how long we keep it and where it lives. The page is built from the same record the team uses to manage the data. The Portuguese version is the reference text.",
     "policy": "The plain-language text is in the [privacy policy](/en/privacy/).",
     "itemsTitle": "What we keep",
@@ -71,7 +71,8 @@
     { "id": "apple-push", "brazil": false, "pt": "Apple, serviço de notificações do iPhone", "en": "Apple, the iPhone notification service" },
     { "id": "email-relay", "brazil": null, "pt": "Serviço que entrega os e-mails do Bipe", "en": "The service that delivers Bipe's emails" },
     { "id": "icloud-keychain", "brazil": null, "pt": "Chaveiro do iCloud, na sua conta Apple", "en": "iCloud Keychain, in your Apple account" },
-    { "id": "support-tool", "brazil": null, "pt": "Ferramenta da equipe do Bipe para ler e responder pedidos de ajuda. Recebe só texto, nunca arquivos", "en": "The tool the Bipe team uses to read and answer help requests. It gets text only, never files" }
+    { "id": "support-tool", "brazil": null, "pt": "Ferramenta da equipe do Bipe para ler e responder pedidos de ajuda. Recebe só texto, nunca arquivos", "en": "The tool the Bipe team uses to read and answer help requests. It gets text only, never files" },
+    { "id": "starlings", "brazil": false, "pt": "Starlings, o sistema de trabalho da Envisioning, na União Europeia", "en": "Starlings, Envisioning's work system, in the European Union" }
   ],
   "items": [
     {
@@ -332,7 +333,7 @@
     {
       "id": "organisation-requests",
       "basis": "legitimate-interest",
-      "places": ["server"],
+      "places": ["starlings"],
       "pt": {
         "name": "Pedido de organização",
         "what": "Nome, tipo e CNPJ da organização, nome, cargo e e-mail de quem escreveu, quantos clientes ela atende, os canais que usa, quanto paga hoje para falar com os clientes, a mensagem e o idioma.",

@@ -1354,6 +1354,32 @@
           "bipe-api/src/banner.ts"
         ]
       }
+    },
+    {
+      "id": "haptics",
+      "name": "Haptics language",
+      "ios": {
+        "status": "built",
+        "evidence": [
+          "bipe-ios/Components/BipeKit/Sources/BipeKit/BipeHapticsPlayer.swift",
+          "bipe-ios/ElementX/Sources/Screens/RoomScreen/View/SwipeRightAction.swift"
+        ]
+      },
+      "android": {
+        "status": "built",
+        "evidence": [
+          "bipe-android/libraries/bipe/src/main/kotlin/io/element/android/libraries/bipe/haptics/BipeHaptics.kt",
+          "bipe-android/features/messages/impl/src/main/kotlin/io/element/android/features/messages/impl/timeline/components/TimelineItemEventRow.kt"
+        ]
+      },
+      "web": {
+        "status": "n/a",
+        "reason": "Haptics are an app feature"
+      },
+      "server": {
+        "status": "n/a",
+        "reason": "Runs on the device only"
+      }
     }
   ],
   "differences": [
@@ -1542,6 +1568,13 @@
       "reason": "Built on iOS first (#397)",
       "kind": "gap",
       "issue": 397
+    },
+    {
+      "area": "Warning haptic",
+      "ios": "Notification warning pattern",
+      "android": "One long-press pulse",
+      "reason": "Android has no warning haptic constant (ADR 0134)",
+      "kind": "idiom"
     }
   ]
 }

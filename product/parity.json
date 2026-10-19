@@ -1266,6 +1266,36 @@
           "bipe-api/src/export.ts"
         ]
       }
+    },
+    {
+      "id": "problem-reports",
+      "name": "Report a problem to the Bipe team (files stay in Brazil)",
+      "issue": 367,
+      "ios": {
+        "status": "built",
+        "evidence": [
+          "bipe-ios/Components/Secrets/Secrets.swift",
+          "bipe-ios/ElementX/Sources/Services/BugReport/BugReportService.swift"
+        ]
+      },
+      "android": {
+        "status": "built",
+        "evidence": [
+          "bipe-android/plugins/src/main/kotlin/config/BuildTimeConfig.kt",
+          "bipe-android/features/rageshake/impl/src/main/kotlin/io/element/android/features/rageshake/impl/reporter/DefaultBugReporter.kt"
+        ]
+      },
+      "web": {
+        "status": "n/a",
+        "reason": "No web chat (ADR 0004)"
+      },
+      "server": {
+        "status": "built",
+        "evidence": [
+          "bipe-api/src/bug-reports.ts",
+          "bipe-api/src/intake.ts"
+        ]
+      }
     }
   ],
   "differences": [

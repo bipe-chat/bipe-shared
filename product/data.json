@@ -70,7 +70,8 @@
     { "id": "server", "brazil": true, "pt": "Servidor do Bipe em São Paulo", "en": "Bipe server in São Paulo" },
     { "id": "apple-push", "brazil": false, "pt": "Apple, serviço de notificações do iPhone", "en": "Apple, the iPhone notification service" },
     { "id": "email-relay", "brazil": null, "pt": "Serviço que entrega os e-mails do Bipe", "en": "The service that delivers Bipe's emails" },
-    { "id": "icloud-keychain", "brazil": null, "pt": "Chaveiro do iCloud, na sua conta Apple", "en": "iCloud Keychain, in your Apple account" }
+    { "id": "icloud-keychain", "brazil": null, "pt": "Chaveiro do iCloud, na sua conta Apple", "en": "iCloud Keychain, in your Apple account" },
+    { "id": "support-tool", "brazil": null, "pt": "Ferramenta da equipe do Bipe para ler e responder pedidos de ajuda. Recebe só texto, nunca arquivos", "en": "The tool the Bipe team uses to read and answer help requests. It gets text only, never files" }
   ],
   "items": [
     {
@@ -343,6 +344,40 @@
         "what": "The organisation's name, kind and CNPJ, the name, role and email of the person who wrote, how many customers it serves, the channels it uses, what it pays today to talk to customers, the message and the language.",
         "why": "To answer the request and to learn what organisations pay today to talk to their customers.",
         "retention": "One year. Earlier, if you ask."
+      }
+    },
+    {
+      "id": "support-chat",
+      "basis": "contract",
+      "places": ["server", "support-tool"],
+      "pt": {
+        "name": "Conversa com o Suporte Bipe",
+        "what": "O que você escreve na conversa com o Suporte Bipe, seu ID no Bipe, seu nome de usuário e seu nome. Fotos e arquivos ficam só no servidor do Bipe.",
+        "why": "Responder você. O texto vai para a ferramenta de atendimento da equipe.",
+        "retention": "Enquanto a conversa existir. Antes disso, se você pedir."
+      },
+      "en": {
+        "name": "Chat with Bipe Support",
+        "what": "What you write in the chat with Bipe Support, your Bipe ID, your username and your name. Photos and files stay on the Bipe server only.",
+        "why": "To answer you. The text goes to the team's support tool.",
+        "retention": "While the chat exists. Earlier, if you ask."
+      }
+    },
+    {
+      "id": "problem-reports",
+      "basis": "consent",
+      "places": ["server", "support-tool"],
+      "pt": {
+        "name": "Avisos de problema",
+        "what": "O que você escreve em Avisar sobre um problema, a versão do app e do sistema do celular e, se você escolher, os registros técnicos do app e as capturas de tela.",
+        "why": "Entender o problema, corrigir e responder a você. A equipe lê o texto na ferramenta de suporte. Os registros e as capturas ficam só no servidor do Bipe.",
+        "retention": "90 dias no servidor do Bipe. Antes disso, se você pedir."
+      },
+      "en": {
+        "name": "Problem reports",
+        "what": "What you write in Report a problem, the app and phone system versions and, if you choose, the app's technical logs and the screenshots.",
+        "why": "To understand the problem, fix it and answer you. The team reads the text in the support tool. The logs and screenshots stay on the Bipe server only.",
+        "retention": "90 days on the Bipe server. Earlier, if you ask."
       }
     }
   ],

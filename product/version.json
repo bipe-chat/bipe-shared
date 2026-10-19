@@ -1,5 +1,5 @@
 {
   "$comment": "One version name and one build number for iOS and Android (ADR 0088). Change with node tools/bump-build.mjs, never by hand in an app.",
   "version": "26.10.2",
-  "build": 8
+  "build": 9
 }

@@ -1,0 +1,179 @@
+{
+  "$comment": "remoteBannerState(banner, app_version, now) and compareAppVersions(a, b). ADR 0117, bipe#386. Expected values come from the reference implementation (tools/lib/registries.mjs).",
+  "state": [
+    {
+      "name": "no banner",
+      "banner": null,
+      "app_version": "26.10.2",
+      "now": "2026-10-20T12:00:00Z"
+    },
+    {
+      "name": "notice before expiry",
+      "banner": {
+        "id": "aviso-1",
+        "title": "Instabilidade agora",
+        "text": "Algumas mensagens podem demorar. Estamos cuidando disso.",
+        "link": "https://bipe.chat/status/",
+        "expires_at": "2026-11-01T12:00:00Z"
+      },
+      "app_version": "26.10.2",
+      "now": "2026-10-20T12:00:00Z"
+    },
+    {
+      "name": "expiry is exclusive",
+      "banner": {
+        "id": "aviso-1",
+        "title": "Instabilidade agora",
+        "text": "Algumas mensagens podem demorar. Estamos cuidando disso.",
+        "link": "https://bipe.chat/status/",
+        "expires_at": "2026-11-01T12:00:00Z"
+      },
+      "app_version": "26.10.2",
+      "now": "2026-11-01T12:00:00Z"
+    },
+    {
+      "name": "after expiry",
+      "banner": {
+        "id": "aviso-1",
+        "title": "Instabilidade agora",
+        "text": "Algumas mensagens podem demorar. Estamos cuidando disso.",
+        "link": "https://bipe.chat/status/",
+        "expires_at": "2026-11-01T12:00:00Z"
+      },
+      "app_version": "26.10.2",
+      "now": "2026-11-02T00:00:00Z"
+    },
+    {
+      "name": "below minimum",
+      "banner": {
+        "id": "aviso-1",
+        "title": "Instabilidade agora",
+        "text": "Algumas mensagens podem demorar. Estamos cuidando disso.",
+        "link": "https://bipe.chat/status/",
+        "expires_at": "2026-11-01T12:00:00Z",
+        "min_app_version": "26.10.2",
+        "update_links": {
+          "ios": "https://testflight.apple.com/join/k3ycEfzk",
+          "android": "https://bipe.chat/baixar/android/bipe.apk"
+        }
+      },
+      "app_version": "26.10.1",
+      "now": "2026-10-20T12:00:00Z"
+    },
+    {
+      "name": "at minimum",
+      "banner": {
+        "id": "aviso-1",
+        "title": "Instabilidade agora",
+        "text": "Algumas mensagens podem demorar. Estamos cuidando disso.",
+        "link": "https://bipe.chat/status/",
+        "expires_at": "2026-11-01T12:00:00Z",
+        "min_app_version": "26.10.2",
+        "update_links": {
+          "ios": "https://testflight.apple.com/join/k3ycEfzk",
+          "android": "https://bipe.chat/baixar/android/bipe.apk"
+        }
+      },
+      "app_version": "26.10.2",
+      "now": "2026-10-20T12:00:00Z"
+    },
+    {
+      "name": "above minimum",
+      "banner": {
+        "id": "aviso-1",
+        "title": "Instabilidade agora",
+        "text": "Algumas mensagens podem demorar. Estamos cuidando disso.",
+        "link": "https://bipe.chat/status/",
+        "expires_at": "2026-11-01T12:00:00Z",
+        "min_app_version": "26.10.2",
+        "update_links": {
+          "ios": "https://testflight.apple.com/join/k3ycEfzk",
+          "android": "https://bipe.chat/baixar/android/bipe.apk"
+        }
+      },
+      "app_version": "26.11",
+      "now": "2026-10-20T12:00:00Z"
+    },
+    {
+      "name": "shorter version below",
+      "banner": {
+        "id": "aviso-1",
+        "title": "Instabilidade agora",
+        "text": "Algumas mensagens podem demorar. Estamos cuidando disso.",
+        "link": "https://bipe.chat/status/",
+        "expires_at": "2026-11-01T12:00:00Z",
+        "min_app_version": "26.10.2",
+        "update_links": {
+          "ios": "https://testflight.apple.com/join/k3ycEfzk",
+          "android": "https://bipe.chat/baixar/android/bipe.apk"
+        }
+      },
+      "app_version": "26.10",
+      "now": "2026-10-20T12:00:00Z"
+    },
+    {
+      "name": "update banner expired",
+      "banner": {
+        "id": "aviso-1",
+        "title": "Instabilidade agora",
+        "text": "Algumas mensagens podem demorar. Estamos cuidando disso.",
+        "link": "https://bipe.chat/status/",
+        "expires_at": "2026-11-01T12:00:00Z",
+        "min_app_version": "26.10.2",
+        "update_links": {
+          "ios": "https://testflight.apple.com/join/k3ycEfzk",
+          "android": "https://bipe.chat/baixar/android/bipe.apk"
+        }
+      },
+      "app_version": "26.9.9",
+      "now": "2026-11-02T00:00:00Z"
+    },
+    {
+      "name": "two-digit part",
+      "banner": {
+        "id": "aviso-1",
+        "title": "Instabilidade agora",
+        "text": "Algumas mensagens podem demorar. Estamos cuidando disso.",
+        "link": "https://bipe.chat/status/",
+        "expires_at": "2026-11-01T12:00:00Z",
+        "min_app_version": "26.10.2",
+        "update_links": {
+          "ios": "https://testflight.apple.com/join/k3ycEfzk",
+          "android": "https://bipe.chat/baixar/android/bipe.apk"
+        }
+      },
+      "app_version": "26.9.10",
+      "now": "2026-10-20T12:00:00Z"
+    }
+  ],
+  "compare": [
+    {
+      "a": "26.10.2",
+      "b": "26.10.2"
+    },
+    {
+      "a": "26.10.10",
+      "b": "26.10.9"
+    },
+    {
+      "a": "26.10",
+      "b": "26.10.0"
+    },
+    {
+      "a": "26.9",
+      "b": "26.10"
+    },
+    {
+      "a": "27",
+      "b": "26.12.31"
+    },
+    {
+      "a": "26.10.2-dev",
+      "b": "26.10.2"
+    },
+    {
+      "a": "1.2.3.4",
+      "b": "1.2.3"
+    }
+  ]
+}

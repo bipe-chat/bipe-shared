@@ -169,6 +169,23 @@
       "note": "Token, PIN, QR and e-mail recovery are merged on both apps; guardians and CPF recovery are not"
     },
     {
+      "id": "web-sign-in",
+      "name": "Link a computer by QR code",
+      "ios": "planned",
+      "android": "planned",
+      "web": {
+        "status": "n/a",
+        "reason": "Stock Element Web at chat.bipe.net.br shows the QR code (ADR 0116)"
+      },
+      "server": {
+        "status": "built",
+        "evidence": [
+          "bipe-api/src/weblink.ts"
+        ]
+      },
+      "issue": 391
+    },
+    {
       "id": "verified-badge",
       "name": "Verified seal",
       "ios": "planned",
@@ -183,11 +200,15 @@
     {
       "id": "cnpj-badge",
       "name": "Business seal",
-      "ios": "planned",
-      "android": "planned",
+      "ios": { "status": "planned", "note": "Open in bipe-ios#33; set built when it merges" },
+      "android": { "status": "planned", "note": "Open in bipe-android#35; set built when it merges" },
       "web": {
-        "status": "n/a",
-        "reason": "No web chat (ADR 0004); the site shows a demo at most"
+        "status": "built",
+        "evidence": [
+          "bipe-web/src/badge.ts",
+          "bipe-web/src/sim/LinkPages.tsx"
+        ],
+        "note": "The public link page bipe.chat/@handle verifies the badge without a master key: signature, kid, exp, sub homeserver and lvl only"
       },
       "server": {
         "status": "built",
@@ -1264,6 +1285,73 @@
         "status": "built",
         "evidence": [
           "bipe-api/src/export.ts"
+        ]
+      }
+    },
+    {
+      "id": "problem-reports",
+      "name": "Report a problem to the Bipe team (files stay in Brazil)",
+      "issue": 367,
+      "ios": {
+        "status": "built",
+        "evidence": [
+          "bipe-ios/Components/Secrets/Secrets.swift",
+          "bipe-ios/ElementX/Sources/Services/BugReport/BugReportService.swift"
+        ]
+      },
+      "android": {
+        "status": "built",
+        "evidence": [
+          "bipe-android/plugins/src/main/kotlin/config/BuildTimeConfig.kt",
+          "bipe-android/features/rageshake/impl/src/main/kotlin/io/element/android/features/rageshake/impl/reporter/DefaultBugReporter.kt"
+        ]
+      },
+      "web": {
+        "status": "n/a",
+        "reason": "No web chat (ADR 0004)"
+      },
+      "server": {
+        "status": "built",
+        "evidence": [
+          "bipe-api/src/bug-reports.ts",
+          "bipe-api/src/intake.ts"
+        ]
+      }
+    },
+    {
+      "id": "support-dm",
+      "name": "Support DM bridged to the Bipe team (ADR 0114)",
+      "ios": { "status": "built", "evidence": ["bipe-ios/ElementX/Sources/FlowCoordinators/UserSessionFlowCoordinator.swift", "bipe-ios/Components/Secrets/Secrets.swift"] },
+      "android": { "status": "built", "evidence": ["bipe-android/libraries/bipe/src/main/kotlin/io/element/android/libraries/bipe/support/BipeSupportChat.kt", "bipe-android/plugins/src/main/kotlin/config/BuildTimeConfig.kt"] },
+      "web": { "status": "n/a", "reason": "Mobile only (ADR 0004)" },
+      "server": { "status": "built", "evidence": ["bipe-api/src/support.ts"] }
+    },
+    {
+      "id": "remote-banner",
+      "name": "Remote critical banner above the chat list (ADR 0117)",
+      "issue": 386,
+      "ios": {
+        "status": "built",
+        "evidence": [
+          "bipe-ios/Components/BipeKit/Sources/BipeKit/BipeRemoteBanner.swift",
+          "bipe-ios/ElementX/Sources/Screens/HomeScreen/View/BipeRemoteBannerRow.swift"
+        ]
+      },
+      "android": {
+        "status": "built",
+        "evidence": [
+          "bipe-android/libraries/bipe/src/main/kotlin/io/element/android/libraries/bipe/banner/BipeRemoteBannerStore.kt",
+          "bipe-android/libraries/bipe/src/main/kotlin/io/element/android/libraries/bipe/ui/BipeRemoteBannerRow.kt"
+        ]
+      },
+      "web": {
+        "status": "n/a",
+        "reason": "No chat list on the web (ADR 0004)"
+      },
+      "server": {
+        "status": "built",
+        "evidence": [
+          "bipe-api/src/banner.ts"
         ]
       }
     }

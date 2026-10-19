@@ -37,6 +37,8 @@ const MODELS = {
   RecoveryClaim: { ios: "BipeRecoveryClaim", android: "BipeRecoveryClaim" },
   // Handle change history (ADR 0066): the timeline line is bipe-chat/bipe#166, built with #153 (iOS) and #154 (Android).
   HandleChange: { ios: "BipeHandleChange", android: "BipeHandleChange" },
+  // Remote critical banner (ADR 0117): bipe-chat/bipe#386.
+  RemoteBanner: { ios: "BipeRemoteBanner", android: "BipeRemoteBanner" },
 };
 
 // Contract enum -> client enum per platform. "Error.error" is the enum on the error property of Error.
@@ -81,6 +83,8 @@ const NOT_IN_APPS = {
   WaitlistReport: "staff page on the site only (bipe#368)",
   BusinessReport: "staff page on the site only (bipe#368)",
   UserReports: "staff page on the site only (bipe#368)",
+  BugReportSummary: "staff view and Starlings link only (bipe#367); the apps send the rageshake form",
+  BugReport: "staff view and Starlings link only (bipe#367); the apps send the rageshake form",
   RetentionReport: "staff page on the site only (bipe#368)",
   VisitCount: "staff page on the site only (ADR 0098)",
   VisitReport: "staff page on the site only (ADR 0098)",

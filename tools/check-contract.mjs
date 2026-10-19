@@ -52,7 +52,7 @@ const ENUMS = {
 // Schemas the apps do not model, with the reason.
 const NOT_IN_APPS = {
   ...Object.fromEntries([
-    "BusinessToolError", "EmptyBusinessRequest", "PixChargeLink", "BugReportSummary",
+    "BusinessToolError", "EmptyBusinessRequest", "PixChargeLink",
     "Queue", "QueueJoin", "QueuePlace", "QueuePlaceStatus", "QueuePolicy", "QueuePosition", "QueueWaitRange", "OwnerQueuePlace",
     "Quote", "QuoteAccept", "QuoteDecline", "QuoteLine", "QuoteLineInput", "QuoteRequest", "QuoteVersion", "QuoteVersionInput",
     "Order", "OrderInput", "OrderLine", "OrderLineInput", "OrderPolicy", "OrderRefusal", "OrderRefuseReason", "OrderStatus", "OwnerOrderInput",
@@ -81,6 +81,8 @@ const NOT_IN_APPS = {
   WaitlistReport: "staff page on the site only (bipe#368)",
   BusinessReport: "staff page on the site only (bipe#368)",
   UserReports: "staff page on the site only (bipe#368)",
+  BugReportSummary: "staff view and Starlings link only (bipe#367); the apps send the rageshake form",
+  BugReport: "staff view and Starlings link only (bipe#367); the apps send the rageshake form",
   RetentionReport: "staff page on the site only (bipe#368)",
   VisitCount: "staff page on the site only (ADR 0098)",
   VisitReport: "staff page on the site only (ADR 0098)",

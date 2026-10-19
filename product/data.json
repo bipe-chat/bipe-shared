@@ -71,7 +71,7 @@
     { "id": "apple-push", "brazil": false, "pt": "Apple, serviço de notificações do iPhone", "en": "Apple, the iPhone notification service" },
     { "id": "email-relay", "brazil": null, "pt": "Serviço que entrega os e-mails do Bipe", "en": "The service that delivers Bipe's emails" },
     { "id": "icloud-keychain", "brazil": null, "pt": "Chaveiro do iCloud, na sua conta Apple", "en": "iCloud Keychain, in your Apple account" },
-    { "id": "support-desk", "brazil": false, "pt": "Ferramenta de atendimento da equipe (Starlings, na Cloudflare)", "en": "The team's support tool (Starlings, on Cloudflare)" }
+    { "id": "support-tool", "brazil": null, "pt": "Ferramenta da equipe do Bipe para ler e responder pedidos de ajuda. Recebe só texto, nunca arquivos", "en": "The tool the Bipe team uses to read and answer help requests. It gets text only, never files" }
   ],
   "items": [
     {
@@ -349,7 +349,7 @@
     {
       "id": "support-chat",
       "basis": "contract",
-      "places": ["server", "support-desk"],
+      "places": ["server", "support-tool"],
       "pt": {
         "name": "Conversa com o Suporte Bipe",
         "what": "O que você escreve na conversa com o Suporte Bipe, seu ID no Bipe, seu nome de usuário e seu nome. Fotos e arquivos ficam só no servidor do Bipe.",
@@ -366,18 +366,18 @@
     {
       "id": "problem-reports",
       "basis": "consent",
-      "places": ["server", "support-desk"],
+      "places": ["server", "support-tool"],
       "pt": {
-        "name": "Relato de problema",
-        "what": "O que você escreve no relato, a versão do app e do aparelho e, se você escolher, os registros técnicos (logs) e capturas de tela.",
-        "why": "Encontrar e corrigir o problema. Logs e capturas ficam só no servidor do Bipe. A ferramenta de atendimento recebe o texto e a versão.",
-        "retention": "90 dias. Antes disso, se você pedir."
+        "name": "Avisos de problema",
+        "what": "O que você escreve em Avisar sobre um problema, a versão do app e do sistema do celular e, se você escolher, os registros técnicos do app e as capturas de tela.",
+        "why": "Entender o problema, corrigir e responder a você. A equipe lê o texto na ferramenta de suporte. Os registros e as capturas ficam só no servidor do Bipe.",
+        "retention": "90 dias no servidor do Bipe. Antes disso, se você pedir."
       },
       "en": {
-        "name": "Problem report",
-        "what": "What you write in the report, the app and device version and, if you choose, technical logs and screenshots.",
-        "why": "To find and fix the problem. Logs and screenshots stay on the Bipe server only. The support tool gets the text and the version.",
-        "retention": "90 days. Earlier, if you ask."
+        "name": "Problem reports",
+        "what": "What you write in Report a problem, the app and phone system versions and, if you choose, the app's technical logs and the screenshots.",
+        "why": "To understand the problem, fix it and answer you. The team reads the text in the support tool. The logs and screenshots stay on the Bipe server only.",
+        "retention": "90 days on the Bipe server. Earlier, if you ask."
       }
     }
   ],

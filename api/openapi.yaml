@@ -1182,46 +1182,6 @@ paths:
         "401": { $ref: "#/components/responses/Error" }
         "429": { $ref: "#/components/responses/Error" }
         "503": { $ref: "#/components/responses/Error" }
-  /v1/bug-reports/submit:
-    post:
-      summary: In-app problem report (rageshake form)
-      description: >
-        ADR 0114, bipe#367. The Element "Report a problem" screen posts here (iOS RAGESHAKE_URL, Android BUG_REPORT_URL).
-        Needs a Matrix access token; the user comes from the token, never from a form field. Logs and screenshots
-        stay on the API host in Brazil for 90 days. The API sends text and metadata only to Starlings, with a
-        staff-only link, and the support bot posts a notice into the caller's support room.
-        Max 50 MB body, 20 logs, 10 screenshots, 10 labels. 10 per user per hour, 500 per hour in total.
-      security: [{ matrix: [] }]
-      requestBody:
-        required: true
-        content:
-          multipart/form-data:
-            schema:
-              type: object
-              required: [text]
-              properties:
-                text: { type: string, maxLength: 5000 }
-                user_agent: { type: string, description: 'iOS sends "iOS"; Android sends its user agent' }
-                version: { type: string, description: 'Android sends "Version"' }
-                build: { type: string }
-                os: { type: string }
-                label: { type: array, items: { type: string, maxLength: 40 } }
-                compressed-log: { type: array, items: { type: string, format: binary } }
-                file: { type: array, items: { type: string, format: binary }, description: Screenshots }
-      responses:
-        "200":
-          description: Stored
-          content:
-            application/json:
-              schema:
-                type: object
-                required: [report_id]
-                properties:
-                  report_id: { type: string, format: uuid }
-        "400": { $ref: "#/components/responses/Error" }
-        "401": { $ref: "#/components/responses/Error" }
-        "413": { $ref: "#/components/responses/Error" }
-        "429": { $ref: "#/components/responses/Error" }
   /v1/support/starlings:
     post:
       summary: A Starlings member's reply, sent into the user's support room
@@ -1251,49 +1211,6 @@ paths:
         "401": { $ref: "#/components/responses/Error" }
         "404": { $ref: "#/components/responses/Error" }
         "503": { $ref: "#/components/responses/Error" }
-  /v1/admin/bug-reports:
-    get:
-      summary: Staff list of problem reports, newest first (no text)
-      description: Only for MAS admins (ADR 0056); everyone else gets 404. At most 200 rows.
-      security: [{ matrix: [] }]
-      responses:
-        "200":
-          description: The reports
-          content:
-            application/json:
-              schema:
-                type: object
-                required: [reports]
-                properties:
-                  reports: { type: array, items: { $ref: "#/components/schemas/BugReportSummary" } }
-        "401": { $ref: "#/components/responses/Error" }
-        "404": { $ref: "#/components/responses/Error" }
-  /v1/admin/bug-reports/{id}:
-    get:
-      summary: Staff view of one problem report
-      description: >
-        Only for MAS admins (ADR 0056); everyone else gets 404. The Starlings intake line links here.
-        /v1/admin/bug-reports/{id}/files/{name} returns one file as an attachment.
-      security: [{ matrix: [] }]
-      parameters:
-        - { name: id, in: path, required: true, schema: { type: string, format: uuid } }
-      responses:
-        "200":
-          description: The report
-          content:
-            application/json:
-              schema:
-                allOf:
-                  - $ref: "#/components/schemas/BugReportSummary"
-                  - type: object
-                    required: [user_id, text, files]
-                    properties:
-                      user_id: { type: string }
-                      text: { type: string }
-                      os: { type: string, nullable: true }
-                      files: { type: array, items: { type: string } }
-        "401": { $ref: "#/components/responses/Error" }
-        "404": { $ref: "#/components/responses/Error" }
   /v1/admin/inviters:
     get:
       summary: Staff report of inviters ranked by joins
@@ -1428,6 +1345,98 @@ paths:
           content:
             application/json:
               schema: { $ref: "#/components/schemas/UserReports" }
+        "401": { $ref: "#/components/responses/Error" }
+        "404": { $ref: "#/components/responses/Error" }
+  /v1/bug-reports/submit:
+    post:
+      summary: Send a problem report from the app
+      description: >
+        "Avisar sobre um problema" in Ajuda e sobre (bipe#367). Signed-in users only: a report without a valid bearer
+        token gets 401. The body is the rageshake multipart form that both apps already send. The API keeps the text,
+        the logs and the screenshots on the server in Brazil for 90 days. It sends only the text and metadata to the
+        Bipe support tool (Starlings), with a staff-only link to the files. It never logs the text, a file or the
+        user ID next to the text. Body limit 50 MB. 10 reports per hour per account.
+      security: [{ matrix: [] }]
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              required: [text]
+              properties:
+                text: { type: string, minLength: 1, maxLength: 5000 }
+                app: { type: string, maxLength: 64, description: "Application ID, for example chat.bipe.app" }
+                user_agent: { type: string, maxLength: 64, description: "iOS or Android" }
+                version: { type: string, maxLength: 32 }
+                build: { type: string, maxLength: 16 }
+                os: { type: string, maxLength: 64 }
+                label: { type: array, items: { type: string, maxLength: 40 }, maxItems: 10 }
+                compressed-log: { type: array, items: { type: string, format: binary }, maxItems: 20 }
+                file: { type: array, items: { type: string, format: binary }, maxItems: 10, description: Screenshots }
+      responses:
+        "200":
+          description: Stored. The app shows its "sent" state.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  report_id: { type: string, format: uuid }
+        "400": { $ref: "#/components/responses/Error" }
+        "401": { $ref: "#/components/responses/Error" }
+        "413": { $ref: "#/components/responses/Error" }
+        "429": { $ref: "#/components/responses/Error" }
+  /v1/admin/bug-reports:
+    get:
+      summary: Staff list of problem reports
+      description: >
+        Only for users that MAS marks admin (ADR 0056); every other user gets 404 not_found. CORS allows PUBLIC_SITE_URL.
+        Newest first, max 200, from the last 90 days. No text in the list.
+      security: [{ matrix: [] }]
+      responses:
+        "200":
+          description: Reports
+          content:
+            application/json:
+              schema:
+                type: object
+                required: [reports]
+                properties:
+                  reports: { type: array, items: { $ref: "#/components/schemas/BugReportSummary" } }
+        "401": { $ref: "#/components/responses/Error" }
+        "404": { $ref: "#/components/responses/Error" }
+  /v1/admin/bug-reports/{id}:
+    get:
+      summary: Staff view of one problem report
+      description: >
+        Only for users that MAS marks admin (ADR 0056); every other user gets 404 not_found. The Starlings intake line
+        links here (attachments_url). Returns the text, the metadata and the names of the stored files.
+      security: [{ matrix: [] }]
+      parameters:
+        - { name: id, in: path, required: true, schema: { type: string, format: uuid } }
+      responses:
+        "200":
+          description: Report
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/BugReport" }
+        "401": { $ref: "#/components/responses/Error" }
+        "404": { $ref: "#/components/responses/Error" }
+  /v1/admin/bug-reports/{id}/files/{name}:
+    get:
+      summary: Staff download of one file of a problem report
+      description: Only for users that MAS marks admin (ADR 0056); every other user gets 404 not_found. Cache-Control no-store.
+      security: [{ matrix: [] }]
+      parameters:
+        - { name: id, in: path, required: true, schema: { type: string, format: uuid } }
+        - { name: name, in: path, required: true, schema: { type: string, pattern: "^(log|shot)-[0-9]{2}\\.[a-z0-9]{1,8}$" } }
+      responses:
+        "200":
+          description: The file
+          content:
+            application/octet-stream:
+              schema: { type: string, format: binary }
         "401": { $ref: "#/components/responses/Error" }
         "404": { $ref: "#/components/responses/Error" }
   /v1/admin/retention:
@@ -4126,17 +4135,27 @@ components:
   schemas:
     BugReportSummary:
       type: object
-      required: [id, created_at, platform, labels, log_count, screenshot_count, relayed]
+      required: [id, created_at, platform, labels, log_count, screenshot_count]
       properties:
         id: { type: string, format: uuid }
         created_at: { type: string, format: date-time }
         platform: { type: string, enum: [ios, android, other] }
-        app_version: { type: string, nullable: true }
-        build: { type: integer, nullable: true }
+        app_version: { type: [string, "null"] }
+        build: { type: [integer, "null"] }
         labels: { type: array, items: { type: string } }
         log_count: { type: integer }
         screenshot_count: { type: integer }
-        relayed: { type: boolean, description: Starlings took the intake line }
+        relayed: { type: boolean, description: "The Starlings intake took the text" }
+    BugReport:
+      allOf:
+        - { $ref: "#/components/schemas/BugReportSummary" }
+        - type: object
+          required: [user_id, text, files]
+          properties:
+            user_id: { type: string }
+            text: { type: string }
+            os: { type: [string, "null"] }
+            files: { type: array, items: { type: string }, description: "Names for /v1/admin/bug-reports/{id}/files/{name}" }
     ExperimentEvent:
       type: object
       required: [experiment, arm, event]

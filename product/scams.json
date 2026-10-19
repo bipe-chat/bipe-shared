@@ -1,15 +1,15 @@
 {
-  "$comment": "Scams in Brazil register: the page /golpes-no-brasil/ and /en/scams-in-brazil/. Research and conflicts: bipe/docs/scams-brazil.md. Every number in stats and charts has a source in sources, with a URL and a date. Never write a number that is not in a source. Bipe features in protect take their status from product.json. Validated by tools/gen-product-doc.mjs.",
+  "$comment": "Scams in Brazil register: the page /golpes-no-brasil/ and /en/scams-in-brazil/. Research and conflicts: bipe/docs/scams-brazil.md. Source locators and the Banco Central data snapshot: product/scams-evidence.json. Every number in stats and charts has a source in sources, with a URL and a date. Never write a number that is not in a source. Bipe features in protect take their status from product.json. Validated by tools/gen-product-doc.mjs.",
   "version": 1,
-  "date": "2026-10-13",
+  "date": "2026-10-18",
+  "publishedDate": "2026-10-13",
   "sources": [
     { "id": "anuario2026", "name": "20º Anuário Brasileiro de Segurança Pública 2026", "publisher": "Fórum Brasileiro de Segurança Pública", "url": "https://forumseguranca.org.br/wp-content/uploads/2026/07/anuario-2026.pdf", "date": "2026-07", "kind": "primary" },
     { "id": "vitimizacao2025", "name": "Pesquisa de vitimização e percepção sobre violência e segurança pública 2025", "publisher": "Fórum Brasileiro de Segurança Pública e Datafolha", "url": "https://publicacoes.forumseguranca.org.br/server/api/core/bitstreams/33ed3320-fc11-45f9-a909-ed69eba48cfd/content", "date": "2025-08", "kind": "primary" },
     { "id": "medo2026", "name": "Medo do crime e eleições 2026: os gatilhos da insegurança", "publisher": "Fórum Brasileiro de Segurança Pública e Datafolha", "url": "https://forumseguranca.org.br/wp-content/uploads/2026/05/os-gatilhos-da-inseguranca-relatorio-completo-2026.pdf", "date": "2026-05", "kind": "primary" },
     { "id": "cetic2025", "name": "Privacidade e proteção de dados pessoais 2025, resumo executivo", "publisher": "Cetic.br, NIC.br e CGI.br", "url": "https://cetic.br/media/docs/publicacoes/2/pt-br/20260831092525/PRIVACIDADE_2025_RE%20PT.pdf", "date": "2026-08-31", "kind": "primary" },
-    { "id": "datasenado2024", "name": "Panorama Político 2024: golpes digitais atingem 24% dos brasileiros", "publisher": "Instituto DataSenado", "url": "https://www12.senado.leg.br/institucional/datasenado/publicacaodatasenado?id=golpes-digitais-atingem-24-dos-brasileiros-aponta-21a-edicao-da-pesquisa-panorama-politico", "date": "2024-10-01", "kind": "primary" },
+    { "id": "datasenado2024", "name": "Panorama Político 2024: apostas esportivas, golpes digitais e endividamento", "publisher": "Instituto DataSenado", "url": "https://www12.senado.leg.br/institucional/datasenado/materias/relatorios-de-pesquisa/golpes-digitais-atingem-24-dos-brasileiros-aponta-21a-edicao-da-pesquisa-panorama-politico", "date": "2024-09", "kind": "primary" },
     { "id": "febraban2025", "name": "Golpe da Falsa Venda é o mais aplicado contra clientes bancários no 1º semestre do ano", "publisher": "Febraban", "url": "https://portal.febraban.org.br/noticia/4381/pt-br/", "date": "2025-11-11", "kind": "primary" },
-    { "id": "ibgePib2024", "name": "PIB cresce 3,4% em 2024 e fecha o ano em R$ 11,7 trilhões", "publisher": "IBGE", "url": "https://agenciadenoticias.ibge.gov.br/agencia-sala-de-imprensa/42774-pib-cresce-3-4-em-2024-e-fecha-o-ano-em-r-11-7-trilhoes.html", "date": "2025-03-07", "kind": "primary" },
     { "id": "silverguard2025", "name": "Estudo Golpes com Pix 2025", "publisher": "Silverguard e SOS Golpe", "url": "https://uploads.finsidersbrasil.com.br/2025/10/Silverguard-Estudo_Golpes_com_Pix_2025.pdf", "date": "2025-10", "kind": "company" },
     { "id": "gasa2026", "name": "State of Scams in Brazil 2026", "publisher": "Global Anti-Scam Alliance", "url": "https://gasa.org/knowledge-base/reports/state-of-scams-in-brazil-2026", "date": "2026-08-06", "kind": "secondary" },
     { "id": "glossario2025", "name": "Glossário de Tipologias de Fraudes e Golpes Digitais", "publisher": "Ministério da Justiça e Segurança Pública e Febraban (Aliança Nacional de Combate a Fraudes Bancárias Digitais)", "url": "https://www.gov.br/mj/pt-br/assuntos/alianca-nacional-de-combate-a-fraudes-bancarias-digitais/glossario_final_iniciativa_1-8_v10.pdf", "date": "2025-10", "kind": "primary" },
@@ -35,7 +35,6 @@
     { "id": "oabsp2026", "name": "Golpe do falso advogado já soma 4.388 denúncias e acende alerta em todo o país", "publisher": "OAB São Paulo", "url": "https://www.oabsp.org.br/jornaldaadvocacia/26-02-06-1718-golpe-do-falso-advogado-ja-soma-4388-denuncias-e-acende-alerta-em-todo-o-pais", "date": "2026-02-06", "kind": "primary" },
     { "id": "bcbValores", "name": "Valores a Receber: Consultas foram retomadas", "publisher": "Banco Central do Brasil", "url": "https://www.bcb.gov.br/detalhenoticia/609/noticia", "date": "2022-02-15", "kind": "primary" },
     { "id": "bcbPix", "name": "Segurança no Pix", "publisher": "Banco Central do Brasil", "url": "https://www.bcb.gov.br/estabilidadefinanceira/pix-seguranca", "date": "2026-10-13", "kind": "primary" },
-    { "id": "bcbMed2025", "name": "Aprimoramentos no MED: MED 2.0 (Circuito Pix)", "publisher": "Banco Central do Brasil", "url": "https://www.bcb.gov.br/content/estabilidadefinanceira/pix/MED/MED_2-0_Circuito_Pix-Dia_1.pdf", "date": "2025-10-14", "kind": "primary" },
     { "id": "inssSms", "name": "INSS não envia SMS para informar sobre corte de benefício por falta de Prova de Vida", "publisher": "INSS", "url": "https://www.gov.br/inss/pt-br/assuntos/noticias/inss-nao-envia-sms-para-informar-sobre-corte-de-beneficio-por-falta-de-prova-de-vida", "date": "2026-08-12", "kind": "primary" },
     { "id": "inssLinks", "name": "Alerta de golpe: jamais clique em links suspeitos", "publisher": "INSS", "url": "https://www.gov.br/inss/pt-br/assuntos/noticias/alerta-de-golpe-jamais-clique-em-links-suspeitos", "date": "2026-08-31", "kind": "primary" },
     { "id": "detranPr", "name": "Detran-PR alerta para golpe com mensagens falsas referentes à suspensão da CNH", "publisher": "Detran-PR", "url": "https://www.detran.pr.gov.br/Noticia/Detran-PR-alerta-para-golpe-com-mensagens-falsas-referentes-suspensao-da-CNH", "date": "2024-11-19", "kind": "primary" },
@@ -60,20 +59,41 @@
     { "id": "safernetIndicadores", "name": "Indicadores do Canal de Ajuda", "publisher": "SaferNet Brasil", "url": "https://indicadores.safernet.org.br/helpline/helplineviz/helpchart-page.html", "date": "2026-10-13", "kind": "primary" },
     { "id": "pcprSextorsao", "name": "Alguém está exigindo dinheiro para não divulgar conteúdo íntimo para meus contatos", "publisher": "Polícia Civil do Paraná", "url": "https://www.policiacivil.pr.gov.br/golpeExtorsaoSexual", "date": "2026-10-13", "kind": "primary" },
     { "id": "aenAmor", "name": "Dia dos Namorados: PCPR alerta para golpes amorosos e orienta sobre formas de prevenção", "publisher": "Governo do Paraná (Polícia Civil do Paraná)", "url": "https://www.parana.pr.gov.br/aen/Noticia/Dia-dos-Namorados-PCPR-alerta-para-golpes-amorosos-e-orienta-sobre-formas-de-prevencao", "date": "2026-06-12", "kind": "primary" },
-    { "id": "pcspPerguntas", "name": "Delitos praticados por meios eletrônicos: perguntas e respostas", "publisher": "Polícia Civil do Estado de São Paulo", "url": "https://www.policiacivil.sp.gov.br/portal/imagens/CRIMES%20CIBERN%C3%89TICOS%20-%20PERGUNTAS%20E%20RESPOSTAS%20V2.pdf", "date": "2021-01", "kind": "primary" }
+    { "id": "pcspPerguntas", "name": "Delitos praticados por meios eletrônicos: perguntas e respostas", "publisher": "Polícia Civil do Estado de São Paulo", "url": "https://www.policiacivil.sp.gov.br/portal/imagens/CRIMES%20CIBERN%C3%89TICOS%20-%20PERGUNTAS%20E%20RESPOSTAS%20V2.pdf", "date": "2021-01", "kind": "primary" },
+    { "id": "ceticPR21", "name": "Painel TIC 2025, indicador PR21: situações envolvendo golpes", "publisher": "Cetic.br e NIC.br", "url": "https://cetic.br/pt/tics/painel/painel/privacidade3/PR21/", "date": "2026-08", "kind": "primary" },
+    { "id": "ceticPR22", "name": "Painel TIC 2025, indicador PR22: canais dos golpes", "publisher": "Cetic.br e NIC.br", "url": "https://cetic.br/pt/tics/painel/painel/privacidade3/PR22/", "date": "2026-08", "kind": "primary" },
+    { "id": "gasaForum2026", "name": "Brazil Anti-Scam Forum 2026: key takeaways", "publisher": "Global Anti-Scam Alliance", "url": "https://gasa.org/knowledge-base/blog/brazil-anti-scam-forum-2026-key-takeaways-on-strengthening-scam-prevention-in-brazil", "date": "2026-09-15", "kind": "secondary" },
+    { "id": "bcbMedData", "name": "Estatísticas do Pix: contestações e devoluções pelo MED", "publisher": "Banco Central do Brasil", "url": "https://dadosabertos.bcb.gov.br/dataset/pix", "date": "2026-10-18", "kind": "primary" },
+    { "id": "bcbMedFaq", "name": "O que é e como funciona o Mecanismo Especial de Devolução (MED)?", "publisher": "Banco Central do Brasil", "url": "https://www.bcb.gov.br/meubc/faqs/p/o-que-e-e-como-funciona-o-mecanismo-especial-de-devolucao-med", "date": "2026-09-18", "kind": "primary" }
   ],
-  "hero": ["records2025", "lostMoney", "messagingApps", "digitalLoss", "noCourt"],
+  "hero": ["records2025", "lostMoney", "whatsappOrigin", "digitalLoss"],
   "stats": [
     { "id": "falsoParente60", "source": "silverguard2025", "pt": { "value": "21%", "label": "das vítimas de 60 anos ou mais atendidas pela central SOS Golpe caíram no golpe do conhecido pedindo dinheiro, o mais comum nessa idade", "period": "jan. a jun. 2025" }, "en": { "value": "21%", "label": "of victims aged 60 or older helped by the SOS Golpe helpline fell for a known contact asking for money, the most common scam at that age", "period": "Jan to Jun 2025" } },
-    { "id": "falsoParenteWhats", "source": "silverguard2025", "pt": { "value": "95,3%", "label": "dos golpes do conhecido pedindo dinheiro começaram no WhatsApp, quase sempre com número novo e a foto de um filho ou filha", "period": "jan. a jun. 2025" }, "en": { "value": "95.3%", "label": "of scams where a known contact asks for money started on WhatsApp, almost always from a new number with a photo of a son or daughter", "period": "Jan to Jun 2025" } },
-    { "id": "falsoParenteLoss", "source": "silverguard2025", "pt": { "value": "R$ 2.800", "label": "foi a perda média no golpe do conhecido pedindo dinheiro", "period": "jan. a jun. 2025" }, "en": { "value": "R$ 2,800", "label": "was the mean loss when a known contact asks for money", "period": "Jan to Jun 2025" } },
-    { "id": "pixMeanLoss", "source": "silverguard2025", "pt": { "value": "R$ 2.540", "label": "foi a perda média das vítimas de golpe com Pix atendidas pela central SOS Golpe. Quem tem 60 anos ou mais perdeu R$ 4.820, cinco vezes mais que quem tem de 18 a 24 anos", "period": "jan. a jun. 2025" }, "en": { "value": "R$ 2,540", "label": "was the mean loss of Pix scam victims helped by the SOS Golpe helpline. People aged 60 or older lost R$ 4,820, five times more than people aged 18 to 24", "period": "Jan to Jun 2025" } },
+    {
+      "id": "falsoParenteWhats", "source": "silverguard2025",
+      "pt": {"value": "95,3%", "label": "dos casos analisados do golpe do conhecido pedindo dinheiro começaram no WhatsApp, segundo a central SOS Golpe. O dado é desse tipo de golpe, não de todos os golpes com Pix", "period": "jan. a jun. 2025"},
+      "en": {"value": "95.3%", "label": "of analysed cases of a known contact asking for money started on WhatsApp, according to SOS Golpe. This is one scam subtype, not all Pix scams", "period": "Jan to Jun 2025"}
+    },
+    {
+      "id": "falsoParenteLoss", "source": "silverguard2025",
+      "pt": {"value": "R$ 2.800", "label": "foi a perda média nos casos analisados do golpe do conhecido pedindo dinheiro pela central SOS Golpe", "period": "jan. a jun. 2025"},
+      "en": {"value": "R$ 2,800", "label": "was the mean loss in cases of a known contact asking for money analysed by SOS Golpe", "period": "Jan to Jun 2025"}
+    },
+    {
+      "id": "pixMeanLoss", "source": "silverguard2025",
+      "pt": {"value": "R$ 2.540", "label": "foi a perda média das vítimas de golpe com Pix atendidas pela central SOS Golpe. A amostra não representa toda a população", "period": "jan. a jun. 2025"},
+      "en": {"value": "R$ 2,540", "label": "was the mean loss among Pix scam victims helped by SOS Golpe. The sample does not represent the whole population", "period": "Jan to Jun 2025"}
+    },
     { "id": "pixToCompany", "source": "silverguard2025", "pt": { "value": "65%", "label": "dos golpes com Pix denunciados à central SOS Golpe mandaram o dinheiro para conta de empresa (CNPJ). Um ano antes eram 42%", "period": "jun. 2025" }, "en": { "value": "65%", "label": "of Pix scams reported to the SOS Golpe helpline sent the money to a company account (CNPJ). One year before it was 42%", "period": "Jun 2025" } },
-    { "id": "medAccepted", "source": "silverguard2025", "pt": { "value": "24%", "label": "dos pedidos de devolução pelo MED foram aceitos pelo banco que recebeu o Pix, na projeção para 2025. Em 2022 eram 73%", "period": "2025 (projeção)" }, "en": { "value": "24%", "label": "of MED refund requests were accepted by the bank that received the Pix, as projected for 2025. In 2022 it was 73%", "period": "2025 (projection)" } },
+    {
+      "id": "medAccepted", "source": "bcbMedData",
+      "pt": {"value": "17,7%", "label": "das contestações de Pix foram aceitas em 2025: 3,93 milhões de 22,23 milhões. Aceitar a contestação não significa devolver o dinheiro", "period": "jan. a dez. 2025; consulta em 18 out. 2026"},
+      "en": {"value": "17.7%", "label": "of Pix disputes were accepted in 2025: 3.93 million out of 22.23 million. Accepting a dispute does not mean returning the money", "period": "Jan to Dec 2025; retrieved 18 Oct 2026"}
+    },
     {
       "id": "records2025", "source": "anuario2026",
-      "pt": { "value": "2,26 milhões", "label": "de golpes registrados na polícia em 2025, cinco vezes mais que em 2018", "period": "2025" },
-      "en": { "value": "2.26 million", "label": "scams reported to the police in 2025, five times more than in 2018", "period": "2025" }
+      "pt": {"value": "2,26 milhões", "label": "de registros policiais de estelionato, incluindo casos presenciais e digitais. É mais de cinco vezes o total de 2018", "period": "2025"},
+      "en": {"value": "2.26 million", "label": "police reports of estelionato, including in-person and digital scams. That is more than five times the 2018 total", "period": "2025"}
     },
     {
       "id": "lostMoney", "source": "vitimizacao2025",
@@ -81,15 +101,14 @@
       "en": { "value": "1 in 3", "label": "Brazilians aged 16 or older lost money to a digital scam in one year (33.4%, about 56 million people)", "period": "Jul 2024 to Jun 2025" }
     },
     {
-      "id": "messagingApps", "source": "cetic2025",
-      "pt": { "value": "84%", "label": "de quem teve tentativa de golpe com os próprios dados foi procurado por app de mensagem", "period": "2025" },
-      "en": { "value": "84%", "label": "of people who had a scam attempt with their own data were approached on a messaging app", "period": "2025" }
+      "id": "messagingApps", "source": "ceticPR22",
+      "pt": {"value": "80%", "label": "dos usuários de internet com 16 anos ou mais que vivenciaram golpes com dados pessoais citaram apps de mensagem, na tabela PR22 do Cetic.br", "period": "2025"},
+      "en": {"value": "80%", "label": "of internet users aged 16 or older who experienced scams involving personal data named messaging apps, in Cetic.br table PR22", "period": "2025"}
     },
     {
-      "id": "digitalLoss", "source": "vitimizacao2025", "also": ["ibgePib2024"],
-      "$comment": "Sum of the five totals in Quadro 6 (Pix or boleto, card, undelivered purchase, investment, bank account): R$ 111.930.090.182. Against the 2024 GDP of R$ 11,7 trilhões (IBGE) that is 0,96%.",
-      "pt": { "value": "R$ 111,9 bilhões", "label": "perdidos com golpes digitais, cartão clonado e conta de banco invadida em um ano, na estimativa da pesquisa. É cerca de 1% do PIB do Brasil", "period": "jul. 2024 a jun. 2025" },
-      "en": { "value": "R$ 111.9 billion", "label": "lost to digital scams, cloned cards and hacked bank accounts in one year, as the survey estimates. That is about 1% of Brazil's GDP", "period": "Jul 2024 to Jun 2025" }
+      "id": "digitalLoss", "source": "vitimizacao2025", "also": [], "$comment": "Quadro 6, p. 17: sum of five national survey extrapolations, R$ 111,930,090,182.00. Not a transaction ledger. 2,007 interviews on 2-6 June 2025. The report labels its reference period Jul 2024-Jun 2025. No allocation to channels is possible.",
+      "pt": {"value": "R$ 111,9 bilhões", "label": "em perdas estimadas a partir de respostas à pesquisa FBSP/Datafolha, em cinco tipos de golpe digital. É uma projeção para o país, não uma soma de transações registradas", "period": "jul. 2024 a jun. 2025"},
+      "en": {"value": "R$ 111.9 billion", "label": "in losses estimated from FBSP/Datafolha survey responses across five kinds of digital scam. This is a national extrapolation, not a sum of recorded transactions", "period": "Jul 2024 to Jun 2025"}
     },
     {
       "id": "pixLoss", "source": "vitimizacao2025",
@@ -98,23 +117,23 @@
     },
     {
       "id": "noCourt", "source": "anuario2026",
-      "pt": { "value": "Mais de 97%", "label": "dos golpes registrados na polícia não chegam à Justiça", "period": "2025" },
-      "en": { "value": "Over 97%", "label": "of scams reported to the police never reach a court", "period": "2025" }
+      "pt": {"value": "2,8 processos", "label": "penais para cada 100 boletins de ocorrência de estelionato em 2025. A comparação usa totais anuais, sem acompanhar os mesmos casos", "period": "2025"},
+      "en": {"value": "2.8 cases", "label": "in criminal court for every 100 police reports of estelionato in 2025. This compares annual totals without tracking the same cases", "period": "2025"}
     },
     {
-      "id": "familyData", "source": "cetic2025",
-      "pt": { "value": "39%", "label": "dos usuários de internet contam que tentaram aplicar um golpe em alguém da família usando dados de outro parente", "period": "2025" },
-      "en": { "value": "39%", "label": "of internet users say someone tried to scam a family member using another relative's data", "period": "2025" }
+      "id": "familyData", "source": "ceticPR21",
+      "pt": {"value": "39%", "label": "dos usuários de internet com 16 anos ou mais relataram que alguém tentou aplicar um golpe numa pessoa da família usando dados pessoais de alguém da família", "period": "2025"},
+      "en": {"value": "39%", "label": "of internet users aged 16 or older reported that someone tried to scam a family member using personal data of someone in the family", "period": "2025"}
     },
     {
       "id": "cloned", "source": "vitimizacao2025",
-      "pt": { "value": "8,7%", "label": "tiveram o número usado por outra pessoa para aplicar golpe (cerca de 14,7 milhões de pessoas)", "period": "jul. 2024 a jun. 2025" },
-      "en": { "value": "8.7%", "label": "had their number used by someone else to scam people (about 14.7 million people)", "period": "Jul 2024 to Jun 2025" }
+      "pt": {"value": "8,7%", "label": "dos brasileiros de 16 anos ou mais relataram ter o celular clonado, descrito na pesquisa como o número usado por outra pessoa para aplicar golpes (cerca de 14,7 milhões)", "period": "jul. 2024 a jun. 2025"},
+      "en": {"value": "8.7%", "label": "of Brazilians aged 16 or older reported a cloned phone, described in the survey as their number being used by someone else to run scams (about 14.7 million)", "period": "Jul 2024 to Jun 2025"}
     },
     {
       "id": "fakeCall", "source": "febraban2025",
-      "pt": { "value": "139 mil", "label": "relatos de falsa central ou falso funcionário de banco aos bancos, quase o triplo do mesmo período de 2024", "period": "1º semestre de 2025" },
-      "en": { "value": "139,000", "label": "reports to banks of a fake bank call centre or fake bank employee, almost three times the same period of 2024", "period": "first half of 2025" }
+      "pt": {"value": "139 mil", "label": "relatos de falsa central ou falso funcionário aos bancos associados à Febraban, quase o triplo do mesmo período de 2024", "period": "1º semestre de 2025"},
+      "en": {"value": "139,000", "label": "reports of fake bank call centres or employees to Febraban member banks, almost three times the same period of 2024", "period": "first half of 2025"}
     },
     {
       "id": "pixAverage", "source": "vitimizacao2025",
@@ -123,13 +142,13 @@
     },
     {
       "id": "fakeSale", "source": "febraban2025",
-      "pt": { "value": "174 mil", "label": "relatos de venda falsa aos bancos, o golpe mais relatado do semestre", "period": "1º semestre de 2025" },
-      "en": { "value": "174,000", "label": "reports of a fake sale to banks, the most reported scam of the half year", "period": "first half of 2025" }
+      "pt": {"value": "174 mil", "label": "relatos de venda falsa aos bancos associados à Febraban, a categoria mais relatada nesse levantamento do semestre", "period": "1º semestre de 2025"},
+      "en": {"value": "174,000", "label": "reports of fake sales to Febraban member banks, the most reported category in that half-year dataset", "period": "first half of 2025"}
     },
     {
       "id": "threats", "source": "vitimizacao2025",
-      "pt": { "value": "19,1%", "label": "receberam ligação, mensagem ou e-mail com ameaça de criminoso que tinha seus dados ou da sua família, pedindo dinheiro", "period": "jul. 2024 a jun. 2025" },
-      "en": { "value": "19.1%", "label": "got a call, message or e-mail with threats from a criminal who had their or their family's data, asking for money", "period": "Jul 2024 to Jun 2025" }
+      "pt": {"value": "19,1%", "label": "dos brasileiros de 16 anos ou mais receberam ligação, mensagem ou e-mail com ameaça de criminoso que tinha seus dados ou da família e exigia dinheiro", "period": "jul. 2024 a jun. 2025"},
+      "en": {"value": "19.1%", "label": "of Brazilians aged 16 or older received a call, message or email with threats from a criminal using their or their family’s data and demanding money", "period": "Jul 2024 to Jun 2025"}
     },
     {
       "id": "datasenado24", "source": "datasenado2024",
@@ -138,19 +157,30 @@
     },
     {
       "id": "medo158", "source": "medo2026",
-      "pt": { "value": "15,8%", "label": "caíram num golpe e perderam dinheiro pela internet ou pelo celular, numa única pergunta", "period": "12 meses antes de mar. 2026" },
-      "en": { "value": "15.8%", "label": "fell for a scam and lost money online or by phone, in a single question", "period": "12 months before Mar 2026" }
+      "pt": {"value": "15,8%", "label": "dos brasileiros de 16 anos ou mais relataram ter caído num golpe e perdido dinheiro pela internet ou pelo celular, numa pergunta específica da pesquisa", "period": "12 meses antes de mar. 2026"},
+      "en": {"value": "15.8%", "label": "of Brazilians aged 16 or older reported being scammed and losing money online or by phone, in one specific survey question", "period": "12 months before Mar 2026"}
     },
     {
       "id": "fear", "source": "medo2026",
-      "pt": { "value": "83,2%", "label": "têm medo de cair num golpe e perder dinheiro pela internet ou pelo celular, o medo mais citado", "period": "mar. 2026" },
-      "en": { "value": "83.2%", "label": "fear falling for a scam and losing money online or by phone, the most named fear", "period": "Mar 2026" }
-    }
-,
-    { "id": "whatsappBanks", "source": "febraban2025", "pt": {"value": "73 mil", "label": "relatos de \"golpe do WhatsApp\" aos bancos", "period": "1º semestre de 2025"}, "en": {"value": "73,000", "label": "reports of the \"WhatsApp scam\" to banks", "period": "first half of 2025"}},
+      "pt": {"value": "83,2%", "label": "dos brasileiros de 16 anos ou mais disseram ter medo de cair num golpe e perder dinheiro pela internet ou pelo celular", "period": "mar. 2026"},
+      "en": {"value": "83.2%", "label": "of Brazilians aged 16 or older said they feared a scam that would cost them money online or by phone", "period": "Mar 2026"}
+    },
+    {
+      "id": "whatsappBanks", "source": "febraban2025",
+      "pt": {"value": "73 mil", "label": "relatos classificados como \"golpe do WhatsApp\" aos bancos associados à Febraban. A categoria não mede só o falso parente", "period": "1º semestre de 2025"},
+      "en": {"value": "73,000", "label": "reports classified as the \"WhatsApp scam\" to Febraban member banks. This category is not limited to fake relatives", "period": "first half of 2025"}
+    },
     { "id": "clonedLoss", "source": "vitimizacao2025", "pt": {"value": "R$ 815", "label": "foi a perda média de quem teve o número usado por outra pessoa para aplicar golpe", "period": "jul. 2024 a jun. 2025"}, "en": {"value": "R$ 815", "label": "was the mean loss of people whose number someone else used to scam people", "period": "Jul 2024 to Jun 2025"}},
-    { "id": "profileTaken", "source": "vitimizacao2025", "pt": {"value": "7,0%", "label": "tiveram um perfil de rede social ou de app de mensagem tomado por outra pessoa", "period": "jul. 2024 a jun. 2025"}, "en": {"value": "7.0%", "label": "had a social media or messaging profile taken over by someone else", "period": "Jul 2024 to Jun 2025"}},
-    { "id": "posedAs", "source": "vitimizacao2025", "pt": {"value": "11,4%", "label": "tiveram alguém se passando por eles na internet", "period": "jul. 2024 a jun. 2025"}, "en": {"value": "11.4%", "label": "had someone pose as them online", "period": "Jul 2024 to Jun 2025"}},
+    {
+      "id": "profileTaken", "source": "vitimizacao2025",
+      "pt": {"value": "7,0%", "label": "dos brasileiros de 16 anos ou mais tiveram um perfil de rede social ou de app de mensagem tomado por outra pessoa", "period": "jul. 2024 a jun. 2025"},
+      "en": {"value": "7.0%", "label": "of Brazilians aged 16 or older had a social media or messaging profile taken over by someone else", "period": "Jul 2024 to Jun 2025"}
+    },
+    {
+      "id": "posedAs", "source": "vitimizacao2025",
+      "pt": {"value": "11,4%", "label": "dos brasileiros de 16 anos ou mais relataram que alguém se passou por eles na internet", "period": "jul. 2024 a jun. 2025"},
+      "en": {"value": "11.4%", "label": "of Brazilians aged 16 or older reported that someone posed as them online", "period": "Jul 2024 to Jun 2025"}
+    },
     { "id": "fakeCallAttempts", "source": "vitimizacao2025", "pt": {"value": "46,4 milhões", "label": "de pessoas, na estimativa da pesquisa, tiveram tentativa de golpe por app de mensagem ou por ligação de falsa central de banco", "period": "jul. 2024 a jun. 2025"}, "en": {"value": "46.4 million", "label": "people, as the survey estimates, had a scam attempt on a messaging app or by a fake bank call centre", "period": "Jul 2024 to Jun 2025"}},
     { "id": "pixShare", "source": "vitimizacao2025", "pt": {"value": "14,3%", "label": "dos brasileiros de 16 anos ou mais perderam dinheiro com golpe de Pix ou boleto falso", "period": "jul. 2024 a jun. 2025"}, "en": {"value": "14.3%", "label": "of Brazilians aged 16 or older lost money to a Pix or fake boleto scam", "period": "Jul 2024 to Jun 2025"}},
     { "id": "pixAttempts", "source": "vitimizacao2025", "pt": {"value": "42,9 milhões", "label": "de pessoas, na estimativa da pesquisa, tiveram tentativa de golpe pedindo Pix ou pagamento de boleto", "period": "jul. 2024 a jun. 2025"}, "en": {"value": "42.9 million", "label": "people, as the survey estimates, had a scam attempt asking for a Pix or a boleto payment", "period": "Jul 2024 to Jun 2025"}},
@@ -184,20 +214,98 @@
       "en": { "value": "4,388", "label": "reports of the fake lawyer scam to the São Paulo bar association, in a little over a year and a half", "period": "to Feb 2026" }
     },
     {
-      "id": "medRecovered", "source": "bcbMed2025",
-      "pt": { "value": "9,3%", "label": "do valor contestado no MED, o mecanismo de devolução do Pix, voltou em média para as vítimas", "period": "2025" },
-      "en": { "value": "9.3%", "label": "of the value disputed through MED, the Pix refund mechanism, went back to victims on average", "period": "2025" }
+      "id": "medRecovered", "source": "bcbMedData",
+      "pt": {"value": "8,96%", "label": "do valor de Pix com contestação aceita voltou pelo MED em 2025: R$ 696,10 milhões de R$ 7,77 bilhões. Não é a taxa de devolução de todos os golpes", "period": "jan. a dez. 2025; consulta em 18 out. 2026"},
+      "en": {"value": "8.96%", "label": "of accepted disputed Pix value was returned through MED in 2025: R$ 696.10 million out of R$ 7.77 billion. This is not the recovery rate for all scams", "period": "Jan to Dec 2025; retrieved 18 Oct 2026"}
     },
     {
       "id": "intimateImages", "source": "safernetIndicadores",
-      "pt": { "value": "266", "label": "pedidos de ajuda sobre exposição de imagens íntimas ao canal da SaferNet, o tema mais procurado do ano", "period": "2024" },
-      "en": { "value": "266", "label": "requests for help with exposed intimate images to SaferNet's helpline, the most common topic of the year", "period": "2024" }
+      "pt": {"value": "266", "label": "pedidos de ajuda sobre exposição de imagens íntimas à SaferNet, o tema mais procurado no ano. Inclui situações além de sextorsão", "period": "2024"},
+      "en": {"value": "266", "label": "requests for help with exposed intimate images to SaferNet, the most common topic that year. This includes situations beyond sextortion", "period": "2024"}
+    },
+    {
+      "id": "whatsappOrigin", "source": "silverguard2025",
+      "pt": {"value": "29,6%", "label": "dos golpes com Pix relatados à central SOS Golpe começaram no WhatsApp. WhatsApp, Instagram e Facebook somam 64,0%, segundo o estudo", "period": "12.197 denúncias; jan. a jun. 2025"},
+      "en": {"value": "29.6%", "label": "of Pix scam reports to SOS Golpe started on WhatsApp. WhatsApp, Instagram and Facebook total 64.0%, according to the study", "period": "12,197 reports; Jan to Jun 2025"}
+    }
+  ],
+  "methodology": [
+    {
+      "id": "lossEstimate",
+      "sources": [
+        "vitimizacao2025"
+      ],
+      "pt": {
+        "title": "Como chegamos aos R$ 111,9 bilhões",
+        "body": "É a soma das cinco projeções de perda do quadro 6: Pix ou boleto, cartão, compra não entregue, investimento e conta bancária. O estudo projeta as respostas de 2.007 pessoas de 16 anos ou mais para a população brasileira e usa as perdas médias declaradas. Os valores dependem da amostra e da lembrança de quem respondeu. Não são transações conferidas nos bancos."
+      },
+      "en": {
+        "title": "How the R$ 111.9 billion was calculated",
+        "body": "It adds the five loss projections in table 6: Pix or boleto, cards, undelivered purchases, investments and bank accounts. The study extrapolates responses from 2,007 people aged 16 or older to the Brazilian population and uses self-reported mean losses. Values depend on the sample and respondents’ recall. They are not bank-verified transactions."
+      }
+    },
+    {
+      "id": "gasaEstimate",
+      "sources": [
+        "gasaForum2026"
+      ],
+      "pt": {
+        "title": "Por que a GASA estima cerca de R$ 21 bilhões",
+        "body": "A GASA divulga outra estimativa para os 12 meses anteriores à pesquisa de 2026. Incluiu perguntas de verificação e excluiu perdas cujo valor a pessoa não sabia informar com segurança. Público, perguntas, período e critérios diferem do FBSP/Datafolha. Os dois totais não devem ser somados nem tratados como uma série anual. A própria GASA também desaconselha comparar diretamente seu resultado de 2026 com o de 2025."
+      },
+      "en": {
+        "title": "Why GASA estimates about R$ 21 billion",
+        "body": "GASA reports a separate estimate for the 12 months before its 2026 survey. It added verification questions and excluded losses whose amounts respondents could not state confidently. The population, questions, period and criteria differ from FBSP/Datafolha. These totals should not be added or treated as an annual series. GASA also warns against directly comparing its own 2026 and 2025 results."
+      }
+    },
+    {
+      "id": "channelsScope",
+      "sources": [
+        "silverguard2025",
+        "ceticPR22"
+      ],
+      "pt": {
+        "title": "Contato não é perda, nem prova de responsabilidade",
+        "body": "A Silverguard conta relatos de quem procurou a central SOS Golpe. O Cetic.br permite citar vários canais para uma mesma pessoa. Nenhum desses recortes mede a parcela de dinheiro perdida por plataforma ou o risco para cada usuário. Por isso, não dá para multiplicar os 64,0% da Meta pelos R$ 111,9 bilhões de outra pesquisa, nem usar esse percentual como medida de responsabilidade."
+      },
+      "en": {
+        "title": "Contact is not a loss or proof of responsibility",
+        "body": "Silverguard counts reports from people who contacted SOS Golpe. Cetic.br lets each person name several channels. Neither measure gives a platform’s share of money lost or risk per user. The Meta figure of 64.0% cannot be multiplied by R$ 111.9 billion from another study or used as a measure of responsibility."
+      }
+    },
+    {
+      "id": "justiceScope",
+      "sources": [
+        "anuario2026"
+      ],
+      "pt": {
+        "title": "O que a comparação com a Justiça permite dizer",
+        "body": "O Anuário informa 2.261.055 boletins e 63.771 processos penais de estelionato em 2025. Dividir o segundo total pelo primeiro dá 2,8 processos por 100 boletins. Como os casos não foram acompanhados individualmente, a conta não revela quantos boletins daquele ano chegaram à Justiça. O recorte inclui estelionatos presenciais e digitais."
+      },
+      "en": {
+        "title": "What the court comparison can establish",
+        "body": "The yearbook lists 2,261,055 police reports and 63,771 criminal proceedings for estelionato in 2025. Dividing the second total by the first gives 2.8 proceedings per 100 reports. Without tracking individual cases, this does not show how many of that year’s reports reached court. The category includes in-person and digital scams."
+      }
+    },
+    {
+      "id": "medScope",
+      "sources": [
+        "bcbMedData"
+      ],
+      "pt": {
+        "title": "O que o MED mede",
+        "body": "A série do Banco Central separa quantidade de contestações, aceitação e valores devolvidos. Em 2025, R$ 696,10 milhões voltaram de R$ 7,77 bilhões com contestação aceita: 8,96%. A taxa usa os valores somados no ano, não a média simples das taxas mensais. Esses registros não cobrem todas as perdas do país e podem ser revisados."
+      },
+      "en": {
+        "title": "What MED measures",
+        "body": "Banco Central separates dispute counts, acceptance and money returned. In 2025, R$ 696.10 million was returned from R$ 7.77 billion in accepted disputed value: 8.96%. The rate uses summed annual amounts, not a simple average of monthly rates. These records do not cover every national loss and can be revised."
+      }
     }
   ],
   "more": ["datasenado24", "medo158", "fear"],
-  "channelCharts": ["channels", "platforms", "pixStart"],
+  "channelCharts": ["platforms", "channels", "pixStart"],
   "charts": [
-    {"id": "pixStart", "form": "bars", "sources": ["silverguard2025"], "pt": {"title": "Onde começou o golpe com Pix", "note": "Primeiro contato do golpista, em 12.197 denúncias de vítimas à central SOS Golpe. Somando WhatsApp, Instagram e Facebook, 2 em cada 3 golpes começaram num app da Meta. Quem procura a central não representa toda a população."}, "en": {"title": "Where the Pix scam started", "note": "The scammer's first contact, in 12,197 reports from victims to the SOS Golpe helpline. WhatsApp, Instagram and Facebook together make 2 in 3: those scams started in a Meta app. People who contact the helpline do not represent the whole population."}, "rows": [
+    {"id": "pixStart", "form": "bars", "sources": ["silverguard2025"], "pt": {"title": "Onde começou o golpe com Pix", "note": "Tipo de canal do primeiro contato em 12.197 denúncias à central SOS Golpe, de janeiro a junho de 2025. A amostra reúne quem procurou a central e não representa o país. Os canais pequenos também estão no relatório; o gráfico mostra os principais."}, "en": {"title": "Where the Pix scam started", "note": "Type of initial contact channel in 12,197 reports to SOS Golpe, January to June 2025. This sample consists of people who contacted the service and is not nationally representative. The chart shows the main channels; the report also lists smaller ones."}, "rows": [
       {"id": "messaging", "value": 41.6, "highlight": true, "pt": {"label": "App de mensagem", "value": "41,6%"}, "en": {"label": "Messaging app", "value": "41.6%"}},
       {"id": "social", "value": 36.4, "pt": {"label": "Rede social", "value": "36,4%"}, "en": {"label": "Social network", "value": "36.4%"}},
       {"id": "games", "value": 3.6, "pt": {"label": "App de jogo", "value": "3,6%"}, "en": {"label": "Gaming app", "value": "3.6%"}},
@@ -209,39 +317,23 @@
       {"id": "sms", "value": 0.7, "pt": {"label": "SMS", "value": "0,7%"}, "en": {"label": "SMS", "value": "0.7%"}}
     ]},
     {
-      "id": "channels", "form": "bars", "sources": ["cetic2025"],
-      "pt": { "title": "Por onde chega a tentativa de golpe", "note": "Usuários de internet com 16 anos ou mais que passaram por uma tentativa de golpe com os próprios dados, em 2025. Cada pessoa pode citar mais de um canal, por isso a soma passa de 100%." },
-      "en": { "title": "How the scam attempt arrives", "note": "Internet users aged 16 or older who had a scam attempt with their own data, in 2025. Each person can name more than one channel, so the total is above 100%." },
+      "id": "channels", "form": "bars", "sources": ["ceticPR22", "cetic2025"],
+      "pt": { "title": "Por onde as pessoas tiveram contato com golpes", "note": "Tabela PR22: usuários de internet com 16 anos ou mais que vivenciaram golpes com dados pessoais em 2025. Cada pessoa pode citar vários canais. O resumo executivo traz outros percentuais, como 84% para mensagens e 79% para ligações; aqui usamos a tabela publicada." },
+      "en": { "title": "Where people encountered scams", "note": "Table PR22: internet users aged 16 or older who experienced scams involving personal data in 2025. People can name several channels. The executive summary gives different percentages, including 84% for messaging and 79% for calls; we use the published table here." },
       "rows": [
-        { "id": "messaging", "value": 84, "highlight": true, "pt": { "label": "App de mensagem", "value": "84%" }, "en": { "label": "Messaging app", "value": "84%" } },
-        { "id": "call", "value": 79, "pt": { "label": "Ligação", "value": "79%" }, "en": { "label": "Phone call", "value": "79%" } },
-        { "id": "fakesite", "value": 71, "pt": { "label": "Site ou app falso", "value": "71%" }, "en": { "label": "Fake website or app", "value": "71%" } },
-        { "id": "sms", "value": 71, "pt": { "label": "SMS", "value": "71%" }, "en": { "label": "SMS", "value": "71%" } },
-        { "id": "email", "value": 69, "pt": { "label": "E-mail", "value": "69%" }, "en": { "label": "E-mail", "value": "69%" } },
-        { "id": "social", "value": 67, "pt": { "label": "Rede social", "value": "67%" }, "en": { "label": "Social media", "value": "67%" } }
+        {"id": "messaging", "value": 80, "highlight": true, "pt": {"label": "App de mensagem", "value": "80%"}, "en": {"label": "Messaging app", "value": "80%"}},
+        {"id": "call", "value": 73, "pt": {"label": "Ligação", "value": "73%"}, "en": {"label": "Phone call", "value": "73%"}},
+        {"id": "fakesite", "value": 60, "pt": {"label": "Site ou app falso", "value": "60%"}, "en": {"label": "Fake website or app", "value": "60%"}},
+        {"id": "sms", "value": 59, "pt": {"label": "SMS", "value": "59%"}, "en": {"label": "SMS", "value": "59%"}},
+        {"id": "email", "value": 56, "pt": {"label": "E-mail", "value": "56%"}, "en": {"label": "E-mail", "value": "56%"}},
+        {"id": "social", "value": 55, "pt": {"label": "Rede social", "value": "55%"}, "en": {"label": "Social media", "value": "55%"}}
       ]
     },
-    {
-      "id": "platforms", "form": "bars", "sources": ["gasa2026"],
-      "pt": { "title": "Em qual plataforma o golpista procurou", "note": "Adultos que deram de cara com um golpe nos últimos 12 meses: 820 de 1.170 pessoas num painel online, em março e abril de 2026. Cada pessoa pode citar mais de uma plataforma. Em destaque, os apps de mensagem." },
-      "en": { "title": "Which platform the scammer used", "note": "Adults who met a scam in the last 12 months: 820 of 1,170 people in an online panel, March and April 2026. Each person can name more than one platform. Messaging apps are highlighted." },
-      "rows": [
-        { "id": "whatsapp", "value": 64, "highlight": true, "pt": { "label": "WhatsApp", "value": "64%" }, "en": { "label": "WhatsApp", "value": "64%" } },
-        { "id": "gmail", "value": 32, "pt": { "label": "Gmail", "value": "32%" }, "en": { "label": "Gmail", "value": "32%" } },
-        { "id": "instagram", "value": 22, "pt": { "label": "Instagram", "value": "22%" }, "en": { "label": "Instagram", "value": "22%" } },
-        { "id": "facebook", "value": 17, "pt": { "label": "Facebook", "value": "17%" }, "en": { "label": "Facebook", "value": "17%" } },
-        { "id": "google", "value": 13, "pt": { "label": "Google", "value": "13%" }, "en": { "label": "Google", "value": "13%" } },
-        { "id": "telegram", "value": 12, "highlight": true, "pt": { "label": "Telegram", "value": "12%" }, "en": { "label": "Telegram", "value": "12%" } },
-        { "id": "outlook", "value": 11, "pt": { "label": "Outlook", "value": "11%" }, "en": { "label": "Outlook", "value": "11%" } },
-        { "id": "olx", "value": 9, "pt": { "label": "OLX", "value": "9%" }, "en": { "label": "OLX", "value": "9%" } },
-        { "id": "tiktok", "value": 9, "pt": { "label": "TikTok", "value": "9%" }, "en": { "label": "TikTok", "value": "9%" } },
-        { "id": "youtube", "value": 6, "pt": { "label": "YouTube", "value": "6%" }, "en": { "label": "YouTube", "value": "6%" } }
-      ]
-    },
+    {"id": "platforms", "form": "bars", "sources": ["silverguard2025"], "pt": {"title": "WhatsApp, Instagram e Facebook: o canal inicial", "note": "Nas 12.197 denúncias à central SOS Golpe de janeiro a junho de 2025. O estudo informa 64,0% para a Meta; as três parcelas arredondadas abaixo somam 64,1%. São participações nos relatos, não no dinheiro perdido. Não medem o risco por usuário nem a responsabilidade de cada plataforma."}, "en": {"title": "WhatsApp, Instagram and Facebook: the initial channel", "note": "Among 12,197 reports to SOS Golpe from January to June 2025. The study reports a Meta total of 64.0%; the three rounded figures below add up to 64.1%. These are shares of reports, not of money lost. They do not measure risk per user or platform responsibility."}, "rows": [{"id": "whatsapp", "value": 29.6, "pt": {"label": "WhatsApp", "value": "29,6%"}, "en": {"label": "WhatsApp", "value": "29.6%"}}, {"id": "instagram", "value": 21.4, "pt": {"label": "Instagram", "value": "21,4%"}, "en": {"label": "Instagram", "value": "21.4%"}}, {"id": "facebook", "value": 13.1, "pt": {"label": "Facebook", "value": "13,1%"}, "en": {"label": "Facebook", "value": "13.1%"}}]},
     {
       "id": "records", "form": "columns", "sources": ["anuario2026"],
-      "pt": { "title": "Golpes registrados na polícia, por ano", "note": "Boletins de ocorrência de estelionato no Brasil, que inclui o golpe pela internet e pelo celular. Conta só quem foi à polícia." },
-      "en": { "title": "Scams reported to the police, per year", "note": "Police reports of estelionato (fraud by deceit) in Brazil, which includes scams online and by phone. It counts only people who went to the police." },
+      "pt": { "title": "Golpes registrados na polícia, por ano", "note": "Boletins de ocorrência de estelionato no Brasil, incluindo casos presenciais e digitais. São registros, não uma contagem de todas as vítimas. Mudanças na denúncia e no registro também podem influir na série." },
+      "en": { "title": "Scams reported to the police, per year", "note": "Police reports of estelionato in Brazil, including in-person and digital scams. These count reports, not every victim. Changes in reporting and recording can also affect the series." },
       "rows": [
         { "id": "2018", "value": 426799, "pt": { "label": "2018", "value": "427 mil" }, "en": { "label": "2018", "value": "427k" } },
         { "id": "2019", "value": 523820, "pt": { "label": "2019", "value": "524 mil" }, "en": { "label": "2019", "value": "524k" } },
@@ -253,12 +345,7 @@
         { "id": "2025", "value": 2261055, "pt": { "label": "2025", "value": "2,26 milhões" }, "en": { "label": "2025", "value": "2.26M" } }
       ]
     },
-    {"id": "med", "form": "columns", "sources": ["silverguard2025"], "pt": {"title": "Pix contestado e aceito como golpe, por ano", "note": "Valor dos Pix contestados pelo MED, o mecanismo de devolução do Banco Central, que o banco de destino aceitou como golpe. Conta só o que a vítima contestou. Dados do Banco Central, pedidos pela Lei de Acesso à Informação. *2025 é projeção."}, "en": {"title": "Pix disputed and accepted as a scam, per year", "note": "Value of Pix payments disputed through MED, the Banco Central refund mechanism, that the receiving bank accepted as a scam. It counts only what victims disputed. Banco Central data, obtained under the access to information law. *2025 is a projection."}, "rows": [
-      {"id": "2022", "value": 3054620019, "pt": {"label": "2022", "value": "R$ 3,05 bi"}, "en": {"label": "2022", "value": "R$ 3.05B"}},
-      {"id": "2023", "value": 4359376586, "pt": {"label": "2023", "value": "R$ 4,36 bi"}, "en": {"label": "2023", "value": "R$ 4.36B"}},
-      {"id": "2024", "value": 6743978896, "pt": {"label": "2024", "value": "R$ 6,74 bi"}, "en": {"label": "2024", "value": "R$ 6.74B"}},
-      {"id": "2025", "value": 7675420858, "pt": {"label": "2025*", "value": "R$ 7,68 bi"}, "en": {"label": "2025*", "value": "R$ 7.68B"}}
-    ]},
+    {"id": "med", "form": "columns", "sources": ["bcbMedData"], "pt": {"title": "Valor de Pix com contestação aceita pelo MED", "note": "Totais anuais da série pública do Banco Central, consultada em 18 de outubro de 2026. Todos os anos estão completos, incluindo 2025. É o valor com contestação aceita, não o valor devolvido, nem todo o prejuízo com Pix. A série pode ser revisada."}, "en": {"title": "Value of Pix payments with accepted MED disputes", "note": "Annual totals from Banco Central public data, retrieved 18 October 2026. Every year is complete, including 2025. This is accepted disputed value, not money returned or all Pix losses. The series can be revised."}, "rows": [{"id": "2022", "value": 3024439448.68, "pt": {"label": "2022", "value": "R$ 3,02 bi"}, "en": {"label": "2022", "value": "R$ 3.02B"}}, {"id": "2023", "value": 4353579605.84, "pt": {"label": "2023", "value": "R$ 4,35 bi"}, "en": {"label": "2023", "value": "R$ 4.35B"}}, {"id": "2024", "value": 6687074511.26, "pt": {"label": "2024", "value": "R$ 6,69 bi"}, "en": {"label": "2024", "value": "R$ 6.69B"}}, {"id": "2025", "value": 7770213467.02, "pt": {"label": "2025", "value": "R$ 7,77 bi"}, "en": {"label": "2025", "value": "R$ 7.77B"}}]},
     {
       "id": "types", "form": "bars", "sources": ["vitimizacao2025"],
       "pt": { "title": "Que golpe tirou dinheiro das pessoas", "note": "Brasileiros de 16 anos ou mais que perderam dinheiro em cada tipo de golpe, entre julho de 2024 e junho de 2025. Uma pessoa pode ter caído em mais de um." },
@@ -273,8 +360,8 @@
     },
     {
       "id": "ages", "form": "bars", "sources": ["datasenado2024"],
-      "pt": { "title": "Golpe pega gente de toda idade", "note": "Idade de quem perdeu dinheiro com crime digital nos 12 meses antes de junho de 2024. Entre parênteses, quanto cada faixa é da população. As fatias ficam parecidas, então não dá para dizer que uma idade cai mais que outra." },
-      "en": { "title": "Scams hit people of every age", "note": "Age of people who lost money to a digital crime in the 12 months before June 2024. In brackets, each group's share of the population. The shares are close, so no age group falls for scams more than another." },
+      "pt": { "title": "Golpe pega gente de toda idade", "note": "Distribuição por idade de quem relatou perder dinheiro com crime digital nos 12 meses antes de junho de 2024. Entre parênteses, a participação na população de 16 anos ou mais. Não é a chance de sofrer golpe dentro de cada idade; esses dados não permitem um ranking de risco por idade." },
+      "en": { "title": "Scams hit people of every age", "note": "Age distribution of people who reported losing money to digital crime in the 12 months before June 2024. Brackets show each group’s share of the population aged 16 or older. This is not the scam rate within each age group and does not establish an age-based risk ranking." },
       "rows": [
         { "id": "16-29", "value": 27, "pt": { "label": "16 a 29 anos (27% da população)", "value": "27%" }, "en": { "label": "16 to 29 (27% of the population)", "value": "27%" } },
         { "id": "30-39", "value": 23, "pt": { "label": "30 a 39 anos (20% da população)", "value": "23%" }, "en": { "label": "30 to 39 (20% of the population)", "value": "23%" } },
@@ -316,11 +403,7 @@
         "falsoParenteWhats",
         "falsoParenteLoss"
       ],
-      "describedBy": [
-        "glossario2025",
-        "febZap",
-        "febZapCodigo"
-      ],
+      "describedBy": ["glossario2025", "febZap", "febZapCodigo", "certCaiu", "bcbMedFaq"],
       "protect": [
         "requests",
         "family-check",
@@ -351,7 +434,7 @@
           "Já pagou? Fale com o seu banco na hora e peça o MED, o mecanismo de devolução do Pix. Depois faça o boletim de ocorrência.",
           "Avise a família e a pessoa que teve o nome e a foto usados."
         ],
-        "limit": "A pessoa ainda pode aceitar o pedido e pagar depois da pausa. O Bipe avisa, não segura o seu dinheiro."
+        "limit": "A pausa antes de pagar é planejada. Um aviso não impede que alguém pague; confirme o pedido por um contato que você já conhece."
       },
       "en": {
         "heading": "Fake relative",
@@ -377,7 +460,7 @@
           "Already paid? Talk to your bank at once and ask for MED, the Pix refund mechanism. Then file a police report.",
           "Tell the family and the person whose name and photo were used."
         ],
-        "limit": "The person can still accept the request and pay after the pause. Bipe warns, it does not hold your money."
+        "limit": "The pause before paying is planned. A warning cannot stop someone paying; confirm the request through a contact channel you already know."
       }
     },
     {
@@ -411,11 +494,7 @@
         "profileTaken",
         "posedAs"
       ],
-      "describedBy": [
-        "febWhatsapp",
-        "glossario2025",
-        "pcspPerguntas"
-      ],
+      "describedBy": ["febWhatsapp", "glossario2025", "pcspPerguntas", "certCaiu"],
       "protect": [
         "no-sms",
         "new-phone",
@@ -505,11 +584,7 @@
         "fakeCall",
         "fakeCallAttempts"
       ],
-      "describedBy": [
-        "febFalsaCentral",
-        "febContaInvadida",
-        "glossario2025"
-      ],
+      "describedBy": ["febFalsaCentral", "febContaInvadida", "glossario2025", "certCaiu", "bcbMedFaq"],
       "protect": [
         "reserved-names",
         "lookalikes",
@@ -536,11 +611,11 @@
           "Pedem para você não desligar e não contar para ninguém."
         ],
         "todo": [
-          "Desligue e ligue você para o número que está atrás do cartão ou no app do banco.",
+          "Desligue e procure o banco pelo app oficial ou pelo número que está atrás do cartão. Se for ligar, use outro telefone para evitar uma chamada que o golpista manteve presa.",
           "Não instale nenhum app que pedirem por ligação ou mensagem.",
           "Já passou dados ou dinheiro? Fale com o banco na hora, bloqueie o cartão e faça o boletim de ocorrência."
         ],
-        "limit": "A maioria começa por ligação de telefone, e o Bipe não tem como agir ali."
+        "limit": "Uma ligação de telefone fica fora da checagem do Bipe. Na conversa, a checagem pode encontrar sinais suspeitos, mas pode deixar o golpe passar."
       },
       "en": {
         "heading": "Fake bank call centre",
@@ -561,11 +636,11 @@
           "They ask you not to hang up and not to tell anyone."
         ],
         "todo": [
-          "Hang up and call the number on the back of your card or in the bank app yourself.",
+          "Hang up and contact the bank through its official app or the number on the back of your card. Use another phone if calling, to avoid a line the scammer has kept open.",
           "Do not install any app someone asks for by call or message.",
           "Already gave data or money? Talk to the bank at once, block the card and file a police report."
         ],
-        "limit": "Most of these start with a phone call, and Bipe cannot act there."
+        "limit": "A phone call is outside Bipe’s checks. In a chat, checks may find suspicious signals but can miss a scam."
       }
     },
     {
@@ -600,11 +675,7 @@
         "pixToCompany",
         "medAccepted"
       ],
-      "describedBy": [
-        "bcbPix",
-        "proconQr",
-        "febPixErrado"
-      ],
+      "describedBy": ["bcbPix", "proconQr", "febPixErrado", "certCaiu", "bcbMedFaq"],
       "protect": [
         "money-pause",
         "scam-alerts",
@@ -635,7 +706,7 @@
           "Recebeu um Pix por engano? Devolva só pelo botão de devolução no app do banco, nunca para outra chave.",
           "Caiu no golpe? Fale com o seu banco na hora e peça o MED, o mecanismo de devolução do Pix. Depois faça o boletim de ocorrência."
         ],
-        "limit": "O Pix acontece no app do banco. O Bipe avisa na conversa e mostra o nome certo no pedido de Pix, mas quem paga é você."
+        "limit": "O pagamento acontece no app do banco. O pedido de Pix com nome verificado é um recurso planejado. Mesmo com o nome conferido, é preciso confirmar a cobrança e quem recebe."
       },
       "en": {
         "heading": "Pix and fake boleto",
@@ -661,7 +732,7 @@
           "Got a Pix by mistake? Return it only with the refund button in the bank app, never to another key.",
           "Fell for it? Talk to your bank at once and ask for MED, the Pix refund mechanism. Then file a police report."
         ],
-        "limit": "The Pix happens in your bank app. Bipe warns in the chat and shows the right name on a Pix request, but you make the payment."
+        "limit": "Payment happens in your bank app. Pix request cards with a verified name are planned. Even with a checked name, you still need to confirm the charge and recipient."
       }
     },
     {
@@ -696,11 +767,7 @@
         "fakeShopAverage",
         "fakeShopLoss"
       ],
-      "describedBy": [
-        "febFalsaVenda",
-        "febCompras",
-        "proconEvite"
-      ],
+      "describedBy": ["febFalsaVenda", "febCompras", "proconEvite", "certCaiu", "bcbMedFaq"],
       "protect": [
         "cnpj-badge",
         "pix-charges",
@@ -719,12 +786,7 @@
           "Pede pagamento por Pix ou boleto, fora do site de vendas, para dar \"desconto\".",
           "Depois do pagamento, some ou para de responder."
         ],
-        "signs": [
-          "O preço está muito abaixo do normal.",
-          "Só aceita Pix, e para conta de pessoa física.",
-          "Pede para fechar a compra fora do site ou do app de vendas.",
-          "O perfil é novo, tem poucos seguidores ou os comentários estão desligados."
-        ],
+        "signs": ["O preço está muito abaixo do normal.", "Só aceita pagamento antecipado, sem a proteção do site de vendas.", "Pede para fechar a compra fora do site ou do app de vendas.", "O perfil é novo ou restringe os comentários. Ter CNPJ ou seguidores não garante que a loja seja legítima."],
         "todo": [
           "Antes de comprar, pesquise o nome da loja e o CNPJ.",
           "Prefira pagar pelo próprio site de vendas, com cartão.",
@@ -744,12 +806,7 @@
           "They ask for payment by Pix or boleto, outside the marketplace, to give a \"discount\".",
           "After the payment, they disappear or stop answering."
         ],
-        "signs": [
-          "The price is far below normal.",
-          "They take only Pix, to a personal account.",
-          "They ask to close the sale outside the marketplace site or app.",
-          "The profile is new, has few followers or has comments turned off."
-        ],
+        "signs": ["The price is far below normal.", "Only accepts advance payment without the marketplace’s protection.", "Asks to complete the purchase outside the marketplace or app.", "The profile is new or restricts comments. A CNPJ or followers do not guarantee a legitimate shop."],
         "todo": [
           "Before you buy, search the shop's name and CNPJ.",
           "Pay through the marketplace itself, by card, when you can.",
@@ -785,11 +842,7 @@
         "threats",
         "threatsPaid"
       ],
-      "describedBy": [
-        "pcprAmeaca",
-        "pcscCartilha",
-        "glossario2025"
-      ],
+      "describedBy": ["pcprAmeaca", "pcscCartilha", "glossario2025", "certCaiu", "bcbMedFaq"],
       "protect": [
         "requests",
         "scam-alerts"
@@ -817,7 +870,7 @@
           "Ligue para o parente citado num número que você já tinha.",
           "Não pague. Faça o boletim de ocorrência e, se tiver risco, ligue 190."
         ],
-        "limit": "O vazamento dos seus dados aconteceu em outro lugar, e o Bipe não apaga esses dados. O aviso aparece quando a mensagem ameaça e pede dinheiro."
+        "limit": "O vazamento dos seus dados aconteceu em outro lugar, e o Bipe não apaga esses dados. A checagem pode mostrar um aviso quando a mensagem ameaça e pede dinheiro."
       },
       "en": {
         "heading": "Threats with your data",
@@ -842,7 +895,7 @@
           "Call the relative they named on a number you already had.",
           "Do not pay. File a police report and, if there is a risk, call 190."
         ],
-        "limit": "Your data leaked somewhere else, and Bipe cannot erase it. The warning shows when a message makes a threat and asks for money."
+        "limit": "Your data leaked somewhere else, and Bipe cannot erase it. Checks may show a warning when a message makes a threat and asks for money."
       }
     },
     {
@@ -871,11 +924,7 @@
       "stats": [
         "posedAs"
       ],
-      "describedBy": [
-        "glossario2025",
-        "febZap",
-        "febWhatsapp"
-      ],
+      "describedBy": ["glossario2025", "febZap", "febWhatsapp", "certCaiu", "bcbMedFaq"],
       "protect": [
         "requests",
         "verified-badge",
@@ -903,7 +952,7 @@
           "Deixe sua foto de perfil visível só para os seus contatos.",
           "Já pagou? Fale com o seu banco na hora, peça o MED e faça o boletim de ocorrência."
         ],
-        "limit": "O selo só ajuda quando a pessoa de verdade é verificada. Se ela não tem selo, o Bipe mostra que a conta é nova e não está nos seus contatos, mas não sabe quem está do outro lado."
+        "limit": "O selo de identidade é planejado e deve mostrar o nome da comprovação. Isso não confirma que você conhece a pessoa nem que o pedido de dinheiro seja legítimo."
       },
       "en": {
         "heading": "Fake acquaintance",
@@ -926,7 +975,7 @@
           "Show your profile photo only to your contacts.",
           "Already paid? Talk to your bank at once, ask for MED and file a police report."
         ],
-        "limit": "The seal helps only when the real person is verified. If they have no seal, Bipe shows that the account is new and not in your contacts, but it cannot tell who is on the other side."
+        "limit": "The identity seal is planned and is intended to show the name from identity evidence. This does not establish that you know the person or that a money request is legitimate."
       }
     },
     {
@@ -953,11 +1002,7 @@
       },
       "scene": "codigo-engano",
       "stats": [],
-      "describedBy": [
-        "febZapCodigo",
-        "febWhatsapp",
-        "pcspPerguntas"
-      ],
+      "describedBy": ["febZapCodigo", "febWhatsapp", "pcspPerguntas", "certCaiu"],
       "protect": [
         "no-sms",
         "scam-alerts",
@@ -965,7 +1010,7 @@
       ],
       "pt": {
         "heading": "\"Te mandei um código por engano\"",
-        "body": "Alguém diz que mandou um código para o seu número sem querer e pede para você repassar. Esse código é a chave da sua conta em outro app. Quem passa o código perde a conta.",
+        "body": "Alguém diz que mandou um código para o seu número sem querer e pede para você repassar. Pode ser o código de acesso da sua conta em outro app. Repassar o código pode permitir que o golpista entre na conta.",
         "title": "Golpe do código por engano: como funciona e o que fazer",
         "headline": "\"Te mandei um código por engano\": o código é a chave da sua conta",
         "lede": "Alguém diz que mandou um código para o seu número sem querer e pede para você repassar. Com esse código, o golpista entra na sua conta de outro app e pede dinheiro para os seus contatos.",
@@ -979,16 +1024,12 @@
           "Um desconhecido ou um contato pede esse código por mensagem.",
           "A mensagem tem pressa e um pedido de desculpas."
         ],
-        "todo": [
-          "Não passe o código para ninguém. Código que você não pediu nunca é engano.",
-          "Ligue a confirmação em duas etapas nos seus apps de mensagem.",
-          "Passou o código? Avise seus contatos por outro caminho e fale com o suporte do app."
-        ],
+        "todo": ["Não repasse o código. Um código que você não pediu pode ser uma tentativa de entrar na sua conta.", "Ligue a confirmação em duas etapas nos seus apps de mensagem.", "Passou o código? Avise seus contatos por outro caminho e fale com o suporte do app."],
         "limit": "No Bipe não existe código por SMS, então não tem o que pedir. Mas o Bipe não protege a sua conta em outros apps."
       },
       "en": {
         "heading": "\"I sent you a code by mistake\"",
-        "body": "Someone says they sent a code to your number by mistake and asks you to pass it on. That code is the key to your account in another app. Whoever passes it on loses the account.",
+        "body": "Someone says they sent a code to your number by mistake and asks you to pass it on. It may be the access code for your account in another app. Sharing it may let the scammer into your account.",
         "title": "Code by mistake scam: how it works and what to do",
         "headline": "\"I sent you a code by mistake\": the code is the key to your account",
         "lede": "Someone says they sent a code to your number by mistake and asks you to pass it on. With that code, the scammer gets into your account in another app and asks your contacts for money.",
@@ -1002,11 +1043,7 @@
           "A stranger or a contact asks for that code by message.",
           "The message is rushed and full of apologies."
         ],
-        "todo": [
-          "Do not pass the code to anyone. A code you did not ask for is never a mistake.",
-          "Turn on two-step verification in your messaging apps.",
-          "Passed it on? Warn your contacts another way and contact the app's support."
-        ],
+        "todo": ["Do not share the code. An unsolicited code may be an attempt to access your account.", "Turn on two-step verification in your messaging apps.", "Shared it? Warn your contacts another way and contact the app’s support."],
         "limit": "Bipe has no SMS code, so there is nothing to ask for. But Bipe does not protect your account in other apps."
       }
     },
@@ -1035,11 +1072,7 @@
       },
       "scene": "golpe-amor",
       "stats": [],
-      "describedBy": [
-        "glossario2025",
-        "aenAmor",
-        "pcspPerguntas"
-      ],
+      "describedBy": ["glossario2025", "aenAmor", "pcspPerguntas", "certCaiu", "bcbMedFaq"],
       "protect": [
         "scam-alerts",
         "money-pause",
@@ -1066,7 +1099,7 @@
           "Procure a foto do perfil na busca por imagem.",
           "Já pagou? Fale com o seu banco, peça o MED e faça o boletim de ocorrência."
         ],
-        "limit": "É um golpe lento, de semanas. O aviso aparece no pedido de dinheiro, mas não convence quem já confia na pessoa."
+        "limit": "A confiança pode crescer por semanas. A checagem pode avisar num pedido de dinheiro, mas não avalia a relação nem garante que ela seja segura."
       },
       "en": {
         "heading": "Romance scam",
@@ -1089,7 +1122,7 @@
           "Search for the profile photo with an image search.",
           "Already paid? Talk to your bank, ask for MED and file a police report."
         ],
-        "limit": "It is a slow scam that takes weeks. The warning shows on the request for money, but it will not convince someone who already trusts the person."
+        "limit": "Trust can build over weeks. Checks may warn about a money request but cannot assess the relationship or guarantee that it is safe."
       }
     },
     {
@@ -1119,11 +1152,7 @@
       "stats": [
         "oabsp"
       ],
-      "describedBy": [
-        "oabCampanha",
-        "glossario2025",
-        "febAdvogado"
-      ],
+      "describedBy": ["oabCampanha", "glossario2025", "febAdvogado", "certCaiu", "bcbMedFaq"],
       "protect": [
         "cnpj-badge",
         "verified-badge",
@@ -1204,12 +1233,7 @@
       },
       "scene": "orgao-publico",
       "stats": [],
-      "describedBy": [
-        "bcbValores",
-        "inssSms",
-        "detranPr",
-        "glossario2025"
-      ],
+      "describedBy": ["bcbValores", "inssSms", "detranPr", "glossario2025", "certCaiu"],
       "protect": [
         "reserved-names",
         "lookalikes",
@@ -1236,7 +1260,7 @@
           "Valores a receber só se consultam em valoresareceber.bcb.gov.br. INSS só pelo Meu INSS ou pelo 135.",
           "Passou dados ou pagou? Fale com o seu banco e faça o boletim de ocorrência."
         ],
-        "limit": "A maioria chega por SMS e e-mail, fora do Bipe. No Bipe, nome de órgão público fica reservado, e o aviso aparece em link que usa bcb, gov, inss, receita ou detran sem ser o site oficial."
+        "limit": "SMS e e-mail ficam fora da checagem do Bipe. Reservar nomes de órgãos é um recurso planejado. A checagem de links pode encontrar algumas imitações, mas não cobre todo site falso."
       },
       "en": {
         "heading": "Fake government body",
@@ -1259,7 +1283,7 @@
           "Check money to claim only at valoresareceber.bcb.gov.br. INSS only through Meu INSS or 135.",
           "Gave data or paid? Talk to your bank and file a police report."
         ],
-        "limit": "Most of these arrive by SMS and e-mail, outside Bipe. On Bipe, public bodies' names are reserved, and the warning shows on links that use bcb, gov, inss, receita or detran without being the official site."
+        "limit": "SMS and email are outside Bipe’s checks. Reserving government names is planned. Link checks may find some imitations but do not cover every fake website."
       }
     },
     {
@@ -1289,11 +1313,7 @@
       "scene": "taxa-correios",
       "realScene": "entrega-real",
       "stats": [],
-      "describedBy": [
-        "correiosFalsas",
-        "correiosSeguranca",
-        "glossario2025"
-      ],
+      "describedBy": ["correiosFalsas", "correiosSeguranca", "glossario2025", "certCaiu"],
       "protect": [
         "reserved-names",
         "scam-alerts"
@@ -1314,12 +1334,8 @@
           "O valor é baixo, para você pagar sem pensar.",
           "O link não é do site oficial."
         ],
-        "todo": [
-          "Não pague pelo link. Confira a encomenda no app ou no site oficial dos Correios.",
-          "Imposto de importação só se paga no site oficial, com o código de rastreio.",
-          "Passou o cartão? Fale com o banco para bloquear e faça o boletim de ocorrência."
-        ],
-        "limit": "Quase sempre chega por SMS, fora do Bipe. No Bipe, o nome Correios fica reservado e o aviso aparece em mensagem com link e taxa de entrega."
+        "todo": ["Não pague pelo link. Abra você mesmo o site ou app oficial dos Correios.", "Confira a encomenda e eventual cobrança dos Correios no Minhas Importações, pelo site ou app oficial.", "Passou dados do cartão ou pagou? Fale com o banco imediatamente, bloqueie o cartão se necessário, guarde as provas e faça o boletim de ocorrência."],
+        "limit": "SMS fica fora da checagem do Bipe. Reservar o nome Correios é um recurso planejado. Na conversa, a checagem pode encontrar sinais de cobrança falsa, mas não confirma a entrega nem a taxa."
       },
       "en": {
         "heading": "Fake delivery fee",
@@ -1337,12 +1353,8 @@
           "The amount is small, so you pay without thinking.",
           "The link is not the official site."
         ],
-        "todo": [
-          "Do not pay through the link. Check the parcel in the official Correios app or site.",
-          "Import tax is paid only on the official site, with the tracking code.",
-          "Gave your card? Ask your bank to block it and file a police report."
-        ],
-        "limit": "It almost always arrives by SMS, outside Bipe. On Bipe, the name Correios is reserved and the warning shows on messages with a link and a delivery fee."
+        "todo": ["Do not pay through the link. Open the official Correios website or app yourself.", "Check the parcel and any Correios charge in Minhas Importações through the official website or app.", "Shared card details or paid? Contact your bank immediately, block the card if needed, save evidence and file a police report."],
+        "limit": "SMS is outside Bipe’s checks. Reserving the Correios name is planned. In chats, checks may find fake-charge signals but do not confirm a delivery or fee."
       }
     },
     {
@@ -1372,10 +1384,7 @@
       },
       "scene": "renda-extra",
       "stats": [],
-      "describedBy": [
-        "febTarefa",
-        "glossario2025"
-      ],
+      "describedBy": ["febTarefa", "glossario2025", "certCaiu", "bcbMedFaq"],
       "protect": [
         "requests",
         "scam-alerts",
@@ -1402,7 +1411,7 @@
           "Saia do grupo e não deposite mais nada para recuperar o que já foi.",
           "Já pagou? Fale com o seu banco, peça o MED e faça o boletim de ocorrência."
         ],
-        "limit": "A pessoa entra por vontade própria. O Bipe avisa, mas não bloqueia a conversa."
+        "limit": "O grupo pode fazer uma proposta falsa parecer legítima. A checagem pode avisar na mensagem, mas não valida uma vaga nem impede uma transferência."
       },
       "en": {
         "heading": "Fake job and task scam",
@@ -1425,7 +1434,7 @@
           "Leave the group and do not deposit more to get back what is gone.",
           "Already paid? Talk to your bank, ask for MED and file a police report."
         ],
-        "limit": "The person joins by choice. Bipe warns, but it does not block the chat."
+        "limit": "A group can make a fake offer seem legitimate. Checks may warn about a message but cannot validate a job or stop a transfer."
       }
     },
     {
@@ -1454,10 +1463,7 @@
       },
       "scene": "falso-suporte-bipe",
       "stats": [],
-      "describedBy": [
-        "glossario2025",
-        "febWhatsapp"
-      ],
+      "describedBy": ["glossario2025", "febWhatsapp", "certCaiu", "bcbMedFaq"],
       "protect": [
         "reserved-names",
         "lookalikes",
@@ -1485,7 +1491,7 @@
           "Feche a conversa e procure o suporte pelo app ou pelo site oficial.",
           "Passou dados? Troque a senha, fale com o banco e faça o boletim de ocorrência."
         ],
-        "limit": "No Bipe, ninguém usa o nome Bipe sem ser o Bipe. As telas de senha dizem que o Bipe nunca pede a sua senha, e o aviso aparece quando uma mensagem pede. Por ligação, fora do Bipe, alguém ainda pode tentar."
+        "limit": "Os nomes reservados são um recurso planejado. A checagem pode avisar sobre pedidos suspeitos de senha, mas não confirma a identidade do suporte. Procure ajuda pelo canal oficial."
       },
       "en": {
         "heading": "Fake support",
@@ -1508,7 +1514,7 @@
           "Close the chat and find support through the official app or site.",
           "Gave data? Change your PIN, talk to your bank and file a police report."
         ],
-        "limit": "On Bipe, nobody but Bipe can use the name Bipe. The PIN screens say that Bipe never asks for your PIN, and the warning shows when a message asks for it. On a phone call, outside Bipe, someone can still try."
+        "limit": "Reserved names are planned. Checks may warn about suspicious password requests but do not establish a support agent’s identity. Use the official support channel."
       }
     },
     {
@@ -1539,11 +1545,7 @@
       "stats": [
         "fakeSale"
       ],
-      "describedBy": [
-        "febFalsaVenda",
-        "glossario2025",
-        "febCompras"
-      ],
+      "describedBy": ["febFalsaVenda", "glossario2025", "febCompras", "certCaiu", "bcbMedFaq"],
       "protect": [
         "verified-badge",
         "pix-cards",
@@ -1571,7 +1573,7 @@
           "Antes de confirmar o Pix, confira o nome que o banco mostra.",
           "Já pagou? Fale com o seu banco, peça o MED e faça o boletim de ocorrência."
         ],
-        "limit": "Uma pessoa verificada ainda pode dar golpe. O selo prova quem é a pessoa, não que ela é honesta. O anúncio fica em outro site, o Bipe vê só a conversa."
+        "limit": "Uma pessoa verificada ainda pode dar golpe. O selo previsto mostra o nome da comprovação, sem garantir que a oferta seja legítima. O anúncio fica em outro site, o Bipe vê só a conversa."
       },
       "en": {
         "heading": "Fake second-hand sale",
@@ -1594,7 +1596,7 @@
           "Before you confirm the Pix, check the name your bank shows.",
           "Already paid? Talk to your bank, ask for MED and file a police report."
         ],
-        "limit": "A verified person can still scam. The seal proves who the person is, not that they are honest. The ad is on another site, and Bipe only sees the chat."
+        "limit": "A verified person can still scam. The planned seal shows the name from identity evidence without guaranteeing a legitimate offer. The ad is on another site, and Bipe only sees the chat."
       }
     },
     {
@@ -1624,10 +1626,7 @@
       },
       "scene": "comprovante-falso",
       "stats": [],
-      "describedBy": [
-        "proconValinhos",
-        "bcbPix"
-      ],
+      "describedBy": ["proconValinhos", "bcbPix", "certCaiu"],
       "protect": [
         "scam-alerts",
         "pix-cards"
@@ -1706,10 +1705,7 @@
       "scene": "aluguel",
       "realScene": "pousada-real",
       "stats": [],
-      "describedBy": [
-        "pcprAluguel",
-        "glossario2025"
-      ],
+      "describedBy": ["pcprAluguel", "glossario2025", "certCaiu", "bcbMedFaq"],
       "protect": [
         "verified-badge",
         "scam-alerts",
@@ -1734,9 +1730,9 @@
         "todo": [
           "Visite o imóvel antes de pagar, ou mande alguém de confiança.",
           "Prefira imobiliária ou site com pagamento protegido.",
-          "Já pagou? Guarde prints, a chave Pix e o nome da conta e faça o boletim de ocorrência."
+          "Já pagou? Fale com o banco imediatamente e peça o MED se o pagamento foi por Pix. Guarde conversas, anúncio e comprovantes e faça o boletim de ocorrência."
         ],
-        "limit": "O anúncio fica em outro site. O selo prova quem é a pessoa, não que o imóvel é dela."
+        "limit": "O anúncio fica em outro site. O selo previsto mostra o nome da comprovação, sem provar que o imóvel é da pessoa."
       },
       "en": {
         "heading": "Fake rental",
@@ -1757,9 +1753,9 @@
         "todo": [
           "Visit the place before you pay, or send someone you trust.",
           "Prefer an agency or a site with protected payment.",
-          "Already paid? Keep screenshots, the Pix key and the account name and file a police report."
+          "Already paid? Contact your bank immediately and request MED if you paid by Pix. Save chats, the listing and receipts, and file a police report."
         ],
-        "limit": "The ad is on another site. The seal proves who the person is, not that the place is theirs."
+        "limit": "The ad is on another site. The planned seal shows the name from identity evidence without proving ownership of the property."
       }
     },
     {
@@ -1789,25 +1785,21 @@
       "stats": [
         "medRecovered"
       ],
-      "describedBy": [
-        "febPixErrado",
-        "glossario2025",
-        "bcbPix"
-      ],
+      "describedBy": ["febPixErrado", "glossario2025", "bcbPix", "certCaiu", "bcbMedFaq"],
       "protect": [
         "scam-alerts",
         "money-pause"
       ],
       "pt": {
         "heading": "Pix errado",
-        "body": "Cai um Pix na sua conta e logo alguém pede para devolver, para outra chave. Depois o golpista pede o dinheiro de volta pelo MED. Você devolve duas vezes.",
+        "body": "Cai um Pix na sua conta e alguém pede a devolução para outra chave. O golpista também pode tentar recuperar o Pix original pelo MED. Se conseguir, você pode perder o mesmo valor duas vezes.",
         "title": "Golpe do Pix errado: como funciona e o que fazer",
         "headline": "Golpe do Pix errado: \"mandei sem querer, devolve para essa chave\"",
         "lede": "Cai um Pix na sua conta e alguém pede para devolver para outra chave. Depois o golpista também pede o estorno pelo MED, e o banco tira o valor de novo. Devolva só pelo botão do banco.",
         "how": [
           "O golpista manda um Pix para a sua chave, muitas vezes de dinheiro de outro golpe.",
           "Escreve ou liga dizendo que mandou errado e pede para devolver para outra chave.",
-          "Depois pede o estorno do Pix original pelo MED, e você paga duas vezes."
+          "Depois tenta recuperar o Pix original pelo MED. A devolução não é automática, mas, se o pedido for aceito e o dinheiro voltar, você pode perder duas vezes."
         ],
         "signs": [
           "Caiu um Pix de alguém que você não conhece.",
@@ -1819,18 +1811,18 @@
           "Nunca mande para uma chave nova.",
           "Na dúvida, fale com o seu banco antes de devolver."
         ],
-        "limit": "É mecânica de banco. O Bipe só avisa quando a mensagem pede para devolver para uma chave."
+        "limit": "A devolução acontece no app do banco. O Bipe pode avisar sobre um pedido suspeito na conversa, mas não confirma nem decide o estorno."
       },
       "en": {
         "heading": "Wrong Pix",
-        "body": "A Pix lands in your account and soon someone asks you to send it back, to another key. Then the scammer also asks for the money back through MED. You pay it back twice.",
+        "body": "A Pix arrives and someone asks you to return it to another key. The scammer may also try to recover the original Pix through MED. If successful, you can lose the same amount twice.",
         "title": "Wrong Pix scam: how it works and what to do",
         "headline": "The wrong Pix scam: \"I sent it by mistake, send it back to this key\"",
         "lede": "A Pix lands in your account and someone asks you to return it to another key. Then the scammer also disputes it through MED, and the bank takes the amount again. Return money only with your bank's button.",
         "how": [
           "The scammer sends a Pix to your key, often money from another scam.",
           "They write or call to say it was a mistake and ask you to return it to another key.",
-          "Then they dispute the original Pix through MED, and you pay twice."
+          "They then try to recover the original Pix through MED. A return is not automatic, but if the request succeeds you may lose the same amount twice."
         ],
         "signs": [
           "A Pix arrived from someone you do not know.",
@@ -1842,7 +1834,7 @@
           "Never send it to a new key.",
           "In doubt, talk to your bank before you return anything."
         ],
-        "limit": "These are bank mechanics. Bipe only warns when a message asks you to send money back to a key."
+        "limit": "These are bank mechanics. Bipe may warn when a message asks you to send money back to a key."
       }
     },
     {
@@ -1874,10 +1866,7 @@
       "stats": [
         "pixShare"
       ],
-      "describedBy": [
-        "febBoleto",
-        "glossario2025"
-      ],
+      "describedBy": ["febBoleto", "glossario2025", "certCaiu", "bcbMedFaq"],
       "protect": [
         "scam-alerts",
         "pix-charges",
@@ -1904,7 +1893,7 @@
           "Pegue a segunda via só no app ou no site oficial da empresa.",
           "Pagou? Fale com o seu banco na hora e com a empresa, e faça o boletim de ocorrência."
         ],
-        "limit": "Boleto em PDF por e-mail fica fora do Bipe. No Bipe, o aviso aparece em código de boleto colado na conversa."
+        "limit": "Boleto em PDF por e-mail fica fora do Bipe. No Bipe, a checagem pode mostrar um aviso em código de boleto colado na conversa."
       },
       "en": {
         "heading": "Fake boleto",
@@ -1927,7 +1916,7 @@
           "Get duplicate bills only in the company's official app or site.",
           "Paid? Talk to your bank at once and to the company, and file a police report."
         ],
-        "limit": "A PDF boleto by e-mail is outside Bipe. On Bipe, the warning shows on a boleto code pasted in a chat."
+        "limit": "A PDF boleto by e-mail is outside Bipe. On Bipe, checks may show a warning on a boleto code pasted in a chat."
       }
     },
     {
@@ -1957,10 +1946,7 @@
       "scene": "emprestimo",
       "realScene": "credito-real",
       "stats": [],
-      "describedBy": [
-        "febEmprestimo",
-        "glossario2025"
-      ],
+      "describedBy": ["febEmprestimo", "glossario2025", "certCaiu", "bcbMedFaq"],
       "protect": [
         "scam-alerts",
         "cnpj-badge",
@@ -1987,7 +1973,7 @@
           "Simule e contrate só no app do seu banco ou numa instituição autorizada pelo Banco Central.",
           "Já pagou? Fale com o seu banco, peça o MED e faça o boletim de ocorrência."
         ],
-        "limit": "O aviso aparece quando a conversa pede taxa para liberar dinheiro. Fora isso, o Bipe não tem como conferir a oferta."
+        "limit": "A checagem pode mostrar um aviso quando a conversa pede taxa para liberar dinheiro. Fora isso, o Bipe não tem como conferir a oferta."
       },
       "en": {
         "heading": "Fake loan",
@@ -2010,7 +1996,7 @@
           "Simulate and sign only in your bank app or with an institution the Central Bank authorises.",
           "Already paid? Talk to your bank, ask for MED and file a police report."
         ],
-        "limit": "The warning shows when the chat asks for a fee to release money. Beyond that, Bipe cannot check the offer."
+        "limit": "Checks may show a warning when the chat asks for a fee to release money. Beyond that, Bipe cannot check the offer."
       }
     },
     {
@@ -2046,11 +2032,7 @@
         "investLoss",
         "cvmStopOrders"
       ],
-      "describedBy": [
-        "cvmIrregulares",
-        "febInvestimento",
-        "glossario2025"
-      ],
+      "describedBy": ["cvmIrregulares", "febInvestimento", "glossario2025", "certCaiu", "bcbMedFaq"],
       "protect": [
         "verified-groups",
         "scam-alerts",
@@ -2067,17 +2049,9 @@
           "Promete retorno alto e garantido, por cripto, robô de trade ou indicação de amigos.",
           "Deixa sacar um pouco no começo, pede depósitos maiores, e depois some com tudo."
         ],
-        "signs": [
-          "Retorno garantido e alto. Investimento de verdade não garante isso.",
-          "Pressa para entrar e prêmio por trazer amigos.",
-          "A empresa não aparece no cadastro da CVM."
-        ],
-        "todo": [
-          "Confira no cadastro da CVM se a empresa pode oferecer investimento.",
-          "Pague só para conta no nome da empresa registrada.",
-          "Caiu? Guarde tudo, fale com o seu banco e faça o boletim de ocorrência. Denuncie à CVM."
-        ],
-        "limit": "O Bipe ainda não confere o CNPJ no cadastro da CVM. A proposta está escrita e espera decisão. O aviso aparece em promessa de retorno garantido."
+        "signs": ["Prometem retorno alto e garantido, sem explicar os riscos.", "Há pressa para entrar e prêmio por trazer amigos.", "Não dá para confirmar a autorização para aquela oferta nos canais oficiais da CVM. Um cadastro ou CNPJ pode ter sido copiado."],
+        "todo": ["Confira nos canais oficiais da CVM se a empresa e a oferta têm a autorização necessária.", "Confirme o contato e a conta de destino por um canal obtido fora da oferta recebida. Um nome no cadastro não prova que a mensagem veio daquela empresa.", "Caiu num golpe? Guarde as provas, fale com o banco, faça o boletim de ocorrência e denuncie à CVM."],
+        "limit": "O Bipe não confere se a oferta tem autorização da CVM. A checagem pode mostrar um aviso em promessas suspeitas, mas não avalia investimentos."
       },
       "en": {
         "heading": "Fake investment",
@@ -2090,17 +2064,9 @@
           "They promise high guaranteed returns, through crypto, a trading bot or bringing in friends.",
           "They let you cash out a little at first, ask for bigger deposits, then disappear with everything."
         ],
-        "signs": [
-          "Guaranteed high returns. Real investments do not guarantee that.",
-          "A rush to join and rewards for bringing friends.",
-          "The company is not in the CVM register."
-        ],
-        "todo": [
-          "Check the CVM register to see if the company may offer investments.",
-          "Pay only to an account in the registered company's name.",
-          "Fell for it? Keep everything, talk to your bank and file a police report. Report it to the CVM."
-        ],
-        "limit": "Bipe does not check a CNPJ against the CVM register yet. A proposal is written and waits for a decision. The warning shows on promises of guaranteed returns."
+        "signs": ["Promises high, guaranteed returns without explaining risks.", "Pressure to join and rewards for bringing friends.", "The relevant authorisation cannot be confirmed through CVM’s official channels. Registration details or a CNPJ may have been copied."],
+        "todo": ["Check CVM’s official channels for the authorisation required for that company and offer.", "Confirm contact and payment details through a channel obtained independently of the offer. A registered name does not prove the message came from that business.", "Affected by a scam? Save evidence, contact your bank, file a police report and report it to CVM."],
+        "limit": "Bipe does not check whether an offer is authorised by CVM. Checks may warn about suspicious promises but do not assess investments."
       }
     },
     {
@@ -2129,16 +2095,14 @@
       },
       "scene": "aposta",
       "stats": [],
-      "describedBy": [
-        "fazendaApostas"
-      ],
+      "describedBy": ["fazendaApostas", "certCaiu", "bcbMedFaq"],
       "protect": [
         "scam-alerts",
         "verified-groups"
       ],
       "pt": {
         "heading": "Apostas e \"tigrinho\"",
-        "body": "Um robô que acerta a hora certa de jogar, um grupo de sinais pago, uma plataforma nova que paga muito. Desde outubro de 2026, aposta de quota fixa é proibida no Brasil, e surgiu outro golpe: a falsa devolução de saldo.",
+        "body": "Um robô que promete acertar a hora de jogar, um grupo de sinais pago, uma plataforma que trava o saque. Também há pedidos de taxa para liberar saldo. O Ministério da Fazenda informa que a MP nº 1.394/2026 proibiu a oferta de apostas de quota fixa em 25 de setembro de 2026 e definiu regras de devolução.",
         "title": "Golpe das apostas e do tigrinho: como funciona e o que fazer",
         "headline": "Golpe das apostas: robô do tigrinho, sinais pagos e falsa devolução de saldo",
         "lede": "Um robô que acerta a hora de jogar, um grupo de sinais pago ou uma plataforma que paga muito. Desde outubro de 2026, as apostas de quota fixa estão proibidas no Brasil. Devolução de saldo nunca cobra taxa.",
@@ -2152,16 +2116,12 @@
           "Pagam por indicação e por depósito de amigos.",
           "Pedem taxa para devolver um saldo seu."
         ],
-        "todo": [
-          "Não pague por robô nem por sinal. Ninguém prevê jogo de azar.",
-          "A devolução do saldo passa pelo seu banco e não cobra taxa.",
-          "Caiu? Guarde tudo e faça o boletim de ocorrência."
-        ],
-        "limit": "Quase tudo acontece em anúncio, rede social e grupo de outro app. No Bipe, o aviso aparece em pedido de taxa e depósito."
+        "todo": ["Não pague por robô nem por sinal. Ninguém prevê jogo de azar.", "Não pague taxa enviada por mensagem para liberar saldo. Confira o procedimento nos canais oficiais do seu banco e do Ministério da Fazenda.", "Caiu? Guarde tudo e faça o boletim de ocorrência."],
+        "limit": "A oferta pode chegar por anúncio ou outro app, fora do Bipe. Na conversa, a checagem pode avisar sobre um pedido suspeito de taxa ou depósito."
       },
       "en": {
         "heading": "Betting and \"tigrinho\"",
-        "body": "A bot that knows when to play, a paid tips group, a new platform that pays a lot. Since October 2026, fixed-odds betting is banned in Brazil, and another scam came up: the fake balance refund.",
+        "body": "A bot claims to predict when to play, a paid tips group or a platform blocks withdrawals. Scammers also ask for fees to release balances. Brazil’s Ministry of Finance states that provisional measure 1,394/2026 prohibited fixed-odds betting offers on 25 September 2026 and set balance-return rules.",
         "title": "Betting scam and the tigrinho bot: how it works and what to do",
         "headline": "The betting scam: tigrinho bots, paid tips and fake balance refunds",
         "lede": "A bot that knows when to play, a paid tips group or a platform that pays a lot. Since October 2026, fixed-odds betting is banned in Brazil. A balance refund never charges a fee.",
@@ -2175,12 +2135,8 @@
           "They pay you for referrals and for friends' deposits.",
           "They ask for a fee to refund money that is yours."
         ],
-        "todo": [
-          "Do not pay for a bot or tips. Nobody predicts a game of chance.",
-          "Balance refunds go through your bank and charge no fee.",
-          "Fell for it? Keep everything and file a police report."
-        ],
-        "limit": "Almost all of it happens in ads, social media and groups in other apps. On Bipe, the warning shows on requests for a fee or a deposit."
+        "todo": ["Do not pay for a bot or tips. Nobody predicts a game of chance.", "Do not pay a fee requested in a message to release a balance. Check the process through your bank’s and the Ministry of Finance’s official channels.", "Fell for it? Keep everything and file a police report."],
+        "limit": "The offer may arrive through ads or other apps, outside Bipe. In a chat, checks may warn about a suspicious fee or deposit request."
       }
     },
     {
@@ -2212,11 +2168,7 @@
       },
       "scene": "link-falso",
       "stats": [],
-      "describedBy": [
-        "febLink",
-        "certFraudes",
-        "inssLinks"
-      ],
+      "describedBy": ["febLink", "certFraudes", "inssLinks", "certCaiu"],
       "protect": [
         "scam-alerts",
         "reserved-names",
@@ -2243,7 +2195,7 @@
           "Nunca digite senha ou código numa página que chegou por mensagem.",
           "Digitou? Troque a senha, fale com o banco e faça o boletim de ocorrência."
         ],
-        "limit": "O Bipe avisa quando o link imita um banco, um órgão do governo ou uma empresa conhecida, também com siglas como bcb, gov e inss no endereço. Ainda não confere se o domínio é novo."
+        "limit": "O Bipe pode avisar quando o link imita um banco, um órgão do governo ou uma empresa conhecida, também com siglas como bcb, gov e inss no endereço. Ainda não confere se o domínio é novo."
       },
       "en": {
         "heading": "Fake link",
@@ -2266,7 +2218,7 @@
           "Never type a password or code on a page that came by message.",
           "Typed it? Change your password, talk to your bank and file a police report."
         ],
-        "limit": "Bipe warns when a link copies a bank, a government body or a well-known company, also with short names like bcb, gov and inss in the address. It does not check yet whether a domain is new."
+        "limit": "Bipe may warn when a link copies a bank, a government body or a well-known company, also with short names like bcb, gov and inss in the address. It does not check yet whether a domain is new."
       }
     },
     {
@@ -2294,11 +2246,7 @@
       },
       "scene": "acesso-remoto",
       "stats": [],
-      "describedBy": [
-        "febMaoFantasma",
-        "glossario2025",
-        "certCaiu"
-      ],
+      "describedBy": ["febMaoFantasma", "glossario2025", "certCaiu"],
       "protect": [
         "scam-alerts",
         "reserved-names"
@@ -2319,12 +2267,8 @@
           "Pedem para você não desligar e seguir as instruções.",
           "O celular começa a se mexer sozinho."
         ],
-        "todo": [
-          "Desligue na hora. Nenhum banco pede para instalar app.",
-          "Já instalou? Desligue a internet, apague o app e fale com o banco por outro celular.",
-          "Depois, restaure o celular e faça o boletim de ocorrência."
-        ],
-        "limit": "Depois que o app está instalado, o golpe acontece fora da conversa. O aviso aparece quando a mensagem pede para instalar um app de acesso remoto, mas o Bipe não impede a instalação."
+        "todo": ["Desligue. Não instale app nem dê acesso à tela por instrução de quem ligou dizendo ser do banco.", "Já instalou? Desconecte o aparelho da internet e fale com o banco por outro aparelho para bloquear os acessos.", "Guarde as provas, faça o boletim de ocorrência e procure orientação técnica para remover o app ou restaurar o aparelho com segurança."],
+        "limit": "Depois que o app está instalado, o golpe acontece fora da conversa. A checagem pode mostrar um aviso quando a mensagem pede para instalar um app de acesso remoto, mas o Bipe não impede a instalação."
       },
       "en": {
         "heading": "Phantom hand and fake app",
@@ -2342,12 +2286,8 @@
           "They ask you not to hang up and to follow instructions.",
           "The phone starts moving on its own."
         ],
-        "todo": [
-          "Hang up at once. No bank asks you to install an app.",
-          "Already installed? Turn off the internet, delete the app and call the bank from another phone.",
-          "Then reset the phone and file a police report."
-        ],
-        "limit": "Once the app is installed, the scam happens outside the chat. The warning shows when a message asks you to install a remote-access app, but Bipe cannot stop the install."
+        "todo": ["Hang up. Do not install an app or grant screen access on instructions from an unsolicited caller claiming to be your bank.", "Already installed it? Disconnect the device from the internet and contact your bank from another device to block access.", "Save evidence, file a police report and seek technical guidance to remove the app or reset the device safely."],
+        "limit": "Once the app is installed, the scam happens outside the chat. Checks may show a warning when a message asks you to install a remote-access app, but Bipe cannot stop the install."
       }
     },
     {
@@ -2374,9 +2314,7 @@
       },
       "scene": "noSms",
       "stats": [],
-      "describedBy": [
-        "anatelGolpes"
-      ],
+      "describedBy": ["anatelGolpes", "certCaiu"],
       "protect": [
         "no-sms",
         "new-phone"
@@ -2452,11 +2390,7 @@
       },
       "scene": "sequestro",
       "stats": [],
-      "describedBy": [
-        "sspspCartilha",
-        "pcscCartilha",
-        "pcprSequestro"
-      ],
+      "describedBy": ["sspspCartilha", "pcscCartilha", "pcprSequestro", "certCaiu"],
       "protect": [
         "family-check",
         "requests",
@@ -2483,7 +2417,7 @@
           "Não pague.",
           "Ligue 190."
         ],
-        "limit": "Quase sempre é por ligação, fora do Bipe. No Bipe, quem não está nos seus contatos chega como pedido, e o aviso aparece no pedido de dinheiro com pressa."
+        "limit": "Quase sempre é por ligação, fora do Bipe. No Bipe, quem não está nos seus contatos chega como pedido, e a checagem pode mostrar um aviso no pedido de dinheiro com pressa."
       },
       "en": {
         "heading": "Fake kidnapping",
@@ -2506,7 +2440,7 @@
           "Do not pay.",
           "Call 190."
         ],
-        "limit": "It is almost always a phone call, outside Bipe. On Bipe, people not in your contacts arrive as a request, and the warning shows on a rushed request for money."
+        "limit": "It is almost always a phone call, outside Bipe. On Bipe, people not in your contacts arrive as a request, and checks may show a warning on a rushed request for money."
       }
     },
     {
@@ -2538,11 +2472,7 @@
       "stats": [
         "intimateImages"
       ],
-      "describedBy": [
-        "safernetSextorsao",
-        "pcprSextorsao",
-        "glossario2025"
-      ],
+      "describedBy": ["safernetSextorsao", "pcprSextorsao", "glossario2025", "certCaiu"],
       "protect": [
         "requests",
         "scam-alerts"
@@ -2568,7 +2498,7 @@
           "Guarde as provas, bloqueie e denuncie o perfil.",
           "Peça ajuda no canal da SaferNet e faça o boletim de ocorrência."
         ],
-        "limit": "O aviso indica a SaferNet quando a mensagem ameaça e pede dinheiro. A ameaça pode vir de outro app, onde as imagens foram trocadas."
+        "limit": "A checagem pode indicar a SaferNet quando a mensagem ameaça e pede dinheiro. A ameaça pode vir de outro app, onde as imagens foram trocadas."
       },
       "en": {
         "heading": "Sextortion",
@@ -2591,7 +2521,7 @@
           "Keep the evidence, block and report the profile.",
           "Ask SaferNet's helpline for help and file a police report."
         ],
-        "limit": "The warning points to SaferNet when a message makes a threat and asks for money. The threat can come from another app, where the images were shared."
+        "limit": "A warning may point to SaferNet when a message makes a threat and asks for money. The threat can come from another app, where the images were shared."
       }
     },
     {
@@ -2618,10 +2548,7 @@
       },
       "scene": "escola",
       "stats": [],
-      "describedBy": [
-        "pcscCartilha",
-        "febWhatsapp"
-      ],
+      "describedBy": ["pcscCartilha", "febWhatsapp", "certCaiu"],
       "protect": [
         "verified-groups",
         "communities",
@@ -2648,7 +2575,7 @@
           "Não passe código nenhum.",
           "Avise o grupo e quem cuida dele."
         ],
-        "limit": "Grupo aberto continua aberto. O Bipe avisa na mensagem, e a comunidade deixa só quem cuida postar nos avisos."
+        "limit": "Estar num grupo conhecido não prova que a cobrança seja legítima. Comunidades e grupos só com verificados são recursos planejados. A checagem pode avisar sobre sinais suspeitos na mensagem."
       },
       "en": {
         "heading": "Group chat scam",
@@ -2671,7 +2598,7 @@
           "Do not pass on any code.",
           "Tell the group and the people who run it."
         ],
-        "limit": "An open group stays open. Bipe warns on the message, and a community lets only its admins post announcements."
+        "limit": "Being in a familiar group does not establish that a charge is legitimate. Communities and verified-only groups are planned. Checks may warn about suspicious signals in a message."
       }
     },
     {
@@ -2700,9 +2627,7 @@
       "scene": "vaquinha",
       "realScene": "doacao-real",
       "stats": [],
-      "describedBy": [
-        "glossario2025"
-      ],
+      "describedBy": ["glossario2025", "certCaiu"],
       "protect": [
         "scam-alerts",
         "cnpj-badge",
@@ -2729,7 +2654,7 @@
           "Antes de confirmar o Pix, veja o nome que o banco mostra.",
           "Desconfiou? Avise o grupo e denuncie o perfil."
         ],
-        "limit": "O aviso aparece quando a mensagem tem chave Pix e pedido com pressa. O Bipe não sabe se a história é verdade."
+        "limit": "A checagem pode mostrar um aviso quando a mensagem tem chave Pix e pedido com pressa. O Bipe não sabe se a história é verdade."
       },
       "en": {
         "heading": "Fake fundraiser",
@@ -2752,7 +2677,7 @@
           "Before you confirm the Pix, look at the name your bank shows.",
           "Suspicious? Tell the group and report the profile."
         ],
-        "limit": "The warning shows when the message has a Pix key and a rushed request. Bipe does not know if the story is true."
+        "limit": "Checks may show a warning when the message has a Pix key and a rushed request. Bipe does not know if the story is true."
       }
     }
   ],
@@ -2763,20 +2688,21 @@
     { "id": "ligacao", "source": "febFalsaCentral", "pt": {"name": "Ligação da falsa central", "body": "Uma ligação diz ser do banco e pede senha ou transferência. Desligue e ligue você para o número que está atrás do cartão, de outro telefone."}, "en": {"name": "A call from a fake bank line", "body": "A call says it is the bank and asks for your password or a transfer. Hang up and call the number on the back of the card, from another phone."} }
   ],
   "protect": [
-    { "feature": "scam-alerts", "pt": "Aparece um aviso embaixo da mensagem com cara de golpe, como Pix com pressa, troca de número ou boleto. Vem ligado, sem precisar mexer em nada.", "en": "A warning shows under a message that looks like a scam, such as a rushed Pix, a new number or a boleto. It is on by default, with nothing to set up." },
-    { "feature": "requests", "pt": "Quem não está nos seus contatos chega como pedido. Uma mensagem de número novo não cai direto na sua lista de conversas.", "en": "People who are not in your contacts arrive as a request. A message from a new number does not land straight in your chat list." },
-    { "feature": "no-sms", "pt": "No Bipe não tem código por SMS para pedir. Quem pega seu chip não pega sua conta.", "en": "Bipe has no SMS code anyone could ask for. Whoever takes your SIM card does not get your account." },
-    { "feature": "money-pause", "pt": "Num pedido de dinheiro suspeito, copiar e pagar ficam travados por 5 segundos, para quebrar a pressa do golpe.", "en": "On a suspicious money request, copy and pay stay locked for 5 seconds, to break the scam's rush." },
-    { "feature": "verified-badge", "pt": "Um selo com o nome verificado pelo Pix ou pelo gov.br. Aí dá para saber quem está do outro lado.", "en": "A seal with a name verified through Pix or gov.br, so you know who is on the other side." },
-    { "feature": "family-check", "pt": "Se o contato salvo como Mãe tem outro nome verificado, o app pergunta se é a mesma pessoa.", "en": "If the contact saved as Mum has a different verified name, the app asks if it is the same person." }
+    { "feature": "scam-alerts", "pt": "Se a checagem encontra sinais como Pix com pressa ou troca de número, aparece um aviso embaixo da mensagem.", "en": "If checks find signals such as a rushed Pix or a new number, a warning appears under the message." },
+    { "feature": "requests", "pt": "Quem não está nos seus contatos chega como pedido. Você aceita ou ignora.", "en": "People who aren't in your contacts arrive as a request. You accept it or ignore it." },
+    { "feature": "no-sms", "pt": "Quem pega seu chip não pega sua conta. No Bipe não tem código por SMS para pedir.", "en": "Whoever takes your SIM does not get your account. Bipe has no SMS code to ask for." },
+    { "feature": "money-pause", "pt": "Num pedido de dinheiro suspeito, copiar e pagar ficam travados por 5 segundos. A pausa quebra a pressa do golpe.", "en": "When a money request looks suspicious, copy and pay stay locked for 5 seconds. The pause breaks the scammer's rush." },
+    { "feature": "verified-badge", "pt": "Verificação gratuita pelo Pix ou pelo gov.br. O selo vem com o nome verificado.", "en": "Free verification through Pix or gov.br. The seal comes with the verified name." },
+    { "feature": "family-check", "pt": "Se o contato salvo como Mãe tem outro nome verificado, o app pergunta se é a mesma pessoa.", "en": "If the contact saved as Mom has a different verified name, the app asks if it's the same person." }
   ],
   "pt": {
+    "helpLink": "Já caiu num golpe? Veja o que fazer agora.",
     "title": "Golpes no Brasil em números",
     "headline": "Golpe no Brasil: mais de 2 milhões de registros num ano",
-    "lede": "Em 2025, a polícia registrou 2,26 milhões de golpes, cinco vezes mais que em 2018. E isso é só quem foi à polícia. Os canais mais citados para tentativa de golpe são o app de mensagem e a ligação. Aqui estão os números, com a fonte de cada um.",
+    "lede": "Em 2025, a polícia registrou 2,26 milhões de ocorrências de estelionato, presenciais e digitais. As pesquisas mostram que o problema vai além dos registros policiais. Veja o que cada número mede, como reconhecer os golpes e onde buscar ajuda.",
     "numbersTitle": "Os números principais",
     "channelsTitle": "Quanto golpe passa pelo app de mensagem",
-    "channelsBody": "O golpe chega por vários caminhos ao mesmo tempo, mas o app de mensagem aparece na frente. Numa pesquisa oficial, 84% de quem teve tentativa de golpe com os próprios dados foi procurado por app de mensagem, e 79% por ligação. Numa pesquisa internacional com brasileiros, o WhatsApp é a plataforma mais citada, bem à frente das outras. Nenhuma das pesquisas mede em que canal cada golpe começou, só por onde as pessoas foram procuradas.",
+    "channelsBody": "O primeiro contato, os canais por onde a pessoa passou e a forma de pagamento são coisas diferentes. Na amostra da Silverguard, WhatsApp, Instagram e Facebook aparecem como canais iniciais. O Cetic.br mede canais citados por pessoas que vivenciaram golpes com dados pessoais. Esses dados não permitem atribuir uma fatia do prejuízo nacional a uma plataforma.",
     "chartsTitle": "Como o golpe cresceu e quem ele atinge",
     "typesTitle": "Os golpes mais comuns",
     "typeNumbers": "Os números",
@@ -2786,23 +2712,15 @@
     "typeOthers": "Outros golpes comuns",
     "typeMore": "Como funciona e o que fazer",
     "moreTitle": "Por que os números não batem",
-    "moreBody": "Cada pesquisa pergunta uma coisa, num ano diferente. A do Fórum e do Datafolha de 2025 soma cinco tipos de golpe e chega a 33,4%. A do DataSenado de 2024 fez uma pergunta só, por telefone, e chegou a 24%. A do Fórum de 2026 fez outra pergunta só e chegou a 15,8%. Nenhuma está errada: elas medem coisas diferentes.",
-    "protectTitle": "O que protege você",
+    "moreBody": "Cada estudo tem perguntas, público e período próprios. O FBSP/Datafolha de 2025 identifica quem relatou pelo menos um entre cinco tipos de perda e chega a 33,4%; não soma os percentuais dos cinco. O DataSenado de 2024 e o FBSP de 2026 usam outras perguntas. As diferenças não demonstram, sozinhas, aumento ou queda dos golpes.",
+    "protectTitle": "O que fazer para se proteger ou depois de um golpe",
     "protectLede": "Golpista sempre tem pressa. O que mais protege é parar e conferir por outro caminho.",
-    "advice": [
-      "Alguém pediu dinheiro por mensagem? Ligue para a pessoa num número que você já tinha antes de pagar.",
-      "Banco não liga pedindo senha, código ou transferência. Desligue e ligue você para o número que está atrás do cartão.",
-      "O código que chega por SMS é só seu. Não passe para ninguém, nem para quem diz ser do app.",
-      "Ninguém do Bipe pede a sua senha de 8 números, nem por mensagem, nem por ligação. Quem pede não é do Bipe.",
-      "Print de comprovante não prova pagamento. Confira no app do seu banco se o dinheiro caiu.",
-      "Preço bom demais numa loja que você não conhece costuma ser golpe.",
-      "Caiu num golpe com Pix? Fale com o seu banco na hora e peça o MED, o mecanismo de devolução do Pix. Depois faça o boletim de ocorrência."
-    ],
+    "advice": ["Alguém pediu dinheiro por mensagem? Ligue para a pessoa num número que você já tinha antes de pagar.", "Banco não liga pedindo senha, código ou transferência. Desligue e ligue você para o número que está atrás do cartão.", "O código que chega por SMS é só seu. Não passe para ninguém, nem para quem diz ser do app.", "Ninguém do Bipe pede a sua senha de 8 números, nem por mensagem, nem por ligação. Quem pede não é do Bipe.", "Print de comprovante não prova pagamento. Confira no app do seu banco se o dinheiro caiu.", "Preço bom demais numa loja que você não conhece costuma ser golpe.", "Pagou um golpe por Pix? Conteste a transação no app ou no canal oficial do seu banco e peça o MED imediatamente. O prazo para pedir é de até 80 dias; agir cedo ajuda, mas a devolução não é garantida. O MED não cobre simples desacordo comercial ou Pix enviado por engano.", "Guarde mensagens, links, comprovantes e protocolos. Faça o boletim de ocorrência, mesmo sem saber quem foi o golpista. Não pague taxa para alguém prometer recuperar o dinheiro."],
     "bipeTitle": "Como o Bipe ajuda",
-    "bipeLede": "Cada item mostra em que pé está no iPhone e no Android.",
-    "limit": "O Bipe só protege as conversas que acontecem no Bipe. Se alguém da família ainda usa outro app, o golpista pode escrever para essa pessoa lá.",
+    "bipeLede": "Os recursos procuram sinais de golpe e ajudam a conferir o contato. Abra a página de cada recurso para ver a disponibilidade no iPhone e no Android. Recursos planejados ainda não estão disponíveis.",
+    "limit": "A checagem do Bipe pode deixar golpes passar ou avisar numa conversa legítima. Sem aviso não quer dizer que é seguro. O selo previsto mostra o nome da comprovação, sem garantir a intenção de quem escreve. Os recursos atuam nas conversas do Bipe; confira o status de cada um.",
     "sourcesTitle": "De onde vêm esses números",
-    "sourcesNote": "Pesquisa feita em 13 de outubro de 2026. A gente só usa número que tem fonte. Pesquisa de empresa ou de associação privada aparece marcada como tal.",
+    "sourcesNote": "Fontes conferidas em 18 de outubro de 2026. Cada número informa a base e o período. Estudos de empresas e de associações privadas aparecem identificados. As estimativas não devem ser somadas entre pesquisas.",
     "source": "Fonte",
     "table": "Ver os números em tabela",
     "typeAliases": "Também chamado de",
@@ -2818,15 +2736,16 @@
     "outsideMore": "Como se proteger",
     "groups": { "pessoa": "Alguém se passa por quem você conhece", "instituicao": "Alguém se passa por banco, órgão público ou empresa", "compra": "Compra e venda", "dinheiro": "Pix, boleto, empréstimo e investimento", "conta": "Conta e celular", "grupo": "Grupos e ameaças" },
     "channels": { "messaging": "app de mensagem", "sms": "SMS", "call": "ligação", "email": "e-mail", "ad": "anúncio", "social": "rede social", "marketplace": "site de vendas", "dating": "app de namoro", "carrier": "operadora do celular", "inPerson": "pessoalmente" },
-    "kinds": { "primary": "fonte oficial", "secondary": "pesquisa de associação privada", "company": "estudo de empresa privada", "press": "como noticiado pela imprensa" }
+    "kinds": { "primary": "fonte original", "secondary": "pesquisa de associação privada", "company": "estudo de empresa privada", "press": "como noticiado pela imprensa" }
   },
   "en": {
+    "helpLink": "Already affected by a scam? See what to do now.",
     "title": "Scams in Brazil in numbers",
     "headline": "Scams in Brazil: over 2 million police reports in one year",
-    "lede": "In 2025, the police recorded 2.26 million scams, five times more than in 2018. And that is only the people who went to the police. The channels people name most for scam attempts are messaging apps and phone calls. Here are the numbers, each with its source.",
+    "lede": "In 2025, police recorded 2.26 million reports of estelionato, covering in-person and digital scams. Surveys show that the problem extends beyond police reports. See what each figure measures, how to recognise scams and where to get help.",
     "numbersTitle": "The main numbers",
     "channelsTitle": "How much scamming goes through messaging apps",
-    "channelsBody": "Scams arrive by many routes at once, but messaging apps come first. In an official survey, 84% of people who had a scam attempt with their own data were approached on a messaging app, and 79% by phone call. In an international survey of Brazilians, WhatsApp is the platform people name most, far ahead of the rest. None of the surveys measures where each scam started, only where people were approached.",
+    "channelsBody": "Initial contact, the channels a person encountered and the payment method are different measures. In the Silverguard sample, WhatsApp, Instagram and Facebook are initial contact channels. Cetic.br measures channels named by people who experienced scams involving personal data. These figures cannot allocate a share of national losses to any platform.",
     "chartsTitle": "How scams grew and who they hit",
     "typesTitle": "The most common scams",
     "typeNumbers": "The numbers",
@@ -2836,23 +2755,15 @@
     "typeOthers": "Other common scams",
     "typeMore": "How it works and what to do",
     "moreTitle": "Why the numbers differ",
-    "moreBody": "Each survey asks a different thing, in a different year. The 2025 Fórum and Datafolha survey adds up five kinds of scam and reaches 33.4%. The 2024 DataSenado survey asked one question, by phone, and reached 24%. The 2026 Fórum survey asked another single question and reached 15.8%. None is wrong: they measure different things.",
-    "protectTitle": "What protects you",
+    "moreBody": "Studies use different questions, populations and periods. The 2025 FBSP/Datafolha survey finds that 33.4% reported at least one of five kinds of loss; it does not add the five percentages. DataSenado 2024 and FBSP 2026 use other questions. Differences alone do not establish an increase or decrease in scams.",
+    "protectTitle": "How to protect yourself and what to do after a scam",
     "protectLede": "A scammer is always in a rush. What protects you most is to stop and check another way.",
-    "advice": [
-      "Someone asked for money by message? Call them on a number you already had before you pay.",
-      "Banks do not call asking for a password, a code or a transfer. Hang up and call the number on the back of your card yourself.",
-      "The code you get by SMS is yours alone. Do not give it to anyone, not even someone who says they are from the app.",
-      "Nobody from Bipe asks for your 8-digit PIN, not by message and not by phone call. Whoever asks is not from Bipe.",
-      "A screenshot of a receipt does not prove payment. Check in your bank app that the money arrived.",
-      "A price too good to be true, from a shop you do not know, is usually a scam.",
-      "Fell for a Pix scam? Talk to your bank at once and ask for MED, the Pix refund mechanism. Then file a police report."
-    ],
+    "advice": ["Someone asked for money by message? Call them on a number you already had before you pay.", "Banks do not call asking for a password, a code or a transfer. Hang up and call the number on the back of your card yourself.", "The code you get by SMS is yours alone. Do not give it to anyone, not even someone who says they are from the app.", "Nobody from Bipe asks for your 8-digit PIN, not by message and not by phone call. Whoever asks is not from Bipe.", "A screenshot of a receipt does not prove payment. Check in your bank app that the money arrived.", "A price too good to be true, from a shop you do not know, is usually a scam.", "Paid a scammer by Pix? Dispute the payment in your bank app or through its official channel and request MED immediately. You can request it within 80 days; acting early helps, but a refund is not guaranteed. MED does not cover ordinary commercial disputes or a Pix sent by mistake.", "Save messages, links, receipts and case numbers. File a police report even if you do not know who the scammer is. Do not pay a fee to someone promising to recover the money."],
     "bipeTitle": "How Bipe helps",
-    "bipeLede": "Each item shows where it stands on iPhone and Android.",
-    "limit": "Bipe only protects the chats that happen in Bipe. If someone in the family still uses another app, a scammer can write to them there.",
+    "bipeLede": "Features look for scam signals and help you check a contact. Open each feature’s page to see its iPhone and Android availability. Planned features are not available yet.",
+    "limit": "Bipe checks can miss scams or warn about a legitimate conversation. No warning does not mean it is safe. The planned seal shows the name from identity evidence without guaranteeing the sender’s intentions. Features act within Bipe conversations; check each feature’s status.",
     "sourcesTitle": "Where these numbers come from",
-    "sourcesNote": "Researched on 13 October 2026. We only use numbers that have a source. Surveys by a company or a private association are marked as such.",
+    "sourcesNote": "Sources checked on 18 October 2026. Each figure states its base and period. Company and private-association studies are labelled. Estimates from different studies should not be added together.",
     "source": "Source",
     "table": "See the numbers as a table",
     "typeAliases": "Also called",
@@ -2868,6 +2779,6 @@
     "outsideMore": "How to protect yourself",
     "groups": { "pessoa": "Someone poses as a person you know", "instituicao": "Someone poses as a bank, a public body or a company", "compra": "Buying and selling", "dinheiro": "Pix, boleto, loans and investment", "conta": "Account and phone", "grupo": "Groups and threats" },
     "channels": { "messaging": "messaging app", "sms": "SMS", "call": "phone call", "email": "e-mail", "ad": "ad", "social": "social media", "marketplace": "marketplace", "dating": "dating app", "carrier": "phone carrier", "inPerson": "in person" },
-    "kinds": { "primary": "official source", "secondary": "private association survey", "company": "private company study", "press": "as reported by the press" }
+    "kinds": { "primary": "original source", "secondary": "private association survey", "company": "private company study", "press": "as reported by the press" }
   }
 }

@@ -200,11 +200,15 @@
     {
       "id": "cnpj-badge",
       "name": "Business seal",
-      "ios": { "status": "built", "evidence": ["bipe-ios/Components/BipeKit/Sources/BipeKit/BipeCompanySeals.swift", "bipe-ios/ElementX/Sources/Other/SwiftUI/Views/BipeCompanySeal.swift"] },
-      "android": { "status": "built", "evidence": ["bipe-android/libraries/bipe/src/main/kotlin/io/element/android/libraries/bipe/company/BipeCompanySeals.kt", "bipe-android/libraries/bipe/src/main/kotlin/io/element/android/libraries/bipe/company/BipeCompanySeal.kt"] },
+      "ios": { "status": "planned", "note": "Open in bipe-ios#33; set built when it merges" },
+      "android": { "status": "planned", "note": "Open in bipe-android#35; set built when it merges" },
       "web": {
-        "status": "n/a",
-        "reason": "No web chat (ADR 0004); the site shows a demo at most"
+        "status": "built",
+        "evidence": [
+          "bipe-web/src/badge.ts",
+          "bipe-web/src/sim/LinkPages.tsx"
+        ],
+        "note": "The public link page bipe.chat/@handle verifies the badge without a master key: signature, kid, exp, sub homeserver and lvl only"
       },
       "server": {
         "status": "built",
@@ -1321,6 +1325,35 @@
       "android": { "status": "built", "evidence": ["bipe-android/libraries/bipe/src/main/kotlin/io/element/android/libraries/bipe/support/BipeSupportChat.kt", "bipe-android/plugins/src/main/kotlin/config/BuildTimeConfig.kt"] },
       "web": { "status": "n/a", "reason": "Mobile only (ADR 0004)" },
       "server": { "status": "built", "evidence": ["bipe-api/src/support.ts"] }
+    },
+    {
+      "id": "remote-banner",
+      "name": "Remote critical banner above the chat list (ADR 0117)",
+      "issue": 386,
+      "ios": {
+        "status": "built",
+        "evidence": [
+          "bipe-ios/Components/BipeKit/Sources/BipeKit/BipeRemoteBanner.swift",
+          "bipe-ios/ElementX/Sources/Screens/HomeScreen/View/BipeRemoteBannerRow.swift"
+        ]
+      },
+      "android": {
+        "status": "built",
+        "evidence": [
+          "bipe-android/libraries/bipe/src/main/kotlin/io/element/android/libraries/bipe/banner/BipeRemoteBannerStore.kt",
+          "bipe-android/libraries/bipe/src/main/kotlin/io/element/android/libraries/bipe/ui/BipeRemoteBannerRow.kt"
+        ]
+      },
+      "web": {
+        "status": "n/a",
+        "reason": "No chat list on the web (ADR 0004)"
+      },
+      "server": {
+        "status": "built",
+        "evidence": [
+          "bipe-api/src/banner.ts"
+        ]
+      }
     }
   ],
   "differences": [
@@ -1471,6 +1504,22 @@
       "android": "Element's bottom sheet",
       "reason": "Platform idiom",
       "kind": "idiom"
+    },
+    {
+      "area": "Archive chats",
+      "ios": "Swipe or long press to archive (`m.lowpriority`); Arquivadas row at the top of the list",
+      "android": "Not built",
+      "reason": "Built on iOS first (#435)",
+      "kind": "gap",
+      "issue": 435
+    },
+    {
+      "area": "App lock screen during biometrics",
+      "ios": "Bipe logo, Bipe bloqueado and the Face ID or Touch ID prompt",
+      "android": "Element's lock screen",
+      "reason": "Built on iOS first (#435)",
+      "kind": "gap",
+      "issue": 435
     },
     {
       "area": "Terms screen and a recovery alert due together",

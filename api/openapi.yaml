@@ -143,6 +143,27 @@ paths:
           content:
             application/json:
               schema: { $ref: "#/components/schemas/SignupConfig" }
+  /v1/banner:
+    get:
+      summary: The remote critical banner (ADR 0117, bipe#386)
+      description: >
+        No auth. One banner above the chat list for critical notices only: an outage, a forced update, a change of
+        terms. null when there is none or it is past expires_at. The apps fetch it on launch and on foreground and
+        decide with remoteBannerState() (test-vectors/remote-banner.json). Cache-Control max-age 60. 120 per IP per minute.
+      responses:
+        "200":
+          description: The banner, or null
+          content:
+            application/json:
+              schema:
+                type: object
+                required: [banner]
+                properties:
+                  banner:
+                    oneOf:
+                      - { $ref: "#/components/schemas/RemoteBanner" }
+                      - { type: "null" }
+        "429": { $ref: "#/components/responses/Error" }
   /v1/signup/resume:
     post:
       summary: Get the answer of a device-first sign-up again (ADR 0094)
@@ -1211,6 +1232,41 @@ paths:
         "401": { $ref: "#/components/responses/Error" }
         "404": { $ref: "#/components/responses/Error" }
         "503": { $ref: "#/components/responses/Error" }
+  /v1/admin/research/messaging:
+    get:
+      summary: Staff-only messaging parity research and strategy
+      description: >
+        Only MAS admins may read this dated research snapshot. Other users get 404 not_found.
+        Returns platform profiles, sourced feature comparisons, strategic implications and the
+        captured Bipe implementation ledger. Types are in api/internal-research.d.ts.
+        This is research, not a release promise. Cache-Control is private, no-store.
+        CORS allows PUBLIC_SITE_URL. The public site must never bundle the research payload.
+      security: [{ matrix: [] }]
+      responses:
+        "200":
+          description: Dated research with claim-level source IDs and Bipe evidence
+          content:
+            application/json:
+              schema:
+                type: object
+                required: [version, reviewed, reviewAfter, title, summary, methodology, groups, platforms, strategy, priorities, watchlist, sources, features, snapshot]
+                properties:
+                  version: { type: integer }
+                  reviewed: { type: string, format: date }
+                  reviewAfter: { type: string, format: date }
+                  title: { type: string }
+                  summary: { type: string }
+                  methodology: { type: array, items: { type: string } }
+                  groups: { type: array, items: { type: object } }
+                  platforms: { type: array, items: { type: object } }
+                  strategy: { type: array, items: { type: object } }
+                  priorities: { type: array, items: { type: object } }
+                  watchlist: { type: array, items: { type: object } }
+                  sources: { type: array, items: { type: object } }
+                  features: { type: array, items: { type: object } }
+                  snapshot: { type: object }
+        "401": { $ref: "#/components/responses/Error" }
+        "404": { $ref: "#/components/responses/Error" }
   /v1/admin/inviters:
     get:
       summary: Staff report of inviters ranked by joins
@@ -4247,6 +4303,27 @@ components:
         signup_key: { type: string, pattern: "^[A-Za-z0-9_-]{43}$", description: "Device-first only, recommended: 32 random bytes as base64url, made by the app before the first try and kept on this device until the credentials are stored. Same key again: the same account (ADR 0094). Ignored in legacy mode." }
         terms_version: { type: string, pattern: "^\\d{4}-\\d{2}-\\d{2}$", description: "ADR 0113: the legalVersion the person accepted with the checkbox. Must be the current one." }
         account_type: { type: string, enum: [personal, company], description: "ADR 0087: company makes a company account (owner case). It needs a valid attestation (ADR 0043) and device-first mode. Default personal." }
+    RemoteBanner:
+      type: object
+      required: [id, title, text, link, expires_at]
+      description: >
+        Staff set it with the CLI `banner set <file>`; remoteBannerProblem() validates it. The text is pt-BR only.
+        With min_app_version, an app below that version shows the banner as an update: it opens update_links for its
+        platform and the person cannot dismiss it. Otherwise the banner opens link and the person can dismiss it by id.
+      properties:
+        id: { type: string, pattern: "^[a-z0-9][a-z0-9-]{0,63}$", description: "A new id shows the banner again to people who dismissed an older one" }
+        title: { type: string, minLength: 1, maxLength: 60 }
+        text: { type: string, minLength: 1, maxLength: 240 }
+        link: { type: string, format: uri, description: https only }
+        min_app_version: { type: string, pattern: "^\\d{1,4}(\\.\\d{1,4}){0,3}$" }
+        update_links:
+          type: object
+          required: [ios, android]
+          description: Required with min_app_version. Where each app gets the new version.
+          properties:
+            ios: { type: string, format: uri }
+            android: { type: string, format: uri }
+        expires_at: { type: string, format: date-time }
     SignupConfig:
       type: object
       required: [invite_required, terms_version]

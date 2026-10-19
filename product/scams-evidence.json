@@ -1,0 +1,647 @@
+{
+  "checked": "2026-10-18",
+  "scope": "40 retained statistics, 7 charts, 29 scam types, both languages. Source IDs refer to scams.json. Descriptions and recovery advice were checked against the cited glossary, Febraban, CERT.br and official specialist sources. Feature descriptions and availability follow product.json.",
+  "stats": [
+    {
+      "stat": "falsoParente60",
+      "source": "silverguard2025",
+      "locator": "PDF p. 17, known contact asking for money, most common scam among clients aged 60+ (21%)"
+    },
+    {
+      "stat": "falsoParenteWhats",
+      "source": "silverguard2025",
+      "locator": "PDF p. 18, 95.3% of the known-contact scam subset, visually inspected"
+    },
+    {
+      "stat": "falsoParenteLoss",
+      "source": "silverguard2025",
+      "locator": "PDF p. 17, R$2,800 mean within the known-contact scam subset"
+    },
+    {
+      "stat": "pixMeanLoss",
+      "source": "silverguard2025",
+      "locator": "PDF p. 16, R$2,540 mean; removed unsupported R$4,820 detail"
+    },
+    {
+      "stat": "pixToCompany",
+      "source": "silverguard2025",
+      "locator": "PDF pp. 22-23, June 2025 destination account CNPJ share 65% versus 42% in June 2024"
+    },
+    {
+      "stat": "medAccepted",
+      "source": "bcbMedData",
+      "locator": "2025 sum of Qtdecontestacoesaceitas / sum of QtdePixcontestados; 3,933,741 / 22,233,693 = 17.6927%"
+    },
+    {
+      "stat": "records2025",
+      "source": "anuario2026",
+      "locator": "Anuário 2026, Graph 33, printed p. 121; Table 17, printed p. 120"
+    },
+    {
+      "stat": "lostMoney",
+      "source": "vitimizacao2025",
+      "locator": "Printed pp. 8-9 and 19-21; use the original question and universe; fieldwork 2-6 June 2025, n=2,007, 16+, reported reference period Jul 2024-Jun 2025"
+    },
+    {
+      "stat": "messagingApps",
+      "source": "ceticPR22",
+      "locator": "PR22 total: messaging 80, calls 73, fake site/app 60, SMS 59, email 56, social 55; differs from executive summary 84/79/71/71/69/67. Retain and disclose both source versions; do not silently combine them."
+    },
+    {
+      "stat": "digitalLoss",
+      "source": "vitimizacao2025",
+      "locator": "Printed p. 17, Quadro 6; monetary projections and five financial-loss categories"
+    },
+    {
+      "stat": "pixLoss",
+      "source": "vitimizacao2025",
+      "locator": "Printed p. 17, Quadro 6; monetary projections and five financial-loss categories"
+    },
+    {
+      "stat": "noCourt",
+      "source": "anuario2026",
+      "locator": "Anuário 2026, Quadro 04, printed p. 125; 63,771 / 2,261,055 * 100 = 2.8204. Annual totals, not linked cases."
+    },
+    {
+      "stat": "familyData",
+      "source": "ceticPR21",
+      "locator": "PR21 total: 39% yes to someone attempting a scam on a family member using family personal data, not respondents admitting to scamming"
+    },
+    {
+      "stat": "cloned",
+      "source": "vitimizacao2025",
+      "locator": "Printed pp. 8-9 and 19-21; use the original question and universe; fieldwork 2-6 June 2025, n=2,007, 16+, reported reference period Jul 2024-Jun 2025"
+    },
+    {
+      "stat": "fakeCall",
+      "source": "febraban2025",
+      "locator": "Article of 11 Nov 2025, Jan-Jun 2025 reports to member banks; not population prevalence. Fake sales 174k, fake bank centre 139k, WhatsApp category 73k."
+    },
+    {
+      "stat": "pixAverage",
+      "source": "vitimizacao2025",
+      "locator": "Printed p. 17, Quadro 6; monetary projections and five financial-loss categories"
+    },
+    {
+      "stat": "fakeSale",
+      "source": "febraban2025",
+      "locator": "Article of 11 Nov 2025, Jan-Jun 2025 reports to member banks; not population prevalence. Fake sales 174k, fake bank centre 139k, WhatsApp category 73k."
+    },
+    {
+      "stat": "threats",
+      "source": "vitimizacao2025",
+      "locator": "Printed pp. 8-9 and 19-21; use the original question and universe; fieldwork 2-6 June 2025, n=2,007, 16+, reported reference period Jul 2024-Jun 2025"
+    },
+    {
+      "stat": "datasenado24",
+      "source": "datasenado2024",
+      "locator": "Printed p. 26, Graph 22: 24%; 21,808 telephone interviews 5-28 June 2024, age 16+"
+    },
+    {
+      "stat": "medo158",
+      "source": "medo2026",
+      "locator": "Printed p. 25, Table 5: specific scam-loss question 15.8%, separate from banking fraud question 12.4%; fieldwork 9-10 March 2026, n=2,004, 16+"
+    },
+    {
+      "stat": "fear",
+      "source": "medo2026",
+      "locator": "Printed p. 12, Graph 1: 83.2% fear of losing money in an internet/phone scam; a perception measure, not incidence"
+    },
+    {
+      "stat": "whatsappBanks",
+      "source": "febraban2025",
+      "locator": "Article of 11 Nov 2025, Jan-Jun 2025 reports to member banks; not population prevalence. Fake sales 174k, fake bank centre 139k, WhatsApp category 73k."
+    },
+    {
+      "stat": "clonedLoss",
+      "source": "vitimizacao2025",
+      "locator": "Printed pp. 8-9 and 19-21; use the original question and universe; fieldwork 2-6 June 2025, n=2,007, 16+, reported reference period Jul 2024-Jun 2025"
+    },
+    {
+      "stat": "profileTaken",
+      "source": "vitimizacao2025",
+      "locator": "Printed pp. 8-9 and 19-21; use the original question and universe; fieldwork 2-6 June 2025, n=2,007, 16+, reported reference period Jul 2024-Jun 2025"
+    },
+    {
+      "stat": "posedAs",
+      "source": "vitimizacao2025",
+      "locator": "Printed pp. 8-9 and 19-21; use the original question and universe; fieldwork 2-6 June 2025, n=2,007, 16+, reported reference period Jul 2024-Jun 2025"
+    },
+    {
+      "stat": "fakeCallAttempts",
+      "source": "vitimizacao2025",
+      "locator": "Printed pp. 8-9 and 19-21; use the original question and universe; fieldwork 2-6 June 2025, n=2,007, 16+, reported reference period Jul 2024-Jun 2025"
+    },
+    {
+      "stat": "pixShare",
+      "source": "vitimizacao2025",
+      "locator": "Printed p. 17, Quadro 6; monetary projections and five financial-loss categories"
+    },
+    {
+      "stat": "pixAttempts",
+      "source": "vitimizacao2025",
+      "locator": "Printed pp. 8-9 and 19-21; use the original question and universe; fieldwork 2-6 June 2025, n=2,007, 16+, reported reference period Jul 2024-Jun 2025"
+    },
+    {
+      "stat": "fakeShopShare",
+      "source": "vitimizacao2025",
+      "locator": "Printed p. 17, Quadro 6; monetary projections and five financial-loss categories"
+    },
+    {
+      "stat": "fakeShopAverage",
+      "source": "vitimizacao2025",
+      "locator": "Printed p. 17, Quadro 6; monetary projections and five financial-loss categories"
+    },
+    {
+      "stat": "fakeShopLoss",
+      "source": "vitimizacao2025",
+      "locator": "Printed p. 17, Quadro 6; monetary projections and five financial-loss categories"
+    },
+    {
+      "stat": "threatsPaid",
+      "source": "vitimizacao2025",
+      "locator": "Printed pp. 8-9 and 19-21; use the original question and universe; fieldwork 2-6 June 2025, n=2,007, 16+, reported reference period Jul 2024-Jun 2025"
+    },
+    {
+      "stat": "investShare",
+      "source": "vitimizacao2025",
+      "locator": "Printed p. 17, Quadro 6; monetary projections and five financial-loss categories"
+    },
+    {
+      "stat": "investAverage",
+      "source": "vitimizacao2025",
+      "locator": "Printed p. 17, Quadro 6; monetary projections and five financial-loss categories"
+    },
+    {
+      "stat": "investLoss",
+      "source": "vitimizacao2025",
+      "locator": "Printed p. 17, Quadro 6; monetary projections and five financial-loss categories"
+    },
+    {
+      "stat": "cvmStopOrders",
+      "source": "cvmStopOrders",
+      "locator": "Official CVM article dated 9 Apr 2026: 37 precautionary stop orders in 2025, 13 in 2024; not number of proven scams"
+    },
+    {
+      "stat": "oabsp",
+      "source": "oabsp2026",
+      "locator": "OAB-SP article dated 6 Feb 2026: 4,388 complaints in a little over 18 months in São Paulo; not a national total"
+    },
+    {
+      "stat": "medRecovered",
+      "source": "bcbMedData",
+      "locator": "2025 sum of full and partial returned values / sum of accepted disputed value; 696,099,371.37 / 7,770,213,467.02 = 8.95856%; not a simple average of monthly percentages"
+    },
+    {
+      "stat": "intimateImages",
+      "source": "safernetIndicadores",
+      "locator": "Public JSON data-helpline-topics.json, year 2024: sum gender groups, Exposição Imagens íntimas = 266, largest topic. Not restricted to sextortion."
+    },
+    {
+      "stat": "whatsappOrigin",
+      "source": "silverguard2025",
+      "locator": "PDF pp. 11-13, 12,197 reports Jan-Jun 2025; WhatsApp 29.6%, Instagram 21.4%, Facebook 13.1%; publisher Meta total 64.0% differs from 64.1% sum of displayed rounded components"
+    }
+  ],
+  "charts": {
+    "records": "Anuário 2026 Graph 33, 2018-2025 exact yearly report counts",
+    "platforms": "Silverguard PDF p. 13, visually inspected; declared Meta aggregate retained with rounding discrepancy disclosed",
+    "channels": "Cetic.br PR22 published table; executive-summary conflict explicitly disclosed",
+    "pixStart": "Silverguard PDF p. 12, initial channel types; partial chart, not all categories",
+    "med": "BCB public monthly series, sums of ValorPixcontestadosaceitos per complete year, 2022-2025",
+    "types": "FBSP/Datafolha 2025, Quadro 6; overlapping victim categories, no addition of percentages",
+    "ages": "DataSenado full report, printed p. 35, Graph 31 and Annex 1 Table 23; shares of victims, not within-age incidence"
+  },
+  "removedOrQualified": [
+    "GASA detailed platform percentages removed because the accessible original summary does not substantiate the old platform table or its claimed base of 820. The full report requires a login. The publisher’s publicly available September article supports only the separate approximate R$21bn estimate and methodology used here.",
+    "Historical Silverguard MED projections replaced by actual BCB complete-year records; historical years also replaced to keep one consistent data vintage.",
+    "Unsupported R$4,820 age-specific mean removed.",
+    "97% case-progression claim replaced by annual court-to-police total ratio.",
+    "No inference of financial losses or legal responsibility from channel percentages.",
+    "Source download of Procon-SP list failed locally but its original public list was independently read through web retrieval.",
+    "GDP analogy dropped; no need to compare a rolling survey period against another calendar year."
+  ],
+  "med": {
+    "url": "https://olinda.bcb.gov.br/olinda/servico/Pix_DadosAbertos/versao/v1/odata/EstatisticasFraudesPix(Database='202201')?$format=json&$top=1000",
+    "latestMonth": 202604,
+    "unit": "BRL; dispute counts are counts, not people",
+    "rows": [
+      {
+        "AnoMes": 202201,
+        "QtdePixcontestados": 71508,
+        "Qtdecontestacoesaceitas": 57777,
+        "ValorPixcontestadosaceitos": 122558868.28,
+        "ValorPixdevolvidosintegralmente": 4261762.1,
+        "ValorPixdevolvidosparcialmente": 2227049.21
+      },
+      {
+        "AnoMes": 202202,
+        "QtdePixcontestados": 78636,
+        "Qtdecontestacoesaceitas": 60680,
+        "ValorPixcontestadosaceitos": 136034158.58,
+        "ValorPixdevolvidosintegralmente": 5355273.06,
+        "ValorPixdevolvidosparcialmente": 2792891.25
+      },
+      {
+        "AnoMes": 202203,
+        "QtdePixcontestados": 134963,
+        "Qtdecontestacoesaceitas": 105015,
+        "ValorPixcontestadosaceitos": 216939856.12,
+        "ValorPixdevolvidosintegralmente": 10998092.06,
+        "ValorPixdevolvidosparcialmente": 6013211.68
+      },
+      {
+        "AnoMes": 202204,
+        "QtdePixcontestados": 152636,
+        "Qtdecontestacoesaceitas": 114763,
+        "ValorPixcontestadosaceitos": 178163735.34,
+        "ValorPixdevolvidosintegralmente": 8494563.65,
+        "ValorPixdevolvidosparcialmente": 3582905.43
+      },
+      {
+        "AnoMes": 202205,
+        "QtdePixcontestados": 229400,
+        "Qtdecontestacoesaceitas": 149005,
+        "ValorPixcontestadosaceitos": 224857927.69,
+        "ValorPixdevolvidosintegralmente": 8179939.0,
+        "ValorPixdevolvidosparcialmente": 4156308.1
+      },
+      {
+        "AnoMes": 202206,
+        "QtdePixcontestados": 190204,
+        "Qtdecontestacoesaceitas": 146524,
+        "ValorPixcontestadosaceitos": 223675609.87,
+        "ValorPixdevolvidosintegralmente": 15034322.97,
+        "ValorPixdevolvidosparcialmente": 4462071.77
+      },
+      {
+        "AnoMes": 202207,
+        "QtdePixcontestados": 186054,
+        "Qtdecontestacoesaceitas": 142492,
+        "ValorPixcontestadosaceitos": 213714814.18,
+        "ValorPixdevolvidosintegralmente": 9793327.15,
+        "ValorPixdevolvidosparcialmente": 4361098.23
+      },
+      {
+        "AnoMes": 202208,
+        "QtdePixcontestados": 218130,
+        "Qtdecontestacoesaceitas": 155020,
+        "ValorPixcontestadosaceitos": 233907673.75,
+        "ValorPixdevolvidosintegralmente": 10758903.55,
+        "ValorPixdevolvidosparcialmente": 4878295.45
+      },
+      {
+        "AnoMes": 202209,
+        "QtdePixcontestados": 196376,
+        "Qtdecontestacoesaceitas": 137731,
+        "ValorPixcontestadosaceitos": 220824276.9,
+        "ValorPixdevolvidosintegralmente": 12832651.52,
+        "ValorPixdevolvidosparcialmente": 6476548.2
+      },
+      {
+        "AnoMes": 202210,
+        "QtdePixcontestados": 199364,
+        "Qtdecontestacoesaceitas": 147113,
+        "ValorPixcontestadosaceitos": 232190741.27,
+        "ValorPixdevolvidosintegralmente": 15522803.17,
+        "ValorPixdevolvidosparcialmente": 6667304.82
+      },
+      {
+        "AnoMes": 202211,
+        "QtdePixcontestados": 215662,
+        "Qtdecontestacoesaceitas": 155174,
+        "ValorPixcontestadosaceitos": 243994363.63,
+        "ValorPixdevolvidosintegralmente": 13685909.73,
+        "ValorPixdevolvidosparcialmente": 6575795.57
+      },
+      {
+        "AnoMes": 202212,
+        "QtdePixcontestados": 272183,
+        "Qtdecontestacoesaceitas": 184605,
+        "ValorPixcontestadosaceitos": 777577423.07,
+        "ValorPixdevolvidosintegralmente": 14551837.02,
+        "ValorPixdevolvidosparcialmente": 7705261.98
+      },
+      {
+        "AnoMes": 202301,
+        "QtdePixcontestados": 208926,
+        "Qtdecontestacoesaceitas": 140714,
+        "ValorPixcontestadosaceitos": 254667303.59,
+        "ValorPixdevolvidosintegralmente": 12605085.82,
+        "ValorPixdevolvidosparcialmente": 7222005.07
+      },
+      {
+        "AnoMes": 202302,
+        "QtdePixcontestados": 210488,
+        "Qtdecontestacoesaceitas": 141112,
+        "ValorPixcontestadosaceitos": 248906751.4,
+        "ValorPixdevolvidosintegralmente": 14631634.06,
+        "ValorPixdevolvidosparcialmente": 9850732.78
+      },
+      {
+        "AnoMes": 202303,
+        "QtdePixcontestados": 278688,
+        "Qtdecontestacoesaceitas": 185652,
+        "ValorPixcontestadosaceitos": 322762922.86,
+        "ValorPixdevolvidosintegralmente": 17933410.5,
+        "ValorPixdevolvidosparcialmente": 10048435.55
+      },
+      {
+        "AnoMes": 202304,
+        "QtdePixcontestados": 272840,
+        "Qtdecontestacoesaceitas": 179832,
+        "ValorPixcontestadosaceitos": 340301283.61,
+        "ValorPixdevolvidosintegralmente": 17104572.55,
+        "ValorPixdevolvidosparcialmente": 13630556.5
+      },
+      {
+        "AnoMes": 202305,
+        "QtdePixcontestados": 371822,
+        "Qtdecontestacoesaceitas": 261416,
+        "ValorPixcontestadosaceitos": 421946678.04,
+        "ValorPixdevolvidosintegralmente": 29141561.1,
+        "ValorPixdevolvidosparcialmente": 10030452.15
+      },
+      {
+        "AnoMes": 202306,
+        "QtdePixcontestados": 343010,
+        "Qtdecontestacoesaceitas": 201734,
+        "ValorPixcontestadosaceitos": 319735983.5,
+        "ValorPixdevolvidosintegralmente": 19854822.46,
+        "ValorPixdevolvidosparcialmente": 10014782.56
+      },
+      {
+        "AnoMes": 202307,
+        "QtdePixcontestados": 403428,
+        "Qtdecontestacoesaceitas": 230453,
+        "ValorPixcontestadosaceitos": 343271986.06,
+        "ValorPixdevolvidosintegralmente": 19533694.57,
+        "ValorPixdevolvidosparcialmente": 9576716.17
+      },
+      {
+        "AnoMes": 202308,
+        "QtdePixcontestados": 417671,
+        "Qtdecontestacoesaceitas": 232591,
+        "ValorPixcontestadosaceitos": 410381739.91,
+        "ValorPixdevolvidosintegralmente": 21458142.76,
+        "ValorPixdevolvidosparcialmente": 11059991.91
+      },
+      {
+        "AnoMes": 202309,
+        "QtdePixcontestados": 416665,
+        "Qtdecontestacoesaceitas": 220849,
+        "ValorPixcontestadosaceitos": 387570686.82,
+        "ValorPixdevolvidosintegralmente": 21169202.08,
+        "ValorPixdevolvidosparcialmente": 10444199.74
+      },
+      {
+        "AnoMes": 202310,
+        "QtdePixcontestados": 477914,
+        "Qtdecontestacoesaceitas": 244351,
+        "ValorPixcontestadosaceitos": 455754645.95,
+        "ValorPixdevolvidosintegralmente": 25891679.47,
+        "ValorPixdevolvidosparcialmente": 15502650.07
+      },
+      {
+        "AnoMes": 202311,
+        "QtdePixcontestados": 503378,
+        "Qtdecontestacoesaceitas": 238071,
+        "ValorPixcontestadosaceitos": 442343018.2,
+        "ValorPixdevolvidosintegralmente": 35898697.93,
+        "ValorPixdevolvidosparcialmente": 11692922.99
+      },
+      {
+        "AnoMes": 202312,
+        "QtdePixcontestados": 650701,
+        "Qtdecontestacoesaceitas": 297341,
+        "ValorPixcontestadosaceitos": 405936605.9,
+        "ValorPixdevolvidosintegralmente": 28032339.98,
+        "ValorPixdevolvidosparcialmente": 8458293.45
+      },
+      {
+        "AnoMes": 202401,
+        "QtdePixcontestados": 795614,
+        "Qtdecontestacoesaceitas": 346691,
+        "ValorPixcontestadosaceitos": 474119368.07,
+        "ValorPixdevolvidosintegralmente": 27264748.79,
+        "ValorPixdevolvidosparcialmente": 12637741.47
+      },
+      {
+        "AnoMes": 202402,
+        "QtdePixcontestados": 684123,
+        "Qtdecontestacoesaceitas": 286689,
+        "ValorPixcontestadosaceitos": 420840068.16,
+        "ValorPixdevolvidosintegralmente": 20329558.97,
+        "ValorPixdevolvidosparcialmente": 10869219.04
+      },
+      {
+        "AnoMes": 202403,
+        "QtdePixcontestados": 757575,
+        "Qtdecontestacoesaceitas": 323643,
+        "ValorPixcontestadosaceitos": 552456070.08,
+        "ValorPixdevolvidosintegralmente": 29350097.63,
+        "ValorPixdevolvidosparcialmente": 15658177.55
+      },
+      {
+        "AnoMes": 202404,
+        "QtdePixcontestados": 780241,
+        "Qtdecontestacoesaceitas": 330886,
+        "ValorPixcontestadosaceitos": 451710877.1,
+        "ValorPixdevolvidosintegralmente": 23131456.96,
+        "ValorPixdevolvidosparcialmente": 10640496.28
+      },
+      {
+        "AnoMes": 202405,
+        "QtdePixcontestados": 841710,
+        "Qtdecontestacoesaceitas": 346370,
+        "ValorPixcontestadosaceitos": 537340697.53,
+        "ValorPixdevolvidosintegralmente": 29102491.12,
+        "ValorPixdevolvidosparcialmente": 18368850.46
+      },
+      {
+        "AnoMes": 202406,
+        "QtdePixcontestados": 924449,
+        "Qtdecontestacoesaceitas": 378357,
+        "ValorPixcontestadosaceitos": 458419507.54,
+        "ValorPixdevolvidosintegralmente": 26670045.76,
+        "ValorPixdevolvidosparcialmente": 12659754.68
+      },
+      {
+        "AnoMes": 202407,
+        "QtdePixcontestados": 1176262,
+        "Qtdecontestacoesaceitas": 530752,
+        "ValorPixcontestadosaceitos": 570192861.96,
+        "ValorPixdevolvidosintegralmente": 29139817.57,
+        "ValorPixdevolvidosparcialmente": 14460767.37
+      },
+      {
+        "AnoMes": 202408,
+        "QtdePixcontestados": 1146697,
+        "Qtdecontestacoesaceitas": 517930,
+        "ValorPixcontestadosaceitos": 841884565.49,
+        "ValorPixdevolvidosintegralmente": 51285171.91,
+        "ValorPixdevolvidosparcialmente": 31845147.72
+      },
+      {
+        "AnoMes": 202409,
+        "QtdePixcontestados": 1159572,
+        "Qtdecontestacoesaceitas": 479644,
+        "ValorPixcontestadosaceitos": 581603713.67,
+        "ValorPixdevolvidosintegralmente": 28637283.24,
+        "ValorPixdevolvidosparcialmente": 12713161.28
+      },
+      {
+        "AnoMes": 202410,
+        "QtdePixcontestados": 1262997,
+        "Qtdecontestacoesaceitas": 494691,
+        "ValorPixcontestadosaceitos": 628578936.77,
+        "ValorPixdevolvidosintegralmente": 39914254.85,
+        "ValorPixdevolvidosparcialmente": 15032820.27
+      },
+      {
+        "AnoMes": 202411,
+        "QtdePixcontestados": 1408727,
+        "Qtdecontestacoesaceitas": 492066,
+        "ValorPixcontestadosaceitos": 628694403.03,
+        "ValorPixdevolvidosintegralmente": 24548545.83,
+        "ValorPixdevolvidosparcialmente": 15490359.03
+      },
+      {
+        "AnoMes": 202412,
+        "QtdePixcontestados": 1356956,
+        "Qtdecontestacoesaceitas": 384500,
+        "ValorPixcontestadosaceitos": 541233441.86,
+        "ValorPixdevolvidosintegralmente": 27761889.91,
+        "ValorPixdevolvidosparcialmente": 15069448.36
+      },
+      {
+        "AnoMes": 202501,
+        "QtdePixcontestados": 1343364,
+        "Qtdecontestacoesaceitas": 369824,
+        "ValorPixcontestadosaceitos": 543386259.36,
+        "ValorPixdevolvidosintegralmente": 28834067.69,
+        "ValorPixdevolvidosparcialmente": 37215347.03
+      },
+      {
+        "AnoMes": 202502,
+        "QtdePixcontestados": 1101788,
+        "Qtdecontestacoesaceitas": 352627,
+        "ValorPixcontestadosaceitos": 661738439.62,
+        "ValorPixdevolvidosintegralmente": 20715832.37,
+        "ValorPixdevolvidosparcialmente": 12267767.4
+      },
+      {
+        "AnoMes": 202503,
+        "QtdePixcontestados": 1237573,
+        "Qtdecontestacoesaceitas": 347156,
+        "ValorPixcontestadosaceitos": 564202596.56,
+        "ValorPixdevolvidosintegralmente": 18537850.49,
+        "ValorPixdevolvidosparcialmente": 10213257.41
+      },
+      {
+        "AnoMes": 202504,
+        "QtdePixcontestados": 1393656,
+        "Qtdecontestacoesaceitas": 372500,
+        "ValorPixcontestadosaceitos": 603531844.79,
+        "ValorPixdevolvidosintegralmente": 46416988.07,
+        "ValorPixdevolvidosparcialmente": 21070310.23
+      },
+      {
+        "AnoMes": 202505,
+        "QtdePixcontestados": 1361178,
+        "Qtdecontestacoesaceitas": 308964,
+        "ValorPixcontestadosaceitos": 485908114.81,
+        "ValorPixdevolvidosintegralmente": 38849444.74,
+        "ValorPixdevolvidosparcialmente": 15702065.46
+      },
+      {
+        "AnoMes": 202506,
+        "QtdePixcontestados": 1258829,
+        "Qtdecontestacoesaceitas": 293723,
+        "ValorPixcontestadosaceitos": 671387352.5,
+        "ValorPixdevolvidosintegralmente": 34476615.69,
+        "ValorPixdevolvidosparcialmente": 18910916.07
+      },
+      {
+        "AnoMes": 202507,
+        "QtdePixcontestados": 1328138,
+        "Qtdecontestacoesaceitas": 325958,
+        "ValorPixcontestadosaceitos": 698562880.44,
+        "ValorPixdevolvidosintegralmente": 40389809.35,
+        "ValorPixdevolvidosparcialmente": 28921454.82
+      },
+      {
+        "AnoMes": 202508,
+        "QtdePixcontestados": 1233710,
+        "Qtdecontestacoesaceitas": 285353,
+        "ValorPixcontestadosaceitos": 727670888.95,
+        "ValorPixdevolvidosintegralmente": 61592739.4,
+        "ValorPixdevolvidosparcialmente": 26469163.33
+      },
+      {
+        "AnoMes": 202509,
+        "QtdePixcontestados": 1243169,
+        "Qtdecontestacoesaceitas": 298711,
+        "ValorPixcontestadosaceitos": 610598093.15,
+        "ValorPixdevolvidosintegralmente": 34541200.24,
+        "ValorPixdevolvidosparcialmente": 16473446.76
+      },
+      {
+        "AnoMes": 202510,
+        "QtdePixcontestados": 3455766,
+        "Qtdecontestacoesaceitas": 367838,
+        "ValorPixcontestadosaceitos": 769475088.67,
+        "ValorPixdevolvidosintegralmente": 45095916.71,
+        "ValorPixdevolvidosparcialmente": 25518966.77
+      },
+      {
+        "AnoMes": 202511,
+        "QtdePixcontestados": 3504902,
+        "Qtdecontestacoesaceitas": 288562,
+        "ValorPixcontestadosaceitos": 859836364.02,
+        "ValorPixdevolvidosintegralmente": 39053614.89,
+        "ValorPixdevolvidosparcialmente": 19768356.71
+      },
+      {
+        "AnoMes": 202512,
+        "QtdePixcontestados": 3771620,
+        "Qtdecontestacoesaceitas": 322525,
+        "ValorPixcontestadosaceitos": 573915544.15,
+        "ValorPixdevolvidosintegralmente": 36932178.49,
+        "ValorPixdevolvidosparcialmente": 18132061.25
+      },
+      {
+        "AnoMes": 202601,
+        "QtdePixcontestados": 3181549,
+        "Qtdecontestacoesaceitas": 279027,
+        "ValorPixcontestadosaceitos": 723000148.12,
+        "ValorPixdevolvidosintegralmente": 66089234.74,
+        "ValorPixdevolvidosparcialmente": 45284083.3
+      },
+      {
+        "AnoMes": 202602,
+        "QtdePixcontestados": 2813650,
+        "Qtdecontestacoesaceitas": 281566,
+        "ValorPixcontestadosaceitos": 655796280.31,
+        "ValorPixdevolvidosintegralmente": 58857761.29,
+        "ValorPixdevolvidosparcialmente": 28971167.11
+      },
+      {
+        "AnoMes": 202603,
+        "QtdePixcontestados": 2925105,
+        "Qtdecontestacoesaceitas": 308781,
+        "ValorPixcontestadosaceitos": 705357176.55,
+        "ValorPixdevolvidosintegralmente": 65670701.36,
+        "ValorPixdevolvidosparcialmente": 27396919.04
+      },
+      {
+        "AnoMes": 202604,
+        "QtdePixcontestados": 2960167,
+        "Qtdecontestacoesaceitas": 282975,
+        "ValorPixcontestadosaceitos": 598133736.33,
+        "ValorPixdevolvidosintegralmente": 74798354.07,
+        "ValorPixdevolvidosparcialmente": 22560166.31
+      }
+    ]
+  }
+}

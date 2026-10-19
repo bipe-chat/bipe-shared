@@ -179,6 +179,8 @@ public enum BipeRegistries {
     public static let emailVerifyLinkHours = ${reg.accounts.emailVerifyLinkHours}
     /// Personal accounts on one phone (ADR 0086). Fallback for max_accounts in GET /v1/me/account.
     public static let maxPersonalAccounts = ${reg.accounts.maxPersonalAccounts}
+    /// Wait between the full-access warning and the biometric check of a web sign-in approval (ADR 0118).
+    public static let webLinkCooldownSeconds = ${reg.accounts.webLinkCooldownSeconds}
 
     /// Terms and privacy accepted at sign-up (ADR 0113; registries/legal.json). Paths are on the public site.
     public static let legalVersion = ${swiftString(reg.legal.legalVersion)}
@@ -399,6 +401,9 @@ object BipeRegistries {
     const val EMAIL_VERIFY_LINK_HOURS = ${reg.accounts.emailVerifyLinkHours}
     // Personal accounts on one phone (ADR 0086). Fallback for max_accounts in GET /v1/me/account.
     const val MAX_PERSONAL_ACCOUNTS = ${reg.accounts.maxPersonalAccounts}
+
+    // Wait between the full-access warning and the biometric check of a web sign-in approval (ADR 0118).
+    const val WEB_LINK_COOLDOWN_SECONDS = ${reg.accounts.webLinkCooldownSeconds}
 
     // Terms and privacy accepted at sign-up (ADR 0113; registries/legal.json). Paths are on the public site.
     const val LEGAL_VERSION = ${kotlinString(reg.legal.legalVersion)}

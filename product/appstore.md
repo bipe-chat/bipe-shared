@@ -102,7 +102,7 @@ O Bipe é um experimento da Envisioning. O código é aberto e está no GitHub, 
 
 #### keywords
 
-golpe,falso parente,mensagens,conversa,pix,privacidade,família,grupos,stickers,enquete,brasil,chat
+golpe,falso parente,falso familiar,mensagens,conversa,pix,privacidade,família,grupos,stickers,brasil
 
 #### release_notes
 

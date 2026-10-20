@@ -47,7 +47,7 @@ const PRA_RE = /(^|[^\p{L}])(pra|pras|pro|pros)(?=$|[^\p{L}])/iu;
 const PLACEHOLDER_RE = /<[^<>\n]+>/;
 const MAX_PANELS = 10;
 // Panel layouts the image builder draws (bipe-web scripts/store-images.mjs, bipe-chat/bipe#463).
-export const LAYOUTS = ["hero", "phone", "tilt-left", "tilt-right", "two-phones", "text"];
+export const LAYOUTS = ["hero", "phone", "text"];
 const BADGE_WORDS = 3;
 
 // Splits text on headings of exactly `level` hashes. Returns [{ title, body }] in order and the

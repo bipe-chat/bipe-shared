@@ -46,8 +46,9 @@ const DASH_RE = /[–—]/;
 const PRA_RE = /(^|[^\p{L}])(pra|pras|pro|pros)(?=$|[^\p{L}])/iu;
 const PLACEHOLDER_RE = /<[^<>\n]+>/;
 const MAX_PANELS = 10;
-// Panel layouts the image builder draws (bipe-web scripts/store-images.mjs, bipe-chat/bipe#463).
-export const LAYOUTS = ["hero", "phone", "text"];
+// Panel text limits in characters, as proxies for 2 lines at store size (bipe-chat/bipe#463).
+const TITLE_MAX = 28;
+const SUB_MAX = 90;
 
 // Splits text on headings of exactly `level` hashes. Returns [{ title, body }] in order and the
 // text before the first heading.
@@ -118,7 +119,7 @@ function renderedFields(listing) {
       for (const [field, text] of Object.entries(fields)) out.push([`${key}.${locale}.${field}`, text, locale]);
   }
   for (const [locale, panels] of Object.entries(listing.screenshots))
-    for (const p of panels) for (const col of ["headline", "sub", "callout"]) out.push([`screenshots.${locale}.${p.slug}.${col}`, p[col] ?? "", locale]);
+    for (const p of panels) for (const col of ["title", "sub"]) out.push([`screenshots.${locale}.${p.slug}.${col}`, p[col] ?? "", locale]);
   return out;
 }
 
@@ -199,16 +200,13 @@ export function checkAppstore(listing, product) {
       if (!SLUG_RE.test(p.slug ?? "")) problems.push(`${where}: slug must be lower case words joined by "-"`);
       if (slugs.has(p.slug)) problems.push(`${where}: slug appears twice`);
       slugs.add(p.slug);
-      if (!p.headline) problems.push(`${where}: missing headline`);
-      for (const col of ["headline", "sub"])
-        if (((p[col] ?? "").match(/\*/g) ?? []).length % 2) problems.push(`${where}.${col}: unpaired *`);
-      if ((p.callout ?? "").includes("*")) problems.push(`${where}.callout: no highlight in a callout`);
-      // MZ, 20 October 2026: a headline is one sentence.
-      if (/[.?!]\s+\S/.test(p.headline ?? "")) problems.push(`${where}.headline: one sentence only`);
-      if (p.layout && !LAYOUTS.includes(p.layout)) problems.push(`${where}: unknown layout ${p.layout}, use one of ${LAYOUTS.join(", ")}`);
-      if (p.layout === "text" && p.feature !== "-") problems.push(`${where}: layout text is for a panel with feature -`);
-      if (p.layout && p.layout !== "text" && p.feature === "-") problems.push(`${where}: a panel with feature - has layout text`);
-      if (reference && reference !== panels && (reference[i]?.layout ?? "") !== (p.layout ?? "")) problems.push(`${where}: layout differs from ${LOCALES[0]}`);
+      if (!p.title) problems.push(`${where}: missing title`);
+      if (!p.sub) problems.push(`${where}: missing sub`);
+      for (const col of ["title", "sub"]) if ((p[col] ?? "").includes("*")) problems.push(`${where}.${col}: no highlight markup`);
+      if ((p.title ?? "").length > TITLE_MAX) problems.push(`${where}.title: ${p.title.length} characters, limit ${TITLE_MAX}`);
+      if ((p.sub ?? "").length > SUB_MAX) problems.push(`${where}.sub: ${p.sub.length} characters, limit ${SUB_MAX}`);
+      // MZ, 20 October 2026: the sub is one sentence.
+      if (/[.?!]\s+\S/.test(p.sub ?? "")) problems.push(`${where}.sub: one sentence only`);
       if (reference && reference !== panels && (reference[i]?.slug !== p.slug || reference[i]?.feature !== p.feature))
         problems.push(`${where}: order or feature differs from ${LOCALES[0]}`);
       if (p.feature === "-") return;

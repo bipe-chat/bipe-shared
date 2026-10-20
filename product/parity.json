@@ -726,7 +726,7 @@
         "status": "built",
         "evidence": [
           "bipe-ios/Components/BipeKit/Sources/BipeKit/PixCheck.swift",
-          "bipe-ios/ShareExtension/Sources/View/BipePixCheckView.swift"
+          "bipe-ios/ElementX/Sources/ShareExtension/BipePixCheckView.swift"
         ]
       },
       "android": {

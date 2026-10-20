@@ -14,7 +14,7 @@ Format:
 - `## Platform: <iOS|Android> (<bundle id>)`. The production IDs wait for bipe-chat/bipe#419 and bipe-chat/bipe#157. Until then both blocks say `chat.bipe.app`.
 - `### <field>` before the first locale is a field for every locale. `### pt-BR` and `### en-US` start a locale. `#### <field>` is a field of that locale.
 - Android `full_description` is the iOS `description` of the same locale, unless the Android locale sets its own.
-- `## Screenshots`: one table per locale, panels in store order. `feature` is a feature id in `product.json`, or `-` for a text panel with no capture. Text between `*asterisks*` is the highlight. `layout`, `badge` and `callout` are optional and set how the image builder draws the panel (bipe-chat/bipe#463): `layout` is `hero`, `phone` or `text` (the same in every locale); `badge` is 1 to 3 words above the headline, rendered in upper case; `callout` is a short label on the part of the screen that the panel shows larger; leave it empty when the screen is readable at store size, and the panel shows no callout.
+- `## Screenshots`: one table per locale, panels in store order. `feature` is a feature id in `product.json`, or `-` for a text panel with no capture. Text between `*asterisks*` is the highlight. A headline is one sentence. `layout` and `callout` are optional and set how the image builder draws the panel (bipe-chat/bipe#463): `layout` is `hero`, `phone` or `text` (the same in every locale; the builder has no drawing for `text` yet); `callout` is a short label on the part of the screen that the panel shows larger; leave it empty when the screen is readable at store size, and the panel shows no callout.
 
 Limits: name and subtitle 30, promotional text 170, description 4000, keywords 100 (comma separated, no space after a comma), Play title 30, Play short description 80, Play full description 4000.
 
@@ -198,29 +198,27 @@ Know who you're talking to. Scam warnings, and chats on servers in Brazil.
 
 ### pt-BR
 
-| slug | feature | layout | headline | sub | badge | callout |
-|---|---|---|---|---|---|---|
-| aviso-golpe | scam-alerts | hero | Um aviso quando tem *cara de golpe* | A checagem roda no seu celular | Aviso de golpe | Aviso na conversa |
-| pedidos | requests | phone | Fora dos contatos? *Chega como pedido* | Você decide se aceita | Pedidos de conversa | Você vê antes de aceitar |
-| conferir-pix | pix-check | phone | Confira o Pix *antes de pagar* | Veja o nome e o valor que estão no código | Conferir Pix | Nome e valor do código |
-| dados-no-brasil | - | text | Suas conversas *ficam no Brasil* | Servidores de empresas brasileiras, sob a lei brasileira | Dados no Brasil |  |
-| seu-arroba | handles | phone | Seu @, *não seu número* | O link e o QR code abrem a conversa | Seu @ |  |
-| selo-cnpj | cnpj-badge | phone | O nome que está *na Receita* | Empresas mostram o CNPJ verificado | Selo de CNPJ | Nome da Receita |
-| grupos | group-types | phone | Grupo que só toca *quando é com você* | Enquetes para decidir junto | Grupos |  |
-| stickers | stickers | phone | Sticker de *qualquer foto* | E sem anúncio em nenhuma tela | Stickers |  |
+| slug | feature | layout | headline | sub | callout |
+|---|---|---|---|---|---|
+| aviso-golpe | scam-alerts | hero | Um aviso quando tem *cara de golpe* | A checagem roda no seu celular | Aviso na conversa |
+| pedidos | requests | phone | Contato novo *chega como pedido* | Você decide se aceita | Você vê antes de aceitar |
+| conferir-pix | pix-check | phone | Confira o Pix *antes de pagar* | Veja o nome e o valor que estão no código | Nome e valor do código |
+| seu-arroba | handles | phone | Seu @, *não seu número* | Suas conversas ficam em servidores no Brasil |  |
+| selo-cnpj | cnpj-badge | phone | O nome que está *na Receita* | Empresas mostram o CNPJ verificado | Nome da Receita |
+| grupos | group-types | phone | Grupo que só toca *quando é com você* | Enquetes para decidir junto |  |
+| stickers | stickers | phone | Sticker de *qualquer foto* | E sem anúncio em nenhuma tela |  |
 
 ### en-US
 
-| slug | feature | layout | headline | sub | badge | callout |
-|---|---|---|---|---|---|---|
-| aviso-golpe | scam-alerts | hero | A warning when it *looks like a scam* | The check runs on your phone | Scam warning | In the chat |
-| pedidos | requests | phone | Not in your contacts? *It's a request* | You decide whether to accept | Message requests | You see it before you accept |
-| conferir-pix | pix-check | phone | Check the Pix *before you pay* | See the name and amount in the code | Pix check | Name and amount in the code |
-| dados-no-brasil | - | text | Your chats *stay in Brazil* | Servers run by Brazilian companies, under Brazilian law | Data in Brazil |  |
-| seu-arroba | handles | phone | Your @, *not your number* | Your link and QR code open the chat | Your @ |  |
-| selo-cnpj | cnpj-badge | phone | The name *on the register* | Businesses show their verified CNPJ | CNPJ seal | Name on the register |
-| grupos | group-types | phone | Groups that ring *only when it's about you* | Polls to decide together | Groups |  |
-| stickers | stickers | phone | Stickers from *any photo* | And no ads on any screen | Stickers |  |
+| slug | feature | layout | headline | sub | callout |
+|---|---|---|---|---|---|
+| aviso-golpe | scam-alerts | hero | A warning when it *looks like a scam* | The check runs on your phone | In the chat |
+| pedidos | requests | phone | New contacts *arrive as a request* | You decide whether to accept | You see it before you accept |
+| conferir-pix | pix-check | phone | Check the Pix *before you pay* | See the name and amount in the code | Name and amount in the code |
+| seu-arroba | handles | phone | Your @, *not your number* | Your chats live on servers in Brazil |  |
+| selo-cnpj | cnpj-badge | phone | The name *on the register* | Businesses show their verified CNPJ | Name on the register |
+| grupos | group-types | phone | Groups that ring *only when it's about you* | Polls to decide together |  |
+| stickers | stickers | phone | Stickers from *any photo* | And no ads on any screen |  |
 
 ## App Review
 

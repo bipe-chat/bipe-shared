@@ -419,6 +419,35 @@
       "issue": 43
     },
     {
+      "id": "invite-note",
+      "name": "Inviter note sent as the first message when the invitee joins, and the join toast",
+      "ios": {
+        "status": "built",
+        "evidence": [
+          "bipe-ios/ElementX/Sources/Application/BipeInviteJoinNotifier.swift",
+          "bipe-ios/Components/BipeKit/Sources/BipeKit/BipeInviteStore.swift",
+          "bipe-ios/ElementX/Sources/Screens/RoomScreen/View/BipeInviterHint.swift"
+        ]
+      },
+      "android": {
+        "status": "built",
+        "evidence": [
+          "bipe-android/libraries/bipe/src/main/kotlin/io/element/android/libraries/bipe/invites/BipeInviteJoinNotifier.kt",
+          "bipe-android/libraries/bipe/src/main/kotlin/io/element/android/libraries/bipe/invites/BipeInviteLinkStore.kt",
+          "bipe-android/libraries/bipe/src/main/kotlin/io/element/android/libraries/bipe/ui/BipeInviterHint.kt"
+        ]
+      },
+      "web": {
+        "status": "n/a",
+        "reason": "No web chat (ADR 0004)"
+      },
+      "server": {
+        "status": "n/a",
+        "reason": "The inviter's phone sends the note end-to-end encrypted; the server never receives it (ADR 0136)"
+      },
+      "issue": 458
+    },
+    {
       "id": "invite-qr",
       "name": "QR code for an invite",
       "ios": {

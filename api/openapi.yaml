@@ -601,6 +601,28 @@ paths:
             application/json:
               schema: { $ref: "#/components/schemas/InvitePreview" }
         "429": { $ref: "#/components/responses/Error" }
+  /v1/web/convite/{code}:
+    get:
+      summary: Link preview head for an invite link (bipe#459)
+      description: >
+        No auth. Rate-limited per IP. The site edge sends only link-preview crawlers
+        (WhatsApp, Meta, Telegram, Slack and others, matched by user agent) for
+        https://bipe.chat/convite/{code} here; browsers get the static invite page.
+        Returns a small HTML page whose Open Graph tags name the inviter: the public
+        profile name, else the handle, in the shared string bipe_onboarding_invited_by,
+        and the public profile photo as og:image. An invalid, used or unknown code, or an
+        invite with no inviter handle, gets the generic invite card, so the preview never
+        says why a code does not work. The image URL holds the handle, never the code.
+        The page is noindex and sends no referrer.
+      parameters:
+        - { name: code, in: path, required: true, schema: { type: string, maxLength: 64 } }
+      responses:
+        "200":
+          description: HTML head for link previews
+          content:
+            text/html:
+              schema: { type: string }
+        "429": { $ref: "#/components/responses/Error" }
   /v1/events:
     post:
       summary: Count one experiment event (headline test, issue #77)

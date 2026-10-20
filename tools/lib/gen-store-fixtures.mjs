@@ -3,6 +3,8 @@
 // mode reads. Android (bipe#457) reads the same file later.
 import { readFileSync } from "node:fs";
 import { join } from "node:path";
+import { pixCheck } from "./pix.mjs";
+import { loadRegistries } from "./registries.mjs";
 
 const SLUGS = ["aviso-golpe", "pedidos", "seu-arroba", "conferir-pix", "conferir-pix-alterado", "grupos", "selo-cnpj", "stickers"];
 
@@ -14,6 +16,11 @@ function fail(msg) {
 export function loadStoreFixtures(root, cast) {
   const data = JSON.parse(readFileSync(join(root, "product/store-fixtures.json"), "utf8"), (key, value) => (key === "$comment" ? undefined : value));
   validateStoreFixtures(data, new Set(cast.map((e) => e.id)));
+  // The clean panel needs a code that checks valid; the altered one needs one that does not (20 Oct 2026: a swapped CRC).
+  const reg = loadRegistries(root);
+  const status = (slug) => pixCheck(data.screens[slug].code, reg).code?.status;
+  if (status("conferir-pix") !== "valid") fail("conferir-pix.code must check valid");
+  if (status("conferir-pix-alterado") === "valid") fail("conferir-pix-alterado.code must not check valid");
   return data;
 }
 

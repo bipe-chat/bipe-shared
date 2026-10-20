@@ -21,7 +21,7 @@
     },
     "seu-arroba": {},
     "conferir-pix": {
-      "code": "00020126440014br.gov.bcb.pix0122rafa.bikes@example.com5204000053039865406850.005802BR5915RAFAEL OLIVEIRA6014BELO HORIZONTE62070503***63047466"
+      "code": "00020126440014br.gov.bcb.pix0122rafa.bikes@example.com5204000053039865406850.005802BR5915RAFAEL OLIVEIRA6014BELO HORIZONTE62070503***63044B2D"
     },
     "conferir-pix-alterado": {
       "$comment": "The site scene's code: one letter of the key changed (rafa.blkes), so the CRC fails.",

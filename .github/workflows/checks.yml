@@ -10,7 +10,9 @@
 #   lockstep checks the siblings on branch B, so the drift check sees the regenerated files.
 # After the merge to main:
 #   land     turns on auto-merge for those sibling pull requests. Each merges when its own checks pass.
-#   lockstep checks the siblings on branch B until they merge.
+#   lockstep waits until those sibling pull requests merge, then checks the siblings on their default
+#            branch. Branch B alone is not enough: it misses the regen output of changes that merged
+#            after B was cut (81ed044 failed so). After 30 minutes it checks branch B instead.
 name: Checks
 
 on:
@@ -104,7 +106,7 @@ jobs:
           done
 
   lockstep:
-    needs: regen
+    needs: [regen, land]
     if: ${{ !failure() && !cancelled() }}
     runs-on: ubuntu-latest
     permissions:
@@ -116,9 +118,8 @@ jobs:
           path: bipe-shared
       # A cross-repo change regenerates files in the sibling repos on a branch of the same name.
       # On a pull request, check out that branch in each sibling where it exists, else the default
-      # branch. On the push after a merge, use the branch of the merged pull request: the sibling
-      # pull requests merge a few minutes later. Without this, lockstep fails on every cross-repo
-      # change until the siblings merge first.
+      # branch. On the push after a merge, wait for the sibling regen pull requests of the merged
+      # branch to merge (land turned on auto-merge), then check the default branches.
       - name: Check out the sibling repos
         env:
           TOKEN: ${{ secrets.BIPE_REPOS_TOKEN }}
@@ -127,7 +128,22 @@ jobs:
           GIT_LFS_SKIP_SMUDGE: "1"
         run: |
           if [ -z "$BRANCH" ] && [ "$GITHUB_EVENT_NAME" = push ]; then
-            BRANCH=$(gh api "repos/${GITHUB_REPOSITORY}/commits/${GITHUB_SHA}/pulls" --jq '.[0].head.ref // empty')
+            BRANCH=$(bipe-shared/.github/scripts/merged-branch.sh)
+            for _ in $(seq 60); do
+              [ -n "$BRANCH" ] || break
+              open=""
+              for repo in bipe-ios bipe-android bipe-api; do
+                open="${open}$(gh pr list -R "bipe-chat/${repo}" --head "$BRANCH" --state open \
+                  --json number,title --jq '.[] | select(.title | startswith("Regenerate from bipe-shared")) | " '"${repo}"'#\(.number)"')"
+              done
+              if [ -z "$open" ]; then
+                BRANCH=""
+                break
+              fi
+              echo "waiting for${open}"
+              sleep 30
+            done
+            [ -z "$BRANCH" ] || echo "::warning::sibling regen pull requests for ${BRANCH} are still open: checking ${BRANCH}."
           fi
           for repo in bipe bipe-ios bipe-android bipe-api bipe-web bipe-infra; do
             url="https://x-access-token:${TOKEN}@github.com/bipe-chat/${repo}.git"
@@ -156,6 +172,9 @@ jobs:
       contents: read
       pull-requests: read
     steps:
+      - uses: actions/checkout@v4
+        with:
+          sparse-checkout: .github/scripts
       - name: Auto-merge the sibling regen pull requests of the merged change
         env:
           TOKEN: ${{ secrets.BIPE_REGEN_TOKEN }}
@@ -165,7 +184,7 @@ jobs:
             echo "::warning::BIPE_REGEN_TOKEN is not set: sibling regen pull requests are not merged."
             exit 0
           fi
-          BRANCH=$(GH_TOKEN="$READ_TOKEN" gh api "repos/${GITHUB_REPOSITORY}/commits/${GITHUB_SHA}/pulls" --jq '.[0].head.ref // empty')
+          BRANCH=$(GH_TOKEN="$READ_TOKEN" .github/scripts/merged-branch.sh)
           if [ -z "$BRANCH" ]; then
             echo "No merged pull request for ${GITHUB_SHA}."
             exit 0

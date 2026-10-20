@@ -14,7 +14,7 @@ Format:
 - `## Platform: <iOS|Android> (<bundle id>)`. The production IDs wait for bipe-chat/bipe#419 and bipe-chat/bipe#157. Until then both blocks say `chat.bipe.app`.
 - `### <field>` before the first locale is a field for every locale. `### pt-BR` and `### en-US` start a locale. `#### <field>` is a field of that locale.
 - Android `full_description` is the iOS `description` of the same locale, unless the Android locale sets its own.
-- `## Screenshots`: one table per locale, panels in store order. `feature` is a feature id in `product.json`, or `-` for a text panel with no capture. Text between `*asterisks*` is the highlight.
+- `## Screenshots`: one table per locale, panels in store order. `feature` is a feature id in `product.json`, or `-` for a text panel with no capture. Text between `*asterisks*` is the highlight. A headline is one sentence. `layout` and `callout` are optional and set how the image builder draws the panel (bipe-chat/bipe#463): `layout` is `hero`, `phone` or `text` (the same in every locale; the builder has no drawing for `text` yet); `callout` is a short label on the part of the screen that the panel shows larger; leave it empty when the screen is readable at store size, and the panel shows no callout.
 
 Limits: name and subtitle 30, promotional text 170, description 4000, keywords 100 (comma separated, no space after a comma), Play title 30, Play short description 80, Play full description 4000.
 
@@ -102,7 +102,7 @@ O Bipe é um experimento da Envisioning. O código é aberto e está no GitHub, 
 
 #### keywords
 
-golpe,falso parente,mensagens,conversa,pix,privacidade,família,grupos,stickers,enquete,brasil,chat
+golpe,falso parente,falso familiar,mensagens,conversa,pix,privacidade,família,grupos,stickers,brasil
 
 #### release_notes
 
@@ -198,29 +198,27 @@ Know who you're talking to. Scam warnings, and chats on servers in Brazil.
 
 ### pt-BR
 
-| slug | feature | headline | sub |
-|---|---|---|---|
-| aviso-golpe | scam-alerts | Um aviso quando tem *cara de golpe* | A checagem roda no seu celular |
-| dados-no-brasil | - | Suas conversas *ficam no Brasil* | Servidores de empresas brasileiras, sob a lei brasileira |
-| pedidos | requests | Quem você não conhece *chega como pedido* | Você decide se aceita |
-| seu-arroba | handles | Seu @, *não seu número* | O link e o QR code abrem a conversa |
-| conferir-pix | pix-check | Confira o Pix *antes de pagar* | Veja o nome e o valor que estão no código |
-| grupos | group-types | Grupo que só toca *quando é com você* | Enquetes para decidir junto |
-| selo-cnpj | cnpj-badge | O nome que está *na Receita* | Empresas mostram o CNPJ verificado |
-| stickers | stickers | Sticker de *qualquer foto* | E sem anúncio em nenhuma tela |
+| slug | feature | layout | headline | sub | callout |
+|---|---|---|---|---|---|
+| aviso-golpe | scam-alerts | hero | Um aviso quando tem *cara de golpe* | A checagem roda no seu celular | Aviso na conversa |
+| pedidos | requests | phone | Contato novo *chega como pedido* | Você decide se aceita | Você vê antes de aceitar |
+| conferir-pix | pix-check | phone | Confira o Pix *antes de pagar* | Veja o nome e o valor que estão no código | Nome e valor do código |
+| seu-arroba | handles | phone | Seu @, *não seu número* | Suas conversas ficam em servidores no Brasil |  |
+| selo-cnpj | cnpj-badge | phone | O nome que está *na Receita* | Empresas mostram o CNPJ verificado | Nome da Receita |
+| grupos | group-types | phone | Grupo que só toca *quando é com você* | Enquetes para decidir junto |  |
+| stickers | stickers | phone | Sticker de *qualquer foto* | E sem anúncio em nenhuma tela |  |
 
 ### en-US
 
-| slug | feature | headline | sub |
-|---|---|---|---|
-| aviso-golpe | scam-alerts | A warning when it *looks like a scam* | The check runs on your phone |
-| dados-no-brasil | - | Your chats *stay in Brazil* | Servers run by Brazilian companies, under Brazilian law |
-| pedidos | requests | People you don't know *arrive as a request* | You decide whether to accept |
-| seu-arroba | handles | Your @, *not your number* | Your link and QR code open the chat |
-| conferir-pix | pix-check | Check the Pix *before you pay* | See the name and amount in the code |
-| grupos | group-types | Groups that ring *only when it's about you* | Polls to decide together |
-| selo-cnpj | cnpj-badge | The name *on the register* | Businesses show their verified CNPJ |
-| stickers | stickers | Stickers from *any photo* | And no ads on any screen |
+| slug | feature | layout | headline | sub | callout |
+|---|---|---|---|---|---|
+| aviso-golpe | scam-alerts | hero | A warning when it *looks like a scam* | The check runs on your phone | In the chat |
+| pedidos | requests | phone | New contacts *arrive as a request* | You decide whether to accept | You see it before you accept |
+| conferir-pix | pix-check | phone | Check the Pix *before you pay* | See the name and amount in the code | Name and amount in the code |
+| seu-arroba | handles | phone | Your @, *not your number* | Your chats live on servers in Brazil |  |
+| selo-cnpj | cnpj-badge | phone | The name *on the register* | Businesses show their verified CNPJ | Name on the register |
+| grupos | group-types | phone | Groups that ring *only when it's about you* | Polls to decide together |  |
+| stickers | stickers | phone | Stickers from *any photo* | And no ads on any screen |  |
 
 ## App Review
 

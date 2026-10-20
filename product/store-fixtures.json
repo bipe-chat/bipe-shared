@@ -1,0 +1,63 @@
+{
+  "$comment": "Sample content for the App Store screens (bipe#462). One entry per capture slug, text per locale. People are cast ids (product/cast.json); `me` is the viewer. Messages from people are in people's voice (\"pra\" is fine). tools/gen.mjs validates this file and writes BipeStoreFixtures.swift; the iOS screenshot mode reads it. `minute`: the time shown is 10:<minute> on the capture day.",
+  "version": 1,
+  "me": "gabi",
+  "locales": ["pt-BR", "en-US"],
+  "screens": {
+    "aviso-golpe": {
+      "chat": "golpista",
+      "lines": [
+        { "from": "golpista", "text": { "pt-BR": "Oi filha, troquei de número. Essa é minha conta nova aqui", "en-US": "Hi sweetie, I changed my number. This is my new account" } },
+        { "from": "me", "text": { "pt-BR": "Mãe? O que houve com o outro?", "en-US": "Mom? What happened to the old one?" } },
+        { "from": "golpista", "text": { "pt-BR": "Caiu na água. Preciso pagar um boleto hoje ainda, me faz um Pix que amanhã te devolvo", "en-US": "It fell in the water. I have a bill due today, can you send me a Pix? I'll pay you back tomorrow" } }
+      ]
+    },
+    "pedidos": {
+      "requests": [
+        { "from": "golpista", "minute": 12 },
+        { "from": "camila", "minute": 3 },
+        { "from": "suporte", "minute": 1 }
+      ]
+    },
+    "seu-arroba": {},
+    "conferir-pix": {
+      "code": "00020126440014br.gov.bcb.pix0122rafa.bikes@example.com5204000053039865406850.005802BR5915RAFAEL OLIVEIRA6014BELO HORIZONTE62070503***63047466"
+    },
+    "conferir-pix-alterado": {
+      "$comment": "The site scene's code: one letter of the key changed (rafa.blkes), so the CRC fails.",
+      "code": "00020126440014br.gov.bcb.pix0122rafa.blkes@example.com5204000053039865406850.005802BR5915RAFAEL OLIVEIRA6014BELO HORIZONTE62070503***63044B2D"
+    },
+    "grupos": {
+      "groups": [
+        { "id": "familia", "minute": 58, "unread": 5, "mentions": 1, "preview": { "pt-BR": "Vô Antônio: Domingo tem almoço aqui em casa", "en-US": "Grandpa Antônio: Sunday lunch at my place" } },
+        { "id": "avisos", "minute": 41, "unread": 1, "poll": { "pt-BR": "Cor da fachada", "en-US": "Paint color for the building" } },
+        { "id": "faculdade", "minute": 30, "unread": 12, "preview": { "pt-BR": "Bia: Sexta tem churrasco lá em casa", "en-US": "Bia: BBQ at my place on Friday" } },
+        { "id": "escola", "minute": 22, "unread": 3, "preview": { "pt-BR": "Tia Sandra: Reunião de pais na quinta, às 19h", "en-US": "Ms. Sandra: Parents' meeting on Thursday at 7 PM" } },
+        { "id": "igreja", "minute": 15, "preview": { "pt-BR": "Pastora Débora: Agora o grupo aceita só quem tem selo verificado", "en-US": "Pastor Débora: From now on, only verified accounts can join" } },
+        { "id": "condominio", "minute": 4, "preview": { "pt-BR": "Seu Valdir: A água volta às 14h", "en-US": "Valdir: The water comes back at 2 PM" } }
+      ]
+    },
+    "selo-cnpj": {
+      "chat": "clinica",
+      "lines": [
+        { "from": "clinica", "text": { "pt-BR": "Olá, Gabi! Aqui é a Clínica Vida.", "en-US": "Hi Gabi, this is Clínica Vida." } },
+        { "from": "clinica", "text": { "pt-BR": "Sua consulta é amanhã, às 14h, com a Dra. Ana. Responda 1 para confirmar ou 2 para remarcar.", "en-US": "Your appointment is tomorrow at 2 PM with Dr. Ana. Reply 1 to confirm or 2 to reschedule." } },
+        { "from": "me", "text": { "pt-BR": "1", "en-US": "1" } },
+        { "from": "clinica", "text": { "pt-BR": "Consulta confirmada. Até amanhã!", "en-US": "Confirmed. See you tomorrow!" } },
+        { "from": "me", "text": { "pt-BR": "Preciso levar algum exame?", "en-US": "Should I bring any test results?" } },
+        { "from": "clinica", "text": { "pt-BR": "Só um documento com foto e a carteirinha do plano.", "en-US": "Just a photo ID and your health plan card." } },
+        { "from": "me", "text": { "pt-BR": "Combinado, obrigada!", "en-US": "Great, thanks!" } }
+      ]
+    },
+    "stickers": {
+      "chat": "faculdade",
+      "lines": [
+        { "from": "bia", "text": { "pt-BR": "Sexta tem churrasco lá em casa", "en-US": "BBQ at my place on Friday" } },
+        { "from": "leo", "sticker": "rafa" },
+        { "from": "caio", "text": { "pt-BR": "Bora! Eu levo o carvão", "en-US": "I'm in! I'll bring the charcoal" } },
+        { "from": "duda", "sticker": "cida" },
+        { "from": "me", "sticker": "caramelo" }
+      ]
+    }
+  }
+}

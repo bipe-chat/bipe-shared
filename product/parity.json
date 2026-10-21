@@ -1319,6 +1319,7 @@
         "status": "built",
         "evidence": [
           "bipe-android/features/preferences/impl/src/main/kotlin/io/element/android/features/preferences/impl/bipe/BipeSettingsGroupView.kt",
+          "bipe-android/features/preferences/impl/src/main/kotlin/io/element/android/features/preferences/impl/root/PreferencesRootView.kt",
           "bipe-android/libraries/bipe/src/main/kotlin/io/element/android/libraries/bipe/generated/BipeSettings.kt"
         ]
       },

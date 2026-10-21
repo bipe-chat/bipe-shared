@@ -104,6 +104,11 @@ jobs:
               commit -q -m "Regenerate from bipe-shared#${PR_NUMBER}" -m "Output of the bipe-shared generators for ${PR_URL}."
             git -C "$repo" push -q origin "HEAD:refs/heads/${BRANCH}"
             echo "${repo}: pushed ${BRANCH}"
+            # A pull request on branch B with a base other than main (a stacked pull request) carries the
+            # regen commit into that base, not into main: bipe-ios#92 and bipe-android#82 did so.
+            stacked=$(gh pr list -R "bipe-chat/${repo}" --head "$BRANCH" --state open \
+              --json number,baseRefName --jq '.[] | select(.baseRefName != "main") | "#\(.number) (base \(.baseRefName))"')
+            [ -z "$stacked" ] || echo "::warning::${repo} ${stacked}: not based on main, so the generated files miss main. Retarget it to main."
             if [ -z "$(gh pr list -R "bipe-chat/${repo}" --head "$BRANCH" --state open --json number --jq '.[].number')" ]; then
               gh pr create -R "bipe-chat/${repo}" --base main --head "$BRANCH" \
                 --title "Regenerate from bipe-shared#${PR_NUMBER}" \
@@ -139,7 +144,7 @@ jobs:
               [ -n "$BRANCH" ] || break
               open=""
               for repo in bipe-ios bipe-android bipe-api; do
-                open="${open}$(gh pr list -R "bipe-chat/${repo}" --head "$BRANCH" --state open \
+                open="${open}$(gh pr list -R "bipe-chat/${repo}" --head "$BRANCH" --base main --state open \
                   --json number --jq '.[] | " '"${repo}"'#\(.number)"')"
               done
               if [ -z "$open" ]; then
@@ -204,8 +209,13 @@ jobs:
             # there at once, and only the regen pull request.
             filter='.[] | select(.isDraft | not) | .number'
             [ "$repo" = bipe ] && filter='.[] | select(.title | startswith("Regenerate from bipe-shared")) | .number'
-            numbers=$(GH_TOKEN="$TOKEN" gh pr list -R "bipe-chat/${repo}" --head "$BRANCH" --state open \
+            # Only pull requests based on main. A stacked pull request would merge into its base branch,
+            # and main would miss the change (bipe-ios#92, bipe-android#82 on 21 Oct 2026).
+            numbers=$(GH_TOKEN="$TOKEN" gh pr list -R "bipe-chat/${repo}" --head "$BRANCH" --base main --state open \
               --json number,title,isDraft --jq "$filter")
+            stacked=$(GH_TOKEN="$TOKEN" gh pr list -R "bipe-chat/${repo}" --head "$BRANCH" --state open \
+              --json number,baseRefName --jq '.[] | select(.baseRefName != "main") | "#\(.number) (base \(.baseRefName))"')
+            [ -z "$stacked" ] || echo "::warning::${repo} ${stacked}: not based on main, not merged. Retarget it to main, then merge it."
             for n in $numbers; do
               if [ "$repo" = bipe ]; then
                 GH_TOKEN="$TOKEN" gh pr merge "$n" -R "bipe-chat/${repo}" --squash

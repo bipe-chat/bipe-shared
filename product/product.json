@@ -2596,14 +2596,15 @@
       "tiers": {
         "small": {
           "name": "Pequeno negócio",
-          "who": "MEI ativo ou microempresa (ME), pelos dados da Receita.",
+          "who": "MEI ativo ou microempresa (ME), pelos dados da Receita, ou quem trabalha por conta própria sem CNPJ.",
           "billing": "Sem mensalidade.",
           "points": [
             "Selo de CNPJ verificado e nome reservado.",
             "Caixa de entrada com 2 atendentes.",
             "Perguntas com opções e API.",
             "Suporte pelas páginas de ajuda.",
-            "O selo segue as mesmas regras dos outros planos: o CPF verificado do dono precisa aparecer entre os sócios do CNPJ na Receita."
+            "O selo segue as mesmas regras dos outros planos: o CPF verificado do dono precisa aparecer entre os sócios do CNPJ na Receita.",
+            "Sem CNPJ, a conta da empresa tem as mesmas ferramentas, mas fica sem selo e sem cobrança por Pix."
           ]
         },
         "company": {
@@ -2681,14 +2682,15 @@
       "tiers": {
         "small": {
           "name": "Small business",
-          "who": "An active MEI or a micro company (ME), from Receita's data.",
+          "who": "An active MEI or a micro company (ME), from Receita's data, or someone who works on their own with no CNPJ.",
           "billing": "No monthly fee.",
           "points": [
             "Verified CNPJ seal and reserved name.",
             "Inbox with 2 agents.",
             "Questions with options and the API.",
             "Support through the help pages.",
-            "The seal follows the same rules as every other plan: the owner's verified CPF must be one of the partners in the CNPJ record at Receita."
+            "The seal follows the same rules as every other plan: the owner's verified CPF must be one of the partners in the CNPJ record at Receita.",
+            "With no CNPJ, the company account has the same tools, but no seal and no Pix charges."
           ]
         },
         "company": {
@@ -2822,8 +2824,8 @@
         "note": "Usamos esses dados só para responder e para entender quanto as organizações pagam hoje. A gente guarda tudo no Starlings, o sistema de trabalho da Envisioning, em servidores na União Europeia, e apaga depois de um ano."
       },
       "small": {
-        "heading": "MEI ou microempresa?",
-        "body": "Você não precisa do formulário. Baixe o app e crie a conta da empresa em Você > Sua conta > Criar conta da empresa. O plano Pequeno negócio não tem mensalidade.",
+        "heading": "MEI, microempresa ou autônomo?",
+        "body": "Você não precisa do formulário. Baixe o app e crie a conta da empresa em Você > Sua conta > Criar conta da empresa. Dá para criar sem CNPJ. O plano Pequeno negócio não tem mensalidade.",
         "button": "Baixar o app"
       }
     },
@@ -2909,8 +2911,8 @@
         "note": "We use this only to answer you and to learn what organisations pay today. We keep it in Starlings, Envisioning's work system, on servers in the European Union, and delete it after one year."
       },
       "small": {
-        "heading": "MEI or micro company?",
-        "body": "You don't need the form. Get the app and create the company account in You > Your account > Create a company account. The Small business plan has no monthly fee.",
+        "heading": "MEI, micro company or self-employed?",
+        "body": "You don't need the form. Get the app and create the company account in You > Your account > Create a company account. You can create it with no CNPJ. The Small business plan has no monthly fee.",
         "button": "Get the app"
       }
     }

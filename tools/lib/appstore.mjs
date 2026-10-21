@@ -130,9 +130,11 @@ export function placeholders(listing, section) {
 }
 
 // Returns a list of problems. An empty list means the listing is ready to upload as text.
-export function checkAppstore(listing, product) {
+// ledger: product/parity.json, the status per feature (bipe#300).
+export function checkAppstore(listing, ledger) {
   const problems = [];
-  const features = new Map(product.features.map((f) => [f.id, f]));
+  const surface = (item, s) => (typeof item[s] === "string" ? item[s] : item[s]?.status);
+  const features = new Map(ledger.items.map((i) => [i.id, { status: { ios: surface(i, "ios"), android: surface(i, "android") } }]));
 
   for (const [name, key] of Object.entries(PLATFORMS)) {
     const block = listing.platforms[key];

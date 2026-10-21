@@ -381,10 +381,6 @@
       "id": "scam-alerts",
       "area": "safety",
       "icon": "warning",
-      "status": {
-        "ios": "testing",
-        "android": "built"
-      },
       "slug": {
         "pt": "aviso-de-golpe",
         "en": "scam-warnings"
@@ -429,10 +425,6 @@
       "id": "requests",
       "area": "safety",
       "icon": "chat",
-      "status": {
-        "ios": "testing",
-        "android": "built"
-      },
       "slug": {
         "pt": "pedidos-de-conversa",
         "en": "message-requests"
@@ -464,10 +456,6 @@
       "id": "money-pause",
       "area": "safety",
       "icon": "hourglass",
-      "status": {
-        "ios": "planned",
-        "android": "planned"
-      },
       "slug": {
         "pt": "pausa-antes-de-pagar",
         "en": "pause-before-paying"
@@ -499,10 +487,6 @@
       "id": "no-sms",
       "area": "safety",
       "icon": "sim",
-      "status": {
-        "ios": "testing",
-        "android": "built"
-      },
       "slug": {
         "pt": "sem-codigo-por-sms",
         "en": "no-sms-codes"
@@ -533,10 +517,6 @@
       "id": "phone-account",
       "area": "safety",
       "icon": "key",
-      "status": {
-        "ios": "planned",
-        "android": "planned"
-      },
       "slug": {
         "pt": "conta-no-celular",
         "en": "account-on-your-phone"
@@ -570,10 +550,6 @@
       "id": "new-phone",
       "area": "safety",
       "icon": "devices",
-      "status": {
-        "ios": "planned",
-        "android": "planned"
-      },
       "slug": {
         "pt": "celular-novo",
         "en": "new-phone"
@@ -609,10 +585,6 @@
       "id": "verified-badge",
       "area": "identity",
       "icon": "badge",
-      "status": {
-        "ios": "planned",
-        "android": "planned"
-      },
       "slug": {
         "pt": "selo-verificado",
         "en": "verified-seal"
@@ -655,10 +627,6 @@
       "id": "cnpj-badge",
       "area": "identity",
       "icon": "bank",
-      "status": {
-        "ios": "built",
-        "android": "built"
-      },
       "slug": {
         "pt": "selo-de-cnpj",
         "en": "business-seal"
@@ -695,10 +663,6 @@
       "id": "reserved-names",
       "area": "identity",
       "icon": "shield",
-      "status": {
-        "ios": "planned",
-        "android": "planned"
-      },
       "slug": {
         "pt": "nomes-reservados",
         "en": "reserved-names"
@@ -734,10 +698,6 @@
       "id": "lookalikes",
       "area": "identity",
       "icon": "letters",
-      "status": {
-        "ios": "planned",
-        "android": "planned"
-      },
       "slug": {
         "pt": "letras-disfarcadas",
         "en": "lookalike-letters"
@@ -774,10 +734,6 @@
       "id": "family-check",
       "area": "identity",
       "icon": "person-question",
-      "status": {
-        "ios": "planned",
-        "android": "planned"
-      },
       "slug": {
         "pt": "e-a-mae-mesmo",
         "en": "is-that-really-mom"
@@ -817,10 +773,6 @@
       "id": "handles",
       "area": "privacy",
       "icon": "at",
-      "status": {
-        "ios": "testing",
-        "android": "built"
-      },
       "slug": {
         "pt": "nome-de-usuario",
         "en": "usernames"
@@ -858,10 +810,6 @@
       "id": "profile-links",
       "area": "privacy",
       "icon": "qr",
-      "status": {
-        "ios": "testing",
-        "android": "built"
-      },
       "slug": {
         "pt": "link-e-qr-code",
         "en": "link-and-qr-code"
@@ -897,10 +845,6 @@
       "id": "public-profile",
       "area": "chat",
       "icon": "person",
-      "status": {
-        "ios": "built",
-        "android": "built"
-      },
       "slug": {
         "pt": "perfil-publico",
         "en": "public-profile"
@@ -936,10 +880,6 @@
       "id": "invites",
       "area": "chat",
       "icon": "user-plus",
-      "status": {
-        "ios": "testing",
-        "android": "built"
-      },
       "slug": {
         "pt": "convites",
         "en": "invites"
@@ -976,10 +916,6 @@
       "id": "phone-discovery",
       "area": "chat",
       "icon": "search",
-      "status": {
-        "ios": "planned",
-        "android": "planned"
-      },
       "slug": {
         "pt": "ache-seus-contatos",
         "en": "find-your-contacts"
@@ -1010,10 +946,6 @@
       "id": "e2ee",
       "area": "privacy",
       "icon": "lock",
-      "status": {
-        "ios": "testing",
-        "android": "built"
-      },
       "slug": {
         "pt": "ponta-a-ponta",
         "en": "end-to-end"
@@ -1044,10 +976,6 @@
       "id": "no-ads",
       "area": "privacy",
       "icon": "eye-off",
-      "status": {
-        "ios": "policy",
-        "android": "policy"
-      },
       "slug": {
         "pt": "sem-anuncio",
         "en": "no-ads"
@@ -1078,10 +1006,6 @@
       "id": "free",
       "area": "privacy",
       "icon": "gift",
-      "status": {
-        "ios": "policy",
-        "android": "policy"
-      },
       "slug": {
         "pt": "gratuito",
         "en": "free"
@@ -1112,10 +1036,6 @@
       "id": "brazil-servers",
       "area": "privacy",
       "icon": "server",
-      "status": {
-        "ios": "policy",
-        "android": "policy"
-      },
       "slug": {
         "pt": "servidor-no-brasil",
         "en": "servers-in-brazil"
@@ -1146,10 +1066,6 @@
       "id": "open-source",
       "area": "privacy",
       "icon": "code",
-      "status": {
-        "ios": "policy",
-        "android": "policy"
-      },
       "slug": {
         "pt": "codigo-aberto",
         "en": "open-source"
@@ -1180,10 +1096,6 @@
       "id": "pix-cards",
       "area": "payments",
       "icon": "pix",
-      "status": {
-        "ios": "planned",
-        "android": "planned"
-      },
       "slug": {
         "pt": "pedido-de-pix",
         "en": "pix-requests"
@@ -1215,10 +1127,6 @@
       "id": "pix-charges",
       "area": "payments",
       "icon": "receipt",
-      "status": {
-        "ios": "planned",
-        "android": "planned"
-      },
       "slug": {
         "pt": "cobranca-com-cnpj",
         "en": "business-pix-charges"
@@ -1250,10 +1158,6 @@
       "id": "agenda",
       "area": "chat",
       "icon": "calendar",
-      "status": {
-        "ios": "planned",
-        "android": "planned"
-      },
       "slug": {
         "pt": "agenda",
         "en": "bookings"
@@ -1294,10 +1198,6 @@
       "id": "catalog",
       "area": "chat",
       "icon": "bag",
-      "status": {
-        "ios": "planned",
-        "android": "planned"
-      },
       "slug": {
         "pt": "catalogo",
         "en": "catalog"
@@ -1336,10 +1236,6 @@
       "id": "orders",
       "area": "chat",
       "icon": "box",
-      "status": {
-        "ios": "planned",
-        "android": "planned"
-      },
       "slug": {
         "pt": "pedidos",
         "en": "orders"
@@ -1378,10 +1274,6 @@
       "id": "quotes",
       "area": "chat",
       "icon": "document",
-      "status": {
-        "ios": "planned",
-        "android": "planned"
-      },
       "slug": {
         "pt": "orcamento",
         "en": "quotes"
@@ -1420,10 +1312,6 @@
       "id": "queue",
       "area": "chat",
       "icon": "ticket",
-      "status": {
-        "ios": "planned",
-        "android": "planned"
-      },
       "slug": {
         "pt": "fila-virtual",
         "en": "queue"
@@ -1462,10 +1350,6 @@
       "id": "pix-check",
       "area": "payments",
       "icon": "pix-check",
-      "status": {
-        "ios": "built",
-        "android": "built"
-      },
       "slug": {
         "pt": "conferir-pix",
         "en": "pix-check"
@@ -1498,10 +1382,6 @@
       "id": "stickers",
       "area": "chat",
       "icon": "sticker",
-      "status": {
-        "ios": "built",
-        "android": "built"
-      },
       "slug": {
         "pt": "stickers",
         "en": "stickers"
@@ -1536,10 +1416,6 @@
       "id": "group-types",
       "area": "community",
       "icon": "group",
-      "status": {
-        "ios": "built",
-        "android": "built"
-      },
       "slug": {
         "pt": "grupos-sem-barulho",
         "en": "quiet-groups"
@@ -1574,10 +1450,6 @@
       "id": "polls",
       "area": "community",
       "icon": "poll",
-      "status": {
-        "ios": "testing",
-        "android": "built"
-      },
       "slug": {
         "pt": "enquetes",
         "en": "polls"
@@ -1609,10 +1481,6 @@
       "id": "communities",
       "area": "community",
       "icon": "house",
-      "status": {
-        "ios": "planned",
-        "android": "planned"
-      },
       "slug": {
         "pt": "comunidades",
         "en": "communities"
@@ -1645,10 +1513,6 @@
       "id": "verified-groups",
       "area": "community",
       "icon": "group-badge",
-      "status": {
-        "ios": "planned",
-        "android": "planned"
-      },
       "slug": {
         "pt": "grupo-so-com-verificados",
         "en": "verified-only-groups"

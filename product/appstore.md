@@ -6,7 +6,7 @@ Rules for the text:
 
 - Frame and claims: `bipe/docs/positioning.md` (ADR 0047). Voice: `bipe/docs/design/linguagem.md` (store text is Bipe voice: "para", never "pra").
 - Order: scam warning and knowing who is talking first, data in Brazil second, no ads third, the @ fourth.
-- Claim only features whose status in `product.json` is `built`, `testing` or `policy` on that platform. Planned features stay out.
+- Claim only features whose status in `parity.json` is `built`, `testing` or `policy` on that platform. Planned features stay out.
 - Every field passes the humanizer skill. No em or en dashes.
 
 Format:

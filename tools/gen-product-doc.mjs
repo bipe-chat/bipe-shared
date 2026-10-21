@@ -47,6 +47,14 @@ function iconNames() {
   return new Set([...union[1].matchAll(/"([a-z-]+)"/g)].map((m) => m[1]));
 }
 const ICONS = iconNames();
+// Milestone titles: the bold names in the table of ../bipe/docs/MILESTONES.md. Fails closed when none are found.
+function milestoneTitles() {
+  const src = readFileSync(join(root, "../bipe/docs/MILESTONES.md"), "utf8");
+  const titles = [...src.matchAll(/^\| \*\*([^*|]+)\*\* \|/gm)].map((m) => m[1]);
+  if (!titles.length) fail("milestone: no milestone titles found in bipe/docs/MILESTONES.md");
+  return new Set(titles);
+}
+const MILESTONES = milestoneTitles();
 const featureIcons = new Set();
 const featureIds = new Set(product.features.map((f) => f.id));
 const areaIds = new Set(product.areas.map((a) => a.id));
@@ -55,6 +63,9 @@ const featureSlugs = new Set();
 for (const f of product.features) {
   if (!areaIds.has(f.area)) fail(`feature ${f.id}: unknown area ${f.area}`);
   for (const p of ["ios", "android"]) if (!STATUSES.includes(f.status[p])) fail(`feature ${f.id}: status.${p}`);
+  // The milestone that holds the feature's open work. A policy has none; every other feature names one.
+  const policy = f.status.ios === "policy" && f.status.android === "policy";
+  if (policy ? f.milestone !== null : !MILESTONES.has(f.milestone)) fail(`feature ${f.id}: milestone ${f.milestone} (${policy ? "null for a policy" : "a title in bipe/docs/MILESTONES.md"})`);
   for (const l of ["pt", "en"]) {
     if (!f[l]?.name || !f[l]?.body) fail(`feature ${f.id}: ${l} copy`);
     if (!f[l].points?.length || f[l].points.some((x) => !x)) fail(`feature ${f.id}: ${l}.points`);
@@ -354,9 +365,9 @@ const lines = [
   "",
   "## Features",
   "",
-  "| Feature | Area | iOS | Android | What it does |",
-  "|---|---|---|---|---|",
-  ...product.features.map((f) => `| ${f.en.name} (\`${f.id}\`) | ${f.area} | ${label[f.status.ios]} | ${label[f.status.android]} | ${f.en.body} |`),
+  "| Feature | Area | iOS | Android | Milestone | What it does |",
+  "|---|---|---|---|---|---|",
+  ...product.features.map((f) => `| ${f.en.name} (\`${f.id}\`) | ${f.area} | ${label[f.status.ios]} | ${label[f.status.android]} | ${f.milestone ?? "none"} | ${f.en.body} |`),
   "",
   "## ICPs",
   "",

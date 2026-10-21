@@ -1,5 +1,5 @@
 {
-  "$comment": "What Bipe is and what it does, for the website, store listings and docs. One source of truth: bipe-web renders it, tools/gen-product-doc.mjs writes bipe/docs/product.md from it. status per platform: testing (in the TestFlight or beta build), planned (designed, not in a build), policy (a promise about how Bipe runs, not a feature). Never mark a feature testing before it is in a build. Copy passed a humanizer pass by hand (no em dashes, plain words). Draft until the brand review. Tentpoles: the reasons to switch, in order. demos: simulations on the tentpole page, in order; the first one leads.",
+  "$comment": "What Bipe is and what it does, for the website, store listings and docs. One source of truth: bipe-web renders it, tools/gen-product-doc.mjs writes bipe/docs/product.md from it. status per platform: testing (in the TestFlight or beta build), built (merged on that platform, not in a tester build), planned (designed, not in a build), policy (a promise about how Bipe runs, not a feature). milestone: the title of the milestone in bipe/docs/MILESTONES.md that holds the open work for the feature, on either platform; null for a policy. Never mark a feature testing before it is in a build. Copy passed a humanizer pass by hand (no em dashes, plain words). Draft until the brand review. Tentpoles: the reasons to switch, in order. demos: simulations on the tentpole page, in order; the first one leads.",
   "version": 1,
   "promise": {
     "pt": {
@@ -385,6 +385,7 @@
         "ios": "testing",
         "android": "built"
       },
+      "milestone": "M2 Android beta",
       "slug": {
         "pt": "aviso-de-golpe",
         "en": "scam-warnings"
@@ -433,6 +434,7 @@
         "ios": "testing",
         "android": "built"
       },
+      "milestone": "M2 Android beta",
       "slug": {
         "pt": "pedidos-de-conversa",
         "en": "message-requests"
@@ -468,6 +470,7 @@
         "ios": "planned",
         "android": "planned"
       },
+      "milestone": "M3 Store launch",
       "slug": {
         "pt": "pausa-antes-de-pagar",
         "en": "pause-before-paying"
@@ -503,6 +506,7 @@
         "ios": "testing",
         "android": "built"
       },
+      "milestone": "M2 Android beta",
       "slug": {
         "pt": "sem-codigo-por-sms",
         "en": "no-sms-codes"
@@ -537,6 +541,7 @@
         "ios": "planned",
         "android": "planned"
       },
+      "milestone": "M2 Android beta",
       "slug": {
         "pt": "conta-no-celular",
         "en": "account-on-your-phone"
@@ -574,6 +579,7 @@
         "ios": "planned",
         "android": "planned"
       },
+      "milestone": "M3 Store launch",
       "slug": {
         "pt": "celular-novo",
         "en": "new-phone"
@@ -613,6 +619,7 @@
         "ios": "planned",
         "android": "planned"
       },
+      "milestone": "M3 Store launch",
       "slug": {
         "pt": "selo-verificado",
         "en": "verified-seal"
@@ -659,6 +666,7 @@
         "ios": "built",
         "android": "built"
       },
+      "milestone": "Work side: one speaker",
       "slug": {
         "pt": "selo-de-cnpj",
         "en": "business-seal"
@@ -699,6 +707,7 @@
         "ios": "planned",
         "android": "planned"
       },
+      "milestone": "M3 Store launch",
       "slug": {
         "pt": "nomes-reservados",
         "en": "reserved-names"
@@ -738,6 +747,7 @@
         "ios": "planned",
         "android": "planned"
       },
+      "milestone": "M3 Store launch",
       "slug": {
         "pt": "letras-disfarcadas",
         "en": "lookalike-letters"
@@ -778,6 +788,7 @@
         "ios": "planned",
         "android": "planned"
       },
+      "milestone": "M4 Groups pilot",
       "slug": {
         "pt": "e-a-mae-mesmo",
         "en": "is-that-really-mom"
@@ -821,6 +832,7 @@
         "ios": "testing",
         "android": "built"
       },
+      "milestone": "M2 Android beta",
       "slug": {
         "pt": "nome-de-usuario",
         "en": "usernames"
@@ -862,6 +874,7 @@
         "ios": "testing",
         "android": "built"
       },
+      "milestone": "M2 Android beta",
       "slug": {
         "pt": "link-e-qr-code",
         "en": "link-and-qr-code"
@@ -901,6 +914,7 @@
         "ios": "built",
         "android": "built"
       },
+      "milestone": "M2 Android beta",
       "slug": {
         "pt": "perfil-publico",
         "en": "public-profile"
@@ -940,6 +954,7 @@
         "ios": "testing",
         "android": "built"
       },
+      "milestone": "M2 Android beta",
       "slug": {
         "pt": "convites",
         "en": "invites"
@@ -980,6 +995,7 @@
         "ios": "planned",
         "android": "planned"
       },
+      "milestone": "M3 Store launch",
       "slug": {
         "pt": "ache-seus-contatos",
         "en": "find-your-contacts"
@@ -1014,6 +1030,7 @@
         "ios": "testing",
         "android": "built"
       },
+      "milestone": "M2 Android beta",
       "slug": {
         "pt": "ponta-a-ponta",
         "en": "end-to-end"
@@ -1048,6 +1065,7 @@
         "ios": "policy",
         "android": "policy"
       },
+      "milestone": null,
       "slug": {
         "pt": "sem-anuncio",
         "en": "no-ads"
@@ -1082,6 +1100,7 @@
         "ios": "policy",
         "android": "policy"
       },
+      "milestone": null,
       "slug": {
         "pt": "gratuito",
         "en": "free"
@@ -1116,6 +1135,7 @@
         "ios": "policy",
         "android": "policy"
       },
+      "milestone": null,
       "slug": {
         "pt": "servidor-no-brasil",
         "en": "servers-in-brazil"
@@ -1150,6 +1170,7 @@
         "ios": "policy",
         "android": "policy"
       },
+      "milestone": null,
       "slug": {
         "pt": "codigo-aberto",
         "en": "open-source"
@@ -1184,6 +1205,7 @@
         "ios": "planned",
         "android": "planned"
       },
+      "milestone": "Later",
       "slug": {
         "pt": "pedido-de-pix",
         "en": "pix-requests"
@@ -1219,6 +1241,7 @@
         "ios": "planned",
         "android": "planned"
       },
+      "milestone": "Later",
       "slug": {
         "pt": "cobranca-com-cnpj",
         "en": "business-pix-charges"
@@ -1254,6 +1277,7 @@
         "ios": "planned",
         "android": "planned"
       },
+      "milestone": "Work side: one speaker",
       "slug": {
         "pt": "agenda",
         "en": "bookings"
@@ -1298,6 +1322,7 @@
         "ios": "planned",
         "android": "planned"
       },
+      "milestone": "Work side: one speaker",
       "slug": {
         "pt": "catalogo",
         "en": "catalog"
@@ -1340,6 +1365,7 @@
         "ios": "planned",
         "android": "planned"
       },
+      "milestone": "Work side: one speaker",
       "slug": {
         "pt": "pedidos",
         "en": "orders"
@@ -1382,6 +1408,7 @@
         "ios": "planned",
         "android": "planned"
       },
+      "milestone": "Work side: one speaker",
       "slug": {
         "pt": "orcamento",
         "en": "quotes"
@@ -1424,6 +1451,7 @@
         "ios": "planned",
         "android": "planned"
       },
+      "milestone": "Work side: one speaker",
       "slug": {
         "pt": "fila-virtual",
         "en": "queue"
@@ -1466,6 +1494,7 @@
         "ios": "built",
         "android": "built"
       },
+      "milestone": "M2 Android beta",
       "slug": {
         "pt": "conferir-pix",
         "en": "pix-check"
@@ -1502,6 +1531,7 @@
         "ios": "built",
         "android": "built"
       },
+      "milestone": "M4 Groups pilot",
       "slug": {
         "pt": "stickers",
         "en": "stickers"
@@ -1540,6 +1570,7 @@
         "ios": "built",
         "android": "built"
       },
+      "milestone": "M4 Groups pilot",
       "slug": {
         "pt": "grupos-sem-barulho",
         "en": "quiet-groups"
@@ -1578,6 +1609,7 @@
         "ios": "testing",
         "android": "built"
       },
+      "milestone": "M2 Android beta",
       "slug": {
         "pt": "enquetes",
         "en": "polls"
@@ -1613,6 +1645,7 @@
         "ios": "planned",
         "android": "planned"
       },
+      "milestone": "M4 Groups pilot",
       "slug": {
         "pt": "comunidades",
         "en": "communities"
@@ -1649,6 +1682,7 @@
         "ios": "planned",
         "android": "planned"
       },
+      "milestone": "M4 Groups pilot",
       "slug": {
         "pt": "grupo-so-com-verificados",
         "en": "verified-only-groups"

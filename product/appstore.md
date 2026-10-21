@@ -253,7 +253,7 @@ false
 
 ## App Privacy
 
-Source: `bipe-ios/ElementX/SupportingFiles/PrivacyInfo.xcprivacy`, checked against `product/data.json` (20 October 2026). Bipe does not track (`NSPrivacyTracking` is false), so no data type is used for tracking.
+Source: `bipe-ios/ElementX/SupportingFiles/PrivacyInfo.xcprivacy`, checked against `product/data.json` and the app code (21 October 2026). Bipe does not track (`NSPrivacyTracking` is false), so no data type is used for tracking. The app has no telemetry (bipe-chat/bipe#55): no Sentry, no PostHog, so no crash or performance data leaves the phone.
 
 | Data type | Collected | Linked to the person | Purpose | data.json item |
 |---|---|---|---|---|
@@ -264,16 +264,14 @@ Source: `bipe-ios/ElementX/SupportingFiles/PrivacyInfo.xcprivacy`, checked again
 | Audio Data | Yes, voice messages | No | App Functionality | media |
 | User ID | Yes | Yes | App Functionality, Analytics | account, app-growth |
 | Device ID | Yes | Yes | App Functionality | account, push |
-| Product Interaction | Yes | No | Analytics | app-growth |
-| Crash Data | Yes, only when the person sends a problem report | No | App Functionality | problem-reports |
-| Performance Data | Yes | No | Analytics | problem-reports |
+| Product Interaction | Yes | Yes | Analytics | app-growth |
 | Other Diagnostic Data | Yes, only when the person sends a problem report | Yes | App Functionality | problem-reports |
 
-To check before the answers go to App Store Connect:
+Decisions (21 October 2026, mz can overrule):
 
-- `app-growth` stores a code derived from the account. If that code can be linked back to the account, Product Interaction is linked too.
-- Performance Data has no matching item in `data.json`. Remove it from `PrivacyInfo.xcprivacy` or add the item.
-- Messages are encrypted end to end. Apple counts only data the developer can read, so Precise Location, Contacts, Photos or Videos and Audio Data in encrypted chats may not count as collected. Unencrypted rooms (bipe-chat/bipe#78) still count.
+- Product Interaction is linked: `app-growth` keys each account by an HMAC with a secret the server holds, so the server can link it back to the account.
+- Crash Data and Performance Data are not collected: nothing in the app produces them since bipe-chat/bipe#55. Problem-report logs are Other Diagnostic Data.
+- Location, Contacts, Photos or Videos and Audio Data stay declared. In encrypted chats the server cannot read them, but unencrypted rooms (bipe-chat/bipe#78) still exist.
 
 ## Age rating
 

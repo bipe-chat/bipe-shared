@@ -278,6 +278,18 @@ for (const [ref, types] of Object.entries(ENUMS)) {
   }
 }
 
+// ADR 0138 rule 2 (bipe-chat/bipe#513): what anyone can read about another account never names who is behind it.
+// A company account must not lead to its owner's personal account, user ID, phone, CPF or e-mail.
+const PUBLIC_SCHEMAS = ["InvitePreview", "PublicProfile", "BadgeEnvelope", "BadgeGone"];
+const NOT_PUBLIC = /(^|_)(user_id|phone|cpf|owner|created_by|email)$/;
+for (const name of PUBLIC_SCHEMAS) {
+  const spec = schemas[name];
+  if (!spec) { problems.push(`PUBLIC_SCHEMAS.${name}: not in the contract any more`); continue; }
+  for (const field of spec.properties) {
+    if (NOT_PUBLIC.test(field)) problems.push(`public schema ${name} has field ${field}: a public answer never names the account behind it (ADR 0138 rule 2)`);
+  }
+}
+
 for (const key of Object.keys(GAPS)) if (!gapsUsed.has(key)) problems.push(`GAPS["${key}"] is closed: remove it`);
 
 if (problems.length) {

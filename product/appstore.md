@@ -14,7 +14,7 @@ Format:
 - `## Platform: <iOS|Android> (<bundle id>)`. The production IDs wait for bipe-chat/bipe#419 and bipe-chat/bipe#157. Until then both blocks say `chat.bipe.app`.
 - `### <field>` before the first locale is a field for every locale. `### pt-BR` and `### en-US` start a locale. `#### <field>` is a field of that locale.
 - Android `full_description` is the iOS `description` of the same locale, unless the Android locale sets its own.
-- `## Screenshots`: one table per locale, panels in store order. `feature` is a feature id in `product.json`, or `-` for a panel with no capture (the image builder has no drawing for it yet). `title` is the feature name, short enough for 2 lines at store size. `sub` is one sentence of at most 2 lines. No highlight markup (bipe-chat/bipe#463).
+- `## Screenshots`: one table per locale, panels in store order. `feature` is a feature id in `product.json`, or `-` for a panel with no capture: the image builder draws the Brazil network there. `title` is the feature name, short enough for 2 lines at store size. `sub` is one sentence of at most 2 lines. No highlight markup (bipe-chat/bipe#463).
 
 Limits: name and subtitle 30, promotional text 170, description 4000, keywords 100 (comma separated, no space after a comma), Play title 30, Play short description 80, Play full description 4000.
 
@@ -203,7 +203,8 @@ Know who you're talking to. Scam warnings, and chats on servers in Brazil.
 | aviso-golpe | scam-alerts | Aviso de golpe | Quando uma mensagem tem cara de golpe, o Bipe avisa. |
 | pedidos | requests | Pedidos de conversa | Quem não é seu contato chega como pedido, e você decide. |
 | conferir-pix | pix-check | Confira o Pix | Veja o nome e o valor do código antes de pagar. |
-| seu-arroba | handles | Seu @, sem número | As conversas ficam em servidores no Brasil, e ninguém vê seu número. |
+| dados-no-brasil | - | Seus dados no Brasil | As conversas ficam em servidores no Brasil, de empresas brasileiras. |
+| seu-arroba | handles | Seu @, sem número | O link e o QR code abrem a conversa, sem mostrar seu número. |
 | selo-cnpj | cnpj-badge | Selo de CNPJ | Empresas mostram o nome que está na Receita. |
 | grupos | group-types | Grupos sem barulho | O grupo só toca quando é com você. |
 | stickers | stickers | Stickers | Faça um sticker de qualquer foto, sem anúncio em nenhuma tela. |
@@ -215,7 +216,8 @@ Know who you're talking to. Scam warnings, and chats on servers in Brazil.
 | aviso-golpe | scam-alerts | Scam warnings | When a message looks like a scam, Bipe warns you. |
 | pedidos | requests | Message requests | People not in your contacts arrive as a request, and you decide. |
 | conferir-pix | pix-check | Check the Pix | See the name and the amount in the code before you pay. |
-| seu-arroba | handles | Your @, no number | Chats live on servers in Brazil, and nobody sees your number. |
+| dados-no-brasil | - | Your data in Brazil | Chats live on servers in Brazil, run by Brazilian companies. |
+| seu-arroba | handles | Your @, no number | Your link and QR code open the chat without showing your number. |
 | selo-cnpj | cnpj-badge | CNPJ seal | Businesses show the name on the federal register. |
 | grupos | group-types | Quiet groups | A group only rings when it's about you. |
 | stickers | stickers | Stickers | Make a sticker from any photo, with no ads on any screen. |

@@ -1409,6 +1409,33 @@
         "status": "n/a",
         "reason": "Runs on the device only"
       }
+    },
+    {
+      "id": "dm-delete",
+      "name": "\"Apagar conversa\" in a DM instead of a room leave (bipe#464)",
+      "issue": 464,
+      "ios": {
+        "status": "built",
+        "evidence": [
+          "bipe-ios/Components/BipeKit/Sources/BipeKit/ClearedChats.swift",
+          "bipe-ios/ElementX/Sources/Application/BipeClearedChats.swift"
+        ]
+      },
+      "android": {
+        "status": "built",
+        "evidence": [
+          "bipe-android/libraries/bipe/src/main/kotlin/io/element/android/libraries/bipe/clearedchats/ClearedChats.kt",
+          "bipe-android/libraries/bipe/src/main/kotlin/io/element/android/libraries/bipe/clearedchats/BipeClearedChats.kt"
+        ]
+      },
+      "web": {
+        "status": "n/a",
+        "reason": "No web chat (ADR 0004)"
+      },
+      "server": {
+        "status": "n/a",
+        "reason": "Matrix account data; no Bipe server code"
+      }
     }
   ],
   "differences": [

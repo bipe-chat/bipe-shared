@@ -1,0 +1,39 @@
+{
+  "$comment": "Cleared DMs (bipe-chat/bipe#464; registries/cleared-chats.json). marker: clearedChatMarker(content, room_id). hidden: clearedChatHidden(marker, latest_ts). keeps: clearedChatKeepsEvent(marker, event_ts). clear: clearedChatsWithClear(content, room_id, ts). Times are origin_server_ts in ms; null means no value. Expected values come from the reference implementation (tools/lib/registries.mjs).",
+  "marker": [
+    { "name": "valid entry", "content": { "rooms": { "!a:bipe.net.br": { "ts": 1791720000000 } } }, "room_id": "!a:bipe.net.br" },
+    { "name": "other room only", "content": { "rooms": { "!b:bipe.net.br": { "ts": 1791720000000 } } }, "room_id": "!a:bipe.net.br" },
+    { "name": "no event", "content": null, "room_id": "!a:bipe.net.br" },
+    { "name": "no rooms key", "content": {}, "room_id": "!a:bipe.net.br" },
+    { "name": "rooms is a list", "content": { "rooms": [] }, "room_id": "!a:bipe.net.br" },
+    { "name": "content is a list", "content": [], "room_id": "!a:bipe.net.br" },
+    { "name": "entry is null", "content": { "rooms": { "!a:bipe.net.br": null } }, "room_id": "!a:bipe.net.br" },
+    { "name": "ts is a string", "content": { "rooms": { "!a:bipe.net.br": { "ts": "1791720000000" } } }, "room_id": "!a:bipe.net.br" },
+    { "name": "ts is negative", "content": { "rooms": { "!a:bipe.net.br": { "ts": -1 } } }, "room_id": "!a:bipe.net.br" },
+    { "name": "ts has a fraction", "content": { "rooms": { "!a:bipe.net.br": { "ts": 1.5 } } }, "room_id": "!a:bipe.net.br" },
+    { "name": "ts is zero", "content": { "rooms": { "!a:bipe.net.br": { "ts": 0 } } }, "room_id": "!a:bipe.net.br" },
+    { "name": "extra fields are ignored", "content": { "v": 2, "rooms": { "!a:bipe.net.br": { "ts": 5, "by": "x" } } }, "room_id": "!a:bipe.net.br" }
+  ],
+  "hidden": [
+    { "name": "not cleared", "marker": null, "latest_ts": 100 },
+    { "name": "not cleared, empty room", "marker": null, "latest_ts": null },
+    { "name": "latest event is the marker", "marker": 100, "latest_ts": 100 },
+    { "name": "latest event before the marker", "marker": 100, "latest_ts": 99 },
+    { "name": "new message after the marker", "marker": 100, "latest_ts": 101 },
+    { "name": "cleared, no latest event", "marker": 100, "latest_ts": null }
+  ],
+  "keeps": [
+    { "name": "not cleared", "marker": null, "event_ts": 5 },
+    { "name": "event at the marker", "marker": 100, "event_ts": 100 },
+    { "name": "event before the marker", "marker": 100, "event_ts": 1 },
+    { "name": "event after the marker", "marker": 100, "event_ts": 101 }
+  ],
+  "clear": [
+    { "name": "first clear, no event", "content": null, "room_id": "!a:bipe.net.br", "ts": 100 },
+    { "name": "keeps other rooms and keys", "content": { "v": 2, "rooms": { "!b:bipe.net.br": { "ts": 50 }, "!c:bipe.net.br": "bad" } }, "room_id": "!a:bipe.net.br", "ts": 100 },
+    { "name": "second clear moves the marker forward", "content": { "rooms": { "!a:bipe.net.br": { "ts": 100 } } }, "room_id": "!a:bipe.net.br", "ts": 200 },
+    { "name": "marker never moves back", "content": { "rooms": { "!a:bipe.net.br": { "ts": 300 } } }, "room_id": "!a:bipe.net.br", "ts": 200 },
+    { "name": "malformed entry is replaced", "content": { "rooms": { "!a:bipe.net.br": { "ts": "x" } } }, "room_id": "!a:bipe.net.br", "ts": 200 },
+    { "name": "malformed rooms is replaced", "content": { "rooms": [] }, "room_id": "!a:bipe.net.br", "ts": 200 }
+  ]
+}

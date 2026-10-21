@@ -904,7 +904,7 @@
     },
     {
       "id": "app-lock",
-      "name": "App lock with the account PIN",
+      "name": "App lock, off by default, with the account PIN",
       "ios": {
         "status": "built",
         "evidence": [
@@ -1458,8 +1458,8 @@
     },
     {
       "area": "App lock",
-      "ios": "Element's lock screen, the account PIN, biometrics on",
-      "android": "Element's lock screen, 8-digit account PIN, biometric option",
+      "ios": "Off by default; switch in Sua conta. Element's lock screen, biometrics optional",
+      "android": "Off by default; switch in Sua conta. Element's lock screen, biometrics optional",
       "reason": "Element X lock screen per platform",
       "kind": "idiom"
     },

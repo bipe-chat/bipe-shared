@@ -1,0 +1,70 @@
+{
+  "$comment": "Sample content for the App Store screens (bipe#462). One entry per capture slug, text per locale. People are cast ids (product/cast.json); `me` is the viewer. Messages from people are in people's voice (\"pra\" is fine). tools/gen.mjs validates this file and writes BipeStoreFixtures.swift; the iOS screenshot mode reads it. `minute`: the time shown is 10:<minute> on the capture day.",
+  "version": 1,
+  "me": "gabi",
+  "locales": ["pt-BR", "en-US"],
+  "screens": {
+    "aviso-golpe": {
+      "chat": "golpista",
+      "lines": [
+        { "from": "golpista", "text": { "pt-BR": "Oi filha, tudo bem?", "en-US": "Hi sweetie, how are you?" } },
+        { "from": "me", "text": { "pt-BR": "Oi mãe! Tudo sim, e você?", "en-US": "Hi Mom! All good, you?" } },
+        { "from": "golpista", "text": { "pt-BR": "Troquei de número. Essa é minha conta nova, salva aí", "en-US": "I changed my number. This is my new account, save it" } },
+        { "from": "me", "text": { "pt-BR": "Mãe? O que houve com o outro?", "en-US": "Mom? What happened to the old one?" } },
+        { "from": "golpista", "text": { "pt-BR": "O outro celular caiu na água ontem", "en-US": "My old phone fell in the water yesterday" } },
+        { "from": "golpista", "text": { "pt-BR": "Preciso pagar um boleto hoje ainda, me faz um Pix que amanhã te devolvo", "en-US": "I have a bill due today, can you send me a Pix? I'll pay you back tomorrow" } },
+        { "from": "me", "text": { "pt-BR": "Peraí, vou te ligar no número antigo", "en-US": "Hold on, I'll call your old number" } }
+      ]
+    },
+    "pedidos": {
+      "requests": [
+        { "from": "golpista", "minute": 12 },
+        { "from": "camila", "minute": 3 },
+        { "from": "suporte", "minute": 1 },
+        { "from": "joao", "minute": 0 },
+        { "from": "falsapastora", "minute": 0 }
+      ]
+    },
+    "seu-arroba": {},
+    "conferir-pix": {
+      "code": "00020126440014br.gov.bcb.pix0122rafa.bikes@example.com5204000053039865406850.005802BR5915RAFAEL OLIVEIRA6014BELO HORIZONTE62070503***63044B2D"
+    },
+    "conferir-pix-alterado": {
+      "$comment": "The site scene's code: one letter of the key changed (rafa.blkes), so the CRC fails.",
+      "code": "00020126440014br.gov.bcb.pix0122rafa.blkes@example.com5204000053039865406850.005802BR5915RAFAEL OLIVEIRA6014BELO HORIZONTE62070503***63044B2D"
+    },
+    "grupos": {
+      "groups": [
+        { "id": "familia", "minute": 58, "unread": 5, "mentions": 1, "preview": { "pt-BR": "Vô Antônio: Domingo tem almoço aqui em casa", "en-US": "Grandpa Antônio: Sunday lunch at my place" } },
+        { "id": "avisos", "minute": 41, "unread": 1, "poll": { "pt-BR": "Cor da fachada", "en-US": "Paint color for the building" } },
+        { "id": "faculdade", "minute": 30, "unread": 12, "preview": { "pt-BR": "Bia: Sexta tem churrasco lá em casa", "en-US": "Bia: BBQ at my place on Friday" } },
+        { "id": "escola", "minute": 22, "unread": 3, "preview": { "pt-BR": "Tia Sandra: Reunião de pais na quinta, às 19h", "en-US": "Ms. Sandra: Parents' meeting on Thursday at 7 PM" } },
+        { "id": "igreja", "minute": 15, "preview": { "pt-BR": "Pastora Débora: Agora o grupo aceita só quem tem selo verificado", "en-US": "Pastor Débora: From now on, only verified accounts can join" } },
+        { "id": "condominio", "minute": 4, "preview": { "pt-BR": "Seu Valdir: A água volta às 14h", "en-US": "Valdir: The water comes back at 2 PM" } }
+      ]
+    },
+    "selo-cnpj": {
+      "chat": "clinica",
+      "lines": [
+        { "from": "me", "text": { "pt-BR": "Oi! Queria marcar uma consulta com a Dra. Ana", "en-US": "Hi! I'd like to book an appointment with Dr. Ana" } },
+        { "from": "clinica", "text": { "pt-BR": "Olá, Gabi! Tem horário amanhã às 14h. Pode ser?", "en-US": "Hi Gabi! There's a slot tomorrow at 2 PM. Does that work?" } },
+        { "from": "me", "text": { "pt-BR": "Pode sim", "en-US": "Yes, that works" } },
+        { "from": "clinica", "text": { "pt-BR": "Consulta marcada. Até amanhã!", "en-US": "Booked. See you tomorrow!" } },
+        { "from": "me", "text": { "pt-BR": "Preciso levar algum exame?", "en-US": "Should I bring any test results?" } },
+        { "from": "clinica", "text": { "pt-BR": "Só um documento com foto e a carteirinha do plano.", "en-US": "Just a photo ID and your health plan card." } },
+        { "from": "me", "text": { "pt-BR": "Combinado, obrigada!", "en-US": "Great, thanks!" } },
+        { "from": "clinica", "text": { "pt-BR": "Se precisar remarcar, é só responder aqui.", "en-US": "If you need to reschedule, just reply here." } }
+      ]
+    },
+    "stickers": {
+      "chat": "faculdade",
+      "lines": [
+        { "from": "bia", "text": { "pt-BR": "Sexta tem churrasco lá em casa", "en-US": "BBQ at my place on Friday" } },
+        { "from": "leo", "sticker": "rafa" },
+        { "from": "caio", "text": { "pt-BR": "Bora! Eu levo o carvão", "en-US": "I'm in! I'll bring the charcoal" } },
+        { "from": "duda", "sticker": "cida" },
+        { "from": "me", "sticker": "caramelo" }
+      ]
+    }
+  }
+}

@@ -6,12 +6,17 @@
 #
 # Flow for a pull request on branch B:
 #   regen    runs the generators and pushes the output to branch B in each sibling repo that changes,
-#            then opens a "Regenerate from bipe-shared" pull request there.
+#            then opens a "Regenerate from bipe-shared" pull request there. When branch B already has an
+#            open pull request in that repo (a feature change on the same branch), regen opens no new
+#            pull request: the feature pull request carries the generated files.
 #   lockstep checks the siblings on branch B, so the drift check sees the regenerated files.
 # After the merge to main:
-#   land     turns on auto-merge for those sibling pull requests. Each merges when its own checks pass.
-#   lockstep waits until those sibling pull requests merge, then checks the siblings on their default
-#            branch. Branch B alone is not enough: it misses the regen output of changes that merged
+#   land     turns on auto-merge for every open sibling pull request on branch B, feature pull requests
+#            too. Each merges when its own checks pass. In bipe it merges only the regen pull request.
+#   lockstep waits until the open sibling pull requests on branch B merge, then checks the siblings on
+#            their default branch. It waits for feature pull requests too: for bipe-shared#60 and #61 it
+#            skipped them (title filter), checked the default branches before the strings landed and
+#            failed. Branch B alone is not enough: it misses the regen output of changes that merged
 #            after B was cut (81ed044 failed so). After 30 minutes it checks branch B instead.
 name: Checks
 
@@ -134,7 +139,7 @@ jobs:
               open=""
               for repo in bipe-ios bipe-android bipe-api; do
                 open="${open}$(gh pr list -R "bipe-chat/${repo}" --head "$BRANCH" --state open \
-                  --json number,title --jq '.[] | select(.title | startswith("Regenerate from bipe-shared")) | " '"${repo}"'#\(.number)"')"
+                  --json number --jq '.[] | " '"${repo}"'#\(.number)"')"
               done
               if [ -z "$open" ]; then
                 BRANCH=""
@@ -190,16 +195,24 @@ jobs:
             exit 0
           fi
           for repo in bipe bipe-ios bipe-android bipe-api; do
+            # A feature pull request on branch B carries the regen commit when regen found it open.
+            # bipe is private on the free plan: no auto-merge and no required checks, so land merges
+            # there at once, and only the regen pull request.
+            filter='.[] | select(.isDraft | not) | .number'
+            [ "$repo" = bipe ] && filter='.[] | select(.title | startswith("Regenerate from bipe-shared")) | .number'
             numbers=$(GH_TOKEN="$TOKEN" gh pr list -R "bipe-chat/${repo}" --head "$BRANCH" --state open \
-              --json number,title --jq '.[] | select(.title | startswith("Regenerate from bipe-shared")) | .number')
+              --json number,title,isDraft --jq "$filter")
             for n in $numbers; do
-              # bipe is private on the free plan: no auto-merge and no required checks, so merge now.
               if [ "$repo" = bipe ]; then
                 GH_TOKEN="$TOKEN" gh pr merge "$n" -R "bipe-chat/${repo}" --squash
                 echo "${repo}#${n}: merged"
-              else
-                GH_TOKEN="$TOKEN" gh pr merge "$n" -R "bipe-chat/${repo}" --auto --squash
+              elif GH_TOKEN="$TOKEN" gh pr merge "$n" -R "bipe-chat/${repo}" --auto --squash; then
                 echo "${repo}#${n}: auto-merge on"
+              else
+                echo "::warning::${repo}#${n}: auto-merge failed. Merge it by hand."
               fi
             done
+            drafts=$(GH_TOKEN="$TOKEN" gh pr list -R "bipe-chat/${repo}" --head "$BRANCH" --state open \
+              --json number,isDraft --jq '.[] | select(.isDraft) | "#\(.number)"')
+            [ -z "$drafts" ] || echo "::warning::${repo} ${drafts}: draft on ${BRANCH}, not merged. Merge it by hand."
           done

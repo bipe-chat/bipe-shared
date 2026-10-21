@@ -1,6 +1,6 @@
 // Store listing check (bipe-chat/bipe#453): parses product/appstore.md and fails on a field over
 // its limit, a missing locale, a space after a keyword comma, an em or en dash, "pra" in Bipe
-// voice, a panel for a feature that is planned, or an unknown panel layout. Lists the App Review
+// voice, a panel for a feature that is planned, or a panel title or sub over its limit. Lists the App Review
 // placeholders that MZ fills.
 // Usage: node tools/check-appstore.mjs
 import { readFileSync } from "node:fs";

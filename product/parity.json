@@ -1263,8 +1263,12 @@
         ]
       },
       "android": {
-        "status": "planned",
-        "note": "On bipe-android PR #13 (factory/358-settings-ia), not merged to main yet. Set back to built with evidence when it merges."
+        "status": "built",
+        "evidence": [
+          "bipe-android/features/preferences/impl/src/main/kotlin/io/element/android/features/preferences/impl/bipe/BipeSettingsGroupView.kt",
+          "bipe-android/features/preferences/impl/src/main/kotlin/io/element/android/features/preferences/impl/root/PreferencesRootView.kt",
+          "bipe-android/libraries/bipe/src/main/kotlin/io/element/android/libraries/bipe/generated/BipeSettings.kt"
+        ]
       },
       "web": {
         "status": "n/a",

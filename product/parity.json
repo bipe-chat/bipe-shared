@@ -171,11 +171,23 @@
     {
       "id": "web-sign-in",
       "name": "Link a computer by QR code",
-      "ios": "planned",
-      "android": "planned",
+      "ios": {
+        "status": "built",
+        "evidence": [
+          "bipe-ios/Components/BipeKit/Sources/BipeKit/BipeWebLink.swift",
+          "bipe-ios/ElementX/Sources/FlowCoordinators/LinkNewDeviceFlowCoordinator.swift"
+        ]
+      },
+      "android": {
+        "status": "built",
+        "evidence": [
+          "bipe-android/libraries/bipe/src/main/kotlin/io/element/android/libraries/bipe/weblink/BipeLinkedDevicesNode.kt",
+          "bipe-android/features/linknewdevice/impl/src/main/kotlin/io/element/android/features/linknewdevice/impl/LinkNewDeviceFlowNode.kt"
+        ]
+      },
       "web": {
         "status": "n/a",
-        "reason": "Stock Element Web at chat.bipe.net.br shows the QR code (ADR 0116)"
+        "reason": "Stock Element Web at chat.bipe.net.br shows the QR code (ADR 0116); the Bipe welcome page has one button to it (bipe#472)"
       },
       "server": {
         "status": "built",

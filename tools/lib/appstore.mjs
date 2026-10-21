@@ -1,5 +1,5 @@
 // Store listing (bipe-chat/bipe#453): parses and checks product/appstore.md, the one source for the
-// App Store and Google Play text, the screenshot panels, the App Review notes, the App Privacy
+// App Store and Google Play text, the screenshot panels, the App Privacy
 // answers and the age rating. The check, the image builder and the upload tools all read the file
 // through parseAppstore(); no tool has its own parser.
 import { readFileSync } from "node:fs";
@@ -121,13 +121,6 @@ function renderedFields(listing) {
   for (const [locale, panels] of Object.entries(listing.screenshots))
     for (const p of panels) for (const col of ["title", "sub"]) out.push([`screenshots.${locale}.${p.slug}.${col}`, p[col] ?? "", locale]);
   return out;
-}
-
-// Placeholders such as <MZ> left in App Review. The upload tools refuse to send a section with one.
-export function placeholders(listing, section) {
-  return Object.entries(listing.other[section] ?? {}).flatMap(([field, text]) =>
-    (text.match(new RegExp(PLACEHOLDER_RE, "g")) ?? []).map((p) => `${section}.${field}: ${p}`),
-  );
 }
 
 // Returns a list of problems. An empty list means the listing is ready to upload as text.

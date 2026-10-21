@@ -1,12 +1,11 @@
 // Store listing check (bipe-chat/bipe#453): parses product/appstore.md and fails on a field over
 // its limit, a missing locale, a space after a keyword comma, an em or en dash, "pra" in Bipe
-// voice, a panel for a feature that is planned, or a panel title or sub over its limit. Lists the App Review
-// placeholders that MZ fills.
+// voice, a panel for a feature that is planned, or a panel title or sub over its limit.
 // Usage: node tools/check-appstore.mjs
 import { readFileSync } from "node:fs";
 import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
-import { checkAppstore, LOCALES, loadAppstore, placeholders } from "./lib/appstore.mjs";
+import { checkAppstore, LOCALES, loadAppstore } from "./lib/appstore.mjs";
 
 const root = join(dirname(fileURLToPath(import.meta.url)), "..");
 const listing = loadAppstore(root);
@@ -18,5 +17,3 @@ if (problems.length) {
 }
 const panels = listing.screenshots[LOCALES[0]].length;
 console.log(`check-appstore: ok (iOS and Android, ${LOCALES.join(" and ")}, ${panels} panels)`);
-const open = placeholders(listing, "App Review");
-if (open.length) console.log(`check-appstore: App Review still has ${open.length} placeholder(s) for MZ: ${open.join("; ")}`);

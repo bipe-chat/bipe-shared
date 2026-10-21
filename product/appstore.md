@@ -1,6 +1,6 @@
 # Bipe store listing
 
-The source of truth for the App Store and Google Play text, the screenshot panels, the App Review notes, the App Privacy answers and the age rating (bipe-chat/bipe#453). Tools read this file: `tools/lib/appstore.mjs` parses it, `node tools/check-appstore.mjs` checks it, and the upload tools (bipe-chat/bipe#456, bipe-chat/bipe#457) send it. Do not copy this text into another file.
+The source of truth for the App Store and Google Play text, the screenshot panels, the App Privacy answers and the age rating (bipe-chat/bipe#453). App Review details (contact, demo account, review notes) live in bipe-ios `Tools/Bipe/review-details.mjs`, with the secrets in the Keychain. Tools read this file: `tools/lib/appstore.mjs` parses it, `node tools/check-appstore.mjs` checks it, and the upload tools (bipe-chat/bipe#456, bipe-chat/bipe#457) send it. Do not copy this text into another file.
 
 Rules for the text:
 
@@ -222,38 +222,9 @@ Know who you're talking to. Scam warnings, and chats on servers in Brazil.
 | grupos | group-types | Quiet groups | A group only rings when it's about you. |
 | stickers | stickers | Stickers | Make a sticker from any photo, with no ads on any screen. |
 
-## App Review
-
-### notes
-
-Bipe is a messaging app for Brazil, built on the open Matrix protocol. It is a fork of Element X (AGPL), with Bipe's own features on top:
-
-- Scam warnings: an on-device check marks messages with scam signals (Pix requests, a new number, receipt screenshots, boletos).
-- Message requests: people who are not in your contacts arrive in Pedidos de conversa. The Bipe server enforces this.
-- Usernames: people find you by an @ handle and a bipe.chat/@ link or QR code. The phone number never shows.
-- Conferir no Bipe: share a Pix key, a Pix code or a QR code screenshot from another app to see what it contains.
-- Business seal: a company proves its CNPJ with an e-CNPJ signature.
-
-Sign-up needs an invite code while Bipe opens by invite. Code for review: <invite code from Keychain item bipe-review-invite>. Open the app, tap Tenho um convite, enter the code, then pick a username and an 8-digit senha. No email, phone number or SMS code is needed.
-
-To see a scam warning, message the account <review contact @handle> with "Oi mãe, troquei de número. Me faz um Pix pra essa chave?".
-
-Report and block: long-press a message to report it. Open a profile to block the person. Account deletion: <path in the app, after bipe-chat/bipe#363>.
-
-### contact
-
-- first_name: <MZ>
-- last_name: <MZ>
-- email: <MZ>
-- phone: <MZ>
-
-### demo_account_required
-
-false
-
 ## App Privacy
 
-Source: `bipe-ios/ElementX/SupportingFiles/PrivacyInfo.xcprivacy`, checked against `product/data.json` (20 October 2026). Bipe does not track (`NSPrivacyTracking` is false), so no data type is used for tracking.
+Source: `bipe-ios/ElementX/SupportingFiles/PrivacyInfo.xcprivacy`, checked against `product/data.json` and the app code (21 October 2026). Bipe does not track (`NSPrivacyTracking` is false), so no data type is used for tracking. The app has no telemetry (bipe-chat/bipe#55): no Sentry, no PostHog, so no crash or performance data leaves the phone.
 
 | Data type | Collected | Linked to the person | Purpose | data.json item |
 |---|---|---|---|---|
@@ -264,16 +235,14 @@ Source: `bipe-ios/ElementX/SupportingFiles/PrivacyInfo.xcprivacy`, checked again
 | Audio Data | Yes, voice messages | No | App Functionality | media |
 | User ID | Yes | Yes | App Functionality, Analytics | account, app-growth |
 | Device ID | Yes | Yes | App Functionality | account, push |
-| Product Interaction | Yes | No | Analytics | app-growth |
-| Crash Data | Yes, only when the person sends a problem report | No | App Functionality | problem-reports |
-| Performance Data | Yes | No | Analytics | problem-reports |
+| Product Interaction | Yes | Yes | Analytics | app-growth |
 | Other Diagnostic Data | Yes, only when the person sends a problem report | Yes | App Functionality | problem-reports |
 
-To check before the answers go to App Store Connect:
+Decisions (21 October 2026, mz can overrule):
 
-- `app-growth` stores a code derived from the account. If that code can be linked back to the account, Product Interaction is linked too.
-- Performance Data has no matching item in `data.json`. Remove it from `PrivacyInfo.xcprivacy` or add the item.
-- Messages are encrypted end to end. Apple counts only data the developer can read, so Precise Location, Contacts, Photos or Videos and Audio Data in encrypted chats may not count as collected. Unencrypted rooms (bipe-chat/bipe#78) still count.
+- Product Interaction is linked: `app-growth` keys each account by an HMAC with a secret the server holds, so the server can link it back to the account.
+- Crash Data and Performance Data are not collected: nothing in the app produces them since bipe-chat/bipe#55. Problem-report logs are Other Diagnostic Data.
+- Location, Contacts, Photos or Videos and Audio Data stay declared. In encrypted chats the server cannot read them, but unencrypted rooms (bipe-chat/bipe#78) still exist.
 
 ## Age rating
 

@@ -1,6 +1,6 @@
 // Writes bipe/docs/product.md from product/product.json, product/parity.json (the status per feature on
 // iOS, Android, web and server, ADR 0092) and product/distribution.json. Also validates
-// product/compare.json, product/scams.json, product/data.json and product/privacy.json.
+// product/compare.json, product/scams.json, product/data.json, product/privacy.json and product/accessibility.json.
 // Usage: node tools/gen-product-doc.mjs [--out <file>]
 import { readdirSync, readFileSync, writeFileSync } from "node:fs";
 import { dirname, join, resolve } from "node:path";
@@ -50,6 +50,14 @@ function iconNames() {
   return new Set([...union[1].matchAll(/"([a-z-]+)"/g)].map((m) => m[1]));
 }
 const ICONS = iconNames();
+// Milestone titles: the bold names in the table of ../bipe/docs/MILESTONES.md. Fails closed when none are found.
+function milestoneTitles() {
+  const src = readFileSync(join(root, "../bipe/docs/MILESTONES.md"), "utf8");
+  const titles = [...src.matchAll(/^\| \*\*([^*|]+)\*\* \|/gm)].map((m) => m[1]);
+  if (!titles.length) fail("milestone: no milestone titles found in bipe/docs/MILESTONES.md");
+  return new Set(titles);
+}
+const MILESTONES = milestoneTitles();
 const featureIcons = new Set();
 const featureIds = new Set(product.features.map((f) => f.id));
 // The status of a feature is its parity.json item of the same id (bipe#300). tools/parity.mjs checks the ledger itself.
@@ -64,6 +72,9 @@ for (const f of product.features) {
   if (!status(f.id)) fail(`feature ${f.id}: no item in parity.json`);
   for (const p of ["ios", "android"]) if (!STATUSES.includes(status(f.id)[p])) fail(`feature ${f.id}: parity.json ${p} status ${status(f.id)[p]}`);
   for (const p of ["web", "server"]) if (![...STATUSES, "n/a"].includes(status(f.id)[p])) fail(`feature ${f.id}: parity.json ${p} status ${status(f.id)[p]}`);
+  // The milestone that holds the feature's open work. A policy has none; every other feature names one.
+  const policy = status(f.id).ios === "policy" && status(f.id).android === "policy";
+  if (policy ? f.milestone !== null : !MILESTONES.has(f.milestone)) fail(`feature ${f.id}: milestone ${f.milestone} (${policy ? "null for a policy" : "a title in bipe/docs/MILESTONES.md"})`);
   for (const l of ["pt", "en"]) {
     if (!f[l]?.name || !f[l]?.body) fail(`feature ${f.id}: ${l} copy`);
     if (!f[l].points?.length || f[l].points.some((x) => !x)) fail(`feature ${f.id}: ${l}.points`);
@@ -331,7 +342,46 @@ for (const l of ["pt", "en"]) {
   if (!c.faq?.length || c.faq.some((x) => !x.q || !x.a)) fail(`privacy.${l}.faq`);
 }
 for (const k of ["explain", "limits", "faq"]) if (privacy.pt[k].length !== privacy.en[k].length) fail(`privacy: ${k} pt and en differ`);
-const text = JSON.stringify(product) + JSON.stringify(dist) + JSON.stringify(data) + JSON.stringify(privacy);
+// Accessibility register (product/accessibility.json, bipe-chat/bipe#491): what works per platform and the roadmap, for /acessibilidade/.
+const a11y = JSON.parse(readFileSync(join(root, "product/accessibility.json"), "utf8"));
+if (a11y.version !== 1 || !/^\d{4}-\d{2}-\d{2}$/.test(a11y.date)) fail("accessibility: version or date");
+for (const l of ["pt", "en"]) if (!/^[a-z0-9-]+$/.test(a11y.slug?.[l] ?? "")) fail(`accessibility: slug.${l}`);
+const A11Y_PLATFORMS = ["ios", "android", "web"];
+const A11Y_LEVELS = ["yes", "partial", "no", "na"];
+const A11Y_STAGES = ["next", "studying"];
+if (JSON.stringify(a11y.platforms) !== JSON.stringify(A11Y_PLATFORMS) || JSON.stringify(a11y.levels) !== JSON.stringify(A11Y_LEVELS)) fail("accessibility: platforms or levels");
+const stepIds = new Set();
+for (const r of a11y.roadmap) {
+  if (!/^[a-z-]+$/.test(r.id) || stepIds.has(r.id)) fail(`accessibility step ${r.id}: id`);
+  stepIds.add(r.id);
+  if (!A11Y_STAGES.includes(r.stage)) fail(`accessibility step ${r.id}: stage`);
+  // Every step names its issues on bipe-chat/bipe. The repo is private: issues never render on the site.
+  if (!r.issues?.length || r.issues.some((n) => !Number.isInteger(n) || n < 1)) fail(`accessibility step ${r.id}: issues`);
+  for (const l of ["pt", "en"]) if (!r[l]?.name || !r[l]?.body) fail(`accessibility step ${r.id}: ${l} copy`);
+}
+const a11yItemIds = new Set();
+for (const it of a11y.items) {
+  if (!/^[a-z-]+$/.test(it.id) || a11yItemIds.has(it.id)) fail(`accessibility item ${it.id}: id`);
+  a11yItemIds.add(it.id);
+  const keys = Object.keys(it.status ?? {});
+  if (keys.length !== A11Y_PLATFORMS.length || A11Y_PLATFORMS.some((p) => !A11Y_LEVELS.includes(it.status[p]))) fail(`accessibility item ${it.id}: status per platform`);
+  if (A11Y_PLATFORMS.every((p) => it.status[p] === "na")) fail(`accessibility item ${it.id}: applies to no platform`);
+  // An item that is partial or no on any platform names the roadmap steps that fix it.
+  const open = A11Y_PLATFORMS.some((p) => it.status[p] === "partial" || it.status[p] === "no");
+  if (!Array.isArray(it.next) || it.next.some((id) => !stepIds.has(id)) || (open && !it.next.length)) fail(`accessibility item ${it.id}: next must name roadmap steps${open ? " (partial or no)" : ""}`);
+  for (const l of ["pt", "en"]) if (!it[l]?.name || !it[l]?.body) fail(`accessibility item ${it.id}: ${l} copy`);
+}
+for (const l of ["pt", "en"]) {
+  const c = a11y[l];
+  for (const k of ["nav", "title", "description", "lede", "rulesTitle", "tableTitle", "tableLede", "featureLabel", "roadmapTitle", "roadmapLede", "limitsTitle", "reportTitle", "report", "reportLink"]) if (!c?.[k]) fail(`accessibility.${l}.${k}`);
+  for (const p of A11Y_PLATFORMS) if (!c.platformLabels?.[p]) fail(`accessibility.${l}.platformLabels.${p}`);
+  for (const v of A11Y_LEVELS) if (!c.levelLabels?.[v]) fail(`accessibility.${l}.levelLabels.${v}`);
+  for (const v of A11Y_STAGES) if (!c.stageLabels?.[v]) fail(`accessibility.${l}.stageLabels.${v}`);
+  if (!c.rules?.length || c.rules.some((x) => !x)) fail(`accessibility.${l}.rules`);
+  if (!c.limits?.length || c.limits.some((x) => !x)) fail(`accessibility.${l}.limits`);
+}
+for (const k of ["rules", "limits"]) if (a11y.pt[k].length !== a11y.en[k].length) fail(`accessibility: ${k} pt and en differ`);
+const text = JSON.stringify(product) + JSON.stringify(dist) + JSON.stringify(data) + JSON.stringify(privacy) + JSON.stringify(a11y);
 if (/[–—]/.test(text)) fail("rendered copy must not contain em or en dashes");
 
 const label = { testing: "TestFlight", built: "Built", planned: "Planned", policy: "Policy", "n/a": "n/a" };
@@ -365,9 +415,9 @@ const lines = [
   "",
   "Status per surface comes from `bipe-shared/product/parity.json` (ADR 0092).",
   "",
-  "| Feature | Area | iOS | Android | Web | Server | What it does |",
-  "|---|---|---|---|---|---|---|",
-  ...product.features.map((f) => `| ${f.en.name} (\`${f.id}\`) | ${f.area} | ${SURFACES.map((s) => label[status(f.id)[s]]).join(" | ")} | ${f.en.body} |`),
+  "| Feature | Area | iOS | Android | Web | Server | Milestone | What it does |",
+  "|---|---|---|---|---|---|---|---|",
+  ...product.features.map((f) => `| ${f.en.name} (\`${f.id}\`) | ${f.area} | ${SURFACES.map((s) => label[status(f.id)[s]]).join(" | ")} | ${f.milestone ?? "none"} | ${f.en.body} |`),
   "",
   "## ICPs",
   "",
@@ -427,6 +477,20 @@ const lines = [
   ...scams.types.map((t) => `| ${t.en.heading} (\`${t.id}\`) | ${t.group} | /golpes-no-brasil/${t.slug.pt}/ | ${t.stats.join(", ") || "no figure"} | ${t.describedBy.join(", ")} | ${t.protect.map((id) => `${id} (${label[status(id).ios]})`).join(", ")} | ${t.scene} |`),
   "",
   `Outside Bipe (hub list, no Bipe card): ${scams.outside.map((o) => `${o.en.name} (${o.source})`).join("; ")}.`,
+  "",
+  "## Accessibility",
+  "",
+  `Register \`product/accessibility.json\`, reviewed ${a11y.date} by reading the code. Page \`/${a11y.slug.pt}/\` and \`/en/${a11y.slug.en}/\`. Tracking: bipe-chat/bipe#504.`,
+  "",
+  "| Item | iOS | Android | Site | Next |",
+  "|---|---|---|---|---|",
+  ...a11y.items.map((it) => `| ${it.en.name} (\`${it.id}\`) | ${A11Y_PLATFORMS.map((p) => a11y.en.levelLabels[it.status[p]]).join(" | ")} | ${it.next.join(", ") || "none"} |`),
+  "",
+  "### Roadmap",
+  "",
+  "| Step | Stage | Issues | What |",
+  "|---|---|---|---|",
+  ...a11y.roadmap.map((r, i) => `| ${i + 1}. ${r.en.name} (\`${r.id}\`) | ${a11y.en.stageLabels[r.stage]} | ${r.issues.map((n) => `#${n}`).join(", ")} | ${r.en.body} |`),
   "",
   "## Distribution",
   "",

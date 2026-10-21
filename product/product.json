@@ -1,5 +1,5 @@
 {
-  "$comment": "What Bipe is and what it does, for the website, store listings and docs. One source of truth: bipe-web renders it, tools/gen-product-doc.mjs writes bipe/docs/product.md from it. status per platform: testing (in the TestFlight or beta build), planned (designed, not in a build), policy (a promise about how Bipe runs, not a feature). Never mark a feature testing before it is in a build. Copy passed a humanizer pass by hand (no em dashes, plain words). Draft until the brand review. Tentpoles: the reasons to switch, in order. demos: simulations on the tentpole page, in order; the first one leads.",
+  "$comment": "What Bipe is and what it does, for the website, store listings and docs. One source of truth: bipe-web renders it, tools/gen-product-doc.mjs writes bipe/docs/product.md from it. status per platform: testing (in the TestFlight or beta build), built (merged on that platform, not in a tester build), planned (designed, not in a build), policy (a promise about how Bipe runs, not a feature). milestone: the title of the milestone in bipe/docs/MILESTONES.md that holds the open work for the feature, on either platform; null for a policy. Never mark a feature testing before it is in a build. Copy passed a humanizer pass by hand (no em dashes, plain words). Draft until the brand review. Tentpoles: the reasons to switch, in order. demos: simulations on the tentpole page, in order; the first one leads.",
   "version": 1,
   "promise": {
     "pt": {
@@ -381,6 +381,7 @@
       "id": "scam-alerts",
       "area": "safety",
       "icon": "warning",
+      "milestone": "M2 Android beta",
       "slug": {
         "pt": "aviso-de-golpe",
         "en": "scam-warnings"
@@ -425,6 +426,7 @@
       "id": "requests",
       "area": "safety",
       "icon": "chat",
+      "milestone": "M2 Android beta",
       "slug": {
         "pt": "pedidos-de-conversa",
         "en": "message-requests"
@@ -456,6 +458,7 @@
       "id": "money-pause",
       "area": "safety",
       "icon": "hourglass",
+      "milestone": "M3 Store launch",
       "slug": {
         "pt": "pausa-antes-de-pagar",
         "en": "pause-before-paying"
@@ -487,6 +490,7 @@
       "id": "no-sms",
       "area": "safety",
       "icon": "sim",
+      "milestone": "M2 Android beta",
       "slug": {
         "pt": "sem-codigo-por-sms",
         "en": "no-sms-codes"
@@ -517,6 +521,7 @@
       "id": "phone-account",
       "area": "safety",
       "icon": "key",
+      "milestone": "M2 Android beta",
       "slug": {
         "pt": "conta-no-celular",
         "en": "account-on-your-phone"
@@ -550,6 +555,7 @@
       "id": "new-phone",
       "area": "safety",
       "icon": "devices",
+      "milestone": "M3 Store launch",
       "slug": {
         "pt": "celular-novo",
         "en": "new-phone"
@@ -585,6 +591,7 @@
       "id": "verified-badge",
       "area": "identity",
       "icon": "badge",
+      "milestone": "M3 Store launch",
       "slug": {
         "pt": "selo-verificado",
         "en": "verified-seal"
@@ -627,6 +634,7 @@
       "id": "cnpj-badge",
       "area": "identity",
       "icon": "bank",
+      "milestone": "Work side: one speaker",
       "slug": {
         "pt": "selo-de-cnpj",
         "en": "business-seal"
@@ -663,6 +671,7 @@
       "id": "reserved-names",
       "area": "identity",
       "icon": "shield",
+      "milestone": "M3 Store launch",
       "slug": {
         "pt": "nomes-reservados",
         "en": "reserved-names"
@@ -698,6 +707,7 @@
       "id": "lookalikes",
       "area": "identity",
       "icon": "letters",
+      "milestone": "M3 Store launch",
       "slug": {
         "pt": "letras-disfarcadas",
         "en": "lookalike-letters"
@@ -734,6 +744,7 @@
       "id": "family-check",
       "area": "identity",
       "icon": "person-question",
+      "milestone": "M4 Groups pilot",
       "slug": {
         "pt": "e-a-mae-mesmo",
         "en": "is-that-really-mom"
@@ -773,6 +784,7 @@
       "id": "handles",
       "area": "privacy",
       "icon": "at",
+      "milestone": "M2 Android beta",
       "slug": {
         "pt": "nome-de-usuario",
         "en": "usernames"
@@ -810,6 +822,7 @@
       "id": "profile-links",
       "area": "privacy",
       "icon": "qr",
+      "milestone": "M2 Android beta",
       "slug": {
         "pt": "link-e-qr-code",
         "en": "link-and-qr-code"
@@ -845,6 +858,7 @@
       "id": "public-profile",
       "area": "chat",
       "icon": "person",
+      "milestone": "M2 Android beta",
       "slug": {
         "pt": "perfil-publico",
         "en": "public-profile"
@@ -880,6 +894,7 @@
       "id": "invites",
       "area": "chat",
       "icon": "user-plus",
+      "milestone": "M2 Android beta",
       "slug": {
         "pt": "convites",
         "en": "invites"
@@ -916,6 +931,7 @@
       "id": "phone-discovery",
       "area": "chat",
       "icon": "search",
+      "milestone": "M3 Store launch",
       "slug": {
         "pt": "ache-seus-contatos",
         "en": "find-your-contacts"
@@ -946,6 +962,7 @@
       "id": "e2ee",
       "area": "privacy",
       "icon": "lock",
+      "milestone": "M2 Android beta",
       "slug": {
         "pt": "ponta-a-ponta",
         "en": "end-to-end"
@@ -976,6 +993,7 @@
       "id": "no-ads",
       "area": "privacy",
       "icon": "eye-off",
+      "milestone": null,
       "slug": {
         "pt": "sem-anuncio",
         "en": "no-ads"
@@ -1006,6 +1024,7 @@
       "id": "free",
       "area": "privacy",
       "icon": "gift",
+      "milestone": null,
       "slug": {
         "pt": "gratuito",
         "en": "free"
@@ -1036,6 +1055,7 @@
       "id": "brazil-servers",
       "area": "privacy",
       "icon": "server",
+      "milestone": null,
       "slug": {
         "pt": "servidor-no-brasil",
         "en": "servers-in-brazil"
@@ -1066,6 +1086,7 @@
       "id": "open-source",
       "area": "privacy",
       "icon": "code",
+      "milestone": null,
       "slug": {
         "pt": "codigo-aberto",
         "en": "open-source"
@@ -1096,6 +1117,7 @@
       "id": "pix-cards",
       "area": "payments",
       "icon": "pix",
+      "milestone": "Later",
       "slug": {
         "pt": "pedido-de-pix",
         "en": "pix-requests"
@@ -1127,6 +1149,7 @@
       "id": "pix-charges",
       "area": "payments",
       "icon": "receipt",
+      "milestone": "Later",
       "slug": {
         "pt": "cobranca-com-cnpj",
         "en": "business-pix-charges"
@@ -1158,6 +1181,7 @@
       "id": "agenda",
       "area": "chat",
       "icon": "calendar",
+      "milestone": "Work side: one speaker",
       "slug": {
         "pt": "agenda",
         "en": "bookings"
@@ -1198,6 +1222,7 @@
       "id": "catalog",
       "area": "chat",
       "icon": "bag",
+      "milestone": "Work side: one speaker",
       "slug": {
         "pt": "catalogo",
         "en": "catalog"
@@ -1236,6 +1261,7 @@
       "id": "orders",
       "area": "chat",
       "icon": "box",
+      "milestone": "Work side: one speaker",
       "slug": {
         "pt": "pedidos",
         "en": "orders"
@@ -1274,6 +1300,7 @@
       "id": "quotes",
       "area": "chat",
       "icon": "document",
+      "milestone": "Work side: one speaker",
       "slug": {
         "pt": "orcamento",
         "en": "quotes"
@@ -1312,6 +1339,7 @@
       "id": "queue",
       "area": "chat",
       "icon": "ticket",
+      "milestone": "Work side: one speaker",
       "slug": {
         "pt": "fila-virtual",
         "en": "queue"
@@ -1350,6 +1378,7 @@
       "id": "pix-check",
       "area": "payments",
       "icon": "pix-check",
+      "milestone": "M2 Android beta",
       "slug": {
         "pt": "conferir-pix",
         "en": "pix-check"
@@ -1382,6 +1411,7 @@
       "id": "stickers",
       "area": "chat",
       "icon": "sticker",
+      "milestone": "M4 Groups pilot",
       "slug": {
         "pt": "stickers",
         "en": "stickers"
@@ -1416,6 +1446,7 @@
       "id": "group-types",
       "area": "community",
       "icon": "group",
+      "milestone": "M4 Groups pilot",
       "slug": {
         "pt": "grupos-sem-barulho",
         "en": "quiet-groups"
@@ -1450,6 +1481,7 @@
       "id": "polls",
       "area": "community",
       "icon": "poll",
+      "milestone": "M2 Android beta",
       "slug": {
         "pt": "enquetes",
         "en": "polls"
@@ -1481,6 +1513,7 @@
       "id": "communities",
       "area": "community",
       "icon": "house",
+      "milestone": "M4 Groups pilot",
       "slug": {
         "pt": "comunidades",
         "en": "communities"
@@ -1513,6 +1546,7 @@
       "id": "verified-groups",
       "area": "community",
       "icon": "group-badge",
+      "milestone": "M4 Groups pilot",
       "slug": {
         "pt": "grupo-so-com-verificados",
         "en": "verified-only-groups"
@@ -2426,14 +2460,15 @@
       "tiers": {
         "small": {
           "name": "Pequeno negócio",
-          "who": "MEI ativo ou microempresa (ME), pelos dados da Receita.",
+          "who": "MEI ativo ou microempresa (ME), pelos dados da Receita, ou quem trabalha por conta própria sem CNPJ.",
           "billing": "Sem mensalidade.",
           "points": [
             "Selo de CNPJ verificado e nome reservado.",
             "Caixa de entrada com 2 atendentes.",
             "Perguntas com opções e API.",
             "Suporte pelas páginas de ajuda.",
-            "O selo segue as mesmas regras dos outros planos: o CPF verificado do dono precisa aparecer entre os sócios do CNPJ na Receita."
+            "O selo segue as mesmas regras dos outros planos: o CPF verificado do dono precisa aparecer entre os sócios do CNPJ na Receita.",
+            "Sem CNPJ, a conta da empresa tem as mesmas ferramentas, mas fica sem selo e sem cobrança por Pix."
           ]
         },
         "company": {
@@ -2511,14 +2546,15 @@
       "tiers": {
         "small": {
           "name": "Small business",
-          "who": "An active MEI or a micro company (ME), from Receita's data.",
+          "who": "An active MEI or a micro company (ME), from Receita's data, or someone who works on their own with no CNPJ.",
           "billing": "No monthly fee.",
           "points": [
             "Verified CNPJ seal and reserved name.",
             "Inbox with 2 agents.",
             "Questions with options and the API.",
             "Support through the help pages.",
-            "The seal follows the same rules as every other plan: the owner's verified CPF must be one of the partners in the CNPJ record at Receita."
+            "The seal follows the same rules as every other plan: the owner's verified CPF must be one of the partners in the CNPJ record at Receita.",
+            "With no CNPJ, the company account has the same tools, but no seal and no Pix charges."
           ]
         },
         "company": {
@@ -2652,8 +2688,8 @@
         "note": "Usamos esses dados só para responder e para entender quanto as organizações pagam hoje. A gente guarda tudo no Starlings, o sistema de trabalho da Envisioning, em servidores na União Europeia, e apaga depois de um ano."
       },
       "small": {
-        "heading": "MEI ou microempresa?",
-        "body": "Você não precisa do formulário. Baixe o app e crie a conta da empresa em Você > Sua conta > Criar conta da empresa. O plano Pequeno negócio não tem mensalidade.",
+        "heading": "MEI, microempresa ou autônomo?",
+        "body": "Você não precisa do formulário. Baixe o app e crie a conta da empresa em Você > Sua conta > Criar conta da empresa. Dá para criar sem CNPJ. O plano Pequeno negócio não tem mensalidade.",
         "button": "Baixar o app"
       }
     },
@@ -2739,8 +2775,8 @@
         "note": "We use this only to answer you and to learn what organisations pay today. We keep it in Starlings, Envisioning's work system, on servers in the European Union, and delete it after one year."
       },
       "small": {
-        "heading": "MEI or micro company?",
-        "body": "You don't need the form. Get the app and create the company account in You > Your account > Create a company account. The Small business plan has no monthly fee.",
+        "heading": "MEI, micro company or self-employed?",
+        "body": "You don't need the form. Get the app and create the company account in You > Your account > Create a company account. You can create it with no CNPJ. The Small business plan has no monthly fee.",
         "button": "Get the app"
       }
     }

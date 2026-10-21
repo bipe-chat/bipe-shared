@@ -2,11 +2,12 @@
 # Prints the head branch of the pull request that produced GITHUB_SHA on main, or nothing.
 # The commits/{sha}/pulls endpoint can return an empty list for a few seconds after a merge
 # (bipe-shared 81ed044: land saw no pull request, so the sibling regen pull requests stayed open).
-# Retry it, then fall back to the "(#N)" or "#N" in the commit subject.
+# Retry it, then fall back to the "(#N)" or "#N" in the commit subject. A failed call counts as an
+# empty list: one "unexpected end of JSON input" stopped lockstep for bipe-shared 9038091.
 set -euo pipefail
 
 for _ in 1 2 3 4 5 6; do
-  branch=$(gh api "repos/${GITHUB_REPOSITORY}/commits/${GITHUB_SHA}/pulls" --jq '.[0].head.ref // empty')
+  branch=$(gh api "repos/${GITHUB_REPOSITORY}/commits/${GITHUB_SHA}/pulls" --jq '.[0].head.ref // empty') || branch=""
   if [ -n "$branch" ]; then
     echo "$branch"
     exit 0

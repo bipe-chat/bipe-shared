@@ -4422,7 +4422,7 @@ components:
       properties:
         user_id: { type: string, description: "Random Matrix ID, e.g. @k7q2m9x4tpab:bipe.net.br" }
         handle: { type: string }
-        inviter_user_id: { type: string, description: "Present when a personal invite was used. The app can offer a chat with the inviter." }
+        inviter_user_id: { type: string, description: "Present when a personal invite was used for a personal account. The app can offer a chat with the inviter. Never present for a company account (ADR 0138 rule 2)." }
         password: { type: string, description: "Device-first only. The hidden MAS password, shown once. Keep it on this device only." }
         recovery_token: { type: string, description: "Device-first only. base64url, 32 random bytes, shown once. Sync it (iCloud Keychain, Block Store)." }
     DiscoverySettings:

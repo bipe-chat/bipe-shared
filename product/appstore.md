@@ -1,6 +1,6 @@
 # Bipe store listing
 
-The source of truth for the App Store and Google Play text, the screenshot panels, the App Review notes, the App Privacy answers and the age rating (bipe-chat/bipe#453). Tools read this file: `tools/lib/appstore.mjs` parses it, `node tools/check-appstore.mjs` checks it, and the upload tools (bipe-chat/bipe#456, bipe-chat/bipe#457) send it. Do not copy this text into another file.
+The source of truth for the App Store and Google Play text, the screenshot panels, the App Privacy answers and the age rating (bipe-chat/bipe#453). App Review details (contact, demo account, review notes) live in bipe-ios `Tools/Bipe/review-details.mjs`, with the secrets in the Keychain. Tools read this file: `tools/lib/appstore.mjs` parses it, `node tools/check-appstore.mjs` checks it, and the upload tools (bipe-chat/bipe#456, bipe-chat/bipe#457) send it. Do not copy this text into another file.
 
 Rules for the text:
 
@@ -14,7 +14,7 @@ Format:
 - `## Platform: <iOS|Android> (<bundle id>)`. The production IDs wait for bipe-chat/bipe#419 and bipe-chat/bipe#157. Until then both blocks say `chat.bipe.app`.
 - `### <field>` before the first locale is a field for every locale. `### pt-BR` and `### en-US` start a locale. `#### <field>` is a field of that locale.
 - Android `full_description` is the iOS `description` of the same locale, unless the Android locale sets its own.
-- `## Screenshots`: one table per locale, panels in store order. `feature` is a feature id in `product.json`, or `-` for a text panel with no capture. Text between `*asterisks*` is the highlight. A headline is one sentence. `layout` and `callout` are optional and set how the image builder draws the panel (bipe-chat/bipe#463): `layout` is `hero`, `phone` or `text` (the same in every locale; the builder has no drawing for `text` yet); `callout` is a short label on the part of the screen that the panel shows larger; leave it empty when the screen is readable at store size, and the panel shows no callout.
+- `## Screenshots`: one table per locale, panels in store order. `feature` is a feature id in `product.json`, or `-` for a panel with no capture: the image builder draws the Brazil network there. `title` is the feature name, short enough for 2 lines at store size. `sub` is one sentence of at most 2 lines. No highlight markup (bipe-chat/bipe#463).
 
 Limits: name and subtitle 30, promotional text 170, description 4000, keywords 100 (comma separated, no space after a comma), Play title 30, Play short description 80, Play full description 4000.
 
@@ -198,60 +198,33 @@ Know who you're talking to. Scam warnings, and chats on servers in Brazil.
 
 ### pt-BR
 
-| slug | feature | layout | headline | sub | callout |
-|---|---|---|---|---|---|
-| aviso-golpe | scam-alerts | hero | Um aviso quando tem *cara de golpe* | A checagem roda no seu celular | Aviso na conversa |
-| pedidos | requests | phone | Contato novo *chega como pedido* | Você decide se aceita | Você vê antes de aceitar |
-| conferir-pix | pix-check | phone | Confira o Pix *antes de pagar* | Veja o nome e o valor que estão no código | Nome e valor do código |
-| seu-arroba | handles | phone | Seu @, *não seu número* | Suas conversas ficam em servidores no Brasil |  |
-| selo-cnpj | cnpj-badge | phone | O nome que está *na Receita* | Empresas mostram o CNPJ verificado | Nome da Receita |
-| grupos | group-types | phone | Grupo que só toca *quando é com você* | Enquetes para decidir junto |  |
-| stickers | stickers | phone | Sticker de *qualquer foto* | E sem anúncio em nenhuma tela |  |
+| slug | feature | title | sub |
+|---|---|---|---|
+| aviso-golpe | scam-alerts | Aviso de golpe | Quando uma mensagem tem cara de golpe, o Bipe avisa. |
+| pedidos | requests | Pedidos de conversa | Quem não é seu contato chega como pedido, e você decide. |
+| conferir-pix | pix-check | Confira o Pix | Veja o nome e o valor do código antes de pagar. |
+| dados-no-brasil | - | Seus dados no Brasil | As conversas ficam em servidores no Brasil, de empresas brasileiras. |
+| seu-arroba | handles | Seu @, sem número | O link e o QR code abrem a conversa, sem mostrar seu número. |
+| selo-cnpj | cnpj-badge | Selo de CNPJ | Empresas mostram o nome que está na Receita. |
+| grupos | group-types | Grupos sem barulho | O grupo só toca quando é com você. |
+| stickers | stickers | Stickers | Faça um sticker de qualquer foto, sem anúncio em nenhuma tela. |
 
 ### en-US
 
-| slug | feature | layout | headline | sub | callout |
-|---|---|---|---|---|---|
-| aviso-golpe | scam-alerts | hero | A warning when it *looks like a scam* | The check runs on your phone | In the chat |
-| pedidos | requests | phone | New contacts *arrive as a request* | You decide whether to accept | You see it before you accept |
-| conferir-pix | pix-check | phone | Check the Pix *before you pay* | See the name and amount in the code | Name and amount in the code |
-| seu-arroba | handles | phone | Your @, *not your number* | Your chats live on servers in Brazil |  |
-| selo-cnpj | cnpj-badge | phone | The name *on the register* | Businesses show their verified CNPJ | Name on the register |
-| grupos | group-types | phone | Groups that ring *only when it's about you* | Polls to decide together |  |
-| stickers | stickers | phone | Stickers from *any photo* | And no ads on any screen |  |
-
-## App Review
-
-### notes
-
-Bipe is a messaging app for Brazil, built on the open Matrix protocol. It is a fork of Element X (AGPL), with Bipe's own features on top:
-
-- Scam warnings: an on-device check marks messages with scam signals (Pix requests, a new number, receipt screenshots, boletos).
-- Message requests: people who are not in your contacts arrive in Pedidos de conversa. The Bipe server enforces this.
-- Usernames: people find you by an @ handle and a bipe.chat/@ link or QR code. The phone number never shows.
-- Conferir no Bipe: share a Pix key, a Pix code or a QR code screenshot from another app to see what it contains.
-- Business seal: a company proves its CNPJ with an e-CNPJ signature.
-
-Sign-up needs an invite code while Bipe opens by invite. Code for review: <invite code from Keychain item bipe-review-invite>. Open the app, tap Tenho um convite, enter the code, then pick a username and an 8-digit senha. No email, phone number or SMS code is needed.
-
-To see a scam warning, message the account <review contact @handle> with "Oi mãe, troquei de número. Me faz um Pix pra essa chave?".
-
-Report and block: long-press a message to report it. Open a profile to block the person. Account deletion: <path in the app, after bipe-chat/bipe#363>.
-
-### contact
-
-- first_name: <MZ>
-- last_name: <MZ>
-- email: <MZ>
-- phone: <MZ>
-
-### demo_account_required
-
-false
+| slug | feature | title | sub |
+|---|---|---|---|
+| aviso-golpe | scam-alerts | Scam warnings | When a message looks like a scam, Bipe warns you. |
+| pedidos | requests | Message requests | People not in your contacts arrive as a request, and you decide. |
+| conferir-pix | pix-check | Check the Pix | See the name and the amount in the code before you pay. |
+| dados-no-brasil | - | Your data in Brazil | Chats live on servers in Brazil, run by Brazilian companies. |
+| seu-arroba | handles | Your @, no number | Your link and QR code open the chat without showing your number. |
+| selo-cnpj | cnpj-badge | CNPJ seal | Businesses show the name on the federal register. |
+| grupos | group-types | Quiet groups | A group only rings when it's about you. |
+| stickers | stickers | Stickers | Make a sticker from any photo, with no ads on any screen. |
 
 ## App Privacy
 
-Source: `bipe-ios/ElementX/SupportingFiles/PrivacyInfo.xcprivacy`, checked against `product/data.json` (20 October 2026). Bipe does not track (`NSPrivacyTracking` is false), so no data type is used for tracking.
+Source: `bipe-ios/ElementX/SupportingFiles/PrivacyInfo.xcprivacy`, checked against `product/data.json` and the app code (21 October 2026). Bipe does not track (`NSPrivacyTracking` is false), so no data type is used for tracking. The app has no telemetry (bipe-chat/bipe#55): no Sentry, no PostHog, so no crash or performance data leaves the phone.
 
 | Data type | Collected | Linked to the person | Purpose | data.json item |
 |---|---|---|---|---|
@@ -262,16 +235,14 @@ Source: `bipe-ios/ElementX/SupportingFiles/PrivacyInfo.xcprivacy`, checked again
 | Audio Data | Yes, voice messages | No | App Functionality | media |
 | User ID | Yes | Yes | App Functionality, Analytics | account, app-growth |
 | Device ID | Yes | Yes | App Functionality | account, push |
-| Product Interaction | Yes | No | Analytics | app-growth |
-| Crash Data | Yes, only when the person sends a problem report | No | App Functionality | problem-reports |
-| Performance Data | Yes | No | Analytics | problem-reports |
+| Product Interaction | Yes | Yes | Analytics | app-growth |
 | Other Diagnostic Data | Yes, only when the person sends a problem report | Yes | App Functionality | problem-reports |
 
-To check before the answers go to App Store Connect:
+Decisions (21 October 2026, mz can overrule):
 
-- `app-growth` stores a code derived from the account. If that code can be linked back to the account, Product Interaction is linked too.
-- Performance Data has no matching item in `data.json`. Remove it from `PrivacyInfo.xcprivacy` or add the item.
-- Messages are encrypted end to end. Apple counts only data the developer can read, so Precise Location, Contacts, Photos or Videos and Audio Data in encrypted chats may not count as collected. Unencrypted rooms (bipe-chat/bipe#78) still count.
+- Product Interaction is linked: `app-growth` keys each account by an HMAC with a secret the server holds, so the server can link it back to the account.
+- Crash Data and Performance Data are not collected: nothing in the app produces them since bipe-chat/bipe#55. Problem-report logs are Other Diagnostic Data.
+- Location, Contacts, Photos or Videos and Audio Data stay declared. In encrypted chats the server cannot read them, but unencrypted rooms (bipe-chat/bipe#78) still exist.
 
 ## Age rating
 

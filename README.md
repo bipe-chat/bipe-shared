@@ -58,7 +58,7 @@ The parity ledger (ADR 0092). `product/parity.json` holds each capability's stat
 node tools/check-appstore.mjs
 ```
 
-The store listing (bipe-chat/bipe#453). `product/appstore.md` holds the App Store and Google Play text in pt-BR and en-US, the screenshot panels, the App Review notes, the App Privacy answers and the age rating. `tools/lib/appstore.mjs` parses it for every tool that needs it. The check fails on a field over its store limit, a missing locale, a space after a keyword comma, an em or en dash, "pra" in Bipe voice, or a panel for a feature that is not built on both apps. It lists the App Review placeholders that MZ fills before an upload. `tools/appstore.test.mjs` runs it in CI.
+The store listing (bipe-chat/bipe#453). `product/appstore.md` holds the App Store and Google Play text in pt-BR and en-US, the screenshot panels, the App Privacy answers and the age rating. App Review details are bipe-ios `Tools/Bipe/review-details.mjs`. `tools/lib/appstore.mjs` parses it for every tool that needs it. The check fails on a field over its store limit, a missing locale, a space after a keyword comma, an em or en dash, "pra" in Bipe voice, or a panel for a feature that is not built on both apps. `tools/appstore.test.mjs` runs it in CI.
 
 ### Hook and CI
 

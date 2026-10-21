@@ -1,6 +1,6 @@
 # Bipe store listing
 
-The source of truth for the App Store and Google Play text, the screenshot panels, the App Review notes, the App Privacy answers and the age rating (bipe-chat/bipe#453). Tools read this file: `tools/lib/appstore.mjs` parses it, `node tools/check-appstore.mjs` checks it, and the upload tools (bipe-chat/bipe#456, bipe-chat/bipe#457) send it. Do not copy this text into another file.
+The source of truth for the App Store and Google Play text, the screenshot panels, the App Privacy answers and the age rating (bipe-chat/bipe#453). App Review details (contact, demo account, review notes) live in bipe-ios `Tools/Bipe/review-details.mjs`, with the secrets in the Keychain. Tools read this file: `tools/lib/appstore.mjs` parses it, `node tools/check-appstore.mjs` checks it, and the upload tools (bipe-chat/bipe#456, bipe-chat/bipe#457) send it. Do not copy this text into another file.
 
 Rules for the text:
 
@@ -221,35 +221,6 @@ Know who you're talking to. Scam warnings, and chats on servers in Brazil.
 | selo-cnpj | cnpj-badge | CNPJ seal | Businesses show the name on the federal register. |
 | grupos | group-types | Quiet groups | A group only rings when it's about you. |
 | stickers | stickers | Stickers | Make a sticker from any photo, with no ads on any screen. |
-
-## App Review
-
-### notes
-
-Bipe is a messaging app for Brazil, built on the open Matrix protocol. It is a fork of Element X (AGPL), with Bipe's own features on top:
-
-- Scam warnings: an on-device check marks messages with scam signals (Pix requests, a new number, receipt screenshots, boletos).
-- Message requests: people who are not in your contacts arrive in Pedidos de conversa. The Bipe server enforces this.
-- Usernames: people find you by an @ handle and a bipe.chat/@ link or QR code. The phone number never shows.
-- Conferir no Bipe: share a Pix key, a Pix code or a QR code screenshot from another app to see what it contains.
-- Business seal: a company proves its CNPJ with an e-CNPJ signature.
-
-Sign-up needs an invite code while Bipe opens by invite. Code for review: <invite code from Keychain item bipe-review-invite>. Open the app, tap Tenho um convite, enter the code, then pick a username and an 8-digit senha. No email, phone number or SMS code is needed.
-
-To see a scam warning, message the account <review contact @handle> with "Oi mãe, troquei de número. Me faz um Pix pra essa chave?".
-
-Report and block: long-press a message to report it. Open a profile to block the person. Account deletion: <path in the app, after bipe-chat/bipe#363>.
-
-### contact
-
-- first_name: <MZ>
-- last_name: <MZ>
-- email: <MZ>
-- phone: <MZ>
-
-### demo_account_required
-
-false
 
 ## App Privacy
 

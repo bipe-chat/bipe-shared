@@ -7,16 +7,22 @@
     "aviso-golpe": {
       "chat": "golpista",
       "lines": [
-        { "from": "golpista", "text": { "pt-BR": "Oi filha, troquei de número. Essa é minha conta nova aqui", "en-US": "Hi sweetie, I changed my number. This is my new account" } },
+        { "from": "golpista", "text": { "pt-BR": "Oi filha, tudo bem?", "en-US": "Hi sweetie, how are you?" } },
+        { "from": "me", "text": { "pt-BR": "Oi mãe! Tudo sim, e você?", "en-US": "Hi Mom! All good, you?" } },
+        { "from": "golpista", "text": { "pt-BR": "Troquei de número. Essa é minha conta nova, salva aí", "en-US": "I changed my number. This is my new account, save it" } },
         { "from": "me", "text": { "pt-BR": "Mãe? O que houve com o outro?", "en-US": "Mom? What happened to the old one?" } },
-        { "from": "golpista", "text": { "pt-BR": "Caiu na água. Preciso pagar um boleto hoje ainda, me faz um Pix que amanhã te devolvo", "en-US": "It fell in the water. I have a bill due today, can you send me a Pix? I'll pay you back tomorrow" } }
+        { "from": "golpista", "text": { "pt-BR": "O outro celular caiu na água ontem", "en-US": "My old phone fell in the water yesterday" } },
+        { "from": "golpista", "text": { "pt-BR": "Preciso pagar um boleto hoje ainda, me faz um Pix que amanhã te devolvo", "en-US": "I have a bill due today, can you send me a Pix? I'll pay you back tomorrow" } },
+        { "from": "me", "text": { "pt-BR": "Peraí, vou te ligar no número antigo", "en-US": "Hold on, I'll call your old number" } }
       ]
     },
     "pedidos": {
       "requests": [
         { "from": "golpista", "minute": 12 },
         { "from": "camila", "minute": 3 },
-        { "from": "suporte", "minute": 1 }
+        { "from": "suporte", "minute": 1 },
+        { "from": "joao", "minute": 0 },
+        { "from": "falsapastora", "minute": 0 }
       ]
     },
     "seu-arroba": {},
@@ -40,13 +46,14 @@
     "selo-cnpj": {
       "chat": "clinica",
       "lines": [
-        { "from": "clinica", "text": { "pt-BR": "Olá, Gabi! Aqui é a Clínica Vida.", "en-US": "Hi Gabi, this is Clínica Vida." } },
-        { "from": "clinica", "text": { "pt-BR": "Sua consulta é amanhã, às 14h, com a Dra. Ana. Responda 1 para confirmar ou 2 para remarcar.", "en-US": "Your appointment is tomorrow at 2 PM with Dr. Ana. Reply 1 to confirm or 2 to reschedule." } },
-        { "from": "me", "text": { "pt-BR": "1", "en-US": "1" } },
-        { "from": "clinica", "text": { "pt-BR": "Consulta confirmada. Até amanhã!", "en-US": "Confirmed. See you tomorrow!" } },
+        { "from": "me", "text": { "pt-BR": "Oi! Queria marcar uma consulta com a Dra. Ana", "en-US": "Hi! I'd like to book an appointment with Dr. Ana" } },
+        { "from": "clinica", "text": { "pt-BR": "Olá, Gabi! Tem horário amanhã às 14h. Pode ser?", "en-US": "Hi Gabi! There's a slot tomorrow at 2 PM. Does that work?" } },
+        { "from": "me", "text": { "pt-BR": "Pode sim", "en-US": "Yes, that works" } },
+        { "from": "clinica", "text": { "pt-BR": "Consulta marcada. Até amanhã!", "en-US": "Booked. See you tomorrow!" } },
         { "from": "me", "text": { "pt-BR": "Preciso levar algum exame?", "en-US": "Should I bring any test results?" } },
         { "from": "clinica", "text": { "pt-BR": "Só um documento com foto e a carteirinha do plano.", "en-US": "Just a photo ID and your health plan card." } },
-        { "from": "me", "text": { "pt-BR": "Combinado, obrigada!", "en-US": "Great, thanks!" } }
+        { "from": "me", "text": { "pt-BR": "Combinado, obrigada!", "en-US": "Great, thanks!" } },
+        { "from": "clinica", "text": { "pt-BR": "Se precisar remarcar, é só responder aqui.", "en-US": "If you need to reschedule, just reply here." } }
       ]
     },
     "stickers": {

@@ -30,6 +30,10 @@
       "hasUnread": {
         "type": "bool",
         "description": "true when the account has unread messages; drives the other-account dot (ADR 0135)."
+      },
+      "isCompany": {
+        "type": "bool",
+        "description": "True only when GET /v1/accounts/{userId}/type or the authenticated account status says company (ADR 0132). Company avatars are rounded squares; personal and unknown accounts are circles."
       }
     }
   },

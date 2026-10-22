@@ -25,6 +25,10 @@
         "description": "One account."
       },
       "description": "Accounts on this phone. The switcher section shows only when there are two or more."
+    },
+    "isCompany": {
+      "type": "bool",
+      "description": "Company account from the Bipe API, independent of its verification badge. Selects the rounded-square avatar."
     }
   },
   "actions": {
@@ -72,6 +76,7 @@
   "notes": [
     "The header never shows the Matrix ID (ADR 0112).",
     "The trust card (Perfil de confiança, ADR 0019) sits after Anotações; it is a later spec.",
-    "Below the invite row comes settings-root (Configurações)."
+    "Below the invite row comes settings-root (Configurações).",
+    "The header and account rows load the actual Matrix avatar through the SDK media API. Without a photo use initials. Shape follows ADR 0132: company is a rounded square; personal/unknown is a circle. A profile name or CNPJ badge must not determine account type."
   ]
 }

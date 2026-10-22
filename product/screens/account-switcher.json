@@ -45,6 +45,7 @@
   "notes": [
     "Each row shows the avatar, the display name and the @handle; never the Matrix ID.",
     "An account with unread messages shows a dot in its row.",
-    "Company accounts do not count against the cap (ADR 0086)."
+    "Company accounts do not count against the cap (ADR 0086).",
+    "Avatars show the actual account photo or initials; company accounts use rounded squares and personal/unknown accounts circles (ADR 0132). Selecting the current account dismisses the menu without a switch haptic."
   ]
 }

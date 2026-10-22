@@ -108,6 +108,7 @@
   ],
   "notes": [
     "bipe_app_chat_list_unread is the accessibility label of the badge. The count comes in already formatted.",
-    "Message requests, filters, search, invites and Bipe trust badges are later issues. The slice lists joined rooms only."
+    "Message requests, filters, search, invites and Bipe trust badges are later issues. The slice lists joined rooms only.",
+    "The current-account avatar and DM avatars show photos from the SDK, with initials when absent. A company avatar is a rounded square based on GET /v1/accounts/{userId}/type (ADR 0132), regardless of verification. Group avatars stay distinct room avatars."
   ]
 }

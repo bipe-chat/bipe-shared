@@ -122,7 +122,9 @@ jobs:
             if [ -z "$(gh pr list -R "bipe-chat/${repo}" --head "$BRANCH" --state open --json number --jq '.[].number')" ]; then
               gh pr create -R "bipe-chat/${repo}" --base main --head "$BRANCH" \
                 --title "Regenerate from bipe-shared#${PR_NUMBER}" \
-                --body "Generated files for ${PR_URL}. Merges on its own after that pull request merges and the checks here pass."
+                --body "Generated files for ${PR_URL}. Merges on its own after that pull request merges and the checks here pass.
+
+          Provenance: bipe-shared generators (tools/gen.mjs) for ${PR_URL}."
             fi
           done
 

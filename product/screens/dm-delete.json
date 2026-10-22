@@ -1,0 +1,46 @@
+{
+  "id": "dm-delete",
+  "title": "Delete a DM (Apagar conversa)",
+  "flow": "chat",
+  "summary": "A confirm sheet that clears a DM on all of the user's devices. The user stays in the room, so the other person keeps the chat and a new message brings it back (bipe-chat/bipe#464, ADR 0141).",
+  "state": {
+    "roomId": { "type": "string", "description": "The DM." },
+    "phase": {
+      "type": "enum",
+      "values": ["confirm", "deleting", "failed"],
+      "description": "confirm: the sheet. deleting: bipe_app_dm_deleting. failed: bipe_dm_delete_error, the buttons come back."
+    }
+  },
+  "actions": {
+    "delete": {
+      "effect": "Reads the global account data chat.bipe.cleared_chats (Client.accountData), adds this room with the origin_server_ts of the latest remote event (Room.latestEvent) by the clearedChatsWithClear rule, and writes it back (Client.setAccountData). On success closes the chat and goes back to the chat list, where the DM is gone."
+    },
+    "cancel": { "effect": "Closes the sheet. Nothing changes." }
+  },
+  "strings": [
+    "bipe_dm_delete_action",
+    "bipe_dm_delete_title",
+    "bipe_dm_delete_body",
+    "bipe_dm_delete_confirm",
+    "bipe_app_dm_deleting",
+    "bipe_dm_delete_error",
+    "bipe_app_cancel"
+  ],
+  "sdk": [
+    "Client.getRoom",
+    "Room.latestEvent",
+    "LatestEventValue",
+    "Client.accountData",
+    "Client.setAccountData",
+    "RoomInfo.isDm"
+  ],
+  "parity": ["dm-delete"],
+  "notes": [
+    "DM only (RoomInfo.isDm true). bipe_dm_delete_action replaces leave in the DM menu and in the chat list swipe. A DM never shows a room leave (ADR 0141).",
+    "Rules: registries/cleared-chats.json and the reference functions clearedChat* in tools/lib/registries.mjs; cases in test-vectors/cleared-chats.json. The write merges into the event and keeps every other entry. The marker never moves back. A malformed entry counts as not cleared.",
+    "The other screens apply the marker: chat-list hides the DM while its latest event ts is at or below the marker (clearedChatHidden); chat-timeline and search drop every event at or below it (clearedChatKeepsEvent). A new message after the marker brings the DM back with only the new messages. Both read the event with Client.accountData at start and again when the app comes to the front, so a delete on one phone shows on the others. Client.observeAccountDataEvent takes only the Matrix types of AccountDataEventType, not chat.bipe.cleared_chats.",
+    "Bipe logic to move, not rewrite: ClearedChats.swift (BipeKit) and ClearedChats.kt, BipeClearedChats.kt, BipeClearedTimeline.kt and BipeServerAccountData.kt (libraries/bipe clearedchats).",
+    "The confirm button uses the destructive style. The room is not left and not forgotten, so Matrix still delivers the other person's next message.",
+    "On the web (stock Element Web) a cleared DM still shows its full history. Accepted gap (ADR 0141)."
+  ]
+}

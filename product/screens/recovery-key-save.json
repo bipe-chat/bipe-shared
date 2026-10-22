@@ -1,0 +1,73 @@
+{
+  "id": "recovery-key-save",
+  "title": "Save a recovery key",
+  "flow": "encryption",
+  "summary": "Makes the recovery key for the message history and shows it once so the person can save it (ADR 0073). Opens from the fallback prompt and from the recovery key row in settings. A key that exists can be replaced.",
+  "state": {
+    "recoveryState": {
+      "type": "enum",
+      "values": ["unknown", "enabled", "disabled", "incomplete"],
+      "description": "Encryption.recoveryState. enabled: a key exists. incomplete: a key exists but this device does not hold all secrets."
+    },
+    "phase": {
+      "type": "enum",
+      "values": ["intro", "creating", "showKey", "saved", "failed"],
+      "description": "creating: Encryption.enableRecovery or resetRecoveryKey runs, with progress. showKey: the key is on screen. saved: the person confirmed."
+    },
+    "progress": {
+      "type": "enum",
+      "values": ["starting", "creatingBackup", "creatingRecoveryKey", "backingUp", "roomKeyUploadError", "done"],
+      "description": "From EnableRecoveryProgressListener."
+    },
+    "recoveryKey": { "type": "string", "optional": true, "description": "The key, held in memory while showKey lasts. Never logged, never stored by the app." }
+  },
+  "actions": {
+    "create": {
+      "effect": "disabled: runs Encryption.enableRecovery (wait for backups to upload, no passphrase). enabled or incomplete: asks for a biometric check, then runs Encryption.resetRecoveryKey. Sets recoveryKey and phase showKey."
+    },
+    "copy": {
+      "effect": "Copies the key to the clipboard, marked as sensitive so the system does not show or sync it, and clears it after 60 s where the platform allows."
+    },
+    "share": {
+      "effect": "Opens the system share sheet with the key, for a password manager or a note."
+    },
+    "confirmSaved": {
+      "effect": "Clears recoveryKey from memory and sets phase saved."
+    }
+  },
+  "strings": [
+    "bipe_fallback_recovery_key",
+    "bipe_fallback_recovery_key_body",
+    "bipe_account_recovery_key",
+    "bipe_account_recovery_key_saved",
+    "bipe_account_recovery_key_missing",
+    "bipe_account_recovery_key_footer",
+    "bipe_app_recovery_key_create",
+    "bipe_app_recovery_key_creating",
+    "bipe_app_recovery_key_show_body",
+    "bipe_app_recovery_key_replace",
+    "bipe_app_recovery_key_replace_body",
+    "bipe_app_recovery_key_saved_action",
+    "bipe_app_recovery_key_biometric",
+    "bipe_app_copy",
+    "bipe_app_copied",
+    "bipe_app_share",
+    "bipe_error_generic"
+  ],
+  "sdk": [
+    "Client.encryption",
+    "Encryption.recoveryState",
+    "Encryption.recoveryStateListener",
+    "Encryption.enableRecovery",
+    "Encryption.resetRecoveryKey",
+    "EnableRecoveryProgressListener.onUpdate",
+    "RecoveryState"
+  ],
+  "parity": ["e2ee", "onboarding-no-element-crypto", "new-phone"],
+  "notes": [
+    "No crypto words on screen: no backup, cross-signing, secret storage or key ID. The key is chave de recuperação and does one thing: brings back old messages on a new phone.",
+    "Bipe never holds the key (security.md rule 13) and never asks for it. bipe_fallback_recovery_key_body says so.",
+    "roomKeyUploadError: show bipe_error_generic with a retry; the key that was made stays valid.",
+    "The key is shown in groups of 4 characters in a monospace font, selectable."
+  ]
+}

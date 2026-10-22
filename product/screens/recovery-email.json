@@ -1,0 +1,47 @@
+{
+  "id": "recovery-email",
+  "title": "Recovery by e-mail",
+  "flow": "recovery",
+  "summary": "Asks for the recovery e-mail and sends the link. The person opens the link on this phone; the app then asks for the PIN (recovery-pin with factor emailLink).",
+  "state": {
+    "email": { "type": "string", "description": "The recovery e-mail field." },
+    "phase": {
+      "type": "enum",
+      "values": ["editing", "sending", "sent", "failed"],
+      "description": "sending: POST /v1/recovery/email runs. sent: the server answered 202."
+    },
+    "emailInvalid": { "type": "bool", "description": "true after submit when the address is not plausible." },
+    "error": { "type": "string", "optional": true, "description": "bipe_error_network, bipe_error_rate_limited or bipe_error_email_unavailable." }
+  },
+  "actions": {
+    "editEmail": {
+      "params": { "text": { "type": "string", "description": "The new field text." } },
+      "effect": "Sets email and clears emailInvalid."
+    },
+    "send": {
+      "effect": "Checks the address locally, then sends POST /v1/recovery/email. On 202 sets phase to sent."
+    },
+    "openLink": {
+      "params": { "url": { "type": "url", "description": "The recovery link from the e-mail, opened on this phone." } },
+      "effect": "Takes the token from the link and opens recovery-pin with factor emailLink. A link that holds no token does nothing."
+    }
+  },
+  "strings": [
+    "bipe_recovery_email",
+    "bipe_recovery_email_body",
+    "bipe_recovery_email_field",
+    "bipe_app_recovery_email_send",
+    "bipe_recovery_email_sent",
+    "bipe_signup_email_invalid",
+    "bipe_error_email_unavailable",
+    "bipe_error_network",
+    "bipe_error_rate_limited"
+  ],
+  "sdk": [],
+  "parity": ["new-phone"],
+  "notes": [
+    "The server answers 202 also for an unknown address, so the screen never says whether an address has an account. bipe_recovery_email_sent says so in its words.",
+    "The link lives recoveryLinkMinutes (registries/accounts.json). An old link fails on confirm with recovery_invalid (recovery-pin).",
+    "The link opens the app through the universal link or app link of the recovery path. Bipe logic: BipeRecoveryLink.token (iOS and Android); BipeAPIClient.requestRecoveryEmail (iOS), BipeDeviceAccount.requestEmailRecovery (Android)."
+  ]
+}

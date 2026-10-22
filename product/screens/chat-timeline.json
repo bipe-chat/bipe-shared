@@ -69,7 +69,7 @@
   "parity": ["e2ee"],
   "notes": [
     "Send is off while draft is blank after trimming.",
-    "undecryptable shows bipe_app_timeline_undecryptable in place of the body. Key recovery is a later screen.",
+    "undecryptable shows the message-undecryptable row in place of the body (cause and help action there).",
     "Media, replies, reactions, edits, read receipts, typing and Bipe scam warnings are later issues."
   ]
 }

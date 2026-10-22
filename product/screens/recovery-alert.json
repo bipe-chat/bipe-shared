@@ -1,0 +1,66 @@
+{
+  "id": "recovery-alert",
+  "title": "Account moving to a new device",
+  "flow": "recovery",
+  "summary": "On a phone that is already signed in: a full alert when someone started a recovery of this account, with a cancel button while the delay runs. Also a notice after the account signed in on a new device with the synced token.",
+  "types": {
+    "RecoveryNotice": {
+      "id": { "type": "string", "description": "The recovery id. Stable key." },
+      "method": {
+        "type": "enum",
+        "values": ["token", "email", "guardian", "cpf"],
+        "description": "How the recovery started."
+      },
+      "purpose": {
+        "type": "enum",
+        "values": ["access", "pinReset"],
+        "description": "access or a new PIN."
+      },
+      "state": {
+        "type": "enum",
+        "values": ["waiting", "completed", "cancelled", "expired"],
+        "description": "From GET /v1/me/account recoveries."
+      },
+      "readyAt": { "type": "date", "optional": true, "description": "When the delay ends." }
+    }
+  },
+  "state": {
+    "notice": { "type": "RecoveryNotice", "optional": true, "description": "The newest recovery that the person has not dismissed: a waiting one, or a completed token recovery." },
+    "phase": {
+      "type": "enum",
+      "values": ["shown", "cancelling", "cancelled", "failed"],
+      "description": "cancelling: POST /v1/me/recoveries/{recoveryId}/cancel runs."
+    }
+  },
+  "actions": {
+    "check": {
+      "effect": "On launch and on foreground: reads GET /v1/me/account and sets notice."
+    },
+    "cancel": {
+      "effect": "For a waiting recovery: asks for a biometric check (or the device PIN), then sends the cancel. Shows bipe_recovery_alert_cancelled."
+    },
+    "keep": {
+      "effect": "It was me: dismisses the notice on this phone. The recovery goes on."
+    }
+  },
+  "strings": [
+    "bipe_recovery_alert_title",
+    "bipe_recovery_alert_email",
+    "bipe_recovery_alert_guardian",
+    "bipe_recovery_alert_cpf",
+    "bipe_recovery_alert_pin_reset",
+    "bipe_recovery_alert_token",
+    "bipe_recovery_alert_cancel",
+    "bipe_recovery_alert_keep",
+    "bipe_recovery_alert_cancelled",
+    "bipe_error_network"
+  ],
+  "sdk": ["Client.session"],
+  "parity": ["new-phone", "theft-protection"],
+  "notes": [
+    "The alert covers the screen while a recovery waits. It is not a banner the person can miss.",
+    "Body per method and purpose: email, guardian, cpf for access; pinReset uses bipe_recovery_alert_pin_reset; a completed token recovery uses bipe_recovery_alert_token and has no cancel. Each takes readyAt formatted by the system.",
+    "Dismissed ids stay on this phone only.",
+    "Bipe logic: BipeAPIClient.account and cancelRecovery, BipeAccountStatus, BipeRecovery (iOS); BipeRecoveryAlerts, BipeDeviceAccount.dismissedRecoveries and dismissRecovery (Android)."
+  ]
+}

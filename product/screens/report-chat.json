@@ -1,0 +1,70 @@
+{
+  "id": "report-chat",
+  "title": "Report a chat",
+  "flow": "people",
+  "summary": "Reports a DM or a group to the Bipe team, with an optional reason. In the same step the user can block the person (DM), delete the DM, or leave the group.",
+  "state": {
+    "roomId": { "type": "string", "description": "The chat." },
+    "isDm": { "type": "bool", "description": "RoomInfo.isDm (ADR 0141)." },
+    "otherUserId": { "type": "string", "optional": true, "description": "DM only: the other person, for block." },
+    "reason": { "type": "string", "description": "What happened, as typed. Can be empty." },
+    "alsoBlock": { "type": "bool", "description": "DM only. Default true." },
+    "alsoDelete": { "type": "bool", "description": "DM only. Default false." },
+    "alsoLeave": { "type": "bool", "description": "Group only. Default false." },
+    "phase": {
+      "type": "enum",
+      "values": ["editing", "sending", "sent", "failed"],
+      "description": "sent: a toast with bipe_dm_reported or bipe_app_group_reported, then the screen closes. failed: bipe_app_report_chat_error, nothing was sent."
+    }
+  },
+  "actions": {
+    "setReason": {
+      "params": { "text": { "type": "string", "description": "The new text." } },
+      "effect": "Updates reason."
+    },
+    "setOption": {
+      "params": {
+        "option": { "type": "enum", "values": ["block", "delete", "leave"], "description": "The switch." },
+        "isOn": { "type": "bool", "description": "The new value." }
+      },
+      "effect": "Updates alsoBlock, alsoDelete or alsoLeave."
+    },
+    "send": {
+      "effect": "Room.reportRoom with the trimmed reason. Then, in order: Client.ignoreUser (alsoBlock), the dm-delete write (alsoDelete), Room.leave (alsoLeave). A failed follow-up step does not undo the report: for a leave, show bipe_dm_report_leave_failed_body."
+    },
+    "cancel": { "effect": "Closes. Nothing is sent." }
+  },
+  "strings": [
+    "bipe_dm_report",
+    "bipe_dm_report_footer",
+    "bipe_app_report_group",
+    "bipe_app_report_group_footer",
+    "bipe_app_report_reason",
+    "bipe_app_report_reason_placeholder",
+    "bipe_app_report_also_block",
+    "bipe_app_report_also_delete",
+    "bipe_app_report_also_leave",
+    "bipe_app_report_send_action",
+    "bipe_dm_reported",
+    "bipe_app_group_reported",
+    "bipe_app_report_chat_error",
+    "bipe_dm_report_leave_failed_title",
+    "bipe_dm_report_leave_failed_body",
+    "bipe_app_cancel"
+  ],
+  "sdk": [
+    "Client.getRoom",
+    "Room.reportRoom",
+    "Client.ignoreUser",
+    "Room.leave",
+    "RoomInfo.isDm"
+  ],
+  "parity": ["who-can-message"],
+  "notes": [
+    "The report goes to the homeserver admins, which is the Bipe team (Matrix report room API). Under end-to-end encryption the team cannot read the messages; the footers say so. Never promise a reply or an action.",
+    "A DM never offers a leave (ADR 0141): delete is the dm-delete marker, so the other person's next message would bring the DM back unless the user also blocks.",
+    "Report of one message is part of the message actions in the timeline (Room.reportContent, timeline interactions spec, bipe-chat/bipe#559), not this screen.",
+    "Opens from person-profile (DM), group-details (group) and a chat request.",
+    "The send button uses the destructive style."
+  ]
+}

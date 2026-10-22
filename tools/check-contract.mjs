@@ -31,7 +31,7 @@ const MODELS = {
   ProfileUpdate: { ios: "BipeProfileUpdate", android: "BipeProfileUpdate" },
   // Device-first accounts (ADR 0057): iOS done in bipe-chat/bipe#153, Android in #154.
   AccountStatus: { ios: "BipeAccountStatus", android: "BipeAccountStatus" },
-  AccountDeletion: { ios: null, android: null }, // bipe-chat/bipe#528: becomes BipeAccountDeletion in each app
+  AccountDeletion: { ios: "BipeAccountDeletion", android: "BipeAccountDeletion" },
   Recovery: { ios: "BipeRecovery", android: "BipeRecovery" },
   Credentials: { ios: "BipeCredentials", android: "BipeCredentials" },
   RecoveryStarted: { ios: "BipeRecoveryStarted", android: "BipeRecoveryStarted" },
@@ -111,11 +111,6 @@ const GAPS = {
   "android:Error.error.cnpj_not_active": "bipe-chat/bipe#115 (business UI in the apps)",
   "android:Error.error.cnpj_taken": "bipe-chat/bipe#115 (business UI in the apps)",
   "android:Error.error.signature_invalid": "bipe-chat/bipe#115 (business UI in the apps)",
-  // Account deletion (ADR 0140): contract first, the apps follow in the same issue.
-  "ios:AccountDeletion": "bipe-chat/bipe#528 (account deletion)",
-  "android:AccountDeletion": "bipe-chat/bipe#528 (account deletion)",
-  "ios:AccountStatus.deletion": "bipe-chat/bipe#528 (account deletion)",
-  "android:AccountStatus.deletion": "bipe-chat/bipe#528 (account deletion)",
 };
 
 // Device-first accounts (ADR 0057, ADR 0059): contract first, apps in bipe-chat/bipe#153 (iOS) and #154 (Android).

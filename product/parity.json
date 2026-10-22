@@ -1427,6 +1427,36 @@
       }
     },
     {
+      "id": "account-deletion",
+      "name": "Apagar conta: 72-hour wait, cancel from any device (ADR 0140, bipe#528)",
+      "issue": 528,
+      "ios": {
+        "status": "built",
+        "evidence": [
+          "bipe-ios/ElementX/Sources/Screens/BipeAccountScreen/View/BipeAccountScreen.swift",
+          "bipe-ios/ElementX/Sources/Application/BipeRecoveryAlerts.swift"
+        ]
+      },
+      "android": {
+        "status": "built",
+        "evidence": [
+          "bipe-android/libraries/bipe/src/main/kotlin/io/element/android/libraries/bipe/account/ui/BipeDeletionRows.kt",
+          "bipe-android/libraries/bipe/src/main/kotlin/io/element/android/libraries/bipe/account/ui/BipeRecoveryAlerts.kt"
+        ]
+      },
+      "web": {
+        "status": "n/a",
+        "reason": "No web chat (ADR 0004)"
+      },
+      "server": {
+        "status": "built",
+        "evidence": [
+          "bipe-api/src/deletion.ts",
+          "bipe-infra/k8s/bipe/deletion.yaml"
+        ]
+      }
+    },
+    {
       "id": "dm-delete",
       "name": "\"Apagar conversa\" in a DM instead of a room leave (bipe#464)",
       "issue": 464,

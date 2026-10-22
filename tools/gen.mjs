@@ -186,6 +186,8 @@ public enum BipeRegistries {
     public static let webLinkCooldownSeconds = ${reg.accounts.webLinkCooldownSeconds}
     /// Wait between an account deletion request and the deletion; other devices can cancel (ADR 0140).
     public static let deletionCooldownHours = ${reg.accounts.deletionCooldownHours}
+    /// Days a released @ stays held for its last holder, also after an account deletion (ADR 0016, registries/handles.json).
+    public static let handleReleaseHoldDays = ${reg.handles.releaseHoldDays}
 
     /// Terms and privacy accepted at sign-up (ADR 0113; registries/legal.json). Paths are on the public site.
     public static let legalVersion = ${swiftString(reg.legal.legalVersion)}
@@ -417,6 +419,8 @@ object BipeRegistries {
 
     // Wait between an account deletion request and the deletion; other devices can cancel (ADR 0140).
     const val DELETION_COOLDOWN_HOURS = ${reg.accounts.deletionCooldownHours}
+    // Days a released @ stays held for its last holder, also after an account deletion (ADR 0016, registries/handles.json).
+    const val HANDLE_RELEASE_HOLD_DAYS = ${reg.handles.releaseHoldDays}
 
     // Terms and privacy accepted at sign-up (ADR 0113; registries/legal.json). Paths are on the public site.
     const val LEGAL_VERSION = ${kotlinString(reg.legal.legalVersion)}

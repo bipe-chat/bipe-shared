@@ -1,0 +1,37 @@
+{
+  "id": "profile-link",
+  "title": "Your link and QR code",
+  "flow": "profile",
+  "summary": "Shows the user's profile link (bipe.chat/@handle) and its QR code, to share or to show in person. Whoever opens it lands on the user in Bipe.",
+  "state": {
+    "handle": { "type": "string", "optional": true, "description": "From GET /v1/me/handle. Without it: bipe_public_profile_needs_handle and bipe_handle_prompt_action." },
+    "link": { "type": "url", "optional": true, "description": "https://bipe.chat/@<handle>." },
+    "publicProfileOn": { "type": "bool", "description": "MyProfile.enabled. Changes what the link shows on the web (see notes), not what it does in the app." },
+    "showingQr": { "type": "bool", "description": "true: the QR code with bipe_profile_qr_title and bipe_profile_qr_footer." }
+  },
+  "actions": {
+    "share": { "effect": "The system share sheet with the link." },
+    "copy": { "effect": "Copies the link and shows bipe_app_copied." },
+    "toggleQr": { "effect": "Shows or hides the QR code." },
+    "pickHandle": { "effect": "No handle only: opens handle-pick." }
+  },
+  "strings": [
+    "bipe_app_profile_link",
+    "bipe_profile_share",
+    "bipe_app_copy",
+    "bipe_app_copied",
+    "bipe_profile_qr_action",
+    "bipe_profile_qr_title",
+    "bipe_profile_qr_footer",
+    "bipe_public_profile_needs_handle",
+    "bipe_handle_prompt_action"
+  ],
+  "sdk": [],
+  "parity": ["profile-links", "handles"],
+  "notes": [
+    "The link is the @ on the bipe.chat host: https://bipe.chat/@<handle>. Bipe logic: BipeProfileLink.url and handle(from:) (BipeKit BipeProfileLink.swift); BipeLinks.kt (libraries/bipe). The rule is used by both apps and the site, so it belongs in registries/ (ADR 0031); until it moves, the two Bipe implementations are the reference.",
+    "On the web, the link shows the public profile when it is on, else a page that opens the app or the store. In the app it always opens profile-link-open.",
+    "The QR code holds exactly the link. Drawn on the device with the same permissive encoder as invite-qr, dark on light in both themes.",
+    "Opens from Seu perfil (settings-group profile, handle row) and from public-profile-edit."
+  ]
+}

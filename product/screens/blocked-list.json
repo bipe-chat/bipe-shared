@@ -1,0 +1,38 @@
+{
+  "id": "blocked-list",
+  "title": "Blocked people",
+  "flow": "settings",
+  "summary": "Lists the people the user blocked, with unblock on each row. Opens from the blocked row of Privacidade.",
+  "state": {
+    "people": { "type": "list", "of": { "type": "Person", "description": "A blocked person." }, "description": "From Client.ignoredUsers, sorted by name. Empty: bipe_privacy_blocked_none." },
+    "loading": { "type": "bool", "description": "true until the first list arrives." }
+  },
+  "actions": {
+    "appear": {
+      "effect": "Client.ignoredUsers, then Client.getProfile for each person (name and photo) and POST /v1/handles/resolve for the @. Client.subscribeToIgnoredUsers keeps the list current."
+    },
+    "unblock": {
+      "params": { "userId": { "type": "string", "description": "The person." } },
+      "effect": "Opens block-person in unblock mode."
+    },
+    "openPerson": {
+      "params": { "userId": { "type": "string", "description": "The person." } },
+      "effect": "Opens person-profile."
+    }
+  },
+  "strings": [
+    "bipe_privacy_blocked",
+    "bipe_privacy_blocked_none",
+    "bipe_action_unblock_person"
+  ],
+  "sdk": [
+    "Client.ignoredUsers",
+    "Client.subscribeToIgnoredUsers",
+    "Client.getProfile"
+  ],
+  "parity": ["settings-structure"],
+  "notes": [
+    "The row value in Privacidade (settings-group privacy) is the count of blocked people, or bipe_privacy_blocked_none.",
+    "A profile that does not load shows the @ or the Matrix ID's localpart. The row stays, so the user can still unblock."
+  ]
+}

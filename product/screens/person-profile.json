@@ -54,6 +54,7 @@
     "bipe_dm_invite_to_group_sent",
     "bipe_dm_invite_to_group_already_member",
     "bipe_app_person_new_group",
+    "bipe_app_group_invite_refused",
     "bipe_settings_notifications",
     "bipe_dm_delete_action",
     "bipe_action_block_person",

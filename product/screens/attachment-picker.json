@@ -1,0 +1,43 @@
+{
+  "id": "attachment-picker",
+  "title": "Attach",
+  "flow": "chat",
+  "summary": "The sheet behind the composer's attach button: photos and videos, the camera, a file, a sticker or a poll. Each choice hands over to the system picker or to its own screen.",
+  "state": {
+    "roomId": { "type": "string", "description": "The chat." },
+    "canPoll": { "type": "bool", "description": "RoomPowerLevels.canOwnUserSendMessage for the poll start event." },
+    "permissionProblem": {
+      "type": "enum",
+      "values": ["none", "photos", "camera"],
+      "description": "photos: bipe_app_attach_photos_permission. camera: bipe_camera_permission_body. Each with a button to the app's system settings (bipe_contacts_open_settings on iOS, bipe_contacts_open_settings_android)."
+    }
+  },
+  "actions": {
+    "photos": { "effect": "Opens the system photo picker (several photos and videos). The picked items open attachment-preview." },
+    "camera": { "effect": "Opens the system camera for a photo or a video. The result opens attachment-preview." },
+    "file": { "effect": "Opens the system file picker (one file). The file opens attachment-preview." },
+    "sticker": { "effect": "Closes the sheet and opens sticker-picker." },
+    "poll": { "effect": "canPoll only: closes the sheet and opens poll-create (bipe-chat/bipe#569)." },
+    "cancel": { "effect": "Closes the sheet." }
+  },
+  "strings": [
+    "bipe_app_composer_attach",
+    "bipe_app_attach_photos",
+    "bipe_app_attach_camera",
+    "bipe_app_attach_file",
+    "bipe_action_stickers",
+    "bipe_app_attach_poll",
+    "bipe_app_attach_photos_permission",
+    "bipe_camera_permission_body",
+    "bipe_contacts_open_settings",
+    "bipe_contacts_open_settings_android",
+    "bipe_app_cancel"
+  ],
+  "sdk": ["Room.getPowerLevels", "RoomPowerLevels.canOwnUserSendMessage", "MessageLikeEventType"],
+  "parity": ["stickers"],
+  "notes": [
+    "The system pickers need no full library access: the iOS photo picker and the Android photo picker give only the chosen items. The permission problem shows only when the platform asks for access and the user said no.",
+    "Location sharing is out of scope (client-rewrite-plan.md phase 3). Contacts as vCard are out of scope.",
+    "Order of rows: photos and videos, camera, file, sticker, poll."
+  ]
+}

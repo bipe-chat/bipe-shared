@@ -1,0 +1,75 @@
+{
+  "id": "chat-timeline",
+  "title": "Chat timeline",
+  "flow": "chat",
+  "summary": "Shows the messages of one chat, loads older ones on scroll, and sends text.",
+  "types": {
+    "TimelineMessage": {
+      "id": { "type": "string", "description": "The SDK's unique timeline item id. Stable key for the row." },
+      "kind": {
+        "type": "enum",
+        "values": ["text", "undecryptable", "unsupported"],
+        "description": "text: a text message. undecryptable: the phone has no key for it yet. unsupported: any other event type in the slice."
+      },
+      "body": { "type": "string", "optional": true, "description": "Plain text of a text message." },
+      "senderName": { "type": "string", "description": "Display name of the sender." },
+      "isOwn": { "type": "bool", "description": "true when this account sent it." },
+      "sentAt": { "type": "date", "description": "Origin server time of the event." },
+      "sendState": {
+        "type": "enum",
+        "values": ["sent", "sending", "failed"],
+        "description": "Only own messages use sending and failed."
+      }
+    }
+  },
+  "state": {
+    "roomName": { "type": "string", "description": "The chat name for the title." },
+    "messages": {
+      "type": "list",
+      "of": { "type": "TimelineMessage", "description": "One message." },
+      "description": "Oldest first, as the timeline listener gives the items."
+    },
+    "isLoadingHistory": { "type": "bool", "description": "true while back-pagination runs." },
+    "reachedStart": { "type": "bool", "description": "true when the start of the chat is loaded." },
+    "draft": { "type": "string", "description": "The text in the composer." }
+  },
+  "actions": {
+    "loadHistory": {
+      "effect": "Back-paginates 20 events when the view scrolls near the top. Does nothing when reachedStart is true or a load runs."
+    },
+    "editDraft": {
+      "params": { "text": { "type": "string", "description": "The new composer text." } },
+      "effect": "Sets draft."
+    },
+    "send": {
+      "effect": "Sends draft as a plain-text message through the timeline, then clears draft. The message shows at once with sendState sending."
+    },
+    "retrySend": {
+      "params": { "id": { "type": "string", "description": "The failed message." } },
+      "effect": "Sends a failed own message again."
+    }
+  },
+  "strings": [
+    "bipe_app_timeline_composer_placeholder",
+    "bipe_app_timeline_send",
+    "bipe_app_timeline_sending",
+    "bipe_app_timeline_failed",
+    "bipe_app_timeline_undecryptable",
+    "bipe_app_timeline_loading_history",
+    "bipe_app_timeline_start"
+  ],
+  "sdk": [
+    "Client.getRoom",
+    "Room.timeline",
+    "Timeline.addListener",
+    "Timeline.paginateBackwards",
+    "Timeline.send",
+    "TimelineItem"
+  ],
+  "parity": ["e2ee"],
+  "notes": [
+    "Send is off while draft is blank after trimming.",
+    "undecryptable shows bipe_app_timeline_undecryptable in place of the body. Key recovery is a later screen.",
+    "Media, replies, reactions, edits, read receipts, typing and Bipe scam warnings are later issues."
+  ]
+}

@@ -1,0 +1,50 @@
+{
+  "id": "signup-name",
+  "title": "Name and terms",
+  "flow": "signup",
+  "summary": "First of the two typing steps: the name people see in chats, and the clickwrap checkbox for the Terms of use and the Privacy policy (ADR 0113).",
+  "state": {
+    "displayName": { "type": "string", "description": "The name field. Trimmed before use, at most 100 characters." },
+    "termsAccepted": { "type": "bool", "description": "The checkbox. Starts unticked on every visit to the step." },
+    "termsVersion": { "type": "string", "description": "The legalVersion that the checkbox accepts: terms_version from GET /v1/signup/config, else legalVersion from registries/legal.json." },
+    "inviterHandle": { "type": "string", "optional": true, "description": "From the pending invite. Shows bipe_signup_invited_by above the field." },
+    "showTermsRequired": { "type": "bool", "description": "true after signup-create got terms_required. Shows bipe_signup_terms_required." }
+  },
+  "actions": {
+    "editName": {
+      "params": { "text": { "type": "string", "description": "The new field text." } },
+      "effect": "Sets displayName."
+    },
+    "toggleTerms": {
+      "effect": "Flips termsAccepted."
+    },
+    "openTerms": {
+      "effect": "Opens the Terms of use in the system browser: PUBLIC_SITE_URL plus termsPath (pt) or enTermsPath (en) from registries/legal.json."
+    },
+    "openPrivacy": {
+      "effect": "Opens the Privacy policy the same way, with privacyPath or enPrivacyPath."
+    },
+    "continue": {
+      "effect": "Goes to signup-pin. Off while the trimmed name is empty or termsAccepted is false."
+    }
+  },
+  "strings": [
+    "bipe_signup_name_title",
+    "bipe_signup_display_name",
+    "bipe_signup_display_name_footer",
+    "bipe_signup_invited_by",
+    "bipe_signup_terms_accept",
+    "bipe_signup_terms_link",
+    "bipe_signup_privacy_link",
+    "bipe_signup_terms_required",
+    "bipe_action_continue"
+  ],
+  "sdk": [],
+  "parity": ["first-run", "onboarding-two-step-signup", "signup-terms-clickwrap"],
+  "notes": [
+    "bipe_signup_terms_accept takes the two link texts as %1$s and %2$s. Each link text is tappable on its own; a tap on the rest of the sentence flips the checkbox.",
+    "The app sends terms_version with POST /v1/signup only when termsAccepted is true. The server refuses an older version (403 terms_required).",
+    "The @ is not asked here. It comes later from the handle prompt (handle-pick). The second-account flow (ADR 0135) also starts at this step.",
+    "Bipe logic: BipeLegalLinks.termsURL and privacyURL (iOS), BipeLegalLinks.termsUrl and privacyUrl (Android)."
+  ]
+}

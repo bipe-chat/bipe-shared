@@ -1,0 +1,46 @@
+{
+  "id": "signup-invite-code",
+  "title": "Invite code",
+  "flow": "signup",
+  "summary": "Asks for the invite code when sign-up needs one and no invite came with a link. A valid code continues to the name step.",
+  "state": {
+    "code": { "type": "string", "description": "What the person typed or pasted. A whole invite link or message is fine; the app takes the code out of it." },
+    "phase": {
+      "type": "enum",
+      "values": ["editing", "checking", "invalid"],
+      "description": "checking: GET /v1/invites/{code} runs. invalid: the server says valid false, or the text holds no code."
+    },
+    "error": { "type": "string", "optional": true, "description": "String key of the error under the field: bipe_error_invite_invalid, bipe_error_network or bipe_error_rate_limited." }
+  },
+  "actions": {
+    "editCode": {
+      "params": { "text": { "type": "string", "description": "The new field text." } },
+      "effect": "Sets code and clears the error."
+    },
+    "submit": {
+      "effect": "Takes the code from the text and runs GET /v1/invites/{code}. valid true: goes to signup-name with the invite. valid false: phase invalid. Continue is off while code is blank."
+    },
+    "noInvite": {
+      "effect": "Opens signup-waitlist as a sheet."
+    }
+  },
+  "strings": [
+    "bipe_invite_code_title",
+    "bipe_invite_code_body",
+    "bipe_signup_invite_code",
+    "bipe_action_continue",
+    "bipe_invite_code_none",
+    "bipe_app_invite_checking",
+    "bipe_error_invite_invalid",
+    "bipe_error_network",
+    "bipe_error_rate_limited"
+  ],
+  "sdk": [],
+  "parity": ["first-run", "invites"],
+  "notes": [
+    "Shown only for the inviteOnly start variant. An invite from a link skips it (registries/onboarding.json steps.inviteCode).",
+    "Code extraction follows test-vectors/invite-codes.json. Bipe logic: BipeInviteLink.normalizedCode and BipeAPIClient.invitePreview (iOS), BipeInviteLink.normalizedCode and BipeApiClient.invitePreview (Android).",
+    "The screen never says why a code is not valid (used, expired, revoked): the server does not tell either.",
+    "POST /v1/signup checks the code again; signup-create handles invite_invalid there."
+  ]
+}

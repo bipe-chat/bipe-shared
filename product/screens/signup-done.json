@@ -1,0 +1,45 @@
+{
+  "id": "signup-done",
+  "title": "Account created",
+  "flow": "signup",
+  "summary": "Says that the account now lives on this phone, then opens the chat with the person who sent the invite, or the chat list when there was no invite.",
+  "state": {
+    "inviterUserId": { "type": "string", "optional": true, "description": "inviter_user_id from POST /v1/signup. Absent without a personal invite." },
+    "inviterHandle": { "type": "string", "optional": true, "description": "The inviter's handle, when the invite preview had one." },
+    "phase": {
+      "type": "enum",
+      "values": ["shown", "openingChat"],
+      "description": "openingChat: finding or making the DM with the inviter."
+    }
+  },
+  "actions": {
+    "appear": {
+      "effect": "Shows bipe_signup_device_success for a short moment (or until a tap), then runs continue."
+    },
+    "continue": {
+      "effect": "With inviterUserId: opens the DM with the inviter (an existing one, else a new encrypted DM that invites the inviter) in chat-timeline, with the inviter hint. Without: opens chat-list."
+    }
+  },
+  "strings": [
+    "bipe_signup_device_success",
+    "bipe_inviter_knows_you_joined",
+    "bipe_inviter_hint",
+    "bipe_inviter_hint_action",
+    "bipe_inviter_greeting",
+    "bipe_action_continue"
+  ],
+  "sdk": [
+    "Client.getDmRoom",
+    "Client.createRoom",
+    "CreateRoomParameters",
+    "Client.getRoom",
+    "Room.timeline"
+  ],
+  "parity": ["first-run", "inviter-prompt", "invite-note", "phone-account"],
+  "notes": [
+    "The inviter's phone sends the inviter's note as the first message when it learns of the join (ADR 0136). Until it arrives, the chat shows bipe_inviter_knows_you_joined (%1$s is the inviter's name) above the hint row bipe_inviter_hint with the action bipe_inviter_hint_action, which sends bipe_inviter_greeting.",
+    "A new DM is encrypted (e2ee-only-rooms) and marked as direct. Never make a second DM when one exists.",
+    "The notification permission is not asked here. It comes after the first sent message (registries/onboarding.json prompts.notifications, bipe-chat/bipe#565).",
+    "Bipe logic: BipeInviteStore.inviterGreeting and setInviterGreeting (iOS); BipeInviterGreeting, BipeDeviceAccount.takePendingInviter (Android)."
+  ]
+}

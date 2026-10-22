@@ -1,0 +1,51 @@
+{
+  "id": "signup-pin",
+  "title": "Create PIN",
+  "flow": "signup",
+  "summary": "Second typing step: the person picks the 8-digit PIN (senha de 8 números) and types it again. The PIN locks the app and authorises the way back into the account (ADR 0057, ADR 0059).",
+  "state": {
+    "step": {
+      "type": "enum",
+      "values": ["create", "confirm"],
+      "description": "create: first entry. confirm: the same PIN again."
+    },
+    "pin": { "type": "string", "description": "Digits typed in this step, at most pinLength. Never logged, never kept after the step ends." },
+    "firstPin": { "type": "string", "optional": true, "description": "The PIN from the create step, held in memory until confirm ends." },
+    "problem": {
+      "type": "enum",
+      "values": ["none", "repeatedDigit", "sequence", "date", "mismatch"],
+      "description": "Why the PIN cannot be used. repeatedDigit, sequence and date come from pinProblem(); mismatch: the confirm entry differs."
+    }
+  },
+  "actions": {
+    "typeDigit": {
+      "params": { "digit": { "type": "string", "description": "One digit, 0 to 9." } },
+      "effect": "Adds the digit. At pinLength digits in create, runs pinProblem(): a problem sets problem and clears pin; none goes to confirm. At pinLength digits in confirm, a match goes to signup-fallback with the PIN; a mismatch sets problem to mismatch and goes back to create."
+    },
+    "deleteDigit": {
+      "effect": "Removes the last digit and clears problem."
+    },
+    "back": {
+      "effect": "From confirm, goes back to create and forgets firstPin. From create, goes back to signup-name."
+    }
+  },
+  "strings": [
+    "bipe_pin_create_title",
+    "bipe_pin_create_body",
+    "bipe_pin_confirm_title",
+    "bipe_pin_mismatch",
+    "bipe_pin_problem_repeated_digit",
+    "bipe_pin_problem_sequence",
+    "bipe_pin_problem_date",
+    "bipe_pin_never_asked"
+  ],
+  "sdk": [],
+  "parity": ["first-run", "onboarding-two-step-signup", "phone-account", "app-lock"],
+  "notes": [
+    "pinLength, the weak-PIN rule and its order are in registries/accounts.json; cases in test-vectors/pins.json. Bipe logic: BipePIN.problem and BipePIN.sanitize (iOS), BipePin.problem and BipePin.sanitizeInput (Android). Do not write a new check.",
+    "bipe_pin_create_body takes pinLength as %1$s.",
+    "A full-screen number pad with the system digit keyboard as fallback. Paste is allowed; the app keeps the digits only.",
+    "The PIN goes to the server in POST /v1/signup (pin), which checks it again (400 pin_weak). The same PIN becomes the app lock (app-lock).",
+    "The words on screen are senha and senha de 8 números, never PIN (linguagem.md section 4)."
+  ]
+}

@@ -1,0 +1,47 @@
+{
+  "id": "signup-fallback",
+  "title": "If you lose your phone",
+  "flow": "signup",
+  "summary": "The last step before the account is made. It asks for an optional recovery e-mail, a way back into the account if the phone is lost. The person can skip it.",
+  "state": {
+    "phase": {
+      "type": "enum",
+      "values": ["choose", "email"],
+      "description": "choose: the two buttons. email: the e-mail field is open."
+    },
+    "email": { "type": "string", "description": "The recovery e-mail field." },
+    "emailInvalid": { "type": "bool", "description": "true after submit when the address is not plausible. Shows bipe_signup_email_invalid." }
+  },
+  "actions": {
+    "addEmail": {
+      "effect": "Sets phase to email."
+    },
+    "editEmail": {
+      "params": { "text": { "type": "string", "description": "The new field text." } },
+      "effect": "Sets email and clears emailInvalid."
+    },
+    "submitEmail": {
+      "effect": "Checks the address locally, then goes to signup-create with the e-mail."
+    },
+    "skip": {
+      "effect": "Goes to signup-create without an e-mail."
+    }
+  },
+  "strings": [
+    "bipe_fallback_title",
+    "bipe_fallback_body",
+    "bipe_fallback_email",
+    "bipe_fallback_skip",
+    "bipe_signup_email_optional",
+    "bipe_signup_email_optional_footer",
+    "bipe_signup_email_invalid",
+    "bipe_action_continue"
+  ],
+  "sdk": [],
+  "parity": ["first-run", "phone-account", "new-phone"],
+  "notes": [
+    "The e-mail is a recovery fallback, never a login (ADR 0057). It goes to POST /v1/signup as email; the server sends a link to confirm it.",
+    "Guardians and the recovery key are offered later, from settings, not here (onboarding.md: the fallback prompt comes after the first chat when skipped).",
+    "Local e-mail check: BipeHandle.isPlausibleEmail (iOS), BipeSignupRules.isPlausibleEmail (Android)."
+  ]
+}

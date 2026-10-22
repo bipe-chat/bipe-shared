@@ -1170,6 +1170,10 @@
     "bipe_app_utd_history": "This message is from before this phone. Approve this phone to read it.",
     "bipe_app_utd_not_shared": "The sender's device didn't share this message with this phone.",
     "bipe_app_utd_unapproved_device": "This message came from a device that %1$s hasn't approved.",
-    "bipe_app_utd_help": "How to see it"
+    "bipe_app_utd_help": "How to see it",
+    "bipe_app_requests_empty": "No chat requests. When someone you don't know writes to you, the request shows here.",
+    "bipe_app_request_accept": "Accept",
+    "bipe_app_request_decline": "Decline",
+    "bipe_app_request_decline_block": "Decline and block"
   }
 }

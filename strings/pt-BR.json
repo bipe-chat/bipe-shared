@@ -1170,6 +1170,10 @@
     "bipe_app_utd_history": "Esta mensagem é de antes deste celular. Aprove este celular para ler.",
     "bipe_app_utd_not_shared": "O aparelho de quem enviou não liberou esta mensagem para este celular.",
     "bipe_app_utd_unapproved_device": "Esta mensagem veio de um aparelho que %1$s não aprovou.",
-    "bipe_app_utd_help": "Como ver"
+    "bipe_app_utd_help": "Como ver",
+    "bipe_app_requests_empty": "Nenhum pedido de conversa. Quando alguém que você não conhece te escrever, o pedido aparece aqui.",
+    "bipe_app_request_accept": "Aceitar",
+    "bipe_app_request_decline": "Recusar",
+    "bipe_app_request_decline_block": "Recusar e bloquear"
   }
 }

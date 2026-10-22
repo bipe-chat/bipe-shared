@@ -1,0 +1,51 @@
+{
+  "id": "company-seal",
+  "title": "Business seal",
+  "flow": "people",
+  "summary": "A sheet with the facts behind a company's seal: legal name, trade name, CNPJ, when Bipe checked it with the Receita Federal, and until when the seal is valid. It says what the seal does not promise (ADR 0042).",
+  "state": {
+    "userId": { "type": "string", "description": "The company account." },
+    "state": {
+      "type": "enum",
+      "values": ["verified", "revoked", "suspended"],
+      "description": "verified: a valid cnpj badge bound to the account's master key. revoked: GET /v1/badges answered 410 (BadgeGone). suspended: the account had a seal and its badge no longer verifies (for example after a master key reset)."
+    },
+    "legalName": { "type": "string", "optional": true, "description": "verified only: BadgePayload.company legal name, under bipe_badge_company_legal_name." },
+    "tradeName": { "type": "string", "optional": true, "description": "verified only: the trade name, under bipe_badge_company_trade_name. Absent when the company has none." },
+    "cnpj": { "type": "string", "optional": true, "description": "verified only: BadgePayload.cnpj, shown with formatCnpj (12.ABC.345/01DE-35)." },
+    "checkedAt": { "type": "date", "optional": true, "description": "verified only: the month of the registry import, under bipe_badge_company_checked." },
+    "validUntil": { "type": "date", "optional": true, "description": "verified only: BadgePayload.exp, under bipe_badge_company_valid_until." },
+    "goneReason": {
+      "type": "enum",
+      "values": ["revoked", "notActive", "notFound", "staff"],
+      "description": "revoked only: BadgeGone.reason. notActive and notFound: bipe_badge_company_revoked_not_active. revoked and staff: bipe_badge_company_revoked."
+    }
+  },
+  "actions": {
+    "close": { "effect": "Closes the sheet." }
+  },
+  "strings": [
+    "bipe_app_seal_title",
+    "bipe_badge_company",
+    "bipe_badge_company_legal_name",
+    "bipe_badge_company_trade_name",
+    "bipe_badge_company_cnpj",
+    "bipe_badge_company_checked",
+    "bipe_badge_company_valid_until",
+    "bipe_badge_company_body",
+    "bipe_badge_company_revoked",
+    "bipe_badge_company_revoked_not_active",
+    "bipe_badge_company_suspended",
+    "bipe_app_close"
+  ],
+  "sdk": ["Client.encryption", "Encryption.userIdentity", "UserIdentity"],
+  "parity": ["cnpj-badge"],
+  "notes": [
+    "Opens from the seal next to the name in person-profile, the chat header and the chat list. The seal itself (an icon with bipe_badge_company as its label) shows only in state verified. revoked and suspended show their notice once where a seal was seen before; never a seal.",
+    "Verification on the device (security rule 2): the envelope from GET /v1/badges/{userId} (or PublicProfile.badge), the signing keys of registries/badge-keys.json, level cnpj, sub equal to the user ID, binding to the account's cross-signing master key, and exp in the future. The HTTP status alone never shows a seal. Failure of any step: no seal (fail closed). Reference: docs/badge-attestation.md. Bipe logic: BadgeVerifier, BadgeEnvelope, BadgePayload (BipeKit BadgeVerifier.swift); BipeCompanySeals, BipeCompanySealState, BipeCNPJ.formatted (BipeKit BipeCompanySeals.swift); BipeCompanySeals.kt (libraries/bipe company).",
+    "SDK gap, as in person-profile: matrix-sdk-ffi does not export UserIdentity.masterKey (pub(crate), 22 Oct 2026). The build lane needs it exported upstream or reads it from the Matrix keys query.",
+    "bipe_badge_company_body is the honest limit of the seal: Bipe checked the CNPJ and the account; it does not vouch for each offer or charge (linguagem.md section 3).",
+    "The avatar shape (rounded square for a company) comes from the account type, not from the seal (ADR 0132). An unverified company still has the square and no seal.",
+    "The CNPJ is formatted with formatCnpj in tools/lib/registries.mjs (alphanumeric CNPJ)."
+  ]
+}

@@ -1,0 +1,89 @@
+{
+  "id": "message-media",
+  "title": "Photos, videos, files and stickers in a chat",
+  "flow": "chat",
+  "summary": "Timeline rows for image, video, file and sticker messages: a thumbnail or file card that downloads and decrypts on the device, a caption, and a tap that opens the media viewer or the file.",
+  "types": {
+    "MediaMessage": {
+      "itemId": { "type": "string", "description": "The timeline item id." },
+      "kind": {
+        "type": "enum",
+        "values": ["image", "video", "file", "sticker"],
+        "description": "From MessageType Image, Video and File, and the sticker content. Audio and voice are message-voice."
+      },
+      "caption": { "type": "string", "optional": true, "description": "The caption (body when it differs from the file name). Plain text." },
+      "fileName": { "type": "string", "optional": true, "description": "file: the name shown on the card." },
+      "sizeText": { "type": "string", "optional": true, "description": "The size formatted by the system (1,2 MB)." },
+      "durationText": { "type": "string", "optional": true, "description": "video: the length formatted by the system." },
+      "aspectRatio": { "type": "string", "optional": true, "description": "width:height from ImageInfo or VideoInfo, so the row has its size before the thumbnail loads." },
+      "blurhash": { "type": "string", "optional": true, "description": "ImageInfo or VideoInfo blurhash, shown while the thumbnail loads." },
+      "loadState": {
+        "type": "enum",
+        "values": ["hidden", "loading", "ready", "failed"],
+        "description": "hidden: the show media setting says to wait for a tap. failed: download or decryption failed."
+      }
+    }
+  },
+  "state": {
+    "message": { "type": "MediaMessage", "description": "The row." },
+    "showMedia": {
+      "type": "enum",
+      "values": ["always", "privateChats", "onTap"],
+      "description": "The chats setting bipe_chats_show_media (registries/settings.json chats.showMedia). privateChats: load in DMs and closed groups only."
+    }
+  },
+  "actions": {
+    "loadThumbnail": {
+      "effect": "When the row comes on screen and showMedia allows it: Client.getMediaThumbnail at the row size (sticker and small images: Client.getMediaContent). The SDK decrypts encrypted media and caches it."
+    },
+    "reveal": {
+      "effect": "From hidden: loads as above."
+    },
+    "open": {
+      "effect": "image and video: opens media-viewer at this item. file: Client.getMediaFile to a temporary file, then the system open or share sheet. sticker: opens the sticker sheet (save, see the pack)."
+    },
+    "retry": {
+      "effect": "From failed: loads again."
+    },
+    "saveSticker": {
+      "effect": "sticker of another person: adds it to My stickers (the personal MSC2545 pack) and shows bipe_sticker_saved or bipe_sticker_save_failed."
+    }
+  },
+  "strings": [
+    "bipe_app_media_tap_to_show",
+    "bipe_app_media_load_failed",
+    "bipe_app_media_file_label",
+    "bipe_app_notification_image",
+    "bipe_app_notification_video",
+    "bipe_sticker_label",
+    "bipe_action_save_sticker",
+    "bipe_sticker_saved",
+    "bipe_sticker_save_failed",
+    "bipe_warning_receipt_image",
+    "bipe_chats_show_media"
+  ],
+  "sdk": [
+    "Client.getMediaThumbnail",
+    "Client.getMediaContent",
+    "Client.getMediaFile",
+    "MediaFileHandle.path",
+    "MediaSource",
+    "MessageType",
+    "ImageMessageContent",
+    "VideoMessageContent",
+    "FileMessageContent",
+    "ImageInfo",
+    "VideoInfo",
+    "FileInfo",
+    "TimelineItemContent"
+  ],
+  "parity": ["stickers", "e2ee"],
+  "notes": [
+    "bipe_app_media_file_label is the accessibility label of a file card: %1$s the file name, %2$s the size. bipe_app_notification_image and bipe_app_notification_video are the labels of a photo or video without a caption.",
+    "Animated stickers (GIF, WebP, APNG) play in the row. Bipe logic: BipeAnimatedImage.frameCount and BipeAnimatedImage (iOS); sticker content: Sticker and StickerPack (iOS StickerPacks.swift, Android stickers/StickerPacks.kt).",
+    "A caption runs through the scam check like a text message (message-scam-warning).",
+    "Images that look like a payment receipt get bipe_warning_receipt_image at the bottom edge (trust-ui.md). No shared detector exists yet in bipe-shared, BipeKit or libraries/bipe; the label waits for one (open point).",
+    "Galleries (MessageType Gallery) show as separate images in phase 1. Location and polls are other specs.",
+    "Never upload or log media outside the SDK. The media cache lives in the SDK store on the device."
+  ]
+}

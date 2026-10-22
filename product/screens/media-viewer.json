@@ -1,0 +1,64 @@
+{
+  "id": "media-viewer",
+  "title": "Media viewer",
+  "flow": "chat",
+  "summary": "Full-screen view of the photos and videos of a chat, starting at the one tapped. Swipe for the others, pinch to zoom, play video, save, share, reply or delete.",
+  "state": {
+    "roomId": { "type": "string", "description": "The chat." },
+    "items": {
+      "type": "list",
+      "of": { "type": "string", "description": "A timeline item id of an image or video." },
+      "description": "The images and videos of the loaded timeline, oldest first. Swiping past the first back-paginates."
+    },
+    "currentIndex": { "type": "int", "description": "The one on screen." },
+    "senderName": { "type": "string", "description": "Shown on top with the time." },
+    "sentAt": { "type": "date", "description": "Origin server time." },
+    "caption": { "type": "string", "optional": true, "description": "Shown at the bottom." },
+    "phase": {
+      "type": "enum",
+      "values": ["loading", "ready", "failed"],
+      "description": "Full-size download of the current item."
+    },
+    "chromeVisible": { "type": "bool", "description": "A tap shows or hides the bars." }
+  },
+  "actions": {
+    "load": {
+      "effect": "Client.getMediaContent for images and Client.getMediaFile for videos at full size; the thumbnail shows until then."
+    },
+    "swipe": {
+      "params": { "index": { "type": "int", "description": "The new index." } },
+      "effect": "Shows that item and loads it."
+    },
+    "save": {
+      "effect": "Saves to the photo library (asks for add-only permission on iOS). Shows bipe_app_media_saved or bipe_app_media_save_failed."
+    },
+    "share": { "effect": "The system share sheet with the decrypted file." },
+    "reply": { "effect": "Closes and starts message-reply for the item." },
+    "delete": { "effect": "Own item: message-delete confirm; on delete, closes or moves to the next." },
+    "close": { "effect": "Closes, also with a swipe down." }
+  },
+  "strings": [
+    "bipe_app_media_close",
+    "bipe_app_media_save",
+    "bipe_app_media_saved",
+    "bipe_app_media_save_failed",
+    "bipe_app_share",
+    "bipe_app_msg_reply",
+    "bipe_app_msg_delete",
+    "bipe_app_media_load_failed",
+    "bipe_app_retry"
+  ],
+  "sdk": [
+    "Client.getMediaContent",
+    "Client.getMediaFile",
+    "MediaFileHandle.path",
+    "MediaSource",
+    "Timeline.paginateBackwards",
+    "Timeline.redactEvent"
+  ],
+  "parity": ["e2ee"],
+  "notes": [
+    "Saved and shared files leave the encryption: they are plain files on the phone. No text needed; the action is the person's choice.",
+    "The per-chat media list (bipe_dm_media_empty, chat info) is groups and DMs work (bipe-chat/bipe#569)."
+  ]
+}

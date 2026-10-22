@@ -1,0 +1,78 @@
+{
+  "id": "media-upload-preview",
+  "title": "Upload preview",
+  "flow": "chat",
+  "summary": "After the person picks photos, videos or a file: a preview with an optional caption, then send. Each item uploads encrypted through the SDK send queue and shows in the timeline at once with its progress.",
+  "types": {
+    "PendingUpload": {
+      "localPath": { "type": "string", "description": "The file in the app's temporary folder (copied from the picker)." },
+      "kind": {
+        "type": "enum",
+        "values": ["image", "video", "file"],
+        "description": "From the type the picker gives."
+      },
+      "sizeBytes": { "type": "int", "description": "After compression." },
+      "tooLarge": { "type": "bool", "description": "sizeBytes above Client.getMaxMediaUploadSize." }
+    }
+  },
+  "state": {
+    "items": {
+      "type": "list",
+      "of": { "type": "PendingUpload", "description": "One item." },
+      "description": "What the person picked, in order. At most 10 at once."
+    },
+    "caption": { "type": "string", "description": "One caption, on the first item." },
+    "phase": {
+      "type": "enum",
+      "values": ["preparing", "ready", "sending"],
+      "description": "preparing: compressing, making thumbnails and reading width, height, length and blurhash."
+    }
+  },
+  "actions": {
+    "prepare": {
+      "effect": "Images: re-encode to JPEG (HEIC to JPEG on iOS), strip the location and other metadata, scale by the chats setting bipe_chats_media_quality. Videos: transcode by the same setting. Files: as they are."
+    },
+    "editCaption": {
+      "params": { "text": { "type": "string", "description": "The caption." } },
+      "effect": "Sets caption."
+    },
+    "remove": {
+      "params": { "index": { "type": "int", "description": "The item." } },
+      "effect": "Drops it; with none left, closes."
+    },
+    "send": {
+      "effect": "For each item that is not tooLarge: Timeline.sendAttachment with UploadParameters (source, caption on the first, in_reply_to when a reply is drafted) and AttachmentKind Image, Video or File with its info and thumbnail. Closes; the rows show sending, and cancel uses SendAttachmentJoinHandle.cancel."
+    },
+    "cancel": { "effect": "Closes and deletes the temporary files." }
+  },
+  "strings": [
+    "bipe_app_media_caption_placeholder",
+    "bipe_app_media_preparing",
+    "bipe_app_media_too_large",
+    "bipe_app_timeline_send",
+    "bipe_app_timeline_sending",
+    "bipe_app_timeline_failed",
+    "bipe_app_cancel",
+    "bipe_chats_media_quality"
+  ],
+  "sdk": [
+    "Timeline.sendAttachment",
+    "AttachmentKind",
+    "UploadParameters",
+    "UploadSource",
+    "ImageInfo",
+    "VideoInfo",
+    "FileInfo",
+    "ThumbnailInfo",
+    "SendAttachmentJoinHandle.join",
+    "SendAttachmentJoinHandle.cancel",
+    "Client.getMaxMediaUploadSize"
+  ],
+  "parity": ["e2ee"],
+  "notes": [
+    "Timeline.sendImage, sendVideo and sendFile are deprecated in the binding; use Timeline.sendAttachment.",
+    "bipe_app_media_too_large takes the limit formatted by the system (100 MB). A too-large item stays in the preview with the message and is not sent.",
+    "Removing the location from photos is a privacy default, not a setting.",
+    "Stickers do not use this screen (composer-stickers). Voice messages neither (composer-voice)."
+  ]
+}

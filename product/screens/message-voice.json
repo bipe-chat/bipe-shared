@@ -1,0 +1,74 @@
+{
+  "id": "message-voice",
+  "title": "Voice messages and audio",
+  "flow": "chat",
+  "summary": "Timeline row for voice messages and audio files: play and pause, a waveform you can drag, speed, and the sender's transcript under the player (ADR 0023). The transcript is the caption of the voice event.",
+  "types": {
+    "VoiceMessage": {
+      "itemId": { "type": "string", "description": "The timeline item id." },
+      "isVoice": { "type": "bool", "description": "true when the audio has the voice flag (UnstableVoiceContent). false: an audio file, shown with its name." },
+      "durationMs": { "type": "int", "description": "From AudioInfo or UnstableAudioDetailsContent." },
+      "waveform": {
+        "type": "list",
+        "of": { "type": "int", "description": "One bar, 0 to 1024 (MSC3246)." },
+        "description": "From UnstableAudioDetailsContent. Empty: a flat line."
+      },
+      "transcript": { "type": "string", "optional": true, "description": "The caption of a voice message: the sender's transcript." }
+    }
+  },
+  "state": {
+    "message": { "type": "VoiceMessage", "description": "The row." },
+    "playback": {
+      "type": "enum",
+      "values": ["idle", "loading", "playing", "paused", "failed"],
+      "description": "loading: Client.getMediaFile downloads and decrypts the Ogg Opus file."
+    },
+    "positionMs": { "type": "int", "description": "Play position." },
+    "speed": {
+      "type": "enum",
+      "values": ["normal", "oneAndHalf", "double"],
+      "description": "Tap cycles 1x, 1,5x, 2x. Kept for the app, not per message."
+    },
+    "transcriptExpanded": { "type": "bool", "description": "false shows 3 lines with bipe_action_show_more." }
+  },
+  "actions": {
+    "play": {
+      "effect": "Downloads once, then plays. Only one audio plays at a time; when it ends, the next voice message right after it plays too."
+    },
+    "pause": { "effect": "Pauses and keeps the position." },
+    "seek": {
+      "params": { "positionMs": { "type": "int", "description": "The new position from a drag on the waveform." } },
+      "effect": "Moves the position."
+    },
+    "cycleSpeed": { "effect": "Next speed." },
+    "toggleTranscript": { "effect": "Expands or folds the transcript." }
+  },
+  "strings": [
+    "bipe_app_media_voice_label",
+    "bipe_app_media_play",
+    "bipe_app_media_pause",
+    "bipe_app_media_speed",
+    "bipe_app_media_load_failed",
+    "bipe_voice_transcript_title",
+    "bipe_action_show_more",
+    "bipe_action_show_less",
+    "bipe_app_notification_voice"
+  ],
+  "sdk": [
+    "Client.getMediaFile",
+    "MediaFileHandle.path",
+    "AudioMessageContent",
+    "AudioInfo",
+    "UnstableVoiceContent",
+    "UnstableAudioDetailsContent",
+    "MessageType"
+  ],
+  "parity": ["voice-transcript-display", "e2ee"],
+  "notes": [
+    "Transcript display (ADR 0023): on a voice message a caption is a transcript. The reader's phone never transcribes. A voice message without a caption shows no transcript row.",
+    "The scam check reads the transcript of incoming voice messages (message-scam-warning, security.md rule 9).",
+    "bipe_app_media_voice_label is the accessibility label: %1$s the length formatted by the system. bipe_app_media_speed takes the speed text (1x, 1,5x, 2x).",
+    "Playback goes on with the screen locked and shows lock-screen controls (audio.md phase 1).",
+    "Bipe logic: BipeVoiceTranscriptView (Android libraries/bipe ui). The iOS transcript row is fork UI, not BipeKit; write it from this spec."
+  ]
+}

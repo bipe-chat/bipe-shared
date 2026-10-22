@@ -1192,6 +1192,20 @@
     "bipe_app_chats_search_chats": "Chats and groups",
     "bipe_app_chats_search_people": "People",
     "bipe_app_chats_search_none": "Nothing found for %1$s.",
-    "bipe_app_chats_search_no_handle": "We didn't find anyone with @%1$s."
+    "bipe_app_chats_search_no_handle": "We didn't find anyone with @%1$s.",
+    "bipe_app_media_tap_to_show": "Tap to show",
+    "bipe_app_media_load_failed": "Couldn't load. Tap to try again.",
+    "bipe_app_media_file_label": "File %1$s, %2$s",
+    "bipe_app_media_voice_label": "Voice message, %1$s",
+    "bipe_app_media_play": "Play",
+    "bipe_app_media_pause": "Pause",
+    "bipe_app_media_speed": "Speed %1$s",
+    "bipe_app_media_close": "Close",
+    "bipe_app_media_save": "Save to phone",
+    "bipe_app_media_saved": "Saved to your phone.",
+    "bipe_app_media_save_failed": "Couldn't save. Try again.",
+    "bipe_app_media_caption_placeholder": "Add a caption",
+    "bipe_app_media_preparing": "Preparing…",
+    "bipe_app_media_too_large": "This file is too large. The limit is %1$s."
   }
 }

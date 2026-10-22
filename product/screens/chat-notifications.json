@@ -1,0 +1,49 @@
+{
+  "id": "chat-notifications",
+  "title": "Notifications of one chat",
+  "flow": "chat",
+  "summary": "Per chat choice of what notifies, from the chat info or a long press in the chat list. A DM offers all messages or mute; a group also offers mentions only (ADR 0141).",
+  "state": {
+    "isDm": { "type": "bool", "description": "Room.isDirect." },
+    "mode": {
+      "type": "enum",
+      "values": ["default", "allMessages", "mentionsAndKeywordsOnly", "mute"],
+      "description": "default: follows notification-settings. Else the user-defined mode of this room."
+    },
+    "legacyMentionsInDm": { "type": "bool", "description": "A DM that already has a mentions-only rule from before. Shows bipe_dm_notifications_mentions_disclaimer and keeps the rule until the person picks another mode." }
+  },
+  "actions": {
+    "load": {
+      "effect": "NotificationSettings.getRoomNotificationSettings for the room (encrypted, member count)."
+    },
+    "setMode": {
+      "params": { "mode": { "type": "string", "description": "allMessages, mentionsAndKeywordsOnly (groups only) or mute." } },
+      "effect": "NotificationSettings.setRoomNotificationMode. mute shows a muted icon on the chat-list row."
+    },
+    "useDefault": {
+      "effect": "NotificationSettings.restoreDefaultRoomNotificationMode."
+    }
+  },
+  "strings": [
+    "bipe_dm_notifications_custom_title",
+    "bipe_dm_notifications_mentions_disclaimer",
+    "bipe_app_notify_default",
+    "bipe_app_notify_all",
+    "bipe_app_notify_mentions",
+    "bipe_app_notify_mute"
+  ],
+  "sdk": [
+    "Client.getNotificationSettings",
+    "NotificationSettings.getRoomNotificationSettings",
+    "NotificationSettings.setRoomNotificationMode",
+    "NotificationSettings.restoreDefaultRoomNotificationMode",
+    "NotificationSettings.unmuteRoom",
+    "RoomNotificationMode",
+    "Room.isDirect"
+  ],
+  "parity": [],
+  "notes": [
+    "The one DM test is Room.isDirect (ADR 0141).",
+    "No mute-for-a-time (8 hours, a week) in phase 1."
+  ]
+}

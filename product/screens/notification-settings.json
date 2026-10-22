@@ -1,0 +1,95 @@
+{
+  "id": "notification-settings",
+  "title": "Notification settings",
+  "flow": "settings",
+  "summary": "The Notificações group of settings (ADR 0112): turn notifications on or off on this phone, choose what chats and groups notify about, invites, and sounds. Values live in the account's push rules on the server, so they follow the account to other devices; on/off and sounds are per phone.",
+  "state": {
+    "enabledOnThisPhone": { "type": "bool", "description": "Notifications on for this phone (the pusher exists and the system permission is granted)." },
+    "systemDenied": { "type": "bool", "description": "The system permission is off. Shows bipe_notifications_permission_title with a button to the system settings." },
+    "chatsMode": {
+      "type": "enum",
+      "values": ["allMessages", "mute"],
+      "description": "Default for DMs: NotificationSettings.getDefaultRoomNotificationMode for one-to-one, encrypted rooms. DMs have no mentions-only mode (ADR 0141)."
+    },
+    "groupsMode": {
+      "type": "enum",
+      "values": ["allMessages", "mentionsAndKeywordsOnly", "mute"],
+      "description": "Default for groups (not one-to-one, encrypted)."
+    },
+    "wholeGroupMentions": { "type": "bool", "description": "NotificationSettings.isRoomMentionEnabled: notify when someone calls the whole group." },
+    "invites": { "type": "bool", "description": "NotificationSettings.isInviteForMeEnabled: chat requests and group invites." },
+    "messageSound": {
+      "type": "enum",
+      "values": ["system", "soft", "silent"],
+      "description": "This phone only."
+    },
+    "showMismatch": { "type": "bool", "description": "The account has older push rules this screen can't show (for example per-keyword rules). Shows the bipe_notifications_mismatch notice once." }
+  },
+  "actions": {
+    "toggleThisPhone": {
+      "effect": "On: asks the system permission if needed, then push-registration register. Off: push-registration unregister."
+    },
+    "setChatsMode": {
+      "params": { "mode": { "type": "string", "description": "allMessages or mute." } },
+      "effect": "NotificationSettings.setDefaultRoomNotificationMode for encrypted one-to-one rooms."
+    },
+    "setGroupsMode": {
+      "params": { "mode": { "type": "string", "description": "allMessages, mentionsAndKeywordsOnly or mute." } },
+      "effect": "NotificationSettings.setDefaultRoomNotificationMode for encrypted rooms with more than two people."
+    },
+    "toggleWholeGroup": {
+      "effect": "NotificationSettings.setRoomMentionEnabled."
+    },
+    "toggleInvites": {
+      "effect": "NotificationSettings.setInviteForMeEnabled."
+    },
+    "setSound": {
+      "params": { "sound": { "type": "string", "description": "system, soft or silent." } },
+      "effect": "Stores the choice on this phone; Android updates its notification channel."
+    }
+  },
+  "strings": [
+    "bipe_settings_notifications",
+    "bipe_settings_notifications_on",
+    "bipe_settings_notifications_off",
+    "bipe_notifications_enable",
+    "bipe_notifications_permission_title",
+    "bipe_notifications_permission_body",
+    "bipe_notifications_notify_about",
+    "bipe_notifications_chats",
+    "bipe_notifications_groups",
+    "bipe_app_notify_all",
+    "bipe_app_notify_mentions",
+    "bipe_app_notify_mute",
+    "bipe_notifications_whole_group",
+    "bipe_notifications_invites",
+    "bipe_notifications_sound",
+    "bipe_notifications_message_sound",
+    "bipe_notifications_tone_system",
+    "bipe_notifications_tone_soft",
+    "bipe_notifications_tone_silent",
+    "bipe_notifications_mismatch_title",
+    "bipe_notifications_mismatch_body",
+    "bipe_app_open_system_settings"
+  ],
+  "sdk": [
+    "Client.getNotificationSettings",
+    "NotificationSettings.getDefaultRoomNotificationMode",
+    "NotificationSettings.setDefaultRoomNotificationMode",
+    "NotificationSettings.isRoomMentionEnabled",
+    "NotificationSettings.setRoomMentionEnabled",
+    "NotificationSettings.isInviteForMeEnabled",
+    "NotificationSettings.setInviteForMeEnabled",
+    "NotificationSettings.getRoomsWithUserDefinedRules",
+    "NotificationSettings.setDelegate",
+    "NotificationSettingsDelegate.settingsDidChange",
+    "RoomNotificationMode"
+  ],
+  "parity": ["settings-structure"],
+  "notes": [
+    "registries/settings.json still marks this group screen element (the fork keeps Element's screen). This spec is the Bipe screen for bipe-app; give the group its rows in the registry when a fork switches to it.",
+    "Bipe has no unencrypted rooms (e2ee-only-rooms), so only the encrypted defaults are shown and set.",
+    "Call ringing (isCallEnabled) is out of scope: no calls in phase 1.",
+    "Custom ringtones (bipe_notifications_tone_custom) are not in phase 1."
+  ]
+}

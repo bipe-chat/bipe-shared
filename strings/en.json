@@ -1164,6 +1164,19 @@
     "bipe_app_typing_many": "Several people are typing",
     "bipe_app_date_today": "Today",
     "bipe_app_date_yesterday": "Yesterday",
-    "bipe_app_unread_marker": "New messages"
+    "bipe_app_unread_marker": "New messages",
+    "bipe_app_notification_fallback": "New message",
+    "bipe_app_notification_image": "Photo",
+    "bipe_app_notification_video": "Video",
+    "bipe_app_notification_voice": "Voice message",
+    "bipe_app_notification_file": "File",
+    "bipe_app_notification_sticker": "Sticker",
+    "bipe_app_notification_reaction": "Reacted %1$s to your message",
+    "bipe_app_notification_dm_request": "Wants to chat with you",
+    "bipe_app_notify_default": "Default",
+    "bipe_app_notify_all": "All messages",
+    "bipe_app_notify_mentions": "Only when someone mentions me",
+    "bipe_app_notify_mute": "Mute",
+    "bipe_app_open_system_settings": "Open phone settings"
   }
 }

@@ -1,0 +1,47 @@
+{
+  "id": "push-registration",
+  "title": "Push registration",
+  "flow": "notifications",
+  "summary": "No screen of its own: keeps this phone registered with Bipe's push gateway (Sygnal at push.bipe.net.br) so the homeserver can wake the app. The push carries only the event and room IDs, never the content.",
+  "state": {
+    "status": {
+      "type": "enum",
+      "values": [
+        "off",
+        "registering",
+        "registered",
+        "failed"
+      ],
+      "description": "off: no permission, notifications off on this phone, or no push token. registered: the pusher is set for the current token."
+    },
+    "pushToken": {
+      "type": "string",
+      "optional": true,
+      "description": "APNs device token (iOS) or FCM token (Android). Kept on the device."
+    }
+  },
+  "actions": {
+    "register": {
+      "effect": "On a granted permission, a new token or an app start with notifications on: Client.setPusher with an HTTP pusher (url https://push.bipe.net.br/_matrix/push/v1/notify, format EventIdOnly), the platform app ID, the app name Bipe, the device name, and lang from the app language; append false."
+    },
+    "unregister": {
+      "effect": "When the person turns notifications off on this phone or signs out: Client.deletePusher with the same identifiers."
+    }
+  },
+  "strings": [],
+  "sdk": [
+    "Client.setPusher",
+    "Client.deletePusher",
+    "PusherIdentifiers",
+    "PusherKind",
+    "HttpPusherData",
+    "PushFormat"
+  ],
+  "parity": [],
+  "notes": [
+    "Push app IDs stay the forks' IDs so Sygnal needs no change (client-rewrite-plan.md section 7): on iOS the four IDs Sygnal lists, chat.bipe.app[.dev].ios.dev|prod, picked by bundle ID and APNs environment (bipe/docs/server-migration.md). Android uses FCM through Sygnal once the Firebase project exists (bipe-chat/bipe#89).",
+    "PushFormat EventIdOnly is required (security.md: push carries no content). Never send a pusher with the full event format.",
+    "Apple (APNs) and Google (FCM) see only a code, not the message (linguagem.md: what we can promise). product/data.json already lists both.",
+    "Re-register after each token change; the platforms rotate tokens."
+  ]
+}

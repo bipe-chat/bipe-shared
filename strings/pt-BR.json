@@ -1164,6 +1164,19 @@
     "bipe_app_typing_many": "Várias pessoas estão digitando",
     "bipe_app_date_today": "Hoje",
     "bipe_app_date_yesterday": "Ontem",
-    "bipe_app_unread_marker": "Mensagens novas"
+    "bipe_app_unread_marker": "Mensagens novas",
+    "bipe_app_notification_fallback": "Mensagem nova",
+    "bipe_app_notification_image": "Foto",
+    "bipe_app_notification_video": "Vídeo",
+    "bipe_app_notification_voice": "Mensagem de voz",
+    "bipe_app_notification_file": "Arquivo",
+    "bipe_app_notification_sticker": "Sticker",
+    "bipe_app_notification_reaction": "Reagiu com %1$s à sua mensagem",
+    "bipe_app_notification_dm_request": "Quer conversar com você",
+    "bipe_app_notify_default": "Padrão",
+    "bipe_app_notify_all": "Todas as mensagens",
+    "bipe_app_notify_mentions": "Só quando me marcam",
+    "bipe_app_notify_mute": "Silenciar",
+    "bipe_app_open_system_settings": "Abrir as configurações do celular"
   }
 }

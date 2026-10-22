@@ -1,0 +1,44 @@
+{
+  "id": "notifications-prompt",
+  "title": "Notification ask",
+  "flow": "notifications",
+  "summary": "Asks for the system notification permission at the moment it helps: right after the person sends their first message (registries/onboarding.json prompts.notifications). A primer card comes first, so the one-shot iOS prompt is not wasted.",
+  "state": {
+    "phase": {
+      "type": "enum",
+      "values": ["hidden", "primer", "asking", "granted", "denied"],
+      "description": "primer: the Bipe card. asking: the system prompt is up. denied: the person said no in the system prompt or earlier."
+    },
+    "recipientName": { "type": "string", "optional": true, "description": "The name of the person the first message went to, for bipe_notifications_prompt_title. Absent in a group." },
+    "systemStatus": {
+      "type": "enum",
+      "values": ["notDetermined", "granted", "denied"],
+      "description": "The platform permission (iOS authorization status; Android 13+ POST_NOTIFICATIONS; granted below Android 13)."
+    }
+  },
+  "actions": {
+    "trigger": {
+      "effect": "On the first sent message (trigger firstMessageSent): shows the primer when systemStatus is notDetermined and the card was not dismissed before."
+    },
+    "allow": {
+      "effect": "Opens the system prompt. granted: starts push-registration."
+    },
+    "notNow": {
+      "effect": "Dismisses the card for good on this phone. Notification settings can still turn notifications on."
+    }
+  },
+  "strings": [
+    "bipe_notifications_prompt_title",
+    "bipe_notifications_prompt_title_generic",
+    "bipe_notifications_prompt_body",
+    "bipe_notifications_prompt_allow",
+    "bipe_fallback_skip"
+  ],
+  "sdk": [],
+  "parity": ["first-run"],
+  "notes": [
+    "A refusal never blocks anything (onboarding.md: Permissions).",
+    "bipe_notifications_prompt_title takes the recipient's name; in a group or without a name use bipe_notifications_prompt_title_generic.",
+    "Card text and buttons come from the generated onboarding code (prompts.notifications)."
+  ]
+}

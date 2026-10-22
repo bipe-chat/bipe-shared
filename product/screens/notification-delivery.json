@@ -1,0 +1,72 @@
+{
+  "id": "notification-delivery",
+  "title": "Showing a notification",
+  "flow": "notifications",
+  "summary": "Turns a content-free push into a readable notification on the phone. iOS: a notification service extension. Android: the push handler. Both fetch and decrypt the event on the device with the SDK notification client, then show sender, chat and text.",
+  "types": {
+    "ShownNotification": {
+      "roomId": { "type": "string", "description": "The chat. Notifications group by it." },
+      "eventId": { "type": "string", "description": "The event." },
+      "title": { "type": "string", "description": "DM: the sender's name. Group: the group name." },
+      "body": { "type": "string", "description": "The plain text, the media kind, or a fixed line (see notes)." },
+      "senderName": { "type": "string", "optional": true, "description": "Group only: shown before the body." },
+      "isInvite": { "type": "bool", "description": "true for an invite to a chat or group." }
+    }
+  },
+  "state": {
+    "result": {
+      "type": "enum",
+      "values": ["shown", "fallback", "dropped"],
+      "description": "shown: decrypted. fallback: the event could not be fetched or decrypted in time; a generic line shows. dropped: nothing to show (own event, read on another device, a muted chat)."
+    },
+    "notification": { "type": "ShownNotification", "optional": true, "description": "What the phone shows." }
+  },
+  "actions": {
+    "receive": {
+      "params": {
+        "roomId": { "type": "string", "description": "From the push payload." },
+        "eventId": { "type": "string", "description": "From the push payload." }
+      },
+      "effect": "Opens the shared SDK store, gets a NotificationClient and calls getNotification for the room and event within the platform's time limit, then shows, falls back or drops."
+    },
+    "open": {
+      "effect": "A tap on the notification opens chat-timeline for the room, scrolled to the event."
+    },
+    "markRead": {
+      "effect": "When the chat is read on any device, removes its notifications (on the next push or app start)."
+    }
+  },
+  "strings": [
+    "bipe_app_notification_fallback",
+    "bipe_app_notification_image",
+    "bipe_app_notification_video",
+    "bipe_app_notification_voice",
+    "bipe_app_notification_file",
+    "bipe_app_notification_sticker",
+    "bipe_app_notification_reaction",
+    "bipe_group_notification_room_invite_body",
+    "bipe_group_notification_room_invite_body_with_sender",
+    "bipe_app_notification_dm_request"
+  ],
+  "sdk": [
+    "Client.notificationClient",
+    "Client.notificationClientWithTimeouts",
+    "NotificationClient.getNotification",
+    "NotificationClient.getNotifications",
+    "NotificationItem",
+    "NotificationEvent",
+    "NotificationRoomInfo",
+    "NotificationSenderInfo",
+    "NotificationProcessSetup",
+    "NotificationStatus"
+  ],
+  "parity": ["e2ee", "requests"],
+  "notes": [
+    "iOS: the extension runs with little memory and about 30 s. It uses NotificationProcessSetup for several processes and the same session store in the app group. Never start a full sync there.",
+    "fallback shows bipe_app_notification_fallback (a new message, no sender text) so a push is never lost and never shows ciphertext.",
+    "A message from someone who is not a contact and has no chat yet is a chat request (parity requests): title from the sender, body bipe_app_notification_dm_request, no message text.",
+    "Media and others: image, video, voice, file and sticker use their fixed lines; a reaction uses bipe_app_notification_reaction with the emoji; edits and deletions show nothing new.",
+    "No scam check runs on the notification text in phase 1; the warning shows in the chat (message-scam-warning).",
+    "Calls are out of scope (plan section 4, phase 3)."
+  ]
+}

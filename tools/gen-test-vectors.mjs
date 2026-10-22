@@ -6,7 +6,7 @@ import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
 import { buildBrCode, crc16, pixCheck } from "./lib/pix.mjs";
 import { loadSchedulingVectors, writeSchedulingApiFixture } from "./lib/scheduling-vectors.mjs";
-import { compareAppVersions, extractInviteCode, handleProblem, pinProblem, remoteBannerState, normalizeCnpj, normalizePhone, handleSkeleton, loadRegistries, normalize, scamMatchIDs, scamWarningKind, trustFacts } from "./lib/registries.mjs";
+import { clearedChatHidden, clearedChatKeepsEvent, clearedChatMarker, clearedChatsWithClear, compareAppVersions, extractInviteCode, handleProblem, pinProblem, remoteBannerState, normalizeCnpj, normalizePhone, handleSkeleton, loadRegistries, normalize, scamMatchIDs, scamWarningKind, trustFacts } from "./lib/registries.mjs";
 
 const root = join(dirname(fileURLToPath(import.meta.url)), "..");
 const reg = loadRegistries(root);
@@ -364,4 +364,16 @@ write("remote-banner.json", {
   $comment: bannerFixture.$comment,
   state: bannerFixture.state.map((c) => ({ ...c, expected: remoteBannerState(c.banner, c.app_version, c.now) })),
   compare: bannerFixture.compare.map((c) => ({ ...c, expected: compareAppVersions(c.a, c.b) })),
+});
+
+// --- Cleared DMs (bipe-chat/bipe#464) ---------------------------------------
+
+const clearedFixture = JSON.parse(readFileSync(join(root, "fixtures/cleared-chats.json"), "utf8"));
+write("cleared-chats.json", {
+  $comment: clearedFixture.$comment,
+  event_type: reg.clearedChats.eventType,
+  marker: clearedFixture.marker.map((c) => ({ ...c, expected: clearedChatMarker(c.content, c.room_id) })),
+  hidden: clearedFixture.hidden.map((c) => ({ ...c, expected: clearedChatHidden(c.marker, c.latest_ts) })),
+  keeps: clearedFixture.keeps.map((c) => ({ ...c, expected: clearedChatKeepsEvent(c.marker, c.event_ts) })),
+  clear: clearedFixture.clear.map((c) => ({ ...c, expected: clearedChatsWithClear(c.content, c.room_id, c.ts) })),
 });

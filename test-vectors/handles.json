@@ -187,6 +187,41 @@
       "skeleton": "bipe"
     },
     {
+      "input": "bipechat",
+      "problem": null,
+      "skeleton": "bipechat"
+    },
+    {
+      "input": "bipechat",
+      "claimant": "@r2vrihsgkqd5:bipe.net.br",
+      "problem": null,
+      "skeleton": "bipechat"
+    },
+    {
+      "input": "bipechat",
+      "claimant": "@ana:bipe.net.br",
+      "problem": "reserved",
+      "skeleton": "bipechat"
+    },
+    {
+      "input": "bipechat",
+      "claimant": "",
+      "problem": "reserved",
+      "skeleton": "bipechat"
+    },
+    {
+      "input": "b.ipechat",
+      "claimant": "@r2vrihsgkqd5:bipe.net.br",
+      "problem": null,
+      "skeleton": "bipechat"
+    },
+    {
+      "input": "b.ipechat",
+      "claimant": "@ana:bipe.net.br",
+      "problem": "reserved",
+      "skeleton": "bipechat"
+    },
+    {
       "input": "novidades_bipe",
       "claimant": "@ana:bipe.net.br",
       "problem": "reserved",

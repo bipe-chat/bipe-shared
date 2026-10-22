@@ -5,7 +5,7 @@ Single source of truth for Bipe logic that iOS, Android, the API and the website
 | Path | Content |
 |---|---|
 | `registries/` | Reserved names, family terms, scam patterns, homoglyphs, handle rules, invite-code rule, and editable Agenda setup templates |
-| `registries/official-accounts.json` | Official support and news account IDs and their owned handles. The generated Swift and Kotlin sets contain full Matrix IDs for exact comparison. |
+| `registries/official-accounts.json` | Official support, news and company account IDs and their owned handles. The generated Swift and Kotlin sets contain full Matrix IDs for exact comparison. |
 | `strings/pt-BR.json`, `strings/en.json` | Bipe-owned UI strings (Element strings stay on Localazy). Draft copy. |
 | `api/openapi.yaml` | Bipe API contract, including Agenda, Catálogo, Fila virtual, Orçamento and Pedidos routes |
 | `api/business-schemas.json` | JSON Schema 2020-12 definitions referenced by OpenAPI and used to generate API TypeScript types |
@@ -13,7 +13,7 @@ Single source of truth for Bipe logic that iOS, Android, the API and the website
 | `docs/trust-facts.md` | Independent trust facts, adapter inputs, invalidation and generated platform rules |
 | `test-vectors/` | Shared cases: badges, normalisation, scam detection, scam warnings, handles (generated), invite codes and scheduling (hand-written). Scheduling currently runs on the API only. |
 | `fixtures/trust-facts.json` | Hand-authored expected outcomes checked before trust vectors are generated |
-| `product/` | Promise, features with status per platform, the parity ledger (`parity.json`), download links. Feeds bipe-web and `bipe/docs/product.md`. `version.json`: the app version name and the one build number for iOS and Android (ADR 0088) |
+| `product/` | Promise, features with status per platform, the parity ledger (`parity.json`), download links, the store listing (`appstore.md`). Feeds bipe-web and `bipe/docs/product.md`. `version.json`: the app version name and the one build number for iOS and Android (ADR 0088) |
 | `tools/` | Generators and checks (Node 24, no npm packages). `tools/lib/registries.mjs` is the reference implementation |
 
 ## Commands
@@ -53,6 +53,12 @@ node tools/parity.mjs [--write] [--report]
 ```
 
 The parity ledger (ADR 0092). `product/parity.json` holds each capability's status on iOS, Android, web and server, with evidence paths, the issue that closes each gap between the apps, and the deliberate differences between the apps. The check fails on a missing evidence path, a gap without an issue, a `product.json` status that disagrees, or an out-of-date Differences table in `bipe-ios/BIPE.md` or `bipe-android/BIPE.md`. `--write` writes those tables. `--report` prints the gap report; a weekly job (`.github/workflows/parity-report.yml`) writes it into the pinned issue bipe-chat/bipe#298.
+
+```sh
+node tools/check-appstore.mjs
+```
+
+The store listing (bipe-chat/bipe#453). `product/appstore.md` holds the App Store and Google Play text in pt-BR and en-US, the screenshot panels, the App Privacy answers and the age rating. App Review details are bipe-ios `Tools/Bipe/review-details.mjs`. `tools/lib/appstore.mjs` parses it for every tool that needs it. The check fails on a field over its store limit, a missing locale, a space after a keyword comma, an em or en dash, "pra" in Bipe voice, or a panel for a feature that is not built on both apps. `tools/appstore.test.mjs` runs it in CI.
 
 ### Hook and CI
 

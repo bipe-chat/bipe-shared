@@ -9,6 +9,35 @@ info:
 servers:
   - url: https://api.bipe.net.br
 paths:
+  /v1/accounts/{userId}/type:
+    get:
+      summary: Account type of a Bipe account
+      description: >
+        Public, no auth, rate-limited per IP. The apps draw a company account's avatar as a rounded
+        square and a person's as a circle (ADR 0132). The type comes from sign-up and never from the
+        profile. Fail closed: 404 or a failed call gives a circle.
+      parameters:
+        - name: userId
+          in: path
+          required: true
+          schema: { type: string }
+          description: Matrix user ID, e.g. @lojadaana:bipe.net.br
+      responses:
+        "200":
+          description: The account type
+          content:
+            application/json:
+              schema:
+                type: object
+                required: [account_type]
+                properties:
+                  account_type: { type: string, enum: [personal, company] }
+        "404":
+          description: Not an account made through Bipe sign-up.
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/Error" }
+        "429": { $ref: "#/components/responses/Error" }
   /v1/badges/{userId}:
     get:
       summary: Current badge envelope for a user
@@ -571,6 +600,28 @@ paths:
           content:
             application/json:
               schema: { $ref: "#/components/schemas/InvitePreview" }
+        "429": { $ref: "#/components/responses/Error" }
+  /v1/web/convite/{code}:
+    get:
+      summary: Link preview head for an invite link (bipe#459)
+      description: >
+        No auth. Rate-limited per IP. The site edge sends only link-preview crawlers
+        (WhatsApp, Meta, Telegram, Slack and others, matched by user agent) for
+        https://bipe.chat/convite/{code} here; browsers get the static invite page.
+        Returns a small HTML page whose Open Graph tags name the inviter: the public
+        profile name, else the handle, in the shared string bipe_onboarding_invited_by,
+        and the public profile photo as og:image. An invalid, used or unknown code, or an
+        invite with no inviter handle, gets the generic invite card, so the preview never
+        says why a code does not work. The image URL holds the handle, never the code.
+        The page is noindex and sends no referrer.
+      parameters:
+        - { name: code, in: path, required: true, schema: { type: string, maxLength: 64 } }
+      responses:
+        "200":
+          description: HTML head for link previews
+          content:
+            text/html:
+              schema: { type: string }
         "429": { $ref: "#/components/responses/Error" }
   /v1/events:
     post:
@@ -4371,7 +4422,7 @@ components:
       properties:
         user_id: { type: string, description: "Random Matrix ID, e.g. @k7q2m9x4tpab:bipe.net.br" }
         handle: { type: string }
-        inviter_user_id: { type: string, description: "Present when a personal invite was used. The app can offer a chat with the inviter." }
+        inviter_user_id: { type: string, description: "Present when a personal invite was used for a personal account. The app can offer a chat with the inviter. Never present for a company account (ADR 0138 rule 2)." }
         password: { type: string, description: "Device-first only. The hidden MAS password, shown once. Keep it on this device only." }
         recovery_token: { type: string, description: "Device-first only. base64url, 32 random bytes, shown once. Sync it (iCloud Keychain, Block Store)." }
     DiscoverySettings:

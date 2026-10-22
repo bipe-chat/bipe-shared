@@ -6,11 +6,18 @@
 #
 # Flow for a pull request on branch B:
 #   regen    runs the generators and pushes the output to branch B in each sibling repo that changes,
-#            then opens a "Regenerate from bipe-shared" pull request there.
+#            then opens a "Regenerate from bipe-shared" pull request there. When branch B already has an
+#            open pull request in that repo (a feature change on the same branch), regen opens no new
+#            pull request: the feature pull request carries the generated files.
 #   lockstep checks the siblings on branch B, so the drift check sees the regenerated files.
 # After the merge to main:
-#   land     turns on auto-merge for those sibling pull requests. Each merges when its own checks pass.
-#   lockstep checks the siblings on branch B until they merge.
+#   land     turns on auto-merge for every open sibling pull request on branch B, feature pull requests
+#            too. Each merges when its own checks pass. In bipe it merges only the regen pull request.
+#   lockstep waits until the open sibling pull requests on branch B merge, then checks the siblings on
+#            their default branch. It waits for feature pull requests too: for bipe-shared#60 and #61 it
+#            skipped them (title filter), checked the default branches before the strings landed and
+#            failed. Branch B alone is not enough: it misses the regen output of changes that merged
+#            after B was cut (81ed044 failed so). After 30 minutes it checks branch B instead.
 name: Checks
 
 on:
@@ -61,8 +68,8 @@ jobs:
           generated() {
             case "$1" in
               bipe) echo "docs/product.md" ;;
-              bipe-ios) echo "Components/BipeKit/Sources/BipeKit/Generated Tools/Bipe" ;;
-              bipe-android) echo "libraries/bipe/src/main plugins/src/main/kotlin" ;;
+              bipe-ios) echo "Components/BipeKit/Sources/BipeKit/Generated Components/BipeKit/Sources/BipeKit/Resources Tools/Bipe BIPE.md" ;;
+              bipe-android) echo "libraries/bipe/src/main plugins/src/main/kotlin BIPE.md" ;;
               bipe-api) echo "src/generated test/fixtures" ;;
             esac
           }
@@ -82,6 +89,9 @@ jobs:
           node bipe-shared/tools/gen.mjs
           node bipe-shared/tools/gen-test-vectors.mjs
           node bipe-shared/tools/gen-product-doc.mjs
+          # Writes the Differences tables in bipe-ios/BIPE.md and bipe-android/BIPE.md. A failed ledger
+          # check here must not stop the push: lockstep reports it.
+          node bipe-shared/tools/parity.mjs --write || true
           for repo in $repos; do
             # shellcheck disable=SC2046
             git -C "$repo" add -A -- $(generated "$repo")
@@ -93,6 +103,11 @@ jobs:
               commit -q -m "Regenerate from bipe-shared#${PR_NUMBER}" -m "Output of the bipe-shared generators for ${PR_URL}."
             git -C "$repo" push -q origin "HEAD:refs/heads/${BRANCH}"
             echo "${repo}: pushed ${BRANCH}"
+            # A pull request on branch B with a base other than main (a stacked pull request) carries the
+            # regen commit into that base, not into main: bipe-ios#92 and bipe-android#82 did so.
+            stacked=$(gh pr list -R "bipe-chat/${repo}" --head "$BRANCH" --state open \
+              --json number,baseRefName --jq '.[] | select(.baseRefName != "main") | "#\(.number) (base \(.baseRefName))"')
+            [ -z "$stacked" ] || echo "::warning::${repo} ${stacked}: not based on main, so the generated files miss main. Retarget it to main."
             if [ -z "$(gh pr list -R "bipe-chat/${repo}" --head "$BRANCH" --state open --json number --jq '.[].number')" ]; then
               gh pr create -R "bipe-chat/${repo}" --base main --head "$BRANCH" \
                 --title "Regenerate from bipe-shared#${PR_NUMBER}" \
@@ -101,7 +116,7 @@ jobs:
           done
 
   lockstep:
-    needs: regen
+    needs: [regen, land]
     if: ${{ !failure() && !cancelled() }}
     runs-on: ubuntu-latest
     permissions:
@@ -113,9 +128,8 @@ jobs:
           path: bipe-shared
       # A cross-repo change regenerates files in the sibling repos on a branch of the same name.
       # On a pull request, check out that branch in each sibling where it exists, else the default
-      # branch. On the push after a merge, use the branch of the merged pull request: the sibling
-      # pull requests merge a few minutes later. Without this, lockstep fails on every cross-repo
-      # change until the siblings merge first.
+      # branch. On the push after a merge, wait for the sibling regen pull requests of the merged
+      # branch to merge (land turned on auto-merge), then check the default branches.
       - name: Check out the sibling repos
         env:
           TOKEN: ${{ secrets.BIPE_REPOS_TOKEN }}
@@ -124,7 +138,22 @@ jobs:
           GIT_LFS_SKIP_SMUDGE: "1"
         run: |
           if [ -z "$BRANCH" ] && [ "$GITHUB_EVENT_NAME" = push ]; then
-            BRANCH=$(gh api "repos/${GITHUB_REPOSITORY}/commits/${GITHUB_SHA}/pulls" --jq '.[0].head.ref // empty')
+            BRANCH=$(bipe-shared/.github/scripts/merged-branch.sh)
+            for _ in $(seq 60); do
+              [ -n "$BRANCH" ] || break
+              open=""
+              for repo in bipe-ios bipe-android bipe-api; do
+                open="${open}$(gh pr list -R "bipe-chat/${repo}" --head "$BRANCH" --base main --state open \
+                  --json number --jq '.[] | " '"${repo}"'#\(.number)"')"
+              done
+              if [ -z "$open" ]; then
+                BRANCH=""
+                break
+              fi
+              echo "waiting for${open}"
+              sleep 30
+            done
+            [ -z "$BRANCH" ] || echo "::warning::sibling regen pull requests for ${BRANCH} are still open: checking ${BRANCH}."
           fi
           for repo in bipe bipe-ios bipe-android bipe-api bipe-web bipe-infra; do
             url="https://x-access-token:${TOKEN}@github.com/bipe-chat/${repo}.git"
@@ -153,6 +182,9 @@ jobs:
       contents: read
       pull-requests: read
     steps:
+      - uses: actions/checkout@v4
+        with:
+          sparse-checkout: .github/scripts
       - name: Auto-merge the sibling regen pull requests of the merged change
         env:
           TOKEN: ${{ secrets.BIPE_REGEN_TOKEN }}
@@ -162,22 +194,35 @@ jobs:
             echo "::warning::BIPE_REGEN_TOKEN is not set: sibling regen pull requests are not merged."
             exit 0
           fi
-          BRANCH=$(GH_TOKEN="$READ_TOKEN" gh api "repos/${GITHUB_REPOSITORY}/commits/${GITHUB_SHA}/pulls" --jq '.[0].head.ref // empty')
+          BRANCH=$(GH_TOKEN="$READ_TOKEN" .github/scripts/merged-branch.sh)
           if [ -z "$BRANCH" ]; then
             echo "No merged pull request for ${GITHUB_SHA}."
             exit 0
           fi
           for repo in bipe bipe-ios bipe-android bipe-api; do
-            numbers=$(GH_TOKEN="$TOKEN" gh pr list -R "bipe-chat/${repo}" --head "$BRANCH" --state open \
-              --json number,title --jq '.[] | select(.title | startswith("Regenerate from bipe-shared")) | .number')
+            # A feature pull request on branch B carries the regen commit when regen found it open.
+            # bipe is private on the free plan: no auto-merge and no required checks, so land merges
+            # there at once, and only the regen pull request.
+            filter='.[] | select(.isDraft | not) | .number'
+            [ "$repo" = bipe ] && filter='.[] | select(.title | startswith("Regenerate from bipe-shared")) | .number'
+            # Only pull requests based on main. A stacked pull request would merge into its base branch,
+            # and main would miss the change (bipe-ios#92, bipe-android#82 on 21 Oct 2026).
+            numbers=$(GH_TOKEN="$TOKEN" gh pr list -R "bipe-chat/${repo}" --head "$BRANCH" --base main --state open \
+              --json number,title,isDraft --jq "$filter")
+            stacked=$(GH_TOKEN="$TOKEN" gh pr list -R "bipe-chat/${repo}" --head "$BRANCH" --state open \
+              --json number,baseRefName --jq '.[] | select(.baseRefName != "main") | "#\(.number) (base \(.baseRefName))"')
+            [ -z "$stacked" ] || echo "::warning::${repo} ${stacked}: not based on main, not merged. Retarget it to main, then merge it."
             for n in $numbers; do
-              # bipe is private on the free plan: no auto-merge and no required checks, so merge now.
               if [ "$repo" = bipe ]; then
                 GH_TOKEN="$TOKEN" gh pr merge "$n" -R "bipe-chat/${repo}" --squash
                 echo "${repo}#${n}: merged"
-              else
-                GH_TOKEN="$TOKEN" gh pr merge "$n" -R "bipe-chat/${repo}" --auto --squash
+              elif GH_TOKEN="$TOKEN" gh pr merge "$n" -R "bipe-chat/${repo}" --auto --squash; then
                 echo "${repo}#${n}: auto-merge on"
+              else
+                echo "::warning::${repo}#${n}: auto-merge failed. Merge it by hand."
               fi
             done
+            drafts=$(GH_TOKEN="$TOKEN" gh pr list -R "bipe-chat/${repo}" --head "$BRANCH" --state open \
+              --json number,isDraft --jq '.[] | select(.isDraft) | "#\(.number)"')
+            [ -z "$drafts" ] || echo "::warning::${repo} ${drafts}: draft on ${BRANCH}, not merged. Merge it by hand."
           done

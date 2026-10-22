@@ -11,6 +11,8 @@
     { "input": "bipe.chat/convite/ABCDEFGHJKMN?utm_source=whatsapp", "code": "ABCD-EFGH-JKMN" },
     { "input": "Entra no Bipe comigo: https://bipe.chat/convite/Q7RM-2XKP-9HTV", "code": "Q7RM-2XKP-9HTV" },
     { "input": "Join me on Bipe: https://bipe.chat/convite/Q7RM-2XKP-9HTV\n", "code": "Q7RM-2XKP-9HTV" },
+    { "input": "convite/Q7RM-2XKP-9HTV", "code": "Q7RM-2XKP-9HTV" },
+    { "input": "utm_source=bipe&referrer=convite/Q7RM-2XKP-9HTV", "code": "Q7RM-2XKP-9HTV" },
     { "input": "", "code": null },
     { "input": "hello", "code": null },
     { "input": "ABCD-EFGH-JKM", "code": null },

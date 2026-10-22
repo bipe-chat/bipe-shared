@@ -48,6 +48,12 @@ jobs:
           repository: bipe-chat/bipe-infra
           token: ${{ secrets.BIPE_REPOS_TOKEN }}
           path: bipe-infra
+      # Bipe Next (ios-new, android-new, bipe#579): evidence paths start with bipe-app/.
+      - uses: actions/checkout@v4
+        with:
+          repository: bipe-chat/bipe-app
+          token: ${{ secrets.BIPE_REPOS_TOKEN }}
+          path: bipe-app
       - uses: actions/setup-node@v4
         with:
           node-version: 24

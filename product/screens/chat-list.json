@@ -5,30 +5,66 @@
   "summary": "Shows every chat of the account, newest activity first, from the SDK room list service.",
   "types": {
     "ChatSummary": {
-      "roomId": { "type": "string", "description": "The Matrix room ID. Stable key for the row." },
-      "name": { "type": "string", "description": "The display name the SDK computes for the room." },
-      "avatarUrl": { "type": "url", "optional": true, "description": "mxc URL of the room or DM avatar." },
-      "lastMessage": { "type": "string", "optional": true, "description": "Plain-text preview of the latest event, as the SDK formats it." },
-      "lastActivity": { "type": "date", "optional": true, "description": "Time of the latest event." },
-      "unreadCount": { "type": "int", "description": "Unread messages. 0 hides the badge." },
-      "isDirect": { "type": "bool", "description": "true for a DM." }
+      "roomId": {
+        "type": "string",
+        "description": "The Matrix room ID. Stable key for the row."
+      },
+      "name": {
+        "type": "string",
+        "description": "The display name the SDK computes for the room."
+      },
+      "avatarUrl": {
+        "type": "url",
+        "optional": true,
+        "description": "mxc URL of the room or DM avatar."
+      },
+      "lastMessage": {
+        "type": "string",
+        "optional": true,
+        "description": "Plain-text preview of the latest event, as the SDK formats it."
+      },
+      "lastActivity": {
+        "type": "date",
+        "optional": true,
+        "description": "Time of the latest event."
+      },
+      "unreadCount": {
+        "type": "int",
+        "description": "Unread messages. 0 hides the badge."
+      },
+      "isDirect": {
+        "type": "bool",
+        "description": "true for a DM."
+      }
     }
   },
   "state": {
     "phase": {
       "type": "enum",
-      "values": ["loading", "empty", "loaded"],
+      "values": [
+        "loading",
+        "empty",
+        "loaded"
+      ],
       "description": "loading: the first sync has not listed the rooms yet. empty: the account has no chats. loaded: chats is not empty."
     },
     "chats": {
       "type": "list",
-      "of": { "type": "ChatSummary", "description": "One row." },
+      "of": {
+        "type": "ChatSummary",
+        "description": "One row."
+      },
       "description": "The chats, in the order the room list service gives (newest activity first)."
     }
   },
   "actions": {
     "openChat": {
-      "params": { "roomId": { "type": "string", "description": "The chat to open." } },
+      "params": {
+        "roomId": {
+          "type": "string",
+          "description": "The chat to open."
+        }
+      },
       "effect": "Opens chat-timeline for that room."
     },
     "loadMore": {
@@ -48,9 +84,11 @@
     "RoomListEntriesUpdate",
     "Room.roomInfo"
   ],
-  "parity": ["e2ee-only-rooms"],
+  "parity": [
+    "e2ee-only-rooms"
+  ],
   "notes": [
     "bipe_app_chat_list_unread is the accessibility label of the badge. The count comes in already formatted.",
-    "Message requests, filters, search, invites and Bipe trust badges are later issues. The slice lists joined rooms only."
+    "Tabs, the unread chip and empty states: chat-list-filters. Pedidos: chat-requests and chat-request-preview. Search: chat-search. The banner slot: remote-banner (bipe-chat/bipe#557). Trust badges on rows are phase 2."
   ]
 }

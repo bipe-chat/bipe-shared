@@ -1,0 +1,70 @@
+{
+  "id": "chat-search",
+  "title": "Search",
+  "flow": "home",
+  "summary": "Finds chats and groups by name, and a person by their exact @. iOS shows it as the search tab, Android as a search button in the top bar (ADR 0053, parity difference Search). Message text is not searched in phase 1.",
+  "types": {
+    "PersonResult": {
+      "userId": { "type": "string", "description": "Matrix ID from the exact @ lookup." },
+      "handle": { "type": "string", "description": "The @ without @." },
+      "name": { "type": "string", "optional": true, "description": "Display name from the profile." }
+    }
+  },
+  "state": {
+    "query": { "type": "string", "description": "The field text, trimmed." },
+    "chats": {
+      "type": "list",
+      "of": { "type": "ChatSummary", "description": "A matching chat or group (chat-list type)." },
+      "description": "Joined rooms whose name matches, best first."
+    },
+    "person": { "type": "PersonResult", "optional": true, "description": "The person whose @ equals the query, when the query looks like an @." },
+    "phase": {
+      "type": "enum",
+      "values": ["idle", "searching", "results", "noResults"],
+      "description": "idle: empty query. noResults: no chat and no person."
+    }
+  },
+  "actions": {
+    "editQuery": {
+      "params": { "text": { "type": "string", "description": "The new field text." } },
+      "effect": "Sets query. Applies FuzzyMatchRoomName with the query to a search room list at once; after 300 ms without typing, and when the query passes the handle rule, looks up the exact @."
+    },
+    "openChat": {
+      "params": { "roomId": { "type": "string", "description": "A result." } },
+      "effect": "Opens chat-timeline."
+    },
+    "openPerson": {
+      "params": { "userId": { "type": "string", "description": "The person." } },
+      "effect": "Opens the existing DM (Client.getDmRoom) or the person's profile with a start-chat button (bipe-chat/bipe#567)."
+    },
+    "clear": {
+      "effect": "Clears query."
+    }
+  },
+  "strings": [
+    "bipe_app_chats_search",
+    "bipe_app_chats_search_chats",
+    "bipe_app_chats_search_people",
+    "bipe_app_chats_search_none",
+    "bipe_app_chats_search_no_handle",
+    "bipe_start_chat_search_by_handle"
+  ],
+  "sdk": [
+    "RoomListService.allRooms",
+    "RoomList.entriesWithDynamicAdapters",
+    "RoomListDynamicEntriesController.setFilter",
+    "RoomListEntriesDynamicFilterKind",
+    "Client.getDmRoom",
+    "Client.getProfile",
+    "Client.session"
+  ],
+  "parity": ["handles"],
+  "notes": [
+    "People search is exact @ only (GET /v1/handles/{handle}); there is no directory and no partial match, so nobody can list Bipe users. The Matrix user directory (Client.searchUsers) is not used.",
+    "idle shows bipe_start_chat_search_by_handle as the hint. noResults shows bipe_app_chats_search_none; when the query is an @ that nobody has, bipe_app_chats_search_no_handle.",
+    "Chat filter: All of NonLeft, Joined, NonSpace and FuzzyMatchRoomName with the query. DM names are the other person's name (ADR 0141).",
+    "Message text search (encrypted, on the device) is out of scope for phase 1.",
+    "Bipe logic: BipeHandle.localProblem, BipeHandleResolver.userID(forHandle:), BipeAPIClient.handle (iOS); BipeHandle, BipeHandleResolver.userId(forHandle), BipeApiClient.handle (Android).",
+    "Search placement differs by platform on purpose (parity.json differences, area Search, idiom)."
+  ]
+}

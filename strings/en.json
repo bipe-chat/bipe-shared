@@ -1177,6 +1177,21 @@
     "bipe_app_notify_all": "All messages",
     "bipe_app_notify_mentions": "Only when someone mentions me",
     "bipe_app_notify_mute": "Mute",
-    "bipe_app_open_system_settings": "Open phone settings"
+    "bipe_app_open_system_settings": "Open phone settings",
+    "bipe_app_chats_tab_groups": "Groups",
+    "bipe_app_chats_filter_all": "All",
+    "bipe_app_chats_filter_unread": "Unread",
+    "bipe_app_chats_unread_empty": "Nothing unread.",
+    "bipe_app_chats_requests_count": "Chat requests: %1$s",
+    "bipe_app_chats_requests_empty": "No chat requests.",
+    "bipe_app_chats_request_accept": "Accept",
+    "bipe_app_chats_request_decline": "Decline",
+    "bipe_app_chats_request_decline_block": "Decline and block",
+    "bipe_app_chats_request_failed": "Couldn't answer the request. Try again.",
+    "bipe_app_chats_search": "Search",
+    "bipe_app_chats_search_chats": "Chats and groups",
+    "bipe_app_chats_search_people": "People",
+    "bipe_app_chats_search_none": "Nothing found for %1$s.",
+    "bipe_app_chats_search_no_handle": "We didn't find anyone with @%1$s."
   }
 }

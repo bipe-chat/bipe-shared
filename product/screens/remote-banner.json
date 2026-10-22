@@ -1,0 +1,40 @@
+{
+  "id": "remote-banner",
+  "title": "Remote critical banner",
+  "flow": "home",
+  "summary": "One banner above the chat list for critical notices only: an outage, a forced update, a change of terms (ADR 0117). The text comes from the server; the app decides how to show it from the shared rule.",
+  "state": {
+    "bannerState": {
+      "type": "enum",
+      "values": ["hidden", "notice", "update"],
+      "description": "remoteBannerState(banner, app version, now): hidden (none, expired or dismissed), notice (opens link, can be closed), update (app below min_app_version: opens the update link, no close)."
+    },
+    "id": { "type": "string", "optional": true, "description": "The banner id. A closed notice stays closed for this id." },
+    "title": { "type": "string", "optional": true, "description": "From the server, pt-BR only, at most 60 characters." },
+    "text": { "type": "string", "optional": true, "description": "From the server, pt-BR only, at most 240 characters." },
+    "link": { "type": "url", "optional": true, "description": "https link for a notice, or the platform update link for an update." }
+  },
+  "actions": {
+    "refresh": {
+      "effect": "On launch and on foreground: GET /v1/banner (no auth), then computes bannerState. A failed fetch keeps the last state."
+    },
+    "open": {
+      "effect": "Opens link in the system browser, or the store page for an update."
+    },
+    "dismiss": {
+      "effect": "notice only: stores the id on this phone and hides the banner."
+    }
+  },
+  "strings": [
+    "bipe_remote_banner_update",
+    "bipe_remote_banner_dismiss"
+  ],
+  "sdk": [],
+  "parity": ["remote-banner"],
+  "notes": [
+    "The rule is remoteBannerState() in tools/lib/registries.mjs with cases in test-vectors/remote-banner.json. Bipe logic: BipeRemoteBanner.state(appVersion:now:) and BipeAPIClient.remoteBanner (iOS); BipeRemoteBannerStore and BipeRemoteBanner.state (Android, api/BipeApiModels.kt), BipeOnForeground. Move them.",
+    "The app version is product/version.json (the generated version name).",
+    "The banner slot above the list holds account tasks too (recovery key, inviter row, ADR 0117). The remote banner comes first; it is the only item from the server.",
+    "News never uses this banner; it goes to the Novidades chat (ADR 0117)."
+  ]
+}

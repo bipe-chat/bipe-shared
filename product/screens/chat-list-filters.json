@@ -1,0 +1,69 @@
+{
+  "id": "chat-list-filters",
+  "title": "Chat list tabs and filters",
+  "flow": "home",
+  "summary": "Splits the chat list into the Conversas tab (DMs and the Pedidos row) and the Grupos tab (rooms with more than two people), with an unread chip on each tab (ADR 0053). Each tab and chip is one SDK room list filter.",
+  "state": {
+    "tab": {
+      "type": "enum",
+      "values": ["conversations", "groups"],
+      "description": "conversations: DM rooms (Room.isDirect first, member count second). groups: every other joined room."
+    },
+    "chip": {
+      "type": "enum",
+      "values": ["all", "unread"],
+      "description": "all: every joined room of the tab. unread: rooms with unread messages or the unread flag."
+    },
+    "phase": {
+      "type": "enum",
+      "values": ["loading", "empty", "emptyFilter", "loaded"],
+      "description": "empty: the tab has no rooms at all. emptyFilter: the chip hides every room. loaded: rows to show."
+    }
+  },
+  "actions": {
+    "selectTab": {
+      "params": { "tab": { "type": "string", "description": "conversations or groups." } },
+      "effect": "Sets tab and applies the filter with RoomListDynamicEntriesController.setFilter, keeping the chip."
+    },
+    "selectChip": {
+      "params": { "chip": { "type": "string", "description": "all or unread." } },
+      "effect": "Sets chip and applies the combined filter (All of the tab filter and, for unread, the unread filter). Resets paging to one page."
+    },
+    "loadMore": {
+      "effect": "RoomListDynamicEntriesController.addOnePage near the end of the list."
+    }
+  },
+  "strings": [
+    "bipe_app_chat_list_title",
+    "bipe_app_chats_tab_groups",
+    "bipe_app_chats_filter_all",
+    "bipe_app_chats_filter_unread",
+    "bipe_app_chats_unread_empty",
+    "bipe_chats_empty_title",
+    "bipe_chats_empty_body",
+    "bipe_groups_empty_title",
+    "bipe_groups_empty_body",
+    "bipe_groups_empty_action"
+  ],
+  "sdk": [
+    "RoomListService.allRooms",
+    "RoomList.entriesWithDynamicAdapters",
+    "RoomListEntriesWithDynamicAdaptersResult.controller",
+    "RoomListEntriesWithDynamicAdaptersResult.entriesStream",
+    "RoomListDynamicEntriesController.setFilter",
+    "RoomListDynamicEntriesController.addOnePage",
+    "RoomListDynamicEntriesController.resetToOnePage",
+    "RoomListEntriesDynamicFilterKind",
+    "RoomList.loadingState",
+    "Room.isDirect"
+  ],
+  "parity": ["e2ee-only-rooms", "group-types"],
+  "notes": [
+    "Filters: every tab uses All of NonLeft, Joined, NonSpace and DeduplicateVersions. conversations adds Category (people); groups adds Category (group). unread adds ReadReceipts (unread). Pending invites never show in the tabs: DM invites go to chat-requests, group invites to the top of Grupos as invite rows (chat-requests notes).",
+    "The one DM test is Room.isDirect (ADR 0141). A DM that gains a third member moves to Grupos.",
+    "Two DM rooms with one person show as one row, the newest room (ADR 0141). DeduplicateVersions covers room upgrades only; the app hides the older DM itself.",
+    "The Grupos tab badge counts only what notifies in a quiet group: mentions, replies and new polls (ADR 0053, ADR 0026).",
+    "Empty states: conversations empty shows bipe_chats_empty_title and bipe_chats_empty_body; groups empty shows bipe_groups_empty_title, bipe_groups_empty_body and the bipe_groups_empty_action button (create group, bipe-chat/bipe#569); emptyFilter shows bipe_app_chats_unread_empty.",
+    "Favourites, low priority and Arquivadas (bipe-chat/bipe#435) are not phase 1 chips. The self-chat lives in Você, never in these tabs (ADR 0053)."
+  ]
+}

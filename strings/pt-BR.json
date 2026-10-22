@@ -1177,6 +1177,21 @@
     "bipe_app_notify_all": "Todas as mensagens",
     "bipe_app_notify_mentions": "Só quando me marcam",
     "bipe_app_notify_mute": "Silenciar",
-    "bipe_app_open_system_settings": "Abrir as configurações do celular"
+    "bipe_app_open_system_settings": "Abrir as configurações do celular",
+    "bipe_app_chats_tab_groups": "Grupos",
+    "bipe_app_chats_filter_all": "Todas",
+    "bipe_app_chats_filter_unread": "Não lidas",
+    "bipe_app_chats_unread_empty": "Nada para ler agora.",
+    "bipe_app_chats_requests_count": "Pedidos de conversa: %1$s",
+    "bipe_app_chats_requests_empty": "Nenhum pedido de conversa.",
+    "bipe_app_chats_request_accept": "Aceitar",
+    "bipe_app_chats_request_decline": "Recusar",
+    "bipe_app_chats_request_decline_block": "Recusar e bloquear",
+    "bipe_app_chats_request_failed": "Não deu para responder o pedido. Tente de novo.",
+    "bipe_app_chats_search": "Buscar",
+    "bipe_app_chats_search_chats": "Conversas e grupos",
+    "bipe_app_chats_search_people": "Pessoas",
+    "bipe_app_chats_search_none": "Nada encontrado para %1$s.",
+    "bipe_app_chats_search_no_handle": "A gente não achou ninguém com @%1$s."
   }
 }

@@ -1,0 +1,72 @@
+{
+  "id": "chat-request-preview",
+  "title": "Chat request",
+  "flow": "home",
+  "summary": "One request before the person answers: who asks, the trust facts (name not verified, account age, not in contacts) and three choices: accept, decline, or decline and block. Reporting is one more row.",
+  "state": {
+    "roomId": { "type": "string", "description": "The invited room." },
+    "inviterId": { "type": "string", "description": "Matrix ID of the person who asks." },
+    "inviterName": { "type": "string", "description": "Display name." },
+    "inviterHandle": { "type": "string", "optional": true, "description": "The person's @, from the handle resolver." },
+    "isVerified": { "type": "bool", "description": "The person has the verified seal (server-held badge state)." },
+    "accountAge": { "type": "string", "optional": true, "description": "Account age formatted by the system (1 dia, 2 meses), for bipe_banner_unverified_body." },
+    "phase": {
+      "type": "enum",
+      "values": ["loading", "shown", "accepting", "declining", "invalid", "failed"],
+      "description": "invalid: the invite is gone or the room no longer exists (bipe_dm_invite_invalid). failed: accept or decline did not go through."
+    },
+    "confirmBlock": { "type": "bool", "description": "The decline-and-block confirm is open." }
+  },
+  "actions": {
+    "load": {
+      "effect": "Room.previewRoom (or RoomPreview from the room ID) for the inviter and the room info; resolves the @ and the badge."
+    },
+    "accept": {
+      "effect": "Room.join, then opens chat-timeline. The room moves to Conversas."
+    },
+    "decline": {
+      "effect": "Room.leave. The request goes away; the other person is not told."
+    },
+    "declineAndBlock": {
+      "effect": "After the confirm (bipe_dm_decline_block_alert): Room.leave, then Client.ignoreUser for the inviter."
+    },
+    "report": {
+      "effect": "Room.reportRoom with an optional reason, then decline. Shows bipe_dm_reported."
+    }
+  },
+  "strings": [
+    "bipe_app_notification_dm_request",
+    "bipe_banner_unverified_title",
+    "bipe_banner_unverified_body",
+    "bipe_request_unverified_body",
+    "bipe_app_chats_request_accept",
+    "bipe_app_chats_request_decline",
+    "bipe_app_chats_request_decline_block",
+    "bipe_dm_decline_block_description",
+    "bipe_dm_decline_block_alert",
+    "bipe_app_msg_report",
+    "bipe_dm_report_footer",
+    "bipe_dm_reported",
+    "bipe_dm_invite_invalid",
+    "bipe_app_chats_request_failed",
+    "bipe_app_cancel"
+  ],
+  "sdk": [
+    "Room.previewRoom",
+    "RoomPreview.info",
+    "RoomPreview.inviter",
+    "RoomPreviewInfo",
+    "Room.inviter",
+    "Room.join",
+    "Room.leave",
+    "Room.reportRoom",
+    "Client.ignoreUser"
+  ],
+  "parity": ["requests", "verified-badge", "profile-change-facts"],
+  "notes": [
+    "No message text before accept: the preview shows the inviter and the trust facts only. Read receipts and typing are not sent before accept (the person is not a member yet).",
+    "Trust card (trust-ui.md, neutral level): bipe_banner_unverified_title with bipe_banner_unverified_body (%1$s account age), and bipe_request_unverified_body under it. A verified person shows the seal and the verified name instead.",
+    "Decline is silent for the other person: Matrix shows a leave, and Bipe shows no notice for it.",
+    "Bipe logic: BipeUnverifiedRequestCard and BipeTrustProfileCard (Android, libraries/bipe/ui); BipeTrustProfile, BadgeVerifier, BipeHandleResolver (iOS BipeKit). Account age and the other facts follow the trust facts rules (ADR 0074, registries/trust-facts.json, generated BipeTrustFacts)."
+  ]
+}

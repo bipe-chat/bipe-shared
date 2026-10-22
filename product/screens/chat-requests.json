@@ -1,0 +1,62 @@
+{
+  "id": "chat-requests",
+  "title": "Chat requests",
+  "flow": "home",
+  "summary": "Pedidos de conversa: first messages from people the person has no chat with land here, not in the chat list (ADR 0016). A row at the top of Conversas opens the list; each request opens chat-request-preview.",
+  "types": {
+    "ChatRequest": {
+      "roomId": { "type": "string", "description": "The invited DM room. Stable key." },
+      "inviterId": { "type": "string", "description": "Matrix ID of the person who asks." },
+      "inviterName": { "type": "string", "description": "Display name, or the @ when the person has one." },
+      "avatarUrl": { "type": "url", "optional": true, "description": "mxc URL. Hidden when hidePhotos is true." },
+      "invitedAt": { "type": "date", "optional": true, "description": "When the invite came." }
+    }
+  },
+  "state": {
+    "requests": {
+      "type": "list",
+      "of": { "type": "ChatRequest", "description": "One request." },
+      "description": "Pending DM invites, newest first."
+    },
+    "hidePhotos": { "type": "bool", "description": "The privacy setting bipe_privacy_requests_hide_photos. Shows a placeholder avatar until accept." },
+    "phase": {
+      "type": "enum",
+      "values": ["loading", "empty", "loaded"],
+      "description": "empty: no pending request."
+    }
+  },
+  "actions": {
+    "openList": {
+      "effect": "From the Pedidos row in Conversas (shown only when requests is not empty): opens this list."
+    },
+    "openRequest": {
+      "params": { "roomId": { "type": "string", "description": "The request." } },
+      "effect": "Opens chat-request-preview."
+    }
+  },
+  "strings": [
+    "bipe_requests_title",
+    "bipe_requests_row_body",
+    "bipe_app_chats_requests_count",
+    "bipe_app_chats_requests_empty",
+    "bipe_app_notification_dm_request"
+  ],
+  "sdk": [
+    "RoomListService.allRooms",
+    "RoomList.entriesWithDynamicAdapters",
+    "RoomListDynamicEntriesController.setFilter",
+    "RoomListEntriesDynamicFilterKind",
+    "Room.inviter",
+    "Room.isDirect",
+    "Room.membership",
+    "Membership"
+  ],
+  "parity": ["requests"],
+  "notes": [
+    "The list is a second room list with the filter All of Invite and Category (people). Group invites use Invite and Category (group) and show as invite rows at the top of Grupos, with the same accept and decline actions.",
+    "Who can reach Pedidos at all is set on the server (ADR 0038, who-can-message): the Synapse module refuses invites the setting does not allow. The client never filters them out itself.",
+    "The row shows bipe_requests_title, bipe_requests_row_body and a count badge whose accessibility label is bipe_app_chats_requests_count.",
+    "Each row's preview line is bipe_app_notification_dm_request; the message text shows only after accept, so a stranger cannot push content into the list.",
+    "Bipe logic: BipeRequestsRow (Android, libraries/bipe/ui). The setting row lives in settings (bipe-chat/bipe#571)."
+  ]
+}

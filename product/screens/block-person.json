@@ -42,7 +42,7 @@
     "Client.unignoreUser",
     "Client.subscribeToIgnoredUsers"
   ],
-  "parity": ["who-can-message"],
+  "parity": [],
   "notes": [
     "Opens from person-profile, from report-chat (bipe_app_report_also_block), from a chat request and from blocked-list.",
     "Block is the Matrix ignore list (m.ignored_user_list, account data): the server stops sending the person's messages and invites to the user, on every device of the account. The user stays in shared groups.",

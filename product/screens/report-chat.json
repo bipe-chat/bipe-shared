@@ -59,7 +59,7 @@
     "Room.leave",
     "RoomInfo.isDm"
   ],
-  "parity": ["who-can-message"],
+  "parity": [],
   "notes": [
     "The report goes to the homeserver admins, which is the Bipe team (Matrix report room API). Under end-to-end encryption the team cannot read the messages; the footers say so. Never promise a reply or an action.",
     "A DM never offers a leave (ADR 0141): delete is the dm-delete marker, so the other person's next message would bring the DM back unless the user also blocks.",

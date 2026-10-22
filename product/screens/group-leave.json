@@ -1,0 +1,58 @@
+{
+  "id": "group-leave",
+  "title": "Leave a group",
+  "flow": "groups",
+  "summary": "A confirm sheet before the user leaves a group. It warns when the user is the only person left or the only admin.",
+  "state": {
+    "roomId": { "type": "string", "description": "The group." },
+    "warning": {
+      "type": "enum",
+      "values": ["none", "alone", "lastAdmin"],
+      "description": "alone: RoomInfo.joinedMembersCount is 1 (bipe_app_group_leave_alone). lastAdmin: the user is the only joined admin and other people are in the group (bipe_app_group_leave_last_admin). none: bipe_app_group_leave_body."
+    },
+    "phase": {
+      "type": "enum",
+      "values": ["confirm", "leaving", "failed"],
+      "description": "confirm: the sheet. leaving: bipe_app_group_leaving. failed: bipe_app_group_leave_error, the buttons come back."
+    }
+  },
+  "actions": {
+    "appear": {
+      "effect": "Reads RoomInfo and the members' roles to set warning."
+    },
+    "chooseAdmin": {
+      "effect": "lastAdmin only: closes the sheet and opens group-members, where the user makes someone admin."
+    },
+    "leave": {
+      "effect": "Room.leave. On success closes the chat and goes back to the chat list; the group leaves the list."
+    },
+    "cancel": { "effect": "Closes the sheet. Nothing changes." }
+  },
+  "strings": [
+    "bipe_app_group_leave_title",
+    "bipe_app_group_leave_body",
+    "bipe_app_group_leave_alone",
+    "bipe_app_group_leave_last_admin",
+    "bipe_app_group_leave_choose_admin",
+    "bipe_app_group_leave_confirm",
+    "bipe_app_group_leaving",
+    "bipe_app_group_leave_error",
+    "bipe_app_cancel"
+  ],
+  "sdk": [
+    "Client.getRoom",
+    "Room.roomInfo",
+    "RoomInfo.joinedMembersCount",
+    "Room.members",
+    "RoomMember",
+    "RoomMemberRole",
+    "Room.leave"
+  ],
+  "parity": ["group-types"],
+  "notes": [
+    "Groups only. A DM never leaves: its menu has dm-delete instead (ADR 0141, bipe-chat/bipe#464).",
+    "lastAdmin: the user can still leave. The sheet shows bipe_app_group_leave_choose_admin first and bipe_app_group_leave_confirm second. The user decides.",
+    "The leave button uses the destructive style.",
+    "Room.forget is not called. A left group can come back through a new invite."
+  ]
+}

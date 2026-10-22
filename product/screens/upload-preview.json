@@ -27,7 +27,7 @@
       "values": ["standard", "high"],
       "description": "The setting bipe_chats_media_quality: standard resizes photos and videos before upload; high sends them as they are."
     },
-    "replyToEventId": { "type": "string", "optional": true, "description": "The message the composer replies to (message-reply), carried over." },
+    "replyingTo": { "type": "MessageReply", "optional": true, "description": "The reply of the composer (message-reply), carried over." },
     "isPreparing": { "type": "bool", "description": "true while photos and videos are resized and thumbnails made." },
     "maxUploadLabel": { "type": "string", "optional": true, "description": "The homeserver limit, formatted, for bipe_app_upload_too_large." }
   },
@@ -41,7 +41,7 @@
       "effect": "Drops one item; the screen closes when none is left."
     },
     "send": {
-      "effect": "Sends each item as an attachment with its thumbnail and info, the caption on the first item, as a reply when replyToEventId is set, then closes. Off while an item isTooLarge or isPreparing."
+      "effect": "Sends each item as an attachment with its thumbnail and info, the caption on the first item, as a reply when replyingTo is set, then closes. Off while an item isTooLarge or isPreparing."
     },
     "cancel": {
       "effect": "Closes without sending; the composer draft stays."

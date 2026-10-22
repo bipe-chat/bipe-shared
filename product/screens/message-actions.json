@@ -1,0 +1,67 @@
+{
+  "id": "message-actions",
+  "title": "Message actions",
+  "flow": "chat",
+  "summary": "The sheet that opens on a long press on a message: quick reactions on top, then the actions that apply to that message. Each action hands over to its own spec.",
+  "types": {
+    "MessageAction": {
+      "kind": {
+        "type": "enum",
+        "values": ["reply", "edit", "copy", "retry", "delete", "report"],
+        "description": "One row of the sheet, in this order."
+      }
+    }
+  },
+  "state": {
+    "rowId": { "type": "string", "optional": true, "description": "The message the sheet is open for. Missing while closed." },
+    "showsReactions": { "type": "bool", "description": "false for messages that take no reactions (message-reactions)." },
+    "actions": {
+      "type": "list",
+      "of": { "type": "MessageAction", "description": "One row." },
+      "description": "Only the actions that apply to this message (see notes)."
+    }
+  },
+  "actions": {
+    "open": {
+      "params": { "rowId": { "type": "string", "description": "A message row." } },
+      "effect": "Opens the sheet with a light haptic. Date, notice and handle-change rows have no sheet."
+    },
+    "react": {
+      "params": { "key": { "type": "string", "description": "One of the quick reactions." } },
+      "effect": "message-reactions toggle, then closes the sheet."
+    },
+    "moreReactions": {
+      "effect": "Closes the sheet and runs message-reactions openPicker."
+    },
+    "choose": {
+      "params": { "kind": { "type": "MessageAction", "description": "The row." } },
+      "effect": "Closes the sheet and runs: reply, message-reply startReply; edit, message-edit startEdit; copy, puts the text on the clipboard and shows bipe_app_copied; retry, chat-timeline retrySend; delete, message-delete askDelete; report, message-report open."
+    },
+    "close": {
+      "effect": "Closes the sheet."
+    }
+  },
+  "strings": [
+    "bipe_app_message_action_reply",
+    "bipe_app_message_action_edit",
+    "bipe_app_copy",
+    "bipe_app_copied",
+    "bipe_app_retry",
+    "bipe_app_message_action_delete",
+    "bipe_app_message_action_report",
+    "bipe_app_message_action_more_reactions"
+  ],
+  "sdk": [
+    "EventTimelineItem",
+    "EventSendState",
+    "MsgLikeKind",
+    "MessageContent"
+  ],
+  "parity": [],
+  "notes": [
+    "reply: canReply and the message is sent. edit: canEdit. copy: text messages only. retry: own message with send state failed. delete: canDelete, or an own message not sent yet. report: messages of other people that are sent.",
+    "Undecryptable rows: report only, and the message-undecryptable help when its cause has one. Deleted rows have no sheet.",
+    "Not in this sheet (ADR 0141 and plan section 4): threads, pin, copy link to the message, forward, view source. Forward and media save come with #561.",
+    "The sheet shows the message on top, so the person sees what they act on. The haptic follows ADR 0134 (registries haptics, selection)."
+  ]
+}

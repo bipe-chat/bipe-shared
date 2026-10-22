@@ -1,0 +1,38 @@
+{
+  "id": "typing-indicator",
+  "title": "Typing indicator",
+  "flow": "chat",
+  "summary": "Shows above the composer who in the chat is typing now, and tells the others when this account types.",
+  "types": {},
+  "state": {
+    "typingNames": {
+      "type": "list",
+      "of": { "type": "string", "description": "Display name in this room." },
+      "description": "People typing now, without this account, in the order the SDK gives. Empty hides the line."
+    },
+    "sharesTyping": { "type": "bool", "description": "The privacy setting for online and typing (bipe_privacy_presence). When off, the app neither sends nor shows typing." }
+  },
+  "actions": {
+    "draftChanged": {
+      "effect": "chat-timeline editDraft also sends typing on when the draft is not blank, at most once every 4 seconds, and typing off when the draft becomes blank, is sent, or the chat closes. Does nothing when sharesTyping is off."
+    }
+  },
+  "strings": [
+    "bipe_app_typing_one",
+    "bipe_app_typing_two",
+    "bipe_app_typing_many"
+  ],
+  "sdk": [
+    "Room.subscribeToTypingNotifications",
+    "TypingNotificationsListener",
+    "Room.typingNotice",
+    "Room.memberDisplayName"
+  ],
+  "parity": [],
+  "notes": [
+    "One name: bipe_app_typing_one. Two: bipe_app_typing_two. Three or more: bipe_app_typing_many with the first name.",
+    "In a DM the line shows the other person's name, like a group with one other member.",
+    "The setting is the presence toggle of ADR 0050: it controls online presence and typing only, never read receipts. Its screen is the privacy settings spec.",
+    "The line has a calm animation of three dots before the text. Screen readers announce the text once when it appears, not on every change."
+  ]
+}

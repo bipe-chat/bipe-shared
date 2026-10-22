@@ -1,0 +1,77 @@
+{
+  "id": "message-reactions",
+  "title": "Reactions",
+  "flow": "chat",
+  "summary": "Shows the reactions under a message as small pills with a count, lets the person add or remove their own with one tap, pick any emoji, and see who reacted.",
+  "types": {
+    "MessageReaction": {
+      "key": { "type": "string", "description": "The reaction key, usually one emoji." },
+      "count": { "type": "int", "description": "How many people reacted with this key." },
+      "includesOwn": { "type": "bool", "description": "true when this account reacted with this key. The pill shows selected." },
+      "isSending": { "type": "bool", "description": "true while the own reaction is not sent yet." }
+    },
+    "ReactionSender": {
+      "userId": { "type": "string", "description": "Matrix ID." },
+      "name": { "type": "string", "description": "Display name in this room, or bipe_app_you for this account." },
+      "reactedAt": { "type": "date", "description": "Time of the reaction." }
+    }
+  },
+  "state": {
+    "pickerOpenFor": { "type": "string", "optional": true, "description": "Row id of the message whose emoji picker is open." },
+    "sheet": {
+      "type": "list",
+      "of": { "type": "ReactionSender", "description": "One person and key." },
+      "optional": true,
+      "description": "The open who-reacted sheet for one key, newest first. Missing while closed."
+    },
+    "sheetKey": { "type": "string", "optional": true, "description": "The key the sheet shows." },
+    "error": { "type": "bool", "description": "true after a reaction failed to send. Shows bipe_app_reaction_failed once." }
+  },
+  "actions": {
+    "toggle": {
+      "params": {
+        "rowId": { "type": "string", "description": "The message." },
+        "key": { "type": "string", "description": "The reaction key." }
+      },
+      "effect": "Adds this account's reaction with that key, or removes it when it is there. The pill changes at once."
+    },
+    "openPicker": {
+      "params": { "rowId": { "type": "string", "description": "The message." } },
+      "effect": "Opens the system emoji picker. A chosen emoji runs toggle."
+    },
+    "openSenders": {
+      "params": {
+        "rowId": { "type": "string", "description": "The message." },
+        "key": { "type": "string", "description": "The reaction key." }
+      },
+      "effect": "Long press on a pill: opens the sheet with the people who reacted with that key."
+    },
+    "closeSheet": {
+      "effect": "Closes the sheet."
+    }
+  },
+  "strings": [
+    "bipe_app_reactions_title",
+    "bipe_app_reaction_label",
+    "bipe_app_reaction_failed",
+    "bipe_app_message_action_more_reactions",
+    "bipe_app_you"
+  ],
+  "sdk": [
+    "EventTimelineItem",
+    "Reaction",
+    "ReactionSenderData",
+    "EventSendState",
+    "Timeline.toggleReaction",
+    "EventOrTransactionId",
+    "Room.memberDisplayName"
+  ],
+  "parity": [],
+  "notes": [
+    "Quick reactions in message-actions: the 6 keys in this order: thumbs up, red heart, face with tears of joy, open mouth, crying face, folded hands. Then bipe_app_message_action_more_reactions opens the picker.",
+    "A reaction key is shown as sent. Keys longer than one grapheme are shown in full up to 16 characters, then cut.",
+    "bipe_app_reaction_label is the accessibility label of a pill: key, then the count already formatted.",
+    "Undecryptable, deleted and unsent own messages take no reactions. A failed own reaction goes away and sets error.",
+    "Reactions work the same in a DM and a group."
+  ]
+}

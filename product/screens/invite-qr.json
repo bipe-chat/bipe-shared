@@ -1,0 +1,30 @@
+{
+  "id": "invite-qr",
+  "title": "Invite as a QR code",
+  "flow": "invites",
+  "summary": "Shows one pending personal invite as a QR code, so a person next to the user can scan it with the camera of their phone.",
+  "state": {
+    "inviteId": { "type": "string", "description": "The pending invite." },
+    "link": { "type": "url", "description": "The invite link kept on this phone (https://bipe.chat/convite/<code>). The QR code holds exactly this URL." },
+    "name": { "type": "string", "optional": true, "description": "Invite.name, shown above the code when present." }
+  },
+  "actions": {
+    "share": { "effect": "The system share sheet with bipe_invites_share_message and the link." },
+    "close": { "effect": "Closes the screen." }
+  },
+  "strings": [
+    "bipe_invites_qr_title",
+    "bipe_invites_qr_footer",
+    "bipe_invites_share_message",
+    "bipe_app_share",
+    "bipe_app_close"
+  ],
+  "sdk": [],
+  "parity": ["invite-qr"],
+  "notes": [
+    "The code is drawn on the device (parity invite-qr: server n/a). bipe-app draws it with a permissively licensed QR encoder, the same one as the profile QR code (bipe-chat/bipe#567). Dark modules on a light background in both themes, so every camera reads it.",
+    "The link is a universal link (iOS) and an app link (Android). Without the app, it opens the invite page on bipe.chat, which leads to the store. After the install, the person scans again and the app opens with the invite filled in (bipe_invites_qr_footer).",
+    "Only pending invites with a link on this phone have a QR code. An invite made on another device shows bipe_invites_other_device in invites, with no QR code.",
+    "The screen keeps the display brightness as it is."
+  ]
+}

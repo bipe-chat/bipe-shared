@@ -40,6 +40,8 @@
     "bipe_app_media_saved",
     "bipe_app_media_save_failed",
     "bipe_app_media_gallery_permission",
+    "bipe_app_message_action_reply",
+    "bipe_app_message_action_delete",
     "bipe_app_close",
     "bipe_app_media_failed"
   ],
@@ -58,6 +60,6 @@
     "A save or share failure shows bipe_app_media_save_failed.",
     "Captions show at the bottom over the media; long captions scroll.",
     "Forward is not in this spec; it needs the forward picker (ADR 0053: the self-chat is the first target) of the composer issue.",
-    "The reply and delete buttons use the message-actions labels (bipe_app_message_action_reply, bipe_app_message_action_delete, bipe-chat/bipe#559)."
+    "The reply and delete buttons use the message-actions labels (bipe_app_message_action_reply, bipe_app_message_action_delete)."
   ]
 }

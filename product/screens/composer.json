@@ -1,0 +1,86 @@
+{
+  "id": "composer",
+  "title": "Composer",
+  "flow": "chat",
+  "summary": "The text field at the bottom of a chat: Markdown text, @ mentions in groups, a draft kept per chat, and the entries to attachments, stickers and voice. It replaces the draft and send of chat-timeline.",
+  "types": {
+    "MentionSuggestion": {
+      "userId": { "type": "string", "optional": true, "description": "The member. Absent for the whole-group entry." },
+      "name": { "type": "string", "description": "Room.memberDisplayName, or bipe_app_composer_mention_everyone." },
+      "handle": { "type": "string", "optional": true, "description": "The member's @ from POST /v1/handles/resolve." },
+      "avatarUrl": { "type": "url", "optional": true, "description": "mxc URL of the member avatar." }
+    },
+    "ComposerMention": {
+      "userId": { "type": "string", "optional": true, "description": "The mentioned member. Absent for the whole group." },
+      "label": { "type": "string", "description": "The text the pill shows: the name at the time of the mention." }
+    }
+  },
+  "state": {
+    "roomId": { "type": "string", "description": "The chat." },
+    "isDm": { "type": "bool", "description": "RoomInfo.isDm (ADR 0141): no mention suggestions in a DM." },
+    "text": { "type": "string", "description": "The text as typed, Markdown." },
+    "mentions": { "type": "list", "of": { "type": "ComposerMention", "description": "One pill." }, "description": "The mentions in text, in order." },
+    "suggestions": { "type": "list", "of": { "type": "MentionSuggestion", "description": "One suggestion." }, "description": "Shown while the word at the cursor starts with @ in a group. Empty hides the list." },
+    "mode": {
+      "type": "enum",
+      "values": ["text", "recording"],
+      "description": "text: the field. recording: voice-recording replaces the field."
+    },
+    "canSend": { "type": "bool", "description": "text is not blank after trimming. When false, the send button turns into the record button." },
+    "canPost": { "type": "bool", "description": "RoomPowerLevels.canOwnUserSendMessage for m.room.message and the person is not blocked (block-person). false: the composer is off, with the reason bar instead." }
+  },
+  "actions": {
+    "appear": { "effect": "Room.loadComposerDraft. A saved draft of type newMessage fills text; reply and edit drafts go back to message-reply and message-edit." },
+    "editText": {
+      "params": { "text": { "type": "string", "description": "The new text." } },
+      "effect": "Sets text. In a group, a word at the cursor that starts with @ filters the members by name and @ into suggestions. Also runs typing-indicator draftChanged."
+    },
+    "pickSuggestion": {
+      "params": { "userId": { "type": "string", "optional": true, "description": "The member, or absent for the whole group." } },
+      "effect": "Replaces the @word with a pill and adds it to mentions."
+    },
+    "send": {
+      "effect": "messageEventContentFromMarkdown with the text, the pills written as matrix.to links to the user (https://matrix.to/#/@user:server), then withMentions (userIds of the pills, room true for the whole group), then Timeline.send. Clears text and mentions and runs Room.clearComposerDraft."
+    },
+    "leave": { "effect": "When the chat closes or the app goes to the background: Room.saveComposerDraft with text (plain) when not blank, else Room.clearComposerDraft." },
+    "openAttachments": { "effect": "Opens attachment-picker." },
+    "openStickers": { "effect": "Opens sticker-picker." },
+    "startRecording": { "effect": "mode recording: voice-recording starts." }
+  },
+  "strings": [
+    "bipe_app_timeline_composer_placeholder",
+    "bipe_app_timeline_send",
+    "bipe_app_composer_attach",
+    "bipe_action_stickers",
+    "bipe_app_composer_record",
+    "bipe_app_composer_mention_everyone",
+    "bipe_app_chat_list_draft",
+    "bipe_dm_no_permission_to_post"
+  ],
+  "sdk": [
+    "messageEventContentFromMarkdown",
+    "RoomMessageEventContentWithoutRelation",
+    "Mentions",
+    "Timeline.send",
+    "Room.saveComposerDraft",
+    "Room.loadComposerDraft",
+    "Room.clearComposerDraft",
+    "ComposerDraft",
+    "ComposerDraftType",
+    "Room.members",
+    "Room.memberDisplayName",
+    "RoomInfo.isDm",
+    "Room.getPowerLevels",
+    "RoomPowerLevels.canOwnUserSendMessage",
+    "RoomPowerLevels.canOwnUserTriggerRoomNotification"
+  ],
+  "parity": ["stickers", "voice-transcript-send"],
+  "notes": [
+    "Markdown, not rich text (client-rewrite-plan.md section 4; a Bipe rich-text composer is phase 3). The field shows plain text; the sent message carries the HTML that messageEventContentFromMarkdown makes. Bold, italic, strike, code and links render in the timeline.",
+    "Mentions (ADR 0141): groups only. A DM has no @ suggestions and no # room links. The whole-group entry shows only with RoomPowerLevels.canOwnUserTriggerRoomNotification. A mention of the user in a quiet group notifies (chat-notifications).",
+    "Drafts: one per chat, kept by the SDK on this device (ComposerDraft). The chat list row shows bipe_app_chat_list_draft with the draft text in place of the last message while a draft exists. Drafts do not sync across devices.",
+    "The send button and the record button share one place: canSend false shows record, true shows send.",
+    "canPost false: bipe_dm_no_permission_to_post, or the block bar of block-person (bipe-chat/bipe#567) for a blocked person in a DM.",
+    "Replies and edits use this field with their bars (message-reply, message-edit, bipe-chat/bipe#559). The scam check runs only on received messages, never on the user's own text."
+  ]
+}

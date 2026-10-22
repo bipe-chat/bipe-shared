@@ -1,0 +1,87 @@
+{
+  "id": "group-invite-members",
+  "title": "Add people to a group",
+  "flow": "groups",
+  "summary": "Picks people for a group: from the user's contacts or by an exact @. In pick mode it returns the people to group-create; in invite mode it invites them to an existing group.",
+  "types": {
+    "PersonPick": {
+      "person": { "type": "Person", "description": "The person." },
+      "status": {
+        "type": "enum",
+        "values": ["selectable", "selected", "member", "invited", "refused", "failed"],
+        "description": "selectable: can be picked. selected: picked now. member: already in the group (bipe_dm_invite_to_group_already_member, not selectable). invited: has a pending invite, or the invite just went out (bipe_dm_invite_to_group_sent). refused: the server refused the invite (bipe_app_group_invite_refused). failed: another error (bipe_app_group_invite_error)."
+      }
+    }
+  },
+  "state": {
+    "mode": {
+      "type": "enum",
+      "values": ["pick", "invite"],
+      "description": "pick: from group-create, nothing is sent. invite: from group-details or group-members, for an existing group."
+    },
+    "roomId": { "type": "string", "optional": true, "description": "invite mode only: the group." },
+    "query": { "type": "string", "description": "The search text. Empty shows the contacts." },
+    "contacts": { "type": "list", "of": { "type": "PersonPick", "description": "A contact." }, "description": "The user's contacts that match query, by name or @ (see notes). Sorted by name." },
+    "handleMatch": { "type": "PersonPick", "optional": true, "description": "The holder of the exact @ in query, when query is an @ and the lookup found one." },
+    "handleNotFound": { "type": "bool", "description": "true when query is a valid @ and the lookup found nobody: bipe_start_chat_handle_not_found." },
+    "selectedCount": { "type": "int", "description": "People with status selected. The invite button is off at 0." },
+    "phase": {
+      "type": "enum",
+      "values": ["choosing", "inviting", "done"],
+      "description": "choosing: the list. inviting: invite mode, the invites are going out. done: invite mode, every selected person has a result."
+    }
+  },
+  "actions": {
+    "setQuery": {
+      "params": { "query": { "type": "string", "description": "The new text." } },
+      "effect": "Filters contacts at once. When the text is a valid @ (handle rules of registries/handles.json), looks it up with GET /v1/handles/{handle} after a short pause and fills handleMatch or handleNotFound."
+    },
+    "toggle": {
+      "params": { "userId": { "type": "string", "description": "The person." } },
+      "effect": "selectable becomes selected, selected becomes selectable. Other statuses do nothing."
+    },
+    "invite": {
+      "effect": "pick mode: returns the selected people to group-create and closes. invite mode: Room.inviteUserById for each selected person, one at a time; each row shows its result. When all succeed, closes and shows bipe_dm_invite_to_group_sent."
+    },
+    "inviteSomeoneNew": {
+      "effect": "Opens invites (a personal Bipe invite) for a person who is not on Bipe yet."
+    },
+    "cancel": { "effect": "Closes. pick mode keeps the people group-create had." }
+  },
+  "strings": [
+    "bipe_app_group_add_people",
+    "bipe_app_people_search",
+    "bipe_app_people_contacts",
+    "bipe_start_chat_search_by_handle",
+    "bipe_start_chat_handle_not_found",
+    "bipe_app_group_invite_action",
+    "bipe_dm_invite_to_group_already_member",
+    "bipe_dm_invite_to_group_sent",
+    "bipe_app_group_invite_refused",
+    "bipe_app_group_invite_error",
+    "bipe_contacts_invite",
+    "bipe_app_cancel"
+  ],
+  "sdk": [
+    "Client.getRoom",
+    "Room.members",
+    "RoomMembersIterator.nextChunk",
+    "RoomMember",
+    "MembershipState",
+    "Room.inviteUserById",
+    "Room.getPowerLevels",
+    "RoomPowerLevels.canOwnUserInvite",
+    "Client.getProfile",
+    "Client.getDmRoom"
+  ],
+  "parity": ["group-types"],
+  "notes": [
+    "Contacts are the people the user already talks to: the other person of each DM (Client.getDmRoom answers which), the members of the user's groups, invite pairs (GET /v1/me/invite-connections, ADR 0034) and, when phone discovery is on, the address-book matches of POST /v1/contacts/lookup. This is the same set that the who-can-message setting counts as contacts (ADR 0038), so these invites are not refused. Bipe logic: BipeInvitePairs (libraries/bipe invites), BipeInviteToGroup (libraries/bipe groups) and BipeHandleResolver (BipeKit, libraries/bipe).",
+    "No user directory search. Client.searchUsers is not used: Bipe finds people by exact @ only, with no directory and no search (bipe_start_chat_search_by_handle, ADR 0013). The @ in the row comes from POST /v1/handles/resolve.",
+    "invite mode needs RoomPowerLevels.canOwnUserInvite. Without it, group-details and group-members hide the entry to this screen.",
+    "Statuses member and invited come from the group's members (MembershipState join and invite).",
+    "A refused invite is a server error from the who-can-message module (Synapse, ADR 0038). Show bipe_app_group_invite_refused with the person's name. Never say which setting the person chose.",
+    "A DM cannot gain people from this screen (ADR 0141). To make a group with the other person of a DM, the DM details open group-create with that person picked.",
+    "Display names follow Person.displayName. Trust marks (badges, the business seal) on the rows come with the people specs (bipe-chat/bipe#567)."
+  ]
+}

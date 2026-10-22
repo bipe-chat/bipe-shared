@@ -28,12 +28,18 @@
         "reason": "Runs on the device only"
       },
       "ios-new": {
-        "status": "planned",
-        "issue": 560
+        "status": "built",
+        "evidence": [
+          "bipe-app/ios/BipeKit/Sources/BipeKit/ScamDetector.swift",
+          "bipe-app/ios/Bipe/Timeline/TimelineRowView.swift"
+        ]
       },
       "android-new": {
-        "status": "planned",
-        "issue": 560
+        "status": "built",
+        "evidence": [
+          "bipe-app/android/libraries/bipe/src/main/kotlin/chat/bipe/shared/ScamDetector.kt",
+          "bipe-app/android/app/src/main/kotlin/chat/bipe/app/timeline/TimelineRowItem.kt"
+        ]
       },
       "issue": 43
     },

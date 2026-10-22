@@ -1,0 +1,71 @@
+{
+  "id": "read-receipts",
+  "title": "Read receipts",
+  "flow": "chat",
+  "summary": "Shows whether people read your messages. In a DM: a sent tick and a read tick on your own messages. In a group: small avatars of the people who read up to that message, and a sheet that lists them.",
+  "types": {
+    "MessageReceipt": {
+      "tick": {
+        "type": "enum",
+        "values": ["sending", "sent", "read", "failed"],
+        "description": "sending and failed come from the send state. sent: the server has the message. read: at least one other person read it (DM), or every other member read it (group)."
+      },
+      "readers": {
+        "type": "list",
+        "of": { "type": "ReceiptReader", "description": "One person." },
+        "description": "Group only: the people whose newest read receipt is on this message, newest first. Empty in a DM."
+      }
+    },
+    "ReceiptReader": {
+      "userId": { "type": "string", "description": "Matrix ID." },
+      "name": { "type": "string", "description": "Display name in this room." },
+      "avatarUrl": { "type": "url", "optional": true, "description": "mxc URL of the member avatar." },
+      "readAt": { "type": "date", "optional": true, "description": "Receipt time, when the server gave one." }
+    }
+  },
+  "state": {
+    "isDm": { "type": "bool", "description": "RoomInfo.isDm. A DM shows ticks only (ADR 0141)." },
+    "sheetReaders": {
+      "type": "list",
+      "of": { "type": "ReceiptReader", "description": "One person." },
+      "optional": true,
+      "description": "The open read-by sheet of a group message, newest first. Missing while the sheet is closed."
+    }
+  },
+  "actions": {
+    "openReaders": {
+      "params": { "rowId": { "type": "string", "description": "The own group message." } },
+      "effect": "Group only: opens the read-by sheet with every person who read that message or a newer one."
+    },
+    "closeReaders": {
+      "effect": "Closes the sheet."
+    }
+  },
+  "strings": [
+    "bipe_app_receipt_sent",
+    "bipe_app_receipt_read",
+    "bipe_app_timeline_sending",
+    "bipe_app_timeline_failed",
+    "bipe_app_receipt_read_by_title",
+    "bipe_app_receipt_read_by"
+  ],
+  "sdk": [
+    "EventTimelineItem",
+    "Receipt",
+    "EventSendState",
+    "RoomInfo",
+    "Room.memberDisplayName",
+    "Room.memberAvatarUrl",
+    "Timeline.markAsRead",
+    "ReceiptType"
+  ],
+  "parity": [],
+  "notes": [
+    "Receipts are always public (ADR 0050): the client sends ReceiptType.Read only, never ReadPrivate, and always shows the receipts of others. No setting turns them off.",
+    "DM (ADR 0141): two ticks only, sent and read. No avatar row and no read-by sheet. Matrix has no delivered signal, so there is no delivered tick.",
+    "EventTimelineItem.readReceipts holds the users whose newest receipt is on that event. A user's read also covers every older message, so the tick of an older own message is read when any newer event has that user's receipt.",
+    "Group: the avatar row shows at most 3 avatars and a count; bipe_app_receipt_read_by is its accessibility label, with the count already formatted. Own receipts never show.",
+    "Only the newest own message shows its tick label as text; older own messages show the icon only. Screen readers read bipe_app_receipt_sent or bipe_app_receipt_read on every own message.",
+    "sending and failed use the chat-timeline strings. A failed message opens message-actions with retry."
+  ]
+}

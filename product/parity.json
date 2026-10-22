@@ -956,7 +956,13 @@
           "bipe-ios/ElementX/Sources/Screens/RoomScreen/ComposerToolbar/View/BipeRecordingPauseButton.swift"
         ]
       },
-      "android": "planned",
+      "android": {
+        "status": "built",
+        "evidence": [
+          "bipe-android/libraries/bipe/src/main/kotlin/io/element/android/libraries/bipe/voice/BipeVoiceTranscriber.kt",
+          "bipe-android/libraries/textcomposer/impl/src/main/kotlin/io/element/android/libraries/textcomposer/components/VoiceMessageRecording.kt"
+        ]
+      },
       "web": {
         "status": "n/a",
         "reason": "No web chat (ADR 0004); the site shows a demo at most"
@@ -1594,12 +1600,11 @@
       "kind": "idiom"
     },
     {
-      "area": "Voice messages",
-      "ios": "Sender-side transcription, pause and resume",
-      "android": "Shows the transcript and checks it for scams; no sender-side transcription",
-      "reason": "On-device recognition on low-end Android unmeasured (#80, #81)",
-      "kind": "gap",
-      "issue": 80
+      "area": "Voice transcript",
+      "ios": "Any iPhone with an on-device model for the language",
+      "android": "Android 13 and later with an installed on-device model; older phones send without a transcript",
+      "reason": "Android gives a recogniser an audio stream only from Android 13. Quality on low-end phones is not measured (#81)",
+      "kind": "idiom"
     },
     {
       "area": "Sticker from a photo",

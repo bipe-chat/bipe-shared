@@ -1,0 +1,63 @@
+{
+  "id": "media-viewer",
+  "title": "Media viewer",
+  "flow": "chat",
+  "summary": "Full screen for a photo or video of a chat: zoom, play, swipe to the next or previous media of the same chat, and share, save, reply or delete from a bar.",
+  "types": {},
+  "state": {
+    "rowId": { "type": "string", "description": "The media on screen." },
+    "media": { "type": "MediaMessage", "description": "Its details." },
+    "senderName": { "type": "string", "description": "Shown in the top bar with the time." },
+    "sentAt": { "type": "date", "description": "Shown in the top bar." },
+    "canDelete": { "type": "bool", "description": "From timeline-rows MessageDetails." },
+    "isLoadingFull": { "type": "bool", "description": "true while the full-size file downloads; the thumbnail shows meanwhile." },
+    "chromeHidden": { "type": "bool", "description": "true after a tap hides the bars." }
+  },
+  "actions": {
+    "swipe": {
+      "params": { "direction": { "type": "string", "description": "next or previous." } },
+      "effect": "Shows the next or previous image or video of the loaded timeline. At the oldest loaded one, back-paginates."
+    },
+    "share": {
+      "effect": "Downloads the full file to the cache and opens the system share sheet."
+    },
+    "save": {
+      "effect": "Saves the photo or video to the phone gallery. Asks the gallery permission the first time; shows bipe_app_media_saved."
+    },
+    "reply": {
+      "effect": "Closes the viewer and runs message-reply startReply for this media."
+    },
+    "delete": {
+      "effect": "Runs message-delete askDelete; after a delete the viewer closes."
+    },
+    "close": {
+      "effect": "Swipe down or the close button: back to the chat at this media."
+    }
+  },
+  "strings": [
+    "bipe_app_media_share",
+    "bipe_app_media_save",
+    "bipe_app_media_saved",
+    "bipe_app_media_save_failed",
+    "bipe_app_media_gallery_permission",
+    "bipe_app_close",
+    "bipe_app_media_failed"
+  ],
+  "sdk": [
+    "Client.getMediaContent",
+    "Client.getMediaFile",
+    "MediaFileHandle",
+    "MediaSource",
+    "Timeline.paginateBackwards"
+  ],
+  "parity": [],
+  "notes": [
+    "The decrypted file stays in the app cache. Saving or sharing is the only way it leaves the app, and only when the person asks.",
+    "Video plays inline in the viewer with the system player controls; sound on.",
+    "bipe_app_media_gallery_permission shows when the gallery permission is denied, with a link to the system settings.",
+    "A save or share failure shows bipe_app_media_save_failed.",
+    "Captions show at the bottom over the media; long captions scroll.",
+    "Forward is not in this spec; it needs the forward picker (ADR 0053: the self-chat is the first target) of the composer issue.",
+    "The reply and delete buttons use the message-actions labels (bipe_app_message_action_reply, bipe_app_message_action_delete, bipe-chat/bipe#559)."
+  ]
+}

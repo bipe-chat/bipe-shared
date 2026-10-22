@@ -1,0 +1,109 @@
+{
+  "id": "poll-card",
+  "title": "Poll in the timeline",
+  "flow": "groups",
+  "summary": "Shows a poll as a card in the chat: the question, the options, the person's own choice, the votes when visible, and an end button for the person who started it.",
+  "types": {
+    "PollOption": {
+      "id": {
+        "type": "string",
+        "description": "PollAnswer id."
+      },
+      "text": {
+        "type": "string",
+        "description": "PollAnswer text."
+      },
+      "votes": {
+        "type": "int",
+        "description": "Number of voters. Shown only when results are visible."
+      },
+      "isChosen": {
+        "type": "bool",
+        "description": "The person voted for it."
+      },
+      "isWinner": {
+        "type": "bool",
+        "description": "After the end: has the most votes (ties all win)."
+      }
+    }
+  },
+  "state": {
+    "itemId": {
+      "type": "string",
+      "description": "The poll's timeline item."
+    },
+    "question": {
+      "type": "string",
+      "description": "The question."
+    },
+    "options": {
+      "type": "list",
+      "of": {
+        "type": "PollOption",
+        "description": "One option."
+      },
+      "description": "In the order of the poll."
+    },
+    "maxSelections": {
+      "type": "int",
+      "description": "1 for a single choice."
+    },
+    "resultsVisible": {
+      "type": "bool",
+      "description": "Disclosed polls always; Undisclosed after the end."
+    },
+    "totalVoters": {
+      "type": "int",
+      "description": "People who voted."
+    },
+    "isEnded": {
+      "type": "bool",
+      "description": "The poll has an end time."
+    },
+    "canEnd": {
+      "type": "bool",
+      "description": "The person started the poll and it is open."
+    }
+  },
+  "actions": {
+    "vote": {
+      "params": {
+        "optionId": {
+          "type": "string",
+          "description": "The option."
+        }
+      },
+      "effect": "Single choice: replaces the vote. Multiple: toggles the option, up to maxSelections. Timeline.sendPollResponse with the poll event id and all chosen ids. Does nothing after the end."
+    },
+    "end": {
+      "effect": "After a confirm: Timeline.endPoll with the poll event id and bipe_app_groups_poll_end_text as the fallback text for other apps."
+    }
+  },
+  "strings": [
+    "bipe_app_groups_poll_votes",
+    "bipe_app_groups_poll_results_hidden",
+    "bipe_app_groups_poll_end",
+    "bipe_app_groups_poll_end_title",
+    "bipe_app_groups_poll_end_body",
+    "bipe_app_groups_poll_end_text",
+    "bipe_app_groups_poll_ended",
+    "bipe_app_cancel"
+  ],
+  "sdk": [
+    "MsgLikeKind",
+    "PollAnswer",
+    "PollKind",
+    "Timeline.sendPollResponse",
+    "Timeline.endPoll",
+    "EventTimelineItem"
+  ],
+  "parity": [
+    "polls"
+  ],
+  "notes": [
+    "The SDK gives the poll as MsgLikeKind Poll (question, kind, max selections, answers, votes per answer, end time). The votes map is answer id to voter IDs.",
+    "bipe_app_groups_poll_votes takes the voter count formatted by the system.",
+    "A poll is end-to-end encrypted like the rest of the group (product.json polls). Votes are room events, so every member's app can see who voted for what; Undisclosed only hides the counts on screen until the end.",
+    "Open polls the person has not answered appear in the what-you-missed block (group-quiet)."
+  ]
+}

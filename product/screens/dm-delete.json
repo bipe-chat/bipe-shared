@@ -1,0 +1,51 @@
+{
+  "id": "dm-delete",
+  "title": "Delete a DM (Apagar conversa)",
+  "flow": "chat",
+  "summary": "In a DM, Apagar conversa replaces leaving the room (ADR 0141, bipe-chat/bipe#464). The person stays in the room; a marker in account data hides the chat and every message up to now on all their devices. The other person keeps the chat. A new message brings the chat back, starting after the marker.",
+  "state": {
+    "roomId": { "type": "string", "description": "The DM." },
+    "phase": {
+      "type": "enum",
+      "values": ["confirm", "deleting", "done", "failed"],
+      "description": "deleting: the account data write runs."
+    },
+    "marker": { "type": "int", "optional": true, "description": "The cleared timestamp of this room in ms, from the cleared-chats account data event. Absent when never cleared." }
+  },
+  "actions": {
+    "ask": {
+      "effect": "From the chat list (swipe or long press) or the DM info: opens the confirm."
+    },
+    "confirm": {
+      "effect": "Reads the cleared-chats account data event, merges this room with ts = the origin server time of the newest event in the room (now when there is none), keeps every other entry, writes it with Client.setAccountData. Then closes the chat; on failure shows bipe_dm_delete_error."
+    },
+    "applyToList": {
+      "effect": "chat-list hides a DM while its newest event time is at or below its marker."
+    },
+    "applyToTimeline": {
+      "effect": "chat-timeline drops every event at or below the marker and stops back-pagination there; search drops them too."
+    }
+  },
+  "strings": [
+    "bipe_dm_delete_action",
+    "bipe_dm_delete_title",
+    "bipe_dm_delete_body",
+    "bipe_dm_delete_confirm",
+    "bipe_dm_delete_error",
+    "bipe_app_cancel"
+  ],
+  "sdk": [
+    "Client.accountData",
+    "Client.setAccountData",
+    "Room.isDirect",
+    "Room.latestEvent",
+    "Room.timeline"
+  ],
+  "parity": ["dm-delete"],
+  "notes": [
+    "Event type, content shape and merge rule: registries/cleared-chats.json (generated constant clearedChatsEventType), reference clearedChat* in tools/lib/registries.mjs, cases test-vectors/cleared-chats.json. A malformed entry counts as not cleared; a newer marker never moves back.",
+    "Only for a DM (Room.isDirect). A group shows group-leave.",
+    "The marker hides history on the person's devices only. It deletes nothing on the server and nothing for the other person; bipe_dm_delete_body says so.",
+    "Bipe logic: ClearedChats.marker, isHidden, keepsEvent and json(clearing:) (iOS); ClearedChats, BipeClearedChats.clear, BipeClearedTimeline.filter (Android). Move them; do not write a new merge."
+  ]
+}

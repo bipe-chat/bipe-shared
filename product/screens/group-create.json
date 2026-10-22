@@ -1,0 +1,81 @@
+{
+  "id": "group-create",
+  "title": "Create a group",
+  "flow": "groups",
+  "summary": "Makes a new group: the person picks people, gives a name and an optional photo, and the app creates an encrypted, invite-only group with them invited. A new group is quiet by default (group-quiet).",
+  "types": {
+    "PersonPick": {
+      "userId": { "type": "string", "description": "Matrix user ID." },
+      "name": { "type": "string", "description": "Display name." },
+      "avatarUrl": { "type": "url", "optional": true, "description": "mxc URL of the avatar." },
+      "handle": { "type": "string", "optional": true, "description": "The person's @, without @, when known." }
+    }
+  },
+  "state": {
+    "step": {
+      "type": "enum",
+      "values": ["people", "details", "creating", "failed"],
+      "description": "people: pick who joins. details: name and photo. creating: the room is being made. failed: see error."
+    },
+    "query": { "type": "string", "description": "The search field: a name, or an @ to look up." },
+    "suggestions": {
+      "type": "list",
+      "of": { "type": "PersonPick", "description": "One person." },
+      "description": "People from the person's DMs and groups, newest activity first, filtered by query. An @ query adds the account it resolves to."
+    },
+    "selected": {
+      "type": "list",
+      "of": { "type": "PersonPick", "description": "One picked person." },
+      "description": "Who gets an invite. Can be empty: a group of one is allowed."
+    },
+    "name": { "type": "string", "description": "The group name. Required, trimmed, at most 255 characters." },
+    "photo": { "type": "url", "optional": true, "description": "A local image picked for the group photo." }
+  },
+  "actions": {
+    "search": {
+      "params": { "text": { "type": "string", "description": "The field text." } },
+      "effect": "Filters suggestions. Text that starts with @ or looks like a handle is resolved with GET /v1/handles/{handle}."
+    },
+    "toggle": {
+      "params": { "userId": { "type": "string", "description": "The person." } },
+      "effect": "Adds the person to selected or removes them."
+    },
+    "next": {
+      "effect": "From people to details."
+    },
+    "create": {
+      "effect": "Uploads the photo if any (Client.uploadMedia), then Client.createRoom with name, isEncrypted true, isDirect false, visibility private, preset PrivateChat, avatar and the selected user IDs in invite. On success opens chat-timeline for the new group. Off while the trimmed name is empty."
+    }
+  },
+  "strings": [
+    "bipe_app_groups_new_title",
+    "bipe_app_groups_add_people_title",
+    "bipe_app_groups_search_placeholder",
+    "bipe_app_groups_selected",
+    "bipe_app_groups_name_label",
+    "bipe_app_groups_add_photo",
+    "bipe_app_groups_quiet_footer",
+    "bipe_groups_empty_action",
+    "bipe_app_groups_creating",
+    "bipe_app_groups_create_failed",
+    "bipe_action_continue",
+    "bipe_app_retry"
+  ],
+  "sdk": [
+    "Client.createRoom",
+    "CreateRoomParameters",
+    "RoomPreset",
+    "RoomVisibility",
+    "Client.uploadMedia",
+    "Client.getRoom",
+    "SyncService.roomListService",
+    "RoomListService.allRooms"
+  ],
+  "parity": ["group-types", "e2ee-only-rooms"],
+  "notes": [
+    "Every group is encrypted (e2ee-only-rooms). There is no public or knock-to-join group in phase 1, no room address and no community (communities are phase 3).",
+    "The @ lookup goes to bipe-api, never a Matrix user directory search, so an @ is the way to find someone not in the person's chats. Bipe logic: BipeHandleResolver.userID(forHandle:) (iOS), BipeHandleResolver (Android).",
+    "The name is required because a group with no name would show its members' names, which leaks who is in it to anyone who sees the list.",
+    "The empty state of the Groups tab (bipe_groups_empty_title, bipe_groups_empty_body, bipe_groups_empty_action) opens this screen."
+  ]
+}

@@ -1,0 +1,93 @@
+{
+  "id": "group-quiet",
+  "title": "Quiet groups and what you missed",
+  "flow": "groups",
+  "summary": "Groups are quiet by default: they notify only for mentions, replies and new polls (ADR 0026). When the person opens a group with unread messages, a block above the first unread message lists what was for them.",
+  "types": {
+    "MissedLine": {
+      "kind": {
+        "type": "enum",
+        "values": [
+          "mention",
+          "reply",
+          "poll",
+          "pinned",
+          "more"
+        ],
+        "description": "mention: a message that mentions the person. reply: a reply to the person's message. poll: an open poll the person has not answered. pinned: a message pinned since the last visit. more: the count of other unread messages."
+      },
+      "eventId": {
+        "type": "string",
+        "optional": true,
+        "description": "The message the line opens. Absent for more."
+      },
+      "text": {
+        "type": "string",
+        "description": "The sender's name, the poll question or the pinned text, or the formatted count for more."
+      }
+    }
+  },
+  "state": {
+    "applied": {
+      "type": "bool",
+      "description": "The account's group defaults are quiet and the poll rule exists."
+    },
+    "missed": {
+      "type": "list",
+      "of": {
+        "type": "MissedLine",
+        "description": "One line."
+      },
+      "description": "Built on the device from the unread messages after the fully-read marker, in kind order. Empty hides the block."
+    }
+  },
+  "actions": {
+    "applyDefaults": {
+      "effect": "Once per account after sign-in: if the server can push encrypted events and the push rules have no chat.bipe.poll_start rule, sets the default group mode to mentions and keywords only where it is still all messages (encrypted and unencrypted), then adds an override rule chat.bipe.poll_start that notifies for *.poll.start events."
+    },
+    "buildMissed": {
+      "effect": "When a group opens with unread messages: scans the loaded unread events and makes the lines."
+    },
+    "openLine": {
+      "params": {
+        "eventId": {
+          "type": "string",
+          "description": "The line's event."
+        }
+      },
+      "effect": "Scrolls the timeline to the event. more scrolls to the first unread message."
+    }
+  },
+  "strings": [
+    "bipe_group_missed_title",
+    "bipe_group_missed_mention",
+    "bipe_group_missed_reply",
+    "bipe_group_missed_poll",
+    "bipe_group_missed_pinned",
+    "bipe_group_missed_more"
+  ],
+  "sdk": [
+    "Client.getNotificationSettings",
+    "NotificationSettings.canHomeserverPushEncryptedEventToDevice",
+    "NotificationSettings.getRawPushRules",
+    "NotificationSettings.getDefaultRoomNotificationMode",
+    "NotificationSettings.setDefaultRoomNotificationMode",
+    "NotificationSettings.setCustomPushRule",
+    "RoomNotificationMode",
+    "Room.timeline",
+    "Timeline.addListener",
+    "VirtualTimelineItem"
+  ],
+  "parity": [
+    "group-types",
+    "polls"
+  ],
+  "notes": [
+    "A person who already picked a group default (not all messages) keeps it. A group the person sets to all messages or mute keeps that (chat-notifications).",
+    "The poll rule: NotificationSettings.setCustomPushRule with rule id chat.bipe.poll_start, RuleKind override, action notify, condition event match on type *.poll.start.",
+    "Fixed rules on the device, no model, no server change (ADR 0026). Other Matrix apps see a normal room.",
+    "\"Since the last visit\" is the fully-read marker (m.fully_read), the ReadMarker virtual item.",
+    "Pinned messages are not shown in phase 1 of the timeline, so the pinned line stays empty until pins ship.",
+    "Bipe logic: BipeQuietGroups.run and its rule id chat.bipe.poll_start (Android). Keep the same rule id so a phone that moves from the fork does not add a second rule."
+  ]
+}

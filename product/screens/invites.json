@@ -1,0 +1,125 @@
+{
+  "id": "invites",
+  "title": "Invite people",
+  "flow": "invites",
+  "summary": "The person's personal invites: how many are left, make one with a first message (the invite note, ADR 0136), share it as a link or a QR code, name it, cancel it, and see who joined.",
+  "types": {
+    "InviteRow": {
+      "id": { "type": "string", "description": "The invite id." },
+      "status": {
+        "type": "enum",
+        "values": ["pending", "used", "expired", "revoked"],
+        "description": "From GET /v1/me/invites."
+      },
+      "name": { "type": "string", "optional": true, "description": "The name the person gave the invite. Only they see it." },
+      "expiresAt": { "type": "date", "description": "When it stops working." },
+      "joinedUserId": { "type": "string", "optional": true, "description": "used: who joined with it." },
+      "hasLinkHere": { "type": "bool", "description": "The link was made on this phone and is kept here. Else bipe_invites_other_device." },
+      "note": { "type": "string", "optional": true, "description": "The first message kept on this phone for this invite." }
+    }
+  },
+  "state": {
+    "available": { "type": "int", "description": "Invites the person can still make." },
+    "nextAvailableAt": { "type": "date", "optional": true, "description": "When the next one comes back, when none is left." },
+    "joined": {
+      "type": "list",
+      "of": { "type": "InviteRow", "description": "A used invite." },
+      "description": "Newest first."
+    },
+    "pending": {
+      "type": "list",
+      "of": { "type": "InviteRow", "description": "A pending invite." },
+      "description": "Newest first. Expired and revoked go under pending, dimmed."
+    },
+    "draftNote": { "type": "string", "description": "The note field when making an invite. Starts as bipe_invite_note_default; the person can edit or clear it." },
+    "qrFor": { "type": "string", "optional": true, "description": "The invite whose QR sheet is open." }
+  },
+  "actions": {
+    "load": {
+      "effect": "GET /v1/me/invites; keeps links and notes on this phone only for pending invites."
+    },
+    "create": {
+      "effect": "POST /v1/me/invites. Keeps the link (bipe.chat/convite/<code>) and the note on this phone, keyed by invite id, and opens the share sheet with bipe_invites_share_message. invite_quota_exhausted shows bipe_invites_none_left with bipe_invites_next."
+    },
+    "share": {
+      "params": { "id": { "type": "string", "description": "A pending invite made on this phone." } },
+      "effect": "Opens the system share sheet with bipe_invites_share_message and the link."
+    },
+    "showQr": {
+      "params": { "id": { "type": "string", "description": "A pending invite made on this phone." } },
+      "effect": "Opens the QR sheet: the link as a QR code with bipe_invites_qr_footer."
+    },
+    "rename": {
+      "params": {
+        "id": { "type": "string", "description": "The invite." },
+        "name": { "type": "string", "description": "At most 80 characters; blank removes it." }
+      },
+      "effect": "PUT /v1/me/invites/{inviteId}."
+    },
+    "revoke": {
+      "params": { "id": { "type": "string", "description": "A pending invite." } },
+      "effect": "DELETE /v1/me/invites/{inviteId}; deletes its link and note here."
+    },
+    "chat": {
+      "params": { "id": { "type": "string", "description": "A used invite." } },
+      "effect": "Opens the DM with the person who joined (bipe_invites_chat)."
+    },
+    "sendNotesOnJoin": {
+      "effect": "In the background on foreground and after sync: GET /v1/me/invite-connections and GET /v1/me/invites; for each invite that turned used and still has a note here, sends the note once as a normal encrypted message into the DM with the person who joined, then deletes it, and shows bipe_invites_joined once."
+    }
+  },
+  "strings": [
+    "bipe_invites_title",
+    "bipe_invites_available",
+    "bipe_invites_explainer",
+    "bipe_invites_create",
+    "bipe_invites_invite_someone",
+    "bipe_invites_show_qr",
+    "bipe_invites_qr_action",
+    "bipe_invites_qr_title",
+    "bipe_invites_qr_footer",
+    "bipe_invites_joined_header",
+    "bipe_invites_pending_header",
+    "bipe_invites_link",
+    "bipe_invites_other_device",
+    "bipe_invites_name_action",
+    "bipe_invites_name_placeholder",
+    "bipe_invites_name_footer",
+    "bipe_invites_share_message",
+    "bipe_invites_none_left",
+    "bipe_invites_next",
+    "bipe_invites_empty",
+    "bipe_invites_expires",
+    "bipe_invites_status_pending",
+    "bipe_invites_status_used",
+    "bipe_invites_status_expired",
+    "bipe_invites_status_revoked",
+    "bipe_invites_revoke",
+    "bipe_invites_chat",
+    "bipe_invites_joined",
+    "bipe_invite_note_title",
+    "bipe_invite_note_footer",
+    "bipe_invite_note_placeholder",
+    "bipe_invite_note_default",
+    "bipe_app_share",
+    "bipe_app_copy",
+    "bipe_app_copied"
+  ],
+  "sdk": [
+    "Client.session",
+    "Client.getDmRoom",
+    "Client.createRoom",
+    "CreateRoomParameters",
+    "Room.timeline",
+    "Timeline.send",
+    "messageEventContentFromMarkdown"
+  ],
+  "parity": ["invites", "invite-note", "invite-qr", "inviter-prompt"],
+  "notes": [
+    "The note never goes to the server; it lives on the phone that made the invite and is sent from there only (ADR 0136). An invite made without a note works the same.",
+    "bipe_invite_note_default and bipe_invites_share_message are in the people's voice (pra), on purpose: the person sends them (linguagem.md section 2).",
+    "The DM for the note is the invite-pair chat (ADR 0034): reuse an existing DM, else create an encrypted direct room that invites the joined person.",
+    "bipe_invites_available and bipe_invites_next take the count and the date formatted by the system; bipe_invites_expires the date.",
+    "Bipe logic: BipeInviteCreator.create(note:), createIfAvailable and quota, BipeInviteQuota, BipeInviteStore (links, notes, localNames, seenJoinedInviteIDs) (iOS); BipeInviteCreator, BipeInviteLinkStore.saveNote and takeNote, BipeInviteJoinNotifier, BipeInvitePairs, BipeQrCodeContent (Android)."
+  ]
+}

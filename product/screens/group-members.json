@@ -1,0 +1,73 @@
+{
+  "id": "group-members",
+  "title": "Group members",
+  "flow": "groups",
+  "summary": "The people in a group: joined members first, then pending invites. A tap opens the person's profile. An admin can remove someone.",
+  "types": {
+    "Member": {
+      "userId": { "type": "string", "description": "Matrix user ID. Stable key." },
+      "name": { "type": "string", "description": "Display name in the group." },
+      "avatarUrl": { "type": "url", "optional": true, "description": "mxc URL." },
+      "membership": {
+        "type": "enum",
+        "values": ["joined", "invited"],
+        "description": "From RoomMember membership. Left, banned and knocking members are not listed."
+      },
+      "isAdmin": { "type": "bool", "description": "Power level 100." },
+      "isSelf": { "type": "bool", "description": "The person's own row, shown first with bipe_app_groups_you." }
+    }
+  },
+  "state": {
+    "members": {
+      "type": "list",
+      "of": { "type": "Member", "description": "One row." },
+      "description": "Joined (admins first, then by name), then invited."
+    },
+    "query": { "type": "string", "description": "Filter by name or @." },
+    "canInvite": { "type": "bool", "description": "Shows the add people row (group-invite)." },
+    "canRemove": { "type": "bool", "description": "RoomPowerLevels.canOwnUserKick." },
+    "confirmRemove": { "type": "string", "optional": true, "description": "The user ID waiting for the remove confirm." }
+  },
+  "actions": {
+    "load": {
+      "effect": "Room.members, read in chunks with RoomMembersIterator.nextChunk, and the power levels."
+    },
+    "open": {
+      "params": { "userId": { "type": "string", "description": "The member." } },
+      "effect": "Opens the person's profile (bipe-chat/bipe#567)."
+    },
+    "remove": {
+      "params": { "userId": { "type": "string", "description": "The member." } },
+      "effect": "After the confirm: Room.kickUser with no reason. A pending invite is withdrawn the same way."
+    }
+  },
+  "strings": [
+    "bipe_app_groups_members_title",
+    "bipe_app_groups_invited_header",
+    "bipe_app_groups_you",
+    "bipe_app_groups_admin",
+    "bipe_app_groups_add_people_title",
+    "bipe_app_groups_remove",
+    "bipe_app_groups_remove_title",
+    "bipe_app_groups_remove_body",
+    "bipe_app_cancel",
+    "bipe_error_generic"
+  ],
+  "sdk": [
+    "Room.members",
+    "RoomMembersIterator.nextChunk",
+    "RoomMember",
+    "MembershipState",
+    "Room.getPowerLevels",
+    "RoomPowerLevels.canOwnUserKick",
+    "RoomPowerLevels.canOwnUserInvite",
+    "Room.kickUser"
+  ],
+  "parity": ["group-types"],
+  "notes": [
+    "No ban, no role editor and no power level screen in phase 1 (client-rewrite-plan.md section 4: only what Bipe groups need).",
+    "A DM has no member list: its info screen shows the other person (ADR 0141). A DM that gained a third member is a group on every screen and shows this list.",
+    "bipe_app_groups_remove_title takes the member's name.",
+    "Trust badges next to names follow trust UI (phase 2)."
+  ]
+}

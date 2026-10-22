@@ -1,0 +1,53 @@
+{
+  "id": "group-leave",
+  "title": "Leave a group",
+  "flow": "groups",
+  "summary": "Leaves a group after a confirm that says what happens. The last admin is asked to choose a new admin first; the last person is told the group ends.",
+  "state": {
+    "case": {
+      "type": "enum",
+      "values": ["normal", "lastPerson", "lastAdmin"],
+      "description": "lastPerson: nobody else is joined or invited. lastAdmin: the person is the only member with power level 100 and others remain."
+    },
+    "phase": {
+      "type": "enum",
+      "values": ["confirm", "pickAdmin", "leaving", "failed"],
+      "description": "pickAdmin: lastAdmin picks a member to become admin. leaving: Room.leave runs."
+    }
+  },
+  "actions": {
+    "ask": {
+      "effect": "From the group info: works out case from the members and power levels and opens the confirm."
+    },
+    "pickAdmin": {
+      "params": { "userId": { "type": "string", "description": "The new admin." } },
+      "effect": "Room.updatePowerLevelsForUsers gives the member power level 100, then leaves."
+    },
+    "leave": {
+      "effect": "Room.leave, then Room.forget so the group goes from the list on every device. Back to the Groups tab."
+    }
+  },
+  "strings": [
+    "bipe_app_groups_leave",
+    "bipe_app_groups_leave_title",
+    "bipe_app_groups_leave_body",
+    "bipe_app_groups_leave_last_person",
+    "bipe_app_groups_leave_last_admin",
+    "bipe_app_groups_leave_pick_admin",
+    "bipe_app_groups_leave_failed",
+    "bipe_app_cancel"
+  ],
+  "sdk": [
+    "Room.leave",
+    "Room.forget",
+    "Room.members",
+    "Room.getPowerLevels",
+    "RoomPowerLevels.userPowerLevels",
+    "Room.updatePowerLevelsForUsers"
+  ],
+  "parity": ["group-types"],
+  "notes": [
+    "A DM never shows leave: it shows Apagar conversa (dm-delete, ADR 0141).",
+    "Leaving does not delete messages for the others."
+  ]
+}

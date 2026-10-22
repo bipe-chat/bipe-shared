@@ -1,0 +1,64 @@
+{
+  "id": "group-invite",
+  "title": "Add people to a group",
+  "flow": "groups",
+  "summary": "Invites more people into a group the person can invite to: from the group's member list, or from a DM with someone (\"Convidar para um grupo\").",
+  "state": {
+    "entry": {
+      "type": "enum",
+      "values": ["fromGroup", "fromDm"],
+      "description": "fromGroup: pick people for this group. fromDm: pick a group for this person."
+    },
+    "roomId": { "type": "string", "optional": true, "description": "fromGroup: the group." },
+    "userId": { "type": "string", "optional": true, "description": "fromDm: the other person of the DM." },
+    "groups": {
+      "type": "list",
+      "of": { "type": "string", "description": "A group room ID." },
+      "description": "fromDm: joined groups where canOwnUserInvite is true, without the self chat (Anotações). Empty shows bipe_dm_invite_to_group_empty."
+    },
+    "canInvite": { "type": "bool", "description": "RoomPowerLevels.canOwnUserInvite for the group." },
+    "result": {
+      "type": "enum",
+      "values": ["none", "sent", "alreadyMember", "failed"],
+      "description": "Outcome of the last invite."
+    }
+  },
+  "actions": {
+    "invite": {
+      "params": {
+        "userId": { "type": "string", "description": "The person." },
+        "roomId": { "type": "string", "description": "The group." }
+      },
+      "effect": "Checks membership first: joined or invited shows bipe_dm_invite_to_group_already_member. Else Room.inviteUserById; sent shows bipe_dm_invite_to_group_sent."
+    },
+    "pickPeople": {
+      "effect": "fromGroup: the person picker of group-create (search, suggestions, @ lookup), then invite for each."
+    }
+  },
+  "strings": [
+    "bipe_app_groups_add_people_title",
+    "bipe_app_groups_search_placeholder",
+    "bipe_dm_invite_to_group",
+    "bipe_dm_invite_to_group_empty",
+    "bipe_dm_invite_to_group_sent",
+    "bipe_dm_invite_to_group_already_member",
+    "bipe_app_groups_invite_no_permission",
+    "bipe_app_groups_invite_failed"
+  ],
+  "sdk": [
+    "Client.getRoom",
+    "Room.inviteUserById",
+    "Room.member",
+    "Room.getPowerLevels",
+    "RoomPowerLevels.canOwnUserInvite",
+    "RoomMember",
+    "MembershipState"
+  ],
+  "parity": ["group-types"],
+  "notes": [
+    "An invite to a group arrives as a group invite; from a stranger it lands in Pedidos (bipe-chat/bipe#557, ADR 0016). Invite pairs skip that (ADR 0034).",
+    "A DM never gets a third member from this screen (ADR 0141). Inviting a DM's person to a group never changes the DM.",
+    "bipe_app_groups_invite_failed takes the person's name.",
+    "Bipe logic: BipeInviteToGroup.groups and invite (Android). iOS has the flow outside BipeKit; write it from this spec."
+  ]
+}

@@ -79,8 +79,9 @@ jobs:
           repos=""
           for repo in bipe bipe-ios bipe-android bipe-api bipe-app; do
             url="https://x-access-token:${TOKEN}@github.com/bipe-chat/${repo}.git"
-            if [ "$repo" = bipe-app ] && ! git ls-remote "$url" > /dev/null 2>&1; then
-              echo "::warning::BIPE_REGEN_TOKEN cannot reach bipe-app: it is not regenerated. Give the token access to bipe-app."
+            # bipe-app is public, so a read succeeds without access: check the push permission.
+            if [ "$repo" = bipe-app ] && [ "$(gh api repos/bipe-chat/bipe-app --jq .permissions.push 2>/dev/null)" != true ]; then
+              echo "::warning::BIPE_REGEN_TOKEN cannot push to bipe-app: it is not regenerated. Give the token access to bipe-app."
               continue
             fi
             repos="$repos $repo"
@@ -216,7 +217,7 @@ jobs:
             exit 0
           fi
           for repo in bipe bipe-ios bipe-android bipe-api bipe-app; do
-            if [ "$repo" = bipe-app ] && ! GH_TOKEN="$TOKEN" gh api repos/bipe-chat/bipe-app/pulls --silent 2>/dev/null; then
+            if [ "$repo" = bipe-app ] && [ "$(GH_TOKEN="$TOKEN" gh api repos/bipe-chat/bipe-app --jq .permissions.push 2>/dev/null)" != true ]; then
               echo "::warning::BIPE_REGEN_TOKEN cannot reach bipe-app: its regen pull request is not merged. Give the token access to bipe-app."
               continue
             fi

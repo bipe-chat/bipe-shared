@@ -1,0 +1,64 @@
+{
+  "id": "sign-out",
+  "title": "Sign out of this phone",
+  "flow": "settings",
+  "summary": "Explains what the user needs to come back before Bipe signs this phone out, and warns when the account has no way back or when this phone holds the only copy of the old messages (bipe-chat/bipe#204, ADR 0057).",
+  "types": {
+    "WayBack": {
+      "kind": {
+        "type": "enum",
+        "values": ["email", "linkedAccount", "recoveryKey", "syncedToken"],
+        "description": "A way back that the account has."
+      },
+      "title": { "type": "string", "description": "String key of its name: bipe_email_title, bipe_linked_accounts_title, bipe_account_recovery_key or bipe_app_sign_out_synced_token." }
+    }
+  },
+  "state": {
+    "waysBack": { "type": "list", "of": { "type": "WayBack", "description": "One way back." }, "description": "The ways back of the account, as in settings-root." },
+    "isLastDevice": { "type": "bool", "description": "Encryption.isLastDevice: no other device holds the message keys." },
+    "hasRecoveryKey": { "type": "bool", "description": "Encryption.recoveryState is enabled." },
+    "phase": {
+      "type": "enum",
+      "values": ["confirm", "signingOut", "failed"],
+      "description": "confirm: the sheet. signingOut: Client.logout runs. failed: bipe_error_generic."
+    }
+  },
+  "actions": {
+    "appear": {
+      "effect": "Reads the ways back, Encryption.isLastDevice and Encryption.recoveryState. Plays the warning haptic only when waysBack is empty (needs a registry use, see notes)."
+    },
+    "addWayBack": {
+      "effect": "Closes the sheet and opens Sua conta (settings-group account) at Jeitos de voltar."
+    },
+    "signOut": {
+      "effect": "Client.logout, then deletes this account's hidden password, session and SDK store from this phone. Keeps the recovery token in the synced store, so recovery-start finds it. Then account-start: the next account on the phone, or onboarding."
+    },
+    "cancel": { "effect": "Closes the sheet. Nothing changes." }
+  },
+  "strings": [
+    "bipe_account_sign_out",
+    "bipe_app_sign_out_title",
+    "bipe_app_sign_out_body",
+    "bipe_app_sign_out_no_way_back",
+    "bipe_app_sign_out_history",
+    "bipe_app_sign_out_add_way",
+    "bipe_app_sign_out_synced_token",
+    "bipe_email_title",
+    "bipe_linked_accounts_title",
+    "bipe_account_recovery_key",
+    "bipe_app_signing_out",
+    "bipe_error_generic",
+    "bipe_app_cancel"
+  ],
+  "sdk": ["Client.logout", "Client.encryption", "Encryption.isLastDevice", "Encryption.recoveryState"],
+  "parity": ["settings-structure", "phone-account"],
+  "notes": [
+    "bipe_app_sign_out_body takes pinLength, then the sheet lists the ways back by name. Never join the names into one sentence (linguagem.md section 6).",
+    "No way back: bipe_app_sign_out_no_way_back above the buttons, and bipe_app_sign_out_add_way first. Sign-out stays possible: the user decides.",
+    "isLastDevice and not hasRecoveryKey: bipe_app_sign_out_history. The old messages exist only on this phone; without a recovery key they do not come back (ADR 0073).",
+    "Device-first account: the hidden password is the only sign-in secret and it lives on this phone. After sign-out the account comes back only through a way back plus the PIN (recovery-start).",
+    "With two accounts on the phone (ADR 0086), this signs out the active account only.",
+    "Haptics: registries/haptics.json has no sign_out use yet. Add one under warning in the same change that builds this screen, or play none.",
+    "Bipe logic: BipeWaysBack (BipeKit BipeSettingsSupport.swift), BipeCredentialStore (BipeKit); BipeWayBack.kt, BipeDeviceAccount and BipeRecoveryTokenStore (libraries/bipe)."
+  ]
+}

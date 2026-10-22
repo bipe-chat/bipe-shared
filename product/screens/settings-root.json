@@ -1,0 +1,57 @@
+{
+  "id": "settings-root",
+  "title": "Settings list in the Você tab",
+  "flow": "settings",
+  "summary": "The Configurações section of the Você tab: one row per settings group, in the order of registries/settings.json root. Each row shows the current state as its subtitle, so the list reads as a summary (ADR 0112).",
+  "types": {
+    "SettingsGroupRow": {
+      "key": { "type": "string", "description": "The group key from registries/settings.json (privacy, account, notifications, chats, help)." },
+      "title": { "type": "string", "description": "String key of the group title." },
+      "summary": { "type": "string", "optional": true, "description": "The subtitle, already formatted. Absent when the group has no state to sum up." },
+      "needsAttention": { "type": "bool", "description": "true only for account when the account has one way back or none. The only warning mark in Settings." }
+    }
+  },
+  "state": {
+    "rows": {
+      "type": "list",
+      "of": { "type": "SettingsGroupRow", "description": "One group row." },
+      "description": "The groups of root, in order."
+    }
+  },
+  "actions": {
+    "appear": {
+      "effect": "Builds rows from the generated BipeSettings root. Reads the summaries: privacy from GET /v1/me/messaging, account from the ways back (see notes), notifications from the system permission. Shows the rows at once and fills the summaries when they arrive."
+    },
+    "openGroup": {
+      "params": { "key": { "type": "string", "description": "The group key." } },
+      "effect": "Opens settings-group for that key. notifications opens the notifications settings screen of bipe-chat/bipe#565."
+    }
+  },
+  "strings": [
+    "bipe_settings_section",
+    "bipe_settings_privacy",
+    "bipe_settings_account",
+    "bipe_settings_notifications",
+    "bipe_settings_chats",
+    "bipe_settings_help",
+    "bipe_settings_privacy_summary_everyone",
+    "bipe_settings_privacy_summary_verified",
+    "bipe_settings_privacy_summary_contacts",
+    "bipe_settings_account_paths",
+    "bipe_settings_account_paths_none",
+    "bipe_account_paths_warning",
+    "bipe_settings_notifications_on",
+    "bipe_settings_notifications_off"
+  ],
+  "sdk": ["Client.encryption", "Encryption.recoveryState"],
+  "parity": ["settings-structure"],
+  "notes": [
+    "The order, keys and titles come from the generated BipeSettings (registries/settings.json root and groups). Never hard-code the order. A new group needs a new ADR (ADR 0112).",
+    "Privacy summary: everyone → bipe_settings_privacy_summary_everyone, verified → bipe_settings_privacy_summary_verified, contacts → bipe_settings_privacy_summary_contacts.",
+    "Account summary, the ways back: a confirmed recovery email (GET /v1/me/account), a linked Apple or Google account (ADR 0096), a recovery key (Encryption.recoveryState is enabled), and the recovery token synced to this phone's platform account. 0 → bipe_settings_account_paths_none; 1 → bipe_account_paths_warning; 2 or more → bipe_settings_account_paths with the count. needsAttention for 0 or 1. The Você tab icon never shows this mark (ADR 0112).",
+    "Notifications summary: bipe_settings_notifications_on, or bipe_settings_notifications_off when the system permission is off.",
+    "The rest of the Você tab (header with photo, name and @, account switcher, Anotações, Perfil de confiança, Convidar pessoas) is the people and profiles spec (bipe-chat/bipe#567). profile (Seu perfil) opens from the header, not from this list.",
+    "Bipe logic: BipeWaysBack (count, needsWarning, summary) and BipeWhoCanMessage.settingsSummary in BipeKit BipeSettingsSupport.swift; BipeWayBack.kt and BipePrivacySettings.kt in libraries/bipe settings.",
+    "No Matrix or Element words in any row: no sala, sessão, dispositivo, criptografia, chave, homeserver (ADR 0112). Bipe has no haptics setting of its own: the system setting wins (design/haptics.md rule 6)."
+  ]
+}

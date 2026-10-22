@@ -1,0 +1,39 @@
+{
+  "id": "support-open",
+  "title": "Talk to support",
+  "flow": "settings",
+  "summary": "Opens the user's chat with Suporte Bipe (ADR 0114). The API makes the room on first use and invites the user; the app joins it when needed and opens it in chat-timeline.",
+  "state": {
+    "phase": {
+      "type": "enum",
+      "values": ["opening", "failed"],
+      "description": "opening: POST /v1/me/support and the join run. failed: see error."
+    },
+    "error": { "type": "string", "optional": true, "description": "bipe_support_open_failed, bipe_error_network or bipe_error_rate_limited." }
+  },
+  "actions": {
+    "open": {
+      "effect": "From the support row in Ajuda e sobre. POST /v1/me/support gives room_id. If Client.getRoom gives no room or Room.membership is not joined, Client.joinRoomById. Then opens chat-timeline on that room. 503 support_unavailable and other errors: failed with bipe_support_open_failed."
+    },
+    "retry": { "effect": "From failed: runs open again." },
+    "cancel": { "effect": "Closes the screen." }
+  },
+  "strings": [
+    "bipe_settings_support",
+    "bipe_app_support_opening",
+    "bipe_support_open_failed",
+    "bipe_support_room_name",
+    "bipe_error_network",
+    "bipe_error_rate_limited",
+    "bipe_app_retry",
+    "bipe_app_cancel"
+  ],
+  "sdk": ["Client.getRoom", "Room.membership", "Client.joinRoomById"],
+  "parity": ["support-dm"],
+  "notes": [
+    "One support room per user. Later calls return the same room and invite the user again after a leave (api/openapi.yaml /v1/me/support). Only one open runs at a time.",
+    "The chat list and the timeline show the room with the name bipe_support_room_name and the support account's display name. The room topic (bipe_support_room_topic) says that the team reads the room in a support tool and that photos and files stay on the Bipe server; the bot posts bipe_support_welcome the first time.",
+    "Texts in the room go to the Bipe team's Starlings workspace (Cloudflare, outside Brazil). Images and files stay on the Bipe server (ADR 0114, product/privacy.json). Problem reports post a notice into the same room (problem-report).",
+    "Bipe logic: BipeAPIClient.supportRoomID (BipeKit); BipeSupportChat.open (libraries/bipe support), which does the same steps."
+  ]
+}

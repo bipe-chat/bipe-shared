@@ -1,0 +1,74 @@
+{
+  "id": "linked-devices",
+  "title": "Linked devices",
+  "flow": "devices",
+  "summary": "Lists the other devices of the account with their last use, starts Link a computer, and signs out one device after a biometric check, on the MAS page that ends that device's session (ADR 0116).",
+  "types": {
+    "LinkedDevice": {
+      "deviceId": { "type": "string", "description": "The Matrix device ID. Never shown as text." },
+      "displayName": { "type": "string", "optional": true, "description": "The device name; bipe_linked_devices_unknown_name when empty." },
+      "lastUsed": { "type": "date", "optional": true, "description": "last_seen_ts, for bipe_linked_devices_last_used." }
+    }
+  },
+  "state": {
+    "phase": {
+      "type": "enum",
+      "values": ["loading", "loaded", "failed"],
+      "description": "loaded with an empty list shows bipe_linked_devices_empty."
+    },
+    "devices": { "type": "list", "of": { "type": "LinkedDevice", "description": "One other device." }, "description": "The other devices of the account, newest use first. This phone is not in it." },
+    "signOutCandidate": { "type": "LinkedDevice", "optional": true, "description": "The device that the sign-out sheet asks about." },
+    "signOutPhase": {
+      "type": "enum",
+      "values": ["idle", "confirmIdentity", "loading", "page", "failed"],
+      "description": "loading: the MAS page loads or the web view signs in. page: the MAS page that ends the session is in front."
+    }
+  },
+  "actions": {
+    "appear": {
+      "effect": "GET /_matrix/client/v3/devices with the access token. Drops this phone (Client.deviceId) and sorts by last use."
+    },
+    "linkComputer": {
+      "effect": "Opens link-computer-scan."
+    },
+    "askSignOut": {
+      "params": { "deviceId": { "type": "string", "description": "The device to sign out." } },
+      "effect": "Shows the sheet with bipe_linked_devices_sign_out_title (the device name) and bipe_linked_devices_sign_out_body."
+    },
+    "confirmSignOut": {
+      "effect": "Asks for the biometric check with bipe_linked_devices_sign_out_biometric. On a pass, opens the private web view of link-computer-approve on the MAS account page with action org.matrix.session_end and the device ID, and fills the MAS login form once with the hidden password. The user confirms on the MAS page."
+    },
+    "pageClosed": {
+      "effect": "When the user leaves or closes the MAS page: clears the web view, POST /v1/web-link/finish, reloads the list. A device that is gone from the list shows bipe_app_linked_devices_signed_out."
+    },
+    "retry": { "effect": "From failed: runs appear again." }
+  },
+  "strings": [
+    "bipe_linked_devices_title",
+    "bipe_linked_devices_link_computer",
+    "bipe_linked_devices_footer",
+    "bipe_linked_devices_empty",
+    "bipe_linked_devices_last_used",
+    "bipe_linked_devices_unknown_name",
+    "bipe_linked_devices_sign_out",
+    "bipe_linked_devices_sign_out_title",
+    "bipe_linked_devices_sign_out_body",
+    "bipe_linked_devices_sign_out_biometric",
+    "bipe_linked_devices_error",
+    "bipe_app_linked_devices_sign_out_loading",
+    "bipe_app_linked_devices_sign_out_error",
+    "bipe_app_linked_devices_signed_out",
+    "bipe_app_retry",
+    "bipe_app_cancel",
+    "bipe_app_close"
+  ],
+  "sdk": ["Client.deviceId", "Client.homeserver", "Client.session", "Client.accountUrl"],
+  "parity": ["web-sign-in", "settings-structure"],
+  "notes": [
+    "The SDK has no device list in the FFI and Client.accountUrl returns nothing for an m.login.password session, so the app calls GET /_matrix/client/v3/devices (Matrix spec) and builds the MAS account URL from the auth metadata (MSC2965 account_management_uri, then action=org.matrix.session_end&device_id=<id>). Bipe logic: BipeMatrixAccountAPI.devices and authMetadata, BipeWebLink.sessionEndURL (BipeKit BipeWebLink.swift); BipeWebLinkSession.otherDevices, BipeWebApprovalController purpose SignOut (libraries/bipe weblink).",
+    "The private web view, the host rule and the one-time form fill are the same as link-computer-approve. The sign-out flow has no warning and no cooldown, but has the biometric check before the hidden password is read.",
+    "A web device is unattested (ADR 0043). This list shows no badge for any device.",
+    "bipe_linked_devices_title and the row in Sua conta come from registries/settings.json (account, devices, linkedDevices). This phone shows as the thisDevice info row there, not in this list.",
+    "Signing out this phone is sign-out, not this screen."
+  ]
+}

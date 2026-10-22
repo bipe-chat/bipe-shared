@@ -1,0 +1,60 @@
+{
+  "id": "pin-change",
+  "title": "Change PIN",
+  "flow": "settings",
+  "summary": "Changes the account PIN (senha de 8 números) from Sua conta. A biometric check comes first; no old PIN is needed (ADR 0057). The server checks the new PIN, unblocks it and cancels any waiting PIN reset.",
+  "state": {
+    "phase": {
+      "type": "enum",
+      "values": ["confirmIdentity", "create", "confirm", "saving", "failed", "done"],
+      "description": "confirmIdentity: the biometric check. create and confirm: the signup-pin steps. saving: PUT /v1/me/pin runs. failed: see error. done: bipe_pin_changed."
+    },
+    "pin": { "type": "string", "description": "Digits typed in this step. Never logged." },
+    "problem": {
+      "type": "enum",
+      "values": ["none", "repeatedDigit", "sequence", "date", "mismatch"],
+      "description": "As in signup-pin. pin_weak from the server maps to the same values."
+    },
+    "error": { "type": "string", "optional": true, "description": "bipe_error_network, bipe_error_rate_limited or bipe_error_generic." }
+  },
+  "actions": {
+    "confirmIdentity": {
+      "effect": "Asks for the device owner check with bipe_pin_change_biometric_reason. A pass sets create; a fail or cancel closes the screen."
+    },
+    "typeDigit": {
+      "params": { "digit": { "type": "string", "description": "One digit, 0 to 9." } },
+      "effect": "The signup-pin steps: pinProblem() at the end of create, a match check at the end of confirm. A match sets saving and calls save."
+    },
+    "save": {
+      "effect": "PUT /v1/me/pin with the PIN. 204: while the app lock is on and the phone holds one account, also sets the app lock PIN (app-lock); success haptic (use pin_set); shows bipe_pin_changed and closes. 400 pin_weak: sets problem from reason and goes back to create. 429: failed with bipe_error_rate_limited."
+    },
+    "retry": { "effect": "From failed: calls save again with the same PIN while the screen is open." },
+    "cancel": { "effect": "Closes the screen. Nothing changes." }
+  },
+  "strings": [
+    "bipe_pin_change_title",
+    "bipe_pin_change_biometric_reason",
+    "bipe_pin_create_body",
+    "bipe_pin_confirm_title",
+    "bipe_pin_mismatch",
+    "bipe_pin_problem_repeated_digit",
+    "bipe_pin_problem_sequence",
+    "bipe_pin_problem_date",
+    "bipe_pin_never_asked",
+    "bipe_pin_changed",
+    "bipe_error_network",
+    "bipe_error_rate_limited",
+    "bipe_error_generic",
+    "bipe_app_retry",
+    "bipe_app_cancel"
+  ],
+  "sdk": [],
+  "parity": ["app-lock"],
+  "notes": [
+    "No old PIN: the biometric check on the signed-in phone stands in for it (ADR 0057). A phone with no biometrics uses the phone's passcode.",
+    "The server sends a notice to the verified recovery email after a change (api/openapi.yaml /v1/me/pin). The app shows nothing about it.",
+    "There is no remove-PIN action. Every account has a PIN (ADR 0057, ADR 0112).",
+    "With two accounts on the phone (ADR 0086), this changes the PIN of the active account only. The app lock PIN does not change.",
+    "Bipe logic: BipeAPIClient.setPIN (BipeKit); BipeApiClient.setPin, BipeDeviceAccount and BipePin (libraries/bipe api and account); pinProblem() from the generated code."
+  ]
+}

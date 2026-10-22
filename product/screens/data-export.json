@@ -1,0 +1,48 @@
+{
+  "id": "data-export",
+  "title": "Download my data",
+  "flow": "settings",
+  "summary": "Gives the user a copy of what the Bipe API stores about them as one JSON file (LGPD art. 18, ADR 0112). The owner proves it is them first; the file goes to the system share sheet. Messages are not on the server, so the file does not have them.",
+  "state": {
+    "phase": {
+      "type": "enum",
+      "values": ["idle", "confirmIdentity", "enterPin", "preparing", "failed"],
+      "description": "confirmIdentity: biometrics or the phone's passcode. enterPin: no owner check on the phone, so the app lock PIN. preparing: GET /v1/me/export runs. failed: see error."
+    },
+    "pinWrong": { "type": "bool", "description": "enterPin: the last app lock PIN did not match." },
+    "error": { "type": "string", "optional": true, "description": "bipe_privacy_export_error or bipe_error_rate_limited." }
+  },
+  "actions": {
+    "start": {
+      "effect": "From the export row in Privacidade. Biometrics or the phone's passcode when the phone has them (bipe_privacy_export_biometric); else the app lock PIN when the lock is on; else failed with bipe_privacy_export_error (fail closed)."
+    },
+    "submitPin": {
+      "params": { "pin": { "type": "string", "description": "The app lock PIN. Never logged." } },
+      "effect": "Checks it on the device. A match calls export; a miss sets pinWrong (error haptic, use pin_wrong)."
+    },
+    "export": {
+      "effect": "GET /v1/me/export. 200: saves the body as it is, with the file name from content-disposition (bipe-dados-YYYY-MM-DD.json), in a cache folder that holds only the latest export, and opens the system share sheet with it. 429: failed with bipe_error_rate_limited. Anything else: failed with bipe_privacy_export_error."
+    },
+    "dismiss": { "effect": "Closes the dialog. Nothing is kept but the latest file in the cache folder." }
+  },
+  "strings": [
+    "bipe_privacy_export",
+    "bipe_privacy_export_footer",
+    "bipe_privacy_export_biometric",
+    "bipe_app_export_preparing",
+    "bipe_pin_enter_title",
+    "bipe_pin_mismatch",
+    "bipe_privacy_export_error",
+    "bipe_error_rate_limited",
+    "bipe_app_cancel"
+  ],
+  "sdk": [],
+  "parity": ["data-export"],
+  "notes": [
+    "The app does not parse the file. It saves the bytes and shares them (api/openapi.yaml /v1/me/export). 3 exports per hour per account.",
+    "A file name that is not a plain bipe-dados-*.json name becomes bipe-dados-<today>.json (no path, no leading dot).",
+    "The export covers server data only: account state, recovery email, handle and its history, public profile, messaging and discovery settings, phone link status, invites, the CNPJ claim, terms acceptances and growth events. bipe_privacy_export_footer says that chats are not in it.",
+    "Bipe logic: BipeAPIClient.exportMyData and BipeDataExport.filename (BipeKit BipeSettingsSupport.swift); BipeApiClient.export, BipeDataExportFile and BipeDataExportRow (libraries/bipe api and settings).",
+    "product/data.json is the LGPD record of what the server keeps; the whatBipeKeeps row opens its public page (/lgpd/)."
+  ]
+}

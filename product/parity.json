@@ -1402,12 +1402,18 @@
         ]
       },
       "ios-new": {
-        "status": "planned",
-        "issue": 560
+        "status": "built",
+        "evidence": [
+          "bipe-app/ios/BipeKit/Sources/BipeKit/BipeHandleChanges.swift",
+          "bipe-app/ios/Bipe/Timeline/TimelineRows.swift"
+        ]
       },
       "android-new": {
-        "status": "planned",
-        "issue": 560
+        "status": "built",
+        "evidence": [
+          "bipe-app/android/libraries/bipe/src/main/kotlin/chat/bipe/shared/BipeHandleChanges.kt",
+          "bipe-app/android/app/src/main/kotlin/chat/bipe/app/timeline/TimelineRows.kt"
+        ]
       },
       "issue": 166
     },

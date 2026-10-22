@@ -84,7 +84,7 @@
     "Filters: chats is All of Joined, NonSpace, DeduplicateVersions and Category People; groups is the same with Category Group. Unread adds ReadReceipts with ReadReceiptsCategory Messages (unread messages, or marked unread). The Category rule follows RoomInfo.isDm (ADR 0141: one DM test), so a DM with a third member moves to groups.",
     "ADR 0053: a group of two that is not a DM stays in groups. The self-chat shows in neither tab; it is the first item of Você.",
     "Two DMs with one person (ADR 0141): the list keeps only the newest room; the older one is hidden, not deleted.",
-    "Cleared DMs (dm-delete) stay hidden until a new message arrives. Move, do not rewrite: BipeKit ClearedChats.swift, libraries/bipe clearedchats/ClearedChats.kt; rules in registries/cleared-chats.json and test-vectors/cleared-chats.json.",
+    "Cleared DMs stay hidden until a new message arrives (dm-delete spec, clearedChatHidden). Move, do not rewrite: BipeKit ClearedChats.swift, libraries/bipe clearedchats/ClearedChats.kt; rules in registries/cleared-chats.json and test-vectors/cleared-chats.json.",
     "Requests (DM invites) never show in either tab; the requests row of chat-requests sits at the top of Conversas.",
     "Group invite rows use bipe_group_notification_room_invite_body_with_sender with the inviter name, and Accept and Decline buttons.",
     "Empty states: noChats is bipe_chats_empty_title, bipe_chats_empty_body and the bipe_action_start_chat button. noGroups is bipe_app_groups_empty. noUnread is bipe_app_chat_list_no_unread, with a tap that turns the filter off.",

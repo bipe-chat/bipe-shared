@@ -1,0 +1,72 @@
+{
+  "id": "chat-notifications",
+  "title": "Notifications of one chat",
+  "flow": "chat",
+  "summary": "Picks how one group or DM notifies. A group has three modes: only what is for you (quiet, the default), all messages, mute (ADR 0026). A DM has two: all messages and mute (ADR 0141).",
+  "types": {
+    "NotifyOption": {
+      "mode": {
+        "type": "enum",
+        "values": ["quiet", "all", "mute", "mentionsLegacy"],
+        "description": "quiet: RoomNotificationMode mentionsAndKeywordsOnly in a group. all: allMessages. mute: mute. mentionsLegacy: mentionsAndKeywordsOnly in a DM, set before ADR 0141."
+      },
+      "title": { "type": "string", "description": "String key: bipe_app_notify_quiet, bipe_app_notify_all, bipe_app_notify_mute or bipe_app_notify_mentions_legacy." },
+      "footer": { "type": "string", "optional": true, "description": "String key of the line under the option: bipe_app_notify_quiet_footer for quiet." },
+      "isDefault": { "type": "bool", "description": "true when this mode is the account default for this kind of chat, so choosing it removes the room rule." }
+    }
+  },
+  "state": {
+    "roomId": { "type": "string", "description": "The chat." },
+    "isDm": { "type": "bool", "description": "RoomInfo.isDm (ADR 0141)." },
+    "options": { "type": "list", "of": { "type": "NotifyOption", "description": "One choice." }, "description": "Group: quiet, all, mute. DM: all, mute, plus mentionsLegacy only while it is the current mode." },
+    "current": {
+      "type": "enum",
+      "values": ["quiet", "all", "mute", "mentionsLegacy"],
+      "description": "From NotificationSettings.getRoomNotificationSettings."
+    },
+    "saving": { "type": "bool", "description": "true while the change goes out. The options are locked." }
+  },
+  "actions": {
+    "appear": {
+      "effect": "Client.getNotificationSettings, then NotificationSettings.getRoomNotificationSettings and NotificationSettings.getDefaultRoomNotificationMode, both with isEncrypted from RoomInfo.encryptionState and isOneToOne set to isDm (the one DM test of ADR 0141, never the member count)."
+    },
+    "choose": {
+      "params": {
+        "mode": {
+          "type": "enum",
+          "values": ["quiet", "all", "mute"],
+          "description": "The new mode. mentionsLegacy cannot be chosen."
+        }
+      },
+      "effect": "When mode is the account default: NotificationSettings.restoreDefaultRoomNotificationMode. Else NotificationSettings.setRoomNotificationMode. From mute to another mode: NotificationSettings.unmuteRoom first. A failure shows bipe_app_notify_error and puts the old choice back."
+    }
+  },
+  "strings": [
+    "bipe_settings_notifications",
+    "bipe_app_notify_quiet",
+    "bipe_app_notify_quiet_footer",
+    "bipe_app_notify_all",
+    "bipe_app_notify_mute",
+    "bipe_app_notify_mentions_legacy",
+    "bipe_app_notify_error"
+  ],
+  "sdk": [
+    "Client.getNotificationSettings",
+    "NotificationSettings.getRoomNotificationSettings",
+    "NotificationSettings.getDefaultRoomNotificationMode",
+    "NotificationSettings.setRoomNotificationMode",
+    "NotificationSettings.restoreDefaultRoomNotificationMode",
+    "NotificationSettings.unmuteRoom",
+    "NotificationSettings.canHomeserverPushEncryptedEventToDevice",
+    "RoomNotificationMode",
+    "RoomInfo.isDm"
+  ],
+  "parity": ["group-types"],
+  "notes": [
+    "Quiet is mentions and keywords plus the account override rule chat.bipe.poll_start (event type *.poll.start), so a new poll notifies in a quiet group (groups.md, #97). BipeQuietGroups sets that rule and the group default once per account (libraries/bipe groups/BipeQuietGroups.kt). This screen never writes the poll rule.",
+    "Quiet in an encrypted group needs the server to push encrypted events (NotificationSettings.canHomeserverPushEncryptedEventToDevice, Synapse msc4028). Without it, mentions-only silences the group. While the answer is false, the group shows only all and mute, and a group whose rule is already mentions-only shows as quiet with no footer. Parity note: inert until Synapse pushes encrypted events (#118).",
+    "DM (ADR 0141): only all and mute. A DM with mentions-only from before keeps that server rule and shows bipe_app_notify_mentions_legacy as the current option until the user picks another. Then that row goes away.",
+    "Words: Silenciar and Todas as mensagens come from ADR 0141. The row in group-details shows the title of the current option.",
+    "The account defaults per chat kind (groups, DMs) are in the notifications settings spec (bipe-chat/bipe#565), not here."
+  ]
+}

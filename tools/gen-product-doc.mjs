@@ -1,4 +1,5 @@
-// Writes bipe/docs/product.md from product/product.json and product/distribution.json. Also validates
+// Writes bipe/docs/product.md from product/product.json, product/parity.json (the status per feature on
+// iOS, Android, web and server, ADR 0092) and product/distribution.json. Also validates
 // product/compare.json, product/scams.json, product/data.json, product/privacy.json and product/accessibility.json.
 // Usage: node tools/gen-product-doc.mjs [--out <file>]
 import { readdirSync, readFileSync, writeFileSync } from "node:fs";
@@ -12,8 +13,10 @@ const out = resolve(outIndex >= 0 ? args[outIndex + 1] : join(root, "../bipe/doc
 
 const product = JSON.parse(readFileSync(join(root, "product/product.json"), "utf8"));
 const dist = JSON.parse(readFileSync(join(root, "product/distribution.json"), "utf8"));
+const ledger = JSON.parse(readFileSync(join(root, "product/parity.json"), "utf8"));
 
 const STATUSES = ["testing", "built", "planned", "policy"];
+const SURFACES = ["ios", "android", "web", "server"];
 const fail = (m) => { throw new Error(`product validation failed: ${m}`); };
 if (product.version !== 1 || dist.version !== 1) fail("version must be 1");
 const ht = product.headlineTest;
@@ -57,14 +60,20 @@ function milestoneTitles() {
 const MILESTONES = milestoneTitles();
 const featureIcons = new Set();
 const featureIds = new Set(product.features.map((f) => f.id));
+// The status of a feature is its parity.json item of the same id (bipe#300). tools/parity.mjs checks the ledger itself.
+const ledgerStatus = new Map(ledger.items.map((i) => [i.id, Object.fromEntries(SURFACES.map((s) => [s, typeof i[s] === "string" ? i[s] : i[s]?.status]))]));
+const status = (id) => ledgerStatus.get(id);
 const areaIds = new Set(product.areas.map((a) => a.id));
 // Every feature has its own page on the site (/recursos/<slug>/): a slug per language and points that say how it works.
 const featureSlugs = new Set();
 for (const f of product.features) {
   if (!areaIds.has(f.area)) fail(`feature ${f.id}: unknown area ${f.area}`);
-  for (const p of ["ios", "android"]) if (!STATUSES.includes(f.status[p])) fail(`feature ${f.id}: status.${p}`);
+  if (f.status !== undefined) fail(`feature ${f.id}: status lives in parity.json, not product.json`);
+  if (!status(f.id)) fail(`feature ${f.id}: no item in parity.json`);
+  for (const p of ["ios", "android"]) if (!STATUSES.includes(status(f.id)[p])) fail(`feature ${f.id}: parity.json ${p} status ${status(f.id)[p]}`);
+  for (const p of ["web", "server"]) if (![...STATUSES, "n/a"].includes(status(f.id)[p])) fail(`feature ${f.id}: parity.json ${p} status ${status(f.id)[p]}`);
   // The milestone that holds the feature's open work. A policy has none; every other feature names one.
-  const policy = f.status.ios === "policy" && f.status.android === "policy";
+  const policy = status(f.id).ios === "policy" && status(f.id).android === "policy";
   if (policy ? f.milestone !== null : !MILESTONES.has(f.milestone)) fail(`feature ${f.id}: milestone ${f.milestone} (${policy ? "null for a policy" : "a title in bipe/docs/MILESTONES.md"})`);
   for (const l of ["pt", "en"]) {
     if (!f[l]?.name || !f[l]?.body) fail(`feature ${f.id}: ${l} copy`);
@@ -375,7 +384,7 @@ for (const k of ["rules", "limits"]) if (a11y.pt[k].length !== a11y.en[k].length
 const text = JSON.stringify(product) + JSON.stringify(dist) + JSON.stringify(data) + JSON.stringify(privacy) + JSON.stringify(a11y);
 if (/[–—]/.test(text)) fail("rendered copy must not contain em or en dashes");
 
-const label = { testing: "TestFlight", built: "Built", planned: "Planned", policy: "Policy" };
+const label = { testing: "TestFlight", built: "Built", planned: "Planned", policy: "Policy", "n/a": "n/a" };
 const lines = [
   "# Product: what Bipe is and does",
   "",
@@ -404,9 +413,11 @@ const lines = [
   "",
   "## Features",
   "",
-  "| Feature | Area | iOS | Android | Milestone | What it does |",
-  "|---|---|---|---|---|---|",
-  ...product.features.map((f) => `| ${f.en.name} (\`${f.id}\`) | ${f.area} | ${label[f.status.ios]} | ${label[f.status.android]} | ${f.milestone ?? "none"} | ${f.en.body} |`),
+  "Status per surface comes from `bipe-shared/product/parity.json` (ADR 0092).",
+  "",
+  "| Feature | Area | iOS | Android | Web | Server | Milestone | What it does |",
+  "|---|---|---|---|---|---|---|---|",
+  ...product.features.map((f) => `| ${f.en.name} (\`${f.id}\`) | ${f.area} | ${SURFACES.map((s) => label[status(f.id)[s]]).join(" | ")} | ${f.milestone ?? "none"} | ${f.en.body} |`),
   "",
   "## ICPs",
   "",
@@ -415,7 +426,7 @@ const lines = [
   "| Step | ICP | Who | Current | Platforms | Gate in tester build |",
   "|---|---|---|---|---|---|",
   ...product.icps.map((i) => {
-    const ready = (id) => i.platforms.every((pl) => product.features.find((f) => f.id === id).status[pl] === "testing");
+    const ready = (id) => i.platforms.every((pl) => status(id)[pl] === "testing");
     const gate = i.gate.map((id) => (ready(id) ? id : `~~${id}~~`)).join(", ");
     return `| ${i.step} | ${i.name} (\`${i.id}\`) | ${i.who} | ${i.current ? "yes" : ""} | ${i.platforms.join(", ")} | ${i.gate.filter(ready).length} of ${i.gate.length}: ${gate} |`;
   }),
@@ -436,7 +447,7 @@ const lines = [
   `|---|---|${product.audiences.map(() => "---|").join("")}---|`,
   ...product.features.map((f) => {
     const used = product.audiences.map((a) => a.sections.some((s) => s.features.includes(f.id)));
-    return `| ${f.en.name} | ${label[f.status.ios]} | ${used.map((u) => (u ? "x" : "")).join(" | ")} | ${used.filter(Boolean).length} |`;
+    return `| ${f.en.name} | ${label[status(f.id).ios]} | ${used.map((u) => (u ? "x" : "")).join(" | ")} | ${used.filter(Boolean).length} |`;
   }),
   "",
   "## Comparison",
@@ -463,7 +474,7 @@ const lines = [
   "",
   "| Golpe | Group | Page (pt) | Figures | Described by | Bipe features | Scene |",
   "|---|---|---|---|---|---|---|",
-  ...scams.types.map((t) => `| ${t.en.heading} (\`${t.id}\`) | ${t.group} | /golpes-no-brasil/${t.slug.pt}/ | ${t.stats.join(", ") || "no figure"} | ${t.describedBy.join(", ")} | ${t.protect.map((id) => `${id} (${label[product.features.find((f) => f.id === id).status.ios]})`).join(", ")} | ${t.scene} |`),
+  ...scams.types.map((t) => `| ${t.en.heading} (\`${t.id}\`) | ${t.group} | /golpes-no-brasil/${t.slug.pt}/ | ${t.stats.join(", ") || "no figure"} | ${t.describedBy.join(", ")} | ${t.protect.map((id) => `${id} (${label[status(id).ios]})`).join(", ")} | ${t.scene} |`),
   "",
   `Outside Bipe (hub list, no Bipe card): ${scams.outside.map((o) => `${o.en.name} (${o.source})`).join("; ")}.`,
   "",

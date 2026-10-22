@@ -381,10 +381,6 @@
       "id": "scam-alerts",
       "area": "safety",
       "icon": "warning",
-      "status": {
-        "ios": "testing",
-        "android": "built"
-      },
       "milestone": "M2 Android beta",
       "slug": {
         "pt": "aviso-de-golpe",
@@ -430,10 +426,6 @@
       "id": "requests",
       "area": "safety",
       "icon": "chat",
-      "status": {
-        "ios": "testing",
-        "android": "built"
-      },
       "milestone": "M2 Android beta",
       "slug": {
         "pt": "pedidos-de-conversa",
@@ -466,10 +458,6 @@
       "id": "money-pause",
       "area": "safety",
       "icon": "hourglass",
-      "status": {
-        "ios": "planned",
-        "android": "planned"
-      },
       "milestone": "M3 Store launch",
       "slug": {
         "pt": "pausa-antes-de-pagar",
@@ -502,10 +490,6 @@
       "id": "no-sms",
       "area": "safety",
       "icon": "sim",
-      "status": {
-        "ios": "testing",
-        "android": "built"
-      },
       "milestone": "M2 Android beta",
       "slug": {
         "pt": "sem-codigo-por-sms",
@@ -537,10 +521,6 @@
       "id": "phone-account",
       "area": "safety",
       "icon": "key",
-      "status": {
-        "ios": "planned",
-        "android": "planned"
-      },
       "milestone": "M2 Android beta",
       "slug": {
         "pt": "conta-no-celular",
@@ -575,10 +555,6 @@
       "id": "new-phone",
       "area": "safety",
       "icon": "devices",
-      "status": {
-        "ios": "planned",
-        "android": "planned"
-      },
       "milestone": "M3 Store launch",
       "slug": {
         "pt": "celular-novo",
@@ -615,10 +591,6 @@
       "id": "verified-badge",
       "area": "identity",
       "icon": "badge",
-      "status": {
-        "ios": "planned",
-        "android": "planned"
-      },
       "milestone": "M3 Store launch",
       "slug": {
         "pt": "selo-verificado",
@@ -662,10 +634,6 @@
       "id": "cnpj-badge",
       "area": "identity",
       "icon": "bank",
-      "status": {
-        "ios": "built",
-        "android": "built"
-      },
       "milestone": "Work side: one speaker",
       "slug": {
         "pt": "selo-de-cnpj",
@@ -703,10 +671,6 @@
       "id": "reserved-names",
       "area": "identity",
       "icon": "shield",
-      "status": {
-        "ios": "planned",
-        "android": "planned"
-      },
       "milestone": "M3 Store launch",
       "slug": {
         "pt": "nomes-reservados",
@@ -743,10 +707,6 @@
       "id": "lookalikes",
       "area": "identity",
       "icon": "letters",
-      "status": {
-        "ios": "planned",
-        "android": "planned"
-      },
       "milestone": "M3 Store launch",
       "slug": {
         "pt": "letras-disfarcadas",
@@ -784,10 +744,6 @@
       "id": "family-check",
       "area": "identity",
       "icon": "person-question",
-      "status": {
-        "ios": "planned",
-        "android": "planned"
-      },
       "milestone": "M4 Groups pilot",
       "slug": {
         "pt": "e-a-mae-mesmo",
@@ -828,10 +784,6 @@
       "id": "handles",
       "area": "privacy",
       "icon": "at",
-      "status": {
-        "ios": "testing",
-        "android": "built"
-      },
       "milestone": "M2 Android beta",
       "slug": {
         "pt": "nome-de-usuario",
@@ -870,10 +822,6 @@
       "id": "profile-links",
       "area": "privacy",
       "icon": "qr",
-      "status": {
-        "ios": "testing",
-        "android": "built"
-      },
       "milestone": "M2 Android beta",
       "slug": {
         "pt": "link-e-qr-code",
@@ -910,10 +858,6 @@
       "id": "public-profile",
       "area": "chat",
       "icon": "person",
-      "status": {
-        "ios": "built",
-        "android": "built"
-      },
       "milestone": "M2 Android beta",
       "slug": {
         "pt": "perfil-publico",
@@ -950,10 +894,6 @@
       "id": "invites",
       "area": "chat",
       "icon": "user-plus",
-      "status": {
-        "ios": "testing",
-        "android": "built"
-      },
       "milestone": "M2 Android beta",
       "slug": {
         "pt": "convites",
@@ -991,10 +931,6 @@
       "id": "phone-discovery",
       "area": "chat",
       "icon": "search",
-      "status": {
-        "ios": "planned",
-        "android": "planned"
-      },
       "milestone": "M3 Store launch",
       "slug": {
         "pt": "ache-seus-contatos",
@@ -1026,10 +962,6 @@
       "id": "e2ee",
       "area": "privacy",
       "icon": "lock",
-      "status": {
-        "ios": "testing",
-        "android": "built"
-      },
       "milestone": "M2 Android beta",
       "slug": {
         "pt": "ponta-a-ponta",
@@ -1061,10 +993,6 @@
       "id": "no-ads",
       "area": "privacy",
       "icon": "eye-off",
-      "status": {
-        "ios": "policy",
-        "android": "policy"
-      },
       "milestone": null,
       "slug": {
         "pt": "sem-anuncio",
@@ -1096,10 +1024,6 @@
       "id": "free",
       "area": "privacy",
       "icon": "gift",
-      "status": {
-        "ios": "policy",
-        "android": "policy"
-      },
       "milestone": null,
       "slug": {
         "pt": "gratuito",
@@ -1131,10 +1055,6 @@
       "id": "brazil-servers",
       "area": "privacy",
       "icon": "server",
-      "status": {
-        "ios": "policy",
-        "android": "policy"
-      },
       "milestone": null,
       "slug": {
         "pt": "servidor-no-brasil",
@@ -1166,10 +1086,6 @@
       "id": "open-source",
       "area": "privacy",
       "icon": "code",
-      "status": {
-        "ios": "policy",
-        "android": "policy"
-      },
       "milestone": null,
       "slug": {
         "pt": "codigo-aberto",
@@ -1201,10 +1117,6 @@
       "id": "pix-cards",
       "area": "payments",
       "icon": "pix",
-      "status": {
-        "ios": "planned",
-        "android": "planned"
-      },
       "milestone": "Later",
       "slug": {
         "pt": "pedido-de-pix",
@@ -1237,10 +1149,6 @@
       "id": "pix-charges",
       "area": "payments",
       "icon": "receipt",
-      "status": {
-        "ios": "planned",
-        "android": "planned"
-      },
       "milestone": "Later",
       "slug": {
         "pt": "cobranca-com-cnpj",
@@ -1273,10 +1181,6 @@
       "id": "agenda",
       "area": "chat",
       "icon": "calendar",
-      "status": {
-        "ios": "planned",
-        "android": "planned"
-      },
       "milestone": "Work side: one speaker",
       "slug": {
         "pt": "agenda",
@@ -1318,10 +1222,6 @@
       "id": "catalog",
       "area": "chat",
       "icon": "bag",
-      "status": {
-        "ios": "planned",
-        "android": "planned"
-      },
       "milestone": "Work side: one speaker",
       "slug": {
         "pt": "catalogo",
@@ -1361,10 +1261,6 @@
       "id": "orders",
       "area": "chat",
       "icon": "box",
-      "status": {
-        "ios": "planned",
-        "android": "planned"
-      },
       "milestone": "Work side: one speaker",
       "slug": {
         "pt": "pedidos",
@@ -1404,10 +1300,6 @@
       "id": "quotes",
       "area": "chat",
       "icon": "document",
-      "status": {
-        "ios": "planned",
-        "android": "planned"
-      },
       "milestone": "Work side: one speaker",
       "slug": {
         "pt": "orcamento",
@@ -1447,10 +1339,6 @@
       "id": "queue",
       "area": "chat",
       "icon": "ticket",
-      "status": {
-        "ios": "planned",
-        "android": "planned"
-      },
       "milestone": "Work side: one speaker",
       "slug": {
         "pt": "fila-virtual",
@@ -1490,10 +1378,6 @@
       "id": "pix-check",
       "area": "payments",
       "icon": "pix-check",
-      "status": {
-        "ios": "built",
-        "android": "built"
-      },
       "milestone": "M2 Android beta",
       "slug": {
         "pt": "conferir-pix",
@@ -1527,10 +1411,6 @@
       "id": "stickers",
       "area": "chat",
       "icon": "sticker",
-      "status": {
-        "ios": "built",
-        "android": "built"
-      },
       "milestone": "M4 Groups pilot",
       "slug": {
         "pt": "stickers",
@@ -1566,10 +1446,6 @@
       "id": "group-types",
       "area": "community",
       "icon": "group",
-      "status": {
-        "ios": "built",
-        "android": "built"
-      },
       "milestone": "M4 Groups pilot",
       "slug": {
         "pt": "grupos-sem-barulho",
@@ -1605,10 +1481,6 @@
       "id": "polls",
       "area": "community",
       "icon": "poll",
-      "status": {
-        "ios": "testing",
-        "android": "built"
-      },
       "milestone": "M2 Android beta",
       "slug": {
         "pt": "enquetes",
@@ -1641,10 +1513,6 @@
       "id": "communities",
       "area": "community",
       "icon": "house",
-      "status": {
-        "ios": "planned",
-        "android": "planned"
-      },
       "milestone": "M4 Groups pilot",
       "slug": {
         "pt": "comunidades",
@@ -1678,10 +1546,6 @@
       "id": "verified-groups",
       "area": "community",
       "icon": "group-badge",
-      "status": {
-        "ios": "planned",
-        "android": "planned"
-      },
       "milestone": "M4 Groups pilot",
       "slug": {
         "pt": "grupo-so-com-verificados",

@@ -1,6 +1,7 @@
 # ADR 0031, ADR 0092: the shared rules, the generated code in every repo, the API clients and the parity ledger stay in step.
 # Needs the secret BIPE_REPOS_TOKEN: a fine-grained token with read access to contents of
 # bipe, bipe-ios, bipe-android, bipe-api, bipe-web and bipe-infra.
+# The parity step also reads issue state on bipe-chat/bipe with it (Issues: read).
 # Needs the secret BIPE_REGEN_TOKEN: a fine-grained token with read and write access to contents and
 # pull requests of bipe, bipe-ios, bipe-android and bipe-api. Without it, regen and land do nothing.
 #
@@ -172,8 +173,11 @@ jobs:
         run: node bipe-shared/tools/check-contract.mjs
       - name: Drift
         run: node bipe-shared/tools/check-drift.mjs --against head --repos "$GITHUB_WORKSPACE"
+      # --issues: every iOS/Android gap names an open issue on bipe-chat/bipe (M2 exit test, bipe#300).
       - name: Parity
-        run: node bipe-shared/tools/parity.mjs --against head --repos "$GITHUB_WORKSPACE"
+        env:
+          GH_TOKEN: ${{ secrets.BIPE_REPOS_TOKEN }}
+        run: node bipe-shared/tools/parity.mjs --against head --repos "$GITHUB_WORKSPACE" --issues
 
   land:
     if: github.event_name == 'push'

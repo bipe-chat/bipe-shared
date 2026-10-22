@@ -9,8 +9,8 @@ import { checkAppstore, LOCALES, loadAppstore } from "./lib/appstore.mjs";
 
 const root = join(dirname(fileURLToPath(import.meta.url)), "..");
 const listing = loadAppstore(root);
-const product = JSON.parse(readFileSync(join(root, "product/product.json"), "utf8"));
-const problems = checkAppstore(listing, product);
+const ledger = JSON.parse(readFileSync(join(root, "product/parity.json"), "utf8"));
+const problems = checkAppstore(listing, ledger);
 if (problems.length) {
   for (const p of problems) console.error(`appstore.md: ${p}`);
   process.exit(1);

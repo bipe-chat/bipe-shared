@@ -1,5 +1,5 @@
 {
-  "$comment": "Parity ledger (ADR 0092). One item per capability that can differ between surfaces, with a status on ios, android, web (bipe-web) and server (bipe-api, bipe-infra): planned, built (merged, not in a tester build), testing (in a tester build), policy, or n/a with a reason. built and testing need evidence: paths that start with the surface's repo name. When iOS and Android differ, issue names the open issue that closes the gap. differences: deliberate behaviour differences between the apps; kind idiom, gap or undecided (gap and undecided need an issue). The Differences tables in both BIPE.md files are generated from it. Check: node tools/parity.mjs. Write the tables: --write. Report: --report.",
+  "$comment": "Parity ledger (ADR 0092). One item per capability that can differ between surfaces, with a status on ios, android, web (bipe-web) and server (bipe-api, bipe-infra): planned, built (merged, not in a tester build), testing (in a tester build), policy, or n/a with a reason. built and testing need evidence: paths that start with the surface's repo name. This is the one status per feature: product.json features have none, bipe-web and gen-product-doc.mjs read it by id. When iOS and Android differ, issue names the open issue that closes the gap (--issues checks that it is open). differences: deliberate behaviour differences between the apps; kind idiom, gap or undecided (gap and undecided need an issue). The Differences tables in both BIPE.md files are generated from it. Check: node tools/parity.mjs. Write the tables: --write. Report: --report.",
   "version": 1,
   "items": [
     {
@@ -135,8 +135,20 @@
     {
       "id": "phone-account",
       "name": "Your account lives on your phone",
-      "ios": "planned",
-      "android": "planned",
+      "ios": {
+        "status": "built",
+        "evidence": [
+          "bipe-ios/Components/BipeKit/Sources/BipeKit/BipeCredentialStore.swift",
+          "bipe-ios/Components/BipeKit/Sources/BipeKit/BipeAccount.swift"
+        ]
+      },
+      "android": {
+        "status": "built",
+        "evidence": [
+          "bipe-android/libraries/bipe/src/main/kotlin/io/element/android/libraries/bipe/account/BipeAccountVault.kt",
+          "bipe-android/libraries/bipe/src/main/kotlin/io/element/android/libraries/bipe/account/BipePin.kt"
+        ]
+      },
       "web": {
         "status": "n/a",
         "reason": "Sign-up is in the apps"
@@ -146,14 +158,25 @@
         "evidence": [
           "bipe-api/src/accounts.ts"
         ]
-      },
-      "note": "Code is merged on both apps (BipeCredentialStore, BipeAccountVault); product.json still says planned"
+      }
     },
     {
       "id": "new-phone",
       "name": "New phone, same account",
-      "ios": "planned",
-      "android": "planned",
+      "ios": {
+        "status": "built",
+        "evidence": [
+          "bipe-ios/Components/BipeKit/Sources/BipeKit/BipeCredentialStore.swift",
+          "bipe-ios/ElementX/Sources/Screens/BipeRecoveryScreen/View/BipeRecoveryScreen.swift"
+        ]
+      },
+      "android": {
+        "status": "built",
+        "evidence": [
+          "bipe-android/libraries/bipe/src/main/kotlin/io/element/android/libraries/bipe/account/BipeRecoveryTokenStore.kt",
+          "bipe-android/features/login/impl/src/main/kotlin/io/element/android/features/login/impl/screens/biperecovery/BipeRecoveryView.kt"
+        ]
+      },
       "web": {
         "status": "built",
         "evidence": [
@@ -212,8 +235,20 @@
     {
       "id": "cnpj-badge",
       "name": "Business seal",
-      "ios": { "status": "built", "evidence": ["bipe-ios/Components/BipeKit/Sources/BipeKit/BipeCompanySeals.swift", "bipe-ios/ElementX/Sources/Other/SwiftUI/Views/BipeCompanySeal.swift"] },
-      "android": { "status": "built", "evidence": ["bipe-android/libraries/bipe/src/main/kotlin/io/element/android/libraries/bipe/company/BipeCompanySeals.kt", "bipe-android/libraries/bipe/src/main/kotlin/io/element/android/libraries/bipe/company/BipeCompanySeal.kt"] },
+      "ios": {
+        "status": "built",
+        "evidence": [
+          "bipe-ios/Components/BipeKit/Sources/BipeKit/BipeCompanySeals.swift",
+          "bipe-ios/ElementX/Sources/Other/SwiftUI/Views/BipeCompanySeal.swift"
+        ]
+      },
+      "android": {
+        "status": "built",
+        "evidence": [
+          "bipe-android/libraries/bipe/src/main/kotlin/io/element/android/libraries/bipe/company/BipeCompanySeals.kt",
+          "bipe-android/libraries/bipe/src/main/kotlin/io/element/android/libraries/bipe/company/BipeCompanySeal.kt"
+        ]
+      },
       "web": {
         "status": "built",
         "evidence": [
@@ -234,8 +269,20 @@
     {
       "id": "reserved-names",
       "name": "Reserved names",
-      "ios": "planned",
-      "android": "planned",
+      "ios": {
+        "status": "built",
+        "evidence": [
+          "bipe-ios/Components/BipeKit/Sources/BipeKit/BipePublicProfile.swift",
+          "bipe-ios/Components/BipeKit/Sources/BipeKit/NameNormalizer.swift"
+        ]
+      },
+      "android": {
+        "status": "built",
+        "evidence": [
+          "bipe-android/libraries/bipe/src/main/kotlin/io/element/android/libraries/bipe/BipePublicProfile.kt",
+          "bipe-android/libraries/bipe/src/main/kotlin/io/element/android/libraries/bipe/NameNormalizer.kt"
+        ]
+      },
       "web": {
         "status": "n/a",
         "reason": "No web chat (ADR 0004); the site shows a demo at most"
@@ -246,8 +293,7 @@
           "bipe-api/src/registry.ts",
           "bipe-api/src/handles.ts"
         ]
-      },
-      "note": "Both apps check public profile names (BipePublicProfile); product.json still says planned"
+      }
     },
     {
       "id": "lookalikes",
@@ -533,8 +579,16 @@
     {
       "id": "phone-discovery",
       "name": "Find your contacts",
-      "ios": "planned",
-      "android": "planned",
+      "ios": {
+        "status": "built",
+        "evidence": [
+          "bipe-ios/ElementX/Sources/Screens/BipeContactsScreen/View/BipeContactsScreen.swift"
+        ]
+      },
+      "android": {
+        "status": "planned",
+        "note": "No address-book match yet; #162 closes the gap"
+      },
       "web": {
         "status": "n/a",
         "reason": "No web chat (ADR 0004); the site shows a demo at most"
@@ -545,7 +599,6 @@
           "bipe-api/src/phones.ts"
         ]
       },
-      "note": "iOS has address-book match merged (BipeContactsScreen), Android has nothing; product.json says planned for both",
       "issue": 162
     },
     {
@@ -1372,10 +1425,30 @@
     {
       "id": "support-dm",
       "name": "Support DM bridged to the Bipe team (ADR 0114)",
-      "ios": { "status": "built", "evidence": ["bipe-ios/ElementX/Sources/FlowCoordinators/UserSessionFlowCoordinator.swift", "bipe-ios/Components/Secrets/Secrets.swift"] },
-      "android": { "status": "built", "evidence": ["bipe-android/libraries/bipe/src/main/kotlin/io/element/android/libraries/bipe/support/BipeSupportChat.kt", "bipe-android/plugins/src/main/kotlin/config/BuildTimeConfig.kt"] },
-      "web": { "status": "n/a", "reason": "Mobile only (ADR 0004)" },
-      "server": { "status": "built", "evidence": ["bipe-api/src/support.ts"] }
+      "ios": {
+        "status": "built",
+        "evidence": [
+          "bipe-ios/ElementX/Sources/FlowCoordinators/UserSessionFlowCoordinator.swift",
+          "bipe-ios/Components/Secrets/Secrets.swift"
+        ]
+      },
+      "android": {
+        "status": "built",
+        "evidence": [
+          "bipe-android/libraries/bipe/src/main/kotlin/io/element/android/libraries/bipe/support/BipeSupportChat.kt",
+          "bipe-android/plugins/src/main/kotlin/config/BuildTimeConfig.kt"
+        ]
+      },
+      "web": {
+        "status": "n/a",
+        "reason": "Mobile only (ADR 0004)"
+      },
+      "server": {
+        "status": "built",
+        "evidence": [
+          "bipe-api/src/support.ts"
+        ]
+      }
     },
     {
       "id": "remote-banner",

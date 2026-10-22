@@ -299,12 +299,18 @@
         ]
       },
       "ios-new": {
-        "status": "planned",
-        "issue": 574
+        "status": "built",
+        "evidence": [
+          "bipe-app/ios/Bipe/LinkComputer/LinkComputerView.swift",
+          "bipe-app/ios/Bipe/LinkComputer/QRScannerView.swift"
+        ]
       },
       "android-new": {
-        "status": "planned",
-        "issue": 574
+        "status": "built",
+        "evidence": [
+          "bipe-app/android/app/src/main/kotlin/chat/bipe/app/linkcomputer/LinkComputerScreen.kt",
+          "bipe-app/android/app/src/main/kotlin/chat/bipe/app/linkcomputer/QrScanner.kt"
+        ]
       },
       "issue": 391
     },
@@ -625,12 +631,18 @@
         ]
       },
       "ios-new": {
-        "status": "planned",
-        "issue": 577
+        "status": "built",
+        "evidence": [
+          "bipe-app/ios/Bipe/Invites/InvitesView.swift",
+          "bipe-app/ios/Bipe/Invites/InvitesModel.swift"
+        ]
       },
       "android-new": {
-        "status": "planned",
-        "issue": 577
+        "status": "built",
+        "evidence": [
+          "bipe-app/android/app/src/main/kotlin/chat/bipe/app/invites/InvitesScreens.kt",
+          "bipe-app/android/app/src/main/kotlin/chat/bipe/app/invites/InvitesModel.kt"
+        ]
       },
       "issue": 43
     },
@@ -1745,12 +1757,16 @@
         "reason": "Not an app build"
       },
       "ios-new": {
-        "status": "planned",
-        "issue": 584
+        "status": "built",
+        "evidence": [
+          "bipe-app/ios/project.yml"
+        ]
       },
       "android-new": {
-        "status": "planned",
-        "issue": 584
+        "status": "built",
+        "evidence": [
+          "bipe-app/android/app/build.gradle.kts"
+        ]
       }
     },
     {

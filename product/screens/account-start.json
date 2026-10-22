@@ -7,7 +7,7 @@
     "phase": {
       "type": "enum",
       "values": ["opening", "noAccount", "failed", "ready"],
-      "description": "opening: restoring a session or signing in. noAccount: no session and no device credential. failed: the sign-in or restore failed. ready: the session runs and the app shows chat-list."
+      "description": "opening: restoring a session, finishing a pending sign-up or signing in. noAccount: no session and no device credential; the app shows onboarding-welcome. failed: the sign-in or restore failed. ready: the session runs and the app shows chat-list."
     },
     "userId": {
       "type": "string",
@@ -17,7 +17,7 @@
   },
   "actions": {
     "start": {
-      "effect": "On launch: restore the saved SDK session if one exists; else read the newest device credential (BipeKit BipeCredentialStore.password() on iOS, libraries/bipe on Android) and sign in with it; else go to noAccount."
+      "effect": "On launch: restore the saved SDK session if one exists; else finish a pending sign-up with POST /v1/signup/resume (signup-create, ADR 0094); else read the newest device credential (BipeKit BipeCredentialStore.password() on iOS, libraries/bipe on Android) and sign in with it; else go to noAccount."
     },
     "retry": {
       "effect": "From failed: run start again."
@@ -43,7 +43,7 @@
     "Sign-in uses MAS compatibility login (m.login.password on /_matrix/client/v3/login). bipe-infra compose/templates/mas-bipe.yaml keeps passwords.enabled true for this.",
     "The homeserver comes from the build configuration, never from the user.",
     "The SDK session store and the saved session live in the app group (iOS) or app storage (Android), so the switch from the fork can reuse them (client-rewrite-study.md section 6).",
-    "Sign-up, recovery, the PIN and the app lock are later screens. In the slice, noAccount only explains that an account must already be on the phone.",
+    "Sign-up is onboarding-welcome to signup-done (bipe-chat/bipe#553). Recovery, the PIN entry and the app lock are bipe-chat/bipe#555. Until a build has sign-up, noAccount shows bipe_app_start_no_account_title and bipe_app_start_no_account_body.",
     "Never log or show the password or the recovery token."
   ]
 }

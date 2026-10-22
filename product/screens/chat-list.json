@@ -41,7 +41,8 @@
     "bipe_app_chat_list_unread"
   ],
   "sdk": [
-    "Client.roomListService",
+    "Client.syncService",
+    "SyncService.roomListService",
     "RoomListService.allRooms",
     "RoomList.entriesWithDynamicAdapters",
     "RoomListEntriesUpdate",

@@ -1,0 +1,70 @@
+{
+  "id": "signup-create",
+  "title": "Creating the account",
+  "flow": "signup",
+  "summary": "Makes the device-first account after the last step: device check (attestation), POST /v1/signup with a retry key, storage of the hidden password and the recovery token, then sign-in with the Matrix SDK. The person sees one progress state, or an error that sends them back to the step that can fix it.",
+  "types": {
+    "SignupForm": {
+      "displayName": { "type": "string", "description": "From signup-name." },
+      "termsVersion": { "type": "string", "description": "The version the person accepted on signup-name." },
+      "pin": { "type": "string", "description": "From signup-pin. In memory only." },
+      "email": { "type": "string", "optional": true, "description": "From signup-fallback." },
+      "inviteCode": { "type": "string", "optional": true, "description": "From the link, the paste or signup-invite-code." }
+    }
+  },
+  "state": {
+    "phase": {
+      "type": "enum",
+      "values": ["attesting", "creating", "signingIn", "failed", "done"],
+      "description": "attesting: the device check runs. creating: POST /v1/signup runs (and retries). signingIn: credentials are stored and the SDK signs in. failed: see error. done: go to signup-done."
+    },
+    "form": { "type": "SignupForm", "description": "What the steps collected." },
+    "error": {
+      "type": "enum",
+      "values": ["none", "network", "rateLimited", "inviteInvalid", "termsRequired", "pinWeak", "emailTaken", "attestationInvalid", "attestationFailed", "signInFailed", "generic"],
+      "description": "The reason for failed. Each maps to one string and one way out (see notes)."
+    }
+  },
+  "actions": {
+    "start": {
+      "effect": "Gets or makes the pending sign-up (a signup_key of 32 random bytes, kept on this device with the PIN before the first request), runs the device check, then sends POST /v1/signup with display_name, pin, email, invite_code, terms_version, lang, attestation and signup_key."
+    },
+    "retry": {
+      "effect": "From failed: runs start again with the same signup_key, so a request that reached the server returns the same account (ADR 0094)."
+    },
+    "fix": {
+      "effect": "From failed with inviteInvalid, termsRequired, pinWeak or emailTaken: goes back to the step that owns the field (signup-invite-code, signup-name, signup-pin, signup-fallback) and keeps the other answers."
+    }
+  },
+  "strings": [
+    "bipe_app_signup_creating",
+    "bipe_error_network",
+    "bipe_error_rate_limited",
+    "bipe_error_invite_invalid",
+    "bipe_signup_terms_required",
+    "bipe_error_email_taken",
+    "bipe_error_attestation_invalid",
+    "bipe_error_attestation_failed",
+    "bipe_signup_signin_failed",
+    "bipe_error_generic",
+    "bipe_app_retry"
+  ],
+  "sdk": [
+    "ClientBuilder.serverNameOrHomeserverUrl",
+    "ClientBuilder.sessionPaths",
+    "ClientBuilder.build",
+    "Client.login",
+    "Client.session",
+    "Client.syncService"
+  ],
+  "parity": ["first-run", "phone-account", "attestation", "onboarding-two-step-signup", "signup-terms-clickwrap", "invites"],
+  "notes": [
+    "Device check (ADR 0022, ADR 0043). iOS: App Attest with a one-time challenge from POST /v1/attest/challenge; when Apple's service is down after one more try, send no attestation and let the server decide (SIGNUP_ATTEST_REQUIRED). Android: Play Integrity is planned (parity attestation, bipe-chat/bipe#92); until then Android sends none. A phone that cannot attest still gets an account while the switch is off; the server holds the attestation state, never the client.",
+    "Retry key (ADR 0094): the signup_key and the PIN of the first try are kept on this device (iOS Keychain ThisDeviceOnly, Android storage without backup) until the credentials are stored. 429 with reason signup_in_progress: wait a few seconds and send again, without showing an error. After a 4xx field error the server made nothing, so the next try takes the PIN from the form again; after 429 or 5xx the PIN of the first try stays.",
+    "A lost answer is finished on the next launch: account-start calls POST /v1/signup/resume with the kept key (404 drops the key).",
+    "Storage (ADR 0059): the hidden password on this device only (iOS Keychain ThisDeviceOnly, Android storage without backup); the recovery token in the synced store (iCloud Keychain, Block Store). Then Client.login with the user ID and the password (MAS compatibility login, m.login.password). Never log or show either.",
+    "Error map: network, bipe_error_network, retry. rate_limited, bipe_error_rate_limited, retry. invite_invalid, bipe_error_invite_invalid, fix. terms_required, bipe_signup_terms_required, fix on signup-name (untick the box). pin_weak, the pinProblem() string, fix. email_taken, bipe_error_email_taken, fix. attestation_invalid, bipe_error_attestation_invalid. Attestation that fails on the device, bipe_error_attestation_failed (iOS only), retry. Sign-in fails after the account exists, bipe_signup_signin_failed, retry signs in again without a new request. Anything else, bipe_error_generic, retry.",
+    "Bipe logic: BipeAPIClient.signup, BipeAPIClient.resumeSignup, BipeAppAttest.attestationUnlessServiceDown, BipeCredentialStore.pendingSignup, save and saveRecoveryToken (iOS); BipeDeviceAccount.signUp, resumePendingSignup and storeCredentials, BipeRecoveryTokenStore (Android). Move them, do not rewrite them.",
+    "The @ is not sent here; handle-pick sets it later. inviter_user_id from the answer goes to signup-done."
+  ]
+}

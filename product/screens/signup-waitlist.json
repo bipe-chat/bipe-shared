@@ -1,0 +1,43 @@
+{
+  "id": "signup-waitlist",
+  "title": "Waitlist",
+  "flow": "signup",
+  "summary": "A sheet for people without an invite. It explains that Bipe opens slowly and puts an e-mail address on the waitlist.",
+  "state": {
+    "email": { "type": "string", "description": "The e-mail field." },
+    "phase": {
+      "type": "enum",
+      "values": ["editing", "sending", "done", "failed"],
+      "description": "sending: POST /v1/waitlist runs. done: the server answered 202. failed: a network error or 429."
+    },
+    "emailInvalid": { "type": "bool", "description": "true after submit when the address is not plausible. Shows bipe_signup_email_invalid." }
+  },
+  "actions": {
+    "editEmail": {
+      "params": { "text": { "type": "string", "description": "The new field text." } },
+      "effect": "Sets email and clears emailInvalid."
+    },
+    "join": {
+      "effect": "Checks the address locally, then sends POST /v1/waitlist with source app and lang (pt or en from the system language). On 202 sets phase to done."
+    },
+    "close": {
+      "effect": "Closes the sheet and goes back to signup-invite-code."
+    }
+  },
+  "strings": [
+    "bipe_waitlist_body",
+    "bipe_signup_email",
+    "bipe_signup_email_invalid",
+    "bipe_waitlist_join",
+    "bipe_waitlist_done",
+    "bipe_error_network",
+    "bipe_error_rate_limited"
+  ],
+  "sdk": [],
+  "parity": ["waitlist"],
+  "notes": [
+    "The server always answers 202 for a well-formed address, also when the address is already on the list. The screen shows done in both cases.",
+    "Local e-mail check: BipeHandle.isPlausibleEmail (iOS), BipeSignupRules.isPlausibleEmail (Android). Bipe logic: BipeAPIClient.joinWaitlist (iOS), BipeApiClient.joinWaitlist (Android).",
+    "product/data.json already lists the waitlist address; this screen adds no new personal data."
+  ]
+}

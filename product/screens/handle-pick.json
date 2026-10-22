@@ -1,0 +1,70 @@
+{
+  "id": "handle-pick",
+  "title": "Pick your @",
+  "flow": "signup",
+  "summary": "Lets the person pick or change their @ (username), with a live check that it is free. After sign-up it opens from the handle prompt card above the chat list; settings open the same screen later.",
+  "state": {
+    "currentHandle": { "type": "string", "optional": true, "description": "The @ the account has now, from GET /v1/me/handle. Absent for a new account." },
+    "nextChangeAt": { "type": "date", "optional": true, "description": "From GET /v1/me/handle: before this time a change is refused (cooldown)." },
+    "input": { "type": "string", "description": "The field, without @, after BipeHandle sanitising (lower case, allowed characters only)." },
+    "status": {
+      "type": "enum",
+      "values": ["empty", "tooShort", "tooLong", "invalidCharacters", "checking", "available", "reserved", "taken", "unchanged"],
+      "description": "Local rule first (registries/handles.json), then GET /v1/handles/{handle}/availability, debounced. unchanged: input equals currentHandle."
+    },
+    "phase": {
+      "type": "enum",
+      "values": ["editing", "saving", "saved", "failed"],
+      "description": "saving: PUT /v1/me/handle runs."
+    },
+    "error": { "type": "string", "optional": true, "description": "String key of a save error: bipe_error_handle_cooldown, bipe_handle_taken, bipe_error_network or bipe_error_generic." }
+  },
+  "actions": {
+    "editHandle": {
+      "params": { "text": { "type": "string", "description": "The new field text." } },
+      "effect": "Sanitises the text, sets input, and starts the local check and then the availability check."
+    },
+    "save": {
+      "effect": "Sends PUT /v1/me/handle. On 200 sets phase to saved, shows bipe_handle_saved and closes. Save is on only when status is available."
+    },
+    "remove": {
+      "effect": "After a confirm dialog with bipe_handle_remove_body, sends DELETE /v1/me/handle and shows bipe_handle_remove_done. Only when currentHandle exists."
+    },
+    "dismissPrompt": {
+      "effect": "From the prompt card: hides the card (registries/onboarding.json prompts.handle, trigger chatListWithoutHandle) and keeps it hidden on this phone."
+    }
+  },
+  "strings": [
+    "bipe_handle_prompt_title",
+    "bipe_handle_prompt_body",
+    "bipe_handle_prompt_action",
+    "bipe_fallback_skip",
+    "bipe_signup_handle",
+    "bipe_handle_placeholder",
+    "bipe_handle_screen_footer",
+    "bipe_handle_checking",
+    "bipe_handle_available",
+    "bipe_handle_too_short",
+    "bipe_handle_too_long",
+    "bipe_handle_invalid_characters",
+    "bipe_handle_reserved",
+    "bipe_handle_taken",
+    "bipe_handle_cooldown_until",
+    "bipe_error_handle_cooldown",
+    "bipe_handle_saved",
+    "bipe_handle_remove",
+    "bipe_handle_remove_body",
+    "bipe_handle_remove_done",
+    "bipe_error_network",
+    "bipe_error_generic"
+  ],
+  "sdk": ["Client.session"],
+  "parity": ["handles", "first-run"],
+  "notes": [
+    "The handle rule (length, pattern, cooldown) is in registries/handles.json with cases in test-vectors/handles.json. bipe_handle_too_short and bipe_handle_too_long take minLength and maxLength.",
+    "Calls to bipe-api with auth send the Matrix access token from Client.session.",
+    "During the cooldown the field is read-only and the footer shows bipe_handle_cooldown_until with nextChangeAt from the system date formatter.",
+    "Bipe logic: BipeHandle.sanitize and localProblem, BipeHandleAvailabilityChecker, BipeAPIClient.setMyHandle and removeMyHandle (iOS); BipeHandle, BipeHandleAvailabilityChecker, BipeHandlePrompt, BipeApiClient.setMyHandle (Android).",
+    "The chat notices about a handle change (handle-change-notice) are not part of this screen."
+  ]
+}

@@ -1,0 +1,34 @@
+{
+  "id": "date-separator",
+  "title": "Date separators",
+  "flow": "chat",
+  "summary": "A centred day label between messages of different days, and the start-of-chat line. The SDK places them as virtual timeline items.",
+  "state": {
+    "label": { "type": "string", "description": "bipe_app_date_today, bipe_app_date_yesterday, the weekday for the last 7 days, else the date from the system formatter in the app language (13 de outubro; with the year when it is not this year)." },
+    "kind": {
+      "type": "enum",
+      "values": ["dateDivider", "readMarker", "timelineStart"],
+      "description": "VirtualTimelineItem: DateDivider shows the label; ReadMarker shows bipe_app_unread_marker once; TimelineStart shows bipe_app_timeline_start."
+    }
+  },
+  "actions": {
+    "render": {
+      "effect": "For each TimelineItem.asVirtual, draws the line for its kind. The label of a date divider updates at midnight."
+    }
+  },
+  "strings": [
+    "bipe_app_date_today",
+    "bipe_app_date_yesterday",
+    "bipe_app_unread_marker",
+    "bipe_app_timeline_start"
+  ],
+  "sdk": [
+    "TimelineItem.asVirtual",
+    "VirtualTimelineItem"
+  ],
+  "parity": [],
+  "notes": [
+    "The label sticks to the top while the day's messages scroll.",
+    "Dates follow linguagem.md: day before month, never the month first."
+  ]
+}

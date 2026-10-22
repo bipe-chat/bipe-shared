@@ -1,0 +1,42 @@
+{
+  "id": "message-delete",
+  "title": "Delete a message",
+  "flow": "chat",
+  "summary": "Delete a message for everyone in the chat (Matrix redaction). A confirm comes first. The message then shows as a deleted line.",
+  "state": {
+    "confirming": { "type": "string", "optional": true, "description": "The item id waiting for the confirm." },
+    "isOwn": { "type": "bool", "description": "The message is the person's own." }
+  },
+  "actions": {
+    "ask": {
+      "params": { "itemId": { "type": "string", "description": "The message." } },
+      "effect": "From message-actions: opens the confirm."
+    },
+    "confirm": {
+      "effect": "Timeline.redactEvent with the item id and no reason. A message that is still sending is cancelled with Timeline.abortSend instead."
+    },
+    "cancel": {
+      "effect": "Closes the confirm."
+    }
+  },
+  "strings": [
+    "bipe_app_delete_title",
+    "bipe_app_delete_body",
+    "bipe_app_delete_confirm",
+    "bipe_app_cancel",
+    "bipe_app_deleted_own",
+    "bipe_app_deleted_other"
+  ],
+  "sdk": [
+    "Timeline.redactEvent",
+    "Timeline.abortSend",
+    "EventOrTransactionId",
+    "MsgLikeKind"
+  ],
+  "parity": ["e2ee-only-rooms"],
+  "notes": [
+    "A redacted message (MsgLikeKind Redacted) shows bipe_app_deleted_own or bipe_app_deleted_other in place of the body, with no actions and no reactions.",
+    "There is no delete for me only. Clearing a whole chat is the chat list's Apagar conversa (parity dm-delete).",
+    "The other person's app may have shown a notification already; the confirm body says the message goes away for everyone in the chat, nothing more."
+  ]
+}

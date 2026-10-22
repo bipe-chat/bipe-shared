@@ -1,0 +1,40 @@
+{
+  "id": "message-edit",
+  "title": "Edit a message",
+  "flow": "chat",
+  "summary": "Edit the text of the person's own message. The composer switches to edit mode with the old text; the message then shows an edited label.",
+  "state": {
+    "editing": { "type": "string", "optional": true, "description": "The item id being edited. The composer shows bipe_app_edit_banner." },
+    "draft": { "type": "string", "description": "The composer text, filled with the old text." }
+  },
+  "actions": {
+    "startEdit": {
+      "params": { "itemId": { "type": "string", "description": "The own message (isEditable)." } },
+      "effect": "From message-actions: sets editing, puts the plain text in the composer and keeps the old draft aside."
+    },
+    "cancelEdit": {
+      "effect": "Clears editing and restores the old draft."
+    },
+    "save": {
+      "effect": "Timeline.edit with the item id and EditedContent from the new text (messageEventContentFromMarkdown). An unchanged or blank text does nothing. The message shows the new text at once."
+    }
+  },
+  "strings": [
+    "bipe_app_edit_banner",
+    "bipe_app_edited",
+    "bipe_app_cancel",
+    "bipe_app_timeline_failed"
+  ],
+  "sdk": [
+    "Timeline.edit",
+    "EditedContent",
+    "EventOrTransactionId",
+    "messageEventContentFromMarkdown"
+  ],
+  "parity": ["e2ee-only-rooms"],
+  "notes": [
+    "The edited label (bipe_app_edited) shows next to the time when MessageContent isEdited is true. No edit history sheet in phase 1.",
+    "Only text and captions can be edited. Matrix sets no time limit, and Bipe adds none.",
+    "The scam check runs again on the new text (message-scam-warning): an edit keeps the event id, so the warning cache uses the body too (ScamDetector.warningKind)."
+  ]
+}

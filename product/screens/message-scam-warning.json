@@ -1,0 +1,104 @@
+{
+  "id": "message-scam-warning",
+  "title": "Scam warning on a message",
+  "flow": "chat",
+  "summary": "An amber card on a received message that looks like a known scam pattern (falso parente, Pix code, boleto, fake bank alert and others). It says what to check, never that the message is a scam. A money request also pauses copy and pay for 5 seconds.",
+  "types": {
+    "ScamWarning": {
+      "kind": {
+        "type": "enum",
+        "values": [
+          "extortion",
+          "pixCode",
+          "boleto",
+          "remoteApp",
+          "pinRequest",
+          "pixKey",
+          "deliveryFee",
+          "lookalikeLink",
+          "bankAlert",
+          "receipt",
+          "newNumber",
+          "urgency"
+        ],
+        "description": "The first kind in warningKindPriority (registries/scam-patterns.json) whose rule applies."
+      },
+      "pauseSeconds": {
+        "type": "int",
+        "description": "Seconds left on the money pause. Starts at 5 for the money kinds (pixCode, boleto, pixKey, deliveryFee), else 0."
+      }
+    }
+  },
+  "state": {
+    "itemId": {
+      "type": "string",
+      "description": "The message."
+    },
+    "warning": {
+      "type": "ScamWarning",
+      "optional": true,
+      "description": "Absent when no rule applies."
+    },
+    "victimSheetOpen": {
+      "type": "bool",
+      "description": "The I was scammed sheet is open."
+    }
+  },
+  "actions": {
+    "check": {
+      "effect": "For each received text message (and each edit), runs the on-device scam check on the plain body and sets warning. Results are cached by event id and body."
+    },
+    "tapLink": {
+      "params": {
+        "url": {
+          "type": "url",
+          "description": "A link in a message with a warning."
+        }
+      },
+      "effect": "Money kinds: while pauseSeconds is above 0, the link does nothing and shows bipe_pause_countdown. Then, and for other kinds at once, the link opens."
+    },
+    "copy": {
+      "effect": "Money kinds: copy of the Pix code, boleto line or Pix key follows the same pause."
+    },
+    "scamVictim": {
+      "effect": "Opens a sheet with bipe_scam_victim_body (call the bank, ask for the MED return)."
+    }
+  },
+  "strings": [
+    "bipe_scam_warning_title",
+    "bipe_scam_warning_extortion",
+    "bipe_scam_warning_pix_code",
+    "bipe_scam_warning_boleto",
+    "bipe_scam_warning_remote_app",
+    "bipe_scam_warning_pin_request",
+    "bipe_scam_warning_pix_key",
+    "bipe_scam_warning_delivery_fee",
+    "bipe_scam_warning_lookalike_link",
+    "bipe_scam_warning_bank_alert",
+    "bipe_scam_warning_receipt",
+    "bipe_scam_warning_new_number",
+    "bipe_scam_warning_urgency",
+    "bipe_warning_money_request_title",
+    "bipe_warning_money_request_body",
+    "bipe_pause_countdown",
+    "bipe_action_scam_victim",
+    "bipe_scam_victim_body"
+  ],
+  "sdk": [
+    "EventTimelineItem",
+    "TimelineItemContent",
+    "MessageType"
+  ],
+  "parity": [
+    "scam-alerts",
+    "money-pause"
+  ],
+  "notes": [
+    "The check runs on the device and never sends the message anywhere (security.md: on-device checks never phone home).",
+    "Rules: registries/scam-patterns.json, reference implementation tools/lib/registries.mjs, cases test-vectors/scam-detection.json and test-vectors/scam-warnings.json. Bipe logic: ScamDetector.matchIDs and ScamDetector.warningKind, ScamWarningKind (iOS); ScamDetector.matchIds and warningKind, ScamWarningKind (Android). Move them; do not write a new check.",
+    "Look (trust-ui.md): caution card, amber, outline icon, 1 pt border, above the message body, inside the bubble. Never red: red is only a hard name mismatch.",
+    "Money pause (parity money-pause, planned on both forks): 5 s from the first time the card is on screen (trust-ui.md Deliberate pause). After it the person decides; Bipe never blocks for good. With reduced motion the number changes with no animation. Pix request cards (phase 2) use the same pause.",
+    "No warning on the person's own messages. Messages from verified institutions follow the trust UI rules of phase 2.",
+    "Images that look like a receipt get bipe_warning_receipt_image; that check belongs to media (bipe-chat/bipe#561)."
+  ]
+}

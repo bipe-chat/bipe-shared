@@ -1,0 +1,61 @@
+{
+  "id": "read-receipts",
+  "title": "Read receipts",
+  "flow": "chat",
+  "summary": "Shows who read what. In a DM, ticks on the person's own messages: sent and read (ADR 0141). In a group, small avatars of readers under the newest message they read, and a sheet with the names. The app also sends the person's own receipts.",
+  "types": {
+    "OwnMessageStatus": {
+      "state": {
+        "type": "enum",
+        "values": ["sending", "sent", "read", "failed"],
+        "description": "sending and failed from the local send state. sent: the server has it. read: in a DM, the other person's read receipt is on this message or a later one."
+      }
+    },
+    "Reader": {
+      "userId": { "type": "string", "description": "Matrix user ID." },
+      "name": { "type": "string", "description": "Display name." },
+      "readAt": { "type": "date", "optional": true, "description": "Receipt timestamp." }
+    }
+  },
+  "state": {
+    "isDm": { "type": "bool", "description": "Room.isDirect." },
+    "status": { "type": "OwnMessageStatus", "optional": true, "description": "DM: the status of each own message. Shown only on the newest own message and on failed ones." },
+    "readers": {
+      "type": "list",
+      "of": { "type": "Reader", "description": "One reader." },
+      "description": "Group: readers whose latest receipt is on this message, from EventTimelineItem readReceipts. Up to 3 avatars, then +N."
+    },
+    "sheetOpen": { "type": "bool", "description": "Group: the seen-by sheet is open." }
+  },
+  "actions": {
+    "markRead": {
+      "effect": "When the newest message is on screen and the app is in the foreground: Timeline.markAsRead with ReceiptType Read (public receipts, ADR 0050)."
+    },
+    "openReaders": {
+      "effect": "Group only: opens the sheet with each reader and the time."
+    }
+  },
+  "strings": [
+    "bipe_app_receipt_sent",
+    "bipe_app_receipt_read",
+    "bipe_app_timeline_sending",
+    "bipe_app_timeline_failed",
+    "bipe_app_receipts_title"
+  ],
+  "sdk": [
+    "Timeline.markAsRead",
+    "Timeline.sendReadReceipt",
+    "ReceiptType",
+    "Receipt",
+    "EventSendState",
+    "EventTimelineItem",
+    "Room.isDirect"
+  ],
+  "parity": ["e2ee-only-rooms"],
+  "notes": [
+    "No delivered tick: Matrix has no delivered signal (ADR 0141).",
+    "Receipts are always public; there is no private receipt option (ADR 0050).",
+    "bipe_app_receipt_sent and bipe_app_receipt_read are the accessibility labels of the ticks. The ticks are icons, not text.",
+    "The seen-by sheet is not shown in a DM."
+  ]
+}

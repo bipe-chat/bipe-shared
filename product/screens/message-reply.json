@@ -1,0 +1,96 @@
+{
+  "id": "message-reply",
+  "title": "Replies",
+  "flow": "chat",
+  "summary": "Reply to a message: the composer shows the message being answered, the sent reply shows a quote of it, and a tap on the quote scrolls to the original.",
+  "types": {
+    "ReplyQuote": {
+      "eventId": {
+        "type": "string",
+        "description": "The event answered."
+      },
+      "senderName": {
+        "type": "string",
+        "optional": true,
+        "description": "Its sender's display name."
+      },
+      "preview": {
+        "type": "string",
+        "optional": true,
+        "description": "One line of its text, or the media kind."
+      },
+      "state": {
+        "type": "enum",
+        "values": [
+          "loading",
+          "ready",
+          "unavailable"
+        ],
+        "description": "From InReplyToDetails.event: unavailable when the original is deleted, not loaded or can't be read."
+      }
+    }
+  },
+  "state": {
+    "replyingTo": {
+      "type": "ReplyQuote",
+      "optional": true,
+      "description": "The quote above the composer while a reply is drafted."
+    }
+  },
+  "actions": {
+    "startReply": {
+      "params": {
+        "eventId": {
+          "type": "string",
+          "description": "The message to answer."
+        }
+      },
+      "effect": "From message-actions or a swipe right on the message: sets replyingTo and focuses the composer."
+    },
+    "cancelReply": {
+      "effect": "Clears replyingTo."
+    },
+    "send": {
+      "effect": "Timeline.sendReply with the composer content (messageEventContentFromMarkdown) and the event id, then clears replyingTo."
+    },
+    "loadQuote": {
+      "params": {
+        "eventId": {
+          "type": "string",
+          "description": "The quoted event of a reply in the timeline."
+        }
+      },
+      "effect": "Timeline.loadReplyDetails when the quote is not loaded."
+    },
+    "jumpToOriginal": {
+      "params": {
+        "eventId": {
+          "type": "string",
+          "description": "The quoted event."
+        }
+      },
+      "effect": "Scrolls to the original and highlights it for a moment. Back-paginates if needed; does nothing when unavailable."
+    }
+  },
+  "strings": [
+    "bipe_app_reply_to",
+    "bipe_app_reply_to_self",
+    "bipe_app_reply_unavailable",
+    "bipe_app_cancel"
+  ],
+  "sdk": [
+    "Timeline.sendReply",
+    "Timeline.loadReplyDetails",
+    "InReplyToDetails.event",
+    "InReplyToDetails.eventId",
+    "messageEventContentFromMarkdown"
+  ],
+  "parity": [
+    "e2ee-only-rooms"
+  ],
+  "notes": [
+    "bipe_app_reply_to takes the sender's name. A reply to the person's own message uses bipe_app_reply_to_self.",
+    "A swipe to reply has a haptic at the threshold (registries/haptics.json).",
+    "Replies in threads are out of scope: no threads in phase 1."
+  ]
+}

@@ -1,0 +1,117 @@
+{
+  "id": "message-actions",
+  "title": "Message actions",
+  "flow": "chat",
+  "summary": "The sheet that opens on a long press (or a right click) on a message. It shows a row of quick reactions and the actions that apply to that message, in the chat type (DM or group) and for the sender.",
+  "types": {
+    "MessageAction": {
+      "kind": {
+        "type": "enum",
+        "values": [
+          "reply",
+          "copy",
+          "edit",
+          "delete",
+          "report",
+          "retry",
+          "cancelSend"
+        ],
+        "description": "One row of the sheet, in this order."
+      }
+    }
+  },
+  "state": {
+    "itemId": {
+      "type": "string",
+      "description": "The timeline item id of the message."
+    },
+    "isOwn": {
+      "type": "bool",
+      "description": "EventTimelineItem isOwn."
+    },
+    "isDm": {
+      "type": "bool",
+      "description": "Room.isDirect: the one DM test (ADR 0141)."
+    },
+    "quickReactions": {
+      "type": "list",
+      "of": {
+        "type": "string",
+        "description": "One emoji."
+      },
+      "description": "Six emoji: the person's most used, else the default set in notes. Each shows as selected when the person already reacted with it."
+    },
+    "actions": {
+      "type": "list",
+      "of": {
+        "type": "MessageAction",
+        "description": "One row."
+      },
+      "description": "Rows that apply. reply: canBeRepliedTo. copy: the message has text. edit: isEditable. delete: own message with canOwnUserRedactOwn, or another's in a group with canOwnUserRedactOther. report: not own. retry and cancelSend: own message with a failed send."
+    }
+  },
+  "actions": {
+    "open": {
+      "params": {
+        "itemId": {
+          "type": "string",
+          "description": "The pressed message."
+        }
+      },
+      "effect": "Opens the sheet with a light haptic and lifts the message above it."
+    },
+    "react": {
+      "params": {
+        "key": {
+          "type": "string",
+          "description": "The emoji."
+        }
+      },
+      "effect": "Timeline.toggleReaction and closes. A tap on the + at the end opens the system emoji keyboard (message-reactions)."
+    },
+    "choose": {
+      "params": {
+        "kind": {
+          "type": "string",
+          "description": "A MessageAction kind."
+        }
+      },
+      "effect": "reply: message-reply. copy: copies the plain text, shows bipe_app_copied. edit: message-edit. delete: message-delete. report: the report flow of people and profiles (bipe-chat/bipe#567). retry: Timeline.retrySend. cancelSend: Timeline.abortSend."
+    },
+    "dismiss": {
+      "effect": "Closes the sheet."
+    }
+  },
+  "strings": [
+    "bipe_app_msg_reply",
+    "bipe_app_copy",
+    "bipe_app_copied",
+    "bipe_app_msg_edit",
+    "bipe_app_msg_delete",
+    "bipe_app_msg_report",
+    "bipe_app_retry",
+    "bipe_app_msg_cancel_send",
+    "bipe_app_msg_more_reactions"
+  ],
+  "sdk": [
+    "EventTimelineItem",
+    "Room.isDirect",
+    "Room.getPowerLevels",
+    "RoomPowerLevels.canOwnUserRedactOwn",
+    "RoomPowerLevels.canOwnUserRedactOther",
+    "Timeline.toggleReaction",
+    "Timeline.retrySend",
+    "Timeline.abortSend"
+  ],
+  "parity": [
+    "e2ee-only-rooms",
+    "haptics"
+  ],
+  "notes": [
+    "Default quick reactions: 👍 ❤️ 😂 😮 😢 🙏.",
+    "Not in a DM (ADR 0141): threads, pin, copy link to the message. Phase 1 has no threads, pins or message links in groups either.",
+    "Forward and select are composer and media work (bipe-chat/bipe#563, #561), not phase 1 of this sheet.",
+    "A redacted message, a date separator, a scam warning or a notice line has no sheet.",
+    "Haptic ids from registries/haptics.json (generated BipeHaptics)."
+  ]
+}

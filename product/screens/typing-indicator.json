@@ -1,0 +1,36 @@
+{
+  "id": "typing-indicator",
+  "title": "Typing indicator",
+  "flow": "chat",
+  "summary": "Shows who is typing in the open chat, above the composer, and tells the others when the person types.",
+  "state": {
+    "typingNames": {
+      "type": "list",
+      "of": { "type": "string", "description": "A display name." },
+      "description": "From the typing listener, without the person's own user ID."
+    }
+  },
+  "actions": {
+    "observe": {
+      "effect": "Room.subscribeToTypingNotifications while the chat is open; drops the subscription when it closes."
+    },
+    "typed": {
+      "effect": "On composer change: Room.typingNotice(true), at most every 4 s. On send, on a blank composer or after 5 s without typing: Room.typingNotice(false)."
+    }
+  },
+  "strings": [
+    "bipe_app_typing_one",
+    "bipe_app_typing_two",
+    "bipe_app_typing_many"
+  ],
+  "sdk": [
+    "Room.subscribeToTypingNotifications",
+    "TypingNotificationsListener.call",
+    "Room.typingNotice"
+  ],
+  "parity": [],
+  "notes": [
+    "One name: bipe_app_typing_one. Two: bipe_app_typing_two. Three or more: bipe_app_typing_many. In a DM the line shows no name, only the animated dots and bipe_app_typing_one as the accessibility label.",
+    "Typing notices are not encrypted in Matrix. Phase 1 always sends them; a setting to turn them off is out of scope."
+  ]
+}

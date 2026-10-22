@@ -1,0 +1,90 @@
+{
+  "id": "message-reactions",
+  "title": "Reactions",
+  "flow": "chat",
+  "summary": "Emoji reactions under a message: a chip per emoji with its count, the person's own reactions highlighted, a tap toggles, a long press shows who reacted.",
+  "types": {
+    "ReactionChip": {
+      "key": {
+        "type": "string",
+        "description": "The emoji (Reaction.key)."
+      },
+      "count": {
+        "type": "int",
+        "description": "Number of senders."
+      },
+      "includesOwn": {
+        "type": "bool",
+        "description": "true when the person reacted with it."
+      },
+      "senders": {
+        "type": "list",
+        "of": {
+          "type": "string",
+          "description": "A Matrix user ID."
+        },
+        "description": "ReactionSenderData of each sender, oldest first."
+      }
+    }
+  },
+  "state": {
+    "itemId": {
+      "type": "string",
+      "description": "The message."
+    },
+    "chips": {
+      "type": "list",
+      "of": {
+        "type": "ReactionChip",
+        "description": "One emoji."
+      },
+      "description": "In the order the SDK gives (first reaction first). More than 6 chips fold into a +N chip."
+    },
+    "whoSheet": {
+      "type": "string",
+      "optional": true,
+      "description": "The emoji whose sender list is open."
+    }
+  },
+  "actions": {
+    "toggle": {
+      "params": {
+        "key": {
+          "type": "string",
+          "description": "The emoji."
+        }
+      },
+      "effect": "Timeline.toggleReaction with the item id and the key. The chip updates at once (local echo)."
+    },
+    "showSenders": {
+      "params": {
+        "key": {
+          "type": "string",
+          "description": "The emoji."
+        }
+      },
+      "effect": "Opens a sheet with one tab per emoji and the names of the senders."
+    },
+    "pickEmoji": {
+      "effect": "Opens the system emoji keyboard; the chosen emoji runs toggle."
+    }
+  },
+  "strings": [
+    "bipe_app_reactions_title",
+    "bipe_app_reaction_label",
+    "bipe_app_msg_more_reactions"
+  ],
+  "sdk": [
+    "Timeline.toggleReaction",
+    "EventTimelineItem",
+    "ReactionSenderData"
+  ],
+  "parity": [
+    "e2ee-only-rooms"
+  ],
+  "notes": [
+    "In an encrypted room the reaction emoji sits in m.relates_to, which the Matrix spec keeps outside the encryption, so the server can see it. Do not promise more.",
+    "bipe_app_reaction_label is the accessibility label of a chip: %1$s the emoji, %2$s the count formatted by the system.",
+    "No custom image reactions in phase 1. Stickers are separate (parity stickers)."
+  ]
+}

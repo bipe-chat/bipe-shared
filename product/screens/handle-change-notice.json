@@ -1,0 +1,47 @@
+{
+  "id": "handle-change-notice",
+  "title": "Handle change notices",
+  "flow": "chat",
+  "summary": "A quiet line in a chat when a member set, changed or removed their @ (ADR 0066). People see that the @ changed, so a scammer cannot take over a familiar @ unnoticed.",
+  "types": {
+    "HandleChangeLine": {
+      "userId": { "type": "string", "description": "The member whose @ changed." },
+      "name": { "type": "string", "description": "The member's display name in this chat." },
+      "old": { "type": "string", "optional": true, "description": "The @ before, without @. Absent for a first set." },
+      "new": { "type": "string", "optional": true, "description": "The @ after, without @. Absent for a removal." },
+      "at": { "type": "date", "description": "When the change happened." }
+    }
+  },
+  "state": {
+    "lines": {
+      "type": "list",
+      "of": { "type": "HandleChangeLine", "description": "One line, placed by time between the loaded timeline items." },
+      "description": "Changes of current members after they joined, from POST /v1/handle-changes."
+    }
+  },
+  "actions": {
+    "refresh": {
+      "effect": "When the chat opens and on foreground: POST /v1/handle-changes for the members (at most 100 per call, since the last check) and caches the answer on the phone."
+    },
+    "place": {
+      "effect": "On each timeline update: inserts the lines between the items by time. A change older than the first loaded item waits for back-pagination; a newer one shows at the end only when the timeline is live."
+    }
+  },
+  "strings": [
+    "bipe_handle_set",
+    "bipe_handle_changed",
+    "bipe_handle_removed"
+  ],
+  "sdk": [
+    "Room.members",
+    "Room.timeline",
+    "Timeline.addListener",
+    "Client.session"
+  ],
+  "parity": ["handle-change-notice", "handles"],
+  "notes": [
+    "The lines are local items made by the app, not Matrix events. They have no actions.",
+    "bipe_handle_set: %1$s name, %2$s new. bipe_handle_changed: name, new, old. bipe_handle_removed: name, old.",
+    "Bipe logic: BipeHandleChange.line, BipeHandleChange.placements, BipeHandleChangeStore (iOS); BipeHandleChanges, BipeHandleChangeLine (Android). Move them; the placement rules are tested there."
+  ]
+}

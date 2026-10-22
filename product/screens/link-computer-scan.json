@@ -1,0 +1,112 @@
+{
+  "id": "link-computer-scan",
+  "title": "Link a computer: scan the code",
+  "flow": "devices",
+  "summary": "Scans the QR code that chat.bipe.net.br shows on a computer and opens the MSC4108 secure channel to that browser (ADR 0116). The phone shows a 2-digit check code that the user types on the computer, then hands over to link-computer-warning.",
+  "types": {
+    "LinkComputerSupport": {
+      "phase": {
+        "type": "enum",
+        "values": ["checking", "supported", "needsPin", "notSupported"],
+        "description": "checking: the support gate runs. supported: the server advertises org.matrix.msc4108 and this phone holds the hidden password. needsPin: a beta account with no hidden password on this phone; it needs the PIN first (ADR 0057). notSupported: the server does not advertise MSC4108, or no hidden password for another reason."
+      }
+    }
+  },
+  "state": {
+    "support": { "type": "LinkComputerSupport", "description": "The Bipe support gate. The scanner opens only when it is supported." },
+    "phase": {
+      "type": "enum",
+      "values": ["cameraDenied", "scanning", "connecting", "showCheckCode", "failed"],
+      "description": "cameraDenied: no camera permission. scanning: the camera looks for a QR code. connecting: a code was read and GrantQrLoginProgress is starting. showCheckCode: GrantQrLoginProgress.establishingSecureChannel; the user types the code on the computer. failed: see error."
+    },
+    "checkCode": { "type": "string", "optional": true, "description": "checkCodeString of GrantQrLoginProgress.establishingSecureChannel: always 2 characters, a leading zero kept." },
+    "error": {
+      "type": "string",
+      "optional": true,
+      "description": "String key of the failed phase: bipe_app_link_computer_not_bipe_code, bipe_app_link_computer_expired, bipe_app_link_computer_insecure, bipe_app_link_computer_needs_recovery_key, bipe_app_link_computer_stopped, bipe_error_network or bipe_error_generic."
+    }
+  },
+  "actions": {
+    "open": {
+      "effect": "From Settings > Linked devices > Link a computer (bipe_linked_devices_link_computer). Runs the support gate: Bipe check, never Client.isLoginWithQrCodeSupported (ADR 0118). supported: asks for the camera and sets scanning. needsPin: shows bipe_link_computer_needs_pin with bipe_link_computer_create_pin. notSupported: shows bipe_link_computer_not_supported."
+    },
+    "createPin": {
+      "effect": "needsPin: opens the signup-pin steps, then POST /v1/me/device-first, which stores a new hidden password on this phone. Then runs open again."
+    },
+    "codeRead": {
+      "params": { "bytes": { "type": "string", "description": "The raw bytes that the camera's QR decoder read." } },
+      "effect": "QrCodeData.fromBytes. When decoding fails, or QrCodeData.intent is not QrCodeIntent.login (a new device that shows the code to sign in), sets failed with bipe_app_link_computer_not_bipe_code and keeps the camera on. Else Client.newGrantLoginWithQrCodeHandler, then GrantLoginWithQrCodeHandler.scan with a GrantQrLoginProgressListener; sets connecting."
+    },
+    "progress": {
+      "params": { "update": { "type": "string", "description": "The GrantQrLoginProgress case that onUpdate got." } },
+      "effect": "establishingSecureChannel: sets showCheckCode with checkCode. waitingForAuth: keeps verificationUri and the ContinuationMessageSender and opens link-computer-warning. syncingSecrets and done arrive later, on link-computer-approve."
+    },
+    "taskFailed": {
+      "params": { "reason": { "type": "string", "description": "The HumanQrGrantLoginError case from GrantLoginWithQrCodeTask.wait." } },
+      "effect": "Maps the error to a string and sets failed: notFound and expired → bipe_app_link_computer_expired; connectionInsecure and invalidCheckCode → bipe_app_link_computer_insecure; missingSecretsBackup → bipe_app_link_computer_needs_recovery_key; cancelled → bipe_app_link_computer_stopped; unsupportedQrCodeType, unsupportedProtocol and otherDeviceAlreadySignedIn → bipe_app_link_computer_not_bipe_code; anything else → bipe_error_generic."
+    },
+    "scanAgain": {
+      "effect": "From failed: drops the task and sets scanning."
+    },
+    "setUpRecoveryKey": {
+      "effect": "From failed with bipe_app_link_computer_needs_recovery_key: opens recovery-key-save."
+    },
+    "openSystemSettings": {
+      "effect": "From cameraDenied: opens the app's page in the system settings."
+    },
+    "cancel": {
+      "effect": "GrantLoginWithQrCodeTask.cancel when a task runs, then closes the screen. Nothing changes on the account."
+    }
+  },
+  "strings": [
+    "bipe_linked_devices_link_computer",
+    "bipe_linked_devices_footer",
+    "bipe_app_link_computer_scan_title",
+    "bipe_app_link_computer_scan_body",
+    "bipe_recovery_qr_never_from_others",
+    "bipe_app_link_computer_connecting",
+    "bipe_app_link_computer_check_code_title",
+    "bipe_app_link_computer_check_code_body",
+    "bipe_link_computer_needs_pin",
+    "bipe_link_computer_create_pin",
+    "bipe_link_computer_not_supported",
+    "bipe_link_computer_error_title",
+    "bipe_app_link_computer_not_bipe_code",
+    "bipe_app_link_computer_expired",
+    "bipe_app_link_computer_insecure",
+    "bipe_app_link_computer_needs_recovery_key",
+    "bipe_app_link_computer_stopped",
+    "bipe_app_link_computer_scan_again",
+    "bipe_app_recovery_key_create",
+    "bipe_camera_permission_body",
+    "bipe_contacts_open_settings",
+    "bipe_contacts_open_settings_android",
+    "bipe_error_network",
+    "bipe_error_generic",
+    "bipe_app_cancel"
+  ],
+  "sdk": [
+    "Client.newGrantLoginWithQrCodeHandler",
+    "GrantLoginWithQrCodeHandler.scan",
+    "GrantLoginWithQrCodeTask.wait",
+    "GrantLoginWithQrCodeTask.cancel",
+    "GrantQrLoginProgressListener.onUpdate",
+    "GrantQrLoginProgress",
+    "QrCodeData.fromBytes",
+    "QrCodeData.intent",
+    "QrCodeIntent",
+    "HumanQrGrantLoginError",
+    "ContinuationMessageSender"
+  ],
+  "parity": ["web-sign-in"],
+  "notes": [
+    "Single entry point (ADR 0116, security.md rule 5): only Settings > Linked devices > Link a computer opens this scanner. The general camera, chat attachments, links and QR codes in messages never start a web sign-in. The scanner for profile and invite codes never hands a sign-in code to this flow.",
+    "The support gate replaces the SDK gate, which is false for an m.login.password session (ADR 0118 F10a): GET /_matrix/client/versions advertises org.matrix.msc4108 in unstable_features, and this phone holds the hidden password of the account. The grant handler works without OAuth. Bipe logic: BipeWebLink.qrLoginFeature and BipeMatrixAccountAPI.supportsQRLogin (iOS BipeKit); BipeWebLinkSession.isSupported (Android libraries/bipe weblink).",
+    "needsPin is the beta account case (made before ADR 0057): POST /v1/me/device-first needs a PIN first (409 pin_not_set). bipe_link_computer_needs_pin takes pinLength from registries/accounts.json.",
+    "Time: the Synapse rendezvous session lives 60 seconds from the QR code on the computer (registries/accounts.json webLinkCooldownSeconds comment). The scan, the check code, the warning, the cooldown, the biometric check and the MAS page must fit in it. An expired session ends as notFound or expired; the user reloads the site for a new code.",
+    "The check code is not secret from the user: it proves that the browser and this phone share the channel. Show it large. Never read it aloud and never send it anywhere.",
+    "missingSecretsBackup: this phone has no recovery key and key backup, so the computer cannot get the history (ADR 0116 History). The user sets up the recovery key first (recovery-key-save).",
+    "bipe_recovery_qr_never_from_others shows under the camera: it is the scam guard of rule 5 at the moment of the scan.",
+    "Out of scope: the linked devices list and sign-out of a device are the settings spec (bipe-chat/bipe#571). Phone-to-phone sign-in by QR keeps the ADR 0059 direction and is not this screen."
+  ]
+}

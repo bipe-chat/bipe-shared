@@ -1,9 +1,10 @@
 # ADR 0031, ADR 0092: the shared rules, the generated code in every repo, the API clients and the parity ledger stay in step.
 # Needs the secret BIPE_REPOS_TOKEN: a fine-grained token with read access to contents of
-# bipe, bipe-ios, bipe-android, bipe-api, bipe-web and bipe-infra.
+# bipe, bipe-ios, bipe-android, bipe-api, bipe-web, bipe-infra and bipe-app.
 # The parity step also reads issue state on bipe-chat/bipe with it (Issues: read).
 # Needs the secret BIPE_REGEN_TOKEN: a fine-grained token with read and write access to contents and
-# pull requests of bipe, bipe-ios, bipe-android and bipe-api. Without it, regen and land do nothing.
+# pull requests of bipe, bipe-ios, bipe-android, bipe-api and bipe-app. Without it, regen and land do nothing.
+# bipe-app (Bipe's own client, bipe-chat/bipe#550) is skipped with a warning while a token cannot reach it.
 #
 # Flow for a pull request on branch B:
 #   regen    runs the generators and pushes the output to branch B in each sibling repo that changes,
@@ -72,11 +73,13 @@ jobs:
               bipe-ios) echo "Components/BipeKit/Sources/BipeKit/Generated Components/BipeKit/Sources/BipeKit/Resources Tools/Bipe BIPE.md" ;;
               bipe-android) echo "libraries/bipe/src/main plugins/src/main/kotlin BIPE.md" ;;
               bipe-api) echo "src/generated test/fixtures" ;;
+              bipe-app) echo "ios/BipeKit/Sources/BipeKit/Generated ios/BipeKit/Sources/BipeKit/Resources android/libraries/bipe/src/main" ;;
             esac
           }
-          repos="bipe bipe-ios bipe-android bipe-api"
-          for repo in $repos; do
+          repos=""
+          for repo in bipe bipe-ios bipe-android bipe-api bipe-app; do
             url="https://x-access-token:${TOKEN}@github.com/bipe-chat/${repo}.git"
+            repos="$repos $repo"
             if git ls-remote --exit-code --heads "$url" "$BRANCH" > /dev/null; then
               git clone -q --depth 1 --branch "$BRANCH" "$url" "$repo"
             else
@@ -84,6 +87,13 @@ jobs:
               git -C "$repo" checkout -q -b "$BRANCH"
             fi
           done
+          # bipe-app is public, so the clone works without access; the push would fail with 403.
+          # A dry-run push checks the token's write access without writing anything.
+          if ! git -C bipe-app push --dry-run -q origin HEAD:refs/heads/regen-access-probe 2>/dev/null; then
+            echo "::warning::BIPE_REGEN_TOKEN cannot push to bipe-app: it is not regenerated. Give the token access to bipe-app."
+            rm -rf bipe-app
+            repos=$(echo "$repos" | sed 's/ bipe-app//')
+          fi
           # gen-product-doc.mjs reads bipe-web (figure ids in src/sim/scenes.ts, IconName in
           # src/components/ui.tsx). Read only: no generated files go there.
           git clone -q --depth 1 "https://x-access-token:${TOKEN}@github.com/bipe-chat/bipe-web.git" bipe-web
@@ -112,7 +122,9 @@ jobs:
             if [ -z "$(gh pr list -R "bipe-chat/${repo}" --head "$BRANCH" --state open --json number --jq '.[].number')" ]; then
               gh pr create -R "bipe-chat/${repo}" --base main --head "$BRANCH" \
                 --title "Regenerate from bipe-shared#${PR_NUMBER}" \
-                --body "Generated files for ${PR_URL}. Merges on its own after that pull request merges and the checks here pass."
+                --body "Generated files for ${PR_URL}. Merges on its own after that pull request merges and the checks here pass.
+
+          Provenance: bipe-shared generators (tools/gen.mjs) for ${PR_URL}."
             fi
           done
 
@@ -134,6 +146,7 @@ jobs:
       - name: Check out the sibling repos
         env:
           TOKEN: ${{ secrets.BIPE_REPOS_TOKEN }}
+          REGEN_TOKEN: ${{ secrets.BIPE_REGEN_TOKEN }}
           GH_TOKEN: ${{ github.token }}
           BRANCH: ${{ github.head_ref }}
           GIT_LFS_SKIP_SMUDGE: "1"
@@ -143,7 +156,7 @@ jobs:
             for _ in $(seq 60); do
               [ -n "$BRANCH" ] || break
               open=""
-              for repo in bipe-ios bipe-android bipe-api; do
+              for repo in bipe-ios bipe-android bipe-api bipe-app; do
                 open="${open}$(gh pr list -R "bipe-chat/${repo}" --head "$BRANCH" --base main --state open \
                   --json number --jq '.[] | " '"${repo}"'#\(.number)"')"
               done
@@ -156,7 +169,7 @@ jobs:
             done
             [ -z "$BRANCH" ] || echo "::warning::sibling regen pull requests for ${BRANCH} are still open: checking ${BRANCH}."
           fi
-          for repo in bipe bipe-ios bipe-android bipe-api bipe-web bipe-infra; do
+          for repo in bipe bipe-ios bipe-android bipe-api bipe-web bipe-infra bipe-app; do
             url="https://x-access-token:${TOKEN}@github.com/bipe-chat/${repo}.git"
             if [ -n "$BRANCH" ] && git ls-remote --exit-code --heads "$url" "$BRANCH" > /dev/null; then
               echo "${repo}: ${BRANCH}"
@@ -166,6 +179,12 @@ jobs:
               git clone -q --depth 1 "$url" "$repo"
             fi
           done
+          # Check bipe-app only when regen can write its generated files there (dry-run push): else every
+          # pull request would fail on bipe-app drift. The drift check skips a missing sibling with a warning.
+          if ! git -C bipe-app push --dry-run -q "https://x-access-token:${REGEN_TOKEN}@github.com/bipe-chat/bipe-app.git" HEAD:refs/heads/regen-access-probe 2>/dev/null; then
+            echo "::warning::BIPE_REGEN_TOKEN cannot push to bipe-app: its generated files are not checked. Give the token access to bipe-app."
+            rm -rf bipe-app
+          fi
       - uses: actions/setup-node@v4
         with:
           node-version: 24
@@ -203,7 +222,7 @@ jobs:
             echo "No merged pull request for ${GITHUB_SHA}."
             exit 0
           fi
-          for repo in bipe bipe-ios bipe-android bipe-api; do
+          for repo in bipe bipe-ios bipe-android bipe-api bipe-app; do
             # A feature pull request on branch B carries the regen commit when regen found it open.
             # bipe is private on the free plan: no auto-merge and no required checks, so land merges
             # there at once, and only the regen pull request.

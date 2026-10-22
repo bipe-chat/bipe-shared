@@ -6,7 +6,12 @@
   "state": {
     "phase": {
       "type": "enum",
-      "values": ["opening", "noAccount", "failed", "ready"],
+      "values": [
+        "opening",
+        "noAccount",
+        "failed",
+        "ready"
+      ],
       "description": "opening: restoring a session, finishing a pending sign-up or signing in. noAccount: no session and no device credential; the app shows onboarding-welcome. failed: the sign-in or restore failed. ready: the session runs and the app shows chat-list."
     },
     "userId": {
@@ -17,7 +22,7 @@
   },
   "actions": {
     "start": {
-      "effect": "On launch: restore the saved SDK session if one exists; else finish a pending sign-up with POST /v1/signup/resume (signup-create, ADR 0094); else read the newest device credential (BipeKit BipeCredentialStore.password() on iOS, libraries/bipe on Android) and sign in with it; else go to noAccount."
+      "effect": "On launch: restore the saved SDK session if one exists; else finish a pending sign-up with POST /v1/signup/resume (signup-create, ADR 0094); else read the device credentials of every account on this phone (BipeKit BipeCredentialStore.password() on iOS, libraries/bipe on Android) and sign in with it; else go to noAccount."
     },
     "retry": {
       "effect": "From failed: run start again."
@@ -38,13 +43,17 @@
     "Client.restoreSession",
     "Client.syncService"
   ],
-  "parity": ["phone-account"],
+  "parity": [
+    "phone-account"
+  ],
   "notes": [
     "Sign-in uses MAS compatibility login (m.login.password on /_matrix/client/v3/login). bipe-infra compose/templates/mas-bipe.yaml keeps passwords.enabled true for this.",
     "The homeserver comes from the build configuration, never from the user.",
     "The SDK session store and the saved session live in the app group (iOS) or app storage (Android), so the switch from the fork can reuse them (client-rewrite-study.md section 6).",
     "Sign-up is onboarding-welcome to signup-done (bipe-chat/bipe#553). Recovery, the PIN entry and the app lock are bipe-chat/bipe#555. Until a build has sign-up, noAccount shows bipe_app_start_no_account_title and bipe_app_start_no_account_body.",
     "While a recovery started on this phone is kept (recovery-waiting), start opens that screen instead of noAccount. A recovery that waits for this account on another phone shows recovery-alert after ready.",
-    "Never log or show the password or the recovery token."
+    "Never log or show the password or the recovery token.",
+    "Several accounts (ADR 0086): account-start opens every account on the phone. The current account is the one used last on this phone (saved by app-tabs switchAccount). On the first start, with nothing saved, it is the oldest account on the phone (the credential stored first), so the primary account opens, not a newer second one.",
+    "ready opens app-tabs."
   ]
 }

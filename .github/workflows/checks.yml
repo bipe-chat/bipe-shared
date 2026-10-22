@@ -1,9 +1,10 @@
 # ADR 0031, ADR 0092: the shared rules, the generated code in every repo, the API clients and the parity ledger stay in step.
 # Needs the secret BIPE_REPOS_TOKEN: a fine-grained token with read access to contents of
-# bipe, bipe-ios, bipe-android, bipe-api, bipe-web and bipe-infra.
+# bipe, bipe-ios, bipe-android, bipe-api, bipe-web, bipe-infra and bipe-app.
 # The parity step also reads issue state on bipe-chat/bipe with it (Issues: read).
 # Needs the secret BIPE_REGEN_TOKEN: a fine-grained token with read and write access to contents and
-# pull requests of bipe, bipe-ios, bipe-android and bipe-api. Without it, regen and land do nothing.
+# pull requests of bipe, bipe-ios, bipe-android, bipe-api and bipe-app. Without it, regen and land do nothing.
+# bipe-app (Bipe's own client, bipe-chat/bipe#550) is skipped with a warning while a token cannot reach it.
 #
 # Flow for a pull request on branch B:
 #   regen    runs the generators and pushes the output to branch B in each sibling repo that changes,
@@ -72,11 +73,17 @@ jobs:
               bipe-ios) echo "Components/BipeKit/Sources/BipeKit/Generated Components/BipeKit/Sources/BipeKit/Resources Tools/Bipe BIPE.md" ;;
               bipe-android) echo "libraries/bipe/src/main plugins/src/main/kotlin BIPE.md" ;;
               bipe-api) echo "src/generated test/fixtures" ;;
+              bipe-app) echo "ios/BipeKit/Sources/BipeKit/Generated ios/BipeKit/Sources/BipeKit/Resources android/libraries/bipe/src/main" ;;
             esac
           }
-          repos="bipe bipe-ios bipe-android bipe-api"
-          for repo in $repos; do
+          repos=""
+          for repo in bipe bipe-ios bipe-android bipe-api bipe-app; do
             url="https://x-access-token:${TOKEN}@github.com/bipe-chat/${repo}.git"
+            if [ "$repo" = bipe-app ] && ! git ls-remote "$url" > /dev/null 2>&1; then
+              echo "::warning::BIPE_REGEN_TOKEN cannot reach bipe-app: it is not regenerated. Give the token access to bipe-app."
+              continue
+            fi
+            repos="$repos $repo"
             if git ls-remote --exit-code --heads "$url" "$BRANCH" > /dev/null; then
               git clone -q --depth 1 --branch "$BRANCH" "$url" "$repo"
             else
@@ -143,7 +150,7 @@ jobs:
             for _ in $(seq 60); do
               [ -n "$BRANCH" ] || break
               open=""
-              for repo in bipe-ios bipe-android bipe-api; do
+              for repo in bipe-ios bipe-android bipe-api bipe-app; do
                 open="${open}$(gh pr list -R "bipe-chat/${repo}" --head "$BRANCH" --base main --state open \
                   --json number --jq '.[] | " '"${repo}"'#\(.number)"')"
               done
@@ -156,8 +163,13 @@ jobs:
             done
             [ -z "$BRANCH" ] || echo "::warning::sibling regen pull requests for ${BRANCH} are still open: checking ${BRANCH}."
           fi
-          for repo in bipe bipe-ios bipe-android bipe-api bipe-web bipe-infra; do
+          for repo in bipe bipe-ios bipe-android bipe-api bipe-web bipe-infra bipe-app; do
             url="https://x-access-token:${TOKEN}@github.com/bipe-chat/${repo}.git"
+            # The drift check skips a missing sibling with a warning.
+            if [ "$repo" = bipe-app ] && ! git ls-remote "$url" > /dev/null 2>&1; then
+              echo "::warning::BIPE_REPOS_TOKEN cannot reach bipe-app: its generated files are not checked. Give the token access to bipe-app."
+              continue
+            fi
             if [ -n "$BRANCH" ] && git ls-remote --exit-code --heads "$url" "$BRANCH" > /dev/null; then
               echo "${repo}: ${BRANCH}"
               git clone -q --depth 1 --branch "$BRANCH" "$url" "$repo"
@@ -203,7 +215,11 @@ jobs:
             echo "No merged pull request for ${GITHUB_SHA}."
             exit 0
           fi
-          for repo in bipe bipe-ios bipe-android bipe-api; do
+          for repo in bipe bipe-ios bipe-android bipe-api bipe-app; do
+            if [ "$repo" = bipe-app ] && ! GH_TOKEN="$TOKEN" gh api repos/bipe-chat/bipe-app/pulls --silent 2>/dev/null; then
+              echo "::warning::BIPE_REGEN_TOKEN cannot reach bipe-app: its regen pull request is not merged. Give the token access to bipe-app."
+              continue
+            fi
             # A feature pull request on branch B carries the regen commit when regen found it open.
             # bipe is private on the free plan: no auto-merge and no required checks, so land merges
             # there at once, and only the regen pull request.

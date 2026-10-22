@@ -1,7 +1,8 @@
 // Generates platform code from registries/ and strings/.
-// Usage: node tools/gen.mjs [--swift <dir>] [--kotlin <dir>] [--api <dir>] [--ios-version <dir>] [--android-version <dir>]
+// Usage: node tools/gen.mjs [--swift <dir>] [--kotlin <dir>] [--app <dir>] [--api <dir>] [--ios-version <dir>] [--android-version <dir>]
 //   Default Swift output: ../bipe-ios/Components/BipeKit/Sources/BipeKit/Generated
 //   Default Kotlin output: ../bipe-android/libraries/bipe/src/main (kotlin/ and res/ below it)
+//   Default app output: ../bipe-app (ios/BipeKit and android/libraries/bipe), when that folder exists
 //   Default version output (ADR 0088): ../bipe-ios/Tools/Bipe/version.env and Version.xcconfig, ../bipe-android/plugins/src/main/kotlin/BipeVersion.kt
 import { copyFileSync, existsSync, mkdirSync, readdirSync, writeFileSync } from "node:fs";
 import { dirname, join, resolve } from "node:path";
@@ -15,6 +16,7 @@ import { generateSettings } from "./lib/gen-settings.mjs";
 import { generateOnboarding } from "./lib/gen-onboarding.mjs";
 import { generateHaptics } from "./lib/gen-haptics.mjs";
 import { generateCast, loadCast } from "./lib/gen-cast.mjs";
+import { loadScreens } from "./lib/screens.mjs";
 
 const root = join(dirname(fileURLToPath(import.meta.url)), "..");
 const args = process.argv.slice(2);
@@ -229,21 +231,27 @@ ${members.join("\n\n")}
 `;
 }
 
-mkdirSync(swiftOut, { recursive: true });
-writeFileSync(join(swiftOut, "BipeRegistries.swift"), swiftRegistries());
-writeFileSync(join(swiftOut, "BipeTrustFacts.swift"), generateTrust(reg.trust, "swift", HEADER));
-writeFileSync(join(swiftOut, "BipeAgendaTemplates.swift"), generateAgendaTemplates(reg, "swift", HEADER));
-writeFileSync(join(swiftOut, "BipeStrings.swift"), swiftStrings());
-writeFileSync(join(swiftOut, "BipeSettings.swift"), generateSettings(reg.settings, "swift", HEADER, swiftString));
-writeFileSync(join(swiftOut, "BipeOnboarding.swift"), generateOnboarding(reg.onboarding, "swift", HEADER, swiftString));
-writeFileSync(join(swiftOut, "BipeHaptics.swift"), generateHaptics(reg.haptics, "swift", HEADER, swiftString));
-writeFileSync(join(swiftOut, "BipeCast.swift"), generateCast(loadCast(root), CAST_HEADER, swiftString));
-const resources = resolve(swiftOut, "../../../Sources/BipeKit/Resources");
-for (const [locale, strings] of [["pt-BR", reg.strings.strings], ["en", reg.stringsEn.strings]]) {
-  mkdirSync(join(resources, `${locale}.lproj`), { recursive: true });
-  writeFileSync(join(resources, `${locale}.lproj`, "Bipe.strings"), appleStrings(strings));
+// Writes the BipeKit Swift files and string tables. `out` is <package>/Sources/BipeKit/Generated.
+// `post` rewrites each file for the target (bipe-app adds its licence header); `cast` writes BipeCast.swift.
+function writeSwift(out, { post = (text) => text, cast = true } = {}) {
+  const write = (file, text) => writeFileSync(join(out, file), post(text, "swift"));
+  mkdirSync(out, { recursive: true });
+  write("BipeRegistries.swift", swiftRegistries());
+  write("BipeTrustFacts.swift", generateTrust(reg.trust, "swift", HEADER));
+  write("BipeAgendaTemplates.swift", generateAgendaTemplates(reg, "swift", HEADER));
+  write("BipeStrings.swift", swiftStrings());
+  write("BipeSettings.swift", generateSettings(reg.settings, "swift", HEADER, swiftString));
+  write("BipeOnboarding.swift", generateOnboarding(reg.onboarding, "swift", HEADER, swiftString));
+  write("BipeHaptics.swift", generateHaptics(reg.haptics, "swift", HEADER, swiftString));
+  if (cast) write("BipeCast.swift", generateCast(loadCast(root), CAST_HEADER, swiftString));
+  const resources = resolve(out, "../../../Sources/BipeKit/Resources");
+  for (const [locale, strings] of [["pt-BR", reg.strings.strings], ["en", reg.stringsEn.strings]]) {
+    mkdirSync(join(resources, `${locale}.lproj`), { recursive: true });
+    writeFileSync(join(resources, `${locale}.lproj`, "Bipe.strings"), appleStrings(strings));
+  }
+  console.log(`wrote Swift to ${out}`);
 }
-console.log(`wrote Swift to ${swiftOut}`);
+writeSwift(swiftOut);
 
 // Kotlin string literal. `$` is escaped because Kotlin templates use it.
 const kotlinString = (s) =>
@@ -451,24 +459,82 @@ const androidStrings = (strings, comment) =>
 
 const kotlinIndex = args.indexOf("--kotlin");
 const kotlinOut = resolve(kotlinIndex >= 0 ? args[kotlinIndex + 1] : join(root, "../bipe-android/libraries/bipe/src/main"));
-if (kotlinIndex >= 0 || existsSync(resolve(kotlinOut, "../../.."))) {
-  const kotlinDir = join(kotlinOut, "kotlin", ...KOTLIN_PACKAGE.split("."));
+// Writes the Kotlin files and string resources. `out` is <module>/src/main. `post` rewrites each Kotlin file
+// for the target (bipe-app moves it to its own package and licence header).
+function writeKotlin(out, { packageName = KOTLIN_PACKAGE, post = (text) => text } = {}) {
+  const kotlinDir = join(out, "kotlin", ...packageName.split("."));
+  const write = (file, text) => writeFileSync(join(kotlinDir, file), post(text, "kotlin"));
   mkdirSync(kotlinDir, { recursive: true });
-  writeFileSync(join(kotlinDir, "BipeRegistries.kt"), kotlinRegistries());
-  writeFileSync(join(kotlinDir, "BipeTrustFacts.kt"), generateTrust(reg.trust, "kotlin", KOTLIN_HEADER));
-  writeFileSync(join(kotlinDir, "BipeAgendaTemplates.kt"), generateAgendaTemplates(reg, "kotlin", KOTLIN_HEADER));
-  writeFileSync(join(kotlinDir, "BipeSettings.kt"), generateSettings(reg.settings, "kotlin", KOTLIN_HEADER, kotlinString));
-  writeFileSync(join(kotlinDir, "BipeOnboarding.kt"), generateOnboarding(reg.onboarding, "kotlin", KOTLIN_HEADER, kotlinString));
-  writeFileSync(join(kotlinDir, "BipeHaptics.kt"), generateHaptics(reg.haptics, "kotlin", KOTLIN_HEADER, kotlinString));
+  write("BipeRegistries.kt", kotlinRegistries());
+  write("BipeTrustFacts.kt", generateTrust(reg.trust, "kotlin", KOTLIN_HEADER));
+  write("BipeAgendaTemplates.kt", generateAgendaTemplates(reg, "kotlin", KOTLIN_HEADER));
+  write("BipeSettings.kt", generateSettings(reg.settings, "kotlin", KOTLIN_HEADER, kotlinString));
+  write("BipeOnboarding.kt", generateOnboarding(reg.onboarding, "kotlin", KOTLIN_HEADER, kotlinString));
+  write("BipeHaptics.kt", generateHaptics(reg.haptics, "kotlin", KOTLIN_HEADER, kotlinString));
   // pt-BR is the default language, so it fills values/. en is the alternative.
   for (const [dir, strings, comment] of [
     ["values", reg.strings.strings, "pt-BR (default). DRAFT copy: not yet through the humanizer pass."],
     ["values-en", reg.stringsEn.strings, "en. DRAFT copy: not yet through the humanizer pass."],
   ]) {
-    mkdirSync(join(kotlinOut, "res", dir), { recursive: true });
-    writeFileSync(join(kotlinOut, "res", dir, "bipe_strings.xml"), androidStrings(strings, comment));
+    mkdirSync(join(out, "res", dir), { recursive: true });
+    writeFileSync(join(out, "res", dir, "bipe_strings.xml"), androidStrings(strings, comment));
   }
-  console.log(`wrote Kotlin to ${kotlinOut}`);
+  console.log(`wrote Kotlin to ${out}`);
+}
+if (kotlinIndex >= 0 || existsSync(resolve(kotlinOut, "../../.."))) writeKotlin(kotlinOut);
+
+// bipe-app: Bipe's own client (ADR 0143, ADR 0145, bipe-chat/bipe#550). Same registries and strings as the forks,
+// in an iOS Swift package (ios/BipeKit) and an Android module (android/libraries/bipe), plus the screen ids from
+// product/screens. Every file carries the Bipe licence header with the app store permission (ADR 0144), and the
+// Kotlin files move to Bipe's own package.
+const APP_KOTLIN_PACKAGE = "chat.bipe.shared.generated";
+const APP_LICENSE = "SPDX-License-Identifier: AGPL-3.0-only\nAdditional permission: APP-STORE-PERMISSION.md (AGPL section 7)\nCopyright 2026 Bipe contributors\n";
+// The Android module namespace in bipe-app, so its R class is chat.bipe.shared.R.
+const APP_ANDROID_NAMESPACE = "chat.bipe.shared";
+function appPost(text, lang) {
+  const out = lang === "swift"
+    ? APP_LICENSE.replace(/^/gm, "// ").replace(/\/\/ $/, "") + "\n" + text
+    : text.replace(KOTLIN_LICENSE, `/*\n${APP_LICENSE.replace(/^(?=.)/gm, " * ")} */\n\n`)
+      .replace(`package ${KOTLIN_PACKAGE}`, `package ${APP_KOTLIN_PACKAGE}`)
+      .replaceAll("io.element.android.libraries.bipe.R", `${APP_ANDROID_NAMESPACE}.R`);
+  // Clean room (plan section 1): no Element name reaches bipe-app.
+  if (/io\.element|element-hq/i.test(out)) throw new Error("gen.mjs: an Element name would reach bipe-app");
+  return out;
+}
+
+function appScreens(lang) {
+  const screens = loadScreens(root).map(({ spec }) => spec);
+  if (lang === "swift") {
+    const cases = screens.map((s) => `    /// ${s.title} (flow ${s.flow}). Spec: bipe-shared/product/screens/${s.id}.json\n    case ${camel(s.id.replace(/-/g, "_"))} = ${swiftString(s.id)}`);
+    return `${HEADER.replace("bipe-shared/registries and bipe-shared/strings", "bipe-shared/product/screens")}
+/// Screen ids of Bipe's own client. iOS and Android use the same ids.
+public enum BipeScreen: String, CaseIterable, Sendable {
+${cases.join("\n\n")}
+}
+`;
+  }
+  const entries = screens.map((s) => `    /** ${s.title} (flow ${s.flow}). Spec: bipe-shared/product/screens/${s.id}.json */\n    ${s.id.replace(/-/g, "_").toUpperCase()}(${kotlinString(s.id)}),`);
+  return `${KOTLIN_LICENSE}${HEADER.replace("bipe-shared/registries and bipe-shared/strings", "bipe-shared/product/screens")}
+@file:Suppress("all", "ktlint")
+
+package ${KOTLIN_PACKAGE}
+
+/** Screen ids of Bipe's own client. iOS and Android use the same ids. */
+enum class BipeScreen(val id: String) {
+${entries.join("\n\n")}
+}
+`;
+}
+
+const appIndex = args.indexOf("--app");
+const appOut = resolve(appIndex >= 0 ? args[appIndex + 1] : join(root, "../bipe-app"));
+if (appIndex >= 0 || existsSync(appOut)) {
+  const swiftDir = join(appOut, "ios/BipeKit/Sources/BipeKit/Generated");
+  writeSwift(swiftDir, { post: appPost, cast: false });
+  writeFileSync(join(swiftDir, "BipeScreen.swift"), appPost(appScreens("swift"), "swift"));
+  const kotlinMain = join(appOut, "android/libraries/bipe/src/main");
+  writeKotlin(kotlinMain, { packageName: APP_KOTLIN_PACKAGE, post: appPost });
+  writeFileSync(join(kotlinMain, "kotlin", ...APP_KOTLIN_PACKAGE.split("."), "BipeScreen.kt"), appPost(appScreens("kotlin"), "kotlin"));
 }
 
 // bipe-api: the reference library and the registries it reads, copied verbatim.

@@ -1,0 +1,35 @@
+{
+  "id": "notifications-prompt",
+  "title": "Notifications prompt",
+  "flow": "notifications",
+  "summary": "After the person sends their first message, a sheet asks if they want to know when the reply comes. Allow opens the system permission; Not now closes the sheet for good on this phone.",
+  "types": {},
+  "state": {
+    "recipientName": { "type": "string", "optional": true, "description": "DM: the other person's name for the title. Missing in a group." },
+    "isAsking": { "type": "bool", "description": "true while the system permission dialog is open." }
+  },
+  "actions": {
+    "allow": {
+      "effect": "Opens the system permission dialog. Allowed: push-registration registers this phone. Either way the sheet closes and does not come back."
+    },
+    "notNow": {
+      "effect": "Closes the sheet. It does not come back on this phone; the person can turn notifications on in notification-settings."
+    }
+  },
+  "strings": [
+    "bipe_notifications_prompt_title",
+    "bipe_notifications_prompt_title_generic",
+    "bipe_notifications_prompt_body",
+    "bipe_notifications_prompt_allow",
+    "bipe_fallback_skip"
+  ],
+  "sdk": [],
+  "parity": ["first-run"],
+  "notes": [
+    "Defined by registries/onboarding.json prompts, key notifications: trigger firstMessageSent, primary to systemPermission, text dismiss. Generated BipeOnboarding gives the keys; the app does not hard-code them.",
+    "Shows only when the system permission was never asked (push-registration permission notAsked). A phone that already allowed or denied never sees it.",
+    "Title: bipe_notifications_prompt_title with the name in a DM, bipe_notifications_prompt_title_generic in a group.",
+    "The sheet opens after the first message shows as sent, not while it sends, and never over another sheet.",
+    "Move, do not rewrite: the prompt trigger logic is generated from the registry into BipeKit and libraries/bipe (BipeOnboarding)."
+  ]
+}

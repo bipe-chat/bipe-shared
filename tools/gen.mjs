@@ -17,6 +17,7 @@ import { generateOnboarding } from "./lib/gen-onboarding.mjs";
 import { generateHaptics } from "./lib/gen-haptics.mjs";
 import { generateCast, loadCast } from "./lib/gen-cast.mjs";
 import { loadScreens } from "./lib/screens.mjs";
+import { generateColors } from "./lib/gen-tokens.mjs";
 
 const root = join(dirname(fileURLToPath(import.meta.url)), "..");
 const args = process.argv.slice(2);
@@ -535,6 +536,11 @@ if (appIndex >= 0 || existsSync(appOut)) {
   const kotlinMain = join(appOut, "android/libraries/bipe/src/main");
   writeKotlin(kotlinMain, { packageName: APP_KOTLIN_PACKAGE, post: appPost });
   writeFileSync(join(kotlinMain, "kotlin", ...APP_KOTLIN_PACKAGE.split("."), "BipeScreen.kt"), appPost(appScreens("kotlin"), "kotlin"));
+  // Colour tokens (bipe-chat/bipe#551): bipe-app only. The forks keep bipe-tokens.
+  const TOKENS_HEADER = HEADER.replace("bipe-shared/registries and bipe-shared/strings", "bipe-shared/design/tokens.json");
+  writeFileSync(join(swiftDir, "BipeColors.swift"), appPost(`${TOKENS_HEADER}\n${generateColors("swift")}`, "swift"));
+  writeFileSync(join(kotlinMain, "kotlin", ...APP_KOTLIN_PACKAGE.split("."), "BipeColors.kt"),
+    appPost(`${KOTLIN_LICENSE}${TOKENS_HEADER}\n@file:Suppress("all", "ktlint")\n\npackage ${KOTLIN_PACKAGE}\n\n${generateColors("kotlin")}`, "kotlin"));
 }
 
 // bipe-api: the reference library and the registries it reads, copied verbatim.

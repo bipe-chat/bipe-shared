@@ -1,0 +1,43 @@
+{
+  "id": "handle-change-line",
+  "title": "Handle change line",
+  "flow": "chat",
+  "summary": "A quiet line in the timeline when a person in the chat set, changed or removed their @, at the time of the change (ADR 0066). The line is local: bipe-api holds the history, no Matrix event exists.",
+  "types": {
+    "HandleChangeLine": {
+      "userId": { "type": "string", "description": "Matrix ID of the person." },
+      "name": { "type": "string", "description": "The person's current display name in this room." },
+      "oldHandle": { "type": "string", "optional": true, "description": "The @ before. Missing on a first set." },
+      "newHandle": { "type": "string", "optional": true, "description": "The @ after. Missing on a removal." },
+      "at": { "type": "date", "description": "Time of the change from bipe-api." }
+    }
+  },
+  "state": {
+    "line": { "type": "HandleChangeLine", "description": "The row." }
+  },
+  "actions": {
+    "openProfile": {
+      "effect": "Opens the person's profile (timeline-rows openHandleChangeProfile)."
+    }
+  },
+  "strings": [
+    "bipe_handle_set",
+    "bipe_handle_changed",
+    "bipe_handle_removed"
+  ],
+  "sdk": [
+    "Room.members",
+    "RoomMembersIterator",
+    "RoomMember",
+    "Room.memberDisplayName"
+  ],
+  "parity": ["handle-change-notice"],
+  "notes": [
+    "Move, do not rewrite: BipeKit BipeHandleChanges.swift (BipeHandleChange.line(name:), BipeHandleChangePlacement.placements, BipeHandleChangeStore) and libraries/bipe BipeHandleChanges.kt.",
+    "Source: bipe-api POST /v1/handle-changes with the Matrix IDs of the members of the joined rooms, at most 100 per call, since the newest cached change. The cache lives on the device per account.",
+    "Placement: inside the loaded range only, before the first row newer than the change. A change newer than the last row shows at the end only when the timeline is live. No line for a person who is not a member now, or for a change before the person joined. Back-pagination brings older lines in.",
+    "Text: old and new: bipe_handle_changed (name, new, old). New only: bipe_handle_set (name, new). Old only: bipe_handle_removed (name, old). Neither: no line.",
+    "The row id is bipe-handle-change-<userId>-<at in ms>, so it stays stable across rebuilds.",
+    "Same in a DM and a group (ADR 0141 keeps it). A failed fetch keeps the cache and tries again on the next open."
+  ]
+}

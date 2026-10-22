@@ -1,0 +1,51 @@
+{
+  "id": "message-report",
+  "title": "Report a message",
+  "flow": "chat",
+  "summary": "Sends one message to the server team as a report, with an optional reason, and can block the sender in the same step.",
+  "types": {},
+  "state": {
+    "rowId": { "type": "string", "description": "The reported message." },
+    "senderName": { "type": "string", "description": "Display name of the sender, for the block option." },
+    "reason": { "type": "string", "description": "What the person writes. Can be empty." },
+    "alsoBlock": { "type": "bool", "description": "Block the sender too. Off at the start." },
+    "isSending": { "type": "bool", "description": "true while the report is sent." },
+    "error": { "type": "bool", "description": "true after a failed report. Shows bipe_app_report_error." }
+  },
+  "actions": {
+    "editReason": {
+      "params": { "text": { "type": "string", "description": "The new reason." } },
+      "effect": "Sets reason."
+    },
+    "setAlsoBlock": {
+      "params": { "on": { "type": "bool", "description": "The new value." } },
+      "effect": "Sets alsoBlock."
+    },
+    "send": {
+      "effect": "Reports the message with the trimmed reason, then blocks the sender when alsoBlock is on, then closes and shows bipe_app_message_reported."
+    },
+    "cancel": {
+      "effect": "Closes without a report."
+    }
+  },
+  "strings": [
+    "bipe_report_message_reason",
+    "bipe_report_message_body",
+    "bipe_action_block_person",
+    "bipe_app_report_send",
+    "bipe_app_report_error",
+    "bipe_app_message_reported",
+    "bipe_app_cancel"
+  ],
+  "sdk": [
+    "Room.reportContent",
+    "Room.ignoreUser"
+  ],
+  "parity": [],
+  "notes": [
+    "Report and block stay in a DM (ADR 0141).",
+    "bipe_report_message_body says what the team receives: the reason and the message ID. In an encrypted chat the team cannot read the message text.",
+    "Blocking here is the Matrix ignore list, the same block as the profile. The block flow and its unblock bar are the people issue; this spec only calls it.",
+    "When the report is sent and the block fails, the report counts as sent: the sheet closes with bipe_app_message_reported, and the person can block from the profile."
+  ]
+}

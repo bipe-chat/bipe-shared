@@ -184,6 +184,8 @@ public enum BipeRegistries {
     public static let maxPersonalAccounts = ${reg.accounts.maxPersonalAccounts}
     /// Wait between the full-access warning and the biometric check of a web sign-in approval (ADR 0118).
     public static let webLinkCooldownSeconds = ${reg.accounts.webLinkCooldownSeconds}
+    /// Wait between an account deletion request and the deletion; other devices can cancel (ADR 0140).
+    public static let deletionCooldownHours = ${reg.accounts.deletionCooldownHours}
 
     /// Terms and privacy accepted at sign-up (ADR 0113; registries/legal.json). Paths are on the public site.
     public static let legalVersion = ${swiftString(reg.legal.legalVersion)}
@@ -412,6 +414,9 @@ object BipeRegistries {
 
     // Wait between the full-access warning and the biometric check of a web sign-in approval (ADR 0118).
     const val WEB_LINK_COOLDOWN_SECONDS = ${reg.accounts.webLinkCooldownSeconds}
+
+    // Wait between an account deletion request and the deletion; other devices can cancel (ADR 0140).
+    const val DELETION_COOLDOWN_HOURS = ${reg.accounts.deletionCooldownHours}
 
     // Terms and privacy accepted at sign-up (ADR 0113; registries/legal.json). Paths are on the public site.
     const val LEGAL_VERSION = ${kotlinString(reg.legal.legalVersion)}

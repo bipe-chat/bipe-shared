@@ -195,6 +195,23 @@
       }
     },
     {
+      "id": "account-deletion",
+      "basis": "legal-obligation",
+      "places": ["server"],
+      "pt": {
+        "name": "Pedido para apagar a conta",
+        "what": "Quando você pediu, quando a conta vai sumir e se você pediu para apagar as mensagens. Depois que a conta some, ficam só o código do CPF verificado (nunca o CPF) e o registro do selo.",
+        "why": "Esperar 72 horas para que qualquer aparelho seu possa cancelar, e depois impedir que uma conta apagada volte a se verificar na hora para fugir de um bloqueio.",
+        "retention": "O pedido fica até a conta sumir ou você cancelar. O código do CPF e o registro do selo ficam por 5 anos."
+      },
+      "en": {
+        "name": "Account deletion request",
+        "what": "When you asked, when the account goes, and whether you asked to delete your messages. After the account goes, only the code of the verified CPF (never the CPF) and the seal record stay.",
+        "why": "To wait 72 hours so that any of your devices can cancel, and then to stop a deleted account from verifying again at once to get around a block.",
+        "retention": "The request stays until the account goes or you cancel. The CPF code and the seal record stay for 5 years."
+      }
+    },
+    {
       "id": "invites",
       "basis": "legitimate-interest",
       "places": ["server"],

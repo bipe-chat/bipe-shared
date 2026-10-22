@@ -467,6 +467,49 @@ paths:
         "204": { description: Cancelled }
         "401": { $ref: "#/components/responses/Error" }
         "404": { $ref: "#/components/responses/Error" }
+  /v1/me/deletion:
+    post:
+      summary: Ask to delete the caller's account (ADR 0140)
+      description: >
+        The app runs the device owner check first (Face ID, Touch ID or the phone's passcode, client
+        side), then sends the PIN. The server checks the PIN like on the recovery paths (403
+        pin_wrong with tries_left, 403 pin_blocked, 403 pin_not_set). On success it records the
+        request with due_at = now + deletionCooldownHours (registries/accounts.json). A second
+        request while one waits returns the waiting one and changes nothing. Until due_at the
+        account works and every signed-in device sees deletion in GET /v1/me/account and can
+        cancel. At due_at the server hands each group the account owns to its oldest admin, else
+        its oldest member, redacts the account's events when redact_messages is true, holds the @
+        for releaseHoldDays (registries/handles.json), deletes the PIN, recovery and email records, keeps only the CPF
+        hash and the badge record, and deactivates the account.
+      security: [{ matrix: [] }]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [pin, redact_messages]
+              properties:
+                pin: { type: string, maxLength: 64 }
+                redact_messages: { type: boolean, description: "Apagar todas as minhas mensagens." }
+      responses:
+        "202":
+          description: Waiting
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/AccountDeletion" }
+        "401": { $ref: "#/components/responses/Error" }
+        "403": { $ref: "#/components/responses/Error" }
+        "429": { $ref: "#/components/responses/Error" }
+  /v1/me/deletion/cancel:
+    post:
+      summary: Cancel the waiting deletion of the caller's account
+      description: Any signed-in device of the account can cancel until due_at. 404 when no deletion waits.
+      security: [{ matrix: [] }]
+      responses:
+        "204": { description: Cancelled }
+        "401": { $ref: "#/components/responses/Error" }
+        "404": { $ref: "#/components/responses/Error" }
   /v1/recovery/token:
     post:
       summary: Get back in with the synced recovery token and the PIN (ADR 0059)
@@ -4909,6 +4952,14 @@ components:
         terms_version: { type: string, description: "ADR 0113: the last legalVersion this account accepted. Absent when none (accounts made before ADR 0113). An app shows the re-accept screen when it differs from legalVersion." }
         max_accounts: { type: integer, minimum: 1, description: "ADR 0086: personal accounts one phone may hold. Company accounts do not count. Absent from an older server: the app uses maxPersonalAccounts in registries/accounts.json." }
         account_type: { type: string, enum: [personal, company], description: "ADR 0087. Absent from an older server: personal." }
+        deletion: { $ref: "#/components/schemas/AccountDeletion", description: "ADR 0140: the waiting deletion of this account. Absent when none. Apps show the cancel alert on every device but the one that asked." }
+    AccountDeletion:
+      type: object
+      required: [created_at, due_at, redact_messages]
+      properties:
+        created_at: { type: string, format: date-time }
+        due_at: { type: string, format: date-time, description: "When the server deletes the account, unless a device cancels before." }
+        redact_messages: { type: boolean }
     TermsAcceptance:
       type: object
       required: [terms_version]

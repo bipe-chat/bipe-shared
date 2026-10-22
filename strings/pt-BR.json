@@ -1282,6 +1282,11 @@
     "bipe_app_settings_report_logs_footer": "Os registros ajudam a achar o problema. Eles não trazem suas mensagens e ficam no servidor do Bipe, no Brasil, por 90 dias.",
     "bipe_app_settings_report_screenshot": "Adicionar print da tela",
     "bipe_app_settings_report_send": "Enviar",
-    "bipe_app_settings_report_error": "Não deu para enviar o relato. Tente de novo."
+    "bipe_app_settings_report_error": "Não deu para enviar o relato. Tente de novo.",
+    "bipe_app_link_check_code_title": "Digite este código no computador",
+    "bipe_app_link_check_code_body": "O computador pede o código para ter certeza de que fala com este celular.",
+    "bipe_app_link_check_code_done": "Já digitei o código",
+    "bipe_app_link_not_bipe_code": "Este não é um código de entrada do Bipe. Abra chat.bipe.net.br no computador e leia o código de lá.",
+    "bipe_app_link_expired": "O código venceu. Recarregue a página no computador e leia o código novo."
   }
 }

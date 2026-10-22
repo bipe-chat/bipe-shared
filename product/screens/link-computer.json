@@ -1,0 +1,108 @@
+{
+  "id": "link-computer",
+  "title": "Link a computer",
+  "flow": "settings",
+  "summary": "Signs a browser in to the account by QR code (MSC4108, ADR 0116, ADR 0118). chat.bipe.net.br shows the code; this phone scans it from Aparelhos conectados only, then shows the full-access warning, waits through the cooldown, asks for a biometric check, shows the check code, and approves in a private web view of the MAS consent page.",
+  "types": {
+    "BrowserInfo": {
+      "ip": { "type": "string", "optional": true, "description": "The browser IP read from the MAS consent page text." },
+      "place": { "type": "string", "optional": true, "description": "City and region from GET /v1/web-link/place, country added when abroad. Absent: unknown." }
+    }
+  },
+  "state": {
+    "phase": {
+      "type": "enum",
+      "values": ["scanning", "connecting", "warning", "cooldown", "confirmOwner", "checkCode", "consent", "finishing", "done", "failed", "cancelled"],
+      "description": "scanning: camera open. connecting: the secure channel forms. warning: the full-access text. cooldown: the continue button counts down. confirmOwner: the biometric check. checkCode: the 2-digit code to type on the computer. consent: the private web view with the MAS page. finishing: secrets sync and the server cleans up."
+    },
+    "cooldownLeft": { "type": "int", "description": "Seconds left before Continue works. Starts at webLinkCooldownSeconds (registries/accounts.json)." },
+    "checkCode": { "type": "string", "optional": true, "description": "check_code_string of the EstablishingSecureChannel progress, 2 digits." },
+    "browser": { "type": "BrowserInfo", "optional": true, "description": "Shown above the web view." },
+    "startedAt": { "type": "date", "description": "When the scan started. Sent to POST /v1/web-link/finish." },
+    "error": {
+      "type": "enum",
+      "values": ["none", "notSupported", "notBipeCode", "expired", "insecure", "declined", "signInPage", "generic"],
+      "description": "Why failed: from HumanQrGrantLoginError, the QR decode, or the web view (signInPage: MAS showed its login form a second time)."
+    }
+  },
+  "actions": {
+    "scan": {
+      "params": { "bytes": { "type": "string", "description": "The QR code payload, as bytes from the camera." } },
+      "effect": "QrCodeData.fromBytes. A code whose serverName or baseUrl is not Bipe's homeserver, or whose intent is not a new device asking to log in, sets error notBipeCode. Else GrantLoginWithQrCodeHandler.scan with a progress listener; phase connecting."
+    },
+    "progress": {
+      "params": { "step": { "type": "string", "description": "GrantQrLoginProgress: starting, establishingSecureChannel, waitingForAuth, syncingSecrets, done." } },
+      "effect": "establishingSecureChannel: keeps checkCode and shows warning (the code shows only after the biometric check). waitingForAuth: keeps verification_uri and the continuation sender for consent. syncingSecrets: finishing. done: runs finish."
+    },
+    "continue": {
+      "effect": "From warning when cooldownLeft is 0 (warning haptic when the warning shows): confirmOwner with bipe_link_computer_biometric. A passed check reads the hidden password from the credential store and shows checkCode."
+    },
+    "codeTyped": {
+      "effect": "The person says the computer took the code (or the progress moves to waitingForAuth): opens consent. The web view loads verification_uri on the MAS host only, fills the MAS login form once with the localpart and the hidden password, and shows bipe_link_computer_consent_hint with the browser IP and place above the page."
+    },
+    "approved": {
+      "effect": "When the web view leaves the consent page after the approve, or the person closes it: ContinuationMessageSender.confirm, clears the web view's cookies, then waits for done."
+    },
+    "finish": {
+      "effect": "POST /v1/web-link/finish with startedAt, so the MAS browser sessions the web view made end. Shows bipe_link_computer_done with the success haptic and goes back to linked-devices."
+    },
+    "cancel": {
+      "effect": "At any step: GrantLoginWithQrCodeTask.cancel (or ContinuationMessageSender.cancel in consent), clears the web view, phase cancelled."
+    }
+  },
+  "strings": [
+    "bipe_linked_devices_link_computer",
+    "bipe_linked_devices_footer",
+    "bipe_link_computer_warning_title",
+    "bipe_link_computer_warning_body",
+    "bipe_link_computer_warning_scam",
+    "bipe_link_computer_continue",
+    "bipe_pause_countdown",
+    "bipe_link_computer_biometric",
+    "bipe_app_link_check_code_title",
+    "bipe_app_link_check_code_body",
+    "bipe_app_link_check_code_done",
+    "bipe_link_computer_loading",
+    "bipe_link_computer_place",
+    "bipe_link_computer_place_unknown",
+    "bipe_link_computer_place_source",
+    "bipe_link_computer_consent_hint",
+    "bipe_link_computer_done",
+    "bipe_link_computer_error_title",
+    "bipe_link_computer_error_sign_in",
+    "bipe_link_computer_not_supported",
+    "bipe_app_link_not_bipe_code",
+    "bipe_app_link_expired",
+    "bipe_app_cancel",
+    "bipe_app_retry"
+  ],
+  "sdk": [
+    "Client.newGrantLoginWithQrCodeHandler",
+    "Client.isLoginWithQrCodeSupported",
+    "GrantLoginWithQrCodeHandler.scan",
+    "GrantQrLoginProgressListener.onUpdate",
+    "GrantQrLoginProgress",
+    "GrantLoginWithQrCodeTask.wait",
+    "GrantLoginWithQrCodeTask.cancel",
+    "ContinuationMessageSender.confirm",
+    "ContinuationMessageSender.cancel",
+    "QrCodeData.fromBytes",
+    "QrCodeData.serverName",
+    "QrCodeData.baseUrl",
+    "QrCodeData.intent",
+    "HumanQrGrantLoginError",
+    "Client.session"
+  ],
+  "parity": ["web-sign-in", "haptics"],
+  "notes": [
+    "Direction (ADR 0116): the browser shows the code, the phone scans. This is the one exception to the ADR 0059 rule; phone-to-phone keeps the other direction. The scanner opens only from linked-devices: the general camera, attachments, links and a QR code in a message never start it (rule 5).",
+    "Support gate (ADR 0118): Client.isLoginWithQrCodeSupported needs an OAuth session, and Bipe signs in with m.login.password, so it says no. Use Bipe's check instead: /versions advertises org.matrix.msc4108 and this phone holds the hidden password of a device-first account. Then call GrantLoginWithQrCodeHandler.scan; no SDK patch.",
+    "SDK vs server: the SDK gives the MSC4108 channel, the check code, the verification URI and secrets sync (cross-signing and the backup key, so the browser decrypts history itself). Server and Bipe work outside the SDK: the MAS device code consent page needs a MAS browser session, which only the private web view makes with the form fill (bipe/docs/security.md QR finding: both directions need the consent page on the signed-in device); the browser place (GET /v1/web-link/place, GeoIP on the Bipe server, no IP leaves Brazil); the clean-up of MAS browser sessions (POST /v1/web-link/finish).",
+    "Unverified: that GrantLoginWithQrCodeHandler.scan works for a session that signed in with m.login.password (the forks do the same, untested end to end, bipe/docs/security.md); that the SDK pin passes verification_uri_complete so MAS fills in the user code (ADR 0118, bipe-chat/bipe#392). If not, the consent page asks for the code shown on the computer.",
+    "Order (ADR 0118): warning, cooldown, biometric, then the web view. The SDK's check code is a step the ADR does not name: show it after the biometric check, so a person talked through the flow by a scammer meets the warning first.",
+    "Web view: iOS WKWebView with a non-persistent data store; Android a WebView in the app process. Never ASWebAuthenticationSession, SFSafariViewController or a Custom Tab. Loads only the MAS host. Fills the login form once; a second login form is error signInPage. Never logs or keeps the password.",
+    "The web device is unattested (ADR 0043). The warning haptic plays with the warning (use web_link_warning), success with done.",
+    "Bipe logic: BipeWebLink (localpart, isAllowed, isDeviceConsentPath, firstIPAddress, qrLoginFeature), BipeWebLinkPlace.label, BipeMatrixAccountAPI.supportsQRLogin and authMetadata, BipeAPIClient.webLinkPlace and finishWebLink (iOS); BipeWebLink, BipeWebLinkSession, BipeWebApprovalController, BipeMatrixAccountApi, BipeApiClient.webLinkPlace and finishWebLink (Android weblink/). Move them.",
+    "bipe_pause_countdown shows the cooldown on the Continue button; with reduced motion only the number changes."
+  ]
+}

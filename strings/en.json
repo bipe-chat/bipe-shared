@@ -1282,6 +1282,11 @@
     "bipe_app_settings_report_logs_footer": "Logs help find the problem. They don't include your messages and stay on the Bipe server in Brazil for 90 days.",
     "bipe_app_settings_report_screenshot": "Add a screenshot",
     "bipe_app_settings_report_send": "Send",
-    "bipe_app_settings_report_error": "Couldn't send the report. Try again."
+    "bipe_app_settings_report_error": "Couldn't send the report. Try again.",
+    "bipe_app_link_check_code_title": "Type this code on the computer",
+    "bipe_app_link_check_code_body": "The computer asks for it to make sure it's talking to this phone.",
+    "bipe_app_link_check_code_done": "I typed the code",
+    "bipe_app_link_not_bipe_code": "This isn't a Bipe sign-in code. Open chat.bipe.net.br on the computer and scan the code there.",
+    "bipe_app_link_expired": "The code expired. Reload the page on the computer and scan the new code."
   }
 }

@@ -1218,6 +1218,19 @@
     "bipe_app_composer_limit": "O áudio chegou ao limite de %1$s minutos.",
     "bipe_app_composer_library": "Fotos e vídeos",
     "bipe_app_composer_camera": "Câmera",
-    "bipe_app_composer_file": "Documento"
+    "bipe_app_composer_file": "Documento",
+    "bipe_app_people_handle_row": "Nome de usuário",
+    "bipe_app_people_message": "Mandar mensagem",
+    "bipe_app_people_copy_link": "Copiar link",
+    "bipe_app_people_scan_qr": "Ler um QR code",
+    "bipe_app_people_qr_unknown": "Este QR code não é um link do Bipe.",
+    "bipe_app_people_contacts_searching": "Procurando seus contatos…",
+    "bipe_app_people_contacts_on_bipe": "No Bipe",
+    "bipe_app_people_phone_unlink": "Desvincular número",
+    "bipe_app_people_phone_unlink_body": "Seus contatos deixam de te achar por esse número.",
+    "bipe_app_people_block_title": "Bloquear %1$s?",
+    "bipe_app_people_blocked_bar": "Você bloqueou esta pessoa.",
+    "bipe_app_people_report_placeholder": "Conte o que aconteceu",
+    "bipe_app_people_report_send": "Enviar denúncia"
   }
 }

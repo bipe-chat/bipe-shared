@@ -1,0 +1,42 @@
+{
+  "id": "profile-share",
+  "title": "Link and QR code",
+  "flow": "people",
+  "summary": "The person's profile link bipe.chat/@handle and its QR code, to show in person or share. Whoever scans or opens it lands on person-profile in the app, or on the web profile page.",
+  "state": {
+    "handle": { "type": "string", "description": "Required. Without one the screen opens handle-pick instead." },
+    "url": { "type": "url", "description": "BipeProfileLink.url(handle:)." }
+  },
+  "actions": {
+    "copyLink": {
+      "effect": "Copies the URL and shows bipe_app_copied."
+    },
+    "share": {
+      "effect": "System share sheet with the URL."
+    },
+    "showQr": {
+      "effect": "Shows the QR code of the URL full screen with the brightness up while it shows."
+    },
+    "scanQr": {
+      "effect": "Opens the camera to scan another person's code. A bipe.chat/@ link opens person-profile; an invite link opens the invite flow; anything else shows bipe_app_people_qr_unknown."
+    }
+  },
+  "strings": [
+    "bipe_profile_share",
+    "bipe_profile_qr_action",
+    "bipe_profile_qr_title",
+    "bipe_profile_qr_footer",
+    "bipe_app_people_copy_link",
+    "bipe_app_copied",
+    "bipe_app_share",
+    "bipe_app_people_scan_qr",
+    "bipe_app_people_qr_unknown"
+  ],
+  "sdk": [],
+  "parity": ["profile-links", "profile-link-routing", "handles"],
+  "notes": [
+    "The QR code holds only the public link; it grants nothing. It is not the sign-in QR of another device (security.md rule 5): a scan here never approves a device.",
+    "Camera permission is asked only on scanQr (onboarding.md: Permissions).",
+    "Bipe logic: BipeProfileLink.url, BipeQRCodeView, BipeProfileQRCodeSheet (iOS); BipeProfileLink.url, BipeQrCodeContent, BipeProfileQrSheet (Android)."
+  ]
+}

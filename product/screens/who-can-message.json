@@ -1,0 +1,46 @@
+{
+  "id": "who-can-message",
+  "title": "Who can message you",
+  "flow": "settings",
+  "summary": "Privacy setting for who can start a chat or invite the person to a group. The server enforces it: invites it does not allow are refused. Strangers allowed by everyone arrive as chat requests.",
+  "state": {
+    "value": {
+      "type": "enum",
+      "values": ["everyone", "verified", "contacts"],
+      "description": "who_can_message from GET /v1/me/messaging. Default everyone."
+    },
+    "phase": {
+      "type": "enum",
+      "values": ["loading", "ready", "saving", "failed"],
+      "description": "saving: PUT /v1/me/messaging runs."
+    }
+  },
+  "actions": {
+    "load": {
+      "effect": "GET /v1/me/messaging."
+    },
+    "choose": {
+      "params": { "value": { "type": "string", "description": "everyone, verified or contacts." } },
+      "effect": "PUT /v1/me/messaging. On failure the choice goes back and bipe_error_network shows."
+    }
+  },
+  "strings": [
+    "bipe_messaging_title",
+    "bipe_privacy_who_can_talk",
+    "bipe_messaging_everyone",
+    "bipe_messaging_everyone_body",
+    "bipe_messaging_verified",
+    "bipe_messaging_verified_body",
+    "bipe_messaging_contacts",
+    "bipe_messaging_contacts_body",
+    "bipe_settings_privacy_summary_contacts",
+    "bipe_error_network"
+  ],
+  "sdk": ["Client.session"],
+  "parity": ["who-can-message", "requests"],
+  "notes": [
+    "Contacts are people in a shared joined chat and invite pairs (ADR 0034); they can always invite.",
+    "verified also admits verified accounts; none exist until the badge ships, and bipe_messaging_verified_body says so.",
+    "Bipe logic: BipeAPIClient.messagingSetting and setMessagingSetting, BipeWhoCanMessage (iOS); BipePrivacySettings.refreshMessaging and setMessaging, BipeMessagingPresenter (Android)."
+  ]
+}

@@ -1,0 +1,82 @@
+{
+  "id": "own-profile",
+  "title": "Your profile",
+  "flow": "people",
+  "summary": "The person's own profile from the Você tab: the name and photo people see in chats (the Matrix profile), the @, the link and QR code, and the entry to the public profile. The name passes the reserved-name check before it is saved.",
+  "state": {
+    "displayName": { "type": "string", "description": "Client.displayName. The field while editing." },
+    "avatarUrl": { "type": "url", "optional": true, "description": "Client.avatarUrl (mxc)." },
+    "handle": { "type": "string", "optional": true, "description": "From GET /v1/me/handle, without @." },
+    "publicProfileOn": { "type": "bool", "description": "enabled from GET /v1/me/profile." },
+    "nameProblem": {
+      "type": "enum",
+      "values": ["none", "empty", "reserved"],
+      "description": "reserved: the normalised name is in registries/reserved-names.json and the account is not a verified company (security.md rule 8)."
+    },
+    "phase": {
+      "type": "enum",
+      "values": ["viewing", "editingName", "saving", "failed"],
+      "description": "saving: Client.setDisplayName or the photo upload runs."
+    }
+  },
+  "actions": {
+    "editName": {
+      "params": { "text": { "type": "string", "description": "The new name." } },
+      "effect": "Sets displayName and runs the local reserved-name check."
+    },
+    "saveName": {
+      "effect": "Client.setDisplayName with the trimmed name. Off while nameProblem is not none."
+    },
+    "changePhoto": {
+      "effect": "Opens the system photo picker or camera, crops to a square, re-encodes as JPEG and calls Client.uploadAvatar."
+    },
+    "removePhoto": {
+      "effect": "Client.removeAvatar."
+    },
+    "openHandle": {
+      "effect": "Opens handle-pick."
+    },
+    "openShare": {
+      "effect": "Opens profile-share. Only with a handle."
+    },
+    "openPublicProfile": {
+      "effect": "Opens public-profile-edit."
+    }
+  },
+  "strings": [
+    "bipe_settings_profile",
+    "bipe_settings_profile_name_photo",
+    "bipe_profile_display_name",
+    "bipe_profile_display_name_footer",
+    "bipe_public_profile_name_empty",
+    "bipe_warning_reserved_name",
+    "bipe_public_profile_photo_change",
+    "bipe_public_profile_photo_remove",
+    "bipe_app_people_handle_row",
+    "bipe_trust_step_profile_add_handle",
+    "bipe_profile_share",
+    "bipe_settings_public_profile",
+    "bipe_public_profile_on",
+    "bipe_public_profile_off",
+    "bipe_public_profile_save",
+    "bipe_error_network",
+    "bipe_error_generic"
+  ],
+  "sdk": [
+    "Client.displayName",
+    "Client.avatarUrl",
+    "Client.setDisplayName",
+    "Client.uploadAvatar",
+    "Client.removeAvatar",
+    "Client.session"
+  ],
+  "parity": ["handles", "public-profile", "profile-links", "reserved-names"],
+  "notes": [
+    "The Matrix profile goes to every chat the person is in. The public profile (ADR 0041) is separate and opt-in; the app fills it from the Matrix profile the first time.",
+    "Reserved names: NameNormalizer.normalize and NameNormalizer.reservedCategory (iOS and Android), cases in test-vectors/normalization.json. The server and the other apps check again; the local check only gives early feedback.",
+    "A company account (ADR 0087) edits the company name and logo here; its seal and legal name come from the badge, never from this screen (cnpj-badge).",
+    "The Matrix ID is never shown (ADR 0013). Without a handle the @ row shows bipe_trust_step_profile_add_handle.",
+    "Badge-lookalike emoji next to the name (bipe_warning_name_lookalike_emoji, trust-ui.md) need a shared registry first; not in this spec.",
+    "Bipe logic: BipeAPIClient.myHandle and myProfile (iOS), BipeApiClient.myProfile, BipeHandleRow, BipePublicProfileRow (Android)."
+  ]
+}

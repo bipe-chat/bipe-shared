@@ -1,0 +1,124 @@
+{
+  "id": "public-profile-edit",
+  "title": "Public profile",
+  "flow": "people",
+  "summary": "Turns the public profile on or off and edits its name, bio and photo (ADR 0041). The profile is reachable only by the exact @ link; it has no search, followers or posts.",
+  "state": {
+    "enabled": {
+      "type": "bool",
+      "description": "The toggle. Off by default."
+    },
+    "hasHandle": {
+      "type": "bool",
+      "description": "Without a handle the toggle is off and bipe_public_profile_needs_handle shows with a link to handle-pick."
+    },
+    "name": {
+      "type": "string",
+      "description": "Up to nameMaxLength (registries/profiles.json)."
+    },
+    "bio": {
+      "type": "string",
+      "description": "Plain text, up to bioMaxLength characters and bioMaxLines lines."
+    },
+    "photoUrl": {
+      "type": "url",
+      "optional": true,
+      "description": "From GET /v1/me/profile."
+    },
+    "problem": {
+      "type": "enum",
+      "values": [
+        "none",
+        "nameEmpty",
+        "nameTooLong",
+        "nameReserved",
+        "bioTooLong",
+        "bioTooManyLines",
+        "noHandle",
+        "photoInvalid"
+      ],
+      "description": "Local check first (BipeProfileProblem), then the server reason of 400 profile_invalid or photo_invalid."
+    },
+    "phase": {
+      "type": "enum",
+      "values": [
+        "loading",
+        "editing",
+        "saving",
+        "saved",
+        "failed"
+      ],
+      "description": "saving: PUT /v1/me/profile (and the photo call) runs."
+    }
+  },
+  "actions": {
+    "load": {
+      "effect": "GET /v1/me/profile. When the record is new, fills name and photo from the Matrix profile."
+    },
+    "toggle": {
+      "effect": "Flips enabled. Turning off saves at once and hides the profile."
+    },
+    "edit": {
+      "params": {
+        "name": {
+          "type": "string",
+          "description": "The name field."
+        },
+        "bio": {
+          "type": "string",
+          "description": "The bio field."
+        }
+      },
+      "effect": "Sets the fields and runs the local check."
+    },
+    "changePhoto": {
+      "effect": "Picks a photo, re-encodes it as JPEG of at most photoMaxPixels per side and photoMaxBytes, then PUT /v1/me/profile/photo. The server removes the metadata."
+    },
+    "removePhoto": {
+      "effect": "DELETE /v1/me/profile/photo."
+    },
+    "save": {
+      "effect": "PUT /v1/me/profile with enabled, name and bio. Shows bipe_public_profile_saved."
+    },
+    "share": {
+      "effect": "Opens profile-share."
+    }
+  },
+  "strings": [
+    "bipe_settings_public_profile",
+    "bipe_public_profile_toggle",
+    "bipe_public_profile_footer",
+    "bipe_public_profile_needs_handle",
+    "bipe_public_profile_name",
+    "bipe_public_profile_bio",
+    "bipe_public_profile_bio_placeholder",
+    "bipe_public_profile_photo_change",
+    "bipe_public_profile_photo_remove",
+    "bipe_public_profile_save",
+    "bipe_public_profile_saved",
+    "bipe_public_profile_share",
+    "bipe_public_profile_name_empty",
+    "bipe_public_profile_name_too_long",
+    "bipe_public_profile_bio_too_long",
+    "bipe_public_profile_bio_too_many_lines",
+    "bipe_public_profile_photo_invalid",
+    "bipe_warning_reserved_name",
+    "bipe_error_network"
+  ],
+  "sdk": [
+    "Client.session",
+    "Client.displayName",
+    "Client.avatarUrl"
+  ],
+  "parity": [
+    "public-profile",
+    "reserved-names",
+    "handles"
+  ],
+  "notes": [
+    "Limits from registries/profiles.json; bipe_public_profile_name_too_long, bipe_public_profile_bio_too_long and bipe_public_profile_bio_too_many_lines take nameMaxLength, bioMaxLength and bioMaxLines.",
+    "The badge on the profile comes from the signed envelope only (GET /v1/badges/{userId}); the person cannot write it.",
+    "Minors: the server refuses to publish (ADR 0041). Show bipe_error_generic.",
+    "Bipe logic: BipeProfileProblem and BipePublicProfileRules.profileProblem and trim, jpegData (iOS, BipePublicProfile.swift), BipeAPIClient.myProfile, setMyProfile, setMyProfilePhoto, deleteMyProfilePhoto; BipeProfileProblem, BipeProfileRules.problem and saveProblem, BipePublicProfiles, BipeProfilePhotoEncoder (Android)."
+  ]
+}

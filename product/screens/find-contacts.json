@@ -1,0 +1,74 @@
+{
+  "id": "find-contacts",
+  "title": "Find your contacts",
+  "flow": "people",
+  "summary": "Shows which people in the phone's address book are on Bipe, by phone number (ADR 0015), and offers an invite for the rest. The server compares keyed hashes and keeps no list.",
+  "types": {
+    "ContactMatch": {
+      "userId": { "type": "string", "description": "The Bipe account. Never shown." },
+      "contactName": { "type": "string", "description": "The name saved in the address book." },
+      "displayName": { "type": "string", "optional": true, "description": "The account's Bipe name, from Client.getProfile." },
+      "handle": { "type": "string", "optional": true, "description": "The @, from POST /v1/handles/resolve." },
+      "joinedWithInvite": { "type": "bool", "description": "The person joined with the caller's invite (invite pairs)." }
+    }
+  },
+  "state": {
+    "permission": {
+      "type": "enum",
+      "values": ["notAsked", "granted", "denied"],
+      "description": "The address-book permission. Asked only here, after the person taps the allow button."
+    },
+    "phase": {
+      "type": "enum",
+      "values": ["intro", "searching", "results", "failed"],
+      "description": "searching: numbers are normalised and POST /v1/contacts/lookup runs."
+    },
+    "matches": {
+      "type": "list",
+      "of": { "type": "ContactMatch", "description": "One contact on Bipe." },
+      "description": "Sorted by contact name."
+    }
+  },
+  "actions": {
+    "allow": {
+      "effect": "Asks the system address-book permission. granted: runs search."
+    },
+    "search": {
+      "effect": "Reads every phone number, normalises each with BipePhoneNumber.normalize (registries/phone-numbers.json; numbers that fail are skipped), sends them in batches of at most 500 to POST /v1/contacts/lookup and maps each match back to the contact name."
+    },
+    "openMatch": {
+      "params": { "userId": { "type": "string", "description": "The match." } },
+      "effect": "Opens person-profile."
+    },
+    "invite": {
+      "effect": "Opens the invite flow (invites, bipe-chat/bipe#569)."
+    },
+    "openSystemSettings": {
+      "effect": "From denied: opens the app's page in the system settings."
+    }
+  },
+  "strings": [
+    "bipe_contacts_title",
+    "bipe_contacts_intro",
+    "bipe_contacts_allow",
+    "bipe_contacts_denied",
+    "bipe_contacts_open_settings",
+    "bipe_contacts_open_settings_android",
+    "bipe_app_people_contacts_searching",
+    "bipe_app_people_contacts_on_bipe",
+    "bipe_contacts_none",
+    "bipe_contacts_invite",
+    "bipe_contacts_joined_with_invite",
+    "bipe_error_rate_limited",
+    "bipe_error_network"
+  ],
+  "sdk": ["Client.getProfile", "Client.session"],
+  "parity": ["phone-discovery", "invites"],
+  "notes": [
+    "Numbers leave the phone only for the lookup; the server normalises again, compares HMACs with linked numbers and stores nothing (phone-link.md). Never log the numbers.",
+    "Only accounts whose holder allows discovery match (who-can-find). Phone numbers are never shown for a match: the row shows the contact name and the Bipe name and @.",
+    "Limits: 500 numbers per request, a daily budget (lower for new accounts), 30 requests per hour. A 429 shows bipe_error_rate_limited with the matches found so far.",
+    "Android has no address-book match yet (parity phone-discovery planned, bipe-chat/bipe#162).",
+    "Bipe logic: BipePhoneNumber.normalize, BipeAPIClient.lookupContacts, resolveHandles, inviteConnections (iOS); BipePhoneNumber.normalize, BipeAddressBook.namesByPhone, BipeContactsPresenter, BipeApiClient.lookupContacts and inviteConnections (Android)."
+  ]
+}

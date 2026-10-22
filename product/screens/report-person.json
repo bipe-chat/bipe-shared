@@ -1,0 +1,55 @@
+{
+  "id": "report-person",
+  "title": "Report",
+  "flow": "people",
+  "summary": "Reports a chat or one message to the Bipe team with a reason the person writes, and optionally leaves the chat. Moderation under end-to-end encryption is report-based: the team sees only the reason and what the person chooses to send.",
+  "state": {
+    "target": {
+      "type": "enum",
+      "values": ["chat", "message"],
+      "description": "chat: from the profile or the chat info. message: from message-actions."
+    },
+    "roomId": { "type": "string", "description": "The chat." },
+    "eventId": { "type": "string", "optional": true, "description": "The message, for target message." },
+    "reason": { "type": "string", "description": "Free text, required." },
+    "alsoLeave": { "type": "bool", "description": "Chat target: leave (or delete, for a DM) after the report." },
+    "phase": {
+      "type": "enum",
+      "values": ["editing", "sending", "done", "leaveFailed", "failed"],
+      "description": "leaveFailed: the report went but the leave did not."
+    }
+  },
+  "actions": {
+    "editReason": {
+      "params": { "text": { "type": "string", "description": "The reason." } },
+      "effect": "Sets reason."
+    },
+    "toggleLeave": {
+      "effect": "Flips alsoLeave."
+    },
+    "send": {
+      "effect": "chat: Room.reportRoom with the reason. message: Room.reportContent with the event ID and the reason. Then, with alsoLeave, Room.leave (a DM uses Apagar conversa, parity dm-delete). Off while reason is blank."
+    }
+  },
+  "strings": [
+    "bipe_dm_report",
+    "bipe_dm_report_footer",
+    "bipe_report_message_reason",
+    "bipe_report_message_body",
+    "bipe_app_people_report_placeholder",
+    "bipe_app_people_report_send",
+    "bipe_dm_report_leave",
+    "bipe_dm_reported",
+    "bipe_dm_reported_and_left",
+    "bipe_dm_report_leave_failed_title",
+    "bipe_dm_report_leave_failed_body",
+    "bipe_error_network"
+  ],
+  "sdk": ["Room.reportRoom", "Room.reportContent", "Room.leave", "Room.isDirect"],
+  "parity": ["requests", "dm-delete"],
+  "notes": [
+    "The report goes to the homeserver admins (Matrix spec reporting endpoints); Bipe staff read it there. No message text is attached by the app.",
+    "A message from a scam warning row (message-scam-warning) can be reported the same way.",
+    "Reporting a person without a chat is not possible in Matrix phase 1; the profile's report uses the DM when one exists, else it is hidden."
+  ]
+}

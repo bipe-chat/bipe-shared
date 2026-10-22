@@ -1,0 +1,97 @@
+{
+  "id": "person-profile",
+  "title": "Person profile",
+  "flow": "people",
+  "summary": "Another person's profile: name, @, photo, the verified seal or the not-verified label, the company seal for a business, the public bio when published, and the actions message, block and report. Opens from a chat header, a member list, a contact match, a scanned QR code or a bipe.chat/@handle link.",
+  "types": {
+    "SealState": {
+      "kind": {
+        "type": "enum",
+        "values": ["none", "personVerified", "companyVerified", "companySuspended", "companyRevoked", "badgeSuspended"],
+        "description": "From the badge envelope verified on the device and the company seal state. Never from the profile record."
+      },
+      "verifiedName": { "type": "string", "optional": true, "description": "The verified legal name (person) or the legal and trade names (company)." },
+      "cnpj": { "type": "string", "optional": true, "description": "Company only, formatted." }
+    }
+  },
+  "state": {
+    "userId": { "type": "string", "optional": true, "description": "Matrix ID. Known from a chat; from a link it comes from GET /v1/handles/{handle}. Never shown." },
+    "handle": { "type": "string", "optional": true, "description": "The @, without @." },
+    "displayName": { "type": "string", "description": "Client.getProfile display name, else the public profile name." },
+    "avatarUrl": { "type": "url", "optional": true, "description": "Matrix avatar or public profile photo." },
+    "isCompany": { "type": "bool", "description": "GET /v1/accounts/{userId}/type is company. Draws the avatar as a rounded square (ADR 0132)." },
+    "seal": { "type": "SealState", "description": "What the trust line shows." },
+    "bio": { "type": "string", "optional": true, "description": "From GET /v1/profiles/{handle} when the profile is on." },
+    "isBlocked": { "type": "bool", "description": "The user ID is in Client.ignoredUsers." },
+    "phase": {
+      "type": "enum",
+      "values": ["loading", "ready", "notFound", "failed"],
+      "description": "notFound: the @ has no holder (404)."
+    }
+  },
+  "actions": {
+    "openFromLink": {
+      "params": { "url": { "type": "url", "description": "https://bipe.chat/@handle, a QR code with that link, or a matrix.to user permalink." } },
+      "effect": "Takes the handle (or the Matrix ID from a permalink) from the URL, resolves it and loads the profile."
+    },
+    "load": {
+      "effect": "Client.getProfile, GET /v1/badges/{userId} verified on the device, GET /v1/accounts/{userId}/type and, with a handle, GET /v1/profiles/{handle}."
+    },
+    "message": {
+      "effect": "Opens the DM: Client.getDmRoom, else Client.createRoom for a new encrypted DM (ADR 0141). A stranger's DM arrives on the other side as a chat request."
+    },
+    "block": {
+      "effect": "Opens block-person."
+    },
+    "report": {
+      "effect": "Opens report-person."
+    },
+    "share": {
+      "effect": "Shares the profile link (BipeProfileLink.url) with the system share sheet. Only with a handle."
+    }
+  },
+  "strings": [
+    "bipe_app_people_message",
+    "bipe_action_block_person",
+    "bipe_action_unblock_person",
+    "bipe_app_msg_report",
+    "bipe_profile_share",
+    "bipe_badge_verified",
+    "bipe_badge_verified_name",
+    "bipe_badge_suspended",
+    "bipe_badge_suspended_body",
+    "bipe_badge_company",
+    "bipe_badge_company_legal_name",
+    "bipe_badge_company_trade_name",
+    "bipe_badge_company_cnpj",
+    "bipe_badge_company_checked",
+    "bipe_badge_company_valid_until",
+    "bipe_badge_company_body",
+    "bipe_badge_company_revoked",
+    "bipe_badge_company_revoked_not_active",
+    "bipe_badge_company_suspended",
+    "bipe_public_profile_not_verified",
+    "bipe_trust_identity_body",
+    "bipe_start_chat_handle_not_found",
+    "bipe_error_network"
+  ],
+  "sdk": [
+    "Client.getProfile",
+    "UserProfile",
+    "Client.getDmRoom",
+    "Client.createRoom",
+    "CreateRoomParameters",
+    "Client.ignoredUsers",
+    "Client.session",
+    "matrixToUserPermalink"
+  ],
+  "parity": ["public-profile", "profile-link-routing", "cnpj-badge", "verified-badge", "reserved-names", "handles"],
+  "notes": [
+    "Trust UI (trust-ui.md): the seal shape and the verified-name line mean verified, never the colour alone. A person without a valid badge shows bipe_public_profile_not_verified in the neutral style.",
+    "Badges are verified on the device against registries/badge-keys.json and bound to the account's master key (security.md rule 2). Bipe logic: BadgeVerifier.verify, BipeCompanySeals.state and isCompany, BipeCNPJ.formatted (iOS); BadgeVerifier, BipeCompanySeals, BipeCompanySeal (Android).",
+    "Handle links: bipe.chat/@handle (2 to 30 characters, ADR 0065) opens this screen in the app. Bipe logic: BipeProfileLink.handle(from:) and matrixUserID(fromPermalink:) (iOS), BipeProfileLink.handle and matrixUserId (Android), BipeHandleResolver.userID(forHandle:).",
+    "The handle lookup is exact only (ADR 0013): no search. The public profile record never carries the Matrix ID; the app needs GET /v1/handles/{handle} with a token to start a chat.",
+    "No follower counts, posts or group lists (ADR 0041). Hard name mismatch and family nickname checks are chat trust cards (phase 2), not this screen.",
+    "Public bio: BipePublicProfileBioView (iOS), BipePublicProfilePresenter (Android)."
+  ]
+}

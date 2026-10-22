@@ -1,0 +1,60 @@
+{
+  "id": "block-person",
+  "title": "Block and unblock",
+  "flow": "people",
+  "summary": "Blocks a person (Matrix ignore): their messages, chat requests and invites stop showing on all the person's devices. A blocked DM stays, with the composer off and a bar to unblock (ADR 0141). Also the list of blocked people in privacy settings.",
+  "state": {
+    "target": { "type": "string", "optional": true, "description": "The user ID in the confirm." },
+    "targetName": { "type": "string", "optional": true, "description": "Its display name, for the title." },
+    "blocked": {
+      "type": "list",
+      "of": { "type": "string", "description": "A user ID." },
+      "description": "Client.ignoredUsers, kept current with the ignored-users listener. Rows show name and @, never the Matrix ID."
+    },
+    "phase": {
+      "type": "enum",
+      "values": ["idle", "confirming", "working", "failed"],
+      "description": "working: ignoreUser or unignoreUser runs."
+    }
+  },
+  "actions": {
+    "askBlock": {
+      "params": { "userId": { "type": "string", "description": "The person." } },
+      "effect": "Opens the confirm."
+    },
+    "confirmBlock": {
+      "effect": "Client.ignoreUser. In an open DM the composer turns off and the unblock bar shows."
+    },
+    "unblock": {
+      "params": { "userId": { "type": "string", "description": "The person." } },
+      "effect": "Client.unignoreUser, from the bar, the profile or the blocked list."
+    },
+    "observe": {
+      "effect": "Client.subscribeToIgnoredUsers while the list or a chat with a blocked person is open."
+    }
+  },
+  "strings": [
+    "bipe_app_people_block_title",
+    "bipe_dm_decline_block_description",
+    "bipe_action_block_person",
+    "bipe_action_unblock_person",
+    "bipe_app_people_blocked_bar",
+    "bipe_privacy_blocked",
+    "bipe_privacy_blocked_none",
+    "bipe_app_cancel",
+    "bipe_error_network"
+  ],
+  "sdk": [
+    "Client.ignoreUser",
+    "Client.unignoreUser",
+    "Client.ignoredUsers",
+    "Client.subscribeToIgnoredUsers",
+    "IgnoredUsersListener.call"
+  ],
+  "parity": ["requests"],
+  "notes": [
+    "The blocked person gets no notice. Matrix ignore lives in the account data, so it follows the account to every device.",
+    "The SDK drops the ignored person's events from timelines and the room list after the next sync; the DM row itself stays (ADR 0141).",
+    "Blocking does not report. The block confirm can offer report-person as a second step."
+  ]
+}

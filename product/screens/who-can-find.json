@@ -1,0 +1,48 @@
+{
+  "id": "who-can-find",
+  "title": "Who can find you",
+  "flow": "settings",
+  "summary": "Privacy setting for phone-number discovery: shows whether a number is linked to the account (never the number), lets the person turn discovery off, and unlink the number.",
+  "state": {
+    "linked": { "type": "bool", "description": "linked from GET /v1/me/phone." },
+    "confirmBy": { "type": "date", "optional": true, "description": "After this date the number stops being discoverable until confirmed again." },
+    "discoverableByPhone": { "type": "bool", "description": "by_phone from GET /v1/me/discovery." },
+    "phase": {
+      "type": "enum",
+      "values": ["loading", "ready", "saving", "failed"],
+      "description": "saving: a PUT or DELETE runs."
+    }
+  },
+  "actions": {
+    "load": {
+      "effect": "GET /v1/me/phone and GET /v1/me/discovery."
+    },
+    "toggleDiscovery": {
+      "effect": "PUT /v1/me/discovery with the new by_phone."
+    },
+    "unlink": {
+      "effect": "After a confirm (bipe_app_people_phone_unlink_body), DELETE /v1/me/phone."
+    }
+  },
+  "strings": [
+    "bipe_privacy_who_can_find",
+    "bipe_privacy_number",
+    "bipe_privacy_number_linked",
+    "bipe_privacy_number_not_linked",
+    "bipe_phone_linked",
+    "bipe_phone_not_linked",
+    "bipe_discovery_toggle",
+    "bipe_discovery_footer",
+    "bipe_app_people_phone_unlink",
+    "bipe_app_people_phone_unlink_body",
+    "bipe_app_cancel",
+    "bipe_error_network"
+  ],
+  "sdk": ["Client.session"],
+  "parity": ["phone-discovery"],
+  "notes": [
+    "Linking a number (Pix phone key or SMS code, phone-link.md) has no API yet; the screen shows bipe_phone_not_linked and no link button until it does.",
+    "The number is never shown, also not to its owner: the server keeps only a keyed hash.",
+    "Bipe logic: BipeAPIClient.myPhone and setDiscoverableByPhone (iOS); BipePrivacySettings.refreshDiscovery and setDiscoverableByPhone, BipeApiClient.phone and discovery (Android)."
+  ]
+}

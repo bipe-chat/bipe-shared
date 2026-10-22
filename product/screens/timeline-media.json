@@ -1,0 +1,97 @@
+{
+  "id": "timeline-media",
+  "title": "Photos, videos and files in the timeline",
+  "flow": "chat",
+  "summary": "Timeline rows for images, videos, stickers and files: a blurred preview while loading, the media itself when it may show, the caption under it, and the upload progress of own media. A tap opens media-viewer or the file.",
+  "types": {
+    "MediaMessage": {
+      "kind": {
+        "type": "enum",
+        "values": ["image", "video", "file", "sticker"],
+        "description": "From the message type. Voice and audio are voice-message rows."
+      },
+      "filename": { "type": "string", "description": "File name from the event." },
+      "caption": { "type": "string", "optional": true, "description": "Text sent with the media." },
+      "mimeType": { "type": "string", "optional": true, "description": "From the event info." },
+      "sizeLabel": { "type": "string", "optional": true, "description": "File size, already formatted by the system (\"2,4 MB\")." },
+      "width": { "type": "int", "optional": true, "description": "Pixels, for the row aspect ratio." },
+      "height": { "type": "int", "optional": true, "description": "Pixels, for the row aspect ratio." },
+      "durationLabel": { "type": "string", "optional": true, "description": "video only: duration, formatted." },
+      "blurhash": { "type": "string", "optional": true, "description": "The blurred placeholder from the event." },
+      "display": {
+        "type": "enum",
+        "values": ["placeholder", "tapToShow", "loading", "shown", "failed"],
+        "description": "placeholder: blurhash only, before the thumbnail loads. tapToShow: the show-media setting hides it until a tap. loading: downloading. shown: the thumbnail or image shows. failed: the download failed."
+      },
+      "uploadProgress": { "type": "int", "optional": true, "description": "Own media while sending: percent 0 to 100." }
+    }
+  },
+  "state": {
+    "media": { "type": "MediaMessage", "description": "The row. Sender, time, reactions, reply quote and receipts come from timeline-rows MessageDetails." },
+    "showMedia": {
+      "type": "enum",
+      "values": ["always", "privateOnly", "never"],
+      "description": "The setting bipe_chats_show_media: always, only in DMs and closed groups, or only on tap."
+    }
+  },
+  "actions": {
+    "appear": {
+      "effect": "Loads the thumbnail (or the image when it has none) through the media cache when display may show it."
+    },
+    "tapToShow": {
+      "effect": "Shows media hidden by showMedia for this message."
+    },
+    "open": {
+      "effect": "image, video, sticker: opens media-viewer. file: downloads the file to the cache and opens the system preview or share sheet."
+    },
+    "retryDownload": {
+      "effect": "failed: loads again."
+    },
+    "cancelUpload": {
+      "effect": "Own media while sending: cancels the send and removes the row."
+    }
+  },
+  "strings": [
+    "bipe_app_media_tap_to_show",
+    "bipe_app_media_failed",
+    "bipe_app_media_image",
+    "bipe_app_media_video",
+    "bipe_app_media_file",
+    "bipe_app_media_sticker",
+    "bipe_app_cancel",
+    "bipe_chats_show_media",
+    "bipe_chats_show_media_always",
+    "bipe_chats_show_media_private",
+    "bipe_chats_show_media_never"
+  ],
+  "sdk": [
+    "MsgLikeKind",
+    "MessageContent",
+    "MessageType",
+    "ImageMessageContent",
+    "VideoMessageContent",
+    "FileMessageContent",
+    "ImageInfo",
+    "VideoInfo",
+    "FileInfo",
+    "MediaSource",
+    "Client.getMediaThumbnail",
+    "Client.getMediaContent",
+    "Client.getMediaFile",
+    "MediaFileHandle",
+    "EventSendState",
+    "MediaUploadProgress",
+    "Timeline.abortSend"
+  ],
+  "parity": ["e2ee"],
+  "notes": [
+    "Encrypted media: the event's MediaSource holds the key; the SDK downloads and decrypts on the phone. Media never goes through a Bipe server other than the homeserver.",
+    "showMedia privateOnly: media shows in DMs and in groups that need an invite; in a public group it waits for a tap. The setting row lives in the Conversas e mídia group of settings.",
+    "The row keeps its size from width and height before the media loads, so the timeline does not jump. Without size: a 4:3 box.",
+    "bipe_app_media_image, _video, _file and _sticker are the accessibility labels, and the preview text in replies, the chat list and notifications (message-reply, notification-service).",
+    "Captions show under the media as text, and the scam warning reads the caption (scam-warning). A caption is edited with message-edit (EditedContent.MediaCaption).",
+    "Stickers show without a bubble, at most 160 points wide, animated when ImageInfo.isAnimated. Saving stickers is the stickers issue (bipe_action_save_sticker).",
+    "A photo that is a receipt image gets no special card here; the receipt scam check reads text only.",
+    "Delete and forward come from message-actions; media delete uses message-delete (bipe_dm_media_delete_body is the media library text, not this row)."
+  ]
+}

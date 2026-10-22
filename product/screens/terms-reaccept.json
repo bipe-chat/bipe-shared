@@ -1,0 +1,50 @@
+{
+  "id": "terms-reaccept",
+  "title": "Accept the terms again",
+  "flow": "account",
+  "summary": "Blocks the app until the person accepts the current Terms of use and Privacy policy, for accounts made before the clickwrap and after a new legalVersion (ADR 0113).",
+  "state": {
+    "acceptedVersion": { "type": "string", "optional": true, "description": "terms_version from GET /v1/me/account. Absent for accounts made before ADR 0113." },
+    "currentVersion": { "type": "string", "description": "legalVersion from registries/legal.json (or terms_version from GET /v1/signup/config when newer)." },
+    "accepted": { "type": "bool", "description": "The checkbox. Starts unticked." },
+    "phase": {
+      "type": "enum",
+      "values": ["shown", "saving", "failed"],
+      "description": "saving: POST /v1/me/terms runs."
+    }
+  },
+  "actions": {
+    "check": {
+      "effect": "After sign-in and on foreground: when acceptedVersion differs from currentVersion, shows this screen over the app."
+    },
+    "toggle": {
+      "effect": "Flips accepted."
+    },
+    "openTerms": {
+      "effect": "Opens the Terms of use in the system browser (termsPath or enTermsPath on PUBLIC_SITE_URL)."
+    },
+    "openPrivacy": {
+      "effect": "Opens the Privacy policy the same way (privacyPath or enPrivacyPath)."
+    },
+    "accept": {
+      "effect": "Sends POST /v1/me/terms with currentVersion. On 204 closes. Off while accepted is false."
+    }
+  },
+  "strings": [
+    "bipe_terms_reaccept_title",
+    "bipe_terms_reaccept_body",
+    "bipe_signup_terms_accept",
+    "bipe_signup_terms_link",
+    "bipe_signup_privacy_link",
+    "bipe_terms_reaccept_failed",
+    "bipe_action_continue",
+    "bipe_account_sign_out"
+  ],
+  "sdk": ["Client.session"],
+  "parity": ["terms-reaccept", "signup-terms-clickwrap"],
+  "notes": [
+    "The app never sends an acceptance that the person did not tick.",
+    "The screen has no close button. A text button at the bottom (bipe_account_sign_out) opens the sign-out confirm of settings, so a person who does not accept can leave.",
+    "Bipe logic: BipeAPIClient.acceptTerms, BipeLegalLinks (iOS); BipeTermsReaccept, BipeTermsReacceptPresenter, BipeLegalLinks (Android)."
+  ]
+}

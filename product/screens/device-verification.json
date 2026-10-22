@@ -1,0 +1,105 @@
+{
+  "id": "device-verification",
+  "title": "Approve this phone",
+  "flow": "encryption",
+  "summary": "Approves a new phone with a device that is already signed in, so the new phone gets the message history (rule 5). The new phone asks; the old device shows who asks and approves after a biometric check; both compare the same symbols (Matrix SAS verification).",
+  "types": {
+    "VerificationSymbol": {
+      "symbol": { "type": "string", "description": "SessionVerificationEmoji.symbol." },
+      "label": { "type": "string", "description": "SessionVerificationEmoji.description, shown under the symbol." }
+    },
+    "RequestingDevice": {
+      "deviceId": { "type": "string", "description": "The Matrix device ID of the other device." },
+      "displayName": { "type": "string", "optional": true, "description": "Its device name, for example the phone model." },
+      "firstSeenAt": { "type": "date", "optional": true, "description": "When the request came." }
+    }
+  },
+  "state": {
+    "role": {
+      "type": "enum",
+      "values": ["newPhone", "approver"],
+      "description": "newPhone: this phone wants the history. approver: this device holds the history and got a request."
+    },
+    "phase": {
+      "type": "enum",
+      "values": ["requesting", "waitingForOther", "incoming", "confirmIdentity", "compare", "waitingForMatch", "done", "cancelled", "failed"],
+      "description": "requesting and waitingForOther: newPhone sent the request. incoming: approver got it. confirmIdentity: approver passes the biometric check. compare: both show symbols. waitingForMatch: this side confirmed, the other not yet."
+    },
+    "otherDevice": { "type": "RequestingDevice", "optional": true, "description": "approver: the device that asks." },
+    "symbols": {
+      "type": "list",
+      "of": { "type": "VerificationSymbol", "description": "One of 7 symbols." },
+      "description": "From SessionVerificationData in compare."
+    }
+  },
+  "actions": {
+    "request": {
+      "effect": "newPhone: SessionVerificationController.requestDeviceVerification. Sets phase waitingForOther."
+    },
+    "receive": {
+      "effect": "approver: SessionVerificationControllerDelegate.didReceiveVerificationRequest with SessionVerificationRequestDetails. Acknowledges it and shows phase incoming over the app."
+    },
+    "accept": {
+      "effect": "approver: asks for a biometric check (or the device PIN), then acceptVerificationRequest. The new phone starts SAS (startSasVerification) when the accept arrives."
+    },
+    "decline": {
+      "effect": "approver: declineVerification. The new phone shows cancelled."
+    },
+    "match": {
+      "effect": "Both: the symbols are the same. approveVerification. phase done after didFinish."
+    },
+    "noMatch": {
+      "effect": "Both: the symbols differ. declineVerification; nothing is approved; shows bipe_app_verify_mismatch."
+    },
+    "cancel": {
+      "effect": "cancelVerification at any time before done."
+    }
+  },
+  "strings": [
+    "bipe_app_verify_title",
+    "bipe_app_verify_body",
+    "bipe_app_verify_waiting",
+    "bipe_app_verify_incoming_title",
+    "bipe_app_verify_incoming_body",
+    "bipe_app_verify_approve",
+    "bipe_app_verify_biometric",
+    "bipe_app_verify_compare",
+    "bipe_app_verify_match",
+    "bipe_app_verify_no_match",
+    "bipe_app_verify_mismatch",
+    "bipe_app_verify_done",
+    "bipe_app_verify_cancelled",
+    "bipe_device_approval_never_for_others",
+    "bipe_app_cancel",
+    "bipe_error_generic"
+  ],
+  "sdk": [
+    "Client.getSessionVerificationController",
+    "SessionVerificationController.setDelegate",
+    "SessionVerificationController.requestDeviceVerification",
+    "SessionVerificationController.acknowledgeVerificationRequest",
+    "SessionVerificationController.acceptVerificationRequest",
+    "SessionVerificationController.startSasVerification",
+    "SessionVerificationController.approveVerification",
+    "SessionVerificationController.declineVerification",
+    "SessionVerificationController.cancelVerification",
+    "SessionVerificationControllerDelegate.didReceiveVerificationRequest",
+    "SessionVerificationControllerDelegate.didAcceptVerificationRequest",
+    "SessionVerificationControllerDelegate.didStartSasVerification",
+    "SessionVerificationControllerDelegate.didReceiveVerificationData",
+    "SessionVerificationControllerDelegate.didFinish",
+    "SessionVerificationControllerDelegate.didCancel",
+    "SessionVerificationControllerDelegate.didFail",
+    "SessionVerificationRequestDetails",
+    "SessionVerificationData",
+    "SessionVerificationEmoji"
+  ],
+  "parity": ["e2ee", "new-phone", "onboarding-no-element-crypto"],
+  "notes": [
+    "Only for devices of the same account (requestDeviceVerification). Verifying other people is not part of phase 1.",
+    "The approver sees the other device's name and time before anything else, and a biometric check comes before the accept (ADR 0059 QR approval rule, applied here too). bipe_device_approval_never_for_others shows on the incoming screen.",
+    "Symbols and their labels come from the SDK (Matrix spec SAS, m.sas.v1). The labels are in English; show the symbol large and the label small.",
+    "The new phone that comes back through QR from the old phone (bipe-chat/bipe#203, #573) needs no verification: the QR login already shares the secrets.",
+    "When Encryption.hasDevicesToVerifyAgainst is false, the new phone does not offer this screen; encryption-status offers only the recovery key."
+  ]
+}

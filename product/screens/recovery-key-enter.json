@@ -1,0 +1,48 @@
+{
+  "id": "recovery-key-enter",
+  "title": "Enter recovery key",
+  "flow": "encryption",
+  "summary": "On a phone that got the account back without another device: the person types or pastes the recovery key to bring back the message history.",
+  "state": {
+    "key": { "type": "string", "description": "The field. Spaces and line breaks are ignored." },
+    "phase": {
+      "type": "enum",
+      "values": ["editing", "checking", "wrongKey", "done", "failed"],
+      "description": "checking: Encryption.recover runs. wrongKey: the key does not open the history. done: the history downloads."
+    }
+  },
+  "actions": {
+    "editKey": {
+      "params": { "text": { "type": "string", "description": "The new field text." } },
+      "effect": "Sets key and clears wrongKey."
+    },
+    "submit": {
+      "effect": "Runs Encryption.recover with the key. On success the phone is approved for the account and old messages start to decrypt; shows bipe_app_recovery_key_enter_done and closes. Off while key is blank."
+    },
+    "noKey": {
+      "effect": "Closes and opens encryption-status, which offers approval from another device."
+    }
+  },
+  "strings": [
+    "bipe_app_recovery_key_enter_title",
+    "bipe_app_recovery_key_enter_body",
+    "bipe_app_recovery_key_checking",
+    "bipe_app_recovery_key_wrong",
+    "bipe_app_recovery_key_enter_done",
+    "bipe_app_recovery_key_none",
+    "bipe_action_continue",
+    "bipe_error_network"
+  ],
+  "sdk": [
+    "Client.encryption",
+    "Encryption.recover",
+    "Encryption.recoveryState",
+    "Encryption.verificationState"
+  ],
+  "parity": ["e2ee", "new-phone", "onboarding-no-element-crypto"],
+  "notes": [
+    "Paste works and the app never logs the field.",
+    "Never offer a reset of the identity here. A reset loses the history for good and is not a Bipe flow; if the key is lost, the person keeps the account without the old messages (ADR 0073).",
+    "After success Encryption.verificationState becomes verified, so encryption-status hides its banner."
+  ]
+}

@@ -1,0 +1,47 @@
+{
+  "id": "message-undecryptable",
+  "title": "Message that can't be read yet",
+  "flow": "chat",
+  "summary": "The timeline row for a message this phone cannot decrypt. It says why in plain words, from the SDK cause, and offers the one action that can help. It replaces the single undecryptable kind of chat-timeline.",
+  "types": {
+    "UndecryptableMessage": {
+      "id": { "type": "string", "description": "The timeline item id." },
+      "cause": {
+        "type": "enum",
+        "values": ["waiting", "beforeJoined", "historyNotOnThisPhone", "notSharedWithThisPhone", "unapprovedSenderDevice"],
+        "description": "Bipe's grouping of the SDK UtdCause (see notes)."
+      },
+      "senderName": { "type": "string", "description": "Display name of the sender." },
+      "sentAt": { "type": "date", "description": "Origin server time." }
+    }
+  },
+  "state": {
+    "message": { "type": "UndecryptableMessage", "description": "The row. The SDK replaces it with the real message when a key arrives." }
+  },
+  "actions": {
+    "openHelp": {
+      "effect": "historyNotOnThisPhone: opens the encryption-status sheet. Other causes have no action."
+    }
+  },
+  "strings": [
+    "bipe_app_timeline_undecryptable",
+    "bipe_app_utd_before_joined",
+    "bipe_app_utd_history",
+    "bipe_app_utd_not_shared",
+    "bipe_app_utd_unapproved_device",
+    "bipe_app_utd_help"
+  ],
+  "sdk": [
+    "TimelineItemContent",
+    "MsgLikeKind",
+    "EncryptedMessage"
+  ],
+  "parity": ["e2ee", "onboarding-no-element-crypto"],
+  "notes": [
+    "Cause map from EncryptedMessage.MegolmV1AesSha2.cause (UtdCause in matrix-sdk-crypto): Unknown and UnknownDevice are waiting (bipe_app_timeline_undecryptable; the key often arrives a moment later). SentBeforeWeJoined is beforeJoined. HistoricalMessageAndBackupIsDisabled and HistoricalMessageAndDeviceIsUnverified are historyNotOnThisPhone. WithheldBySender and WithheldForUnverifiedOrInsecureDevice are notSharedWithThisPhone. VerificationViolation and UnsignedDevice are unapprovedSenderDevice. OlmV1Curve25519AesSha2 and Unknown messages are waiting.",
+    "The row looks like a quiet system line in the sender's bubble position, never like a warning. No lock icon with a red colour.",
+    "unapprovedSenderDevice is calm: it says the message came from a device the sender has not approved. Scam warnings (trust UI) are separate and never use this row.",
+    "bipe_app_utd_unapproved_device takes senderName.",
+    "No analytics (plan section 2): the app does not count or report undecryptable messages."
+  ]
+}

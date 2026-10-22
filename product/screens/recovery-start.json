@@ -1,0 +1,64 @@
+{
+  "id": "recovery-start",
+  "title": "Get back into your account",
+  "flow": "recovery",
+  "summary": "The list of ways back into an existing account on this phone, from fast to slow (ADR 0057, ADR 0059). The first row is the synced recovery token when this phone has one.",
+  "types": {
+    "RecoveryRow": {
+      "key": {
+        "type": "enum",
+        "values": ["token", "oldPhone", "email", "beta"],
+        "description": "The row key of registries/onboarding.json recovery."
+      },
+      "visible": { "type": "bool", "description": "false when its when state does not hold or its gate issue is open." }
+    }
+  },
+  "state": {
+    "rows": {
+      "type": "list",
+      "of": { "type": "RecoveryRow", "description": "One way back in." },
+      "description": "In registries/onboarding.json recovery order. token shows only when a synced recovery token is on the phone (syncedToken). oldPhone stays hidden until bipe-chat/bipe#203."
+    },
+    "hasSyncedToken": { "type": "bool", "description": "true when the iCloud Keychain or Block Store holds a recovery token for an account that is not signed in on this phone." }
+  },
+  "actions": {
+    "appear": {
+      "effect": "Reads the synced store for a recovery token and sets hasSyncedToken and rows."
+    },
+    "chooseToken": {
+      "effect": "Opens recovery-pin for the synced token."
+    },
+    "chooseOldPhone": {
+      "effect": "Opens the QR scan of the new-phone flow (bipe-chat/bipe#203; hidden until it ships)."
+    },
+    "chooseEmail": {
+      "effect": "Opens recovery-email."
+    },
+    "chooseBeta": {
+      "effect": "Opens the sign-in for old beta accounts with e-mail and password: Client.login with the e-mail as user and the password. After sign-in the app moves the account to device-first (POST /v1/me/device-first)."
+    }
+  },
+  "strings": [
+    "bipe_recovery_title",
+    "bipe_pin_enter_title",
+    "bipe_recovery_token_found",
+    "bipe_recovery_qr",
+    "bipe_recovery_qr_body",
+    "bipe_recovery_qr_never_from_others",
+    "bipe_recovery_email",
+    "bipe_recovery_email_body",
+    "bipe_recovery_beta",
+    "bipe_recovery_beta_body",
+    "bipe_recovery_beta_password",
+    "bipe_signup_email"
+  ],
+  "sdk": ["Client.login"],
+  "parity": ["new-phone", "phone-account", "first-run", "multi-account"],
+  "notes": [
+    "Rows, titles and bodies come from the generated onboarding code (registries/onboarding.json recovery). bipe_recovery_email_body takes recoveryDelayHours.email from registries/accounts.json.",
+    "Guardians, CPF and linked Apple or Google accounts are not rows yet: their server paths are not built (Recovery.method guardian and cpf in api/openapi.yaml). Add them as registry rows when they ship.",
+    "With two accounts on the phone (ADR 0086), the token row takes the token of an account that is not signed in.",
+    "Every path gives access only. Message history needs another device or the recovery key (rule 5); recovery-waiting and encryption-status say so.",
+    "Bipe logic: BipeCredentialStore.recoveryToken(excluding:) (iOS), BipeRecoveryTokenStore.recoveryToken and BipeDeviceAccount.hasRecoveryToken (Android), BipeAPIClient.moveToDeviceFirst (iOS)."
+  ]
+}

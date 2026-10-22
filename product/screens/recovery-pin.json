@@ -1,0 +1,59 @@
+{
+  "id": "recovery-pin",
+  "title": "Enter PIN to get back in",
+  "flow": "recovery",
+  "summary": "Asks for the account PIN after the other factor passed: the synced recovery token, or the link in the recovery e-mail (ADR 0059: the PIN comes last). A wrong PIN counts against the account; 5 in total block it.",
+  "state": {
+    "factor": {
+      "type": "enum",
+      "values": ["token", "emailLink"],
+      "description": "token: the synced recovery token from recovery-start. emailLink: the token of the link from the recovery e-mail."
+    },
+    "pin": { "type": "string", "description": "Digits typed, at most pinLength. Never logged." },
+    "phase": {
+      "type": "enum",
+      "values": ["editing", "checking", "wrong", "blocked", "failed"],
+      "description": "checking: the request runs. wrong: pin_wrong with triesLeft. blocked: pin_blocked. failed: network, rate limit or recovery_invalid."
+    },
+    "triesLeft": { "type": "int", "optional": true, "description": "tries_left from the pin_wrong answer." },
+    "error": { "type": "string", "optional": true, "description": "String key of a failed state: bipe_error_network, bipe_error_rate_limited, bipe_error_recovery_invalid or bipe_error_generic." }
+  },
+  "actions": {
+    "typeDigit": {
+      "params": { "digit": { "type": "string", "description": "One digit, 0 to 9." } },
+      "effect": "Adds the digit. At pinLength digits, submits."
+    },
+    "deleteDigit": {
+      "effect": "Removes the last digit."
+    },
+    "submit": {
+      "effect": "token: POST /v1/recovery/token with the token and the PIN; on 200 stores the new password (this device only) and the new token (synced), signs in with Client.login and opens chat-list, then encryption-status. emailLink: POST /v1/recovery/email/confirm with the link token and the PIN; on 200 keeps recovery_id and claim_secret on this device and opens recovery-waiting."
+    },
+    "forgotPin": {
+      "effect": "emailLink: asks for a new PIN (the signup-pin steps with bipe_recovery_new_pin_title) and sends it as new_pin, which starts a pin_reset recovery. token: explains that the PIN resets only through the recovery e-mail and opens recovery-email."
+    }
+  },
+  "strings": [
+    "bipe_pin_enter_title",
+    "bipe_recovery_token_found",
+    "bipe_pin_wrong",
+    "bipe_pin_blocked_title",
+    "bipe_pin_blocked_body",
+    "bipe_pin_forgot",
+    "bipe_recovery_new_pin_title",
+    "bipe_pin_never_asked",
+    "bipe_error_recovery_invalid",
+    "bipe_error_network",
+    "bipe_error_rate_limited",
+    "bipe_error_generic"
+  ],
+  "sdk": ["ClientBuilder.build", "Client.login", "Client.session"],
+  "parity": ["new-phone", "phone-account"],
+  "notes": [
+    "bipe_pin_wrong takes triesLeft; bipe_pin_blocked_body takes pinMaxWrongTries from registries/accounts.json.",
+    "recovery_invalid on the token path: the synced token is old or revoked. Delete it from the synced store and go back to recovery-start without the token row.",
+    "A synced-token sign-in has no delay. The old devices get the bipe_recovery_alert_token notice (recovery-alert).",
+    "With two accounts on the phone (ADR 0086), this is the server PIN of the account that comes back, not the device PIN of the app lock.",
+    "Bipe logic: BipeAPIClient.recoverWithToken and confirmRecoveryEmail, BipeCredentialStore.save, saveRecoveryToken, deleteRecoveryToken and savePendingRecovery (iOS); BipeDeviceAccount.recoverWithToken and confirmEmailRecovery (Android)."
+  ]
+}

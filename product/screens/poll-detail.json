@@ -1,0 +1,68 @@
+{
+  "id": "poll-detail",
+  "title": "Poll",
+  "flow": "chat",
+  "summary": "Shows one poll: the question, the options with votes, the user's vote, and who voted for what when results are visible. A person votes or changes a vote here. The poll's creator ends it.",
+  "types": {
+    "PollOption": {
+      "answerId": { "type": "string", "description": "PollAnswer.id." },
+      "text": { "type": "string", "description": "PollAnswer.text." },
+      "voteCount": { "type": "int", "optional": true, "description": "Votes for this option, from the votes map. Absent while results are hidden." },
+      "voters": { "type": "list", "of": { "type": "Person", "description": "One voter." }, "description": "Who voted for this option, when results are visible. Empty while results are hidden." },
+      "isYourVote": { "type": "bool", "description": "true when the own user's vote is this option: bipe_app_poll_your_vote." },
+      "isWinner": { "type": "bool", "description": "Ended polls only: this option has the most votes (ties all count): bipe_app_poll_most_votes." }
+    }
+  },
+  "state": {
+    "roomId": { "type": "string", "description": "The chat." },
+    "eventId": { "type": "string", "description": "The poll start event." },
+    "question": { "type": "string", "description": "The question." },
+    "options": { "type": "list", "of": { "type": "PollOption", "description": "One option." }, "description": "In the order the creator wrote them." },
+    "totalVotes": { "type": "int", "optional": true, "description": "People who voted, for bipe_app_poll_votes. Absent while results are hidden." },
+    "resultsVisible": { "type": "bool", "description": "true when the kind is disclosed, or the poll has ended. Before the end of an undisclosed poll: bipe_app_poll_results_hidden." },
+    "isEnded": { "type": "bool", "description": "The poll has an end time: bipe_app_poll_ended, voting is off." },
+    "canEnd": { "type": "bool", "description": "The own user sent the poll and it has not ended." }
+  },
+  "actions": {
+    "vote": {
+      "params": { "answerId": { "type": "string", "description": "The chosen option." } },
+      "effect": "Timeline.sendPollResponse with this one answer. Tapping the current vote again does nothing. A failure shows bipe_app_poll_vote_error and the old vote stays."
+    },
+    "end": {
+      "effect": "Confirms with bipe_app_poll_end_confirm, then Timeline.endPoll with bipe_app_poll_ended_text as the text fallback."
+    },
+    "close": { "effect": "Closes the screen." }
+  },
+  "strings": [
+    "bipe_app_poll_title",
+    "bipe_app_poll_votes",
+    "bipe_app_poll_results_hidden",
+    "bipe_app_poll_your_vote",
+    "bipe_app_poll_most_votes",
+    "bipe_app_poll_end",
+    "bipe_app_poll_end_confirm",
+    "bipe_app_poll_ended",
+    "bipe_app_poll_ended_text",
+    "bipe_app_poll_vote_error",
+    "bipe_app_cancel",
+    "bipe_app_close"
+  ],
+  "sdk": [
+    "Room.timeline",
+    "Timeline.addListener",
+    "Timeline.getEventTimelineItemByEventId",
+    "MsgLikeKind",
+    "PollAnswer",
+    "PollKind",
+    "Timeline.sendPollResponse",
+    "Timeline.endPoll"
+  ],
+  "parity": ["polls"],
+  "notes": [
+    "The poll comes from the timeline item with MsgLikeKind poll: question, kind, maxSelections, answers, votes (answer id to user ids) and endTime. The screen follows timeline updates, so new votes show live.",
+    "The same data draws the poll card in chat-timeline: the question, the options, the user's vote and, when results are visible, the counts. Tapping the card opens this screen.",
+    "Voters list the people by Person.displayName. In an undisclosed poll nobody sees votes before the end, the creator included.",
+    "Changing a vote sends a new response. Matrix counts the latest response of each person.",
+    "Words: enquete, never votação (linguagem.md, one word per concept). bipe_app_poll_votes takes the count, formatted by the platform."
+  ]
+}

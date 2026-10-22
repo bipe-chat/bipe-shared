@@ -142,6 +142,7 @@ jobs:
       - name: Check out the sibling repos
         env:
           TOKEN: ${{ secrets.BIPE_REPOS_TOKEN }}
+          REGEN_TOKEN: ${{ secrets.BIPE_REGEN_TOKEN }}
           GH_TOKEN: ${{ github.token }}
           BRANCH: ${{ github.head_ref }}
           GIT_LFS_SKIP_SMUDGE: "1"
@@ -166,9 +167,10 @@ jobs:
           fi
           for repo in bipe bipe-ios bipe-android bipe-api bipe-web bipe-infra bipe-app; do
             url="https://x-access-token:${TOKEN}@github.com/bipe-chat/${repo}.git"
-            # The drift check skips a missing sibling with a warning.
-            if [ "$repo" = bipe-app ] && ! git ls-remote "$url" > /dev/null 2>&1; then
-              echo "::warning::BIPE_REPOS_TOKEN cannot reach bipe-app: its generated files are not checked. Give the token access to bipe-app."
+            # The drift check skips a missing sibling with a warning. Check bipe-app only when regen can
+            # write its generated files there: else every pull request would fail on bipe-app drift.
+            if [ "$repo" = bipe-app ] && [ "$(GH_TOKEN="$REGEN_TOKEN" gh api repos/bipe-chat/bipe-app --jq .permissions.push 2>/dev/null)" != true ]; then
+              echo "::warning::BIPE_REGEN_TOKEN cannot push to bipe-app: its generated files are not checked. Give the token access to bipe-app."
               continue
             fi
             if [ -n "$BRANCH" ] && git ls-remote --exit-code --heads "$url" "$BRANCH" > /dev/null; then

@@ -1,0 +1,75 @@
+{
+  "id": "app-lock",
+  "title": "App lock",
+  "flow": "settings",
+  "summary": "The lock screen that covers Bipe while the app lock is on, and the rules of the Bloquear o app switch in Sua conta. The lock is off by default (ADR 0137). With it on, Bipe asks for the PIN, or biometrics, when it opens.",
+  "state": {
+    "mode": {
+      "type": "enum",
+      "values": ["locked", "turnOn", "biometricOffer", "turnOff"],
+      "description": "locked: the lock screen over the app. turnOn: the PIN setup from the switch. biometricOffer: after the PIN setup, the offer to unlock with biometrics. turnOff: the owner check before the lock goes off."
+    },
+    "pin": { "type": "string", "description": "Digits typed, at most pinLength. Never logged, never kept after the check." },
+    "wrong": { "type": "bool", "description": "locked: the last PIN did not match." },
+    "biometricKind": {
+      "type": "enum",
+      "values": ["none", "faceId", "touchId", "android"],
+      "description": "What the phone offers. none: no biometrics, or not set up on the phone."
+    }
+  },
+  "actions": {
+    "lock": {
+      "effect": "When the lock is on and the app goes to the background, covers the app at once, so the app switcher shows no chats. When it comes back, shows locked and, if biometric unlock is on, asks for biometrics at once."
+    },
+    "typeDigit": {
+      "params": { "digit": { "type": "string", "description": "One digit, 0 to 9." } },
+      "effect": "Adds the digit. locked, at pinLength digits: checks the PIN on the device against the stored app lock PIN; a match unlocks (success haptic, use app_unlock), a miss sets wrong (error haptic, use pin_wrong) and clears pin. turnOn: the signup-pin steps (create, confirm, pinProblem())."
+    },
+    "useBiometrics": {
+      "effect": "locked: asks for biometrics with bipe_app_lock_biometric; a pass unlocks. A fail or cancel leaves the PIN pad."
+    },
+    "turnOn": {
+      "effect": "From the appLock switch in settings-group. Opens the signup-pin steps (create, confirm). The PIN is stored on the device only, as the app lock PIN (success haptic, use pin_set). Then biometricOffer when biometricKind is not none, else done."
+    },
+    "acceptBiometrics": {
+      "effect": "biometricOffer: asks for biometrics once to confirm, then turns biometric unlock on."
+    },
+    "skipBiometrics": {
+      "effect": "biometricOffer: leaves biometric unlock off. The biometricUnlock row in settings-group can turn it on later."
+    },
+    "turnOff": {
+      "effect": "From the appLock switch. Asks for the device owner check (biometrics or the phone's passcode) with bipe_account_app_lock_off_reason. A phone with no passcode asks for the app lock PIN instead. On a pass, removes the app lock PIN and biometric unlock."
+    }
+  },
+  "strings": [
+    "bipe_app_lock_title",
+    "bipe_pin_enter_title",
+    "bipe_app_lock_wrong",
+    "bipe_app_lock_biometric",
+    "bipe_account_biometric_word_android",
+    "bipe_pin_create_title",
+    "bipe_pin_create_body",
+    "bipe_pin_confirm_title",
+    "bipe_pin_mismatch",
+    "bipe_pin_problem_repeated_digit",
+    "bipe_pin_problem_sequence",
+    "bipe_pin_problem_date",
+    "bipe_app_lock_biometric_offer_title",
+    "bipe_app_lock_biometric_offer_use",
+    "bipe_fallback_skip",
+    "bipe_account_app_lock",
+    "bipe_account_app_lock_off_reason",
+    "bipe_account_biometric_unlock"
+  ],
+  "sdk": [],
+  "parity": ["app-lock", "haptics"],
+  "notes": [
+    "Off by default (ADR 0137). Sign-up, sign-in, recovery and a PIN change never turn the lock on. Phones from the forks that already have it on keep it (session store reuse, plan section 4 phase 4).",
+    "The app lock checks the PIN on the device. It never calls POST /v1/me/pin/check, and a wrong app lock PIN does not count against the account (api/openapi.yaml).",
+    "One account on the phone: while the lock is on, a new account PIN (pin-change, recovery) also becomes the app lock PIN (ADR 0086). Two accounts or more: the app lock PIN is a device PIN, apart from the account PINs. The PIN set from the switch can differ from the account PIN until the next account PIN change (ADR 0137).",
+    "The app lock PIN and the biometric flag live in the device credential store (iOS Keychain, this device only; Android Keystore-backed storage). Never synced, never sent.",
+    "bipe_app_lock_biometric and bipe_app_lock_biometric_offer_title and _use take Face ID or Touch ID on iOS and bipe_account_biometric_word_android on Android.",
+    "Open question for MZ, not specified here: what the lock screen offers after many wrong PINs or a forgotten app lock PIN. The forks use Element's lock screen rules; the new client must not copy them. Until a decision, the lock screen has no forgot action and no try limit.",
+    "Bipe logic: BipeAppLock (setPin, isPinSet, verifyPin, removePin) and BipeBiometricUnlock in libraries/bipe account; BipePIN.swift and BipeCredentialStore.swift in BipeKit. pinProblem() comes from registries/accounts.json through the generated code (test-vectors/pins.json)."
+  ]
+}

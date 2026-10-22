@@ -1,0 +1,83 @@
+{
+  "id": "settings-group",
+  "title": "Settings group",
+  "flow": "settings",
+  "summary": "One screen that renders any settings group of registries/settings.json: its sections in order, each with a title, rows and a footer. Every row says its current value (ADR 0112). Seu perfil, Privacidade, Sua conta, Conversas e mídia and Ajuda e sobre all use it.",
+  "types": {
+    "SettingsRow": {
+      "key": { "type": "string", "description": "The row key from the registry." },
+      "title": { "type": "string", "description": "String key of the row title." },
+      "kind": {
+        "type": "enum",
+        "values": ["link", "choice", "switch", "info", "url", "action", "destructive"],
+        "description": "From the registry. link opens a screen; choice opens a picker; switch toggles; info shows a value; url opens a page; action runs something; destructive runs something that cannot be undone."
+      },
+      "value": { "type": "string", "optional": true, "description": "The current value, formatted: the subtitle of a link or choice row, the text of an info row." },
+      "isOn": { "type": "bool", "optional": true, "description": "switch rows only." },
+      "footer": { "type": "string", "optional": true, "description": "String key of the one-line footer that says what the row changes." }
+    },
+    "SettingsSection": {
+      "key": { "type": "string", "description": "The section key from the registry." },
+      "title": { "type": "string", "optional": true, "description": "String key of the section title." },
+      "rows": { "type": "list", "of": { "type": "SettingsRow", "description": "A row that passed its gate." }, "description": "Rows in registry order." },
+      "footer": { "type": "string", "optional": true, "description": "String key of the section footer." }
+    }
+  },
+  "state": {
+    "group": { "type": "string", "description": "The group key: profile, privacy, account, chats or help." },
+    "sections": { "type": "list", "of": { "type": "SettingsSection", "description": "A section with one row or more." }, "description": "Sections in registry order. A section whose rows are all hidden is left out." },
+    "waysBackWarning": { "type": "string", "optional": true, "description": "account only: bipe_fallback_reminder (none) or bipe_account_paths_warning (one) on the status card." },
+    "version": { "type": "string", "optional": true, "description": "help only: the app version name and build from product/version.json, for bipe_help_version." }
+  },
+  "actions": {
+    "appear": {
+      "effect": "Builds sections from the generated BipeSettings group, drops rows whose gate hides them, then reads the value of each row (see notes)."
+    },
+    "tapRow": {
+      "params": { "key": { "type": "string", "description": "The row key." } },
+      "effect": "link and choice: open the screen of the row (see notes). url: opens the page of the row's url key from registries/settings.json urls, in pt or en by the app language, in the in-app browser. action and destructive: run the row (see notes)."
+    },
+    "toggle": {
+      "params": { "key": { "type": "string", "description": "The switch row key." }, "isOn": { "type": "bool", "description": "The new value." } },
+      "effect": "Saves the switch at once and shows the new value. A failed save puts the switch back and shows bipe_error_generic. appLock follows app-lock."
+    },
+    "longPressVersion": {
+      "effect": "help only: copies the Matrix device ID (Client.deviceId) and shows bipe_help_device_id_copied. The device ID never shows as text (ADR 0112)."
+    }
+  },
+  "strings": [
+    "bipe_settings_profile",
+    "bipe_settings_privacy",
+    "bipe_settings_account",
+    "bipe_settings_chats",
+    "bipe_settings_help",
+    "bipe_fallback_title",
+    "bipe_fallback_reminder",
+    "bipe_account_paths_warning",
+    "bipe_settings_account_paths",
+    "bipe_settings_account_paths_none",
+    "bipe_account_pin_footer",
+    "bipe_account_pin_footer_device",
+    "bipe_account_biometric_word_android",
+    "bipe_about_steward",
+    "bipe_help_version",
+    "bipe_help_device_id_copied",
+    "bipe_settings_handle_none",
+    "bipe_error_generic"
+  ],
+  "sdk": ["Client.deviceId", "Client.encryption", "Encryption.recoveryState"],
+  "parity": ["settings-structure", "help-links", "haptics"],
+  "notes": [
+    "Row titles and footers are the string keys in registries/settings.json; the spec does not repeat them. The registry is the one source of order, keys, gates and strings on both platforms (ADR 0031, ADR 0112).",
+    "Gates: absent → shown; ios or android → that platform only; flag:<name> → shown when that build flag is on; planned:<issue> and any unknown gate → hidden (fail closed). Bipe logic: BipeSettingsRow.isShownOnIOS (BipeKit BipeSettingsSupport.swift) and BipeSettingsGate.isShown (libraries/bipe settings).",
+    "Row targets, profile: namePhoto → the profile editor, handle → the @ screen, publicProfile → the public profile screen (bipe-chat/bipe#567).",
+    "Row targets, privacy: messaging → the who-can-message picker (PUT /v1/me/messaging), requestPhotos → a local switch, blocked → the blocked list (bipe-chat/bipe#567), number → info from GET /v1/me/phone, discovery → PUT /v1/me/discovery, contacts → the contacts screen, presence → a switch for typing and online state, readReceipts → info with no switch (always on, ADR 0050), whoCanRead and whatBipeKeeps → url, export → data-export.",
+    "Row targets, account: waysBackStatus → the status card (count and warning), changePin → pin-change, appLock → app-lock (turn on or off), biometricUnlock → a switch that exists only while the lock is on, email → the recovery email screen, linkedAccounts → hidden until bipe-chat/bipe#307, recoveryKey → recovery-key-save, thisDevice → info with this phone's model, linkedDevices → linked-devices, add → the second-account flow (ADR 0086), signOut → sign-out.",
+    "bipe_account_pin_footer takes pinLength. With two accounts on the phone (ADR 0086), show bipe_account_pin_footer_device. bipe_account_biometric_unlock takes Face ID or Touch ID on iOS and bipe_account_biometric_word_android on Android.",
+    "Row targets, chats: appearance → a picker (system, light, dark), language → iOS only, opens the iPhone's Ajustes page of the app, mediaQuality → the photo and video quality screen, showMedia → a picker, liveLocation → the update distance screen.",
+    "Row targets, help: support → support-open, docs, terms and privacy → url, reportProblem → problem-report, licenses → open-source-licences. The section footer is bipe_about_steward (ADR 0040), then bipe_help_version with version.",
+    "Help links (parity help-links): every 'learn more' link in the app goes to a bipe.chat page from registries/settings.json urls or registries/legal.json, never to element.io or matrix.org. Bipe logic: AttributedString+BipeLink.swift and BipeLegalLinks.swift (BipeKit); BipeLinks.kt (libraries/bipe).",
+    "Haptics (parity haptics): the settings screens play only the uses in registries/haptics.json: tap for copy (the device ID), success for pin_set and app_unlock, error for pin_wrong, through the generated BipeHaptics. A new use needs a line in the registry first. The app never calls a platform feedback API directly, and has no haptics row: the system setting wins (design/haptics.md rule 6, ADR 0134).",
+    "Notifications has screen element in the registry; in Bipe's own client it is the notifications settings spec of bipe-chat/bipe#565, not this screen."
+  ]
+}

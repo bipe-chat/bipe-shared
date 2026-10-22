@@ -1,0 +1,32 @@
+{
+  "id": "open-source-licences",
+  "title": "Open source licences",
+  "flow": "settings",
+  "summary": "Lists every open source component in the app with its licence, and the app's own licence with the app store permission (ADR 0144). A tap shows the full licence text.",
+  "types": {
+    "LicensedComponent": {
+      "name": { "type": "string", "description": "The component name, for example matrix-rust-sdk or Phosphor." },
+      "licence": { "type": "string", "description": "The SPDX id, for example Apache-2.0 or MIT." },
+      "text": { "type": "string", "description": "The full licence text with the copyright lines." }
+    }
+  },
+  "state": {
+    "components": { "type": "list", "of": { "type": "LicensedComponent", "description": "One dependency." }, "description": "Bipe first (AGPL-3.0-only with the app store permission), then the dependencies by name." },
+    "selected": { "type": "LicensedComponent", "optional": true, "description": "The component whose text is open." }
+  },
+  "actions": {
+    "select": {
+      "params": { "name": { "type": "string", "description": "The component name." } },
+      "effect": "Shows the full licence text of that component."
+    },
+    "back": { "effect": "Closes the text, or the screen." }
+  },
+  "strings": ["bipe_help_licenses"],
+  "sdk": [],
+  "parity": ["settings-structure"],
+  "notes": [
+    "The list is made at build time from the dependency list that the licence check in CI already reads (plan section 2: allowed Apache-2.0, MIT, BSD, ISC, MPL-2.0). Never typed by hand.",
+    "No Element component may appear: the dependency deny-list in CI fails first (plan section 1).",
+    "Component names and licence texts are not translated."
+  ]
+}

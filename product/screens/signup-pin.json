@@ -45,7 +45,7 @@
     "pinLength, the weak-PIN rule and its order are in registries/accounts.json; cases in test-vectors/pins.json. Bipe logic: BipePIN.problem and BipePIN.sanitize (iOS), BipePin.problem and BipePin.sanitizeInput (Android). Do not write a new check.",
     "bipe_pin_create_body takes pinLength as %1$s.",
     "A full-screen number pad with the system digit keyboard as fallback. Paste is allowed; the app keeps the digits only.",
-    "The PIN goes to the server in POST /v1/signup (pin), which checks it again (400 pin_weak). The same PIN becomes the app lock (app-lock).",
+    "The PIN goes to the server in POST /v1/signup (pin), which checks it again (400 pin_weak). Sign-up never turns the app lock on (ADR 0137); app-lock sets its own PIN when the user turns it on.",
     "The words on screen are senha and senha de 8 números, never PIN (linguagem.md section 4)."
   ]
 }

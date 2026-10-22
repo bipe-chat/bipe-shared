@@ -1,0 +1,64 @@
+{
+  "id": "contacts",
+  "title": "Contacts and invites",
+  "flow": "people",
+  "summary": "Shows which people in the phone's address book are on Bipe, so the user can start a chat, and offers an invite for the others. The server only compares the numbers and keeps none (ADR 0015).",
+  "types": {
+    "ContactMatch": {
+      "person": { "type": "Person", "description": "displayName is the name saved in the address book." },
+      "joinedWithInvite": { "type": "bool", "description": "The person joined with the user's invite (GET /v1/me/invite-connections): bipe_contacts_joined_with_invite." }
+    }
+  },
+  "state": {
+    "permission": {
+      "type": "enum",
+      "values": ["notAsked", "granted", "denied", "limited"],
+      "description": "The system address-book permission. notAsked: bipe_contacts_intro with bipe_contacts_allow. denied: bipe_contacts_denied with bipe_contacts_open_settings (iOS) or bipe_contacts_open_settings_android. limited: iOS limited access, treated as granted for the chosen contacts."
+    },
+    "matches": { "type": "list", "of": { "type": "ContactMatch", "description": "A contact on Bipe." }, "description": "Sorted by name. Empty after a check: bipe_contacts_none." },
+    "pendingInvites": { "type": "int", "description": "Pending personal invites, for the bipe_contacts_pending_invites row." },
+    "phase": {
+      "type": "enum",
+      "values": ["idle", "checking", "loaded", "failed"],
+      "description": "checking: bipe_app_contacts_loading. failed: bipe_error_network, or bipe_error_rate_limited on 429."
+    }
+  },
+  "actions": {
+    "allow": { "effect": "Asks the system for address-book access. Granted: runs check." },
+    "openSettings": { "effect": "denied only: opens the app's page in the system settings." },
+    "check": {
+      "effect": "Reads the phone numbers of the address book, normalises each with normalizePhone (registries/phone-numbers.json), drops the ones that fail and the duplicates, and sends them in chunks of 500 to POST /v1/contacts/lookup. Each match joins the contact name to the user ID. Profiles and handles as in Person."
+    },
+    "openChat": {
+      "params": { "userId": { "type": "string", "description": "A match." } },
+      "effect": "Opens person-profile's message action: the DM, created when missing."
+    },
+    "invite": { "effect": "Opens invites." }
+  },
+  "strings": [
+    "bipe_contacts_title",
+    "bipe_contacts_intro",
+    "bipe_contacts_allow",
+    "bipe_contacts_denied",
+    "bipe_contacts_open_settings",
+    "bipe_contacts_open_settings_android",
+    "bipe_contacts_none",
+    "bipe_contacts_invite",
+    "bipe_contacts_joined_with_invite",
+    "bipe_contacts_pending_invites",
+    "bipe_app_contacts_loading",
+    "bipe_invites_chat",
+    "bipe_error_network",
+    "bipe_error_rate_limited"
+  ],
+  "sdk": ["Client.getProfile", "Client.getDmRoom"],
+  "parity": ["phone-discovery"],
+  "notes": [
+    "The numbers leave the phone only for the lookup. The server compares HMACs with linked numbers, returns only holders who allow discovery, and never stores the list (api/openapi.yaml /v1/contacts/lookup, bipe/docs/phone-link.md). The app keeps no copy of the numbers it sent.",
+    "Limits: 500 numbers per request, a daily budget per account (lower for accounts younger than 7 days), 30 requests per hour. On 429, stop and show bipe_error_rate_limited. Check runs when the user opens the screen or pulls to refresh, not in the background.",
+    "Normalisation: normalizePhone in tools/lib/registries.mjs is the reference; cases in test-vectors/phone-numbers.json. Bipe logic: BipePhoneNumber.normalize (BipeKit), BipePhoneNumber.kt and BipeAddressBook.kt (libraries/bipe contacts).",
+    "The user's own discoverability is the discovery switch of Privacidade (settings-group privacy: bipe_discovery_toggle, PUT /v1/me/discovery with by_phone). It needs a linked number (GET /v1/me/phone); without one, the row says bipe_phone_not_linked. ADR 0063 plans three values (everyone, contacts, nobody); the API has a boolean today, so the switch stays until the API changes.",
+    "The phone number is for discovery only, never identity or sign-in (ADR 0015). No screen shows another person's number.",
+    "Parity: iOS built; Android planned (no address-book match yet, bipe-chat/bipe#162). Both new apps implement it."
+  ]
+}

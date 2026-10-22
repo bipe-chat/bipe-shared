@@ -1,0 +1,76 @@
+{
+  "id": "public-profile-edit",
+  "title": "Public profile",
+  "flow": "profile",
+  "summary": "Turns the user's public profile on or off and edits its name, bio and photo. Anyone with the link bipe.chat/@handle sees it; it is not in any search (ADR 0041).",
+  "state": {
+    "enabled": { "type": "bool", "description": "MyProfile.enabled. Off by default." },
+    "handle": { "type": "string", "optional": true, "description": "MyProfile.handle. Without it the switch is off and locked: bipe_public_profile_needs_handle." },
+    "name": { "type": "string", "description": "MyProfile.name. A profile never saved starts with the Matrix display name." },
+    "bio": { "type": "string", "description": "MyProfile.bio, plain text." },
+    "photoUrl": { "type": "url", "optional": true, "description": "MyProfile.photo_url, or a local file URL of a newly picked photo. A profile never saved offers the Matrix photo." },
+    "problem": {
+      "type": "enum",
+      "values": ["none", "nameEmpty", "nameTooLong", "nameReserved", "bioTooLong", "bioTooManyLines"],
+      "description": "From profileProblem: bipe_public_profile_name_empty, bipe_public_profile_name_too_long (nameMaxLength), bipe_app_profile_name_reserved, bipe_public_profile_bio_too_long (bioMaxLength), bipe_public_profile_bio_too_many_lines (bioMaxLines). Save is off unless none."
+    },
+    "phase": {
+      "type": "enum",
+      "values": ["loading", "editing", "saving", "saved", "failed"],
+      "description": "saved: bipe_public_profile_saved. failed: bipe_error_network, or the problem the server returned (ProfileProblem)."
+    }
+  },
+  "actions": {
+    "appear": { "effect": "GET /v1/me/profile." },
+    "setEnabled": {
+      "params": { "isOn": { "type": "bool", "description": "The new value." } },
+      "effect": "Updates enabled. Saved with the rest."
+    },
+    "setName": {
+      "params": { "name": { "type": "string", "description": "The new text." } },
+      "effect": "Updates name and problem."
+    },
+    "setBio": {
+      "params": { "bio": { "type": "string", "description": "The new text." } },
+      "effect": "Updates bio and problem."
+    },
+    "choosePhoto": { "effect": "Opens the system photo picker, then a square crop." },
+    "removePhoto": { "effect": "DELETE /v1/me/profile/photo." },
+    "save": {
+      "effect": "PUT /v1/me/profile with enabled, name and bio (trimmed). A new photo: PUT /v1/me/profile/photo with the JPEG (see notes). Then bipe_public_profile_saved."
+    },
+    "share": { "effect": "enabled and saved: opens profile-link." }
+  },
+  "strings": [
+    "bipe_settings_public_profile",
+    "bipe_public_profile_toggle",
+    "bipe_public_profile_footer",
+    "bipe_public_profile_needs_handle",
+    "bipe_public_profile_name",
+    "bipe_public_profile_bio",
+    "bipe_public_profile_bio_placeholder",
+    "bipe_public_profile_photo_change",
+    "bipe_public_profile_photo_remove",
+    "bipe_public_profile_photo_invalid",
+    "bipe_public_profile_name_empty",
+    "bipe_public_profile_name_too_long",
+    "bipe_app_profile_name_reserved",
+    "bipe_public_profile_bio_too_long",
+    "bipe_public_profile_bio_too_many_lines",
+    "bipe_public_profile_save",
+    "bipe_public_profile_saved",
+    "bipe_public_profile_share",
+    "bipe_handle_prompt_action",
+    "bipe_error_network"
+  ],
+  "sdk": ["Client.displayName", "Client.avatarUrl", "Client.getMediaContent"],
+  "parity": ["public-profile", "reserved-names", "handles"],
+  "notes": [
+    "Opens from the publicProfile row of Seu perfil (settings-group profile). The row value is bipe_public_profile_on or bipe_public_profile_off.",
+    "Separate from the Matrix profile (ADR 0041): changing this name or photo does not change profile-edit, and the other way round. The first time, the app fills the fields from the Matrix profile (Client.displayName, and Client.getMediaContent for the photo).",
+    "Rules: registries/profiles.json (nameMaxLength 50, bioMaxLength 160, bioMaxLines 4, photoMaxBytes, photoMaxPixels) and the reserved names, by profileProblem in tools/lib/registries.mjs. The server is the authority and returns the same ProfileProblem ids. Bipe logic: BipePublicProfileRules and BipeProfilePhoto.jpegData (BipeKit BipePublicProfile.swift); BipePublicProfile.kt (libraries/bipe).",
+    "Photo: JPEG only, at most photoMaxPixels on each side and photoMaxBytes. The app re-encodes; the server strips every metadata segment. A photo the app cannot encode: bipe_public_profile_photo_invalid.",
+    "Without a handle: the switch is locked, bipe_public_profile_needs_handle shows with bipe_handle_prompt_action, which opens handle-pick.",
+    "Turning it off hides the profile at once: GET /v1/profiles/{handle} answers 404, the same as for an unknown handle."
+  ]
+}

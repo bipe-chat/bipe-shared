@@ -1,0 +1,90 @@
+{
+  "id": "notification-service",
+  "title": "Notification on the phone",
+  "flow": "notifications",
+  "summary": "Turns a content-free push into a notification: the iOS notification service extension or the Android push handler fetches the event, decrypts it on the phone, and shows the sender, the chat and the text. A tap opens the chat; the person can reply or mark as read from the notification.",
+  "types": {
+    "PhoneNotification": {
+      "roomId": { "type": "string", "description": "The chat. Also the notification group." },
+      "eventId": { "type": "string", "description": "The event of the push." },
+      "kind": {
+        "type": "enum",
+        "values": ["message", "chatRequest", "groupInvite", "fallback"],
+        "description": "message: a decrypted event. chatRequest: an invite to a DM. groupInvite: an invite to a group. fallback: the event could not be fetched or decrypted in time."
+      },
+      "title": { "type": "string", "description": "DM: the other person's name. Group: the group name." },
+      "senderName": { "type": "string", "optional": true, "description": "Group messages: the sender name, shown before the text." },
+      "body": { "type": "string", "description": "The plain text of the message, the media label, or the invite or fallback string." },
+      "avatarUrl": { "type": "url", "optional": true, "description": "Sender avatar in a DM, group avatar in a group." },
+      "sentAt": { "type": "date", "description": "Origin server time." },
+      "isNoisy": { "type": "bool", "description": "From the push rules: true plays the sound of notification-settings." }
+    }
+  },
+  "state": {
+    "notification": { "type": "PhoneNotification", "optional": true, "description": "What the phone shows. Missing when the event must not show (see notes)." }
+  },
+  "actions": {
+    "pushReceived": {
+      "params": {
+        "roomId": { "type": "string", "description": "From the push." },
+        "eventId": { "type": "string", "description": "From the push." },
+        "unreadCount": { "type": "int", "optional": true, "description": "From the push, for the app icon badge." }
+      },
+      "effect": "Opens the account in the extension or handler, asks the notification client for the event, builds notification, and shows it. Sets the app badge to unreadCount."
+    },
+    "open": {
+      "effect": "Tap: opens the app on chat-timeline of roomId, scrolled to eventId. With app lock on, app-lock comes first."
+    },
+    "reply": {
+      "params": { "text": { "type": "string", "description": "The reply text." } },
+      "effect": "Sends the text to the chat as a reply to eventId and marks the chat as read, without opening the app. A failure shows a new notification with the inline-reply failure string."
+    },
+    "markAsRead": {
+      "effect": "Sends a public read receipt for eventId and removes the notifications of that chat."
+    }
+  },
+  "strings": [
+    "bipe_app_notification_new_message",
+    "bipe_app_notification_chat_request",
+    "bipe_group_notification_room_invite_body_with_sender",
+    "bipe_app_notification_reply",
+    "bipe_app_notification_mark_read",
+    "bipe_app_timeline_composer_placeholder",
+    "bipe_dm_inline_reply_failed",
+    "bipe_group_notification_inline_reply_failed",
+    "bipe_app_notification_channel_messages",
+    "bipe_notifications_invites",
+    "bipe_app_name"
+  ],
+  "sdk": [
+    "Client.notificationClient",
+    "NotificationProcessSetup",
+    "NotificationClient.getNotification",
+    "NotificationStatus",
+    "NotificationItem",
+    "NotificationEvent",
+    "NotificationSenderInfo",
+    "NotificationRoomInfo",
+    "TimelineEvent.content",
+    "TimelineEventContent",
+    "NotificationClient.getRoom",
+    "Room.timeline",
+    "Timeline.sendReply",
+    "Timeline.markAsRead",
+    "messageEventContentNew"
+  ],
+  "parity": ["e2ee"],
+  "notes": [
+    "iOS runs this in the notification service extension with NotificationProcessSetup MultipleProcesses: the extension and the app share the SDK store in the app group, and the extension has little memory. Android runs it in the app process with SingleProcess and the app's sync service.",
+    "NotificationStatus: Event shows the item. EventFilteredOut, EventRedacted and EventNotFound show nothing (iOS: the extension delivers an empty notification so iOS does not show the gateway alert). An error or a timeout shows kind fallback: title bipe_app_name, body bipe_app_notification_new_message.",
+    "Undecryptable events: kind fallback. The text never shows as an error in a notification.",
+    "Invites: NotificationEvent.Invite in a DM is chatRequest (bipe_app_notification_chat_request with the sender name); in a group, groupInvite (bipe_group_notification_room_invite_body_with_sender). Requests open the requests box of #557.",
+    "DM name and photo follow ADR 0141: the other person, never the room name. RoomInfo isDm decides; NotificationRoomInfo.isDm gives it here.",
+    "Body: plain text, cut by the system. Media and stickers use the timeline label of #561 when it lands; until then fallback text. No Markdown, no scam card (the card shows in the chat, scam-warning).",
+    "Android channels: bipe_app_notification_channel_messages for messages, bipe_notifications_invites for requests and invites. Each chat is one conversation notification with its messages; a group shows each sender name.",
+    "Inline reply failure: bipe_dm_inline_reply_failed in a DM, bipe_group_notification_inline_reply_failed in a group.",
+    "Opening the chat, a read on another device, or markAsRead removes that chat's notifications. The badge follows the unread count of the chat list.",
+    "Nothing from a notification leaves the phone except the reply and the read receipt. No analytics (plan section 2).",
+    "App lock (ADR 0137) does not change notification content; a preview setting needs its own decision."
+  ]
+}

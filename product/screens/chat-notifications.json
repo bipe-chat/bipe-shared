@@ -1,0 +1,57 @@
+{
+  "id": "chat-notifications",
+  "title": "Notifications of one chat",
+  "flow": "chat",
+  "summary": "Lets the person choose notifications for one chat: as in Settings, every message, only mentions (groups) or silenced. A silenced chat shows a muted icon in the chat list.",
+  "types": {},
+  "state": {
+    "isDm": { "type": "bool", "description": "RoomInfo.isDm (ADR 0141)." },
+    "mode": { "type": "NotificationMode", "description": "The effective mode of this chat." },
+    "isDefault": { "type": "bool", "description": "true when the chat follows the Settings default." },
+    "defaultMode": { "type": "NotificationMode", "description": "The Settings default for this kind of chat, for the default option label." },
+    "mentionsMayMiss": { "type": "bool", "description": "Group in an encrypted room and the homeserver cannot push encrypted events to the device." }
+  },
+  "actions": {
+    "appear": {
+      "effect": "Reads the room notification settings for this room, encrypted or not, one-to-one or not."
+    },
+    "useDefault": {
+      "effect": "Removes the custom rule of this chat, so it follows Settings."
+    },
+    "setMode": {
+      "params": { "mode": { "type": "NotificationMode", "description": "DM: all or off. Group: all, mentions or off." } },
+      "effect": "Sets the mode of this chat. A failure puts the old value back and shows bipe_error_generic."
+    }
+  },
+  "strings": [
+    "bipe_dm_notifications_custom_title",
+    "bipe_group_screen_room_notification_settings_room_custom_settings_title",
+    "bipe_app_notification_mode_default",
+    "bipe_app_notification_mode_all",
+    "bipe_app_notification_mode_mentions",
+    "bipe_app_notification_mode_off",
+    "bipe_dm_notifications_mentions_disclaimer",
+    "bipe_group_screen_room_notification_settings_mentions_only_disclaimer",
+    "bipe_error_generic"
+  ],
+  "sdk": [
+    "Client.getNotificationSettings",
+    "NotificationSettings.getRoomNotificationSettings",
+    "RoomNotificationSettings",
+    "NotificationSettings.setRoomNotificationMode",
+    "NotificationSettings.restoreDefaultRoomNotificationMode",
+    "NotificationSettings.unmuteRoom",
+    "NotificationSettings.canPushEncryptedEventToDevice",
+    "Room.latestEncryptionState",
+    "RoomInfo"
+  ],
+  "parity": [],
+  "notes": [
+    "Title: bipe_dm_notifications_custom_title in a DM, bipe_group_screen_room_notification_settings_room_custom_settings_title in a group.",
+    "Options: bipe_app_notification_mode_default with the Settings mode label, then all, mentions (groups only), off. The selected option has a check.",
+    "DM (ADR 0141): every message and silenced only. A DM with an older mentions rule shows mentions as selected, with bipe_dm_notifications_mentions_disclaimer, until the person picks another option.",
+    "Group with mentions and mentionsMayMiss: bipe_group_screen_room_notification_settings_mentions_only_disclaimer under the option.",
+    "Opens from the chat details screen (people and groups issues). A muted chat shows a muted icon on its chat-list row; the unread badge stays, without sound or notification.",
+    "Leaving off for a chat uses unmuteRoom, so the room goes back to its previous mode."
+  ]
+}

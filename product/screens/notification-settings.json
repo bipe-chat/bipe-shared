@@ -1,0 +1,110 @@
+{
+  "id": "notification-settings",
+  "title": "Notification settings",
+  "flow": "settings",
+  "summary": "The Notifications group of Settings (ADR 0112): whether this phone gets notifications, what they are about for chats and groups, and the message sound. Every row says its current value.",
+  "types": {
+    "NotificationMode": {
+      "mode": {
+        "type": "enum",
+        "values": ["all", "mentions", "off"],
+        "description": "all: every message. mentions: only when someone mentions you (groups only). off: no notifications."
+      }
+    }
+  },
+  "state": {
+    "phoneEnabled": { "type": "bool", "description": "The system permission is allowed and push-registration has a pusher." },
+    "chatsMode": { "type": "NotificationMode", "description": "Default for DMs: all or off (ADR 0141: no mentions mode in a DM)." },
+    "groupsMode": { "type": "NotificationMode", "description": "Default for groups: all, mentions or off." },
+    "wholeGroupMentions": { "type": "bool", "description": "Notify when someone mentions the whole group (@room)." },
+    "invites": { "type": "bool", "description": "Notify about chat requests and group invites." },
+    "sound": {
+      "type": "enum",
+      "values": ["phone", "soft", "silent"],
+      "description": "The message sound on this phone. phone: the system default sound. soft: Bipe's soft sound. silent: no sound."
+    },
+    "mentionsMayMiss": { "type": "bool", "description": "true when the homeserver cannot push encrypted events to the device, so mentions mode can miss messages." },
+    "hasOlderChoices": { "type": "bool", "description": "true when the push rules hold choices this screen does not show (keywords, older modes)." }
+  },
+  "actions": {
+    "appear": {
+      "effect": "Reads the system permission and the account push rules, fills the state, and refreshes when the rules change on another device."
+    },
+    "enablePhone": {
+      "effect": "phoneEnabled false: asks the system permission when it was never asked, else opens the system settings of the app. On return, push-registration registers."
+    },
+    "setChatsMode": {
+      "params": { "mode": { "type": "NotificationMode", "description": "all or off." } },
+      "effect": "Sets the default mode for one-to-one rooms, encrypted and not."
+    },
+    "setGroupsMode": {
+      "params": { "mode": { "type": "NotificationMode", "description": "all, mentions or off." } },
+      "effect": "Sets the default mode for group rooms, encrypted and not. With hasOlderChoices, shows the older-choices dialog first."
+    },
+    "setWholeGroupMentions": {
+      "params": { "isOn": { "type": "bool", "description": "The new value." } },
+      "effect": "Turns the room-mention push rule on or off."
+    },
+    "setInvites": {
+      "params": { "isOn": { "type": "bool", "description": "The new value." } },
+      "effect": "Turns the invite-for-me push rule on or off."
+    },
+    "setSound": {
+      "params": { "sound": { "type": "string", "description": "phone, soft or silent." } },
+      "effect": "Saves the sound on this phone. Android: moves the messages channel to that sound. A failure shows bipe_notifications_tone_error."
+    }
+  },
+  "strings": [
+    "bipe_settings_notifications",
+    "bipe_settings_notifications_off",
+    "bipe_notifications_enable",
+    "bipe_notifications_permission_body",
+    "bipe_notifications_notify_about",
+    "bipe_notifications_chats",
+    "bipe_notifications_groups",
+    "bipe_notifications_whole_group",
+    "bipe_notifications_invites",
+    "bipe_app_notification_mode_all",
+    "bipe_app_notification_mode_mentions",
+    "bipe_app_notification_mode_off",
+    "bipe_group_screen_notification_settings_mentions_only_disclaimer",
+    "bipe_notifications_sound",
+    "bipe_notifications_message_sound",
+    "bipe_notifications_tone_system",
+    "bipe_notifications_tone_soft",
+    "bipe_notifications_tone_silent",
+    "bipe_notifications_tone_current",
+    "bipe_notifications_tone_error",
+    "bipe_notifications_mismatch_title",
+    "bipe_notifications_mismatch_body",
+    "bipe_action_continue",
+    "bipe_app_cancel",
+    "bipe_error_generic"
+  ],
+  "sdk": [
+    "Client.getNotificationSettings",
+    "NotificationSettings.setDelegate",
+    "NotificationSettingsDelegate",
+    "NotificationSettings.getDefaultRoomNotificationMode",
+    "NotificationSettings.setDefaultRoomNotificationMode",
+    "RoomNotificationMode",
+    "NotificationSettings.isRoomMentionEnabled",
+    "NotificationSettings.setRoomMentionEnabled",
+    "NotificationSettings.isInviteForMeEnabled",
+    "NotificationSettings.setInviteForMeEnabled",
+    "NotificationSettings.canPushEncryptedEventToDevice",
+    "NotificationSettings.containsKeywordsRules"
+  ],
+  "parity": ["settings-structure"],
+  "notes": [
+    "Opens from settings-root, key notifications (registries/settings.json, screen element in the forks). settings-root shows bipe_settings_notifications_on or bipe_settings_notifications_off from phoneEnabled.",
+    "phoneEnabled false: a card at the top with bipe_settings_notifications_off, bipe_notifications_permission_body and the button bipe_notifications_enable. The rows below stay editable: they are account rules and apply on every device.",
+    "Mode map: all is RoomNotificationMode AllMessages, mentions is MentionsAndKeywordsOnly, off is Mute. getDefaultRoomNotificationMode takes isEncrypted and isOneToOne: the screen reads the encrypted value and writes both.",
+    "Chats offers all and off only (ADR 0141). A user who set mentions for DMs before keeps that server rule; the row then shows bipe_app_notification_mode_mentions until they change it.",
+    "mentionsMayMiss: under the groups row, bipe_group_screen_notification_settings_mentions_only_disclaimer, when canPushEncryptedEventToDevice is false.",
+    "hasOlderChoices: the encrypted and unencrypted defaults differ, or containsKeywordsRules is true. The first change shows bipe_notifications_mismatch_title and bipe_notifications_mismatch_body with bipe_action_continue and bipe_app_cancel.",
+    "Sound is a phone setting, not a push rule. bipe_notifications_tone_current is the accessibility value. Ringtones wait for calls (plan section 8: no calls at first).",
+    "A failed rule change puts the row back and shows bipe_error_generic.",
+    "Per-chat modes are chat-notifications."
+  ]
+}

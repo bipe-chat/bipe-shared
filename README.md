@@ -13,7 +13,7 @@ Single source of truth for Bipe logic that iOS, Android, the API and the website
 | `docs/trust-facts.md` | Independent trust facts, adapter inputs, invalidation and generated platform rules |
 | `test-vectors/` | Shared cases: badges, normalisation, scam detection, scam warnings, handles (generated), invite codes and scheduling (hand-written). Scheduling currently runs on the API only. |
 | `fixtures/trust-facts.json` | Hand-authored expected outcomes checked before trust vectors are generated |
-| `product/` | Promise, features with status per platform, the parity ledger (`parity.json`), download links, the store listing (`appstore.md`). Feeds bipe-web and `bipe/docs/product.md`. `version.json`: the app version name and the one build number for iOS and Android (ADR 0088) |
+| `product/` | Promise, features, the parity ledger (`parity.json`: status per feature on iOS, Android, web and server), download links, the store listing (`appstore.md`). Feeds bipe-web and `bipe/docs/product.md`. `version.json`: the app version name and the one build number for iOS and Android (ADR 0088) |
 | `tools/` | Generators and checks (Node 24, no npm packages). `tools/lib/registries.mjs` is the reference implementation |
 
 ## Commands
@@ -52,7 +52,7 @@ Regenerates everything into a temporary folder and compares it with the generate
 node tools/parity.mjs [--write] [--report]
 ```
 
-The parity ledger (ADR 0092). `product/parity.json` holds each capability's status on iOS, Android, web and server, with evidence paths, the issue that closes each gap between the apps, and the deliberate differences between the apps. The check fails on a missing evidence path, a gap without an issue, a `product.json` status that disagrees, or an out-of-date Differences table in `bipe-ios/BIPE.md` or `bipe-android/BIPE.md`. `--write` writes those tables. `--report` prints the gap report; a weekly job (`.github/workflows/parity-report.yml`) writes it into the pinned issue bipe-chat/bipe#298.
+The parity ledger (ADR 0092). `product/parity.json` holds each capability's status on iOS, Android, web and server, with evidence paths, the issue that closes each gap between the apps, and the deliberate differences between the apps. It is the one status per feature: bipe-web and `gen-product-doc.mjs` read it, and `product.json` has no status. The check fails on a missing evidence path, a gap without an issue, a `product.json` feature without a ledger item or with a `status` field, or an out-of-date Differences table in `bipe-ios/BIPE.md` or `bipe-android/BIPE.md`. `--issues` also fails when a gap names a closed or missing issue (`gh`, CI only). `--write` writes those tables. `--report` prints the gap report; a weekly job (`.github/workflows/parity-report.yml`) writes it into the pinned issue bipe-chat/bipe#298.
 
 ```sh
 node tools/check-appstore.mjs

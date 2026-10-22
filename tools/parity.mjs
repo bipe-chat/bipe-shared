@@ -2,8 +2,10 @@
 // the web (bipe-web) and the server (bipe-api, bipe-infra), and the deliberate differences between
 // the apps. This tool checks the ledger, writes the "Differences" tables in both BIPE.md files and
 // prints the gap report.
-// Usage: node tools/parity.mjs [--against worktree|head] [--repos <dir>] [--write] [--report]
-//   (default) check: schema, evidence paths, gap issues, product.json status, BIPE.md tables. Exit 1 on a problem.
+// The ledger is the one status per feature: bipe-web and gen-product-doc.mjs read it, product.json has none.
+// Usage: node tools/parity.mjs [--against worktree|head] [--repos <dir>] [--write] [--issues] [--report]
+//   (default) check: schema, evidence paths, gap issues, product.json features, BIPE.md tables. Exit 1 on a problem.
+//   --issues: also fail when the issue a gap names is closed or does not exist (M2 exit test). Needs `gh`.
 //   --write: write the "Differences" tables into bipe-ios/BIPE.md and bipe-android/BIPE.md, then check.
 //   --report: print the gap report (Markdown) to stdout. Reads issue state with `gh` when it is installed.
 //   --against, --repos: as in check-drift.mjs. head reads each repo's committed HEAD (CI).
@@ -20,6 +22,7 @@ if (!["worktree", "head"].includes(against)) throw new Error(`--against must be 
 const reposDir = resolve(option("--repos", join(root, "..")));
 const write = args.includes("--write");
 const report = args.includes("--report");
+const checkIssues = args.includes("--issues");
 if (write && against === "head") throw new Error("--write needs --against worktree");
 
 const SURFACES = { ios: ["bipe-ios"], android: ["bipe-android"], web: ["bipe-web"], server: ["bipe-api", "bipe-infra"] };
@@ -103,12 +106,34 @@ for (const d of ledger.differences ?? []) {
   if (d.kind !== "idiom" && !Number.isInteger(d.issue)) problems.push(`${where}: a ${d.kind} names the issue that ${d.kind === "gap" ? "closes" : "decides"} it`);
 }
 
-// 2. product.json keeps a status per feature until it moves here (ADR 0092). Both must agree.
+// 2. Every product.json feature has its status here, under the same id (bipe#300). product.json has no status.
 for (const f of product.features) {
-  const item = ledger.items.find((i) => i.id === f.id);
-  if (!item) { problems.push(`product.json feature ${f.id} has no item in parity.json`); continue; }
-  for (const s of ["ios", "android"]) {
-    if (f.status[s] !== entry(item, s)?.status) problems.push(`${f.id}: product.json says ${s} ${f.status[s]}, parity.json says ${entry(item, s)?.status}`);
+  if (!ids.has(f.id)) problems.push(`product.json feature ${f.id} has no item in parity.json`);
+  if (f.status !== undefined) problems.push(`product.json feature ${f.id}: status lives in parity.json, remove it from product.json`);
+}
+
+// 2b. A gap row names an open issue (M2 exit test, docs/MILESTONES.md). A closed issue closes no gap.
+// Gap rows: items where iOS and Android differ, and differences of kind gap or undecided.
+const gapRows = [
+  ...(ledger.items ?? []).filter((i) => entry(i, "ios")?.status !== entry(i, "android")?.status).map((i) => ({ what: `item ${i.id}`, issue: i.issue })),
+  ...(ledger.differences ?? []).filter((d) => d.kind !== "idiom").map((d) => ({ what: `difference "${d.area}"`, issue: d.issue })),
+];
+if (checkIssues) {
+  const numbers = [...new Set(gapRows.map((r) => r.issue).filter(Number.isInteger))];
+  const state = new Map();
+  for (const n of numbers) {
+    try {
+      state.set(n, execFileSync("gh", ["issue", "view", String(n), "-R", "bipe-chat/bipe", "--json", "state", "--jq", ".state"], { encoding: "utf8", stdio: ["ignore", "pipe", "pipe"] }).trim());
+    } catch (e) {
+      // Fail closed: an issue that gh cannot read does not count as open.
+      state.set(n, /Could not resolve|not found/i.test(String(e.stderr)) ? "MISSING" : "UNREADABLE");
+    }
+  }
+  for (const r of gapRows) {
+    const s = state.get(r.issue);
+    if (s === "CLOSED") problems.push(`${r.what}: gap names #${r.issue}, which is closed (name the open issue that closes the gap, or close the gap)`);
+    else if (s === "MISSING") problems.push(`${r.what}: gap names #${r.issue}, which does not exist on bipe-chat/bipe`);
+    else if (s === "UNREADABLE") problems.push(`${r.what}: gh cannot read #${r.issue} (is gh installed and signed in, with issue read access on bipe-chat/bipe?)`);
   }
 }
 
@@ -139,7 +164,7 @@ if (problems.length) {
   process.exit(1);
 }
 if (!report) {
-  console.log(`parity check ok (${ledger.items.length} items, ${ledger.differences.length} differences, against ${against})`);
+  console.log(`parity check ok (${ledger.items.length} items, ${ledger.differences.length} differences, ${gapRows.length} gap rows${checkIssues ? " with open issues" : ""}, against ${against})`);
   process.exit(0);
 }
 

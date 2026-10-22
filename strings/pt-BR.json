@@ -1206,6 +1206,18 @@
     "bipe_app_media_save_failed": "Não deu para salvar. Tente de novo.",
     "bipe_app_media_caption_placeholder": "Adicionar legenda",
     "bipe_app_media_preparing": "Preparando…",
-    "bipe_app_media_too_large": "Este arquivo é grande demais. O limite é %1$s."
+    "bipe_app_media_too_large": "Este arquivo é grande demais. O limite é %1$s.",
+    "bipe_app_composer_attach": "Anexar",
+    "bipe_app_composer_record": "Gravar áudio",
+    "bipe_app_composer_recording": "Gravando",
+    "bipe_app_composer_pause": "Pausar a gravação",
+    "bipe_app_composer_resume": "Continuar gravando",
+    "bipe_app_composer_stop": "Parar",
+    "bipe_app_composer_discard": "Apagar áudio",
+    "bipe_app_composer_too_short": "Áudio curto demais. Grave de novo.",
+    "bipe_app_composer_limit": "O áudio chegou ao limite de %1$s minutos.",
+    "bipe_app_composer_library": "Fotos e vídeos",
+    "bipe_app_composer_camera": "Câmera",
+    "bipe_app_composer_file": "Documento"
   }
 }

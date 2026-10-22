@@ -1,0 +1,76 @@
+{
+  "id": "composer-voice",
+  "title": "Record a voice message",
+  "flow": "chat",
+  "summary": "Records a voice message from the microphone button, with pause and resume, then a preview where the person checks the transcript made on this phone before sending (ADR 0023).",
+  "state": {
+    "phase": {
+      "type": "enum",
+      "values": ["recording", "paused", "preview", "sending"],
+      "description": "recording and paused show the timer and the live waveform. preview shows the player and the transcript editor."
+    },
+    "elapsedMs": { "type": "int", "description": "Recorded length. Recording stops at 30 minutes." },
+    "waveform": {
+      "type": "list",
+      "of": { "type": "int", "description": "One bar, 0 to 1024." },
+      "description": "Levels sampled while recording."
+    },
+    "transcriptState": {
+      "type": "enum",
+      "values": ["transcribing", "ready", "unavailable"],
+      "description": "Transcription on this phone only. unavailable: no on-device model for the language, or the speech permission is off."
+    },
+    "transcript": { "type": "string", "description": "The editable text. Empty means no transcript." },
+    "micDenied": { "type": "bool", "description": "The microphone permission is off. Shows bipe_microphone_permission_body." }
+  },
+  "actions": {
+    "start": {
+      "effect": "Asks for the microphone permission if needed, then records Ogg Opus, mono, and starts the on-device transcriber on the same audio."
+    },
+    "pause": { "effect": "Pauses recording; the timer stops." },
+    "resume": { "effect": "Records again into the same message." },
+    "stop": { "effect": "Ends recording and goes to preview. Less than 1 s: drops it and shows bipe_app_composer_too_short." },
+    "editTranscript": {
+      "params": { "text": { "type": "string", "description": "The corrected transcript." } },
+      "effect": "Sets transcript."
+    },
+    "discard": { "effect": "Deletes the recording and the transcript." },
+    "send": {
+      "effect": "Timeline.sendAttachment with AttachmentKind Voice (AudioInfo with the length and size, the waveform) and UploadParameters whose caption is the transcript when transcriptState is ready and the text is not blank. A transcript still transcribing is dropped; the sender never waits."
+    }
+  },
+  "strings": [
+    "bipe_app_composer_record",
+    "bipe_app_composer_recording",
+    "bipe_app_composer_pause",
+    "bipe_app_composer_resume",
+    "bipe_app_composer_stop",
+    "bipe_app_composer_discard",
+    "bipe_app_composer_too_short",
+    "bipe_app_composer_limit",
+    "bipe_voice_transcript_title",
+    "bipe_voice_transcribing",
+    "bipe_voice_transcript_placeholder",
+    "bipe_voice_transcript_unavailable",
+    "bipe_microphone_permission_body",
+    "bipe_app_open_system_settings",
+    "bipe_app_timeline_send"
+  ],
+  "sdk": [
+    "Timeline.sendAttachment",
+    "AttachmentKind",
+    "UploadParameters",
+    "UploadSource",
+    "AudioInfo",
+    "SendAttachmentJoinHandle.cancel"
+  ],
+  "parity": ["voice-transcript-send"],
+  "notes": [
+    "Transcript rules (ADR 0023, audio.md phase 2): on this phone only, never a server fallback. Language: the first preferred language the phone transcribes offline, then pt-BR. The caption of a voice message is always a transcript; the app offers no other caption on voice.",
+    "Bipe logic: VoiceTranscriber.transcribe and VoiceTranscriptDraft (state transcribing, ready, unavailable; caption gives only a finished, non-empty text) (iOS); BipeVoiceTranscriber, AndroidBipeVoiceTranscriber, BipeVoiceTranscriptDraft and BipeVoiceTranscriptEditor (Android). Move them; do not write a new transcriber.",
+    "bipe_app_composer_limit takes the limit (30) formatted as minutes. The recording keeps what was recorded and goes to preview.",
+    "The send queue keeps the message when the network drops; the row shows sending, then sent or failed (read-receipts).",
+    "UploadParameters extra_content_json could carry the chat.bipe.audio field of audio.md; phase 1 does not use it (no schema in bipe-shared yet).",
+    "A setting to turn off transcription is not built (audio.md); the speech permission is the switch."
+  ]
+}

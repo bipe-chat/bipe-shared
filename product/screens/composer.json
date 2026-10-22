@@ -1,0 +1,61 @@
+{
+  "id": "composer",
+  "title": "Composer",
+  "flow": "chat",
+  "summary": "The message field at the bottom of a chat: plain text with Markdown, send, the attachment and sticker buttons, the microphone when the field is empty, and a draft per chat that survives closing the app.",
+  "state": {
+    "text": { "type": "string", "description": "The field. Markdown is written as text; there is no formatting toolbar." },
+    "mode": {
+      "type": "enum",
+      "values": ["newMessage", "reply", "edit"],
+      "description": "reply and edit come from message-reply and message-edit. Saved in the draft as ComposerDraftType."
+    },
+    "canSend": { "type": "bool", "description": "true when the trimmed text is not empty. Shows send in place of the microphone." },
+    "isBlocked": { "type": "bool", "description": "The composer is off: the DM is blocked or the person can't post (ADR 0141). The bar of that state replaces the field." }
+  },
+  "actions": {
+    "edit": {
+      "params": { "text": { "type": "string", "description": "The new field text." } },
+      "effect": "Sets text. Drives typing-indicator."
+    },
+    "send": {
+      "effect": "newMessage: Timeline.send with messageEventContentFromMarkdown(text). reply and edit: as in message-reply and message-edit. Clears text and the saved draft (Room.clearComposerDraft)."
+    },
+    "saveDraft": {
+      "effect": "When the chat closes or the app goes to the background: Room.saveComposerDraft with the plain text and the mode. Blank text clears the draft."
+    },
+    "loadDraft": {
+      "effect": "When the chat opens: Room.loadComposerDraft fills text and mode."
+    },
+    "openAttachments": { "effect": "Opens composer-attachments." },
+    "openStickers": { "effect": "Opens composer-stickers." },
+    "startVoice": { "effect": "Starts composer-voice." },
+    "paste": {
+      "effect": "Pasted text goes in the field. A pasted image opens media-upload-preview with it."
+    }
+  },
+  "strings": [
+    "bipe_app_timeline_composer_placeholder",
+    "bipe_app_timeline_send",
+    "bipe_app_composer_attach",
+    "bipe_action_stickers",
+    "bipe_app_composer_record"
+  ],
+  "sdk": [
+    "Timeline.send",
+    "messageEventContentFromMarkdown",
+    "Room.saveComposerDraft",
+    "Room.loadComposerDraft",
+    "Room.clearComposerDraft",
+    "ComposerDraft",
+    "ComposerDraftType"
+  ],
+  "parity": ["e2ee-only-rooms"],
+  "notes": [
+    "Markdown subset the SDK renders: bold, italic, strikethrough, inline code, code blocks, lists, quotes and links. The body keeps the Markdown text as the plain fallback.",
+    "No @ or # suggestions in a DM (ADR 0141). @ mentions in groups are bipe-chat/bipe#569 work; phase 1 sends no mentions.",
+    "The field grows to 6 lines, then scrolls. Return inserts a new line on phones; send is the button.",
+    "The draft lives in the SDK store on this device only. It is not synced to other devices.",
+    "Rich text editing is phase 3 (plan section 4)."
+  ]
+}

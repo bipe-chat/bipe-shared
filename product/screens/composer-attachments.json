@@ -1,0 +1,45 @@
+{
+  "id": "composer-attachments",
+  "title": "Attachment picker",
+  "flow": "chat",
+  "summary": "The sheet from the attach button: photos and videos from the library, the camera, or a file. The choice goes to media-upload-preview.",
+  "state": {
+    "options": {
+      "type": "list",
+      "of": {
+        "type": "enum",
+        "values": ["library", "camera", "file"],
+        "description": "One row."
+      },
+      "description": "In this order. camera only when the phone has one."
+    },
+    "cameraDenied": { "type": "bool", "description": "The camera permission is off. Shows bipe_camera_permission_body with a button to the system settings." }
+  },
+  "actions": {
+    "pickLibrary": {
+      "effect": "Opens the system photo picker (PHPicker on iOS, the Android photo picker) for images and videos, up to 10. No library permission is needed."
+    },
+    "takePhoto": {
+      "effect": "Asks for the camera permission at this moment if needed, then opens the system camera for a photo or a video."
+    },
+    "pickFile": {
+      "effect": "Opens the system document picker for any file."
+    },
+    "dismiss": { "effect": "Closes the sheet." }
+  },
+  "strings": [
+    "bipe_app_composer_library",
+    "bipe_app_composer_camera",
+    "bipe_app_composer_file",
+    "bipe_camera_permission_body",
+    "bipe_app_open_system_settings",
+    "bipe_app_cancel"
+  ],
+  "sdk": [],
+  "parity": ["e2ee"],
+  "notes": [
+    "Permissions in context: the camera is asked for only on a camera action (onboarding.md, Permissions). A refusal never blocks the other options.",
+    "Location, polls and contacts are not in this sheet in phase 1. Polls are groups work (bipe-chat/bipe#569).",
+    "Stickers have their own button (composer-stickers)."
+  ]
+}

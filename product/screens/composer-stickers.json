@@ -1,0 +1,82 @@
+{
+  "id": "composer-stickers",
+  "title": "Sticker picker",
+  "flow": "chat",
+  "summary": "The sticker sheet: My stickers and the packs of this chat, a tap sends the sticker. From here the person also makes a sticker from a photo or imports stickers from WhatsApp (ADR 0029, ADR 0033).",
+  "types": {
+    "PickerPack": {
+      "id": { "type": "string", "description": "The pack id (StickerPack.id)." },
+      "source": {
+        "type": "enum",
+        "values": ["personal", "room"],
+        "description": "personal: im.ponies.user_emotes account data. room: im.ponies.room_emotes state of this chat or of a room in im.ponies.emote_rooms."
+      },
+      "title": { "type": "string", "description": "bipe_stickers_pack_personal, bipe_stickers_pack_room or the pack name." },
+      "stickerCount": { "type": "int", "description": "Images whose usage includes sticker, or that have no usage." }
+    }
+  },
+  "state": {
+    "phase": {
+      "type": "enum",
+      "values": ["loading", "empty", "ready", "failed", "importing"],
+      "description": "loading: reading the packs over the client-server API. empty: no stickers at all."
+    },
+    "packs": {
+      "type": "list",
+      "of": { "type": "PickerPack", "description": "One tab." },
+      "description": "My stickers first, then the packs of this chat."
+    },
+    "importResult": { "type": "int", "optional": true, "description": "Stickers added by the last import or photo." }
+  },
+  "actions": {
+    "load": {
+      "effect": "Reads the personal pack (Client.accountData im.ponies.user_emotes), the enabled rooms (im.ponies.emote_rooms) and this chat's pack state. Images are normal mxc media (Client.getMediaThumbnail)."
+    },
+    "send": {
+      "params": { "stickerId": { "type": "string", "description": "The sticker." } },
+      "effect": "Sends a standard m.sticker event with the sticker's body, info and url (Room.sendRaw with event type m.sticker; the room encrypts it). Closes the sheet."
+    },
+    "fromPhoto": {
+      "effect": "Opens the photo picker; the photo is cut to a 512 px square sticker, uploaded (Client.uploadMedia) and added to My stickers (Client.setAccountData)."
+    },
+    "importFromWhatsApp": {
+      "effect": "Shows bipe_stickers_import_help and bipe_stickers_import_note, opens the document picker for the exported zip or the sticker files, checks each image (size, format) and adds the new ones to My stickers. Shows bipe_stickers_import_done, bipe_stickers_import_none or bipe_stickers_import_failed."
+    }
+  },
+  "strings": [
+    "bipe_stickers_title",
+    "bipe_stickers_pack_personal",
+    "bipe_stickers_pack_room",
+    "bipe_stickers_empty_title",
+    "bipe_stickers_empty_body",
+    "bipe_stickers_error_load",
+    "bipe_a11y_sticker_send",
+    "bipe_stickers_from_photo",
+    "bipe_stickers_import_action",
+    "bipe_stickers_import_help",
+    "bipe_stickers_import_help_folder_android",
+    "bipe_stickers_import_note",
+    "bipe_stickers_import_progress",
+    "bipe_stickers_import_done",
+    "bipe_stickers_import_none",
+    "bipe_stickers_import_failed",
+    "bipe_app_retry"
+  ],
+  "sdk": [
+    "Client.accountData",
+    "Client.setAccountData",
+    "Client.uploadMedia",
+    "Client.getMediaThumbnail",
+    "Room.sendRaw",
+    "Room.stateEvents"
+  ],
+  "parity": ["stickers"],
+  "notes": [
+    "Pack format: MSC2545 with the im.ponies.* names (ADR 0033). Show images whose usage includes sticker or that have no usage. Keep every other field of a pack when writing it.",
+    "Packs are not end-to-end encrypted (account data and room state). bipe_stickers_import_note says so before an import. Sent sticker events in a chat are encrypted as usual.",
+    "Room pack state: BipeKit reads it over the client-server API because the SDK does not give custom room state under sliding sync (StickerPackClient). Check Room.stateEvents in the pinned SDK before moving that code; keep the HTTP path if it still does not work.",
+    "Bipe logic: StickerPackEventType, Sticker, Sticker.eventContentJSON, StickerPack, StickerPackClient.packs and importStickers, StickerMaker.sticker(fromImageData:), StickerImporter.candidates and candidate, ZipReader, BipeAnimatedImage (iOS); StickerPackEventType, Sticker.eventContentJson, StickerPack.parse and parseEnabledRooms, StickerPackRepository (packs, importStickers, addSticker, makeSticker), StickerImporter (candidates, candidate, fromPhoto) (Android). Move them.",
+    "bipe_stickers_import_help_folder_android shows on Android only.",
+    "Third-party packs need a licence check (ADR 0029); phase 1 imports only the person's own files."
+  ]
+}

@@ -1,0 +1,45 @@
+{
+  "id": "link-computer-warning",
+  "title": "Link a computer: full-access warning",
+  "flow": "devices",
+  "summary": "Says in plain words that the computer gets full access to the chats, and that a person who asked for the scan is a scammer. The continue button waits through the short cooldown of security.md rule 5 (ADR 0116, ADR 0118 order steps 1 and 2).",
+  "state": {
+    "secondsLeft": {
+      "type": "int",
+      "description": "Seconds until continue works. Starts at webLinkCooldownSeconds (registries/accounts.json) when the screen shows, and counts down once per second."
+    },
+    "canContinue": { "type": "bool", "description": "true when secondsLeft is 0." }
+  },
+  "actions": {
+    "appear": {
+      "effect": "Plays the web_link_warning haptic (registries/haptics.json) and starts the countdown. The countdown never starts before the screen is in front."
+    },
+    "continue": {
+      "effect": "Only when canContinue. Opens link-computer-approve, which asks for the biometric check first."
+    },
+    "cancel": {
+      "effect": "ContinuationMessageSender.cancel, then GrantLoginWithQrCodeTask.cancel. The computer does not sign in. Closes the flow back to Linked devices."
+    }
+  },
+  "strings": [
+    "bipe_link_computer_warning_title",
+    "bipe_link_computer_warning_body",
+    "bipe_link_computer_warning_scam",
+    "bipe_link_computer_continue",
+    "bipe_pause_countdown",
+    "bipe_app_cancel"
+  ],
+  "sdk": [
+    "ContinuationMessageSender.cancel",
+    "GrantLoginWithQrCodeTask.cancel"
+  ],
+  "parity": ["web-sign-in"],
+  "notes": [
+    "The warning comes after the secure channel (GrantQrLoginProgress.waitingForAuth) and before the biometric check and the MAS page (ADR 0118 order). The hidden password is not read on this screen.",
+    "While secondsLeft is above 0, the continue button shows bipe_pause_countdown with secondsLeft and does nothing. Cancel always works.",
+    "The cooldown is a fixed wait, not a check. Leaving the app and coming back does not skip it: the countdown restarts at webLinkCooldownSeconds when the screen comes back to the front.",
+    "Keep webLinkCooldownSeconds short: the rendezvous session lives 60 seconds from the QR code (link-computer-scan notes).",
+    "Calm voice (linguagem.md section 5): no fear words, no exclamation. The warning colour and icon come from the trust UI tokens, not from the text.",
+    "Bipe logic: the Android approval controller counts down from BipeRegistries.WEB_LINK_COOLDOWN_SECONDS (libraries/bipe weblink BipeWebApprovalController, step WARNING). The generated constant is the source on both platforms."
+  ]
+}

@@ -1,0 +1,48 @@
+{
+  "id": "message-delete",
+  "title": "Delete a message",
+  "flow": "chat",
+  "summary": "Asks once, then deletes a message for everyone in the chat. The message becomes a deleted row (timeline-rows). An unsent own message is dropped without the question.",
+  "types": {},
+  "state": {
+    "confirmRowId": { "type": "string", "optional": true, "description": "The message the dialog asks about. Missing while the dialog is closed." },
+    "isDeleting": { "type": "bool", "description": "true while the deletion is sent." },
+    "error": { "type": "bool", "description": "true after a failed deletion. Shows bipe_app_message_delete_failed once." }
+  },
+  "actions": {
+    "askDelete": {
+      "params": { "rowId": { "type": "string", "description": "A message with canDelete." } },
+      "effect": "Opens the dialog. For an own message that is not sent yet (sending or failed), skips the dialog and cancels the send."
+    },
+    "confirmDelete": {
+      "effect": "Deletes the message for everyone, closes the dialog. The row turns into a deleted row at once."
+    },
+    "cancelDelete": {
+      "effect": "Closes the dialog."
+    }
+  },
+  "strings": [
+    "bipe_app_message_delete_title",
+    "bipe_app_message_delete_body",
+    "bipe_app_message_action_delete",
+    "bipe_app_message_delete_failed",
+    "bipe_app_cancel"
+  ],
+  "sdk": [
+    "Timeline.redactEvent",
+    "Timeline.abortSend",
+    "SendTarget",
+    "EventOrTransactionId",
+    "EventTimelineItem",
+    "Room.getPowerLevels",
+    "RoomPowerLevels.canOwnUserRedactOwn",
+    "RoomPowerLevels.canOwnUserRedactOther"
+  ],
+  "parity": [],
+  "notes": [
+    "canDelete: own message and RoomPowerLevels.canOwnUserRedactOwn, or another person's message in a group and RoomPowerLevels.canOwnUserRedactOther. In a DM nobody deletes the other person's messages (ADR 0141: no moderation in a DM).",
+    "No reason is sent with the redaction.",
+    "Delete for me only is not a Matrix feature and is not offered. Deleting the whole DM is dm-delete, a separate flow.",
+    "redactionSendState of the item shows the deletion as pending until the server has it; a failure brings the message back and sets error."
+  ]
+}

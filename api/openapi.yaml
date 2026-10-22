@@ -87,6 +87,46 @@ paths:
           content:
             application/json:
               schema: { $ref: "#/components/schemas/PixChallenge" }
+  /v1/verifications/govbr:
+    post:
+      summary: Start a gov.br verification for the caller (trust step 5, bipe-chat/bipe#541)
+      description: >
+        Returns a one-page challenge PDF that names Bipe, the caller's @handle, the date and a code.
+        The user signs it in the gov.br app and sends the signed file back with PUT .../document.
+        The challenge is bound to the caller's device key, expires after 30 minutes and works once.
+      security: [{ matrix: [] }]
+      responses:
+        "201":
+          description: Challenge PDF to save on the phone and sign in the gov.br app
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/GovbrChallenge" }
+        "401": { $ref: "#/components/responses/Error" }
+        "429": { $ref: "#/components/responses/Error" }
+  /v1/verifications/govbr/{verificationId}/document:
+    put:
+      summary: Send the signed challenge PDF back
+      description: >
+        The API checks the gov.br signature, the chain to the pinned gov.br root, that the file did not change
+        after signing, and that it is this caller's open challenge. It stores the level, the date, the verified
+        name and a salted CPF hash, never the file. A rejected file leaves the challenge open until it expires.
+      security: [{ matrix: [] }]
+      parameters:
+        - { name: verificationId, in: path, required: true, schema: { type: string } }
+      requestBody:
+        required: true
+        content:
+          application/pdf:
+            schema: { type: string, format: binary, maxLength: 5242880 }
+      responses:
+        "200":
+          description: Result. state is verified (with badge) or rejected (with reason).
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/VerificationStatus" }
+        "401": { $ref: "#/components/responses/Error" }
+        "404": { $ref: "#/components/responses/Error" }
+        "413": { $ref: "#/components/responses/Error" }
   /v1/verifications/{verificationId}:
     get:
       summary: Verification status
@@ -4949,6 +4989,14 @@ components:
         brcode: { type: string, description: "Pix copia-e-cola payload; also rendered as QR" }
         amountCents: { type: integer, const: 1 }
         expiresAt: { type: string, format: date-time }
+    GovbrChallenge:
+      type: object
+      required: [verificationId, pdf, fileName, expiresAt]
+      properties:
+        verificationId: { type: string }
+        pdf: { type: string, format: byte, description: "The challenge PDF, base64. About 2 KB." }
+        fileName: { type: string, const: "bipe-verificacao.pdf" }
+        expiresAt: { type: string, format: date-time }
     VerificationStatus:
       type: object
       required: [verificationId, state]
@@ -4956,6 +5004,10 @@ components:
         verificationId: { type: string }
         state: { type: string, enum: [pending, verified, rejected, expired] }
         badge: { $ref: "#/components/schemas/BadgeEnvelope" }
+        reason:
+          type: string
+          description: Only when state is rejected (gov.br verification).
+          enum: [not_signed, not_govbr, wrong_document, expired, cpf_in_use, changed_after_signing]
 
     # Business schemas are JSON Schema 2020-12; gen.mjs emits the API types from the same definitions.
     CatalogPrice:

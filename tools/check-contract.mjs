@@ -92,10 +92,11 @@ const NOT_IN_APPS = {
   BadgeEnvelope: "verified on device by BadgeVerifier; covered by test-vectors/badges.json",
   BadgeGone: "a 410 means no seal; the apps fetch badges in the seal work (bipe-chat/bipe#252)",
   PixChallenge: "Pix verification is not built in the apps yet",
+  GovbrChallenge: "gov.br verification is not built in the apps yet: bipe-chat/bipe#544 (iOS), #545 (Android)",
   BusinessClaim: "CNPJ verification runs on the web console first; app UI is bipe-chat/bipe#115",
   CnpjRegistryRecord: "CNPJ verification runs on the web console first; app UI is bipe-chat/bipe#115",
   BusinessDomain: "CNPJ verification runs on the web console first; app UI is bipe-chat/bipe#115",
-  VerificationStatus: "Pix verification is not built in the apps yet",
+  VerificationStatus: "Pix and gov.br verification are not built in the apps yet: bipe-chat/bipe#544, #545",
 };
 
 // Known gaps: "<platform>:<Schema>" or "<platform>:<Schema>.<field>" -> issue. Remove the entry when the gap closes.

@@ -44,6 +44,7 @@
     "The homeserver comes from the build configuration, never from the user.",
     "The SDK session store and the saved session live in the app group (iOS) or app storage (Android), so the switch from the fork can reuse them (client-rewrite-study.md section 6).",
     "Sign-up is onboarding-welcome to signup-done (bipe-chat/bipe#553). Recovery, the PIN entry and the app lock are bipe-chat/bipe#555. Until a build has sign-up, noAccount shows bipe_app_start_no_account_title and bipe_app_start_no_account_body.",
+    "While a recovery started on this phone is kept (recovery-waiting), start opens that screen instead of noAccount. A recovery that waits for this account on another phone shows recovery-alert after ready.",
     "Never log or show the password or the recovery token."
   ]
 }

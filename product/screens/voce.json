@@ -1,0 +1,77 @@
+{
+  "id": "voce",
+  "title": "Você",
+  "flow": "voce",
+  "summary": "The Você tab (ADR 0112): who you are first, then the six settings groups. Header with photo, name and @; the account switcher when the phone has two or more accounts; Anotações; Convidar pessoas; then settings-root.",
+  "state": {
+    "displayName": {
+      "type": "string",
+      "description": "Current account's display name."
+    },
+    "handle": {
+      "type": "string",
+      "optional": true,
+      "description": "Current account's @handle."
+    },
+    "avatarUrl": {
+      "type": "url",
+      "optional": true,
+      "description": "Current account's avatar."
+    },
+    "accounts": {
+      "type": "list",
+      "of": {
+        "type": "AccountSummary",
+        "description": "One account."
+      },
+      "description": "Accounts on this phone. The switcher section shows only when there are two or more."
+    }
+  },
+  "actions": {
+    "openProfile": {
+      "effect": "Opens the current account's profile (a later spec, Seu perfil)."
+    },
+    "openQr": {
+      "effect": "Shows the profile QR code (bipe_profile_qr_title)."
+    },
+    "shareProfile": {
+      "effect": "Opens the system share sheet with the bipe.chat/@handle link."
+    },
+    "switchAccount": {
+      "params": {
+        "userId": {
+          "type": "string",
+          "description": "The chosen account."
+        }
+      },
+      "effect": "Runs app-tabs switchAccount."
+    },
+    "openNotes": {
+      "effect": "Opens the self-chat Anotações (ADR 0053)."
+    },
+    "openInvites": {
+      "effect": "Opens the invites screen (a later spec)."
+    }
+  },
+  "strings": [
+    "bipe_tab_you",
+    "bipe_profile_share",
+    "bipe_profile_qr_action",
+    "bipe_app_account_switcher_title",
+    "bipe_self_chat_title",
+    "bipe_self_chat_subtitle",
+    "bipe_invites_title"
+  ],
+  "sdk": [
+    "Client.displayName",
+    "Client.avatarUrl"
+  ],
+  "parity": [
+    "settings-structure"
+  ],
+  "notes": [
+    "The header never shows the Matrix ID (ADR 0112).",
+    "The trust card (Perfil de confiança, ADR 0019) sits after Anotações; it is a later spec.",
+    "Below the invite row comes settings-root (Configurações)."
+  ]
+}

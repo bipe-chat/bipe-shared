@@ -1,0 +1,122 @@
+{
+  "id": "app-tabs",
+  "title": "Tab bar",
+  "flow": "home",
+  "summary": "The app's root after account-start: the tab bar Conversas · Grupos · Você plus search (ADR 0053). The Você tab is the only account switcher: a double tap switches to the next account, a long press opens account-switcher (ADR 0135).",
+  "types": {
+    "AccountSummary": {
+      "userId": {
+        "type": "string",
+        "description": "Matrix ID. Never shown to the user."
+      },
+      "displayName": {
+        "type": "string",
+        "description": "The account's display name."
+      },
+      "handle": {
+        "type": "string",
+        "optional": true,
+        "description": "The @handle from bipe-api, when the account has one."
+      },
+      "avatarUrl": {
+        "type": "url",
+        "optional": true,
+        "description": "mxc URL of the account's avatar."
+      },
+      "isCurrent": {
+        "type": "bool",
+        "description": "true for the account the app shows now."
+      },
+      "hasUnread": {
+        "type": "bool",
+        "description": "true when the account has unread messages; drives the other-account dot (ADR 0135)."
+      }
+    }
+  },
+  "state": {
+    "selectedTab": {
+      "type": "enum",
+      "values": [
+        "conversas",
+        "grupos",
+        "voce",
+        "search"
+      ],
+      "description": "The visible tab. search is a tab on iOS (search tab role) and a top-bar action on Android (ADR 0053)."
+    },
+    "accounts": {
+      "type": "list",
+      "of": {
+        "type": "AccountSummary",
+        "description": "One account on this phone."
+      },
+      "description": "Every account on this phone, in the order they were added (oldest first)."
+    },
+    "conversasUnread": {
+      "type": "int",
+      "description": "Unread DMs and Pedidos for the Conversas badge."
+    },
+    "gruposAttention": {
+      "type": "int",
+      "description": "Mentions, replies and new polls in groups (ADR 0053). Quiet groups count only these."
+    },
+    "otherAccountUnread": {
+      "type": "bool",
+      "description": "true when an account other than the current one has unread messages: a dot on the Você tab icon (ADR 0135)."
+    }
+  },
+  "actions": {
+    "selectTab": {
+      "params": {
+        "tab": {
+          "type": "enum",
+          "values": [
+            "conversas",
+            "grupos",
+            "voce",
+            "search"
+          ],
+          "description": "The tab."
+        }
+      },
+      "effect": "Shows that tab. A tap on Você always opens Você."
+    },
+    "doubleTapVoce": {
+      "effect": "Switches to the next account in accounts (wraps around) and plays the switch haptic (ADR 0134). With one account it does the same as a tap."
+    },
+    "longPressVoce": {
+      "effect": "Opens account-switcher."
+    },
+    "switchAccount": {
+      "params": {
+        "userId": {
+          "type": "string",
+          "description": "The account to show."
+        }
+      },
+      "effect": "Makes that account current: its sync runs in front, the tabs show its chats, and the choice is saved for the next start (account-start)."
+    }
+  },
+  "strings": [
+    "bipe_tab_chats",
+    "bipe_tab_groups",
+    "bipe_tab_you",
+    "bipe_app_tab_search",
+    "bipe_app_account_current_a11y",
+    "bipe_app_tab_you_switch_hint"
+  ],
+  "sdk": [
+    "Client.roomListService",
+    "Client.syncService",
+    "Client.session"
+  ],
+  "parity": [
+    "settings-structure"
+  ],
+  "notes": [
+    "Conversas holds DMs (rooms with two members) and the Pedidos row; Grupos holds rooms with more than two members (ADR 0053). chat-list renders both with its scope.",
+    "Each account has its own SDK client and session store, keyed by user ID (ADR 0086). Only the current account's sync runs in front; the others sync in the background for the badge and the dot.",
+    "The tab bar shows the same on iPhone and as a rail on iPad (ADR 0135 point 6).",
+    "Agenda (bipe_tab_agenda) and Status come later and are not in this spec."
+  ]
+}

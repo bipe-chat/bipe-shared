@@ -1,0 +1,63 @@
+{
+  "id": "poll-create",
+  "title": "Create a poll",
+  "flow": "chat",
+  "summary": "Writes a poll for the open chat: a question, 2 to 20 options, one vote per person, and a choice to hide the results until the end. Sending puts the poll into the timeline.",
+  "state": {
+    "roomId": { "type": "string", "description": "The chat that gets the poll." },
+    "question": { "type": "string", "description": "The question as typed." },
+    "options": { "type": "list", "of": { "type": "string", "description": "One option as typed." }, "description": "2 to 20 options. Starts with 2 empty ones." },
+    "hideResults": { "type": "bool", "description": "true: PollKind undisclosed. false (default): disclosed, people see the votes as they come in." },
+    "canSend": { "type": "bool", "description": "true when the trimmed question is not empty and 2 options or more have text." },
+    "sending": { "type": "bool", "description": "true while Timeline.createPoll runs." }
+  },
+  "actions": {
+    "setQuestion": {
+      "params": { "text": { "type": "string", "description": "The new text." } },
+      "effect": "Updates question and canSend."
+    },
+    "setOption": {
+      "params": {
+        "index": { "type": "int", "description": "The option, from 0." },
+        "text": { "type": "string", "description": "The new text." }
+      },
+      "effect": "Updates the option and canSend."
+    },
+    "addOption": { "effect": "Adds an empty option. Hidden at 20 options." },
+    "removeOption": {
+      "params": { "index": { "type": "int", "description": "The option, from 0." } },
+      "effect": "Takes the option out. Hidden at 2 options."
+    },
+    "setHideResults": {
+      "params": { "isOn": { "type": "bool", "description": "The new value." } },
+      "effect": "Updates hideResults."
+    },
+    "send": {
+      "effect": "Timeline.createPoll with the trimmed question, the options that have text (trimmed, in order), maxSelections 1 and the poll kind. On success closes the screen. On failure shows bipe_app_poll_send_error and keeps the text."
+    },
+    "cancel": { "effect": "Closes the screen. Nothing is sent." }
+  },
+  "strings": [
+    "bipe_app_poll_create_title",
+    "bipe_app_poll_question",
+    "bipe_app_poll_question_placeholder",
+    "bipe_app_poll_option",
+    "bipe_app_poll_add_option",
+    "bipe_app_poll_remove_option",
+    "bipe_app_poll_hide_results",
+    "bipe_app_poll_hide_results_footer",
+    "bipe_app_timeline_send",
+    "bipe_app_poll_send_error",
+    "bipe_app_cancel"
+  ],
+  "sdk": ["Room.timeline", "Timeline.createPoll", "PollKind"],
+  "parity": ["polls"],
+  "notes": [
+    "The composer opens this screen from its attach menu (composer spec, bipe-chat/bipe#563).",
+    "bipe_app_poll_option takes the option number from 1 as its placeholder label.",
+    "One vote per person in the MVP (maxSelections 1). Multiple choice and editing a sent poll are out of scope.",
+    "A poll is a plain Matrix poll event (m.poll.start, unstable prefix through the SDK), end-to-end encrypted like every message. No Bipe server code (parity polls).",
+    "In a quiet group a new poll notifies every member through the push rule chat.bipe.poll_start (chat-notifications, ADR 0026). Open polls the member has not answered show in the O que você perdeu block (bipe_group_missed_poll, groups.md).",
+    "DMs keep polls: ADR 0141 does not list polls among the features a DM does not have. If MZ decides otherwise, the composer hides the entry when RoomInfo.isDm is true."
+  ]
+}

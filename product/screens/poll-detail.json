@@ -63,6 +63,6 @@
     "The same data draws the poll card in chat-timeline: the question, the options, the user's vote and, when results are visible, the counts. Tapping the card opens this screen.",
     "Voters list the people by Person.displayName. In an undisclosed poll nobody sees votes before the end, the creator included.",
     "Changing a vote sends a new response. Matrix counts the latest response of each person.",
-    "Words: enquete, never votação (linguagem.md, one word per concept). bipe_app_poll_votes takes the count, formatted by the platform."
+    "bipe_app_poll_votes takes the count, formatted by the platform."
   ]
 }

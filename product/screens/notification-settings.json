@@ -105,6 +105,7 @@
     "hasOlderChoices: the encrypted and unencrypted defaults differ, or containsKeywordsRules is true. The first change shows bipe_notifications_mismatch_title and bipe_notifications_mismatch_body with bipe_action_continue and bipe_app_cancel.",
     "Sound is a phone setting, not a push rule. bipe_notifications_tone_current is the accessibility value. Ringtones wait for calls (plan section 8: no calls at first).",
     "A failed rule change puts the row back and shows bipe_error_generic.",
+    "Groups are quiet by default (ADR 0026, ADR 0053): a new account starts with groupsMode mentions and chatsMode all. The app sets these defaults once, at the first sign-in of an account that has no default rules of its own yet.",
     "Per-chat modes are chat-notifications."
   ]
 }

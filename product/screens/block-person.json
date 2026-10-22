@@ -1,0 +1,53 @@
+{
+  "id": "block-person",
+  "title": "Block or unblock a person",
+  "flow": "people",
+  "summary": "A confirm sheet that blocks a person, or unblocks a blocked one. A blocked person's DM stays, with the composer off and a bar to unblock (ADR 0141).",
+  "state": {
+    "userId": { "type": "string", "description": "The person." },
+    "name": { "type": "string", "description": "Person.displayName, for the title." },
+    "mode": {
+      "type": "enum",
+      "values": ["block", "unblock"],
+      "description": "block: the user id is not in Client.ignoredUsers. unblock: it is."
+    },
+    "phase": {
+      "type": "enum",
+      "values": ["confirm", "working", "failed"],
+      "description": "failed: bipe_app_block_error or bipe_app_unblock_error, the buttons come back."
+    }
+  },
+  "actions": {
+    "confirm": {
+      "effect": "block: Client.ignoreUser. unblock: Client.unignoreUser. Then closes the sheet. Client.subscribeToIgnoredUsers updates every screen that shows the person."
+    },
+    "cancel": { "effect": "Closes the sheet. Nothing changes." }
+  },
+  "strings": [
+    "bipe_app_block_title",
+    "bipe_dm_decline_block_description",
+    "bipe_app_block_confirm",
+    "bipe_app_block_error",
+    "bipe_app_unblock_title",
+    "bipe_app_unblock_body",
+    "bipe_app_unblock_confirm",
+    "bipe_app_unblock_error",
+    "bipe_app_blocked_bar",
+    "bipe_action_unblock_person",
+    "bipe_app_cancel"
+  ],
+  "sdk": [
+    "Client.ignoredUsers",
+    "Client.ignoreUser",
+    "Client.unignoreUser",
+    "Client.subscribeToIgnoredUsers"
+  ],
+  "parity": [],
+  "notes": [
+    "Opens from person-profile, from report-chat (bipe_app_report_also_block), from a chat request and from blocked-list.",
+    "Block is the Matrix ignore list (m.ignored_user_list, account data): the server stops sending the person's messages and invites to the user, on every device of the account. The user stays in shared groups.",
+    "The DM after a block (ADR 0141): the chat stays in the list. chat-timeline shows bipe_app_blocked_bar with bipe_action_unblock_person in place of the composer. Unblock in the bar opens this sheet in unblock mode.",
+    "Blocking does not tell the other person.",
+    "The confirm button of block uses the destructive style. Unblock uses the normal style."
+  ]
+}

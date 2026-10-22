@@ -1,0 +1,44 @@
+{
+  "id": "who-can-message",
+  "title": "Who can message me",
+  "flow": "settings",
+  "summary": "Picks who can start a chat with the user or invite them to a group: everyone, contacts and verified accounts, or contacts only. The server enforces the choice (ADR 0038).",
+  "state": {
+    "current": {
+      "type": "enum",
+      "values": ["everyone", "verified", "contacts"],
+      "description": "GET /v1/me/messaging who_can_message. Default everyone."
+    },
+    "saving": { "type": "bool", "description": "true while PUT /v1/me/messaging runs. The options are locked." },
+    "failed": { "type": "bool", "description": "A load or save failed: bipe_error_network, and the old choice stays." }
+  },
+  "actions": {
+    "appear": { "effect": "GET /v1/me/messaging." },
+    "choose": {
+      "params": {
+        "value": { "type": "enum", "values": ["everyone", "verified", "contacts"], "description": "The new choice." }
+      },
+      "effect": "PUT /v1/me/messaging. Shows the new choice at once and puts the old one back on failure."
+    }
+  },
+  "strings": [
+    "bipe_messaging_title",
+    "bipe_messaging_everyone",
+    "bipe_messaging_everyone_body",
+    "bipe_messaging_verified",
+    "bipe_messaging_verified_body",
+    "bipe_messaging_contacts",
+    "bipe_messaging_contacts_body",
+    "bipe_error_network"
+  ],
+  "sdk": ["Client.session"],
+  "parity": ["who-can-message"],
+  "notes": [
+    "Opens from the messaging row of Privacidade (settings-group privacy). The row value is the title of the current option; contacts also has bipe_settings_privacy_summary_contacts on Privacidade.",
+    "Enforced on the server: a Synapse module asks bipe-api before every invite to the user and refuses what the setting does not allow, for DMs and groups. It fails closed (ADR 0038). The app only shows and saves the choice.",
+    "Contacts always pass: people who share another joined room with the user, and invite pairs (ADR 0034).",
+    "verified also admits accounts with a verified name. No such account exists yet, so it acts like contacts; bipe_messaging_verified_body says so.",
+    "With everyone, invites from people the user does not know arrive in Pedidos de conversa (the chat requests box), not in the chat list.",
+    "Bipe logic: BipeAPIClient.messagingSetting and its PUT twin, BipeWhoCanMessage (BipeKit); BipeMessagingPresenter and BipeMessagingState (libraries/bipe settings)."
+  ]
+}

@@ -1,0 +1,97 @@
+{
+  "id": "invites",
+  "title": "Invite people to Bipe",
+  "flow": "invites",
+  "summary": "The user's personal invites to Bipe: how many are left, the invites not used yet, and the people who joined with one. Creating an invite opens invite-note.",
+  "types": {
+    "PersonalInvite": {
+      "id": { "type": "string", "description": "Invite.id from GET /v1/me/invites." },
+      "status": {
+        "type": "enum",
+        "values": ["pending", "used", "expired", "revoked"],
+        "description": "Invite.status: bipe_invites_status_pending, _used, _expired or _revoked."
+      },
+      "name": { "type": "string", "optional": true, "description": "Invite.name: who the invite is for. Only the user sees it." },
+      "expiresAt": { "type": "date", "description": "Invite.expires_at, for bipe_invites_expires." },
+      "link": { "type": "url", "optional": true, "description": "The link kept on this phone. Absent when the invite was made on another device: bipe_invites_other_device, no share." },
+      "joined": { "type": "Person", "optional": true, "description": "used only: the person who joined (Invite.joined_user_id)." },
+      "hasNote": { "type": "bool", "description": "pending only: a note waits on this phone (ADR 0136)." }
+    }
+  },
+  "state": {
+    "available": { "type": "int", "optional": true, "description": "MyInvites.available. Absent while loading." },
+    "nextAvailableAt": { "type": "date", "optional": true, "description": "MyInvites.next_available_at, when available is 0." },
+    "pending": { "type": "list", "of": { "type": "PersonalInvite", "description": "A pending invite." }, "description": "Under bipe_invites_pending_header, newest first." },
+    "joined": { "type": "list", "of": { "type": "PersonalInvite", "description": "A used invite." }, "description": "Under bipe_invites_joined_header, newest first." },
+    "phase": {
+      "type": "enum",
+      "values": ["loading", "loaded", "failed"],
+      "description": "failed: bipe_error_network with bipe_app_retry."
+    }
+  },
+  "actions": {
+    "appear": { "effect": "GET /v1/me/invites. Drops the kept links of invites that are no longer pending." },
+    "create": { "effect": "available above 0 only: opens invite-note." },
+    "share": {
+      "params": { "id": { "type": "string", "description": "A pending invite with a link." } },
+      "effect": "Opens the system share sheet with bipe_invites_share_message and the link."
+    },
+    "showQr": {
+      "params": { "id": { "type": "string", "description": "A pending invite with a link." } },
+      "effect": "Opens invite-qr."
+    },
+    "setName": {
+      "params": {
+        "id": { "type": "string", "description": "The invite." },
+        "name": { "type": "string", "description": "The name. Empty removes it." }
+      },
+      "effect": "PUT /v1/me/invites/{inviteId}."
+    },
+    "revoke": {
+      "params": { "id": { "type": "string", "description": "A pending invite." } },
+      "effect": "DELETE /v1/me/invites/{inviteId}. Also deletes the link and the note kept on this phone."
+    },
+    "openChat": {
+      "params": { "id": { "type": "string", "description": "A used invite." } },
+      "effect": "Opens the DM with the person who joined (bipe_invites_chat)."
+    }
+  },
+  "strings": [
+    "bipe_invites_title",
+    "bipe_invites_explainer",
+    "bipe_invites_available",
+    "bipe_invites_none_left",
+    "bipe_invites_next",
+    "bipe_invites_create",
+    "bipe_invites_empty",
+    "bipe_invites_pending_header",
+    "bipe_invites_joined_header",
+    "bipe_invites_status_pending",
+    "bipe_invites_status_used",
+    "bipe_invites_status_expired",
+    "bipe_invites_status_revoked",
+    "bipe_invites_expires",
+    "bipe_invites_other_device",
+    "bipe_invites_name_action",
+    "bipe_invites_name_placeholder",
+    "bipe_invites_name_footer",
+    "bipe_invites_share_message",
+    "bipe_invites_qr_action",
+    "bipe_invites_revoke",
+    "bipe_invites_chat",
+    "bipe_invites_joined",
+    "bipe_app_share",
+    "bipe_error_network",
+    "bipe_app_retry"
+  ],
+  "sdk": ["Client.getDmRoom"],
+  "parity": ["invite-note", "invite-qr"],
+  "notes": [
+    "API: GET and POST /v1/me/invites, PUT and DELETE /v1/me/invites/{inviteId}, GET /v1/me/invite-connections (api/openapi.yaml). A personal invite is single use and expires after 30 days.",
+    "Footer under the create button: bipe_invites_explainer; with 5 or fewer left, add bipe_invites_available; with none left, bipe_invites_none_left plus bipe_invites_next with nextAvailableAt. Bipe logic: BipeInviteQuota.footer (BipeKit BipeInviteCreator.swift); BipeInvitesPresenter (libraries/bipe invites).",
+    "The link and the note live only on this phone, keyed by invite id. The server stores the code as a hash and returns it once. Bipe logic: BipeInviteStore (BipeKit, keychain) and BipeInviteLinkStore (libraries/bipe invites, no-backup storage).",
+    "Join toast (parity invite-note): when GET /v1/me/invite-connections shows a new person who joined with the user's invite, the app shows bipe_invites_joined with the person's name once, and sends the waiting note (invite-note). This runs in the background at app start and on foreground, not only on this screen. Bipe logic: BipeInviteJoinNotifier and BipeInviteNoteSender (libraries/bipe invites); BipeInviteStore.seenJoinedInviteIDs (BipeKit).",
+    "Invite pairs are trusted: a DM invite from a pair joins without a chat request (ADR 0034). Bipe logic: BipeInvitePairs (libraries/bipe invites), BipeInviteStore.invitePairs (BipeKit).",
+    "This is an invite to Bipe, not to a group. Group invites are group-invite-members."
+  ]
+}

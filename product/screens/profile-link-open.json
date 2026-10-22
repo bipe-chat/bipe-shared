@@ -1,0 +1,38 @@
+{
+  "id": "profile-link-open",
+  "title": "Open a profile link",
+  "flow": "people",
+  "summary": "Handles a bipe.chat/@handle link (universal link on iOS, app link on Android, or a scanned QR code): finds the account with that exact @ and opens the person.",
+  "state": {
+    "handle": { "type": "string", "description": "The @ from the link, sanitised and lower case." },
+    "phase": {
+      "type": "enum",
+      "values": ["resolving", "found", "notFound", "failed"],
+      "description": "resolving: bipe_app_profile_link_opening. found: opens person-profile and closes. notFound: bipe_link_handle_not_found with the @. failed: bipe_error_network with bipe_app_retry."
+    }
+  },
+  "actions": {
+    "open": {
+      "params": { "url": { "type": "url", "description": "The link." } },
+      "effect": "Reads the @ from the link (see notes) and calls GET /v1/handles/{handle}. 200: the Matrix ID. The own ID opens profile-link. Another ID opens person-profile. 404: phase notFound."
+    },
+    "retry": { "effect": "Calls the lookup again." },
+    "close": { "effect": "Closes and goes back to where the user was." }
+  },
+  "strings": [
+    "bipe_app_profile_link_opening",
+    "bipe_link_handle_not_found",
+    "bipe_error_network",
+    "bipe_app_retry",
+    "bipe_app_close"
+  ],
+  "sdk": ["Client.session", "Client.userId"],
+  "parity": ["profile-link-routing", "handles"],
+  "notes": [
+    "Accepted links: https on bipe.chat or www.bipe.chat, and the old host proseio.com.br (it redirects), with one path part that starts with @ and passes the local handle rule (registries/handles.json). Anything else is not a profile link and the app ignores it. Bipe logic: BipeProfileLink.handle(from:) (BipeKit), BipeLinks.kt (libraries/bipe).",
+    "A matrix.to link to a user (https://matrix.to/#/@user:server) opens person-profile with that ID directly. Bipe logic: BipeProfileLink.matrixUserID(fromPermalink:) (BipeKit).",
+    "Exact lookup only (ADR 0013, ADR 0041). The app does not suggest similar handles.",
+    "The iOS app declares applinks:bipe.chat; Android declares a verified app link for bipe.chat. The site serves the association files.",
+    "A link that arrives before sign-in waits until account-start ends, then opens."
+  ]
+}

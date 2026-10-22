@@ -1,0 +1,80 @@
+{
+  "id": "group-create",
+  "title": "Create a group",
+  "flow": "groups",
+  "summary": "Makes a new group: a name, an optional photo and the first people to invite. Every group is end-to-end encrypted, private and quiet by default (ADR 0026).",
+  "types": {
+    "Person": {
+      "userId": { "type": "string", "description": "The Matrix user ID. Stable key." },
+      "displayName": { "type": "string", "description": "The name to show: the saved contact name, else the profile name, else the @." },
+      "avatarUrl": { "type": "url", "optional": true, "description": "mxc URL of the profile photo." },
+      "handle": { "type": "string", "optional": true, "description": "The Bipe @ without the at sign, when the person has one." }
+    }
+  },
+  "state": {
+    "name": { "type": "string", "description": "The group name as typed. Trimmed before create." },
+    "photo": { "type": "url", "optional": true, "description": "A local file URL of the picked photo, not yet uploaded." },
+    "people": { "type": "list", "of": { "type": "Person", "description": "A person to invite." }, "description": "The people picked in group-invite-members, in the order picked. Can be empty." },
+    "canCreate": { "type": "bool", "description": "true when the trimmed name is not empty and phase is editing." },
+    "phase": {
+      "type": "enum",
+      "values": ["editing", "creating", "failed"],
+      "description": "editing: the form. creating: bipe_app_group_creating, the form is locked. failed: bipe_app_group_create_error, the form keeps its values."
+    }
+  },
+  "actions": {
+    "setName": {
+      "params": { "name": { "type": "string", "description": "The new text." } },
+      "effect": "Updates name and canCreate."
+    },
+    "choosePhoto": {
+      "effect": "Opens the system photo picker. The picked photo shows in the round avatar. Nothing is uploaded yet."
+    },
+    "removePhoto": { "effect": "Clears photo." },
+    "addPeople": {
+      "effect": "Opens group-invite-members in pick mode with people already selected. Done there replaces people."
+    },
+    "removePerson": {
+      "params": { "userId": { "type": "string", "description": "The person to take out." } },
+      "effect": "Takes the person out of people."
+    },
+    "create": {
+      "effect": "Uploads the photo (Client.uploadMedia) if there is one, then Client.createRoom (see notes). Then invites each person with Room.inviteUserById, one at a time. Then opens chat-timeline for the new group and closes this screen."
+    },
+    "cancel": { "effect": "Closes the screen. Nothing is created." }
+  },
+  "strings": [
+    "bipe_app_group_create_title",
+    "bipe_app_group_name",
+    "bipe_app_group_photo_choose",
+    "bipe_app_group_photo_remove",
+    "bipe_app_group_add_people",
+    "bipe_app_group_create_people",
+    "bipe_app_group_create_quiet_footer",
+    "bipe_groups_empty_action",
+    "bipe_app_group_creating",
+    "bipe_app_group_create_error",
+    "bipe_app_group_create_invites_failed",
+    "bipe_app_cancel"
+  ],
+  "sdk": [
+    "Client.uploadMedia",
+    "Client.createRoom",
+    "CreateRoomParameters",
+    "RoomPreset",
+    "RoomVisibility",
+    "Client.getRoom",
+    "Room.inviteUserById"
+  ],
+  "parity": ["group-types", "e2ee-only-rooms"],
+  "notes": [
+    "CreateRoomParameters: name (trimmed), isEncrypted true, isDirect false, visibility private, preset privateChat, avatar the mxc URL from the upload, topic none, invite none. People are invited after the create, one call each, so one refused invite does not stop the group.",
+    "Every group is end-to-end encrypted (parity e2ee-only-rooms). There is no switch for it, no public option and no room address. Join rule invite, from the preset.",
+    "Quiet by default (ADR 0026, parity group-types): the group takes the account default for groups, which BipeQuietGroups sets to mentions and keywords plus the poll rule chat.bipe.poll_start. The screen does not set a mode per group. bipe_app_group_create_quiet_footer says it only when the default for groups is quiet (NotificationSettings.getDefaultRoomNotificationMode with isOneToOne false is mentionsAndKeywordsOnly). Bipe logic: BipeQuietGroups (libraries/bipe groups/BipeQuietGroups.kt; iOS app target, not BipeKit). Move it to the bipe-app SDK layer and run it once per account after the first sync.",
+    "The create button is bipe_groups_empty_action (Criar grupo), the same words as the empty groups tab.",
+    "A refused invite (the person's who-can-message setting, Synapse module, ADR 0038) or any other failed invite does not undo the create: the group opens, and a banner shows bipe_app_group_create_invites_failed. The per-person reason shows in group-invite-members when the user tries again.",
+    "A failed upload or create: phase failed, nothing is created on the server. Tap create again to retry.",
+    "Name length: no Bipe limit. The server limit applies (Matrix spec, 255 bytes for m.room.name).",
+    "Out of scope: group templates (frozen, groups.md), communities (spaces), verified-only joining (bipe-chat/bipe#71), invite links to a group."
+  ]
+}

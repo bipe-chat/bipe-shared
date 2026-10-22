@@ -1,0 +1,66 @@
+{
+  "id": "voice-message",
+  "title": "Voice message",
+  "flow": "chat",
+  "summary": "The timeline row of a voice message or audio file: play and pause, a waveform with progress, the duration, and the sender's transcript under it (ADR 0023). The scam check reads the transcript.",
+  "types": {
+    "VoiceMessage": {
+      "isVoice": { "type": "bool", "description": "true for a voice message (has the voice marker), false for an audio file." },
+      "duration": { "type": "string", "description": "Length, formatted (\"0:42\")." },
+      "waveform": { "type": "list", "of": { "type": "int", "description": "One bar, 0 to 1024." }, "description": "From the event; empty draws a flat line." },
+      "transcript": { "type": "string", "optional": true, "description": "The caption of a voice message. Missing when the sender sent none." },
+      "playback": {
+        "type": "enum",
+        "values": ["idle", "loading", "playing", "paused", "failed"],
+        "description": "The player state of this row."
+      },
+      "progress": { "type": "int", "description": "Played part, percent 0 to 100." }
+    }
+  },
+  "state": {
+    "voice": { "type": "VoiceMessage", "description": "The row." },
+    "transcriptExpanded": { "type": "bool", "description": "true after the person tapped show more." }
+  },
+  "actions": {
+    "togglePlay": {
+      "effect": "Downloads the audio to the cache when needed, then plays or pauses. Starting one row stops any other."
+    },
+    "seek": {
+      "params": { "percent": { "type": "int", "description": "Where to play from." } },
+      "effect": "Drag on the waveform: moves the position."
+    },
+    "toggleTranscript": {
+      "effect": "Shows the whole transcript, or collapses it to 3 lines."
+    }
+  },
+  "strings": [
+    "bipe_voice_transcript_title",
+    "bipe_action_show_more",
+    "bipe_action_show_less",
+    "bipe_app_voice_play",
+    "bipe_app_voice_pause",
+    "bipe_app_media_failed",
+    "bipe_app_media_voice"
+  ],
+  "sdk": [
+    "MessageType",
+    "AudioMessageContent",
+    "AudioInfo",
+    "UnstableAudioDetailsContent",
+    "UnstableVoiceContent",
+    "MediaSource",
+    "Client.getMediaFile",
+    "MediaFileHandle"
+  ],
+  "parity": ["voice-transcript-display"],
+  "notes": [
+    "ADR 0023: Bipe never captions a voice message in another way, so the caption of a voice message is the transcript. The reader's phone never transcribes.",
+    "Transcript block: bipe_voice_transcript_title, then the text in 3 lines. Over 140 characters, bipe_action_show_more and bipe_action_show_less toggle it (same rule as the forks).",
+    "The scam check (scam-warning) reads the transcript of incoming voice messages; the card goes under the transcript.",
+    "The transcript is the sender's text, not proof of what was said; the row does not claim otherwise.",
+    "Playback goes on with the screen locked and stops when another row plays or a call or other audio starts. Speaker by default; the earpiece when the phone is at the ear.",
+    "Audio files (no voice marker) show the same player with the file name and no transcript.",
+    "bipe_app_voice_play and bipe_app_voice_pause are the button accessibility labels. bipe_app_media_voice is the preview text for replies, the chat list and notifications.",
+    "Recording and the sender-side transcript (voice-transcript-send, BipeKit VoiceTranscriber.swift, libraries/bipe voice/BipeVoiceTranscriber.kt) are the composer issue, not this spec."
+  ]
+}

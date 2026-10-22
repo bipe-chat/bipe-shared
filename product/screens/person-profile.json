@@ -1,0 +1,102 @@
+{
+  "id": "person-profile",
+  "title": "A person's profile",
+  "flow": "people",
+  "summary": "Shows another person: photo, name, @, trust marks and bio, with what the user can do (message, add to a group, block, report). From a DM it is also the DM's info screen (ADR 0141).",
+  "types": {
+    "TrustMark": {
+      "kind": {
+        "type": "enum",
+        "values": ["verifiedName", "company", "companyRevoked", "companySuspended", "confirmedInPerson", "nameSuspended"],
+        "description": "verifiedName: bipe_badge_verified_name. company: bipe_badge_company, opens company-seal. companyRevoked: bipe_badge_company_revoked. companySuspended: bipe_badge_company_suspended. confirmedInPerson: bipe_badge_verified_contact. nameSuspended: bipe_badge_suspended with bipe_badge_suspended_body."
+      },
+      "text": { "type": "string", "description": "String key of the mark." }
+    }
+  },
+  "state": {
+    "userId": { "type": "string", "description": "The person." },
+    "person": { "type": "Person", "description": "Name, photo and @." },
+    "isCompany": { "type": "bool", "description": "GET /v1/accounts/{userId}/type is company: the avatar is a rounded square, else a circle (ADR 0132)." },
+    "marks": { "type": "list", "of": { "type": "TrustMark", "description": "One mark." }, "description": "Only marks that verify on this device (see notes). Empty for most people today." },
+    "reservedNameWarning": { "type": "bool", "description": "The name is a reserved name (normalize, registries/reserved-names.json) and no company mark verifies it: bipe_warning_reserved_name under the name." },
+    "bio": { "type": "string", "optional": true, "description": "PublicProfile.bio when the person has a public profile on, with bipe_public_profile_not_verified under it." },
+    "dmRoomId": { "type": "string", "optional": true, "description": "Client.getDmRoom: the newest DM with the person, when one exists." },
+    "isBlocked": { "type": "bool", "description": "The user id is in Client.ignoredUsers: bipe_app_person_blocked, and block turns into unblock." },
+    "fromDm": { "type": "bool", "description": "Opened from a DM header: the title is bipe_dm_details_title and the DM rows show (notifications, delete)." },
+    "phase": {
+      "type": "enum",
+      "values": ["loading", "loaded", "failed"],
+      "description": "failed: bipe_app_person_not_found with bipe_app_retry."
+    }
+  },
+  "actions": {
+    "appear": {
+      "effect": "Client.getProfile for name and photo; POST /v1/handles/resolve for the @; GET /v1/accounts/{userId}/type; GET /v1/badges/{userId}, verified on the device; GET /v1/profiles/{handle} for the bio; Client.getDmRoom; Client.ignoredUsers. The screen shows what it has and fills in the rest."
+    },
+    "message": {
+      "effect": "Opens the DM in chat-timeline. Without one: Client.createRoom with isDirect true, isEncrypted true, preset trustedPrivateChat and the person invited, with the DM power levels of ADR 0141, then opens it."
+    },
+    "share": { "effect": "Only when the person has an @: the system share sheet with the profile link (BipeProfileLink, https://bipe.chat/@<handle>)." },
+    "addToGroup": { "effect": "Lists the user's groups where RoomPowerLevels.canOwnUserInvite, and invites the person to the chosen one (bipe_dm_invite_to_group, bipe_dm_invite_to_group_empty)." },
+    "newGroup": { "effect": "Opens group-create with this person picked." },
+    "notifications": { "effect": "fromDm only: opens chat-notifications for the DM." },
+    "deleteChat": { "effect": "fromDm only: opens dm-delete." },
+    "block": { "effect": "Opens block-person to block or unblock." },
+    "report": { "effect": "With a DM: opens report-chat for it. Without one there is nothing to report: the row is hidden." },
+    "openSeal": { "effect": "isCompany with a company mark: opens company-seal." }
+  },
+  "strings": [
+    "bipe_dm_details_title",
+    "bipe_app_person_message",
+    "bipe_profile_share",
+    "bipe_dm_invite_to_group",
+    "bipe_dm_invite_to_group_empty",
+    "bipe_dm_invite_to_group_sent",
+    "bipe_dm_invite_to_group_already_member",
+    "bipe_app_person_new_group",
+    "bipe_app_group_invite_refused",
+    "bipe_settings_notifications",
+    "bipe_dm_delete_action",
+    "bipe_action_block_person",
+    "bipe_action_unblock_person",
+    "bipe_app_person_blocked",
+    "bipe_dm_report",
+    "bipe_badge_verified_name",
+    "bipe_badge_company",
+    "bipe_badge_company_revoked",
+    "bipe_badge_company_suspended",
+    "bipe_badge_verified_contact",
+    "bipe_badge_suspended",
+    "bipe_badge_suspended_body",
+    "bipe_warning_reserved_name",
+    "bipe_public_profile_not_verified",
+    "bipe_app_person_not_found",
+    "bipe_app_retry"
+  ],
+  "sdk": [
+    "Client.getProfile",
+    "UserProfile",
+    "Client.getDmRoom",
+    "Client.createRoom",
+    "CreateRoomParameters",
+    "PowerLevels",
+    "Client.ignoredUsers",
+    "Client.subscribeToIgnoredUsers",
+    "Client.encryption",
+    "Encryption.userIdentity",
+    "UserIdentity.isVerified",
+    "Room.inviteUserById"
+  ],
+  "parity": ["handles", "public-profile", "cnpj-badge", "reserved-names", "who-can-message"],
+  "notes": [
+    "One DM test (ADR 0141): the DM is Client.getDmRoom for this person, the newest room. The DM shows the person's name and photo, never m.room.name or m.room.avatar.",
+    "A new DM (ADR 0141): power levels that let neither person invite or change room settings. PowerLevels with invite, state_default and the events for m.room.name, m.room.avatar and m.room.topic above both users' level. The other person's invite can be refused by their who-can-message setting (ADR 0038): show bipe_app_group_invite_refused with the name, and create nothing.",
+    "Trust marks come from the badge envelope only (ADR 0041, security rule 2), verified on the device against the keys of registries/badge-keys.json, the sender and the account's cross-signing master key. The user cannot write a mark. Today no signer exists for names, so verifiedName and nameSuspended stay empty; company marks exist (ADR 0042, ADR 0123). Bipe logic: BadgeVerifier, BipeCompanySeals and BipeCompanySealState (BipeKit); BadgeVerifier, BipeCompanySeals.kt (libraries/bipe company).",
+    "SDK gap: the badge check needs the person's master key. matrix-sdk-ffi has UserIdentity.masterKey only as pub(crate), so the bindings do not export it (22 Oct 2026). bipe-app needs it exported (an upstream change to matrix-rust-sdk) or reads it from the keys query of the Matrix client-server API. Until then, company marks fail closed: no seal.",
+    "confirmedInPerson: the person's identity is verified by the user (UserIdentity.isVerified, after an in-person QR or emoji check). It is a different fact from a verified name (linguagem.md: confirmar, not verificar).",
+    "Reserved names (parity reserved-names): reservedNameWarning uses the same normalize() and registry as profile-edit. A company whose verified seal names it does not get the warning. Bipe logic: NameNormalizer.reservedCategory (BipeKit), NameNormalizer.kt (libraries/bipe).",
+    "The @ comes from POST /v1/handles/resolve and is cached per user ID. Bipe logic: BipeHandleResolver (BipeKit, libraries/bipe). The public profile bio comes from GET /v1/profiles/{handle}; a 404 means no bio.",
+    "No phone number shows, ever: the number is for discovery only (ADR 0015).",
+    "Calls are out of scope for this issue (client-rewrite-plan.md section 4, phase 3)."
+  ]
+}

@@ -13,9 +13,9 @@
     }
   },
   "actions": {
-    "photos": { "effect": "Opens the system photo picker (several photos and videos). The picked items open attachment-preview." },
-    "camera": { "effect": "Opens the system camera for a photo or a video. The result opens attachment-preview." },
-    "file": { "effect": "Opens the system file picker (one file). The file opens attachment-preview." },
+    "photos": { "effect": "Opens the system photo picker (several photos and videos). The picked items open upload-preview." },
+    "camera": { "effect": "Opens the system camera for a photo or a video. The result opens upload-preview." },
+    "file": { "effect": "Opens the system file picker (one file). The file opens upload-preview." },
     "sticker": { "effect": "Closes the sheet and opens sticker-picker." },
     "poll": { "effect": "canPoll only: closes the sheet and opens poll-create (bipe-chat/bipe#569)." },
     "cancel": { "effect": "Closes the sheet." }

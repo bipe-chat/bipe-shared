@@ -1,0 +1,80 @@
+{
+  "id": "upload-preview",
+  "title": "Upload preview",
+  "flow": "chat",
+  "summary": "After the person picks a photo, video or file, shows it full size with a caption field and Send. Sending puts the media in the timeline at once with upload progress.",
+  "types": {
+    "PickedMedia": {
+      "kind": {
+        "type": "enum",
+        "values": ["image", "video", "file"],
+        "description": "From the picked file type."
+      },
+      "filename": { "type": "string", "description": "The file name." },
+      "sizeLabel": { "type": "string", "description": "Size, formatted." },
+      "isTooLarge": { "type": "bool", "description": "true when the file is over the homeserver upload limit." }
+    }
+  },
+  "state": {
+    "items": {
+      "type": "list",
+      "of": { "type": "PickedMedia", "description": "One picked file." },
+      "description": "What the person picked, at most 10. Each item is sent as its own message."
+    },
+    "caption": { "type": "string", "description": "Text to send with the first item." },
+    "quality": {
+      "type": "enum",
+      "values": ["standard", "high"],
+      "description": "The setting bipe_chats_media_quality: standard resizes photos and videos before upload; high sends them as they are."
+    },
+    "replyingTo": { "type": "MessageReply", "optional": true, "description": "The reply of the composer (message-reply), carried over." },
+    "isPreparing": { "type": "bool", "description": "true while photos and videos are resized and thumbnails made." },
+    "maxUploadLabel": { "type": "string", "optional": true, "description": "The homeserver limit, formatted, for bipe_app_upload_too_large." }
+  },
+  "actions": {
+    "editCaption": {
+      "params": { "text": { "type": "string", "description": "The new caption." } },
+      "effect": "Sets caption."
+    },
+    "remove": {
+      "params": { "index": { "type": "int", "description": "The item to drop." } },
+      "effect": "Drops one item; the screen closes when none is left."
+    },
+    "send": {
+      "effect": "Sends each item as an attachment with its thumbnail and info, the caption on the first item, as a reply when replyingTo is set, then closes. Off while an item isTooLarge or isPreparing."
+    },
+    "cancel": {
+      "effect": "Closes without sending; the composer draft stays."
+    }
+  },
+  "strings": [
+    "bipe_app_upload_caption_placeholder",
+    "bipe_app_upload_send",
+    "bipe_app_upload_preparing",
+    "bipe_app_upload_too_large",
+    "bipe_app_upload_failed",
+    "bipe_app_cancel",
+    "bipe_camera_permission_body"
+  ],
+  "sdk": [
+    "Timeline.sendAttachment",
+    "UploadParameters",
+    "UploadSource",
+    "AttachmentKind",
+    "ImageInfo",
+    "VideoInfo",
+    "FileInfo",
+    "ThumbnailInfo",
+    "SendAttachmentJoinHandle",
+    "Client.getMaxMediaUploadSize"
+  ],
+  "parity": ["e2ee"],
+  "notes": [
+    "Sources: the system photo picker (no full gallery permission needed), the camera (bipe_camera_permission_body when denied) and the system file picker. The attachment menu of the composer opens them; that menu is the composer issue.",
+    "quality standard: photos at most 2048 px on the long side, JPEG; videos at most 1280 px. high: no change. The row in Conversas e mídia sets it (bipe_chats_media_quality).",
+    "Every image and video gets a thumbnail and a blurhash in its info, so timeline-media can show a placeholder at once.",
+    "The SDK encrypts the file before upload; the homeserver stores only the encrypted file.",
+    "The send queue keeps the upload when the app goes to the background or the network drops; a failure shows the row as failed with bipe_app_upload_failed and the message-actions retry.",
+    "Metadata: photos lose location and camera data before upload."
+  ]
+}

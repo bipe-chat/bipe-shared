@@ -1,0 +1,76 @@
+{
+  "id": "group-details",
+  "title": "Group info",
+  "flow": "groups",
+  "summary": "The info screen of a group: photo, name, description, people, notifications and leave. People with the right power level edit the name, photo and description here.",
+  "state": {
+    "roomId": { "type": "string", "description": "The group." },
+    "name": { "type": "string", "description": "RoomInfo.displayName." },
+    "avatarUrl": { "type": "url", "optional": true, "description": "RoomInfo.avatarUrl." },
+    "description": { "type": "string", "optional": true, "description": "RoomInfo.topic. Hidden when empty and the user cannot edit." },
+    "memberCount": { "type": "int", "description": "RoomInfo.joinedMembersCount, for bipe_app_group_details_people." },
+    "notificationMode": { "type": "string", "description": "String key of the current mode, from chat-notifications: bipe_app_notify_quiet, bipe_app_notify_all, bipe_app_notify_mute or bipe_app_notify_mentions_legacy." },
+    "canEdit": { "type": "bool", "description": "RoomPowerLevels.canOwnUserSendState for m.room.name. The same answer covers the photo and the description in Bipe groups (see notes)." },
+    "canInvite": { "type": "bool", "description": "RoomPowerLevels.canOwnUserInvite." },
+    "phase": {
+      "type": "enum",
+      "values": ["viewing", "editing", "saving"],
+      "description": "viewing: the info. editing: name, photo and description are fields. saving: the changes go out; bipe_app_save_error on failure, and the screen stays in editing."
+    }
+  },
+  "actions": {
+    "appear": {
+      "effect": "Reads Room.roomInfo, subscribes with Room.subscribeToRoomInfoUpdates, and reads the power levels and the notification mode."
+    },
+    "edit": { "effect": "canEdit only: phase editing." },
+    "save": {
+      "params": {
+        "name": { "type": "string", "description": "The new name, trimmed. Cannot be empty." },
+        "description": { "type": "string", "description": "The new description. Empty removes it." }
+      },
+      "effect": "Sends only what changed: Room.setName, Room.setTopic, and Room.uploadAvatar or Room.removeAvatar for a new or removed photo. Then phase viewing."
+    },
+    "cancelEdit": { "effect": "Drops the changes. phase viewing." },
+    "openPeople": { "effect": "Opens group-members." },
+    "addPeople": { "effect": "canInvite only: opens group-invite-members in invite mode." },
+    "openNotifications": { "effect": "Opens chat-notifications for this group." },
+    "leave": { "effect": "Opens group-leave." }
+  },
+  "strings": [
+    "bipe_app_group_details_title",
+    "bipe_app_group_details_people",
+    "bipe_app_group_name",
+    "bipe_app_group_description",
+    "bipe_app_group_description_placeholder",
+    "bipe_app_group_photo_choose",
+    "bipe_app_group_photo_remove",
+    "bipe_app_group_add_people",
+    "bipe_settings_notifications",
+    "bipe_app_group_leave_action",
+    "bipe_app_edit",
+    "bipe_app_save",
+    "bipe_app_save_error",
+    "bipe_app_cancel"
+  ],
+  "sdk": [
+    "Client.getRoom",
+    "Room.roomInfo",
+    "Room.subscribeToRoomInfoUpdates",
+    "RoomInfo",
+    "Room.getPowerLevels",
+    "RoomPowerLevels.canOwnUserSendState",
+    "RoomPowerLevels.canOwnUserInvite",
+    "Room.setName",
+    "Room.setTopic",
+    "Room.uploadAvatar",
+    "Room.removeAvatar"
+  ],
+  "parity": ["group-types"],
+  "notes": [
+    "Only for a group: RoomInfo.isDm is false (ADR 0141, the one DM test). A DM opens the person's profile instead (bipe-chat/bipe#567). A room that stops being a DM because a third person joined becomes a group and opens this screen.",
+    "A group is the Matrix word room. The screen never says sala (linguagem.md section 4).",
+    "canEdit: Bipe groups keep the default power levels of the privateChat preset, where name, avatar and topic need the same level. If a group from another client sets them apart, ask canOwnUserSendState for each event type and show only the fields the user can change.",
+    "No room address, no join rule, no history visibility, no encryption switch and no roles editor beyond admin in group-members (client-rewrite-plan.md section 4).",
+    "Pinned messages, media and files of the group, search in the group and report a group are later issues. The O que você perdeu block (ADR 0026, bipe_group_missed_*) belongs to chat-timeline, not to this screen."
+  ]
+}

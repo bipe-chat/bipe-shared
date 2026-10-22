@@ -1534,14 +1534,6 @@
       "kind": "idiom"
     },
     {
-      "area": "Where invites live",
-      "ios": "Contatos e convites: invite buttons, people who joined with your invite, and unused invites in the contacts screen",
-      "android": "Convidar pessoas in settings",
-      "reason": "Android has no contacts screen yet (#401)",
-      "kind": "gap",
-      "issue": 401
-    },
-    {
       "area": "Sticker from a photo",
       "ios": "Subject cut-out (Vision)",
       "android": "Centred square crop",

@@ -1,0 +1,52 @@
+{
+  "id": "message-edit",
+  "title": "Edit a message",
+  "flow": "chat",
+  "summary": "Lets the person change the text of their own sent message. The composer switches to edit mode with the old text; the message then shows the new text and an Edited label.",
+  "types": {
+    "MessageEdit": {
+      "rowId": { "type": "string", "description": "The own message being edited." },
+      "originalText": { "type": "string", "description": "The text before the edit, to restore on cancel." }
+    }
+  },
+  "state": {
+    "editing": { "type": "MessageEdit", "optional": true, "description": "Missing when the composer is in normal mode." },
+    "isSaving": { "type": "bool", "description": "true while the edit is sent." },
+    "error": { "type": "bool", "description": "true after a failed edit. Shows bipe_app_message_edit_failed once." }
+  },
+  "actions": {
+    "startEdit": {
+      "params": { "rowId": { "type": "string", "description": "An own text message with canEdit." } },
+      "effect": "Puts the message text in the composer, keeps the unsent draft aside, and shows the edit bar. Ends a reply first."
+    },
+    "cancelEdit": {
+      "effect": "Leaves edit mode and puts the kept draft back."
+    },
+    "saveEdit": {
+      "effect": "Sends the composer text as the new content of the message, then leaves edit mode and puts the kept draft back. Off while the text is blank after trimming or equal to originalText."
+    }
+  },
+  "strings": [
+    "bipe_app_message_editing",
+    "bipe_app_message_save_edit",
+    "bipe_app_message_edit_failed",
+    "bipe_app_message_edited",
+    "bipe_app_cancel"
+  ],
+  "sdk": [
+    "EventTimelineItem",
+    "Timeline.edit",
+    "EditedContent",
+    "messageEventContentNew",
+    "MessageContent",
+    "EventOrTransactionId"
+  ],
+  "parity": [],
+  "notes": [
+    "EventTimelineItem.isEditable decides canEdit: own text messages only. Undecryptable, deleted and media messages are not editable here; media captions come with #561.",
+    "MessageContent.isEdited sets isEdited: the message shows bipe_app_message_edited after the time. Other people see the same label. There is no edit history view.",
+    "editSendState of the item shows the edit as sending and failed, with the chat-timeline strings, until the server has it.",
+    "An unsent own message (local echo) is edited in place by the SDK.",
+    "The scam warning runs again on the new text (scam-warning)."
+  ]
+}

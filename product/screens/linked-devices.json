@@ -1,0 +1,73 @@
+{
+  "id": "linked-devices",
+  "title": "Linked devices",
+  "flow": "settings",
+  "summary": "Settings > Sua conta > Aparelhos conectados (ADR 0116): the other devices of the account with their last use, a sign-out per device, and the only entry to Conectar um computador.",
+  "types": {
+    "LinkedDevice": {
+      "deviceId": { "type": "string", "description": "Matrix device ID. Stable key." },
+      "name": { "type": "string", "optional": true, "description": "The device display name. Absent shows bipe_linked_devices_unknown_name." },
+      "lastSeenAt": { "type": "date", "optional": true, "description": "last_seen_ts from GET /_matrix/client/v3/devices." }
+    }
+  },
+  "state": {
+    "phase": {
+      "type": "enum",
+      "values": ["loading", "loaded", "failed"],
+      "description": "failed shows bipe_linked_devices_error with a retry."
+    },
+    "devices": {
+      "type": "list",
+      "of": { "type": "LinkedDevice", "description": "One device." },
+      "description": "Every device of the account except this phone (Client.deviceId), newest use first. Empty shows bipe_linked_devices_empty."
+    },
+    "canLinkComputer": { "type": "bool", "description": "The server advertises org.matrix.msc4108 and this phone holds the hidden password of a device-first account (ADR 0118 support gate)." },
+    "confirmingSignOut": { "type": "string", "optional": true, "description": "The device the sign-out dialog asks about." }
+  },
+  "actions": {
+    "load": {
+      "effect": "GET /_matrix/client/v3/devices with the access token (the SDK has no device list in the bindings), and GET /_matrix/client/versions for the support gate."
+    },
+    "linkComputer": {
+      "effect": "Opens link-computer (bipe-chat/bipe#573). Without the support gate shows bipe_link_computer_not_supported; an account without a PIN gets bipe_link_computer_needs_pin and bipe_link_computer_create_pin."
+    },
+    "askSignOut": {
+      "params": { "deviceId": { "type": "string", "description": "The device." } },
+      "effect": "Opens the dialog bipe_linked_devices_sign_out_title with bipe_linked_devices_sign_out_body."
+    },
+    "signOut": {
+      "effect": "Device owner check (bipe_linked_devices_sign_out_biometric), then opens the MAS account page that ends that device's session (Client.accountUrl with AccountManagementAction DeviceDelete, else the MSC4191 org.matrix.session_end action) in the private web view of link-computer, fills the MAS login once with the hidden password, and reloads the list when the page reports done."
+    }
+  },
+  "strings": [
+    "bipe_linked_devices_title",
+    "bipe_linked_devices_link_computer",
+    "bipe_linked_devices_footer",
+    "bipe_linked_devices_empty",
+    "bipe_linked_devices_last_used",
+    "bipe_linked_devices_unknown_name",
+    "bipe_linked_devices_sign_out",
+    "bipe_linked_devices_sign_out_title",
+    "bipe_linked_devices_sign_out_body",
+    "bipe_linked_devices_sign_out_biometric",
+    "bipe_linked_devices_error",
+    "bipe_link_computer_not_supported",
+    "bipe_link_computer_needs_pin",
+    "bipe_link_computer_create_pin",
+    "bipe_app_cancel",
+    "bipe_app_retry"
+  ],
+  "sdk": [
+    "Client.deviceId",
+    "Client.session",
+    "Client.accountUrl",
+    "AccountManagementAction"
+  ],
+  "parity": ["web-sign-in", "settings-structure"],
+  "notes": [
+    "A web device is unattested (ADR 0043): no badge, Pix or business account from the web. The list does not say so; the web shows it.",
+    "bipe_linked_devices_last_used takes the date from the system formatter.",
+    "Bipe logic: BipeMatrixAccountAPI.devices, supportsQRLogin and authMetadata, BipeWebLink.sessionEndURL, BipeMatrixDevice (iOS BipeWebLink.swift); BipeMatrixAccountApi, BipeLinkedDevicesPresenter, BipeWebApprovalController (Android weblink/). Move them.",
+    "Entrar em outro aparelho (QR from this phone to a new phone, bipe-chat/bipe#203) is not part of phase 1; its row stays out until #203 ships."
+  ]
+}

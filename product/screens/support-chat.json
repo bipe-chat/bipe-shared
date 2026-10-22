@@ -1,0 +1,35 @@
+{
+  "id": "support-chat",
+  "title": "Talk to support",
+  "flow": "settings",
+  "summary": "Falar com o suporte in Ajuda e sobre (ADR 0114): opens the person's one chat with the Suporte Bipe account, making it on first use.",
+  "state": {
+    "phase": {
+      "type": "enum",
+      "values": ["opening", "opened", "failed"],
+      "description": "opening: POST /v1/me/support runs and the room is joined. failed: shows bipe_support_open_failed."
+    },
+    "roomId": { "type": "string", "optional": true, "description": "room_id from the API." }
+  },
+  "actions": {
+    "open": {
+      "effect": "POST /v1/me/support, then joins the room when the person is only invited (Client.joinRoomById), then opens chat-timeline for it. 503 support_unavailable shows bipe_support_open_failed."
+    }
+  },
+  "strings": [
+    "bipe_settings_support",
+    "bipe_support_open_failed",
+    "bipe_support_room_name",
+    "bipe_support_room_topic",
+    "bipe_support_welcome",
+    "bipe_support_already_open"
+  ],
+  "sdk": ["Client.joinRoomById", "Client.getRoom", "Room.timeline", "Client.session"],
+  "parity": ["support-dm"],
+  "notes": [
+    "The room is encrypted like every room; the support bot has its own device and reads it. The topic (bipe_support_room_topic) says the team reads the chat in a support tool and that photos and files stay on the Bipe server.",
+    "The bot sends bipe_support_welcome on first use; the app shows no extra screen.",
+    "In the chat list the support room shows as Suporte Bipe with the support account's photo, like a DM.",
+    "Bipe logic: BipeAPIClient.supportRoomID (iOS), BipeSupportChat.open and BipeApiClient.supportRoomId (Android)."
+  ]
+}

@@ -1,0 +1,42 @@
+{
+  "id": "pin-change",
+  "title": "Change PIN",
+  "flow": "settings",
+  "summary": "Changes the account PIN from a signed-in phone after a biometric check (ADR 0057). No old PIN is needed. The server notifies the recovery e-mail.",
+  "state": {
+    "phase": {
+      "type": "enum",
+      "values": ["confirmOwner", "create", "confirm", "saving", "done", "failed"],
+      "description": "confirmOwner: the biometric or passcode check. create and confirm: the PIN steps of signup-pin. saving: PUT /v1/me/pin runs."
+    },
+    "error": { "type": "string", "optional": true, "description": "bipe_error_network, bipe_error_rate_limited, a pinProblem string from pin_weak, or bipe_error_generic." }
+  },
+  "actions": {
+    "start": {
+      "effect": "Asks the device owner check with bipe_pin_change_biometric_reason. A failed or cancelled check closes the screen."
+    },
+    "save": {
+      "effect": "PUT /v1/me/pin with the new PIN. On 204 shows bipe_pin_changed with the success haptic. With the lock on and one account on the phone, the lock PIN changes too (ADR 0086, ADR 0137)."
+    }
+  },
+  "strings": [
+    "bipe_pin_change_title",
+    "bipe_pin_change_biometric_reason",
+    "bipe_pin_create_title",
+    "bipe_pin_create_body",
+    "bipe_pin_confirm_title",
+    "bipe_pin_mismatch",
+    "bipe_pin_never_asked",
+    "bipe_pin_changed",
+    "bipe_error_network",
+    "bipe_error_rate_limited",
+    "bipe_error_generic"
+  ],
+  "sdk": ["Client.session"],
+  "parity": ["phone-account", "app-lock"],
+  "notes": [
+    "Setting the PIN on the server also unblocks it, sets the wrong-try count to 0 and cancels every waiting PIN reset (API contract).",
+    "The PIN steps and the weak-PIN rule are the same as signup-pin (registries/accounts.json, test-vectors/pins.json).",
+    "Bipe logic: BipeAPIClient.setPIN (iOS), BipeAccountSession.changePin and BipeApiClient.setPin (Android); the owner check as in BipeDataExportRow (biometrics or the screen lock, else the app lock PIN)."
+  ]
+}

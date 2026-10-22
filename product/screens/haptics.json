@@ -1,0 +1,37 @@
+{
+  "id": "haptics",
+  "title": "Haptics",
+  "flow": "settings",
+  "summary": "Not a screen: the rule for haptics in bipe-app (ADR 0134). Eight haptics named by meaning, played by id from the generated BipeHaptics code, at the uses that registries/haptics.json lists. Bipe has no haptics setting; the phone's system setting wins.",
+  "types": {
+    "HapticUse": {
+      "haptic": {
+        "type": "enum",
+        "values": ["tick", "tap", "threshold", "release", "hold", "success", "warning", "error"],
+        "description": "The haptic id in registries/haptics.json."
+      },
+      "use": { "type": "string", "description": "A use key from the registry, for example message_send, swipe_reply, pin_wrong, web_link_warning." }
+    }
+  },
+  "state": {
+    "uses": {
+      "type": "list",
+      "of": { "type": "HapticUse", "description": "One place that plays a haptic." },
+      "description": "Exactly the uses in the registry. A screen spec that plays one names the use in its notes."
+    }
+  },
+  "actions": {
+    "play": {
+      "params": { "use": { "type": "string", "description": "The use key." } },
+      "effect": "Plays the haptic of that use through the generated code. iOS: the UIKit generator the registry names. Android: the first HapticFeedbackConstants entry whose minSdk fits the device."
+    }
+  },
+  "strings": [],
+  "sdk": [],
+  "parity": ["haptics"],
+  "notes": [
+    "App code never calls a platform feedback API directly. A new use is a registry line; a new haptic needs an ADR.",
+    "iOS plays nothing when System Haptics is off; Android follows the touch feedback setting (design/haptics.md rule 6). No Bipe switch.",
+    "Bipe logic: BipeHaptics.play and prepare, and the View modifier in BipeHapticsPlayer.swift (iOS); haptics/BipeHaptics, BipeHapticOnChange, BipeHapticWhen and BipeSwipeHaptics (Android). The registry enum is generated (BipeHaptics in Generated)."
+  ]
+}

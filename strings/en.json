@@ -1270,6 +1270,18 @@
     "bipe_app_groups_leave_last_person": "You're the only person in the group. If you leave, the group ends.",
     "bipe_app_groups_leave_last_admin": "You're the only admin. Before you leave, choose who runs the group.",
     "bipe_app_groups_leave_pick_admin": "Make admin and leave",
-    "bipe_app_groups_leave_failed": "Couldn't leave the group. Try again."
+    "bipe_app_groups_leave_failed": "Couldn't leave the group. Try again.",
+    "bipe_app_settings_lock_wrong": "That PIN doesn't match. Try again.",
+    "bipe_app_settings_biometric_offer": "Open Bipe with %1$s?",
+    "bipe_app_settings_sign_out_title": "Sign out of this device?",
+    "bipe_app_settings_sign_out_body": "To use this account here again, you need your PIN and a way back into your account.",
+    "bipe_app_settings_sign_out_history": "This is the only device with your old messages. Without a recovery key, they won't come back.",
+    "bipe_app_settings_sign_out_confirm": "Sign out",
+    "bipe_app_settings_export_loading": "Preparing your data…",
+    "bipe_app_settings_report_logs": "Include the app logs",
+    "bipe_app_settings_report_logs_footer": "Logs help find the problem. They don't include your messages and stay on the Bipe server in Brazil for 90 days.",
+    "bipe_app_settings_report_screenshot": "Add a screenshot",
+    "bipe_app_settings_report_send": "Send",
+    "bipe_app_settings_report_error": "Couldn't send the report. Try again."
   }
 }

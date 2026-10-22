@@ -1,0 +1,47 @@
+{
+  "id": "help-about",
+  "title": "Help and about",
+  "flow": "settings",
+  "summary": "The Ajuda e sobre group: support, help pages, terms, privacy, report a problem, open source licences, and a footer with the steward line, the app version and the device ID.",
+  "state": {
+    "version": { "type": "string", "description": "versionName and build number from product/version.json as the build carries them, for example 26.10.2 (12)." },
+    "deviceId": { "type": "string", "description": "Client.deviceId. Shown small; a long press copies it." },
+    "licences": {
+      "type": "list",
+      "of": { "type": "string", "description": "One dependency with its licence text." },
+      "description": "The open source licences screen: every dependency of the build (matrix-rust-sdk Apache-2.0, Phosphor MIT and others) with its licence, and Bipe's own AGPL-3.0 with the app store permission (ADR 0144)."
+    }
+  },
+  "actions": {
+    "openUrl": {
+      "params": { "key": { "type": "string", "description": "docs, terms or privacy: an entry of registries/settings.json urls." } },
+      "effect": "Opens the pt or en URL in the system browser."
+    },
+    "openLicences": {
+      "effect": "Opens the licences list."
+    },
+    "copyDeviceId": {
+      "effect": "Copies deviceId, shows bipe_help_device_id_copied, tap haptic."
+    }
+  },
+  "strings": [
+    "bipe_settings_help",
+    "bipe_settings_support",
+    "bipe_help_docs",
+    "bipe_help_terms",
+    "bipe_help_privacy",
+    "bipe_help_report_problem",
+    "bipe_help_licenses",
+    "bipe_help_version",
+    "bipe_help_device_id_copied",
+    "bipe_about_steward",
+    "bipe_app_sdk_version"
+  ],
+  "sdk": ["Client.deviceId"],
+  "parity": ["help-links", "settings-structure", "open-source"],
+  "notes": [
+    "Help links go to bipe.chat, never to element.io (parity help-links).",
+    "bipe_help_version takes the version string; bipe_app_sdk_version shows the matrix-rust-sdk version under it.",
+    "The licence list is generated at build time from the dependency manifests; the licence check of the bipe-app CI keeps it honest (plan section 2)."
+  ]
+}

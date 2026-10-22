@@ -1270,6 +1270,18 @@
     "bipe_app_groups_leave_last_person": "Você é a única pessoa no grupo. Se sair, o grupo acaba.",
     "bipe_app_groups_leave_last_admin": "Só você administra o grupo. Antes de sair, escolha quem vai administrar.",
     "bipe_app_groups_leave_pick_admin": "Tornar admin e sair",
-    "bipe_app_groups_leave_failed": "Não deu para sair do grupo. Tente de novo."
+    "bipe_app_groups_leave_failed": "Não deu para sair do grupo. Tente de novo.",
+    "bipe_app_settings_lock_wrong": "A senha não confere. Tente de novo.",
+    "bipe_app_settings_biometric_offer": "Abrir o Bipe com %1$s?",
+    "bipe_app_settings_sign_out_title": "Sair deste aparelho?",
+    "bipe_app_settings_sign_out_body": "Para usar esta conta aqui de novo, você vai precisar da sua senha e de um jeito de voltar para a conta.",
+    "bipe_app_settings_sign_out_history": "Este é o único aparelho com suas mensagens antigas. Sem a chave de recuperação, elas não voltam.",
+    "bipe_app_settings_sign_out_confirm": "Sair",
+    "bipe_app_settings_export_loading": "Preparando seus dados…",
+    "bipe_app_settings_report_logs": "Incluir os registros do app",
+    "bipe_app_settings_report_logs_footer": "Os registros ajudam a achar o problema. Eles não trazem suas mensagens e ficam no servidor do Bipe, no Brasil, por 90 dias.",
+    "bipe_app_settings_report_screenshot": "Adicionar print da tela",
+    "bipe_app_settings_report_send": "Enviar",
+    "bipe_app_settings_report_error": "Não deu para enviar o relato. Tente de novo."
   }
 }

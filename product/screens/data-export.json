@@ -1,0 +1,37 @@
+{
+  "id": "data-export",
+  "title": "Download my data",
+  "flow": "settings",
+  "summary": "Baixar meus dados in Privacidade (LGPD art. 18, ADR 0112): after an owner check, gets the JSON copy of everything the Bipe API stores about the account and hands it to the system share sheet.",
+  "state": {
+    "phase": {
+      "type": "enum",
+      "values": ["idle", "confirmOwner", "downloading", "ready", "failed"],
+      "description": "downloading: GET /v1/me/export runs. ready: the share sheet is open."
+    },
+    "fileName": { "type": "string", "optional": true, "description": "From Content-Disposition, bipe-dados-YYYY-MM-DD.json." }
+  },
+  "actions": {
+    "start": {
+      "effect": "Owner check (biometrics or the phone's screen lock, else the app lock PIN, else refused) with bipe_privacy_export_biometric, then GET /v1/me/export."
+    },
+    "share": {
+      "effect": "Saves the body as it is in a private cache folder that holds only the latest export and opens the system share sheet with the file."
+    }
+  },
+  "strings": [
+    "bipe_privacy_export",
+    "bipe_privacy_export_footer",
+    "bipe_privacy_export_biometric",
+    "bipe_privacy_export_error",
+    "bipe_app_settings_export_loading",
+    "bipe_error_rate_limited"
+  ],
+  "sdk": ["Client.session"],
+  "parity": ["data-export"],
+  "notes": [
+    "The app never parses or logs the file. Messages are not on the server, so the footer says the chat contents are not in the file.",
+    "3 exports per hour per account: 429 shows bipe_error_rate_limited.",
+    "Bipe logic: BipeAPIClient.exportMyData and BipeDataExport (iOS); BipeAccountSession.exportData, BipeDataExportFile and BipeDataExportRow (Android)."
+  ]
+}

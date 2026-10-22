@@ -1,0 +1,89 @@
+{
+  "id": "problem-report",
+  "title": "Report a problem",
+  "flow": "settings",
+  "summary": "Avisar sobre um problema in Ajuda e sobre (ADR 0114): the person describes a problem, can add a screenshot and, if they choose, the app logs. The report goes to the Bipe API in Brazil; the team answers in the support chat.",
+  "state": {
+    "text": {
+      "type": "string",
+      "description": "The description, 1 to 5000 characters."
+    },
+    "includeLogs": {
+      "type": "bool",
+      "description": "Off by default. On sends the SDK log files of this phone."
+    },
+    "screenshots": {
+      "type": "list",
+      "of": {
+        "type": "url",
+        "description": "A local image file the person picked."
+      },
+      "description": "At most 10."
+    },
+    "phase": {
+      "type": "enum",
+      "values": [
+        "editing",
+        "sending",
+        "sent",
+        "failed"
+      ],
+      "description": "sending: POST /v1/bug-reports/submit runs. sent: shows bipe_help_report_sent_title and bipe_help_report_sent_body."
+    }
+  },
+  "actions": {
+    "editText": {
+      "params": {
+        "text": {
+          "type": "string",
+          "description": "The new text."
+        }
+      },
+      "effect": "Sets text."
+    },
+    "toggleLogs": {
+      "effect": "Flips includeLogs."
+    },
+    "addScreenshot": {
+      "effect": "Opens the system photo picker for one image."
+    },
+    "send": {
+      "effect": "Sends the multipart form to POST /v1/bug-reports/submit: text, app (the application ID), user_agent (iOS or Android), version, build, os, and the compressed logs and screenshots when chosen. Off while text is blank."
+    },
+    "openSupport": {
+      "effect": "From sent: opens support-chat, where the bot posted a notice of the report."
+    }
+  },
+  "strings": [
+    "bipe_help_report_problem",
+    "bipe_help_problem_description",
+    "bipe_help_problem_language",
+    "bipe_app_settings_report_logs",
+    "bipe_app_settings_report_logs_footer",
+    "bipe_app_settings_report_screenshot",
+    "bipe_app_settings_report_send",
+    "bipe_app_timeline_sending",
+    "bipe_help_report_sent_title",
+    "bipe_help_report_sent_body",
+    "bipe_app_settings_report_error",
+    "bipe_settings_support",
+    "bipe_error_rate_limited"
+  ],
+  "sdk": [
+    "initPlatform",
+    "TracingConfiguration",
+    "TracingFileConfiguration",
+    "Client.session"
+  ],
+  "parity": [
+    "problem-reports",
+    "support-dm"
+  ],
+  "notes": [
+    "No telemetry: nothing goes out on its own, and nothing goes to Sentry, PostHog or an Element server (ADR 0114). The report is sent only when the person taps send.",
+    "Logs come from the SDK tracing file writer (TracingFileConfiguration, set up with initPlatform). The app logs no message text, no password, no token and no PIN, so the files can leave the phone.",
+    "The API keeps text, logs and screenshots in Brazil for 90 days and sends only the text and metadata to the team's tool. product/data.json already lists problem reports.",
+    "10 reports per hour per account: 429 shows bipe_error_rate_limited; other failures show bipe_app_settings_report_error and keep the text.",
+    "No Bipe class to move: the forks send this form from Element's report screen. The form fields are the API contract."
+  ]
+}

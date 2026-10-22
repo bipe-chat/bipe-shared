@@ -1,0 +1,66 @@
+{
+  "id": "app-lock",
+  "title": "App lock",
+  "flow": "settings",
+  "summary": "The optional lock that asks for the PIN (or biometrics) when Bipe opens. Off by default; the Bloquear o app switch in Sua conta turns it on (ADR 0137). Also the lock screen itself.",
+  "state": {
+    "lockOn": { "type": "bool", "description": "A device PIN is set on this phone." },
+    "biometricOn": { "type": "bool", "description": "Biometric unlock is on. Only offered when lockOn and the phone has biometrics." },
+    "biometricKind": {
+      "type": "enum",
+      "values": ["none", "faceId", "touchId", "androidBiometrics"],
+      "description": "What the phone offers. Names the biometric in bipe_account_biometric_unlock and bipe_app_lock_biometric (Face ID, Touch ID, or bipe_account_biometric_word_android)."
+    },
+    "phase": {
+      "type": "enum",
+      "values": ["settings", "creatingPin", "offerBiometric", "locked", "unlocking", "wrongPin"],
+      "description": "settings: the rows in Sua conta. creatingPin: the PIN setup after the switch goes on. offerBiometric: the offer after the PIN. locked: the lock screen. wrongPin: a wrong PIN on the lock screen."
+    },
+    "pin": { "type": "string", "description": "Digits typed on the lock screen, at most pinLength. Never logged." }
+  },
+  "actions": {
+    "turnOn": {
+      "effect": "Opens the signup-pin steps (create and confirm) with the same weak-PIN rule, then offerBiometric. With one account on the phone the account PIN becomes the device PIN too, and the reverse (ADR 0086). Plays the success haptic when set."
+    },
+    "turnOff": {
+      "effect": "Asks the device owner check (biometrics or the phone's passcode; the app PIN on a phone without a passcode), then removes the device PIN and the biometric unlock."
+    },
+    "toggleBiometric": {
+      "effect": "Turns biometric unlock on (after a biometric check) or off."
+    },
+    "lock": {
+      "effect": "When the app goes to the background and comes back after the grace time, or starts cold, with lockOn: shows the lock screen over everything. With biometricOn it asks for biometrics at once."
+    },
+    "unlock": {
+      "effect": "Checks the typed PIN on the device. Right: hides the lock screen, success haptic. Wrong: phase wrongPin, error haptic, clears pin."
+    }
+  },
+  "strings": [
+    "bipe_account_app_lock",
+    "bipe_account_app_lock_off_reason",
+    "bipe_account_biometric_unlock",
+    "bipe_account_biometric_word_android",
+    "bipe_account_pin_footer",
+    "bipe_account_pin_footer_device",
+    "bipe_app_lock_title",
+    "bipe_app_lock_biometric",
+    "bipe_pin_enter_title",
+    "bipe_pin_create_title",
+    "bipe_pin_create_body",
+    "bipe_pin_confirm_title",
+    "bipe_pin_mismatch",
+    "bipe_app_settings_lock_wrong",
+    "bipe_app_settings_biometric_offer",
+    "bipe_fallback_skip"
+  ],
+  "sdk": [],
+  "parity": ["app-lock", "haptics", "multi-account"],
+  "notes": [
+    "The PIN check of the lock runs on the device; it never calls POST /v1/me/pin/check (API contract). The lock PIN is stored hashed on the device only.",
+    "Sign-up, sign-in, recovery and a PIN change never turn the lock on (ADR 0137). While the lock is on and the phone holds one account, a new account PIN also becomes the lock PIN.",
+    "Two accounts on the phone (ADR 0086): one device PIN for the lock; each account keeps its own server PIN for recovery.",
+    "Haptic ids: success for pin_set and app_unlock, error for pin_wrong (registries/haptics.json).",
+    "Bipe logic: BipeAppLock, BipeBiometricUnlock, BipeAccountSession.onAppLockPinSet, turnOffAppLock, verifyAppLockPin and hasSeparateDevicePin (Android account/), BipePIN (iOS). The lock screen UI itself is new code in bipe-app; the forks use Element's lock screen.",
+    "Open: the forks' lock screen comes from Element and its wrong-try limit and grace time are not specified by a Bipe ADR. bipe-app needs a decision (proposal: no sign-out after wrong tries, a growing wait after 5, grace time 0)."
+  ]
+}

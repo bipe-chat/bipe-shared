@@ -1,0 +1,84 @@
+{
+  "id": "settings-group",
+  "title": "Settings group",
+  "flow": "settings",
+  "summary": "One screen per settings group (privacy, account, chats, help, and the profile group from the Você header). The screen renders the sections and rows of that group from registries/settings.json, so iOS and Android show the same rows in the same order.",
+  "types": {
+    "SettingsRow": {
+      "key": { "type": "string", "description": "The row key in the registry." },
+      "kind": {
+        "type": "enum",
+        "values": ["link", "choice", "switch", "info", "url", "action", "destructive"],
+        "description": "The row kind of the registry."
+      },
+      "title": { "type": "string", "description": "A bipe_* string key." },
+      "footer": { "type": "string", "optional": true, "description": "A bipe_* string key under the row." },
+      "value": { "type": "string", "optional": true, "description": "The current value shown on choice, switch and info rows." },
+      "visible": { "type": "bool", "description": "The row's gate passes on this platform (absent, the platform name, a flag that is on). planned:<issue> hides the row; an unknown gate hides it (fail closed)." }
+    }
+  },
+  "state": {
+    "group": {
+      "type": "enum",
+      "values": ["profile", "privacy", "account", "chats", "help"],
+      "description": "The group on screen."
+    },
+    "rows": {
+      "type": "list",
+      "of": { "type": "SettingsRow", "description": "One row." },
+      "description": "Section by section, in registry order. A section with no visible row is hidden."
+    }
+  },
+  "actions": {
+    "tapRow": {
+      "params": { "key": { "type": "string", "description": "The row key." } },
+      "effect": "link: opens the row's screen (see notes). choice: opens the picker. switch: flips and saves. url: opens the urls entry for the app language in the system browser. action and destructive: run the row (see notes). info: nothing."
+    }
+  },
+  "strings": [
+    "bipe_settings_profile",
+    "bipe_settings_privacy",
+    "bipe_settings_account",
+    "bipe_settings_chats",
+    "bipe_settings_help",
+    "bipe_fallback_title",
+    "bipe_account_ways_back",
+    "bipe_account_paths_warning",
+    "bipe_account_pin_section",
+    "bipe_account_pin_footer",
+    "bipe_account_pin_footer_device",
+    "bipe_pin_change_title",
+    "bipe_account_app_lock",
+    "bipe_account_biometric_unlock",
+    "bipe_email_title",
+    "bipe_account_email_none",
+    "bipe_account_recovery_key",
+    "bipe_account_recovery_key_saved",
+    "bipe_account_recovery_key_missing",
+    "bipe_account_recovery_key_footer",
+    "bipe_account_devices",
+    "bipe_account_this_device",
+    "bipe_linked_devices_title",
+    "bipe_account_on_device",
+    "bipe_account_add",
+    "bipe_account_sign_out",
+    "bipe_privacy_export",
+    "bipe_privacy_export_footer",
+    "bipe_settings_support",
+    "bipe_help_docs",
+    "bipe_help_terms",
+    "bipe_help_privacy",
+    "bipe_help_report_problem",
+    "bipe_help_licenses",
+    "bipe_about_steward"
+  ],
+  "sdk": ["Client.session", "Client.encryption", "Encryption.recoveryState"],
+  "parity": ["settings-structure", "help-links"],
+  "notes": [
+    "Every title and footer comes from the generated settings code (BipeSettings), never hard-coded. The strings list above names the rows of this issue; rows of other areas (privacy rows, profile rows, chats rows) are specified with their screens (bipe-chat/bipe#567, #561, #563).",
+    "Row targets in this issue: account.changePin → pin-change; account.appLock and account.biometricUnlock → app-lock; account.recoveryKey → recovery-key-save; account.linkedDevices → linked-devices; account.signOut → sign-out; account.email → the recovery e-mail rows (set, change, remove with PUT and DELETE /v1/me/email; Bipe logic BipeAPIClient.setRecoveryEmail and removeRecoveryEmail, Android account/ui/BipeRecoveryEmailRows); account.add → signup-name in the second-account flow (ADR 0086, ADR 0135); privacy.export → data-export; help.support → support-chat; help.reportProblem → problem-report; help.docs, help.terms, help.privacy → url rows; help.licenses → help-about.",
+    "account.pin footer: bipe_account_pin_footer (takes pinLength) with one account on the phone; bipe_account_pin_footer_device with two or more (ADR 0086: the lock uses one device PIN).",
+    "Gate rules: Bipe logic BipeSettingsRow and BipeSettingsSection extensions (iOS BipeSettingsSupport.swift), BipeSettingsGate (Android). The url language is pt-BR unless the phone is in English.",
+    "There is no Remover senha row (ADR 0057). Apagar conta, Proteção contra roubo and Minha empresa wait for their own decisions (ADR 0112 consequences)."
+  ]
+}

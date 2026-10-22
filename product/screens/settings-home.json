@@ -1,0 +1,57 @@
+{
+  "id": "settings-home",
+  "title": "Settings list in the Você tab",
+  "flow": "settings",
+  "summary": "The Configurações section of the Você tab (ADR 0112): one row per settings group, each with its current state as the subtitle, so the list reads as a summary. Rows and their order come from registries/settings.json root.",
+  "types": {
+    "SettingsGroupRow": {
+      "key": {
+        "type": "enum",
+        "values": ["privacy", "account", "notifications", "chats", "help"],
+        "description": "The group key in registries/settings.json root, in that order."
+      },
+      "subtitle": { "type": "string", "optional": true, "description": "The state line of the group (see notes). Absent when the group has none." },
+      "warning": { "type": "bool", "description": "true only for account when it has one or no ways back. The only warning badge in Settings." }
+    }
+  },
+  "state": {
+    "rows": {
+      "type": "list",
+      "of": { "type": "SettingsGroupRow", "description": "One group." },
+      "description": "From the generated settings code (BipeSettings), root order."
+    }
+  },
+  "actions": {
+    "appear": {
+      "effect": "Reads the values the subtitles need: GET /v1/me/account (ways back), the who-can-message setting, the notification state on this phone, Encryption.recoveryState and the synced token."
+    },
+    "openGroup": {
+      "params": { "key": { "type": "string", "description": "A group key." } },
+      "effect": "Opens settings-group for that key; notifications opens notification-settings (bipe-chat/bipe#565)."
+    }
+  },
+  "strings": [
+    "bipe_settings_section",
+    "bipe_settings_privacy",
+    "bipe_settings_account",
+    "bipe_settings_notifications",
+    "bipe_settings_chats",
+    "bipe_settings_help",
+    "bipe_settings_privacy_summary_everyone",
+    "bipe_settings_privacy_summary_verified",
+    "bipe_settings_privacy_summary_contacts",
+    "bipe_settings_account_paths",
+    "bipe_settings_account_paths_none",
+    "bipe_settings_notifications_on",
+    "bipe_settings_notifications_off"
+  ],
+  "sdk": ["Client.encryption", "Encryption.recoveryState", "Client.session"],
+  "parity": ["settings-structure"],
+  "notes": [
+    "Subtitles: privacy from the who-can-message value (bipe_settings_privacy_summary_*); account from the ways-back count (bipe_settings_account_paths with the count, or bipe_settings_account_paths_none and the warning); notifications from notification-settings (on, or off on this phone). chats and help have none.",
+    "Ways back are counted on the device: confirmed recovery e-mail, linked Apple or Google account, recovery key set up, recovery token synced. One or none sets warning. Bipe logic: BipeWaysBack (iOS BipeSettingsSupport.swift), BipeWayBack (Android settings/).",
+    "The Você tab shows no warning mark for ways back (ADR 0112, MZ 21 Oct 2026); the tab icon carries only the other-account dot (ADR 0135).",
+    "The header, account switcher, Anotações, trust profile card and Convidar pessoas above this section are people and profiles (bipe-chat/bipe#567) and groups (#569).",
+    "A new top-level group needs a new ADR (registries/settings.json)."
+  ]
+}

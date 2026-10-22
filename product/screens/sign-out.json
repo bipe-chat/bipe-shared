@@ -1,0 +1,51 @@
+{
+  "id": "sign-out",
+  "title": "Sign out of this device",
+  "flow": "settings",
+  "summary": "The Sair deste aparelho row of Sua conta. Before it signs out, it checks that the person can come back (ways back) and says when this is the only device with the message history.",
+  "state": {
+    "phase": {
+      "type": "enum",
+      "values": ["checking", "confirm", "signingOut", "failed"],
+      "description": "checking: reads the ways back and Encryption.isLastDevice. confirm: the dialog. signingOut: Client.logout runs."
+    },
+    "waysBack": { "type": "int", "description": "Ways back this device can see (BipeWaysBack count)." },
+    "isLastDevice": { "type": "bool", "description": "Encryption.isLastDevice: no other device holds the keys." },
+    "hasRecoveryKey": { "type": "bool", "description": "Encryption.recoveryState is enabled." }
+  },
+  "actions": {
+    "start": {
+      "effect": "Reads the state and opens the confirm. With no way back the dialog shows bipe_account_paths_warning first; when isLastDevice and no recovery key it adds bipe_app_settings_sign_out_history and offers recovery-key-save."
+    },
+    "confirm": {
+      "effect": "Client.logout, then push-registration unregister, then deletes this account's hidden password and session store from the phone. The synced recovery token stays, so the person can come back with the PIN (recovery-start). Opens chat-list of the other account, or onboarding-welcome when none is left."
+    },
+    "cancel": {
+      "effect": "Closes the dialog."
+    }
+  },
+  "strings": [
+    "bipe_account_sign_out",
+    "bipe_app_settings_sign_out_title",
+    "bipe_app_settings_sign_out_body",
+    "bipe_app_settings_sign_out_history",
+    "bipe_account_paths_warning",
+    "bipe_fallback_recovery_key",
+    "bipe_app_settings_sign_out_confirm",
+    "bipe_app_cancel",
+    "bipe_error_generic"
+  ],
+  "sdk": [
+    "Client.logout",
+    "Client.encryption",
+    "Encryption.isLastDevice",
+    "Encryption.recoveryState"
+  ],
+  "parity": ["phone-account", "settings-structure", "multi-account"],
+  "notes": [
+    "The fallback check is bipe-chat/bipe#204 (soft logout and sign-out for device-first accounts).",
+    "Never delete the synced recovery token on sign-out: it is the way back on this phone and on a new one.",
+    "A sign-out that the server forces (token revoked) is not this screen; account-start handles it.",
+    "Bipe logic: BipeWaysBack (iOS), BipeWayBack (Android), BipeCredentialStore.deletePassword (iOS)."
+  ]
+}

@@ -2,7 +2,7 @@
   "id": "message-actions",
   "title": "Message actions",
   "flow": "chat",
-  "summary": "The sheet that opens on a long press on a message: quick reactions on top, then the actions that apply to that message. Each action hands over to its own spec.",
+  "summary": "Native context and visible overflow menus expose the actions that apply to a message. The existing action sheet remains available for send-state and receipt controls.",
   "types": {
     "MessageAction": {
       "kind": {
@@ -42,6 +42,7 @@
     }
   },
   "strings": [
+    "bipe_message_actions",
     "bipe_app_message_action_reply",
     "bipe_app_message_action_edit",
     "bipe_app_copy",
@@ -62,6 +63,8 @@
     "reply: canReply and the message is sent. edit: canEdit. copy: text messages only. retry: own message with send state failed. delete: canDelete, or an own message not sent yet. report: messages of other people that are sent.",
     "Undecryptable rows: report only, and the message-undecryptable help when its cause has one. Deleted rows have no sheet.",
     "Not in this sheet (ADR 0141 and plan section 4): threads, pin, copy link to the message, forward, view source. Forward and media save come with #561.",
-    "The sheet shows the message on top, so the person sees what they act on. The haptic follows ADR 0134 (registries haptics, selection)."
+    "The sheet shows the message on top, so the person sees what they act on. The haptic follows ADR 0134 (registries haptics, selection).",
+    "Native iOS contextMenu and Android DropdownMenu open from a normal long press and a visible overflow button (bipe#589). The overflow entry is labelled for VoiceOver and TalkBack. Do not attach a second long-press recognizer that competes with the native menu. Keep scrolling, swipe-to-reply and media/reply taps.",
+    "Every command resolves the current row and checks current permissions again at dispatch. A removed, deleted, non-message or no-longer-authorised target cannot dispatch an old command. Menus belong to the timeline model of one immutable account session. New incoming rows do not change the target."
   ]
 }

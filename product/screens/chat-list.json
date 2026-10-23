@@ -107,6 +107,7 @@
     "e2ee-only-rooms"
   ],
   "notes": [
+    "Keep a known latest-activity timestamp visible while the SDK briefly has no latest-event preview (bipe#590), scoped to this account session. The date label must have room beside a long chat title. Do not invent today's date for an unknown event or wait for network to draw the list. Truly unknown times remain unknown until local SDK data arrives.",
     "bipe_app_chat_list_unread is the accessibility label of the badge. The count comes in already formatted.",
     "Message requests, filters, search, invites and Bipe trust badges are later issues. The slice lists joined rooms only.",
     "The current-account avatar and DM avatars show photos from the SDK, with initials when absent. A company avatar is a rounded square based on GET /v1/accounts/{userId}/type (ADR 0132), regardless of verification. Group avatars stay distinct room avatars."

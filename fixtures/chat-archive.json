@@ -1,0 +1,59 @@
+{
+  "version": 1,
+  "vectors": [
+    {
+      "name": "never archived",
+      "marker": null,
+      "incoming": 500,
+      "expected": false
+    },
+    {
+      "name": "empty archived chat",
+      "marker": 0,
+      "incoming": null,
+      "expected": true
+    },
+    {
+      "name": "no newer message",
+      "marker": 100,
+      "incoming": null,
+      "expected": true
+    },
+    {
+      "name": "same incoming message",
+      "marker": 100,
+      "incoming": 100,
+      "expected": true
+    },
+    {
+      "name": "older backfill",
+      "marker": 100,
+      "incoming": 99,
+      "expected": true
+    },
+    {
+      "name": "new incoming message",
+      "marker": 100,
+      "incoming": 101,
+      "expected": false
+    },
+    {
+      "name": "first incoming in empty chat",
+      "marker": 0,
+      "incoming": 1,
+      "expected": false
+    },
+    {
+      "name": "invalid marker",
+      "marker": -1,
+      "incoming": null,
+      "expected": false
+    },
+    {
+      "name": "removed marker",
+      "marker": null,
+      "incoming": null,
+      "expected": false
+    }
+  ]
+}

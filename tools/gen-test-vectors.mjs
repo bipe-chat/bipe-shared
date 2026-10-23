@@ -391,3 +391,6 @@ for (const vector of relationshipVectors.vectors) {
   if (relationshipNameWarning(vector.savedName, vector.verifiedName, vector.nicknameConfirmed, reg) !== vector.expected) throw new Error(`relationship-names: fixture differs for ${vector.name}`);
 }
 write("relationship-names.json", relationshipVectors);
+
+const archiveVectors = JSON.parse(readFileSync(join(root, "fixtures/chat-archive.json"), "utf8"));
+write("chat-archive.json", archiveVectors);

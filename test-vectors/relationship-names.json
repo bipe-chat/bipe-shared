@@ -1,0 +1,102 @@
+{
+  "vectors": [
+    {
+      "name": "no proof",
+      "savedName": "Maria Souza",
+      "verifiedName": null,
+      "expected": null
+    },
+    {
+      "name": "no contact",
+      "savedName": null,
+      "verifiedName": "Maria Souza",
+      "expected": null
+    },
+    {
+      "name": "normalised names agree",
+      "savedName": "  MÁRIA   Souza ",
+      "verifiedName": "Maria Souza",
+      "expected": null
+    },
+    {
+      "name": "different full name",
+      "savedName": "Maria Souza",
+      "verifiedName": "Joana Lima",
+      "expected": "mismatch"
+    },
+    {
+      "name": "confirmation never clears full-name warning",
+      "savedName": "Maria Souza",
+      "verifiedName": "Joana Lima",
+      "nicknameConfirmed": true,
+      "expected": "mismatch"
+    },
+    {
+      "name": "family label",
+      "savedName": "Mãe",
+      "verifiedName": "Maria Souza",
+      "expected": "confirm"
+    },
+    {
+      "name": "family label with name",
+      "savedName": "Mãe Maria",
+      "verifiedName": "Maria Souza",
+      "expected": "confirm"
+    },
+    {
+      "name": "nickname",
+      "savedName": "Nina",
+      "verifiedName": "Maria Souza",
+      "expected": "confirm"
+    },
+    {
+      "name": "confirmed nickname",
+      "savedName": "Nina",
+      "verifiedName": "Maria Souza",
+      "nicknameConfirmed": true,
+      "expected": null
+    },
+    {
+      "name": "family term is whole word",
+      "savedName": "Primoz Silva",
+      "verifiedName": "Maria Souza",
+      "expected": "mismatch"
+    },
+    {
+      "name": "blank contact",
+      "savedName": "  ",
+      "verifiedName": "Maria Souza",
+      "expected": null
+    },
+    {
+      "name": "blank proof",
+      "savedName": "Maria Souza",
+      "verifiedName": "  ",
+      "expected": null
+    },
+    {
+      "name": "non-latin full name",
+      "savedName": "王 小明",
+      "verifiedName": "李 小明",
+      "expected": "mismatch"
+    },
+    {
+      "name": "emoji does not make a full name",
+      "savedName": "Nina ❤️",
+      "verifiedName": "Maria Souza",
+      "expected": "confirm"
+    },
+    {
+      "name": "family punctuation",
+      "savedName": "Mãe, Maria",
+      "verifiedName": "Maria Souza",
+      "expected": "confirm"
+    },
+    {
+      "name": "astral letter full name",
+      "savedName": "𐐀 𐐁",
+      "verifiedName": "𐐀 𐐂",
+      "expected": "mismatch"
+    }
+  ]
+}

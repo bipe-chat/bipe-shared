@@ -19,6 +19,7 @@ import { generateCast, loadCast } from "./lib/gen-cast.mjs";
 import { loadScreens } from "./lib/screens.mjs";
 import { generateColors } from "./lib/gen-tokens.mjs";
 import { generateDmSelection } from "./lib/gen-dm-selection.mjs";
+import { generateRelationshipNames } from "./lib/gen-relationship-names.mjs";
 
 const root = join(dirname(fileURLToPath(import.meta.url)), "..");
 const args = process.argv.slice(2);
@@ -241,6 +242,7 @@ function writeSwift(out, { post = (text) => text, cast = true } = {}) {
   write("BipeRegistries.swift", swiftRegistries());
   write("BipeTrustFacts.swift", generateTrust(reg.trust, "swift", HEADER));
   write("BipeDmSelection.swift", generateDmSelection(reg.dmSelection, "swift", HEADER));
+  write("BipeRelationshipNames.swift", generateRelationshipNames(reg.relationshipNames, "swift", HEADER));
   write("BipeAgendaTemplates.swift", generateAgendaTemplates(reg, "swift", HEADER));
   write("BipeStrings.swift", swiftStrings());
   write("BipeSettings.swift", generateSettings(reg.settings, "swift", HEADER, swiftString));
@@ -473,6 +475,7 @@ function writeKotlin(out, { packageName = KOTLIN_PACKAGE, post = (text) => text 
   write("BipeRegistries.kt", kotlinRegistries());
   write("BipeTrustFacts.kt", generateTrust(reg.trust, "kotlin", KOTLIN_HEADER));
   write("BipeDmSelection.kt", generateDmSelection(reg.dmSelection, "kotlin", KOTLIN_HEADER));
+  write("BipeRelationshipNames.kt", generateRelationshipNames(reg.relationshipNames, "kotlin", KOTLIN_HEADER, packageName));
   write("BipeAgendaTemplates.kt", generateAgendaTemplates(reg, "kotlin", KOTLIN_HEADER));
   write("BipeSettings.kt", generateSettings(reg.settings, "kotlin", KOTLIN_HEADER, kotlinString));
   write("BipeOnboarding.kt", generateOnboarding(reg.onboarding, "kotlin", KOTLIN_HEADER, kotlinString));

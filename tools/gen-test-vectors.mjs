@@ -6,7 +6,7 @@ import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
 import { buildBrCode, crc16, pixCheck } from "./lib/pix.mjs";
 import { loadSchedulingVectors, writeSchedulingApiFixture } from "./lib/scheduling-vectors.mjs";
-import { newestDmRooms, clearedChatHidden, clearedChatKeepsEvent, clearedChatMarker, clearedChatsWithClear, compareAppVersions, extractInviteCode, handleProblem, pinProblem, remoteBannerState, normalizeCnpj, normalizePhone, handleSkeleton, loadRegistries, normalize, scamMatchIDs, scamWarningKind, trustFacts } from "./lib/registries.mjs";
+import { relationshipNameWarning, newestDmRooms, clearedChatHidden, clearedChatKeepsEvent, clearedChatMarker, clearedChatsWithClear, compareAppVersions, extractInviteCode, handleProblem, pinProblem, remoteBannerState, normalizeCnpj, normalizePhone, handleSkeleton, loadRegistries, normalize, scamMatchIDs, scamWarningKind, trustFacts } from "./lib/registries.mjs";
 
 const root = join(dirname(fileURLToPath(import.meta.url)), "..");
 const reg = loadRegistries(root);
@@ -385,3 +385,9 @@ for (const item of dmFixture.cases) {
   if (item.includingCleared && JSON.stringify(newestDmRooms(item.candidates, { includingCleared: true })) !== JSON.stringify(item.includingCleared)) throw new Error(`dm-selection: cleared fallback differs for ${item.name}`);
 }
 write("dm-selection.json", dmFixture);
+
+const relationshipVectors = JSON.parse(readFileSync(join(root, "fixtures/relationship-names.json"), "utf8"));
+for (const vector of relationshipVectors.vectors) {
+  if (relationshipNameWarning(vector.savedName, vector.verifiedName, vector.nicknameConfirmed, reg) !== vector.expected) throw new Error(`relationship-names: fixture differs for ${vector.name}`);
+}
+write("relationship-names.json", relationshipVectors);

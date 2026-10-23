@@ -76,6 +76,7 @@
   ],
   "parity": ["e2ee-only-rooms", "handle-change-notice"],
   "notes": [
+    "Every event message has its original local-time timestamp, including text, media, voice, stickers, polls, undecryptable and deleted messages (bipe#590). Show a short clock time on each message and expose its full date and time to VoiceOver/TalkBack. Daily separators are additional labels, never a substitute for a message timestamp. Edits and deletion do not replace the original event time. Do not add message actions or receipts to a deleted row.",
     "Date separators: TimelineConfiguration.dateDividerMode Daily. VirtualTimelineItem.DateDivider gives the day. Today and yesterday use the two strings; other days use the system date formatter in the app language, with the year only when it is not the current year.",
     "VirtualTimelineItem.ReadMarker becomes readMarker. The marker stays until the chat closes, so the person sees where they stopped.",
     "VirtualTimelineItem.TimelineStart becomes chatStart (bipe_app_timeline_start).",

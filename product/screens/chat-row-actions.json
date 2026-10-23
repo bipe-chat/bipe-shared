@@ -71,6 +71,7 @@
   ],
   "parity": [],
   "notes": [
+    "MZ explicitly requested SF Symbols in iOS context-menu options on 23 October 2026. Native SwiftUI Label(systemImage:) supplies chat-option icons; Android keeps its current icon system. This is a scoped exception to the general Phosphor rule, not permission to copy another client's implementation.",
     "MZ reports missing chat-row context menus in bipe#587. SwiftUI contextMenu/Menu and Compose DropdownMenu share the same applicable commands; a visible labelled overflow button works without long press. Keep normal tap-to-open, archive-only swipe, keyboard focus, VoiceOver and TalkBack.",
     "Only joined, non-space rooms can dispatch a read/unread write. Use the immutable owner session and room ID of the selected row, rechecking local SDK membership before the operation. Missing or stale rows do not dispatch menu actions.",
     "Default chosen: show Mark as read when the room has unread messages or its manual unread flag, otherwise Mark as unread. Expose Notifications through the existing full settings screen rather than an ambiguous mute toggle. MZ can overrule.",

@@ -7,25 +7,50 @@
     "PushRegistration": {
       "channel": {
         "type": "enum",
-        "values": ["apns", "fcm"],
+        "values": [
+          "apns",
+          "fcm"
+        ],
         "description": "apns on iOS, fcm on Android."
       },
-      "pushkey": { "type": "string", "description": "The token from the system push service." },
-      "appId": { "type": "string", "description": "The gateway app ID of this platform and build (see notes)." },
-      "registeredAt": { "type": "date", "description": "When the homeserver accepted the pusher." }
+      "pushkey": {
+        "type": "string",
+        "description": "The token from the system push service."
+      },
+      "appId": {
+        "type": "string",
+        "description": "The gateway app ID of this platform and build (see notes)."
+      },
+      "registeredAt": {
+        "type": "date",
+        "description": "When the homeserver accepted the pusher."
+      }
     }
   },
   "state": {
     "permission": {
       "type": "enum",
-      "values": ["notAsked", "allowed", "denied"],
+      "values": [
+        "notAsked",
+        "allowed",
+        "denied"
+      ],
       "description": "The system notification permission of the app."
     },
-    "registration": { "type": "PushRegistration", "optional": true, "description": "The pusher this phone set on the homeserver. Missing before the first registration and after sign-out." }
+    "registration": {
+      "type": "PushRegistration",
+      "optional": true,
+      "description": "The pusher this phone set on the homeserver. Missing before the first registration and after sign-out."
+    }
   },
   "actions": {
     "tokenReceived": {
-      "params": { "pushkey": { "type": "string", "description": "The new system token." } },
+      "params": {
+        "pushkey": {
+          "type": "string",
+          "description": "The new system token."
+        }
+      },
       "effect": "When permission is allowed and the token or the app language differs from registration, sets the HTTP pusher on the homeserver (see notes) and stores registration."
     },
     "appBecameActive": {
@@ -53,6 +78,7 @@
     "Android: FCM data messages with high priority. UnifiedPush stays out of scope until a later issue (product/parity.json differences, Push).",
     "Android FCM sends the push through Google. Before the own Android client ships pushes, product/data.json and product/privacy.json need a Google item next to the Apple one (AGENTS.md, privacy.json rule).",
     "The pusher is set after the system permission is allowed, never before. The permission is asked only by notifications-prompt or notification-settings.",
-    "Multi-account (later): one pusher per account on the same phone."
+    "Multi-account (later): one pusher per account on the same phone.",
+    "Account routing (notification-service): the APNs default_payload includes account_user_id equal to the registering session’s Matrix ID. Registration versioning forces one replacement of older pushers without this owner. A mutable current-account preference is not used to interpret an already delivered push. Android transport must retain the same immutable registration ownership when it is added; no account is inferred from the foreground UI."
   ]
 }

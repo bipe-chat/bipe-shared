@@ -698,12 +698,21 @@
         "reason": "The inviter's phone sends the note end-to-end encrypted; the server never receives it (ADR 0136)"
       },
       "ios-new": {
-        "status": "planned",
-        "issue": 583
+        "status": "built",
+        "evidence": [
+          "bipe-app/ios/Bipe/Invites/InvitesModel.swift",
+          "bipe-app/ios/BipeKit/Sources/BipeKit/BipeInviteStore.swift"
+        ],
+        "note": "Merged native code; phone acceptance and tester-build evidence remain separate."
       },
       "android-new": {
-        "status": "planned",
-        "issue": 583
+        "status": "built",
+        "evidence": [
+          "bipe-app/android/app/src/main/kotlin/chat/bipe/app/invites/InvitesModel.kt",
+          "bipe-app/android/libraries/bipe/src/main/kotlin/chat/bipe/shared/invites/BipeInviteDelivery.kt",
+          "bipe-app/android/libraries/bipe/src/main/kotlin/chat/bipe/shared/invites/BipeInviteMemory.kt"
+        ],
+        "note": "Merged native code; phone acceptance and tester-build evidence remain separate."
       },
       "issue": 458
     },
@@ -731,12 +740,18 @@
         "reason": "Drawn on the device"
       },
       "ios-new": {
-        "status": "planned",
-        "issue": 577
+        "status": "built",
+        "evidence": [
+          "bipe-app/ios/Bipe/Invites/InvitesView.swift"
+        ],
+        "note": "Merged native code; phone acceptance and tester-build evidence remain separate."
       },
       "android-new": {
-        "status": "planned",
-        "issue": 577
+        "status": "built",
+        "evidence": [
+          "bipe-app/android/app/src/main/kotlin/chat/bipe/app/invites/InvitesScreen.kt"
+        ],
+        "note": "Merged native code; phone acceptance and tester-build evidence remain separate."
       }
     },
     {
@@ -2047,12 +2062,20 @@
         ]
       },
       "ios-new": {
-        "status": "planned",
-        "issue": 558
+        "status": "built",
+        "evidence": [
+          "bipe-app/ios/Bipe/ChatList/RemoteBannerView.swift",
+          "bipe-app/ios/BipeKit/Sources/BipeKit/BipeRemoteBanner.swift"
+        ],
+        "note": "Merged native code; phone acceptance and tester-build evidence remain separate."
       },
       "android-new": {
-        "status": "planned",
-        "issue": 558
+        "status": "built",
+        "evidence": [
+          "bipe-app/android/app/src/main/kotlin/chat/bipe/app/chatlist/ChatSearchAndBanner.kt",
+          "bipe-app/android/libraries/bipe/src/main/kotlin/chat/bipe/shared/banner/BipeRemoteBanner.kt"
+        ],
+        "note": "Merged native code; phone acceptance and tester-build evidence remain separate."
       }
     },
     {

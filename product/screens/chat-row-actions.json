@@ -1,0 +1,82 @@
+{
+  "id": "chat-row-actions",
+  "title": "Chat row actions",
+  "flow": "home",
+  "summary": "Native context and visible overflow menus offer the actions available for a joined conversation or group in the current account. Swipe continues to archive only.",
+  "state": {
+    "rowId": {
+      "type": "string",
+      "optional": true,
+      "description": "The selected joined room, resolved in this account model before dispatch."
+    },
+    "readPending": {
+      "type": "bool",
+      "description": "A read/unread write is in progress. Read commands wait; archive and navigation remain available."
+    },
+    "readFailed": {
+      "type": "bool",
+      "description": "The SDK read/unread operation failed. Keep its account-owned intent for Retry."
+    }
+  },
+  "actions": {
+    "open": {
+      "params": {
+        "roomId": {
+          "type": "string",
+          "description": "A joined DM or group row."
+        }
+      },
+      "effect": "Opens a native context menu from long press or its labelled overflow button."
+    },
+    "archive": {
+      "effect": "Runs chat-archive archive or unarchive. Swipe never deletes or marks read."
+    },
+    "markRead": {
+      "effect": "Sends an explicit public read receipt to the latest known event (ADR 0050), then clears the manual unread flag. SDK errors show Retry."
+    },
+    "markUnread": {
+      "effect": "Sets the manual unread flag without moving a read receipt backwards. Show a dot when there are no unread messages; never invent a message count."
+    },
+    "notifications": {
+      "effect": "Opens the existing chat-notifications controls for this room in this account."
+    },
+    "details": {
+      "effect": "Opens the known DM partner profile or group-details without opening/marking the timeline read."
+    },
+    "delete": {
+      "effect": "For a DM only, opens the existing explicit dm-delete confirmation. Check joined DM membership again before any clear write."
+    },
+    "retry": {
+      "effect": "Retries the failed read/unread intent in its original account; never substitutes the currently selected account."
+    }
+  },
+  "strings": [
+    "bipe_chat_actions",
+    "bipe_archive_action",
+    "bipe_unarchive_action",
+    "bipe_app_notification_mark_read",
+    "bipe_chat_mark_unread",
+    "bipe_chat_unread_state",
+    "bipe_chat_details",
+    "bipe_settings_notifications",
+    "bipe_dm_delete_action",
+    "bipe_chat_read_error",
+    "bipe_app_retry"
+  ],
+  "sdk": [
+    "Client.getRoom",
+    "Room.roomInfo",
+    "Room.markAsRead",
+    "Room.setUnreadFlag"
+  ],
+  "parity": [],
+  "notes": [
+    "MZ reports missing chat-row context menus in bipe#587. SwiftUI contextMenu/Menu and Compose DropdownMenu share the same applicable commands; a visible labelled overflow button works without long press. Keep normal tap-to-open, archive-only swipe, keyboard focus, VoiceOver and TalkBack.",
+    "Only joined, non-space rooms can dispatch a read/unread write. Use the immutable owner session and room ID of the selected row, rechecking local SDK membership before the operation. Missing or stale rows do not dispatch menu actions.",
+    "Default chosen: show Mark as read when the room has unread messages or its manual unread flag, otherwise Mark as unread. Expose Notifications through the existing full settings screen rather than an ambiguous mute toggle. MZ can overrule.",
+    "The unread flag contributes to conversation and account attention. Groups keep their existing mention/reply badge policy. Archive leaves unread and notification policy unchanged.",
+    "Mark read sends the receipt before clearing the manual flag. A partial failure remains retryable and does not claim complete success. A failed read write does not block local Archive or navigation. No new startup network gate.",
+    "DM details need a known partner; disable that route while the SDK has no partner. Group details use the selected room ID and never a previously open timeline room. Native settings/detail models belong to the account session.",
+    "Leave #587 open until actual iPhone and Android context/overflow/gesture/accessibility, offline retry, account switching and confirmed-deletion behavior is recorded."
+  ]
+}

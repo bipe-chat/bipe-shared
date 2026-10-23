@@ -1,0 +1,198 @@
+{
+  "id": "pix-check-result",
+  "title": "Offline Pix check result",
+  "flow": "share",
+  "summary": "Shows the fields found in a shared Pix code or key and the existing scam warning. The code name is unverified; the final check is the recipient name shown by the bank.",
+  "types": {
+    "PixCheckCode": {
+      "status": {
+        "type": "enum",
+        "values": [
+          "valid",
+          "badCrc",
+          "malformed"
+        ],
+        "description": "Exactly PixCheck.Status; a valid checksum proves format only."
+      },
+      "dynamic": {
+        "type": "bool",
+        "description": "A dynamic BR Code has a charge location instead of a static key."
+      },
+      "singleUse": {
+        "type": "bool",
+        "description": "The code declares single-use; this is not payment status."
+      },
+      "key": {
+        "type": "string",
+        "optional": true,
+        "description": "Static code key, as parsed."
+      },
+      "chargeHost": {
+        "type": "string",
+        "optional": true,
+        "description": "Host only from Code.urlHost. Plain text; never fetched or opened."
+      },
+      "name": {
+        "type": "string",
+        "optional": true,
+        "description": "Name entered by the code author, not a verified identity."
+      },
+      "city": {
+        "type": "string",
+        "optional": true,
+        "description": "Recipient city as written."
+      },
+      "amount": {
+        "type": "string",
+        "optional": true,
+        "description": "Decimal amount from the code; format locally in BRL without binary rounding."
+      },
+      "txid": {
+        "type": "string",
+        "optional": true,
+        "description": "Identifier, absent when the payload uses ***."
+      },
+      "info": {
+        "type": "string",
+        "optional": true,
+        "description": "Description in the code."
+      }
+    },
+    "PixCheckKey": {
+      "value": {
+        "type": "string",
+        "description": "One matched span, displayed verbatim."
+      },
+      "types": {
+        "type": "list",
+        "of": {
+          "type": "enum",
+          "values": [
+            "cpf",
+            "cnpj",
+            "phone",
+            "email",
+            "random",
+            "unknown"
+          ],
+          "description": "PixCheck.KeyType."
+        },
+        "description": "Every matching key type, in registry order; do not pick one type when a span is ambiguous."
+      }
+    },
+    "PixCheckedItem": {
+      "sourceIndex": {
+        "type": "int",
+        "description": "The provider item index; images may produce several checked reports."
+      },
+      "code": {
+        "type": "PixCheckCode",
+        "optional": true,
+        "description": "First BR Code in this input, exactly as returned by PixCheck.check."
+      },
+      "keys": {
+        "type": "list",
+        "of": {
+          "type": "PixCheckKey",
+          "description": "One matched key."
+        },
+        "description": "Other Pix key spans, in reference text order."
+      },
+      "warningKind": {
+        "type": "string",
+        "optional": true,
+        "description": "ScamWarningKind from the shared rules, excluding pixCode and pixKey; absent when there is none."
+      }
+    }
+  },
+  "state": {
+    "results": {
+      "type": "list",
+      "of": {
+        "type": "PixCheckedItem",
+        "description": "One checked input."
+      },
+      "description": "Checked reports in receive order, without a server lookup."
+    },
+    "accountAvailable": {
+      "type": "bool",
+      "description": "Only controls the optional send-to-chat action in the containing app; never gates the check."
+    },
+    "isHandingOff": {
+      "type": "bool",
+      "description": "True while the explicit pending preview is being saved."
+    },
+    "handoffFailed": {
+      "type": "bool",
+      "description": "Shows a generic retry error; never sends automatically."
+    }
+  },
+  "actions": {
+    "close": {
+      "effect": "Deletes the local inputs/results and closes the share route or completes the extension."
+    },
+    "sendToChat": {
+      "effect": "Only after an explicit tap, offers an editable preview and a chat chooser for the current signed-in account; the user must select the chat and tap Send before any content leaves the device."
+    },
+    "retryHandoff": {
+      "effect": "Retries saving the same pending preview once per tap, without creating a duplicate send or requiring the check to run again."
+    }
+  },
+  "strings": [
+    "bipe_pix_check_title",
+    "bipe_pix_check_nothing_found",
+    "bipe_pix_check_code_title",
+    "bipe_pix_check_code_dynamic",
+    "bipe_pix_check_code_bad_crc",
+    "bipe_pix_check_code_malformed",
+    "bipe_pix_check_field_name",
+    "bipe_pix_check_field_city",
+    "bipe_pix_check_field_amount",
+    "bipe_pix_check_amount_open",
+    "bipe_pix_check_field_key",
+    "bipe_pix_check_field_charge_host",
+    "bipe_pix_check_field_info",
+    "bipe_pix_check_field_txid",
+    "bipe_pix_check_keys_title",
+    "bipe_pix_check_key_type_cpf",
+    "bipe_pix_check_key_type_cnpj",
+    "bipe_pix_check_key_type_phone",
+    "bipe_pix_check_key_type_email",
+    "bipe_pix_check_key_type_random",
+    "bipe_pix_check_key_type_unknown",
+    "bipe_pix_check_key_types_or",
+    "bipe_pix_check_name_hint",
+    "bipe_pix_check_bank_name",
+    "bipe_pix_check_private",
+    "bipe_pix_check_send_to_chat",
+    "bipe_pix_check_close",
+    "bipe_scam_warning_title",
+    "bipe_scam_warning_pix_key",
+    "bipe_scam_warning_delivery_fee",
+    "bipe_scam_warning_lookalike_link",
+    "bipe_scam_warning_bank_alert",
+    "bipe_scam_warning_pix_code",
+    "bipe_scam_warning_boleto",
+    "bipe_scam_warning_receipt",
+    "bipe_scam_warning_new_number",
+    "bipe_scam_warning_urgency",
+    "bipe_scam_warning_extortion",
+    "bipe_scam_warning_remote_app",
+    "bipe_scam_warning_pin_request",
+    "bipe_error_generic",
+    "bipe_app_retry"
+  ],
+  "sdk": [],
+  "parity": [
+    "pix-check"
+  ],
+  "notes": [
+    "Render every report using existing bipe_pix_check_* strings. The result must remain usable offline and signed out; accountAvailable=false hides Send to a chat. Always show bipe_pix_check_private and end with bipe_pix_check_bank_name, including bad CRC, malformed and nothing-found results.",
+    "Fields, in order: Name in the code, City, Amount (bipe_pix_check_amount_open when absent), static Key or dynamic Charge issued by, Description, Identifier. Omit other missing fields. The dynamic charge host is plain text with bipe_pix_check_code_dynamic; never dereference it. Never use a verified seal, green safety approval, payment-completed mark, bank-launch action or phase 2 verified-key lookup.",
+    "For a valid static code show bipe_pix_check_code_title, fields and bipe_pix_check_name_hint. For badCrc show bipe_pix_check_code_bad_crc before any parsed fields, using the caution/error treatment; parsed values remain explicitly unverified. For malformed show bipe_pix_check_code_malformed and no missing/made-up fields. A correct CRC alone never proves that payment is safe.",
+    "Keys use bipe_pix_check_keys_title and the existing key-type strings. When types has several entries, join their localized labels with bipe_pix_check_key_types_or in reference order. A text with no code/keys shows bipe_pix_check_nothing_found. A rule warning still renders even if no Pix was found.",
+    "warningKind comes only from PixCheck.warning and the existing ScamWarningKind string mapping / registries/scam-patterns.json. Use bipe_scam_warning_title and its mapped body; do not repeat pixCode/pixKey generic warnings because the screen explains those already. Test-vectors/scam-warnings.json and scam-detection.json define priority.",
+    "The original shared input, not a reformatted or verified-sounding summary, is the editable send preview. On iOS the extension may save this preview locally for the containing app as defined by pix-check-receive; finishing the extension does not imply delivery. A later app-open shows the pending preview outside account-start, then offers chat selection only after sign-in/unlock. If already signed in, explicitly confirm the account before sending. Android uses the same preview/chooser behavior in the app. Cancellation, expired handoff or account change never sends to a remembered room.",
+    "Acceptance on both platforms: every pix-check vector; static/dynamic BR Code, bad CRC, malformed code, ambiguous key, no Pix, a warning without Pix; QR image with zero/one/multiple payloads; shared image file versus image object; unsupported/revoked/oversized input; retry and cancellation during decode; two shares back to back; airplane mode and no account; Close causes no network/send; explicit Send requires account, chat choice and final confirmation. No actual bank/account data is needed: use synthetic fixtures."
+  ]
+}

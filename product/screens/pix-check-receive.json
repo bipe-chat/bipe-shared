@@ -1,0 +1,114 @@
+{
+  "id": "pix-check-receive",
+  "title": "Receive a shared Pix item",
+  "flow": "share",
+  "summary": "Reads text or QR images shared from any app, then runs the existing Pix check on the device. It works before sign-in and uses no network.",
+  "types": {
+    "PixSharedItem": {
+      "kind": {
+        "type": "enum",
+        "values": [
+          "text",
+          "image"
+        ],
+        "description": "The supported representation. A file URL is accepted only when it contains a supported image."
+      },
+      "text": {
+        "type": "string",
+        "optional": true,
+        "description": "Text supplied by the user or decoded from a QR. Never a remote URL to fetch."
+      },
+      "localImage": {
+        "type": "url",
+        "optional": true,
+        "description": "A temporary local image copied from the provider while its read grant is valid."
+      }
+    }
+  },
+  "state": {
+    "phase": {
+      "type": "enum",
+      "values": [
+        "missingInput",
+        "reading",
+        "checking",
+        "ready",
+        "unsupported",
+        "noQr",
+        "nothingFound",
+        "failed",
+        "cancelled"
+      ],
+      "description": "missingInput: no usable attachment. reading/checking: work runs off the UI thread. ready: opens pix-check-result. unsupported/noQr/nothingFound: a completed check found no usable Pix. failed: provider/decoder failed. cancelled: no further result can publish."
+    },
+    "items": {
+      "type": "list",
+      "of": {
+        "type": "PixSharedItem",
+        "description": "One shared item."
+      },
+      "description": "The supported items in provider order."
+    },
+    "results": {
+      "type": "list",
+      "of": {
+        "type": "PixCheckedItem",
+        "description": "A checked input."
+      },
+      "description": "One report per supported text or decoded QR payload. No result implies verification of a recipient."
+    },
+    "canRetry": {
+      "type": "bool",
+      "description": "Only a transient read/decode failure with a still-readable local input offers retry."
+    }
+  },
+  "actions": {
+    "receive": {
+      "params": {
+        "items": {
+          "type": "list",
+          "of": {
+            "type": "PixSharedItem",
+            "description": "One shared item."
+          },
+          "description": "The text/image items supplied by the platform."
+        }
+      },
+      "effect": "Validates local representations, reads images in sequence, runs PixCheck.check on each text and QR payload, and opens pix-check-result when it has a report."
+    },
+    "retry": {
+      "effect": "Repeats only the failed local read/check from the retained input; a revoked provider grant asks the user to share again through the same empty state."
+    },
+    "cancel": {
+      "effect": "Cancels provider reads and decoding, invalidates this operation, deletes its temporary files and completes or closes the share flow."
+    },
+    "close": {
+      "effect": "Deletes retained input and results, returns to the source app when launched by sharing, or dismisses the in-app route."
+    }
+  },
+  "strings": [
+    "bipe_pix_check_title",
+    "bipe_pix_check_nothing_found",
+    "bipe_pix_check_private",
+    "bipe_pix_check_bank_name",
+    "bipe_pix_check_close",
+    "bipe_app_cancel",
+    "bipe_app_retry",
+    "bipe_error_generic"
+  ],
+  "sdk": [],
+  "parity": [
+    "pix-check"
+  ],
+  "notes": [
+    "Sources: ADR0091; bipe docs/payments.md 5a phase 1; bipe#294 and #580. Code already moved into bipe-app: ios/BipeKit/Sources/BipeKit/PixCheck.swift and android/libraries/bipe/src/main/kotlin/chat/bipe/shared/PixCheck.kt. Use PixCheck.check, Swift PixCheck.qrPayloads, and an on-device Android decoder behind a platform reader. Reference tools/lib/pix.mjs and test-vectors/pix-check.json; no fork UI or adapter is a source.",
+    "No account or SDK client is needed. The share route is reachable while account-start has no account, is restoring, or has failed. Do not start authentication, contact lookup, badge requests, bank lookup, PSP calls, URL previews or remote image downloads to perform this check.",
+    "iOS: the existing chat.bipe.app.next.share extension accepts plain text and images through NSExtensionItem/NSItemProvider, including local image file representations. Show the SwiftUI check/result inside the extension so a cold or signed-out containing app cannot block it. Configure text/image activation types. Load/copy a provider image while its temporary URL is valid; no persistent source URL. Close completes NSExtensionContext. Do not use responder-chain app-opening workarounds.",
+    "iOS handoff: the check and result remain in the extension. Only the explicit sendToChat action in pix-check-result may create a pending preview in group.chat.bipe.next; the containing app consumes it on a later user-open. Use a random one-use ID, five-minute expiry, protected file excluded from backup, atomic claim, deletion on expiry/consumption/cancel, and no raw content in a deep-link URL. Do not change app groups or distribution identity. No promise that a Share extension can launch its containing app.",
+    "Android: register ACTION_SEND and ACTION_SEND_MULTIPLE with CATEGORY_DEFAULT for text/plain and image/*, never */*. Read EXTRA_TEXT and EXTRA_STREAM/ClipData through the granted content URI. Handle a new share in onNewIntent as well as cold launch; consume the share once so recomposition or returning to the app does not repeat it. Copy to a private temporary file while the grant exists. Back/cancel returns to the caller without sending anything.",
+    "Use the same input ordering on both platforms. For each image, decode locally, remove duplicate QR payload strings and sort those strings lexically. Check each payload independently; do not join several QR payloads into one BR Code. With no QR, phase=noQr. With QR/text but no Pix, phase=nothingFound; any shared-rule warning remains available in the result.",
+    "Limits, default: at most 10 items; text at most 100000 Unicode code points per item; image input at most 10 MiB and downsample to at most 4 megapixels before QR decoding; process images one at a time. Reject unsupported/over-limit items without reading unbounded data. Missing input, unsupported and noQr use bipe_pix_check_nothing_found plus Close; provider failures use bipe_error_generic plus Retry only when canRetry.",
+    "Every async operation has a generation ID; replacing input or cancelling makes older completions inert. A newer share never inherits a result from a previous account or input. No shared text, QR, Pix key, local image path or decoded result goes to logs, analytics, crash uploads, backup or the server. Keep temporary data only until close/cancel or explicit preview handoff.",
+    "Platform references: https://developer.apple.com/library/archive/documentation/General/Conceptual/ExtensibilityPG/Share.html ; https://developer.apple.com/documentation/technologyoverviews/shared-data ; https://developer.android.com/develop/ui/compose/sharing/receive . Use platform APIs, never Element share sources."
+  ]
+}

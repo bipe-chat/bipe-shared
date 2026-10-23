@@ -1,0 +1,34 @@
+{
+  "id": "sticker-from-photo",
+  "title": "Make a sticker from a photo",
+  "flow": "chat",
+  "summary": "Makes a sticker from a photo on the device: the subject is cut out, or the photo is cropped to a centred square. The user sees it and saves it to their own pack (ADR 0029).",
+  "state": {
+    "phase": {
+      "type": "enum",
+      "values": ["picking", "making", "preview", "saving", "failed"],
+      "description": "making: bipe_app_sticker_making. preview: the sticker on a checked background. failed: bipe_app_sticker_make_failed, or bipe_sticker_save_failed after a failed save."
+    },
+    "preview": { "type": "url", "optional": true, "description": "A local file of the made sticker, 512 by 512." }
+  },
+  "actions": {
+    "pickPhoto": { "effect": "Opens the system photo picker for one photo. Then phase making." },
+    "save": { "effect": "Adds the sticker to the user's pack, as sticker-import does for one file. Then bipe_sticker_saved and back to sticker-picker." },
+    "cancel": { "effect": "Closes. Nothing is saved." }
+  },
+  "strings": [
+    "bipe_stickers_from_photo",
+    "bipe_app_sticker_making",
+    "bipe_app_sticker_make_failed",
+    "bipe_action_save_sticker",
+    "bipe_sticker_saved",
+    "bipe_sticker_save_failed",
+    "bipe_app_cancel"
+  ],
+  "sdk": ["Client.uploadMedia"],
+  "parity": ["stickers"],
+  "notes": [
+    "On the device only. The result is 512 by 512 pixels. iOS cuts out the subject with the system vision framework and puts it on a transparent square (PNG); without a subject it crops a centred square. Android crops a centred square and encodes WebP, with no cut-out: a cut-out needs ML Kit, a Google dependency that Bipe has not decided on (a known difference between the apps). Bipe logic: StickerMaker.sticker(fromImageData:) (BipeKit StickerMaker.swift); fromPhoto in StickerImport.kt (libraries/bipe stickers).",
+    "The photo never leaves the phone; only the made sticker is uploaded, in clear, like an imported one (sticker-import)."
+  ]
+}

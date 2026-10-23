@@ -1,0 +1,74 @@
+{
+  "id": "voice-recording",
+  "title": "Record a voice message",
+  "flow": "chat",
+  "summary": "Records a voice message in the composer, with pause and resume, then a preview where the user listens and checks the transcript the phone made. Send puts the transcript in the caption of the voice event (ADR 0023).",
+  "state": {
+    "roomId": { "type": "string", "description": "The chat." },
+    "phase": {
+      "type": "enum",
+      "values": ["recording", "paused", "preview", "sending"],
+      "description": "recording: bipe_app_voice_recording with the live waveform and time. paused: the time stops, bipe_app_voice_resume. preview: play, the transcript field, delete and send. sending: the event goes to the send queue."
+    },
+    "duration": { "type": "int", "description": "Recorded length in milliseconds, for bipe_app_voice_duration." },
+    "waveform": { "type": "list", "of": { "type": "int", "description": "One sample, 0 to 1024." }, "description": "The waveform for the bubble, about 100 samples." },
+    "transcript": {
+      "type": "enum",
+      "values": ["off", "working", "ready", "unavailable"],
+      "description": "off: no speech permission or no on-device model: no field. working: bipe_voice_transcribing. ready: the editable text. unavailable: bipe_voice_transcript_unavailable."
+    },
+    "transcriptText": { "type": "string", "description": "The text the user sends. Starts as the phone's transcript; the user can correct or clear it." },
+    "microphoneDenied": { "type": "bool", "description": "true: bipe_microphone_permission_body with a button to the app's settings, and no recording." }
+  },
+  "actions": {
+    "start": { "effect": "Asks for the microphone the first time. Starts recording to a local Ogg Opus file, mono. phase recording." },
+    "pause": { "effect": "recording only: pauses. phase paused." },
+    "resume": { "effect": "paused only: records on into the same file. phase recording." },
+    "stop": { "effect": "Ends the recording. Shorter than 1 second: bipe_app_voice_too_short and back to the composer. Else phase preview, and the phone starts the transcript on the device." },
+    "play": { "effect": "preview only: plays or pauses the recording." },
+    "editTranscript": {
+      "params": { "text": { "type": "string", "description": "The new text." } },
+      "effect": "Sets transcriptText."
+    },
+    "delete": { "effect": "Drops the file and the transcript. Back to the composer." },
+    "send": {
+      "effect": "Timeline.sendAttachment with AttachmentKind voice (AudioInfo with duration, the waveform) and UploadParameters with caption transcriptText when transcript is ready and the text is not blank. A transcript still working is dropped: the user never waits for it (ADR 0023). A failure shows bipe_app_voice_failed on the item in the timeline."
+    }
+  },
+  "strings": [
+    "bipe_app_composer_record",
+    "bipe_app_voice_recording",
+    "bipe_app_voice_pause",
+    "bipe_app_voice_resume",
+    "bipe_app_voice_stop",
+    "bipe_app_voice_play",
+    "bipe_app_voice_delete",
+    "bipe_app_voice_duration",
+    "bipe_app_voice_too_short",
+    "bipe_app_voice_failed",
+    "bipe_voice_transcript_title",
+    "bipe_voice_transcribing",
+    "bipe_voice_transcript_placeholder",
+    "bipe_voice_transcript_unavailable",
+    "bipe_microphone_permission_body",
+    "bipe_contacts_open_settings",
+    "bipe_contacts_open_settings_android",
+    "bipe_app_timeline_send"
+  ],
+  "sdk": [
+    "Timeline.sendAttachment",
+    "AttachmentKind",
+    "AudioInfo",
+    "UploadParameters",
+    "UploadSource"
+  ],
+  "parity": ["voice-transcript-send"],
+  "notes": [
+    "Transcript (ADR 0023): the sender's phone transcribes, on the device only. No server fallback, ever. No permission or no on-device model for the language: the message goes without a transcript. Language: the first of the phone's preferred languages that the phone transcribes offline, then pt-BR; no language detection (bipe/docs/audio.md).",
+    "The caption of a voice event is the transcript. Bipe offers no other caption on voice messages, so readers can trust a caption on a voice message to be the sender's transcript.",
+    "Bipe logic: VoiceTranscriber.transcribe and VoiceTranscriptDraft (BipeKit VoiceTranscriber.swift, Apple Speech with on-device recognition); BipeVoiceTranscriber.kt (libraries/bipe voice). Android needs an on-device recogniser; without one the transcript stays off.",
+    "Wire format: m.audio with the voice flag (MSC3245) and Ogg Opus, which every Matrix client plays (bipe/docs/audio.md). The app sets the bitrate itself; a lower bitrate saves data on Brazilian carriers.",
+    "Maximum length: Bipe has not decided one. Open point for the build lane to raise with MZ.",
+    "The reader side (the bubble, three lines of transcript, playback speed) and the scam check on transcripts belong to the timeline media spec (bipe-chat/bipe#561)."
+  ]
+}

@@ -268,13 +268,13 @@
       "places": ["server", "apple-push"],
       "pt": {
         "name": "Notificações no iPhone",
-        "what": "O endereço de notificação do seu aparelho e os códigos da conversa e da mensagem nova. O texto da mensagem não vai junto: o app busca o conteúdo direto no servidor do Bipe.",
+        "what": "O endereço de notificação do seu aparelho e os códigos da conversa e da mensagem nova. No Bipe Next, vai também um código aleatório para o celular escolher a conta certa, sem enviar o ID da conta à Apple. O texto da mensagem não vai junto: o app busca o conteúdo direto no servidor do Bipe.",
         "why": "Te avisar que chegou mensagem.",
         "retention": "Enquanto as notificações estiverem ligadas naquele aparelho."
       },
       "en": {
         "name": "iPhone notifications",
-        "what": "Your device's notification address and the IDs of the conversation and the new message. The message text does not go with it: the app fetches the content directly from the Bipe server.",
+        "what": "Your device's notification address and the IDs of the conversation and the new message. Bipe Next also sends a random code so the phone selects the right account, without sending the account ID to Apple. The message text does not go with it: the app fetches the content directly from the Bipe server.",
         "why": "To tell you a message arrived.",
         "retention": "As long as notifications are on for that device."
       }
@@ -403,6 +403,7 @@
     { "id": "scam-warnings", "pt": "Os avisos de golpe e a checagem de links. Nenhum texto, resultado ou pontuação sai do celular.", "en": "Scam warnings and link checks. No text, match or score leaves the phone." },
     { "id": "voice-transcripts", "pt": "A transcrição de mensagens de voz. O texto só sai do celular como legenda da mensagem, com a mesma proteção dela.", "en": "Voice message transcripts. The text leaves the phone only as the message caption, with the same protection as the message." },
     { "id": "access-vault", "pt": "A senha que o app cria sozinho. Ela fica guardada no cofre do aparelho.", "en": "The password the app makes by itself. It stays in the device's secure storage." },
+    { "id": "notification-accounts", "pt": "No Bipe Next, a relação entre cada conta e seu código aleatório de notificação fica no celular. O app não envia essa relação ao Bipe nem à Apple e a apaga quando você sai da conta.", "en": "In Bipe Next, the map from each account to its random notification code stays on the phone. The app does not send the map to Bipe or Apple and removes it at sign-out." },
     {"id": "archived-chats", "pt": "As conversas arquivadas neste aparelho: só o identificador da conversa e a data da última atividade, separados por conta. Não vão para o servidor nem para o backup na nuvem.", "en": "Chats archived on this device: only the room identifier and latest activity timestamp, separated by account. They are not sent to the server or cloud backup."}
   ]
 }

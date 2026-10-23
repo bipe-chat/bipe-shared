@@ -1148,12 +1148,16 @@
         "reason": "Plain Matrix events; no Bipe server code"
       },
       "ios-new": {
-        "status": "planned",
-        "issue": 564
+        "status": "built",
+        "evidence": [
+          "bipe-app/ios/BipeKit/Sources/BipeKit/Stickers/StickerPacks.swift"
+        ]
       },
       "android-new": {
-        "status": "planned",
-        "issue": 564
+        "status": "built",
+        "evidence": [
+          "bipe-app/android/libraries/bipe/src/main/kotlin/chat/bipe/stickers/StickerPacks.kt"
+        ]
       }
     },
     {
@@ -1295,12 +1299,16 @@
         "reason": "Runs on the device only"
       },
       "ios-new": {
-        "status": "planned",
-        "issue": 562
+        "status": "built",
+        "evidence": [
+          "bipe-app/ios/Bipe/Media/VoiceMessageRow.swift"
+        ]
       },
       "android-new": {
-        "status": "planned",
-        "issue": 562
+        "status": "built",
+        "evidence": [
+          "bipe-app/android/app/src/main/kotlin/chat/bipe/app/media/VoiceMessageRow.kt"
+        ]
       }
     },
     {
@@ -1329,12 +1337,16 @@
         "reason": "Runs on the device only"
       },
       "ios-new": {
-        "status": "planned",
-        "issue": 564
+        "status": "built",
+        "evidence": [
+          "bipe-app/ios/Bipe/Media/Voice/VoiceRecordingView.swift"
+        ]
       },
       "android-new": {
-        "status": "planned",
-        "issue": 564
+        "status": "built",
+        "evidence": [
+          "bipe-app/android/app/src/main/kotlin/chat/bipe/app/media/voice/VoiceRecordingBar.kt"
+        ]
       },
       "issue": 80
     },

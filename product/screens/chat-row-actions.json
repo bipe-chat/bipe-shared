@@ -2,7 +2,7 @@
   "id": "chat-row-actions",
   "title": "Chat row actions",
   "flow": "home",
-  "summary": "Native context and visible overflow menus offer the actions available for a joined conversation or group in the current account. Swipe continues to archive only.",
+  "summary": "Native long-press context menus offer the actions available for a joined conversation or group in the current account. No visible overflow button; swipe continues to archive only.",
   "state": {
     "rowId": {
       "type": "string",
@@ -26,7 +26,7 @@
           "description": "A joined DM or group row."
         }
       },
-      "effect": "Opens a native context menu from long press or its labelled overflow button."
+      "effect": "Opens a native context menu from long press. VoiceOver/TalkBack actions expose the same commands without a visible overflow control."
     },
     "archive": {
       "effect": "Runs chat-archive archive or unarchive. Swipe never deletes or marks read."
@@ -72,12 +72,12 @@
   "parity": [],
   "notes": [
     "MZ explicitly requested SF Symbols in iOS context-menu options on 23 October 2026. Native SwiftUI Label(systemImage:) supplies chat-option icons; Android keeps its current icon system. This is a scoped exception to the general Phosphor rule, not permission to copy another client's implementation.",
-    "MZ reports missing chat-row context menus in bipe#587. SwiftUI contextMenu/Menu and Compose DropdownMenu share the same applicable commands; a visible labelled overflow button works without long press. Keep normal tap-to-open, archive-only swipe, keyboard focus, VoiceOver and TalkBack.",
+    "MZ reports missing chat-row context menus in bipe#587. MZ explicitly requested long press only on 23 October 2026: remove visible overflow buttons. SwiftUI contextMenu and Compose DropdownMenu share the same applicable commands; accessibility actions remain available. Keep normal tap-to-open, archive-only swipe, keyboard focus, VoiceOver and TalkBack.",
     "Only joined, non-space rooms can dispatch a read/unread write. Use the immutable owner session and room ID of the selected row, rechecking local SDK membership before the operation. Missing or stale rows do not dispatch menu actions.",
     "Default chosen: show Mark as read when the room has unread messages or its manual unread flag, otherwise Mark as unread. Expose Notifications through the existing full settings screen rather than an ambiguous mute toggle. MZ can overrule.",
     "The unread flag contributes to conversation and account attention. Groups keep their existing mention/reply badge policy. Archive leaves unread and notification policy unchanged.",
     "Mark read sends the receipt before clearing the manual flag. A partial failure remains retryable and does not claim complete success. A failed read write does not block local Archive or navigation. No new startup network gate.",
     "DM details need a known partner; disable that route while the SDK has no partner. Group details use the selected room ID and never a previously open timeline room. Native settings/detail models belong to the account session.",
-    "Leave #587 open until actual iPhone and Android context/overflow/gesture/accessibility, offline retry, account switching and confirmed-deletion behavior is recorded."
+    "Leave #587 open until actual iPhone and Android context/gesture/accessibility, offline retry, account switching and confirmed-deletion behavior is recorded."
   ]
 }

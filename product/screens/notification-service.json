@@ -90,7 +90,7 @@
       "effect": "Resolves accountRoute to exactly one local accountUserId, opens only that account in the extension or handler, fetches and decrypts the event, and retains its owner in each local notification and action. An unknown, ambiguous or missing route never falls back to another account."
     },
     "open": {
-      "effect": "Tap: selects accountUserId after app lock, then opens that account’s chat-timeline of roomId. The route waits for its owner to restore; another account cannot consume it. Event focus remains subject to chat-timeline support."
+      "effect": "Tap: selects the notification owner after app lock and restore. message opens its joined chat; chatRequest opens that account’s requests box; groupInvite opens Groups with its invitations visible. A fallback or unknown kind opens the owner’s conversation list without entering or marking an unverified room. Event focus remains subject to chat-timeline support."
     },
     "reply": {
       "params": {
@@ -116,7 +116,12 @@
     "bipe_group_notification_inline_reply_failed",
     "bipe_app_notification_channel_messages",
     "bipe_notifications_invites",
-    "bipe_app_name"
+    "bipe_app_name",
+    "bipe_app_media_image",
+    "bipe_app_media_video",
+    "bipe_app_media_file",
+    "bipe_app_media_voice",
+    "bipe_app_media_sticker"
   ],
   "sdk": [
     "Client.notificationClient",
@@ -144,7 +149,7 @@
     "Undecryptable events: kind fallback. The text never shows as an error in a notification.",
     "Invites: NotificationEvent.Invite in a DM is chatRequest (bipe_app_notification_chat_request with the sender name); in a group, groupInvite (bipe_group_notification_room_invite_body_with_sender). Requests open the requests box of #557.",
     "DM name and photo follow ADR 0141: the other person, never the room name. RoomInfo isDm decides; NotificationRoomInfo.isDm gives it here.",
-    "Body: plain text, cut by the system. Media and stickers use the timeline label of #561 when it lands; until then fallback text. No Markdown, no scam card (the card shows in the chat, scam-warning).",
+    "Body: plain text, cut by the system. Photos, videos, files, voice messages and stickers use the existing timeline kind label. A nonblank attachment caption follows its kind label; raw filenames and media URLs are never used as a substitute caption. The extension/handler never downloads an attachment to make a preview. Text, emote and notice use their nonblank plain body. Unsupported or undecryptable content remains generic fallback. No Markdown or scam card (the card shows in chat, scam-warning).",
     "Android channels: bipe_app_notification_channel_messages for messages, bipe_notifications_invites for requests and invites. Each chat is one conversation notification with its messages; a group shows each sender name.",
     "Inline reply failure: bipe_dm_inline_reply_failed in a DM, bipe_group_notification_inline_reply_failed in a group.",
     "Opening the chat, a read on another device, or markAsRead removes that chat's notifications. The badge follows the unread count of the chat list.",
@@ -154,6 +159,7 @@
     "A legacy or malformed push without a resolvable immutable account route shows only the generic new-message fallback, with no room route or reply/read actions. Do not decrypt with the current account, the last registered account, or the only saved account. A payload for a signed-out owner never opens or writes as another account.",
     "Notification-client caches are scoped to the owning session. Sign-out detaches that account from action routing. Late work checks that the same session is still registered before showing, clearing or writing.",
     "APNs pusher default_payload carries a random account_route alongside aps. Only the phone stores the route-to-Matrix-ID map; the provider gets no Matrix account ID. The route survives restarts and account switches, is removed on sign-out and is replaced if that account is added again. Re-register older native pushers once. The future Android transport must resolve an immutable registered route locally before it supplies the owning session; provider setup and delivery acceptance remain separate gates.",
-    "Local actions revalidate the stored registration-lifetime route before and after awaiting account restore, and before each SDK write. The same Matrix ID after sign-out is a new lifetime; old PendingIntents and delivered iOS actions must fail closed. Both native clients keep the local route map across process restart and clear only the signed-out owner’s routes."
+    "Local actions revalidate the stored registration-lifetime route before and after awaiting account restore, and before each SDK write. The same Matrix ID after sign-out is a new lifetime; old PendingIntents and delivered iOS actions must fail closed. Both native clients keep the local route map across process restart and clear only the signed-out owner’s routes.",
+    "Each generated local notification preserves its kind in the owner-bound payload. Tap routing uses that kind and consumes the pending route only in the restored owner’s view. Requests and group invites do not open an unjoined timeline or send a read receipt. Opening an invite destination shows the existing accept/decline controls; it never accepts automatically."
   ]
 }

@@ -52,6 +52,10 @@
       "isNoisy": {
         "type": "bool",
         "description": "From the push rules: true plays the sound of notification-settings."
+      },
+      "accountRoute": {
+        "type": "string",
+        "description": "Opaque registration-lifetime code retained in local notification metadata and every open/reply/read action. Removed at sign-out; an old action cannot revive after the same Matrix account is added again."
       }
     }
   },
@@ -149,6 +153,7 @@
     "Every open, reply, mark-read, fallback and inline-reply failure retains accountUserId and roomId. Android PendingIntent identity includes account, room and action; notification tags and iOS thread identifiers use an opaque account-plus-room digest. Two accounts in the same group never share notification history, suppression or clearing.",
     "A legacy or malformed push without a resolvable immutable account route shows only the generic new-message fallback, with no room route or reply/read actions. Do not decrypt with the current account, the last registered account, or the only saved account. A payload for a signed-out owner never opens or writes as another account.",
     "Notification-client caches are scoped to the owning session. Sign-out detaches that account from action routing. Late work checks that the same session is still registered before showing, clearing or writing.",
-    "APNs pusher default_payload carries a random account_route alongside aps. Only the phone stores the route-to-Matrix-ID map; the provider gets no Matrix account ID. The route survives restarts and account switches, is removed on sign-out and is replaced if that account is added again. Re-register older native pushers once. The future Android transport must resolve an immutable registered route locally before it supplies the owning session; provider setup and delivery acceptance remain separate gates."
+    "APNs pusher default_payload carries a random account_route alongside aps. Only the phone stores the route-to-Matrix-ID map; the provider gets no Matrix account ID. The route survives restarts and account switches, is removed on sign-out and is replaced if that account is added again. Re-register older native pushers once. The future Android transport must resolve an immutable registered route locally before it supplies the owning session; provider setup and delivery acceptance remain separate gates.",
+    "Local actions revalidate the stored registration-lifetime route before and after awaiting account restore, and before each SDK write. The same Matrix ID after sign-out is a new lifetime; old PendingIntents and delivered iOS actions must fail closed. Both native clients keep the local route map across process restart and clear only the signed-out owner’s routes."
   ]
 }

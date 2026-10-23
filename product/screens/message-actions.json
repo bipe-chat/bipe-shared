@@ -2,39 +2,71 @@
   "id": "message-actions",
   "title": "Message actions",
   "flow": "chat",
-  "summary": "Native context and visible overflow menus expose the actions that apply to a message. The existing action sheet remains available for send-state and receipt controls.",
+  "summary": "Native long-press context menus expose the actions that apply to a message, without visible overflow buttons. Accessibility and send-state controls retain the existing action sheet.",
   "types": {
     "MessageAction": {
       "kind": {
         "type": "enum",
-        "values": ["reply", "edit", "copy", "retry", "delete", "report"],
+        "values": [
+          "reply",
+          "edit",
+          "copy",
+          "retry",
+          "delete",
+          "report"
+        ],
         "description": "One row of the sheet, in this order."
       }
     }
   },
   "state": {
-    "rowId": { "type": "string", "optional": true, "description": "The message the sheet is open for. Missing while closed." },
-    "showsReactions": { "type": "bool", "description": "false for messages that take no reactions (message-reactions)." },
+    "rowId": {
+      "type": "string",
+      "optional": true,
+      "description": "The message the sheet is open for. Missing while closed."
+    },
+    "showsReactions": {
+      "type": "bool",
+      "description": "false for messages that take no reactions (message-reactions)."
+    },
     "actions": {
       "type": "list",
-      "of": { "type": "MessageAction", "description": "One row." },
+      "of": {
+        "type": "MessageAction",
+        "description": "One row."
+      },
       "description": "Only the actions that apply to this message (see notes)."
     }
   },
   "actions": {
     "open": {
-      "params": { "rowId": { "type": "string", "description": "A message row." } },
+      "params": {
+        "rowId": {
+          "type": "string",
+          "description": "A message row."
+        }
+      },
       "effect": "Opens the sheet with a light haptic. Date, notice and handle-change rows have no sheet."
     },
     "react": {
-      "params": { "key": { "type": "string", "description": "One of the quick reactions." } },
+      "params": {
+        "key": {
+          "type": "string",
+          "description": "One of the quick reactions."
+        }
+      },
       "effect": "message-reactions toggle, then closes the sheet."
     },
     "moreReactions": {
       "effect": "Closes the sheet and runs message-reactions openPicker."
     },
     "choose": {
-      "params": { "kind": { "type": "MessageAction", "description": "The row." } },
+      "params": {
+        "kind": {
+          "type": "MessageAction",
+          "description": "The row."
+        }
+      },
       "effect": "Closes the sheet and runs: reply, message-reply startReply; edit, message-edit startEdit; copy, puts the text on the clipboard and shows bipe_app_copied; retry, chat-timeline retrySend; delete, message-delete askDelete; report, message-report open."
     },
     "close": {
@@ -65,7 +97,7 @@
     "Undecryptable rows: report only, and the message-undecryptable help when its cause has one. Deleted rows have no sheet.",
     "Not in this sheet (ADR 0141 and plan section 4): threads, pin, copy link to the message, forward, view source. Forward and media save come with #561.",
     "The sheet shows the message on top, so the person sees what they act on. The haptic follows ADR 0134 (registries haptics, selection).",
-    "Native iOS contextMenu and Android DropdownMenu open from a normal long press and a visible overflow button (bipe#589). The overflow entry is labelled for VoiceOver and TalkBack. Do not attach a second long-press recognizer that competes with the native menu. Keep scrolling, swipe-to-reply and media/reply taps.",
+    "MZ explicitly requested long press only on 23 October 2026: native iOS contextMenu and Android DropdownMenu open from a normal long press, with no visible overflow button (bipe#589). Labelled accessibility actions keep the same commands available to VoiceOver and TalkBack. Do not attach a second long-press recognizer that competes with the native menu. Keep scrolling, swipe-to-reply and media/reply taps.",
     "Every command resolves the current row and checks current permissions again at dispatch. A removed, deleted, non-message or no-longer-authorised target cannot dispatch an old command. Menus belong to the timeline model of one immutable account session. New incoming rows do not change the target."
   ]
 }

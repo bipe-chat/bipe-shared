@@ -18,6 +18,7 @@ import { generateHaptics } from "./lib/gen-haptics.mjs";
 import { generateCast, loadCast } from "./lib/gen-cast.mjs";
 import { loadScreens } from "./lib/screens.mjs";
 import { generateColors } from "./lib/gen-tokens.mjs";
+import { generateChatArchive } from "./lib/gen-chat-archive.mjs";
 import { generateDmSelection } from "./lib/gen-dm-selection.mjs";
 import { generateRelationshipNames } from "./lib/gen-relationship-names.mjs";
 
@@ -241,6 +242,7 @@ function writeSwift(out, { post = (text) => text, cast = true } = {}) {
   mkdirSync(out, { recursive: true });
   write("BipeRegistries.swift", swiftRegistries());
   write("BipeTrustFacts.swift", generateTrust(reg.trust, "swift", HEADER));
+  write("BipeChatArchive.swift", generateChatArchive("swift", HEADER));
   write("BipeDmSelection.swift", generateDmSelection(reg.dmSelection, "swift", HEADER));
   write("BipeRelationshipNames.swift", generateRelationshipNames(reg.relationshipNames, "swift", HEADER));
   write("BipeAgendaTemplates.swift", generateAgendaTemplates(reg, "swift", HEADER));
@@ -474,6 +476,7 @@ function writeKotlin(out, { packageName = KOTLIN_PACKAGE, post = (text) => text 
   mkdirSync(kotlinDir, { recursive: true });
   write("BipeRegistries.kt", kotlinRegistries());
   write("BipeTrustFacts.kt", generateTrust(reg.trust, "kotlin", KOTLIN_HEADER));
+  write("BipeChatArchive.kt", generateChatArchive("kotlin", KOTLIN_HEADER));
   write("BipeDmSelection.kt", generateDmSelection(reg.dmSelection, "kotlin", KOTLIN_HEADER));
   write("BipeRelationshipNames.kt", generateRelationshipNames(reg.relationshipNames, "kotlin", KOTLIN_HEADER, packageName));
   write("BipeAgendaTemplates.kt", generateAgendaTemplates(reg, "kotlin", KOTLIN_HEADER));

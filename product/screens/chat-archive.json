@@ -1,0 +1,75 @@
+{
+  "id": "chat-archive",
+  "title": "Archived chats",
+  "flow": "home",
+  "summary": "Archives a joined conversation or group on this device, keeping its history and membership. A newer incoming message returns it to the active list.",
+  "state": {
+    "showingArchived": {
+      "type": "bool",
+      "description": "The current tab shows archived chats, independent of its Unread filter."
+    },
+    "failed": {
+      "type": "bool",
+      "description": "The account-owned local file could not be read or saved; show Retry without reporting success."
+    }
+  },
+  "actions": {
+    "archive": {
+      "params": {
+        "roomId": {
+          "type": "string",
+          "description": "A joined chat owned by the current account."
+        }
+      },
+      "effect": "Atomically saves the latest known event timestamp and hides the chat from the active list."
+    },
+    "unarchive": {
+      "params": {
+        "roomId": {
+          "type": "string",
+          "description": "An archived joined chat."
+        }
+      },
+      "effect": "Removes the local marker and restores the chat immediately."
+    },
+    "openArchived": {
+      "effect": "Shows archived chats in the current tab, with access even when the active list is empty."
+    },
+    "openChat": {
+      "params": {
+        "roomId": {
+          "type": "string",
+          "description": "The archived chat."
+        }
+      },
+      "effect": "Opens the existing timeline with all retained history."
+    },
+    "retry": {
+      "effect": "Retries the failed local read or write."
+    }
+  },
+  "strings": [
+    "bipe_archive_action",
+    "bipe_unarchive_action",
+    "bipe_archived_title",
+    "bipe_archived_empty",
+    "bipe_archive_error",
+    "bipe_app_retry",
+    "bipe_chat_list_more",
+    "bipe_chat_actions"
+  ],
+  "sdk": [
+    "Client.getRoom",
+    "Room.latestEvent",
+    "Room.roomInfo"
+  ],
+  "parity": [],
+  "notes": [
+    "MZ requested archive swipes in bipe#588. A trailing swipe offers Archive on active DMs and groups, and Unarchive in Archived. Long press and an accessible action offer the same operation. Delete remains explicit and confirmed elsewhere.",
+    "Default chosen: device-local markers partitioned by full account ID, in an atomic file excluded from device cloud backup. No network call or startup network gate. No message text is stored. MZ can overrule.",
+    "The registry chat-archive.json defines the shared rule. Only a strictly newer remote incoming message restores a chat; own sends, equal timestamps, backfill and room state changes do not. Successful restoration removes its marker.",
+    "Archive is applied after newest-DM selection. It never writes cleared-chats markers, clears a timeline, marks read, leaves a room, or changes badge/notification policy. Search and Start chat can still open an archived room.",
+    "Archived access resolves saved room IDs from the local SDK beyond the loaded page. The active list can request further pages even when all loaded rows are archived. Account switches cannot target another account store.",
+    "Corrupt or unreadable files are retained and reported. Mutations retry loading before writing so failed reads cannot silently replace saved markers. A failed write keeps the prior state and offers Retry. Phone acceptance stays pending until verified on both platforms."
+  ]
+}

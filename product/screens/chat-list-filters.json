@@ -89,6 +89,7 @@
     "Group invite rows use bipe_group_notification_room_invite_body_with_sender with the inviter name, and Accept and Decline buttons.",
     "Empty states: noChats is bipe_chats_empty_title, bipe_chats_empty_body and the bipe_action_start_chat button. noGroups is bipe_app_groups_empty. noUnread is bipe_app_chat_list_no_unread, with a tap that turns the filter off.",
     "The filter chips are only Unread: no favourites, low priority or people and rooms chips (plan section 4, ADR 0141).",
-    "Groups badge counts what notifies in a quiet group (ADR 0026, ADR 0053): RoomInfo numUnreadMentions plus replies to the person."
+    "Groups badge counts what notifies in a quiet group (ADR 0026, ADR 0053): RoomInfo numUnreadMentions plus replies to the person.",
+    "Own-client swipes archive, not delete (bipe#588, chat-archive spec). Archive filtering follows newest-DM selection and is independent of cleared history. Archived access remains visible with an empty active list."
   ]
 }

@@ -70,6 +70,6 @@
   "notes": [
     "Send is off while draft is blank after trimming.",
     "undecryptable shows the message-undecryptable row in place of the body (cause and help action there).",
-    "Media, replies, reactions, edits, read receipts, typing and Bipe scam warnings are later issues."
+    "timeline-rows replaces messages with rows. Replies, reactions, edits, deletions, read receipts, typing, the actions sheet, handle-change lines and scam warnings have their own specs (bipe-chat/bipe#559). Media is a later issue."
   ]
 }

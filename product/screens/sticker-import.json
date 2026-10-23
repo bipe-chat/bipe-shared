@@ -1,0 +1,39 @@
+{
+  "id": "sticker-import",
+  "title": "Import stickers",
+  "flow": "chat",
+  "summary": "Adds stickers from files to the user's own pack: a WhatsApp chat export (ZIP) or WebP and PNG files. Explains how to get the files and that imported stickers are stored without end-to-end encryption.",
+  "state": {
+    "phase": {
+      "type": "enum",
+      "values": ["intro", "importing", "done", "nothingNew", "failed"],
+      "description": "intro: bipe_stickers_import_help and bipe_stickers_import_note. importing: bipe_stickers_import_progress. done: bipe_stickers_import_done with the count. nothingNew: bipe_stickers_import_none. failed: bipe_stickers_import_failed."
+    },
+    "added": { "type": "int", "description": "done only: stickers added, for bipe_stickers_import_done." }
+  },
+  "actions": {
+    "chooseFiles": {
+      "effect": "Opens the system file picker for ZIP, WebP and PNG files, several at once. Then reads the candidates (see notes) and runs the import."
+    },
+    "close": { "effect": "Closes. Stickers already added stay." }
+  },
+  "strings": [
+    "bipe_stickers_import_action",
+    "bipe_stickers_import_help",
+    "bipe_stickers_import_help_folder_android",
+    "bipe_stickers_import_note",
+    "bipe_stickers_import_progress",
+    "bipe_stickers_import_done",
+    "bipe_stickers_import_none",
+    "bipe_stickers_import_failed",
+    "bipe_app_close"
+  ],
+  "sdk": ["Client.session", "Client.uploadMedia"],
+  "parity": ["stickers"],
+  "notes": [
+    "Candidates: a ZIP gives its .webp entries; a WebP or PNG file gives itself. The format comes from the magic bytes, not the file name. At most 1,000,000 bytes and 1024 pixels on each side. Duplicates go out by content hash; the shortcode is st_ plus the first 8 bytes of the SHA-256 in hex, so the same file imported twice is one sticker. Bipe logic: StickerImporter.candidates, StickerImportCandidate and StickerPackClient.importStickers (BipeKit StickerImport.swift, ZipReader.swift); StickerImport.kt (libraries/bipe stickers). Both apps share these limits, so they belong in registries/ (ADR 0031) when this moves.",
+    "Import: read the server copy of im.ponies.user_emotes (client-server API, not the SDK cache), upload each new image to the media repository (Client.uploadMedia), add it with usage sticker and info (w, h, mimetype, size), and write the pack back keeping every other field. A failed upload keeps what was added and reports the error.",
+    "The media repository stores imported stickers in clear, because a pack is shared account data, not a message (bipe_stickers_import_note).",
+    "bipe_stickers_import_help_folder_android shows on Android only."
+  ]
+}

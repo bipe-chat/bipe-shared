@@ -1,0 +1,51 @@
+{
+  "id": "account-switcher",
+  "title": "Account switcher",
+  "flow": "home",
+  "summary": "The menu a long press on the Você tab opens (ADR 0135): every account on this phone with a check on the current one, then Nova conta while the cap allows one more (ADR 0086).",
+  "state": {
+    "accounts": {
+      "type": "list",
+      "of": {
+        "type": "AccountSummary",
+        "description": "One account."
+      },
+      "description": "Every account on this phone, oldest first."
+    },
+    "canAddAccount": {
+      "type": "bool",
+      "description": "true while the phone holds fewer personal accounts than max_accounts (bipe-api GET /v1/me/account, fallback MAX_PERSONAL_ACCOUNTS in the registries)."
+    }
+  },
+  "actions": {
+    "switchAccount": {
+      "params": {
+        "userId": {
+          "type": "string",
+          "description": "The chosen account."
+        }
+      },
+      "effect": "Closes the menu and runs app-tabs switchAccount."
+    },
+    "newAccount": {
+      "effect": "Closes the menu and opens onboarding-welcome to create a second account on this phone. The first account stays signed in."
+    },
+    "dismiss": {
+      "effect": "Closes the menu."
+    }
+  },
+  "strings": [
+    "bipe_app_account_switcher_title",
+    "bipe_app_account_new"
+  ],
+  "sdk": [],
+  "parity": [
+    "settings-structure"
+  ],
+  "notes": [
+    "Each row shows the avatar, the display name and the @handle; never the Matrix ID.",
+    "An account with unread messages shows a dot in its row.",
+    "Company accounts do not count against the cap (ADR 0086).",
+    "Avatars show the actual account photo or initials; company accounts use rounded squares and personal/unknown accounts circles (ADR 0132). Selecting the current account dismisses the menu without a switch haptic."
+  ]
+}

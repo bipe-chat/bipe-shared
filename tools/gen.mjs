@@ -450,8 +450,10 @@ const androidString = (v) => {
   return /^[@?]/.test(esc) ? `\\${esc}` : esc;
 };
 
-const androidStrings = (strings, comment) =>
-  `<?xml version="1.0" encoding="utf-8"?>\n<!-- ${HEADER.trim().replace(/^\/\/ /gm, "").replace(/\n/g, " ")} -->\n<!-- ${comment} -->\n<resources>\n` +
+// `locale` tells Android lint the language of the file: values/ holds pt-BR, so its spell check must not
+// read it as English ("Eles" failed the Typos check in bipe-android#103).
+const androidStrings = (strings, comment, locale) =>
+  `<?xml version="1.0" encoding="utf-8"?>\n<!-- ${HEADER.trim().replace(/^\/\/ /gm, "").replace(/\n/g, " ")} -->\n<!-- ${comment} -->\n<resources xmlns:tools="http://schemas.android.com/tools" tools:locale="${locale}">\n` +
   Object.entries(strings).map(([k, v]) => {
     // A literal % that is not a placeholder would break String.format.
     const formatted = /%(?!\d+\$s)/.test(v) ? ' formatted="false"' : "";
@@ -473,12 +475,12 @@ function writeKotlin(out, { packageName = KOTLIN_PACKAGE, post = (text) => text 
   write("BipeOnboarding.kt", generateOnboarding(reg.onboarding, "kotlin", KOTLIN_HEADER, kotlinString));
   write("BipeHaptics.kt", generateHaptics(reg.haptics, "kotlin", KOTLIN_HEADER, kotlinString));
   // pt-BR is the default language, so it fills values/. en is the alternative.
-  for (const [dir, strings, comment] of [
-    ["values", reg.strings.strings, "pt-BR (default). DRAFT copy: not yet through the humanizer pass."],
-    ["values-en", reg.stringsEn.strings, "en. DRAFT copy: not yet through the humanizer pass."],
+  for (const [dir, strings, comment, locale] of [
+    ["values", reg.strings.strings, "pt-BR (default). DRAFT copy: not yet through the humanizer pass.", "pt"],
+    ["values-en", reg.stringsEn.strings, "en. DRAFT copy: not yet through the humanizer pass.", "en"],
   ]) {
     mkdirSync(join(out, "res", dir), { recursive: true });
-    writeFileSync(join(out, "res", dir, "bipe_strings.xml"), androidStrings(strings, comment));
+    writeFileSync(join(out, "res", dir, "bipe_strings.xml"), androidStrings(strings, comment, locale));
   }
   console.log(`wrote Kotlin to ${out}`);
 }

@@ -1,0 +1,58 @@
+{
+  "id": "push-registration",
+  "title": "Push registration",
+  "flow": "notifications",
+  "summary": "Registers this phone for pushes with Bipe's push gateway (Sygnal) when the person allows notifications, keeps the registration current, and removes it at sign-out. No screen: it runs behind notifications-prompt and notification-settings.",
+  "types": {
+    "PushRegistration": {
+      "channel": {
+        "type": "enum",
+        "values": ["apns", "fcm"],
+        "description": "apns on iOS, fcm on Android."
+      },
+      "pushkey": { "type": "string", "description": "The token from the system push service." },
+      "appId": { "type": "string", "description": "The gateway app ID of this platform and build (see notes)." },
+      "registeredAt": { "type": "date", "description": "When the homeserver accepted the pusher." }
+    }
+  },
+  "state": {
+    "permission": {
+      "type": "enum",
+      "values": ["notAsked", "allowed", "denied"],
+      "description": "The system notification permission of the app."
+    },
+    "registration": { "type": "PushRegistration", "optional": true, "description": "The pusher this phone set on the homeserver. Missing before the first registration and after sign-out." }
+  },
+  "actions": {
+    "tokenReceived": {
+      "params": { "pushkey": { "type": "string", "description": "The new system token." } },
+      "effect": "When permission is allowed and the token or the app language differs from registration, sets the HTTP pusher on the homeserver (see notes) and stores registration."
+    },
+    "appBecameActive": {
+      "effect": "Reads the system permission. allowed without registration: asks the system for a token. denied with registration: keeps the pusher (the system drops the pushes) so notifications come back when the person allows them again."
+    },
+    "signOut": {
+      "effect": "Deletes the pusher of this phone on the homeserver before the session ends. A failure does not stop the sign-out."
+    }
+  },
+  "strings": [],
+  "sdk": [
+    "Client.setPusher",
+    "Client.deletePusher",
+    "PusherIdentifiers",
+    "PusherKind",
+    "HttpPusherData",
+    "PushFormat"
+  ],
+  "parity": [],
+  "notes": [
+    "Pusher: kind Http with the gateway URL https://<push host>/_matrix/push/v1/notify, format EventIdOnly, appDisplayName bipe_app_name, deviceDisplayName the phone model, lang the app language (pt-BR or en), append false (one pusher per phone and app ID).",
+    "Content-free pushes: EventIdOnly makes the homeserver send only the room ID, the event ID and the unread count, never the sender or the text. The phone fetches and decrypts the message (notification-service). This is the fact on bipe-web /quem-pode-ler/ and /lgpd/ (product/privacy.json apple, product/data.json push).",
+    "Gateway and app IDs stay those of the forks, so Sygnal needs no change (client-rewrite-study section 5): same bundle ID and application ID, same APNs and FCM app IDs, one per build type (store and debug). The values live in the app build config, not in this spec.",
+    "iOS: default_payload sets aps mutable-content 1 and an alert, so the notification service extension runs for every push.",
+    "Android: FCM data messages with high priority. UnifiedPush stays out of scope until a later issue (product/parity.json differences, Push).",
+    "Android FCM sends the push through Google. Before the own Android client ships pushes, product/data.json and product/privacy.json need a Google item next to the Apple one (AGENTS.md, privacy.json rule).",
+    "The pusher is set after the system permission is allowed, never before. The permission is asked only by notifications-prompt or notification-settings.",
+    "Multi-account (later): one pusher per account on the same phone."
+  ]
+}

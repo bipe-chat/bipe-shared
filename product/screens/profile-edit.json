@@ -1,0 +1,64 @@
+{
+  "id": "profile-edit",
+  "title": "Your name and photo",
+  "flow": "profile",
+  "summary": "Edits the name and photo that people who chat with the user see (the Matrix profile). The public profile has its own name and photo (public-profile-edit, ADR 0041).",
+  "state": {
+    "name": { "type": "string", "description": "The name field. Starts as Client.displayName." },
+    "avatarUrl": { "type": "url", "optional": true, "description": "Client.avatarUrl, or a local file URL of a newly picked photo." },
+    "nameProblem": {
+      "type": "enum",
+      "values": ["none", "empty", "tooLong", "reserved"],
+      "description": "empty: bipe_public_profile_name_empty. tooLong: bipe_public_profile_name_too_long with nameMaxLength. reserved: bipe_app_profile_name_reserved. Save is off unless none."
+    },
+    "phase": {
+      "type": "enum",
+      "values": ["editing", "saving", "saved", "failed"],
+      "description": "saved: closes the screen. failed: bipe_app_save_error, the fields keep their values."
+    }
+  },
+  "actions": {
+    "appear": { "effect": "Reads Client.displayName and Client.avatarUrl (Client.cachedAvatarUrl first, to show at once)." },
+    "setName": {
+      "params": { "name": { "type": "string", "description": "The new text." } },
+      "effect": "Updates name and nameProblem with the local rules (see notes)."
+    },
+    "choosePhoto": { "effect": "Opens the system photo picker, then a square crop." },
+    "removePhoto": { "effect": "Marks the photo for removal." },
+    "save": {
+      "effect": "Sends only what changed: Client.setDisplayName with the trimmed name; Client.uploadAvatar with a JPEG for a new photo, or Client.removeAvatar. Then phase saved."
+    },
+    "cancel": { "effect": "Closes the screen. Nothing changes." }
+  },
+  "strings": [
+    "bipe_settings_profile_name_photo",
+    "bipe_profile_display_name",
+    "bipe_profile_display_name_footer",
+    "bipe_public_profile_photo_change",
+    "bipe_public_profile_photo_remove",
+    "bipe_public_profile_name_empty",
+    "bipe_public_profile_name_too_long",
+    "bipe_app_profile_name_reserved",
+    "bipe_company_name",
+    "bipe_app_save",
+    "bipe_app_save_error",
+    "bipe_app_cancel"
+  ],
+  "sdk": [
+    "Client.displayName",
+    "Client.setDisplayName",
+    "Client.avatarUrl",
+    "Client.cachedAvatarUrl",
+    "Client.uploadAvatar",
+    "Client.removeAvatar",
+    "Client.subscribeToOwnProfile"
+  ],
+  "parity": ["reserved-names", "settings-structure"],
+  "notes": [
+    "Opens from the namePhoto row of Seu perfil (settings-group profile).",
+    "Name rules: trimmed; not empty; at most nameMaxLength of registries/profiles.json; not a reserved name of registries/reserved-names.json after normalize() with the homoglyph map (exact match). Reference: profileProblem (name_empty, name_too_long, name_reserved) and normalize in tools/lib/registries.mjs; cases in test-vectors/normalization.json. Bipe logic: BipePublicProfileRules.profileProblem and NameNormalizer (BipeKit); BipePublicProfile.kt and NameNormalizer.kt (libraries/bipe).",
+    "Matrix has no server check for reserved display names. The app check stops honest mistakes; other people's apps also show bipe_warning_reserved_name next to an unverified reserved name (person-profile).",
+    "Photo: the app crops it square and re-encodes it as JPEG before upload. Client.subscribeToOwnProfile keeps the screen right when another device changes the profile.",
+    "A company account (ADR 0132) edits the company name here too: the same fields, with bipe_company_name as the field label. The type comes from GET /v1/accounts/{userId}/type."
+  ]
+}

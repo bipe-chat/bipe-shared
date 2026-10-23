@@ -1,0 +1,68 @@
+{
+  "id": "message-reply",
+  "title": "Reply to a message",
+  "flow": "chat",
+  "summary": "Lets the person reply to one message: a bar above the composer shows what they reply to, and the sent message shows a short quote of the original. A tap on the quote scrolls to the original.",
+  "types": {
+    "MessageReply": {
+      "eventId": { "type": "string", "description": "Event ID of the original message." },
+      "state": {
+        "type": "enum",
+        "values": ["loading", "ready", "unavailable"],
+        "description": "loading: the SDK is fetching the original. ready: senderName and preview are set. unavailable: the original could not be loaded or was deleted."
+      },
+      "senderName": { "type": "string", "optional": true, "description": "Display name of the original sender, or bipe_app_you." },
+      "preview": { "type": "string", "optional": true, "description": "One line of the original: its text, or the deleted or undecryptable text of timeline-rows." }
+    }
+  },
+  "state": {
+    "replyingTo": { "type": "MessageReply", "optional": true, "description": "The bar above the composer. Missing when the person is not replying." },
+    "replyingToRowId": { "type": "string", "optional": true, "description": "Row id of the original." }
+  },
+  "actions": {
+    "startReply": {
+      "params": { "rowId": { "type": "string", "description": "The message to reply to. Must have canReply." } },
+      "effect": "Sets replyingTo, focuses the composer and keeps the draft text. Also runs from a swipe on the message."
+    },
+    "cancelReply": {
+      "effect": "Clears replyingTo. The draft text stays."
+    },
+    "sendReply": {
+      "effect": "chat-timeline send with replyingTo: sends the draft as a reply to the original, then clears draft and replyingTo."
+    },
+    "openOriginal": {
+      "params": { "eventId": { "type": "string", "description": "The original message." } },
+      "effect": "Scrolls to the original and highlights it for a moment. When it is not loaded, back-paginates until it is, at most 5 pages; then does nothing."
+    },
+    "loadReply": {
+      "params": { "eventId": { "type": "string", "description": "A quote in state loading or unavailable." } },
+      "effect": "Asks the SDK for the original when a quote comes on screen without details."
+    }
+  },
+  "strings": [
+    "bipe_app_message_replying_to",
+    "bipe_app_message_reply_loading",
+    "bipe_app_message_reply_unavailable",
+    "bipe_app_message_action_reply",
+    "bipe_app_cancel",
+    "bipe_app_you"
+  ],
+  "sdk": [
+    "Timeline.sendReply",
+    "messageEventContentNew",
+    "MsgLikeContent",
+    "InReplyToDetails",
+    "EmbeddedEventDetails",
+    "Timeline.loadReplyDetails",
+    "Timeline.fetchDetailsForEvent",
+    "EventTimelineItem"
+  ],
+  "parity": [],
+  "notes": [
+    "MsgLikeContent.inReplyTo gives the quote. EmbeddedEventDetails Unavailable and Pending map to loading until loadReply ran once; Error maps to unavailable.",
+    "The bar shows bipe_app_message_replying_to with the sender name, then the preview, and a close button labelled bipe_app_cancel.",
+    "Replies are plain replies. Threads are not in a DM (ADR 0141) and not in this spec for groups.",
+    "The preview is one line, cut with the system truncation. Media previews come with #561.",
+    "Swipe to reply: right on the message row, on both platforms. Screen readers use the message-actions action instead."
+  ]
+}

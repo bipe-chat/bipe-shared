@@ -1128,12 +1128,20 @@
         "reason": "Runs on the device only"
       },
       "ios-new": {
-        "status": "planned",
-        "issue": 581
+        "status": "built",
+        "evidence": [
+          "bipe-app/ios/Bipe/PixCheck/PixCheckModel.swift",
+          "bipe-app/ios/Bipe/PixCheck/PixCheckViews.swift",
+          "bipe-app/ios/Bipe/PixCheck/PixHandoff.swift"
+        ]
       },
       "android-new": {
-        "status": "planned",
-        "issue": 581
+        "status": "built",
+        "evidence": [
+          "bipe-app/android/app/src/main/kotlin/chat/bipe/app/pixcheck/PixCheckActivity.kt",
+          "bipe-app/android/app/src/main/kotlin/chat/bipe/app/pixcheck/PixCheckModel.kt",
+          "bipe-app/android/app/src/main/kotlin/chat/bipe/app/pixcheck/PixSendScreen.kt"
+        ]
       },
       "issue": 294
     },

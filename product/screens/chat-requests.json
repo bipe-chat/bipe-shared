@@ -1,0 +1,70 @@
+{
+  "id": "chat-requests",
+  "title": "Chat requests",
+  "flow": "home",
+  "summary": "The box of chat requests: DM invites from people who want to start a conversation. A row at the top of the Conversas tab opens it; each request opens chat-request. Requests never show in the chat list until accepted.",
+  "types": {
+    "ChatRequestSummary": {
+      "roomId": { "type": "string", "description": "The invited room. Stable key for the row." },
+      "inviterId": { "type": "string", "description": "Matrix ID of the person who invited." },
+      "name": { "type": "string", "description": "The inviter's display name." },
+      "avatarUrl": { "type": "url", "optional": true, "description": "The inviter's avatar. Missing when hidePhotos is on." },
+      "trust": {
+        "type": "enum",
+        "values": ["verified", "unverified", "external"],
+        "description": "verified: the account has a verified name. unverified: no verified name. external: an account on another Matrix server."
+      },
+      "invitedAt": { "type": "date", "optional": true, "description": "Time of the invite." }
+    }
+  },
+  "state": {
+    "requests": {
+      "type": "list",
+      "of": { "type": "ChatRequestSummary", "description": "One request." },
+      "description": "Newest first."
+    },
+    "hidePhotos": { "type": "bool", "description": "The privacy setting bipe_privacy_requests_hide_photos." },
+    "rowCount": { "type": "int", "description": "The number on the requests row of the chat list. 0 hides the row." }
+  },
+  "actions": {
+    "openBox": {
+      "effect": "From the requests row: opens this screen."
+    },
+    "openRequest": {
+      "params": { "roomId": { "type": "string", "description": "The request." } },
+      "effect": "Opens chat-request."
+    },
+    "openWhoCanMessage": {
+      "effect": "Opens the who-can-message setting (privacy settings)."
+    }
+  },
+  "strings": [
+    "bipe_requests_title",
+    "bipe_requests_row_body",
+    "bipe_app_requests_empty",
+    "bipe_messaging_title",
+    "bipe_badge_verified",
+    "bipe_banner_unverified_title",
+    "bipe_banner_external"
+  ],
+  "sdk": [
+    "RoomListService.allRooms",
+    "RoomList.entriesWithDynamicAdapters",
+    "RoomListDynamicEntriesController.setFilter",
+    "RoomListEntriesDynamicFilterKind",
+    "Room.roomInfo",
+    "RoomInfo",
+    "Room.inviter",
+    "RoomMember"
+  ],
+  "parity": ["requests", "who-can-message"],
+  "notes": [
+    "A request is a room with membership invited and RoomInfo.isDm true (filter Invite plus Category People). Group invites are not requests: they show as invite rows in the Grupos tab (chat-list-filters).",
+    "The server already applies who can message me (ADR 0038): an invite that the setting refuses never arrives. The box holds what passed.",
+    "Requests stay out of chat-list and out of the Conversas unread badge (ADR 0053: Pedidos is a row, not a tab). The row shows rowCount when it is above 0, with bipe_requests_title and bipe_requests_row_body.",
+    "Trust per row: verified shows the verified seal (bipe_badge_verified), unverified shows bipe_banner_unverified_title, external shows bipe_banner_external. Move, do not rewrite: BipeKit BipeTrustProfile.swift and BadgeVerifier.swift, libraries/bipe BipeTrustProfile.kt and BadgeVerifier.kt (GET /v1/badges/{userId}).",
+    "hidePhotos: rows show the initials avatar, never the photo, until accepted.",
+    "Empty box: bipe_app_requests_empty and a link row bipe_messaging_title to the setting.",
+    "A request from a blocked person never shows (Matrix ignore list)."
+  ]
+}

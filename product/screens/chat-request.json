@@ -1,0 +1,70 @@
+{
+  "id": "chat-request",
+  "title": "One chat request",
+  "flow": "home",
+  "summary": "Shows who wants to talk, with their trust facts, before the person answers. Accept opens the chat; decline removes the request; decline and block also stops the person from writing again; report sends it to the Bipe team.",
+  "types": {},
+  "state": {
+    "request": { "type": "ChatRequestSummary", "description": "The request." },
+    "handle": { "type": "string", "optional": true, "description": "The inviter's @, from bipe-api." },
+    "accountAge": { "type": "string", "optional": true, "description": "unverified only: how long ago the account was created, already formatted by the system (\"3 dias\")." },
+    "nameMismatch": { "type": "string", "optional": true, "description": "The verified name when it differs from the name the person saved in the address book (ADR 0018)." },
+    "isWorking": { "type": "bool", "description": "true while accept, decline or report runs." },
+    "confirmBlock": { "type": "bool", "description": "true while the decline-and-block dialog is open." },
+    "error": { "type": "bool", "description": "true after a failed action. Shows bipe_error_generic." }
+  },
+  "actions": {
+    "accept": {
+      "effect": "Joins the room, then opens chat-timeline. The chat moves to the chat list."
+    },
+    "decline": {
+      "effect": "Leaves the invited room. The request goes away; the inviter sees nothing special."
+    },
+    "askDeclineAndBlock": {
+      "effect": "Opens the dialog with bipe_dm_decline_block_alert."
+    },
+    "declineAndBlock": {
+      "effect": "Leaves the room and adds the inviter to the ignore list."
+    },
+    "report": {
+      "effect": "Reports the room to the Bipe team, leaves it, and shows bipe_dm_reported_and_left."
+    }
+  },
+  "strings": [
+    "bipe_app_request_accept",
+    "bipe_app_request_decline",
+    "bipe_app_request_decline_block",
+    "bipe_dm_decline_block_description",
+    "bipe_dm_decline_block_alert",
+    "bipe_dm_report",
+    "bipe_dm_decline_report_description",
+    "bipe_dm_reported_and_left",
+    "bipe_request_unverified_body",
+    "bipe_banner_unverified_title",
+    "bipe_banner_unverified_body",
+    "bipe_banner_external",
+    "bipe_badge_verified_name",
+    "bipe_warning_name_mismatch",
+    "bipe_app_cancel",
+    "bipe_error_generic"
+  ],
+  "sdk": [
+    "Room.inviter",
+    "Room.join",
+    "Room.leave",
+    "Room.ignoreUser",
+    "Room.reportRoom",
+    "RoomInfo"
+  ],
+  "parity": ["requests", "verified-badge", "family-check"],
+  "notes": [
+    "No message text before accept: a Matrix invite carries no messages. The screen shows the person, not their first message.",
+    "Trust block, in order: the verified name (bipe_badge_verified_name) or, for an unverified account, bipe_banner_unverified_title, bipe_banner_unverified_body with accountAge, and bipe_request_unverified_body. An external account shows bipe_banner_external. Move, do not rewrite: BipeKit BipeTrustProfile.swift, BadgeVerifier.swift, NameNormalizer.swift; libraries/bipe BipeTrustProfile.kt, BadgeVerifier.kt, NameNormalizer.kt.",
+    "nameMismatch (ADR 0018): shows bipe_warning_name_mismatch at trust caution level. The check runs on the phone against the address book; nothing leaves the phone.",
+    "The handle shows as @handle under the name when bipe-api resolves one (BipeHandleResolver).",
+    "Photo: hidden when bipe_privacy_requests_hide_photos is on (chat-requests).",
+    "Decline uses a plain leave, so the inviter can ask again later. Decline and block adds the ignore; the server then drops new invites from that person.",
+    "Report: Room.reportRoom with no reason text, then leave. bipe_dm_decline_report_description says where it goes.",
+    "Accept, decline and decline and block work offline-first: the request leaves the box at once; a failure brings it back with bipe_error_generic."
+  ]
+}

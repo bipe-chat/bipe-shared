@@ -382,5 +382,6 @@ write("cleared-chats.json", {
 const dmFixture = JSON.parse(readFileSync(join(root, "fixtures/dm-selection.json"), "utf8"));
 for (const item of dmFixture.cases) {
   if (JSON.stringify(newestDmRooms(item.candidates)) !== JSON.stringify(item.expected)) throw new Error(`dm-selection: fixture differs for ${item.name}`);
+  if (item.includingCleared && JSON.stringify(newestDmRooms(item.candidates, { includingCleared: true })) !== JSON.stringify(item.includingCleared)) throw new Error(`dm-selection: cleared fallback differs for ${item.name}`);
 }
 write("dm-selection.json", dmFixture);

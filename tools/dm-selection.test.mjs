@@ -8,6 +8,7 @@ for (const item of fixture.cases) {
   test(`DM selection: ${item.name}`, () => {
     assert.deepEqual(newestDmRooms(item.candidates), item.expected);
     assert.deepEqual(newestDmRooms([...item.candidates].reverse()), item.expected);
+    if (item.includingCleared) assert.deepEqual(newestDmRooms(item.candidates, { includingCleared: true }), item.includingCleared);
   });
 }
 

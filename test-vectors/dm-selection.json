@@ -127,6 +127,29 @@
         }
       ],
       "expected": {}
+    },
+    {
+      "name": "all cleared stays hidden but Start chat reuses an existing room",
+      "candidates": [
+        {
+          "roomId": "!old:example.test",
+          "peerUserId": "@ana:example.test",
+          "latestActivityMs": 10,
+          "eligible": true,
+          "cleared": true
+        },
+        {
+          "roomId": "!new:example.test",
+          "peerUserId": "@ana:example.test",
+          "latestActivityMs": 20,
+          "eligible": true,
+          "cleared": true
+        }
+      ],
+      "expected": {},
+      "includingCleared": {
+        "@ana:example.test": "!new:example.test"
+      }
     }
   ]
 }

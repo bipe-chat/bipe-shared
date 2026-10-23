@@ -1,29 +1,155 @@
 {
   "$comment": "Synthetic local facts shared by reference/Swift/Kotlin. Selection precedes unread/name filtering; ineligible candidates model cleared, left, invited and group rooms. Histories are retained.",
   "cases": [
-    { "name": "empty", "candidates": [], "expected": {} },
-    { "name": "newest regardless of input order", "candidates": [
-      { "roomId": "!old:example.test", "peerUserId": "@ana:example.test", "latestActivityMs": 10, "eligible": true },
-      { "roomId": "!new:example.test", "peerUserId": "@ana:example.test", "latestActivityMs": 20, "eligible": true },
-      { "roomId": "!other:example.test", "peerUserId": "@rui:example.test", "latestActivityMs": 5, "eligible": true }
-    ], "expected": { "@ana:example.test": "!new:example.test", "@rui:example.test": "!other:example.test" } },
-    { "name": "ineligible rooms excluded", "candidates": [
-      { "roomId": "!keep:example.test", "peerUserId": "@ana:example.test", "latestActivityMs": 10, "eligible": true },
-      { "roomId": "!cleared:example.test", "peerUserId": "@ana:example.test", "latestActivityMs": 20, "eligible": false },
-      { "roomId": "!left:example.test", "peerUserId": "@ana:example.test", "latestActivityMs": 30, "eligible": false },
-      { "roomId": "!invited:example.test", "peerUserId": "@ana:example.test", "latestActivityMs": 40, "eligible": false },
-      { "roomId": "!group:example.test", "peerUserId": "@ana:example.test", "latestActivityMs": 50, "eligible": false }
-    ], "expected": { "@ana:example.test": "!keep:example.test" } },
-    { "name": "stable ties and missing activity", "candidates": [
-      { "roomId": "!z:example.test", "peerUserId": "@ana:example.test", "latestActivityMs": 20, "eligible": true },
-      { "roomId": "!a:example.test", "peerUserId": "@ana:example.test", "latestActivityMs": 20, "eligible": true },
-      { "roomId": "!missing:example.test", "peerUserId": "@ana:example.test", "latestActivityMs": null, "eligible": true },
-      { "roomId": "!z:example.test", "peerUserId": "@rui:example.test", "latestActivityMs": null, "eligible": true },
-      { "roomId": "!a:example.test", "peerUserId": "@rui:example.test", "latestActivityMs": null, "eligible": true }
-    ], "expected": { "@ana:example.test": "!a:example.test", "@rui:example.test": "!a:example.test" } },
-    { "name": "missing stable identities excluded", "candidates": [
-      { "roomId": "!room:example.test", "peerUserId": "", "latestActivityMs": 20, "eligible": true },
-      { "roomId": "", "peerUserId": "@ana:example.test", "latestActivityMs": 20, "eligible": true }
-    ], "expected": {} }
+    {
+      "name": "empty",
+      "candidates": [],
+      "expected": {}
+    },
+    {
+      "name": "newest regardless of input order",
+      "candidates": [
+        {
+          "roomId": "!old:example.test",
+          "peerUserId": "@ana:example.test",
+          "latestActivityMs": 10,
+          "eligible": true
+        },
+        {
+          "roomId": "!new:example.test",
+          "peerUserId": "@ana:example.test",
+          "latestActivityMs": 20,
+          "eligible": true
+        },
+        {
+          "roomId": "!other:example.test",
+          "peerUserId": "@rui:example.test",
+          "latestActivityMs": 5,
+          "eligible": true
+        }
+      ],
+      "expected": {
+        "@ana:example.test": "!new:example.test",
+        "@rui:example.test": "!other:example.test"
+      }
+    },
+    {
+      "name": "ineligible rooms excluded",
+      "candidates": [
+        {
+          "roomId": "!keep:example.test",
+          "peerUserId": "@ana:example.test",
+          "latestActivityMs": 10,
+          "eligible": true
+        },
+        {
+          "roomId": "!cleared:example.test",
+          "peerUserId": "@ana:example.test",
+          "latestActivityMs": 20,
+          "eligible": false
+        },
+        {
+          "roomId": "!left:example.test",
+          "peerUserId": "@ana:example.test",
+          "latestActivityMs": 30,
+          "eligible": false
+        },
+        {
+          "roomId": "!invited:example.test",
+          "peerUserId": "@ana:example.test",
+          "latestActivityMs": 40,
+          "eligible": false
+        },
+        {
+          "roomId": "!group:example.test",
+          "peerUserId": "@ana:example.test",
+          "latestActivityMs": 50,
+          "eligible": false
+        }
+      ],
+      "expected": {
+        "@ana:example.test": "!keep:example.test"
+      }
+    },
+    {
+      "name": "stable ties and missing activity",
+      "candidates": [
+        {
+          "roomId": "!z:example.test",
+          "peerUserId": "@ana:example.test",
+          "latestActivityMs": 20,
+          "eligible": true
+        },
+        {
+          "roomId": "!a:example.test",
+          "peerUserId": "@ana:example.test",
+          "latestActivityMs": 20,
+          "eligible": true
+        },
+        {
+          "roomId": "!missing:example.test",
+          "peerUserId": "@ana:example.test",
+          "latestActivityMs": null,
+          "eligible": true
+        },
+        {
+          "roomId": "!z:example.test",
+          "peerUserId": "@rui:example.test",
+          "latestActivityMs": null,
+          "eligible": true
+        },
+        {
+          "roomId": "!a:example.test",
+          "peerUserId": "@rui:example.test",
+          "latestActivityMs": null,
+          "eligible": true
+        }
+      ],
+      "expected": {
+        "@ana:example.test": "!a:example.test",
+        "@rui:example.test": "!a:example.test"
+      }
+    },
+    {
+      "name": "missing stable identities excluded",
+      "candidates": [
+        {
+          "roomId": "!room:example.test",
+          "peerUserId": "",
+          "latestActivityMs": 20,
+          "eligible": true
+        },
+        {
+          "roomId": "",
+          "peerUserId": "@ana:example.test",
+          "latestActivityMs": 20,
+          "eligible": true
+        }
+      ],
+      "expected": {}
+    },
+    {
+      "name": "all cleared stays hidden but Start chat reuses an existing room",
+      "candidates": [
+        {
+          "roomId": "!old:example.test",
+          "peerUserId": "@ana:example.test",
+          "latestActivityMs": 10,
+          "eligible": true,
+          "cleared": true
+        },
+        {
+          "roomId": "!new:example.test",
+          "peerUserId": "@ana:example.test",
+          "latestActivityMs": 20,
+          "eligible": true,
+          "cleared": true
+        }
+      ],
+      "expected": {},
+      "includingCleared": {
+        "@ana:example.test": "!new:example.test"
+      }
+    }
   ]
 }

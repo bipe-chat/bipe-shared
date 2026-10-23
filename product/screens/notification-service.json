@@ -7,7 +7,7 @@
     "PhoneNotification": {
       "accountUserId": {
         "type": "string",
-        "description": "Immutable Matrix ID of the account that registered the receiving pusher. Never inferred from the current UI account or a mutable registration slot."
+        "description": "Immutable Matrix ID resolved on this phone from the receiving pusher’s random account route. Never inferred from the current UI account or a mutable registration slot."
       },
       "roomId": {
         "type": "string",
@@ -65,9 +65,9 @@
   "actions": {
     "pushReceived": {
       "params": {
-        "accountUserId": {
+        "accountRoute": {
           "type": "string",
-          "description": "Immutable Matrix ID of the account that registered the receiving pusher. Never inferred from the current UI account or a mutable registration slot."
+          "description": "Random opaque code bound to the registering account on this phone. The provider does not receive the Matrix account ID."
         },
         "roomId": {
           "type": "string",
@@ -83,7 +83,7 @@
           "description": "From the push, for the app icon badge."
         }
       },
-      "effect": "Resolves only accountUserId in the extension or handler, fetches and decrypts the event for that account, and retains its owner in every notification and action. An unavailable or missing owner never falls back to the selected account."
+      "effect": "Resolves accountRoute to exactly one local accountUserId, opens only that account in the extension or handler, fetches and decrypts the event, and retains its owner in each local notification and action. An unknown, ambiguous or missing route never falls back to another account."
     },
     "open": {
       "effect": "Tap: selects accountUserId after app lock, then opens that account’s chat-timeline of roomId. The route waits for its owner to restore; another account cannot consume it. Event focus remains subject to chat-timeline support."
@@ -147,8 +147,8 @@
     "Nothing from a notification leaves the phone except the reply and the read receipt. No analytics (plan section 2).",
     "App lock (ADR 0137) does not change notification content; a preview setting needs its own decision.",
     "Every open, reply, mark-read, fallback and inline-reply failure retains accountUserId and roomId. Android PendingIntent identity includes account, room and action; notification tags and iOS thread identifiers use an opaque account-plus-room digest. Two accounts in the same group never share notification history, suppression or clearing.",
-    "A legacy or malformed push without an immutable accountUserId shows only the generic new-message fallback, with no room route or reply/read actions. Do not decrypt with the current account, the last registered account, or the only saved account. A payload for a signed-out owner never opens or writes as another account.",
+    "A legacy or malformed push without a resolvable immutable account route shows only the generic new-message fallback, with no room route or reply/read actions. Do not decrypt with the current account, the last registered account, or the only saved account. A payload for a signed-out owner never opens or writes as another account.",
     "Notification-client caches are scoped to the owning session. Sign-out detaches that account from action routing. Late work checks that the same session is still registered before showing, clearing or writing.",
-    "APNs pusher default_payload carries account_user_id alongside aps. Re-register older native pushers once so later pushes have immutable ownership. The Android transport must supply the registered owner with each content-free push; provider setup and delivery acceptance remain separate gates."
+    "APNs pusher default_payload carries a random account_route alongside aps. Only the phone stores the route-to-Matrix-ID map; the provider gets no Matrix account ID. The route survives restarts and account switches, is removed on sign-out and is replaced if that account is added again. Re-register older native pushers once. The future Android transport must resolve an immutable registered route locally before it supplies the owning session; provider setup and delivery acceptance remain separate gates."
   ]
 }

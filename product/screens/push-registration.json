@@ -79,6 +79,6 @@
     "Android FCM sends the push through Google. Before the own Android client ships pushes, product/data.json and product/privacy.json need a Google item next to the Apple one (AGENTS.md, privacy.json rule).",
     "The pusher is set after the system permission is allowed, never before. The permission is asked only by notifications-prompt or notification-settings.",
     "Multi-account (later): one pusher per account on the same phone.",
-    "Account routing (notification-service): the APNs default_payload includes account_user_id equal to the registering session’s Matrix ID. Registration versioning forces one replacement of older pushers without this owner. A mutable current-account preference is not used to interpret an already delivered push. Android transport must retain the same immutable registration ownership when it is added; no account is inferred from the foreground UI."
+    "Account routing (notification-service): the APNs default_payload includes account_route, a random code bound on this phone to the registering session’s Matrix ID. The provider never receives that Matrix ID. Registration versioning forces one replacement of older pushers without this route. A mutable current-account preference never interprets an already delivered push. Android transport must resolve the same immutable registration ownership locally when it is added; no account is inferred from the foreground UI."
   ]
 }

@@ -86,11 +86,11 @@
       "access": { "content": "no", "room": "no", "who-when": "partial", "connection": "no" },
       "pt": {
         "name": "A Apple, que entrega as notificações do iPhone",
-        "note": "Recebe só um aviso de que chegou mensagem, com o código da conversa. O texto não passa pela Apple: o app busca a mensagem no servidor do Bipe e abre no celular."
+        "note": "Recebe só um aviso de que chegou mensagem, com o código da conversa. No Bipe Next, recebe também um código aleatório para o celular escolher a conta, sem o ID dela. O texto não passa pela Apple: o app busca a mensagem no servidor do Bipe e abre no celular."
       },
       "en": {
         "name": "Apple, which delivers iPhone notifications",
-        "note": "Gets only a signal that a message arrived, with the chat's ID. The text does not pass through Apple: the app fetches the message from the Bipe server and opens it on the phone."
+        "note": "Gets only a signal that a message arrived, with the chat's ID. In Bipe Next it also gets a random code so the phone selects the account, without the account ID. The text does not pass through Apple: the app fetches the message from the Bipe server and opens it on the phone."
       }
     },
     {

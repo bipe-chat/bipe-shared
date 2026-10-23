@@ -361,12 +361,18 @@
         ]
       },
       "ios-new": {
-        "status": "planned",
-        "issue": 568
+        "status": "built",
+        "evidence": [
+          "bipe-app/ios/Bipe/People/CompanySealSheet.swift",
+          "bipe-app/ios/BipeKit/Sources/BipeKit/BipeCompanySeals.swift"
+        ]
       },
       "android-new": {
-        "status": "planned",
-        "issue": 568
+        "status": "built",
+        "evidence": [
+          "bipe-app/android/app/src/main/kotlin/chat/bipe/app/people/SafetyScreens.kt",
+          "bipe-app/android/libraries/bipe/src/main/kotlin/chat/bipe/shared/company/BipeCompanySeals.kt"
+        ]
       },
       "issue": 252
     },
@@ -517,12 +523,17 @@
         ]
       },
       "ios-new": {
-        "status": "planned",
-        "issue": 568
+        "status": "built",
+        "evidence": [
+          "bipe-app/ios/Bipe/People/ProfileLinkView.swift",
+          "bipe-app/ios/BipeKit/Sources/BipeKit/BipeProfileLink.swift"
+        ]
       },
       "android-new": {
-        "status": "planned",
-        "issue": 568
+        "status": "built",
+        "evidence": [
+          "bipe-app/android/app/src/main/kotlin/chat/bipe/app/people/OwnProfileScreens.kt"
+        ]
       },
       "issue": 43
     },
@@ -555,12 +566,19 @@
         ]
       },
       "ios-new": {
-        "status": "planned",
-        "issue": 568
+        "status": "built",
+        "evidence": [
+          "bipe-app/ios/Bipe/People/ProfileLinkOpenView.swift",
+          "bipe-app/ios/BipeKit/Sources/BipeKit/BipeHandleResolver.swift"
+        ]
       },
       "android-new": {
-        "status": "planned",
-        "issue": 568
+        "status": "built",
+        "evidence": [
+          "bipe-app/android/app/src/main/kotlin/chat/bipe/app/people/ContactsScreens.kt",
+          "bipe-app/android/libraries/bipe/src/main/kotlin/chat/bipe/shared/BipeHandleResolver.kt",
+          "bipe-app/android/app/src/main/AndroidManifest.xml"
+        ]
       },
       "issue": 299
     },
@@ -592,12 +610,18 @@
         ]
       },
       "ios-new": {
-        "status": "planned",
-        "issue": 568
+        "status": "built",
+        "evidence": [
+          "bipe-app/ios/Bipe/People/PublicProfileEditView.swift",
+          "bipe-app/ios/BipeKit/Sources/BipeKit/BipePublicProfile.swift"
+        ]
       },
       "android-new": {
-        "status": "planned",
-        "issue": 568
+        "status": "built",
+        "evidence": [
+          "bipe-app/android/app/src/main/kotlin/chat/bipe/app/people/OwnProfileScreens.kt",
+          "bipe-app/android/libraries/bipe/src/main/kotlin/chat/bipe/shared/BipeProfileRules.kt"
+        ]
       }
     },
     {
@@ -802,12 +826,18 @@
         ]
       },
       "ios-new": {
-        "status": "planned",
-        "issue": 568
+        "status": "built",
+        "evidence": [
+          "bipe-app/ios/Bipe/People/ContactsView.swift",
+          "bipe-app/ios/BipeKit/Sources/BipeKit/BipePhoneNumber.swift"
+        ]
       },
       "android-new": {
-        "status": "planned",
-        "issue": 568
+        "status": "built",
+        "evidence": [
+          "bipe-app/android/app/src/main/kotlin/chat/bipe/app/people/ContactsScreens.kt",
+          "bipe-app/android/libraries/bipe/src/main/kotlin/chat/bipe/shared/api/BipeApiPeople.kt"
+        ]
       },
       "issue": 162
     },

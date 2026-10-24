@@ -41,7 +41,7 @@
           "bipe-app/android/app/src/main/kotlin/chat/bipe/app/timeline/TimelineRowItem.kt"
         ]
       },
-      "issue": 43
+      "issue": 606
     },
     {
       "id": "requests",
@@ -86,7 +86,7 @@
           "bipe-app/android/app/src/main/kotlin/chat/bipe/app/chatlist/RequestNameWarning.kt"
         ]
       },
-      "issue": 43
+      "issue": 606
     },
     {
       "id": "money-pause",
@@ -155,7 +155,7 @@
           "bipe-app/android/app/src/main/kotlin/chat/bipe/app/signup/SignupScreens.kt"
         ]
       },
-      "issue": 43
+      "issue": 606
     },
     {
       "id": "first-run",
@@ -524,7 +524,7 @@
           "bipe-app/android/app/src/main/kotlin/chat/bipe/app/handle/HandlePick.kt"
         ]
       },
-      "issue": 43
+      "issue": 606
     },
     {
       "id": "profile-links",
@@ -568,7 +568,7 @@
           "bipe-app/android/app/src/main/kotlin/chat/bipe/app/people/OwnProfileScreens.kt"
         ]
       },
-      "issue": 43
+      "issue": 606
     },
     {
       "id": "profile-link-routing",
@@ -701,7 +701,7 @@
           "bipe-app/android/app/src/main/kotlin/chat/bipe/app/invites/InvitesModel.kt"
         ]
       },
-      "issue": 43
+      "issue": 606
     },
     {
       "id": "invite-note",
@@ -933,7 +933,7 @@
           "bipe-app/android/app/src/main/kotlin/chat/bipe/app/timeline/TimelineRowItem.kt"
         ]
       },
-      "issue": 43
+      "issue": 606
     },
     {
       "id": "e2ee-only-rooms",
@@ -1291,7 +1291,7 @@
           "bipe-app/android/app/src/main/kotlin/chat/bipe/app/polls/PollScreens.kt"
         ]
       },
-      "issue": 43
+      "issue": 606
     },
     {
       "id": "question-card",
@@ -1561,8 +1561,20 @@
         "status": "n/a",
         "reason": "Runs on the device only"
       },
-      "ios-new": "planned",
-      "android-new": "planned",
+      "ios-new": {
+        "status": "built",
+        "evidence": [
+          "bipe-app/ios/BipeKit/Sources/BipeKit/BipePhotoMatch.swift",
+          "bipe-app/ios/Bipe/ChatList/RequestNameWarning.swift"
+        ]
+      },
+      "android-new": {
+        "status": "built",
+        "evidence": [
+          "bipe-app/android/libraries/bipe/src/main/kotlin/chat/bipe/shared/BipePhotoMatch.kt",
+          "bipe-app/android/app/src/main/kotlin/chat/bipe/app/chatlist/ChatRequests.kt"
+        ]
+      },
       "issue": 143
     },
     {
@@ -2301,7 +2313,7 @@
       "android": "Centred square crop",
       "reason": "Cut-out needs ML Kit, not decided (#101)",
       "kind": "undecided",
-      "issue": 101
+      "issue": 606
     },
     {
       "area": "Sticker import",
@@ -2316,7 +2328,7 @@
       "android": "Fixed on",
       "reason": "Undecided (#102)",
       "kind": "undecided",
-      "issue": 102
+      "issue": 606
     },
     {
       "area": "Language fallback",
@@ -2324,7 +2336,7 @@
       "android": "Bipe strings pt-BR, Element strings en",
       "reason": "Undecided (#102)",
       "kind": "undecided",
-      "issue": 102
+      "issue": 606
     },
     {
       "area": "Handle lookup",
@@ -2332,7 +2344,7 @@
       "android": "Every user search",
       "reason": "Undecided (#102)",
       "kind": "undecided",
-      "issue": 102
+      "issue": 606
     },
     {
       "area": "Search",

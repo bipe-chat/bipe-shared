@@ -451,8 +451,22 @@
           "bipe-api/src/registry.ts"
         ]
       },
-      "ios-new": "planned",
-      "android-new": "planned",
+      "ios-new": {
+        "status": "built",
+        "evidence": [
+          "bipe-app/ios/BipeKit/Sources/BipeKit/BipeNameLookalikes.swift",
+          "bipe-app/ios/Bipe/ChatList/RequestNameWarning.swift",
+          "bipe-app/ios/Bipe/People/ProfileEditView.swift"
+        ]
+      },
+      "android-new": {
+        "status": "built",
+        "evidence": [
+          "bipe-app/android/libraries/bipe/src/main/kotlin/chat/bipe/shared/BipeNameLookalikes.kt",
+          "bipe-app/android/app/src/main/kotlin/chat/bipe/app/chatlist/ChatRequests.kt",
+          "bipe-app/android/app/src/main/kotlin/chat/bipe/app/people/OwnProfileScreens.kt"
+        ]
+      },
       "note": "NameNormalizer runs on both apps for reserved names and link hosts; no lookalike warning on user names"
     },
     {

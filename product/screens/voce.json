@@ -55,6 +55,9 @@
     },
     "openInvites": {
       "effect": "Opens the invites screen (a later spec)."
+    },
+    "openTrust": {
+      "effect": "Opens trust-profile from the trust card (spec trust-card)."
     }
   },
   "strings": [
@@ -75,7 +78,7 @@
   ],
   "notes": [
     "The header never shows the Matrix ID (ADR 0112).",
-    "The trust card (Perfil de confiança, ADR 0019) sits after Anotações; it is a later spec.",
+    "The trust card (Perfil de confiança, ADR 0019) sits after Anotações: spec trust-card, which opens trust-profile.",
     "Below the invite row comes settings-root (Configurações).",
     "The header and account rows load the actual Matrix avatar through the SDK media API. Without a photo use initials. Shape follows ADR 0132: company is a rounded square; personal/unknown is a circle. A profile name or CNPJ badge must not determine account type."
   ]

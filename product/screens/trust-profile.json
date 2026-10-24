@@ -1,0 +1,95 @@
+{
+  "id": "trust-profile",
+  "title": "Perfil de confiança ladder",
+  "flow": "voce",
+  "summary": "The full trust ladder of the current account (ADR 0019): every step with its name, what it proves and its status. It opens from trust-card. Only the account owner sees it.",
+  "state": {
+    "isCompany": {
+      "type": "bool",
+      "description": "Company account. Selects the company ladder."
+    },
+    "steps": {
+      "type": "list",
+      "of": {
+        "type": "TrustStep",
+        "description": "One step."
+      },
+      "description": "The same steps as trust-card, in order."
+    },
+    "missingProfileItems": {
+      "type": "list",
+      "of": {
+        "type": "enum",
+        "values": [
+          "displayName",
+          "handle",
+          "avatar"
+        ],
+        "description": "A missing part of step 2."
+      },
+      "description": "Empty when step 2 is done."
+    },
+    "completedCount": {
+      "type": "int",
+      "description": "Steps with status done."
+    },
+    "totalCount": {
+      "type": "int",
+      "description": "Number of steps."
+    }
+  },
+  "actions": {
+    "addName": {
+      "effect": "Opens profile-edit (name field)."
+    },
+    "addPhoto": {
+      "effect": "Opens profile-edit (photo)."
+    },
+    "chooseHandle": {
+      "effect": "Opens handle-pick."
+    }
+  },
+  "strings": [
+    "bipe_trust_title",
+    "bipe_trust_progress",
+    "bipe_trust_footer",
+    "bipe_trust_coming_soon",
+    "bipe_trust_step_done",
+    "bipe_trust_step_account",
+    "bipe_trust_step_account_body",
+    "bipe_trust_step_profile",
+    "bipe_trust_step_profile_body",
+    "bipe_trust_step_company_profile_body",
+    "bipe_trust_step_profile_add_name",
+    "bipe_trust_step_profile_add_handle",
+    "bipe_trust_step_profile_add_photo",
+    "bipe_trust_step_profile_add_company_name",
+    "bipe_trust_step_profile_add_logo",
+    "bipe_trust_step_email",
+    "bipe_trust_step_email_body",
+    "bipe_trust_step_pix",
+    "bipe_trust_step_pix_body",
+    "bipe_trust_step_govbr",
+    "bipe_trust_step_govbr_body",
+    "bipe_trust_step_cnpj",
+    "bipe_trust_step_cnpj_body",
+    "bipe_trust_step_proof",
+    "bipe_trust_step_proof_body",
+    "bipe_trust_step_domain",
+    "bipe_trust_step_domain_body"
+  ],
+  "sdk": [
+    "Client.displayName",
+    "Client.avatarUrl"
+  ],
+  "parity": [
+    "settings-structure"
+  ],
+  "notes": [
+    "Navigation title bipe_trust_title. A header with the progress bar and bipe_trust_progress, one row per step, then bipe_trust_footer.",
+    "Step row: number, title (bipe_trust_step_<id>), body (bipe_trust_step_<id>_body; profile on a company account uses bipe_trust_step_company_profile_body) and a status mark. done: a check icon; screen readers hear bipe_trust_step_done as the row value. todo: no mark; under the profile step, one action row per missingProfileItems entry. comingSoon: the text bipe_trust_coming_soon in secondary ink.",
+    "Never colour alone (trust-ui.md): every status has an icon or words. The check mark is not the Bipe seal.",
+    "The state is the same BipeTrustProfile value as trust-card; this screen reads it, it does not fetch on its own.",
+    "No step shows a CPF, a document or the verified name of another person (ADR 0019)."
+  ]
+}

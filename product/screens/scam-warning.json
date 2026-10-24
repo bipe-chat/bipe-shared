@@ -13,9 +13,13 @@
     }
   },
   "state": {
-    "warning": { "type": "ScamWarning", "description": "The card under the message. The message itself shows as usual." }
+    "warning": { "type": "ScamWarning", "description": "The card under the message. The message itself shows as usual." },
+    "pauseSecondsLeft": { "type": "int", "description": "Money pause (see notes): seconds left before Copiar and the message's links work again. 0 when there is no pause or it has ended." }
   },
-  "actions": {},
+  "actions": {
+    "startPause": { "effect": "When the card first shows on screen for a kind in BipeRegistries.scamMoneyPauseKinds, starts a countdown of scamMoneyPauseSeconds (5) for that message. It runs once per message per open of the chat." },
+    "tick": { "effect": "Lowers pauseSecondsLeft by one each second until 0." }
+  },
   "strings": [
     "bipe_scam_warning_title",
     "bipe_scam_warning_extortion",
@@ -29,20 +33,24 @@
     "bipe_scam_warning_bank_alert",
     "bipe_scam_warning_receipt",
     "bipe_scam_warning_new_number",
-    "bipe_scam_warning_urgency"
+    "bipe_scam_warning_urgency",
+    "bipe_pause_countdown"
   ],
   "sdk": [
     "EventTimelineItem",
     "MsgLikeKind",
     "MessageContent"
   ],
-  "parity": ["scam-alerts"],
+  "parity": ["scam-alerts", "money-pause"],
   "notes": [
     "Move, do not rewrite: BipeKit ScamDetector.swift and ScamWarning.swift (ScamDetector.warningKind(for:eventID:)), libraries/bipe ScamDetector.kt. The rules come from bipe-shared registries (scamWarningKindPriority, link and Pix patterns) and must match test-vectors/scam-warnings.json.",
     "Input: MessageContent.body of a text message (MsgLikeKind.Message) from another person. Own messages, deleted messages and undecryptable messages get no card. Image captions are checked when media lands (#561).",
     "The detector runs on the device. Nothing about the message or the warning leaves the phone. No analytics (plan section 2).",
     "An edit keeps the event ID: the check runs again on the new body (the BipeKit cache keys on the body too).",
     "Look: trust caution level from the design tokens (trust-ui.md): subtle caution background, caution border, a warning icon, title then the kind text. No red, no exclamation mark, no close button.",
-    "Screen readers read the card as one element: title, then the kind text."
+    "Screen readers read the card as one element: title, then the kind text.",
+    "Money pause (security.md rule 9, trust-ui.md Deliberate pause, bipe#594): while pauseSecondsLeft is above 0, message-actions copy is disabled and shows bipe_pause_countdown with the seconds left, and a tap on a link in that message opens nothing. The card shows bipe_pause_countdown under the kind text. At 0 everything works as usual. The pause never blocks permanently and never asks for a confirmation.",
+    "With reduced motion on, the countdown changes the number only, with no animation. Screen readers hear the countdown once at the start, not every second.",
+    "The kinds and seconds come only from BipeRegistries (scam-patterns.json moneyPauseKinds, moneyPauseSeconds). receipt, newNumber, urgency and pinRequest get the card without the pause: they hold nothing to copy or pay."
   ]
 }

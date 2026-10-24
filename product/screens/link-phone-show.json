@@ -1,0 +1,97 @@
+{
+  "id": "link-phone-show",
+  "title": "Move to a new phone: show the code on the old phone",
+  "flow": "devices",
+  "summary": "On the signed-in old phone, shows the MSC4108 QR code that a new phone scans to sign in to this account (ADR 0059: the old device shows, the new device scans). After the scan the user types on the old phone the 2-digit number that the new phone shows, then link-phone-approve opens.",
+  "state": {
+    "support": { "type": "LinkComputerSupport", "description": "The Bipe support gate of link-computer-scan: the server advertises org.matrix.msc4108 and this phone holds the hidden password. The code shows only when it is supported." },
+    "phase": {
+      "type": "enum",
+      "values": ["preparing", "showingCode", "enterCheckCode", "checking", "failed"],
+      "description": "preparing: GrantGeneratedQrLoginProgress.starting. showingCode: GrantGeneratedQrLoginProgress.qrReady; the QR code is on screen. enterCheckCode: GrantGeneratedQrLoginProgress.qrScanned; the new phone scanned the code and shows a 2-digit number that the user types here. checking: CheckCodeSender.send runs. failed: see error."
+    },
+    "qrBytes": { "type": "string", "optional": true, "description": "QrCodeData.toBytes of qrReady, drawn as a QR code (byte mode, error correction M or higher)." },
+    "canCopyCode": { "type": "bool", "description": "true only in Debug builds or on the iOS Simulator or Android emulator: shows bipe_app_link_phone_copy. false in Release builds on real phones." },
+    "checkCode": { "type": "string", "description": "The digits the user typed, at most 2." },
+    "error": {
+      "type": "string",
+      "optional": true,
+      "description": "String key of the failed phase: bipe_app_link_phone_expired, bipe_app_link_phone_insecure, bipe_app_link_phone_wrong_check_code, bipe_app_link_phone_needs_recovery_key, bipe_app_link_computer_stopped, bipe_error_network or bipe_error_generic."
+    }
+  },
+  "actions": {
+    "open": {
+      "effect": "From Você > Conectar outro aparelho (bipe_app_link_phone_action). Runs the support gate (never Client.isLoginWithQrCodeSupported, ADR 0118). supported: Client.newGrantLoginWithQrCodeHandler, then GrantLoginWithQrCodeHandler.generate with a GrantGeneratedQrLoginProgressListener; sets preparing. needsPin: shows bipe_app_link_phone_needs_pin. notSupported: shows bipe_app_link_phone_not_supported."
+    },
+    "progress": {
+      "params": { "update": { "type": "string", "description": "The GrantGeneratedQrLoginProgress case that onUpdate got." } },
+      "effect": "qrReady: keeps qrBytes and sets showingCode. qrScanned: keeps the CheckCodeSender, notes the time of the scan for link-phone-approve and sets enterCheckCode. waitingForAuth: keeps verificationUri and the ContinuationMessageSender and opens link-phone-approve. syncingSecrets and done arrive later, on link-phone-approve."
+    },
+    "copyCode": {
+      "effect": "Only when canCopyCode. Puts the base64 text of qrBytes (RFC 4648, with padding) on the clipboard and shows bipe_app_link_phone_copied. For the two-Simulator test: the Simulators share the Mac clipboard."
+    },
+    "editCheckCode": {
+      "params": { "text": { "type": "string", "description": "What the user typed." } },
+      "effect": "Keeps the ASCII digits, at most 2. At 2 digits, runs submitCheckCode."
+    },
+    "submitCheckCode": {
+      "effect": "CheckCodeSender.send with the 2 digits as a number (00 to 99); sets checking. A wrong number ends the flow on both phones (invalidCheckCode)."
+    },
+    "taskFailed": {
+      "params": { "reason": { "type": "string", "description": "The HumanQrGrantLoginError case that GrantLoginWithQrCodeHandler.generate threw." } },
+      "effect": "notFound and expired → bipe_app_link_phone_expired; connectionInsecure → bipe_app_link_phone_insecure; invalidCheckCode → bipe_app_link_phone_wrong_check_code; missingSecretsBackup → bipe_app_link_phone_needs_recovery_key; cancelled → bipe_app_link_computer_stopped; a network failure → bipe_error_network; anything else → bipe_error_generic. Sets failed."
+    },
+    "newCode": {
+      "effect": "From failed: drops the handler and runs open again for a new code."
+    },
+    "setUpRecoveryKey": {
+      "effect": "From failed with bipe_app_link_phone_needs_recovery_key: opens recovery-key-save."
+    },
+    "cancel": {
+      "effect": "Cancels the generate task (ContinuationMessageSender.cancel when one is held) and closes the flow. Nothing changes on the account."
+    }
+  },
+  "strings": [
+    "bipe_app_link_phone_action",
+    "bipe_app_link_phone_title",
+    "bipe_app_link_phone_body",
+    "bipe_app_link_phone_never_share",
+    "bipe_app_link_phone_preparing",
+    "bipe_app_link_phone_copy",
+    "bipe_app_link_phone_copied",
+    "bipe_app_link_phone_check_code_title",
+    "bipe_app_link_phone_check_code_body",
+    "bipe_app_link_phone_needs_pin",
+    "bipe_app_link_phone_not_supported",
+    "bipe_app_link_phone_error_title",
+    "bipe_app_link_phone_expired",
+    "bipe_app_link_phone_insecure",
+    "bipe_app_link_phone_wrong_check_code",
+    "bipe_app_link_phone_needs_recovery_key",
+    "bipe_app_link_phone_new_code",
+    "bipe_app_link_computer_stopped",
+    "bipe_app_recovery_key_create",
+    "bipe_error_network",
+    "bipe_error_generic",
+    "bipe_app_cancel"
+  ],
+  "sdk": [
+    "Client.newGrantLoginWithQrCodeHandler",
+    "GrantLoginWithQrCodeHandler.generate",
+    "GrantGeneratedQrLoginProgressListener.onUpdate",
+    "GrantGeneratedQrLoginProgress",
+    "QrCodeData.toBytes",
+    "CheckCodeSender.send",
+    "ContinuationMessageSender.cancel",
+    "HumanQrGrantLoginError"
+  ],
+  "parity": ["new-phone"],
+  "notes": [
+    "Direction (ADR 0059): the signed-in old phone shows the code and the new phone scans it. A signed-in phone never scans a code to let another phone in, so a person told 'scan my code' has nothing to approve. link-computer-scan is the web exception of ADR 0116 and stays in Settings > Linked devices.",
+    "Single entry point: only Você > Conectar outro aparelho opens this screen. The code is never sent, shared or saved; bipe_app_link_phone_never_share shows under it. The copy button exists only in Debug builds and on the Simulator or emulator, where no camera works (bipe-chat/bipe#608). iOS gate: #if targetEnvironment(simulator) || DEBUG. Android gate: BuildConfig.DEBUG or an emulator build (Build.FINGERPRINT generic, Build.HARDWARE goldfish or ranchu).",
+    "The check code goes the other way round from link-computer-scan: the new phone shows it (QrLoginProgress.establishingSecureChannel) and the user types it here. It proves that both phones share the channel. A wrong number stops the flow; the user makes a new code.",
+    "Time: the Synapse rendezvous session lives about 60 seconds (registries/accounts.json webLinkCooldownSeconds comment). The scan, the check code, the warning, the biometric check and the MAS page of link-phone-approve must fit in it. An expired session ends as notFound or expired; newCode makes a new code.",
+    "Keep the screen awake while the code shows (iOS isIdleTimerDisabled, Android FLAG_KEEP_SCREEN_ON) and draw the code on a white field with a quiet zone, in light and dark mode.",
+    "missingSecretsBackup: this phone has no recovery key and key backup, so the new phone cannot get the history. The user sets up the recovery key first (recovery-key-save)."
+  ]
+}

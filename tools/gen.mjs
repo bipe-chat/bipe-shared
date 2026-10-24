@@ -154,6 +154,8 @@ public enum BipeRegistries {
     public static let profileBioMaxLines = ${reg.profiles.bioMaxLines}
     public static let profilePhotoMaxBytes = ${reg.profiles.photoMaxBytes}
     public static let profilePhotoMaxPixels = ${reg.profiles.photoMaxPixels}
+    /// Security rule 8: marks that look like the verified seal; none may sit in a display name (variation selectors removed).
+    public static let sealLookalikeEmoji: [String] = ${swiftArray(reg.profiles.sealLookalikeEmoji.map(swiftString))}
 
     /// Invite codes: the code inside anything a user pastes (registries/invite-codes.json).
     public static let inviteCodePattern = ${swiftString(reg.inviteCodes.pattern)}
@@ -388,6 +390,8 @@ object BipeRegistries {
     const val PROFILE_BIO_MAX_LINES = ${reg.profiles.bioMaxLines}
     const val PROFILE_PHOTO_MAX_BYTES = ${reg.profiles.photoMaxBytes}
     const val PROFILE_PHOTO_MAX_PIXELS = ${reg.profiles.photoMaxPixels}
+    /** Security rule 8: marks that look like the verified seal; none may sit in a display name (variation selectors removed). */
+    val sealLookalikeEmoji: List<String> = ${kotlinList("listOf", reg.profiles.sealLookalikeEmoji.map(kotlinString))}
 
     /** Invite codes: the code inside anything a user pastes (registries/invite-codes.json). */
     const val INVITE_CODE_PATTERN = ${kotlinString(reg.inviteCodes.pattern)}

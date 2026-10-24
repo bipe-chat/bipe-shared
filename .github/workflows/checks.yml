@@ -3,7 +3,7 @@
 # bipe, bipe-ios, bipe-android, bipe-api, bipe-web, bipe-infra and bipe-app.
 # The parity step also reads issue state on bipe-chat/bipe with it (Issues: read).
 # Needs the secret BIPE_REGEN_TOKEN: a fine-grained token with read and write access to contents and
-# pull requests of bipe, bipe-ios, bipe-android, bipe-api and bipe-app. Without it, regen and land do nothing.
+# pull requests of bipe, bipe-api and bipe-app (the forks are frozen, ADR 0155). Without it, regen and land do nothing.
 # bipe-app (Bipe's own client, bipe-chat/bipe#550) is skipped with a warning while a token cannot reach it.
 #
 # Flow for a pull request on branch B:
@@ -77,7 +77,8 @@ jobs:
             esac
           }
           repos=""
-          for repo in bipe bipe-ios bipe-android bipe-api bipe-app; do
+          # ADR 0155: the forks (bipe-ios, bipe-android) are frozen and get no regenerated files.
+          for repo in bipe bipe-api bipe-app; do
             url="https://x-access-token:${TOKEN}@github.com/bipe-chat/${repo}.git"
             repos="$repos $repo"
             if git ls-remote --exit-code --heads "$url" "$BRANCH" > /dev/null; then
@@ -156,7 +157,7 @@ jobs:
             for _ in $(seq 60); do
               [ -n "$BRANCH" ] || break
               open=""
-              for repo in bipe-ios bipe-android bipe-api bipe-app; do
+              for repo in bipe-api bipe-app; do
                 open="${open}$(gh pr list -R "bipe-chat/${repo}" --head "$BRANCH" --base main --state open \
                   --json number --jq '.[] | " '"${repo}"'#\(.number)"')"
               done
@@ -222,7 +223,7 @@ jobs:
             echo "No merged pull request for ${GITHUB_SHA}."
             exit 0
           fi
-          for repo in bipe bipe-ios bipe-android bipe-api bipe-app; do
+          for repo in bipe bipe-api bipe-app; do
             # A feature pull request on branch B carries the regen commit when regen found it open.
             # bipe is private on the free plan: no auto-merge and no required checks, so land merges
             # there at once, and only the regen pull request.

@@ -1,4 +1,4 @@
-// Drift check (ADR 0031, rule 5): regenerates everything bipe-shared generates into a temporary
+// Drift check (ADR 0031, rule 5; the frozen forks are skipped, ADR 0155): regenerates everything bipe-shared generates into a temporary
 // folder and compares it with the generated files in the sibling repos (Swift, Kotlin, API copy,
 // app version files, bipe/docs/product.md) and with test-vectors/. bipe-ios takes MARKETING_VERSION
 // from the generated Tools/Bipe/Version.xcconfig; a MARKETING_VERSION left in project.yml must match it (ADR 0088).
@@ -28,26 +28,12 @@ const node = (script, ...scriptArgs) => execFileSync(process.execPath, [join(roo
 // so an extra file there is stale output.
 const TARGETS = [
   {
-    repo: "bipe-ios",
-    tmpBase: join(tmp, "ios/Sources/BipeKit"),
-    repoBase: "Components/BipeKit/Sources/BipeKit",
-    generatedOnly: ["Generated"],
-  },
-  {
-    repo: "bipe-android",
-    tmpBase: join(tmp, "android/src/main"),
-    repoBase: "libraries/bipe/src/main",
-    generatedOnly: ["kotlin/io/element/android/libraries/bipe/generated"],
-  },
-  {
     repo: "bipe-api",
     tmpBase: join(tmp, "api/src/generated"),
     repoBase: "src/generated",
     generatedOnly: ["."],
   },
   // App version name and build number (ADR 0088). The folders also hold hand-written files.
-  { repo: "bipe-ios", tmpBase: join(tmp, "ios-version"), repoBase: "Tools/Bipe", generatedOnly: [] },
-  { repo: "bipe-android", tmpBase: join(tmp, "android-version"), repoBase: "plugins/src/main/kotlin", generatedOnly: [] },
   { repo: "bipe-api", tmpBase: join(tmp, "api/test/fixtures"), repoBase: "test/fixtures", generatedOnly: [] },
   // Bipe's own client (bipe-chat/bipe#550).
   {
@@ -122,12 +108,8 @@ try {
 
   // project.yml is hand-edited (xcodegen input). Version.xcconfig is checked above; a MARKETING_VERSION
   // in project.yml overrides it, so one that is left there must match.
-  const ios = join(reposDir, "bipe-ios");
-  if (existsSync(ios)) {
-    const { version } = loadVersion(root);
-    const marketing = /^\s*MARKETING_VERSION:\s*"?([^"\s#]+)/m.exec(repoFile(ios, "project.yml") ?? "")?.[1];
-    if (marketing !== undefined && marketing !== version) problems.push(`bipe-ios: project.yml MARKETING_VERSION is ${marketing}, product/version.json says ${version} (remove it from project.yml, Version.xcconfig sets it)`);
-  }
+  // ADR 0155: the forks are frozen; their generated files and version are no longer checked.
+
 
   // bipe/docs/product.md is generated from product/.
   const umbrella = join(reposDir, "bipe");

@@ -820,9 +820,14 @@
         "status": "n/a",
         "reason": "Clipboard and install referrer are on the device"
       },
-      "ios-new": "planned",
+      "ios-new": {
+        "status": "built",
+        "evidence": [
+          "bipe-app/ios/Bipe/Signup/SignupFlowModel.swift"
+        ]
+      },
       "android-new": "planned",
-      "issue": 197
+      "issue": 599
     },
     {
       "id": "phone-discovery",

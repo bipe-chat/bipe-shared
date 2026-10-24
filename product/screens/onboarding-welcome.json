@@ -40,6 +40,9 @@
     "primary": {
       "effect": "Follows the primary button of the variant: invited and open go to signup-name with the invite (if any); inviteOnly goes to signup-invite-code. A pending invite is checked again with GET /v1/invites/{code} first (bipe-chat/bipe#460): valid false goes to signup-invite-code with bipe_invite_no_longer_valid under the field; no network keeps the invite and goes on, as signup-create checks it again."
     },
+    "learnMore": {
+      "effect": "Opens the public site home page in the in-app browser (SFSafariViewController on iOS, Custom Tabs on Android): PUBLIC_SITE_URL plus registries/legal.json homePath, or enHomePath on an English device. The sign-up state stays as it was."
+    },
     "haveAccount": {
       "effect": "Opens the way back into an existing account (recovery-start, bipe-chat/bipe#555)."
     }
@@ -51,6 +54,7 @@
     "bipe_onboarding_join_with_invite",
     "bipe_onboarding_have_invite",
     "bipe_onboarding_have_account",
+    "bipe_onboarding_learn_more",
     "bipe_signup_title",
     "bipe_onboarding_paste_invite_hint",
     "bipe_onboarding_paste_invite",
@@ -61,7 +65,7 @@
   "notes": [
     "Each pair of invitePending and inviteRequired matches exactly one start variant in registries/onboarding.json. The generated onboarding code (gen.mjs) gives the title and buttons; the screen never hard-codes them.",
     "No points list: the welcome line and the title say what Bipe is. The scam check, Brazil and no-ads points belong to the store listing and the site (product/appstore.md), not to this screen. The bipe_onboarding_point_* strings stay for those surfaces.",
-    "Layout: a full-bleed açaí cover with the Bipe mark, the wordmark, the welcome line and the title; the buttons sit below it, or beside it in a wide window. The cover is not an inset card.",
+    "Layout: a full-bleed açaí cover with the Bipe mark, the wordmark, the welcome line and the title; the buttons sit below it, or beside it in a wide window. The cover is not an inset card. A text button under the variant buttons runs learnMore.",
     "bipe_onboarding_invited_by takes the inviter's handle with @ in front. An invite without a handle, or not valid, shows the open or inviteOnly variant and keeps the code for signup-invite-code.",
     "The clipboard is read only after a tap on the paste row, never on launch (iOS shows a paste notice).",
     "The screen talks only to bipe-api (no auth). The Matrix client does not exist yet. Bipe logic: BipeAPIClient.signupConfig and invitePreview, BipeInviteLink (iOS); BipeApiClient, BipeStartScreenInfo (Android).",

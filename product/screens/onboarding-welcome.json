@@ -2,7 +2,7 @@
   "id": "onboarding-welcome",
   "title": "Welcome",
   "flow": "signup",
-  "summary": "The first screen when the phone has no Bipe account. It says what Bipe is and offers one filled button that starts sign-up, plus a row for people who already have an account. The button depends on the invite state (registries/onboarding.json start).",
+  "summary": "The first screen when the phone has no Bipe account. A short cover says what Bipe is and offers one filled button that starts sign-up, plus a row for people who already have an account. The button depends on the invite state (registries/onboarding.json start).",
   "types": {
     "PendingInvite": {
       "code": { "type": "string", "description": "The invite code, normalised (BipeInviteLink.normalizedCode on iOS). Never shown in full." },
@@ -47,9 +47,6 @@
   "strings": [
     "bipe_onboarding_welcome",
     "bipe_onboarding_title",
-    "bipe_onboarding_point_scam",
-    "bipe_onboarding_point_brazil",
-    "bipe_onboarding_point_no_ads",
     "bipe_onboarding_invited_by",
     "bipe_onboarding_join_with_invite",
     "bipe_onboarding_have_invite",
@@ -63,7 +60,8 @@
   "parity": ["first-run", "onboarding-welcome", "invites", "deferred-invite", "phone-account"],
   "notes": [
     "Each pair of invitePending and inviteRequired matches exactly one start variant in registries/onboarding.json. The generated onboarding code (gen.mjs) gives the title and buttons; the screen never hard-codes them.",
-    "The points list keeps the order of linguagem.md section 3: scam check, Brazil, no ads.",
+    "No points list: the welcome line and the title say what Bipe is. The scam check, Brazil and no-ads points belong to the store listing and the site (product/appstore.md), not to this screen. The bipe_onboarding_point_* strings stay for those surfaces.",
+    "Layout: a full-bleed açaí cover with the Bipe mark, the wordmark, the welcome line and the title; the buttons sit below it, or beside it in a wide window. The cover is not an inset card.",
     "bipe_onboarding_invited_by takes the inviter's handle with @ in front. An invite without a handle, or not valid, shows the open or inviteOnly variant and keeps the code for signup-invite-code.",
     "The clipboard is read only after a tap on the paste row, never on launch (iOS shows a paste notice).",
     "The screen talks only to bipe-api (no auth). The Matrix client does not exist yet. Bipe logic: BipeAPIClient.signupConfig and invitePreview, BipeInviteLink (iOS); BipeApiClient, BipeStartScreenInfo (Android).",

@@ -1429,8 +1429,22 @@
         "status": "n/a",
         "reason": "No server change (ADR 0086)"
       },
-      "ios-new": "planned",
-      "android-new": "planned",
+      "ios-new": {
+        "status": "built",
+        "evidence": [
+          "bipe-app/ios/Bipe/Tabs/AppTabsModel.swift",
+          "bipe-app/ios/Bipe/Tabs/AccountMenu.swift",
+          "bipe-app/ios/Bipe/Account/AccountStartModel.swift"
+        ]
+      },
+      "android-new": {
+        "status": "built",
+        "evidence": [
+          "bipe-app/android/app/src/main/kotlin/chat/bipe/app/tabs/AppTabsModel.kt",
+          "bipe-app/android/app/src/main/kotlin/chat/bipe/app/tabs/AccountMenu.kt",
+          "bipe-app/android/app/src/main/kotlin/chat/bipe/app/account/AccountStartModel.kt"
+        ]
+      },
       "issue": 265
     },
     {
@@ -1699,8 +1713,14 @@
         "status": "n/a",
         "reason": "No server part"
       },
-      "ios-new": "planned",
-      "android-new": "planned",
+      "ios-new": {
+        "status": "n/a",
+        "reason": "Bipe Next has no Element code or screens (ADR 0143); its encryption screens are Bipe's own"
+      },
+      "android-new": {
+        "status": "n/a",
+        "reason": "Bipe Next has no Element code or screens (ADR 0143); its encryption screens are Bipe's own"
+      },
       "issue": 201
     },
     {

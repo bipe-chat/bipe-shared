@@ -56,6 +56,9 @@
     "openInvites": {
       "effect": "Opens the invites screen (a later spec)."
     },
+    "openLinkPhone": {
+      "effect": "Opens link-phone-show (bipe_app_link_phone_action): the code that a new phone scans to move the account (ADR 0059). The only way into that flow."
+    },
     "openTrust": {
       "effect": "Opens trust-profile from the trust card (spec trust-card)."
     }
@@ -67,7 +70,8 @@
     "bipe_app_account_switcher_title",
     "bipe_self_chat_title",
     "bipe_self_chat_subtitle",
-    "bipe_invites_title"
+    "bipe_invites_title",
+    "bipe_app_link_phone_action"
   ],
   "sdk": [
     "Client.displayName",

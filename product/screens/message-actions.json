@@ -82,7 +82,8 @@
     "bipe_app_retry",
     "bipe_app_message_action_delete",
     "bipe_app_message_action_report",
-    "bipe_app_message_action_more_reactions"
+    "bipe_app_message_action_more_reactions",
+    "bipe_pause_countdown"
   ],
   "sdk": [
     "EventTimelineItem",
@@ -90,7 +91,7 @@
     "MsgLikeKind",
     "MessageContent"
   ],
-  "parity": [],
+  "parity": ["money-pause"],
   "notes": [
     "MZ explicitly requested SF Symbols in iOS context-menu options on 23 October 2026. Native SwiftUI Label(systemImage:) supplies message-option and reaction-picker icons; Android keeps its current icon system. Action availability and permissions do not change.",
     "reply: canReply and the message is sent. edit: canEdit. copy: text messages only. retry: own message with send state failed. delete: canDelete, or an own message not sent yet. report: messages of other people that are sent.",
@@ -98,6 +99,7 @@
     "Not in this sheet (ADR 0141 and plan section 4): threads, pin, copy link to the message, forward, view source. Forward and media save come with #561.",
     "The sheet shows the message on top, so the person sees what they act on. The haptic follows ADR 0134 (registries haptics, selection).",
     "MZ explicitly requested long press only on 23 October 2026: native iOS contextMenu and Android DropdownMenu open from a normal long press, with no visible overflow button (bipe#589). Labelled accessibility actions keep the same commands available to VoiceOver and TalkBack. Do not attach a second long-press recognizer that competes with the native menu. Keep scrolling, swipe-to-reply and media/reply taps.",
-    "Every command resolves the current row and checks current permissions again at dispatch. A removed, deleted, non-message or no-longer-authorised target cannot dispatch an old command. Menus belong to the timeline model of one immutable account session. New incoming rows do not change the target."
+    "Every command resolves the current row and checks current permissions again at dispatch. A removed, deleted, non-message or no-longer-authorised target cannot dispatch an old command. Menus belong to the timeline model of one immutable account session. New incoming rows do not change the target.",
+    "copy on a message with a running money pause (scam-warning pauseSecondsLeft above 0) is shown disabled with bipe_pause_countdown as its label, and comes back as Copiar at 0 (bipe#594)."
   ]
 }

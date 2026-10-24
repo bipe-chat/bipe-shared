@@ -137,6 +137,10 @@ public enum BipeRegistries {
     /// Scam warning kind raw values, most actionable first. The first kind whose rule applies wins.
     public static let scamWarningKindPriority: [String] = ${swiftArray(reg.scam.warningKindPriority.map(swiftString))}
 
+    /// The money pause (security.md rule 9, trust-ui.md): copy and links stay off this many seconds on these kinds.
+    public static let scamMoneyPauseSeconds = ${reg.scam.moneyPauseSeconds}
+    public static let scamMoneyPauseKinds: Set<String> = ${swiftArray(reg.scam.moneyPauseKinds.map(swiftString))}
+
     /// Username (handle) rules. The server is the authority; clients check early for feedback.
     public static let handleMinLength = ${reg.handles.minLength}
     public static let handleMaxLength = ${reg.handles.maxLength}
@@ -369,6 +373,10 @@ object BipeRegistries {
 
     /** Scam warning kind ids, most actionable first. The first kind whose rule applies wins. */
     val scamWarningKindPriority: List<String> = ${kotlinList("listOf", reg.scam.warningKindPriority.map(kotlinString))}
+
+    /** The money pause (security.md rule 9, trust-ui.md): copy and links stay off this many seconds on these kinds. */
+    const val SCAM_MONEY_PAUSE_SECONDS = ${reg.scam.moneyPauseSeconds}
+    val scamMoneyPauseKinds: Set<String> = ${kotlinList("setOf", reg.scam.moneyPauseKinds.map(kotlinString))}
 
     /** Username (handle) rules. The server is the authority; clients check early for feedback. */
     const val HANDLE_MIN_LENGTH = ${reg.handles.minLength}

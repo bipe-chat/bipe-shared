@@ -8,8 +8,8 @@
     "avatarUrl": { "type": "url", "optional": true, "description": "Client.avatarUrl, or a local file URL of a newly picked photo." },
     "nameProblem": {
       "type": "enum",
-      "values": ["none", "empty", "tooLong", "reserved"],
-      "description": "empty: bipe_public_profile_name_empty. tooLong: bipe_public_profile_name_too_long with nameMaxLength. reserved: bipe_app_profile_name_reserved. Save is off unless none."
+      "values": ["none", "empty", "tooLong", "reserved", "lookalikeEmoji"],
+      "description": "empty: bipe_public_profile_name_empty. tooLong: bipe_public_profile_name_too_long with nameMaxLength. reserved: bipe_app_profile_name_reserved. lookalikeEmoji: bipe_warning_name_lookalike_emoji (security rule 8). Save is off unless none."
     },
     "phase": {
       "type": "enum",
@@ -39,6 +39,7 @@
     "bipe_public_profile_name_empty",
     "bipe_public_profile_name_too_long",
     "bipe_app_profile_name_reserved",
+    "bipe_warning_name_lookalike_emoji",
     "bipe_company_name",
     "bipe_app_save",
     "bipe_app_save_error",
@@ -53,12 +54,13 @@
     "Client.removeAvatar",
     "Client.subscribeToOwnProfile"
   ],
-  "parity": ["reserved-names", "settings-structure"],
+  "parity": ["reserved-names", "settings-structure", "lookalikes"],
   "notes": [
     "Opens from the namePhoto row of Seu perfil (settings-group profile).",
     "Name rules: trimmed; not empty; at most nameMaxLength of registries/profiles.json; not a reserved name of registries/reserved-names.json after normalize() with the homoglyph map (exact match). Reference: profileProblem (name_empty, name_too_long, name_reserved) and normalize in tools/lib/registries.mjs; cases in test-vectors/normalization.json. Bipe logic: BipePublicProfileRules.profileProblem and NameNormalizer (BipeKit); BipePublicProfile.kt and NameNormalizer.kt (libraries/bipe).",
     "Matrix has no server check for reserved display names. The app check stops honest mistakes; other people's apps also show bipe_warning_reserved_name next to an unverified reserved name (person-profile).",
     "Photo: the app crops it square and re-encodes it as JPEG before upload. Client.subscribeToOwnProfile keeps the screen right when another device changes the profile.",
-    "A company account (ADR 0132) edits the company name here too: the same fields, with bipe_company_name as the field label. The type comes from GET /v1/accounts/{userId}/type."
+    "A company account (ADR 0132) edits the company name here too: the same fields, with bipe_company_name as the field label. The type comes from GET /v1/accounts/{userId}/type.",
+    "lookalikeEmoji (bipe#595): the name holds an entry of registries/profiles.json sealLookalikeEmoji, compared after removing U+FE0E and U+FE0F. Reference: sealLookalike in tools/lib/registries.mjs. Checked after reserved. Only the verified seal may sit beside a name; the check runs on the phone because Matrix has no server check for display names."
   ]
 }

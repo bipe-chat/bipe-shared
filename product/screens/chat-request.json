@@ -36,6 +36,11 @@
       "type": "bool",
       "description": "true after a failed action. Shows bipe_error_generic."
     },
+    "contactCollision": {
+      "type": "string",
+      "optional": true,
+      "description": "The name of the user's contact whose name this person's display name copies (security rule 8). Shows bipe_warning_not_your_contact with it."
+    },
     "nameWarning": {
       "type": "enum",
       "values": [
@@ -92,7 +97,8 @@
     "bipe_warning_nickname_confirm_title",
     "bipe_warning_nickname_confirm_body",
     "bipe_action_nickname_confirm_yes",
-    "bipe_action_nickname_confirm_unsure"
+    "bipe_action_nickname_confirm_unsure",
+    "bipe_warning_not_your_contact"
   ],
   "sdk": [
     "Room.inviter",
@@ -102,11 +108,9 @@
     "Room.reportRoom",
     "RoomInfo"
   ],
-  "parity": [
-    "requests",
+  "parity": ["requests",
     "verified-badge",
-    "family-check"
-  ],
+    "family-check", "lookalikes"],
   "notes": [
     "No message text before accept: a Matrix invite carries no messages. The screen shows the person, not their first message.",
     "Trust block, in order: the verified name (bipe_badge_verified_name) or, for an unverified account, bipe_banner_unverified_title, bipe_banner_unverified_body with accountAge, and bipe_request_unverified_body. An external account shows bipe_banner_external. Move, do not rewrite: BipeKit BipeTrustProfile.swift, BadgeVerifier.swift, NameNormalizer.swift; libraries/bipe BipeTrustProfile.kt, BadgeVerifier.kt, NameNormalizer.kt.",
@@ -116,6 +120,7 @@
     "Decline uses a plain leave, so the inviter can ask again later. Decline and block adds the ignore; the server then drops new invites from that person.",
     "Report: Room.reportRoom with no reason text, then leave. bipe_dm_decline_report_description says where it goes.",
     "Accept, decline and decline and block work offline-first: the request leaves the box at once; a failure brings it back with bipe_error_generic.",
-    "accountAge and personal verified-name lifecycle facts are optional and require an authenticated public source. Omit unavailable facts; never derive an age from an invite timestamp or treat a profile name as verified. Company names may use a company seal that verifies against the inviter master key."
+    "accountAge and personal verified-name lifecycle facts are optional and require an authenticated public source. Omit unavailable facts; never derive an age from an invite timestamp or treat a profile name as verified. Company names may use a company seal that verifies against the inviter master key.",
+    "contactCollision (bipe#595, security rule 8): the inviter's display name equals, after normalize() with the homoglyph map, the name of a contact: a person with a joined DM, or an address-book name already matched to a Bipe account with permission. Reference: contactCollision in tools/lib/registries.mjs. Caution treatment (trust-ui.md), under the trust block, above the actions. A verified name that matches is not a collision: the seal already shows who it is. Names stay in memory per account; nothing leaves the phone."
   ]
 }

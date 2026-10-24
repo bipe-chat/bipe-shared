@@ -101,8 +101,20 @@
         "status": "n/a",
         "reason": "Runs on the device only"
       },
-      "ios-new": "planned",
-      "android-new": "planned"
+      "ios-new": {
+        "status": "built",
+        "evidence": [
+          "bipe-app/ios/BipeKit/Sources/BipeKit/BipeMoneyPause.swift",
+          "bipe-app/ios/Bipe/Timeline/TimelineRowView.swift"
+        ]
+      },
+      "android-new": {
+        "status": "built",
+        "evidence": [
+          "bipe-app/android/libraries/bipe/src/main/kotlin/chat/bipe/shared/BipeMoneyPause.kt",
+          "bipe-app/android/app/src/main/kotlin/chat/bipe/app/timeline/TimelineRowItem.kt"
+        ]
+      }
     },
     {
       "id": "no-sms",

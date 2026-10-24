@@ -1,0 +1,48 @@
+{
+  "id": "trust-card",
+  "title": "Perfil de confiança card on the Você tab",
+  "flow": "voce",
+  "summary": "The private trust ladder card on the Você tab, after Anotações (ADR 0112, ADR 0019). It shows how many steps the current account has done and the next things to do. When every live step is done it collapses to one row.",
+  "types": {
+    "TrustStep": {
+      "id": { "type": "enum", "values": ["account", "profile", "email", "pix", "govbr", "cnpj", "proof", "domain"], "description": "The step id, the same on both platforms (BipeTrustProfile.StepID)." },
+      "status": { "type": "enum", "values": ["done", "todo", "comingSoon"], "description": "done; todo when the user can act on it now; comingSoon when the step does not ship yet." }
+    }
+  },
+  "state": {
+    "isCompany": { "type": "bool", "description": "Company account (ADR 0087). Selects the company ladder." },
+    "steps": { "type": "list", "of": { "type": "TrustStep", "description": "One step." }, "description": "The ladder in order: account, profile, email, pix, govbr for a person; account, profile, cnpj, proof, domain for a company." },
+    "missingProfileItems": { "type": "list", "of": { "type": "enum", "values": ["displayName", "handle", "avatar"], "description": "A missing part of step 2." }, "description": "Empty when step 2 is done. In this order." },
+    "completedCount": { "type": "int", "description": "Steps with status done." },
+    "totalCount": { "type": "int", "description": "Number of steps (5)." },
+    "collapsed": { "type": "bool", "description": "true when no step has status todo (liveStepsDone)." }
+  },
+  "actions": {
+    "appear": { "effect": "Builds the ladder at once from the Matrix profile (display name, avatar) and the cached @handle, then fills company steps when GET /v1/me/business answers. A failed or offline call keeps the steps as comingSoon; it never shows an error on the card." },
+    "addName": { "effect": "Opens profile-edit (name field)." },
+    "addPhoto": { "effect": "Opens profile-edit (photo)." },
+    "chooseHandle": { "effect": "Opens handle-pick." },
+    "openLadder": { "effect": "Opens trust-profile. A tap on the card title row, or on the collapsed row." }
+  },
+  "strings": [
+    "bipe_trust_title",
+    "bipe_trust_progress",
+    "bipe_trust_footer",
+    "bipe_trust_step_profile_add_name",
+    "bipe_trust_step_profile_add_handle",
+    "bipe_trust_step_profile_add_photo",
+    "bipe_trust_step_profile_add_company_name",
+    "bipe_trust_step_profile_add_logo"
+  ],
+  "sdk": ["Client.displayName", "Client.avatarUrl"],
+  "parity": ["settings-structure"],
+  "notes": [
+    "Only the account owner sees the card (trust-levels.md rule 1). Nobody else sees a percentage or the steps.",
+    "Expanded card: title row (bipe_trust_title, a chevron), a progress bar of completedCount / totalCount, the line bipe_trust_progress with completedCount and totalCount, one action row per missingProfileItems entry, then bipe_trust_footer. A company account uses bipe_trust_step_profile_add_company_name and bipe_trust_step_profile_add_logo for displayName and avatar.",
+    "Collapsed card (collapsed true): one row with bipe_trust_title and bipe_trust_progress as subtitle. It opens trust-profile.",
+    "Step rules come from BipeTrustProfile (BipeKit) and BipeTrustProfile.kt (libraries/bipe); the apps never compute a step another way. Steps 1 and 2 are computed on the phone. Steps 3 to 5 come only from the Bipe API (trust-levels.md rule 4).",
+    "email and pix are comingSoon until their flows ship (email service; Efí, ADR 0019). govbr is comingSoon until the gov.br flow ships in bipe-app (bipe#544, legal review bipe#17); done when the account's own badge level is govbr. A company's cnpj, proof and domain follow GET /v1/me/business (trust-levels.md, company ladder); not done shows comingSoon until the claim screen ships (bipe#249).",
+    "Progress uses plum (accent) as a progress colour only. It is never a seal and never shows the word verificado (trust-ui.md: colour alone never means verified).",
+    "Each account has its own card. A switch of account rebuilds it from that account's profile; nothing is cached across accounts."
+  ]
+}

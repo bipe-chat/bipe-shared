@@ -141,6 +141,11 @@ public enum BipeRegistries {
     public static let scamMoneyPauseSeconds = ${reg.scam.moneyPauseSeconds}
     public static let scamMoneyPauseKinds: Set<String> = ${swiftArray(reg.scam.moneyPauseKinds.map(swiftString))}
 
+    /// Photo match (ADR 0049, registries/photo-match.json): dHash grid size and the largest Hamming distance that matches.
+    public static let photoMatchWidth = ${reg.photoMatch.width}
+    public static let photoMatchHeight = ${reg.photoMatch.height}
+    public static let photoMatchMaxDistance = ${reg.photoMatch.maxDistance}
+
     /// Username (handle) rules. The server is the authority; clients check early for feedback.
     public static let handleMinLength = ${reg.handles.minLength}
     public static let handleMaxLength = ${reg.handles.maxLength}
@@ -379,6 +384,11 @@ object BipeRegistries {
     /** The money pause (security.md rule 9, trust-ui.md): copy and links stay off this many seconds on these kinds. */
     const val SCAM_MONEY_PAUSE_SECONDS = ${reg.scam.moneyPauseSeconds}
     val scamMoneyPauseKinds: Set<String> = ${kotlinList("setOf", reg.scam.moneyPauseKinds.map(kotlinString))}
+
+    /** Photo match (ADR 0049, registries/photo-match.json): dHash grid size and the largest Hamming distance that matches. */
+    const val PHOTO_MATCH_WIDTH = ${reg.photoMatch.width}
+    const val PHOTO_MATCH_HEIGHT = ${reg.photoMatch.height}
+    const val PHOTO_MATCH_MAX_DISTANCE = ${reg.photoMatch.maxDistance}
 
     /** Username (handle) rules. The server is the authority; clients check early for feedback. */
     const val HANDLE_MIN_LENGTH = ${reg.handles.minLength}

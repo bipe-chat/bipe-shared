@@ -41,6 +41,11 @@
       "optional": true,
       "description": "The name of the user's contact whose name this person's display name copies (security rule 8). Shows bipe_warning_not_your_contact with it."
     },
+    "photoMatch": {
+      "type": "string",
+      "optional": true,
+      "description": "The name of the user's contact whose avatar matches this person's avatar (ADR 0049, photo match). Shows bipe_warning_photo_match with it."
+    },
     "nameWarning": {
       "type": "enum",
       "values": [
@@ -98,7 +103,8 @@
     "bipe_warning_nickname_confirm_body",
     "bipe_action_nickname_confirm_yes",
     "bipe_action_nickname_confirm_unsure",
-    "bipe_warning_not_your_contact"
+    "bipe_warning_not_your_contact",
+    "bipe_warning_photo_match"
   ],
   "sdk": [
     "Room.inviter",
@@ -110,7 +116,7 @@
   ],
   "parity": ["requests",
     "verified-badge",
-    "family-check", "lookalikes"],
+    "family-check", "lookalikes", "photo-match"],
   "notes": [
     "No message text before accept: a Matrix invite carries no messages. The screen shows the person, not their first message.",
     "Trust block, in order: the verified name (bipe_badge_verified_name) or, for an unverified account, bipe_banner_unverified_title, bipe_banner_unverified_body with accountAge, and bipe_request_unverified_body. An external account shows bipe_banner_external. Move, do not rewrite: BipeKit BipeTrustProfile.swift, BadgeVerifier.swift, NameNormalizer.swift; libraries/bipe BipeTrustProfile.kt, BadgeVerifier.kt, NameNormalizer.kt.",
@@ -121,6 +127,7 @@
     "Report: Room.reportRoom with no reason text, then leave. bipe_dm_decline_report_description says where it goes.",
     "Accept, decline and decline and block work offline-first: the request leaves the box at once; a failure brings it back with bipe_error_generic.",
     "accountAge and personal verified-name lifecycle facts are optional and require an authenticated public source. Omit unavailable facts; never derive an age from an invite timestamp or treat a profile name as verified. Company names may use a company seal that verifies against the inviter master key.",
-    "contactCollision (bipe#595, security rule 8): the inviter's display name equals, after normalize() with the homoglyph map, the name of a contact: a person with a joined DM, or an address-book name already matched to a Bipe account with permission. Reference: contactCollision in tools/lib/registries.mjs. Caution treatment (trust-ui.md), under the trust block, above the actions. A verified name that matches is not a collision: the seal already shows who it is. Names stay in memory per account; nothing leaves the phone."
+    "contactCollision (bipe#595, security rule 8): the inviter's display name equals, after normalize() with the homoglyph map, the name of a contact: a person with a joined DM, or an address-book name already matched to a Bipe account with permission. Reference: contactCollision in tools/lib/registries.mjs. Caution treatment (trust-ui.md), under the trust block, above the actions. A verified name that matches is not a collision: the seal already shows who it is. Names stay in memory per account; nothing leaves the phone.",
+    "photoMatch (bipe#597, ADR 0049, security rule 15): the inviter is unverified and their avatar's dHash (registries/photo-match.json) is within maxDistance of a contact's avatar hash. Contacts as for contactCollision. Hashes come from the avatar thumbnails the app already loads, kept in memory per account; no image or hash leaves the phone. Reference: photoHash and photoMatches in tools/lib/registries.mjs; cases in test-vectors/photo-match.json. Same caution card style as contactCollision; when both apply, both lines show. A verified inviter shows the seal instead."
   ]
 }

@@ -46,6 +46,7 @@
     }
   },
   "strings": [
+    "bipe_account_company_owner",
     "bipe_settings_profile",
     "bipe_settings_privacy",
     "bipe_settings_account",
@@ -84,6 +85,7 @@
     "Row targets, help: support → support-open, docs, terms and privacy → url, reportProblem → problem-report, licenses → open-source-licences. The section footer is bipe_about_steward (ADR 0040), then bipe_help_version with version.",
     "Help links (parity help-links): every 'learn more' link in the app goes to a bipe.chat page from registries/settings.json urls or registries/legal.json, never to element.io or matrix.org. Bipe logic: AttributedString+BipeLink.swift and BipeLegalLinks.swift (BipeKit); BipeLinks.kt (libraries/bipe).",
     "Haptics (parity haptics): the settings screens play only the uses in registries/haptics.json: tap for copy (the device ID), success for pin_set and app_unlock, error for pin_wrong, through the generated BipeHaptics. A new use needs a line in the registry first. The app never calls a platform feedback API directly, and has no haptics row: the system setting wins (design/haptics.md rule 6, ADR 0134).",
-    "Notifications has screen element in the registry; in Bipe's own client it is the notifications settings spec of bipe-chat/bipe#565, not this screen."
+    "Notifications has screen element in the registry; in Bipe's own client it is the notifications settings spec of bipe-chat/bipe#565, not this screen.",
+    "A company account with an owner on this phone (account-switcher notes, bipe-chat/bipe#444) shows bipe_account_company_owner with the owner's name at the top of the account group. Only on this phone."
   ]
 }

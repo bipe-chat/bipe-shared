@@ -36,7 +36,8 @@
   },
   "strings": [
     "bipe_app_account_switcher_title",
-    "bipe_app_account_new"
+    "bipe_app_account_new",
+    "bipe_account_company_owner"
   ],
   "sdk": [],
   "parity": [
@@ -46,6 +47,7 @@
     "Each row shows the avatar, the display name and the @handle; never the Matrix ID.",
     "An account with unread messages shows a dot in its row.",
     "Company accounts do not count against the cap (ADR 0086).",
-    "Avatars show the actual account photo or initials; company accounts use rounded squares and personal/unknown accounts circles (ADR 0132). Selecting the current account dismisses the menu without a switch haptic."
+    "Avatars show the actual account photo or initials; company accounts use rounded squares and personal/unknown accounts circles (ADR 0132). Selecting the current account dismisses the menu without a switch haptic.",
+    "Company accounts made on this phone show under their owner (bipe-chat/bipe#444): each owner with its company accounts is one group, in the order of the owner; a company without an owner on this phone keeps its own place. A company row shows bipe_account_company_owner with ownerName under its name. The owner is a phone-side grouping only (AccountList, next to the account order): no API field and no other person sees it (ADR 0138 rules 2, 5 and 7)."
   ]
 }

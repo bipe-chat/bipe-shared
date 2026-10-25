@@ -5,22 +5,56 @@
   "summary": "The Nova conta window (MZ, 19 October 2026, bipe-chat/bipe#445): one sheet for every new account on a phone that already has one. A personal or company sign-up takes its invite from the account on screen, so the invite code step never shows.",
   "types": {
     "SignupStart": {
-      "inviteId": { "type": "string", "description": "id of the invite POST /v1/me/invites made for this sign-up. A cancel before signup-create revokes it." },
-      "code": { "type": "string", "description": "The invite code. Never shown and never logged." },
-      "accountType": { "type": "enum", "values": ["personal", "company"], "description": "account_type of POST /v1/signup (ADR 0087)." }
+      "inviteId": {
+        "type": "string",
+        "description": "id of the invite POST /v1/me/invites made for this sign-up. A cancel before signup-create revokes it."
+      },
+      "code": {
+        "type": "string",
+        "description": "The invite code. Never shown and never logged."
+      },
+      "accountType": {
+        "type": "enum",
+        "values": [
+          "personal",
+          "company"
+        ],
+        "description": "account_type of POST /v1/signup (ADR 0087)."
+      }
     }
   },
   "state": {
-    "currentName": { "type": "string", "description": "Display name of the account on screen, for bipe_account_new_invite_note." },
-    "canAddPersonal": { "type": "bool", "description": "canAddAccount of account-switcher. false: the personal row is off and shows bipe_account_cap_reached with max_accounts." },
-    "canAddCompany": { "type": "bool", "description": "true when the account on screen is not a company and, on iOS, App Attest is supported. Android always tries Key Attestation at signup-create (bipe-chat/bipe#92); a phone the server cannot attest gets attestation_invalid there (ADR 0043, ADR 0087)." },
+    "currentName": {
+      "type": "string",
+      "description": "Display name of the account on screen, for bipe_account_new_invite_note."
+    },
+    "canAddPersonal": {
+      "type": "bool",
+      "description": "canAddAccount of account-switcher. false: the personal row is off and shows bipe_account_cap_reached with max_accounts."
+    },
+    "canAddCompany": {
+      "type": "bool",
+      "description": "true when the account on screen is not a company and, on iOS, App Attest is supported. Android always tries Key Attestation at signup-create (bipe-chat/bipe#92); a phone the server cannot attest gets attestation_invalid there (ADR 0043, ADR 0087)."
+    },
     "invitePhase": {
       "type": "enum",
-      "values": ["loading", "ready", "noneLeft", "failed"],
+      "values": [
+        "loading",
+        "ready",
+        "noneLeft",
+        "failed"
+      ],
       "description": "loading: GET /v1/me/invites of the account on screen runs. ready: available > 0. noneLeft: available is 0; the personal and company rows are off and the window shows BipeInviteQuota.noneLeft. failed: the quota did not load; the rows stay on and a tap tries again."
     },
-    "busy": { "type": "bool", "description": "true while POST /v1/me/invites runs after a tap. The rows are off." },
-    "error": { "type": "string", "optional": true, "description": "bipe_error_network, bipe_error_rate_limited or bipe_error_invite_quota after a failed tap." }
+    "busy": {
+      "type": "bool",
+      "description": "true while POST /v1/me/invites runs after a tap. The rows are off."
+    },
+    "error": {
+      "type": "string",
+      "optional": true,
+      "description": "bipe_error_network, bipe_error_rate_limited or bipe_error_invite_quota after a failed tap."
+    }
   },
   "actions": {
     "appear": {
@@ -30,7 +64,7 @@
       "effect": "Runs BipeInviteCreator.createIfAvailable for the account on screen. created: opens signup-name with a SignupStart of type personal. noneLeft: sets invitePhase noneLeft."
     },
     "chooseCompany": {
-      "effect": "The same as choosePersonal with a SignupStart of type company. signup-name then asks for bipe_company_name."
+      "effect": "The same as choosePersonal with a SignupStart of type company. signup-name then asks for bipe_company_name. The row names the account on screen with bipe_account_new_company_owner. When the sign-up finishes, the phone stores that account as the owner of the new company account (bipe-chat/bipe#444)."
     },
     "chooseExisting": {
       "effect": "Opens recovery-start in the same sheet. A recovered account joins the phone as with account-start didRecover."
@@ -58,10 +92,14 @@
     "bipe_error_network",
     "bipe_error_rate_limited",
     "bipe_error_invite_quota",
-    "bipe_app_cancel"
+    "bipe_app_cancel",
+    "bipe_account_new_company_owner"
   ],
   "sdk": [],
-  "parity": ["multi-account", "invites"],
+  "parity": [
+    "multi-account",
+    "invites"
+  ],
   "notes": [
     "Every new account needs an invite (ADR 0072). Here the invite comes from the quota of the account on screen; POST /v1/me/invites uses its token.",
     "A sign-up from this window starts at signup-name. onboarding-welcome and signup-invite-code do not show. signup-invite-code shows only when signup-create gets invite_invalid (action fix).",

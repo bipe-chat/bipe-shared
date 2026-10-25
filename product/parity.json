@@ -1140,7 +1140,14 @@
           "bipe-app/ios/Bipe/Signup/SignupFlowModel.swift"
         ]
       },
-      "android-new": "planned",
+      "android-new": {
+        "status": "built",
+        "evidence": [
+          "bipe-app/android/app/src/main/kotlin/chat/bipe/app/signup/SignupFlowModel.kt",
+          "bipe-app/android/app/src/main/kotlin/chat/bipe/app/signup/InstallReferrerInvite.kt",
+          "bipe-app/android/app/src/play/kotlin/chat/bipe/app/signup/InstallReferrers.kt"
+        ]
+      },
       "issue": 599
     },
     {
@@ -3098,6 +3105,32 @@
       "ios-new": "planned",
       "android-new": "planned",
       "issue": 242
+    },
+    {
+      "id": "brand-mark",
+      "name": "Brand mark next to a reseller's name, with its detail (ADR 0162, bipe#485)",
+      "ios": {
+        "status": "n/a",
+        "reason": "Fork frozen (ADR 0155); built in the own client"
+      },
+      "android": {
+        "status": "n/a",
+        "reason": "Fork frozen (ADR 0155); built in the own client"
+      },
+      "web": {
+        "status": "n/a",
+        "reason": "No web chat (ADR 0004); the site shows a demo at most"
+      },
+      "server": {
+        "status": "built",
+        "evidence": [
+          "bipe-api/src/brand-marks.ts",
+          "bipe-api/src/badges.ts"
+        ]
+      },
+      "ios-new": "planned",
+      "android-new": "planned",
+      "issue": 485
     },
     {
       "id": "voice-transcript-receive",

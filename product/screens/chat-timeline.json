@@ -96,6 +96,7 @@
     "undecryptable shows the message-undecryptable row in place of the body (cause and help action there).",
     "timeline-rows replaces messages with rows. Replies, reactions, edits, deletions, read receipts, typing, the actions sheet, handle-change lines and scam warnings have their own specs (bipe-chat/bipe#559). Media is a later issue.",
     "The other person left a DM (ADR 0141, bipe-chat/bipe#533): a lasting bar above the composer shows bipe_dm_left with the person's name and one button, bipe_action_invite_again. accountGone shows bipe_dm_account_gone with no button. There is no popup on composer focus. The composer stays on: a message waits in the room for a person who comes back.",
-    "A blocked person's DM (ADR 0141, bipe-chat/bipe#536, block-person): bipe_app_blocked_bar with the person's name and bipe_action_unblock_person replaces the composer. The chat stays in the list. The bar wins over the peerAway bar."
+    "A blocked person's DM (ADR 0141, bipe-chat/bipe#536, block-person): bipe_app_blocked_bar with the person's name and bipe_action_unblock_person replaces the composer. The chat stays in the list. The bar wins over the peerAway bar.",
+    "Brand marks (ADR 0162, spec brand-mark): in a DM with a reseller, the header shows the first verified mark's line under the title (bipe_brand_mark_more for the others), as text inside the title button that opens person-profile; the sheet opens from the line there. bipe_brand_mark_ended shows once there after a mark the phone saw is gone."
   ]
 }

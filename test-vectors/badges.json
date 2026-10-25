@@ -433,6 +433,227 @@
       "senderDevice": "Y29tcGFueS1zZWNvbmQtc2VhdA",
       "senderMasterKey": "dGVzdC1jcm9zcy1zaWduaW5nLW1hc3Rlci1rZXktMDE",
       "expect": "valid"
+    },
+    {
+      "name": "brand-mark: valid",
+      "envelope": {
+        "v": 1,
+        "kid": "test-only-2026-10",
+        "payload": "eyJzdWIiOiJAYmlhLnJldmVuZGU6YmlwZS5uZXQuYnIiLCJsdmwiOiJicmFuZC1tYXJrIiwibmFtZSI6IkRvY2VzIGRhIEFuYSIsIm1hcmsiOiIwYjZmOGE1Mi02ZjQzLTRjMWUtOWQ1NS0yYThiMWYwYzdlMTEiLCJicmFuZCI6IkBsb2phZGFhbmE6YmlwZS5uZXQuYnIiLCJjbnBqIjoiMTEyMjIzMzMwMDAxODEiLCJsYWJlbCI6InJldmVuZGVkb3JhIiwibXNrIjoiY21WelpXeHNaWEl0YldGemRHVnlMV3RsZVMwd01TMW1iM0l0ZEdWemRITSIsImlhdCI6MTc5MTcxNjQwMCwiZXhwIjoxNzkyMzIxMjAwfQ",
+        "sig": "cb8pzGNCbxEr9J9SParfzxaCQ11d0GKO6321LyvwIO8gTvnRaS7Jx4CKJY3-GaH4n0z6nnGd-4q-jecK4fdTDg"
+      },
+      "sender": "@bia.revende:bipe.net.br",
+      "senderDevice": "cmVzZWxsZXItcGhvbmU",
+      "senderMasterKey": "cmVzZWxsZXItbWFzdGVyLWtleS0wMS1mb3ItdGVzdHM",
+      "expect": "valid"
+    },
+    {
+      "name": "brand-mark: valid with label revendedor",
+      "envelope": {
+        "v": 1,
+        "kid": "test-only-2026-10",
+        "payload": "eyJzdWIiOiJAYmlhLnJldmVuZGU6YmlwZS5uZXQuYnIiLCJsdmwiOiJicmFuZC1tYXJrIiwibmFtZSI6IkRvY2VzIGRhIEFuYSIsIm1hcmsiOiIwYjZmOGE1Mi02ZjQzLTRjMWUtOWQ1NS0yYThiMWYwYzdlMTEiLCJicmFuZCI6IkBsb2phZGFhbmE6YmlwZS5uZXQuYnIiLCJjbnBqIjoiMTEyMjIzMzMwMDAxODEiLCJsYWJlbCI6InJldmVuZGVkb3IiLCJtc2siOiJjbVZ6Wld4c1pYSXRiV0Z6ZEdWeUxXdGxlUzB3TVMxbWIzSXRkR1Z6ZEhNIiwiaWF0IjoxNzkxNzE2NDAwLCJleHAiOjE3OTIzMjEyMDB9",
+        "sig": "oxkdcAnqXQiZo6AqQaEw6aTRYv8FkvuOhpRu5c10sK0M5Jn2kpX-Z6haJcy3uAMpSlUCfmorWbClfEpfl_t7Bg"
+      },
+      "sender": "@bia.revende:bipe.net.br",
+      "senderDevice": "cmVzZWxsZXItcGhvbmU",
+      "senderMasterKey": "cmVzZWxsZXItbWFzdGVyLWtleS0wMS1mb3ItdGVzdHM",
+      "expect": "valid"
+    },
+    {
+      "name": "brand-mark: valid with label corretor",
+      "envelope": {
+        "v": 1,
+        "kid": "test-only-2026-10",
+        "payload": "eyJzdWIiOiJAYmlhLnJldmVuZGU6YmlwZS5uZXQuYnIiLCJsdmwiOiJicmFuZC1tYXJrIiwibmFtZSI6IkRvY2VzIGRhIEFuYSIsIm1hcmsiOiIwYjZmOGE1Mi02ZjQzLTRjMWUtOWQ1NS0yYThiMWYwYzdlMTEiLCJicmFuZCI6IkBsb2phZGFhbmE6YmlwZS5uZXQuYnIiLCJjbnBqIjoiMTEyMjIzMzMwMDAxODEiLCJsYWJlbCI6ImNvcnJldG9yIiwibXNrIjoiY21WelpXeHNaWEl0YldGemRHVnlMV3RsZVMwd01TMW1iM0l0ZEdWemRITSIsImlhdCI6MTc5MTcxNjQwMCwiZXhwIjoxNzkyMzIxMjAwfQ",
+        "sig": "mWDfqxrEKHCIhj0EA7DcNttLOU2LOuPuISpk082c_SuBWPTUv76wVFFHPSVJrNHRbRB9XO9K9YIWojcRtvOECg"
+      },
+      "sender": "@bia.revende:bipe.net.br",
+      "senderDevice": "cmVzZWxsZXItcGhvbmU",
+      "senderMasterKey": "cmVzZWxsZXItbWFzdGVyLWtleS0wMS1mb3ItdGVzdHM",
+      "expect": "valid"
+    },
+    {
+      "name": "brand-mark: valid with label representante",
+      "envelope": {
+        "v": 1,
+        "kid": "test-only-2026-10",
+        "payload": "eyJzdWIiOiJAYmlhLnJldmVuZGU6YmlwZS5uZXQuYnIiLCJsdmwiOiJicmFuZC1tYXJrIiwibmFtZSI6IkRvY2VzIGRhIEFuYSIsIm1hcmsiOiIwYjZmOGE1Mi02ZjQzLTRjMWUtOWQ1NS0yYThiMWYwYzdlMTEiLCJicmFuZCI6IkBsb2phZGFhbmE6YmlwZS5uZXQuYnIiLCJjbnBqIjoiMTEyMjIzMzMwMDAxODEiLCJsYWJlbCI6InJlcHJlc2VudGFudGUiLCJtc2siOiJjbVZ6Wld4c1pYSXRiV0Z6ZEdWeUxXdGxlUzB3TVMxbWIzSXRkR1Z6ZEhNIiwiaWF0IjoxNzkxNzE2NDAwLCJleHAiOjE3OTIzMjEyMDB9",
+        "sig": "-VSACajKOjWbUT6fZGpvjtodVCqjN7kfuFAPY1OgNX6nCp2Lex148kRojwOjZwagC0lt8pTt_RDqTZGnxrVGBA"
+      },
+      "sender": "@bia.revende:bipe.net.br",
+      "senderDevice": "cmVzZWxsZXItcGhvbmU",
+      "senderMasterKey": "cmVzZWxsZXItbWFzdGVyLWtleS0wMS1mb3ItdGVzdHM",
+      "expect": "valid"
+    },
+    {
+      "name": "brand-mark: valid on any device of the account",
+      "envelope": {
+        "v": 1,
+        "kid": "test-only-2026-10",
+        "payload": "eyJzdWIiOiJAYmlhLnJldmVuZGU6YmlwZS5uZXQuYnIiLCJsdmwiOiJicmFuZC1tYXJrIiwibmFtZSI6IkRvY2VzIGRhIEFuYSIsIm1hcmsiOiIwYjZmOGE1Mi02ZjQzLTRjMWUtOWQ1NS0yYThiMWYwYzdlMTEiLCJicmFuZCI6IkBsb2phZGFhbmE6YmlwZS5uZXQuYnIiLCJjbnBqIjoiMTEyMjIzMzMwMDAxODEiLCJsYWJlbCI6InJldmVuZGVkb3JhIiwibXNrIjoiY21WelpXeHNaWEl0YldGemRHVnlMV3RsZVMwd01TMW1iM0l0ZEdWemRITSIsImlhdCI6MTc5MTcxNjQwMCwiZXhwIjoxNzkyMzIxMjAwfQ",
+        "sig": "cb8pzGNCbxEr9J9SParfzxaCQ11d0GKO6321LyvwIO8gTvnRaS7Jx4CKJY3-GaH4n0z6nnGd-4q-jecK4fdTDg"
+      },
+      "sender": "@bia.revende:bipe.net.br",
+      "senderDevice": "b3RoZXItcGhvbmU",
+      "senderMasterKey": "cmVzZWxsZXItbWFzdGVyLWtleS0wMS1mb3ItdGVzdHM",
+      "expect": "valid"
+    },
+    {
+      "name": "brand-mark: unknown label",
+      "envelope": {
+        "v": 1,
+        "kid": "test-only-2026-10",
+        "payload": "eyJzdWIiOiJAYmlhLnJldmVuZGU6YmlwZS5uZXQuYnIiLCJsdmwiOiJicmFuZC1tYXJrIiwibmFtZSI6IkRvY2VzIGRhIEFuYSIsIm1hcmsiOiIwYjZmOGE1Mi02ZjQzLTRjMWUtOWQ1NS0yYThiMWYwYzdlMTEiLCJicmFuZCI6IkBsb2phZGFhbmE6YmlwZS5uZXQuYnIiLCJjbnBqIjoiMTEyMjIzMzMwMDAxODEiLCJsYWJlbCI6ImVtYmFpeGFkb3JhIiwibXNrIjoiY21WelpXeHNaWEl0YldGemRHVnlMV3RsZVMwd01TMW1iM0l0ZEdWemRITSIsImlhdCI6MTc5MTcxNjQwMCwiZXhwIjoxNzkyMzIxMjAwfQ",
+        "sig": "ox-Nhz85bvEZrd0KOXCcTBykCTPRhU91FrNV9A4bK-fhSV9b9J4ImWrz-NEF8CExVDMBPzwDL6SRg6PvjwXaCg"
+      },
+      "sender": "@bia.revende:bipe.net.br",
+      "senderDevice": "cmVzZWxsZXItcGhvbmU",
+      "senderMasterKey": "cmVzZWxsZXItbWFzdGVyLWtleS0wMS1mb3ItdGVzdHM",
+      "expect": "malformed"
+    },
+    {
+      "name": "brand-mark: missing label",
+      "envelope": {
+        "v": 1,
+        "kid": "test-only-2026-10",
+        "payload": "eyJzdWIiOiJAYmlhLnJldmVuZGU6YmlwZS5uZXQuYnIiLCJsdmwiOiJicmFuZC1tYXJrIiwibmFtZSI6IkRvY2VzIGRhIEFuYSIsIm1hcmsiOiIwYjZmOGE1Mi02ZjQzLTRjMWUtOWQ1NS0yYThiMWYwYzdlMTEiLCJicmFuZCI6IkBsb2phZGFhbmE6YmlwZS5uZXQuYnIiLCJjbnBqIjoiMTEyMjIzMzMwMDAxODEiLCJtc2siOiJjbVZ6Wld4c1pYSXRiV0Z6ZEdWeUxXdGxlUzB3TVMxbWIzSXRkR1Z6ZEhNIiwiaWF0IjoxNzkxNzE2NDAwLCJleHAiOjE3OTIzMjEyMDB9",
+        "sig": "Wj-h6wRysgDk3VJOrNWOlB7Lml_PXgqTXXfOxvIoP7frxPyxFTP7i65P4wB_xGIqNnuJzW81VgSAzKkC2bsqAg"
+      },
+      "sender": "@bia.revende:bipe.net.br",
+      "senderDevice": "cmVzZWxsZXItcGhvbmU",
+      "senderMasterKey": "cmVzZWxsZXItbWFzdGVyLWtleS0wMS1mb3ItdGVzdHM",
+      "expect": "malformed"
+    },
+    {
+      "name": "brand-mark: missing mark",
+      "envelope": {
+        "v": 1,
+        "kid": "test-only-2026-10",
+        "payload": "eyJzdWIiOiJAYmlhLnJldmVuZGU6YmlwZS5uZXQuYnIiLCJsdmwiOiJicmFuZC1tYXJrIiwibmFtZSI6IkRvY2VzIGRhIEFuYSIsImJyYW5kIjoiQGxvamFkYWFuYTpiaXBlLm5ldC5iciIsImNucGoiOiIxMTIyMjMzMzAwMDE4MSIsImxhYmVsIjoicmV2ZW5kZWRvcmEiLCJtc2siOiJjbVZ6Wld4c1pYSXRiV0Z6ZEdWeUxXdGxlUzB3TVMxbWIzSXRkR1Z6ZEhNIiwiaWF0IjoxNzkxNzE2NDAwLCJleHAiOjE3OTIzMjEyMDB9",
+        "sig": "2v5qS0dRLyfcQfaJ1N026dEInNqzWiZSIuXDLK8AUG0zq4lL5mnyvK5p2Wp4DRFBRzaNbR9i3WNgy1RXlcxaBw"
+      },
+      "sender": "@bia.revende:bipe.net.br",
+      "senderDevice": "cmVzZWxsZXItcGhvbmU",
+      "senderMasterKey": "cmVzZWxsZXItbWFzdGVyLWtleS0wMS1mb3ItdGVzdHM",
+      "expect": "malformed"
+    },
+    {
+      "name": "brand-mark: empty mark",
+      "envelope": {
+        "v": 1,
+        "kid": "test-only-2026-10",
+        "payload": "eyJzdWIiOiJAYmlhLnJldmVuZGU6YmlwZS5uZXQuYnIiLCJsdmwiOiJicmFuZC1tYXJrIiwibmFtZSI6IkRvY2VzIGRhIEFuYSIsIm1hcmsiOiIiLCJicmFuZCI6IkBsb2phZGFhbmE6YmlwZS5uZXQuYnIiLCJjbnBqIjoiMTEyMjIzMzMwMDAxODEiLCJsYWJlbCI6InJldmVuZGVkb3JhIiwibXNrIjoiY21WelpXeHNaWEl0YldGemRHVnlMV3RsZVMwd01TMW1iM0l0ZEdWemRITSIsImlhdCI6MTc5MTcxNjQwMCwiZXhwIjoxNzkyMzIxMjAwfQ",
+        "sig": "2tR4UmRwP4P1-AlFpMRcFmXQGI2YD5LJ0xT2f9FKjPMK6LHSBUitYpWEzw3YJ2iro_p4gBb08MiYQmQZPrUfDg"
+      },
+      "sender": "@bia.revende:bipe.net.br",
+      "senderDevice": "cmVzZWxsZXItcGhvbmU",
+      "senderMasterKey": "cmVzZWxsZXItbWFzdGVyLWtleS0wMS1mb3ItdGVzdHM",
+      "expect": "malformed"
+    },
+    {
+      "name": "brand-mark: missing brand",
+      "envelope": {
+        "v": 1,
+        "kid": "test-only-2026-10",
+        "payload": "eyJzdWIiOiJAYmlhLnJldmVuZGU6YmlwZS5uZXQuYnIiLCJsdmwiOiJicmFuZC1tYXJrIiwibmFtZSI6IkRvY2VzIGRhIEFuYSIsIm1hcmsiOiIwYjZmOGE1Mi02ZjQzLTRjMWUtOWQ1NS0yYThiMWYwYzdlMTEiLCJjbnBqIjoiMTEyMjIzMzMwMDAxODEiLCJsYWJlbCI6InJldmVuZGVkb3JhIiwibXNrIjoiY21WelpXeHNaWEl0YldGemRHVnlMV3RsZVMwd01TMW1iM0l0ZEdWemRITSIsImlhdCI6MTc5MTcxNjQwMCwiZXhwIjoxNzkyMzIxMjAwfQ",
+        "sig": "ItZw9itUjdeZoufn-cuZYX8_oPNaqzcelBH05Ikr6mVfJLnq1Y38DFb9PV5PDjv-NTwLf1dzk_9nmgWAGcmWAA"
+      },
+      "sender": "@bia.revende:bipe.net.br",
+      "senderDevice": "cmVzZWxsZXItcGhvbmU",
+      "senderMasterKey": "cmVzZWxsZXItbWFzdGVyLWtleS0wMS1mb3ItdGVzdHM",
+      "expect": "malformed"
+    },
+    {
+      "name": "brand-mark: missing cnpj",
+      "envelope": {
+        "v": 1,
+        "kid": "test-only-2026-10",
+        "payload": "eyJzdWIiOiJAYmlhLnJldmVuZGU6YmlwZS5uZXQuYnIiLCJsdmwiOiJicmFuZC1tYXJrIiwibmFtZSI6IkRvY2VzIGRhIEFuYSIsIm1hcmsiOiIwYjZmOGE1Mi02ZjQzLTRjMWUtOWQ1NS0yYThiMWYwYzdlMTEiLCJicmFuZCI6IkBsb2phZGFhbmE6YmlwZS5uZXQuYnIiLCJsYWJlbCI6InJldmVuZGVkb3JhIiwibXNrIjoiY21WelpXeHNaWEl0YldGemRHVnlMV3RsZVMwd01TMW1iM0l0ZEdWemRITSIsImlhdCI6MTc5MTcxNjQwMCwiZXhwIjoxNzkyMzIxMjAwfQ",
+        "sig": "5HhYJ2YaYr2-tP7faNTWdWyIAmrsOGLxh1PkOD0aHIKtJ2QYU8Y53tcZ26CfpRFbaCl2Yy0q3611ngVnbItrCg"
+      },
+      "sender": "@bia.revende:bipe.net.br",
+      "senderDevice": "cmVzZWxsZXItcGhvbmU",
+      "senderMasterKey": "cmVzZWxsZXItbWFzdGVyLWtleS0wMS1mb3ItdGVzdHM",
+      "expect": "malformed"
+    },
+    {
+      "name": "brand-mark: cnpj with separators",
+      "envelope": {
+        "v": 1,
+        "kid": "test-only-2026-10",
+        "payload": "eyJzdWIiOiJAYmlhLnJldmVuZGU6YmlwZS5uZXQuYnIiLCJsdmwiOiJicmFuZC1tYXJrIiwibmFtZSI6IkRvY2VzIGRhIEFuYSIsIm1hcmsiOiIwYjZmOGE1Mi02ZjQzLTRjMWUtOWQ1NS0yYThiMWYwYzdlMTEiLCJicmFuZCI6IkBsb2phZGFhbmE6YmlwZS5uZXQuYnIiLCJjbnBqIjoiMTEuMjIyLjMzMy8wMDAxLTgxIiwibGFiZWwiOiJyZXZlbmRlZG9yYSIsIm1zayI6ImNtVnpaV3hzWlhJdGJXRnpkR1Z5TFd0bGVTMHdNUzFtYjNJdGRHVnpkSE0iLCJpYXQiOjE3OTE3MTY0MDAsImV4cCI6MTc5MjMyMTIwMH0",
+        "sig": "ukBZadFvXfnpNECu_S8iUhMzsxzoSYbFpnQ54tdLH32mTKu5M1uf796B8t8mJMQTXvHprY1eqMcfRlZlxkFRAg"
+      },
+      "sender": "@bia.revende:bipe.net.br",
+      "senderDevice": "cmVzZWxsZXItcGhvbmU",
+      "senderMasterKey": "cmVzZWxsZXItbWFzdGVyLWtleS0wMS1mb3ItdGVzdHM",
+      "expect": "malformed"
+    },
+    {
+      "name": "brand-mark: device-bound instead of msk",
+      "envelope": {
+        "v": 1,
+        "kid": "test-only-2026-10",
+        "payload": "eyJzdWIiOiJAYmlhLnJldmVuZGU6YmlwZS5uZXQuYnIiLCJsdmwiOiJicmFuZC1tYXJrIiwibmFtZSI6IkRvY2VzIGRhIEFuYSIsIm1hcmsiOiIwYjZmOGE1Mi02ZjQzLTRjMWUtOWQ1NS0yYThiMWYwYzdlMTEiLCJicmFuZCI6IkBsb2phZGFhbmE6YmlwZS5uZXQuYnIiLCJjbnBqIjoiMTEyMjIzMzMwMDAxODEiLCJsYWJlbCI6InJldmVuZGVkb3JhIiwiaWF0IjoxNzkxNzE2NDAwLCJleHAiOjE3OTIzMjEyMDAsImRldiI6ImNtVnpaV3hzWlhJdGNHaHZibVUifQ",
+        "sig": "T9vuphG4_-HiVTJylLcbHIGaiYKhbWvLDSlhyPxsBD0Ii8hBnf8fgHOGXV09SDJCpEmwkUhJRRpc-jca5v7vCA"
+      },
+      "sender": "@bia.revende:bipe.net.br",
+      "senderDevice": "cmVzZWxsZXItcGhvbmU",
+      "senderMasterKey": "cmVzZWxsZXItbWFzdGVyLWtleS0wMS1mb3ItdGVzdHM",
+      "expect": "malformed"
+    },
+    {
+      "name": "brand-mark: master key mismatch (identity reset)",
+      "envelope": {
+        "v": 1,
+        "kid": "test-only-2026-10",
+        "payload": "eyJzdWIiOiJAYmlhLnJldmVuZGU6YmlwZS5uZXQuYnIiLCJsdmwiOiJicmFuZC1tYXJrIiwibmFtZSI6IkRvY2VzIGRhIEFuYSIsIm1hcmsiOiIwYjZmOGE1Mi02ZjQzLTRjMWUtOWQ1NS0yYThiMWYwYzdlMTEiLCJicmFuZCI6IkBsb2phZGFhbmE6YmlwZS5uZXQuYnIiLCJjbnBqIjoiMTEyMjIzMzMwMDAxODEiLCJsYWJlbCI6InJldmVuZGVkb3JhIiwibXNrIjoiY21WelpXeHNaWEl0YldGemRHVnlMV3RsZVMwd01TMW1iM0l0ZEdWemRITSIsImlhdCI6MTc5MTcxNjQwMCwiZXhwIjoxNzkyMzIxMjAwfQ",
+        "sig": "cb8pzGNCbxEr9J9SParfzxaCQ11d0GKO6321LyvwIO8gTvnRaS7Jx4CKJY3-GaH4n0z6nnGd-4q-jecK4fdTDg"
+      },
+      "sender": "@bia.revende:bipe.net.br",
+      "senderDevice": "cmVzZWxsZXItcGhvbmU",
+      "senderMasterKey": "dGVzdC1jcm9zcy1zaWduaW5nLW1hc3Rlci1rZXktMDE",
+      "expect": "master_key_mismatch"
+    },
+    {
+      "name": "brand-mark: sender master key unknown",
+      "envelope": {
+        "v": 1,
+        "kid": "test-only-2026-10",
+        "payload": "eyJzdWIiOiJAYmlhLnJldmVuZGU6YmlwZS5uZXQuYnIiLCJsdmwiOiJicmFuZC1tYXJrIiwibmFtZSI6IkRvY2VzIGRhIEFuYSIsIm1hcmsiOiIwYjZmOGE1Mi02ZjQzLTRjMWUtOWQ1NS0yYThiMWYwYzdlMTEiLCJicmFuZCI6IkBsb2phZGFhbmE6YmlwZS5uZXQuYnIiLCJjbnBqIjoiMTEyMjIzMzMwMDAxODEiLCJsYWJlbCI6InJldmVuZGVkb3JhIiwibXNrIjoiY21WelpXeHNaWEl0YldGemRHVnlMV3RsZVMwd01TMW1iM0l0ZEdWemRITSIsImlhdCI6MTc5MTcxNjQwMCwiZXhwIjoxNzkyMzIxMjAwfQ",
+        "sig": "cb8pzGNCbxEr9J9SParfzxaCQ11d0GKO6321LyvwIO8gTvnRaS7Jx4CKJY3-GaH4n0z6nnGd-4q-jecK4fdTDg"
+      },
+      "sender": "@bia.revende:bipe.net.br",
+      "senderDevice": "cmVzZWxsZXItcGhvbmU",
+      "senderMasterKey": null,
+      "expect": "master_key_mismatch"
+    },
+    {
+      "name": "brand-mark: the brand itself is not the subject",
+      "envelope": {
+        "v": 1,
+        "kid": "test-only-2026-10",
+        "payload": "eyJzdWIiOiJAYmlhLnJldmVuZGU6YmlwZS5uZXQuYnIiLCJsdmwiOiJicmFuZC1tYXJrIiwibmFtZSI6IkRvY2VzIGRhIEFuYSIsIm1hcmsiOiIwYjZmOGE1Mi02ZjQzLTRjMWUtOWQ1NS0yYThiMWYwYzdlMTEiLCJicmFuZCI6IkBsb2phZGFhbmE6YmlwZS5uZXQuYnIiLCJjbnBqIjoiMTEyMjIzMzMwMDAxODEiLCJsYWJlbCI6InJldmVuZGVkb3JhIiwibXNrIjoiY21WelpXeHNaWEl0YldGemRHVnlMV3RsZVMwd01TMW1iM0l0ZEdWemRITSIsImlhdCI6MTc5MTcxNjQwMCwiZXhwIjoxNzkyMzIxMjAwfQ",
+        "sig": "cb8pzGNCbxEr9J9SParfzxaCQ11d0GKO6321LyvwIO8gTvnRaS7Jx4CKJY3-GaH4n0z6nnGd-4q-jecK4fdTDg"
+      },
+      "sender": "@lojadaana:bipe.net.br",
+      "senderDevice": "cmVzZWxsZXItcGhvbmU",
+      "senderMasterKey": "cmVzZWxsZXItbWFzdGVyLWtleS0wMS1mb3ItdGVzdHM",
+      "expect": "subject_mismatch"
+    },
+    {
+      "name": "brand-mark: expired",
+      "envelope": {
+        "v": 1,
+        "kid": "test-only-2026-10",
+        "payload": "eyJzdWIiOiJAYmlhLnJldmVuZGU6YmlwZS5uZXQuYnIiLCJsdmwiOiJicmFuZC1tYXJrIiwibmFtZSI6IkRvY2VzIGRhIEFuYSIsIm1hcmsiOiIwYjZmOGE1Mi02ZjQzLTRjMWUtOWQ1NS0yYThiMWYwYzdlMTEiLCJicmFuZCI6IkBsb2phZGFhbmE6YmlwZS5uZXQuYnIiLCJjbnBqIjoiMTEyMjIzMzMwMDAxODEiLCJsYWJlbCI6InJldmVuZGVkb3JhIiwibXNrIjoiY21WelpXeHNaWEl0YldGemRHVnlMV3RsZVMwd01TMW1iM0l0ZEdWemRITSIsImlhdCI6MTc5MTcxNjQwMCwiZXhwIjoxNzkxNzE5OTk5fQ",
+        "sig": "T0O0ysOB5W4hXKd1yWIVlurcSoyzrBOQThs9ByfBAyLb9u2r6gUbLw0u-d1CYRw64eFhvuKhEI0OKernMsxpAg"
+      },
+      "sender": "@bia.revende:bipe.net.br",
+      "senderDevice": "cmVzZWxsZXItcGhvbmU",
+      "senderMasterKey": "cmVzZWxsZXItbWFzdGVyLWtleS0wMS1mb3ItdGVzdHM",
+      "expect": "expired"
     }
   ]
 }

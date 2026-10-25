@@ -47,6 +47,18 @@ test("a semantic token below its contrast rule fails", () => {
   assert.throws(() => resolveTokens(broken), /ink.secondary on surface.base \(light\)/);
 });
 
+test("surface tokens are the iOS system backgrounds (bipe-chat/bipe#612)", () => {
+  const resolved = resolveTokens(tokens);
+  assert.deepEqual(Object.values(resolved["surface.base"]), ["#FFFFFF", "#000000", "#FFFFFF", "#000000"]);
+  assert.deepEqual(Object.values(resolved["surface.raised"]), ["#F2F2F7", "#1C1C1E", "#EBEBF0", "#242426"]);
+});
+
+test("a malformed literal hex fails", () => {
+  const broken = structuredClone(tokens);
+  broken.semantic["surface.raised"].light = "#F2F2F";
+  assert.throws(() => resolveTokens(broken), /surface.raised.light references unknown "#F2F2F"/);
+});
+
 test("semantic names are Bipe's own, not Compound's", () => {
   const broken = structuredClone(tokens);
   broken.semantic["color.text.primary"] = broken.semantic["ink.primary"];

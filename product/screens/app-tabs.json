@@ -116,7 +116,8 @@
     "bipe_app_tab_search",
     "bipe_app_account_current_a11y",
     "bipe_app_tab_you_switch_hint",
-    "bipe_tab_agenda"
+    "bipe_tab_agenda",
+    "bipe_a11y_switch_account"
   ],
   "sdk": [
     "Client.roomListService",
@@ -128,12 +129,13 @@
     "agenda"
   ],
   "notes": [
-    "MZ decision 25 Oct 2026 (bipe#577): Buscar is the last tab, apart from Conversas, Grupos (Agenda) and Você. iOS uses the system search tab role (Tab(role: .search)); iOS 26 and later draw it apart at the trailing end of the tab bar. Android keeps the Material idiom: the bottom bar has only the main destinations and search is the trailing action of the top bar of Conversas and Grupos.",
+    "MZ decision 25 Oct 2026 (bipe#577): Buscar is the last tab, apart from Conversas, Grupos (Agenda) and Você. iOS 27 draws it apart only with Tab(role: .prominent); iOS 18 to 26 use the search role (Tab(role: .search)), which they draw apart at the trailing end of the tab bar. Android keeps the Material idiom: the bottom bar has only the main destinations and search is the trailing action of the top bar of Conversas and Grupos.",
     "MZ decision 25 Oct 2026 (bipe#577): a long press (hold) on the Você tab opens account-switcher in place, as the native menu anchored on the tab (iOS context menu, Android dropdown menu). The tab bar of iOS 26 and later has its own press-and-drag gesture: the long press must still open the menu.",
     "Conversas holds DMs (rooms with two members) and the Pedidos row; Grupos holds rooms with more than two members (ADR 0053). chat-list renders both with its scope.",
     "Each account has its own SDK client and session store, keyed by user ID (ADR 0086). Only the current account's sync runs in front; the others sync in the background for the badge and the dot.",
     "The tab bar shows the same on iPhone and as a rail on iPad (ADR 0135 point 6).",
     "Company account: Trabalho (bipe_tab_work) replaces Grupos in the same place, and there is no separate Agenda tab (agenda-owner opens from Trabalho). Trabalho shows business-tools; each tool opens its owner screen inside the tab. Conversas shows DMs and groups together, with the group invites under the Pedidos row, and a notification for a group opens Conversas. On Android, search is the trailing action of the Conversas top bar only. When the current account changes from company to personal on Trabalho, or from personal to company on Grupos, Conversas shows.",
-    "Status comes later and is not in this spec."
+    "Status comes later and is not in this spec.",
+    "Accessibility (bipe#577, ADR 0135): a hold is not available to VoiceOver and TalkBack users, and Você has no account rows. The Você tab item carries the accessibility action bipe_a11y_switch_account (VoiceOver custom action, TalkBack custom action), which opens account-switcher like longPressVoce. Show it only when the phone has two or more accounts."
   ]
 }

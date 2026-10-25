@@ -2,7 +2,7 @@
   "id": "voce",
   "title": "Você",
   "flow": "voce",
-  "summary": "The Você tab (ADR 0112): who you are first, then the six settings groups. Header with photo, name and @; the account switcher when the phone has two or more accounts; Anotações; Convidar pessoas; then settings-root.",
+  "summary": "The Você tab (ADR 0112): who you are first, then the six settings groups. Header with photo, name and @; Anotações; Convidar pessoas; then settings-root.",
   "state": {
     "displayName": {
       "type": "string",
@@ -44,15 +44,6 @@
     "shareProfile": {
       "effect": "Opens the system share sheet with the bipe.chat/@handle link."
     },
-    "switchAccount": {
-      "params": {
-        "userId": {
-          "type": "string",
-          "description": "The chosen account."
-        }
-      },
-      "effect": "Runs app-tabs switchAccount."
-    },
     "openNotes": {
       "effect": "Opens the self-chat Anotações (ADR 0053)."
     },
@@ -74,7 +65,6 @@
     "bipe_tab_you",
     "bipe_profile_share",
     "bipe_profile_qr_action",
-    "bipe_app_account_switcher_title",
     "bipe_self_chat_title",
     "bipe_self_chat_subtitle",
     "bipe_invites_title",
@@ -88,6 +78,7 @@
     "settings-structure"
   ],
   "notes": [
+    "MZ decision 25 Oct 2026 (bipe#577): Você has no account rows. The accounts on this phone switch from the Você tab: a hold opens account-switcher, a double tap goes to the next account, and screen readers use the tab's accessibility action (app-tabs). Nova conta stays on Você, under the header.",
     "MZ decision 25 Oct 2026 (bipe#577): the header shows the current account's avatar (photo, else initials). Since the chat list has no account avatar, Você is the one screen that shows it.",
     "Prompt slot (bipe-chat/bipe#200): prompts with slot true in registries/onboarding.json share one slot per account; after one shows, no other shows for promptSlot.hours. The same prompt keeps its slot while it shows. Bipe logic: BipePromptSlot (BipeKit; libraries/bipe).",
     "The header never shows the Matrix ID (ADR 0112).",

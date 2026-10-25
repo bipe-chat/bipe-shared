@@ -11,6 +11,10 @@
     "snoozeCount": {
       "type": "int",
       "description": "How many times the person tapped \"Agora não\" for this account on this phone. Picks the next value of recoveryReminderSnoozeDays; past the end, the last value repeats."
+    },
+    "syncOff": {
+      "type": "bool",
+      "description": "iOS: this phone is not signed in to iCloud (FileManager.ubiquityIdentityToken is nil), so iCloud Keychain does not carry the recovery token. Android: the synced store does not back up (BipeRecoveryTokenSync.isBackedUp false). The card then shows bipe_fallback_sync_off_ios or _android under the body: turning sync on is the way back with no wait (bipe-chat/bipe#202)."
     }
   },
   "actions": {
@@ -25,7 +29,9 @@
     "bipe_fallback_title",
     "bipe_fallback_reminder",
     "bipe_fallback_email",
-    "bipe_fallback_skip"
+    "bipe_fallback_skip",
+    "bipe_fallback_sync_off_ios",
+    "bipe_fallback_sync_off_android"
   ],
   "sdk": [],
   "parity": ["transfer-safe-recovery", "new-phone"],
@@ -36,6 +42,7 @@
     "\"Came to this phone\": the time the app first saved this account's session on this phone. A new phone after recovery starts the count again.",
     "The card never stops for good while the account has no factor: the loss is the whole account. It never becomes a blocking screen (MZ decision on bipe#538, default).",
     "This card is the transfer part of the fallback prompt in bipe#202. The PIN reminders, the iCloud Keychain check and guardians stay there.",
-    "Android shows the same card (ADR 0031): a person can move from Android to iPhone, and the e-mail works on both."
+    "Android shows the same card (ADR 0031): a person can move from Android to iPhone, and the e-mail works on both.",
+    "The sync check (bipe-chat/bipe#202) only adds a line; it does not change when the card shows. iCloud Keychain sync itself has no public API, so iOS checks the iCloud account only."
   ]
 }

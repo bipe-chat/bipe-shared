@@ -306,9 +306,28 @@
         "status": "n/a",
         "reason": "Sign-up and recovery are in the apps"
       },
-      "server": "planned",
-      "ios-new": "planned",
-      "android-new": "planned",
+      "server": {
+        "status": "built",
+        "evidence": [
+          "bipe-api/src/transfer.ts",
+          "bipe-api/src/accounts.ts"
+        ]
+      },
+      "ios-new": {
+        "status": "built",
+        "evidence": [
+          "bipe-app/ios/BipeKit/Sources/BipeKit/BipeKeychainMove.swift",
+          "bipe-app/ios/Bipe/Account/KeychainMove.swift",
+          "bipe-app/ios/Bipe/Recovery/RecoveryReminder.swift"
+        ]
+      },
+      "android-new": {
+        "status": "built",
+        "evidence": [
+          "bipe-app/android/app/src/main/kotlin/chat/bipe/app/recovery/RecoveryReminder.kt",
+          "bipe-app/android/libraries/bipe/src/main/kotlin/chat/bipe/shared/account/BipeRecoveryReminder.kt"
+        ]
+      },
       "note": "bipe/docs/team-transfer-recovery.md: iOS moves its keychain items into the app-group group; both apps show the recovery reminder and the add-e-mail screen; the server records the moves and counts the share"
     },
     {

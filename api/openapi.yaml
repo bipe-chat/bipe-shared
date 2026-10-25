@@ -1633,6 +1633,40 @@ paths:
         "400": { $ref: "#/components/responses/Error" }
         "401": { $ref: "#/components/responses/Error" }
         "429": { $ref: "#/components/responses/Error" }
+  /v1/profile-facts:
+    post:
+      summary: Account age and profile change dates for Matrix IDs (ADR 0049)
+      description: >
+        The app sends the Matrix IDs it shows a facts line for (chat-request, person-profile) or an
+        amber notice for (the other person of a 1:1 chat). The API does not check room membership,
+        like /v1/handle-changes. For each ID it returns the account creation time (Synapse) and the
+        dates of display-name and photo changes from the last windowDays (registries/profile-facts.json):
+        Matrix profile changes the API saw in Synapse, and public profile edits (ADR 0041). Dates only:
+        the API keeps no name, no photo and no image hash. The apps make the lines with
+        profileFactLines (test-vectors/profile-facts.json). IDs the API knows nothing about are absent.
+      security: [{ matrix: [] }]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [user_ids]
+              properties:
+                user_ids: { type: array, minItems: 1, maxItems: 100, items: { type: string } }
+      responses:
+        "200":
+          description: Facts for the given IDs.
+          content:
+            application/json:
+              schema:
+                type: object
+                required: [facts]
+                properties:
+                  facts: { type: array, items: { $ref: "#/components/schemas/ProfileFacts" } }
+        "400": { $ref: "#/components/responses/Error" }
+        "401": { $ref: "#/components/responses/Error" }
+        "429": { $ref: "#/components/responses/Error" }
   /v1/profiles/{handle}:
     get:
       summary: Public profile by exact handle (ADR 0041)
@@ -5594,6 +5628,14 @@ components:
         old: { type: string, description: "Handle before the change, without @. Absent on a first set." }
         new: { type: string, description: "Handle after the change, without @. Absent on a removal." }
         at: { type: string, format: date-time }
+    ProfileFacts:
+      type: object
+      required: [user_id, name_changes, photo_changes]
+      properties:
+        user_id: { type: string }
+        created_at: { type: string, format: date-time, description: "Account creation time. Absent when Synapse does not answer." }
+        name_changes: { type: array, items: { type: string, format: date-time }, description: "Display-name changes in the window, oldest first." }
+        photo_changes: { type: array, items: { type: string, format: date-time }, description: "Photo changes in the window, oldest first." }
     PublicProfile:
       type: object
       required: [handle, name]

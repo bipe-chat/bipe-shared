@@ -1926,10 +1926,27 @@
         "status": "n/a",
         "reason": "No web chat (ADR 0004); the site shows a demo at most"
       },
-      "server": "planned",
-      "ios-new": "planned",
-      "android-new": "planned",
-      "issue": 142
+      "server": {
+        "status": "built",
+        "evidence": [
+          "bipe-api/src/profile-facts.ts"
+        ]
+      },
+      "ios-new": {
+        "status": "built",
+        "evidence": [
+          "bipe-app/ios/BipeKit/Sources/BipeKit/BipeProfileFacts.swift",
+          "bipe-app/ios/Bipe/People/ProfileFactsViews.swift"
+        ]
+      },
+      "android-new": {
+        "status": "built",
+        "evidence": [
+          "bipe-app/android/libraries/bipe/src/main/kotlin/chat/bipe/shared/BipeProfileFactLines.kt",
+          "bipe-app/android/app/src/main/kotlin/chat/bipe/app/people/ProfileFacts.kt"
+        ]
+      },
+      "issue": 598
     },
     {
       "id": "photo-match",

@@ -1,0 +1,50 @@
+{
+  "id": "soft-logout",
+  "title": "Session expired",
+  "flow": "launch",
+  "summary": "What the app does when the homeserver stops taking an account's token (bipe-chat/bipe#204, ADR 0057). A device-first account has no password to type: the app signs in again with the hidden password, and asks only for the PIN when that is not possible.",
+  "state": {
+    "userId": { "type": "string", "description": "The account whose token the server refused. Never shown." },
+    "phase": {
+      "type": "enum",
+      "values": ["signingIn", "needsPin", "removed"],
+      "description": "signingIn: the quiet sign-in with the hidden password runs; nothing shows. needsPin: recovery-pin for this account, titled bipe_soft_logout_title. removed: another device signed this phone out; the account left the phone."
+    }
+  },
+  "actions": {
+    "authError": {
+      "params": { "isSoftLogout": { "type": "bool", "description": "ClientDelegate.didReceiveAuthError. true: the token expired and the device still exists. false: the device was signed out on the server." } },
+      "effect": "isSoftLogout true: stops the sync, builds a client on the same store and runs Client.login with the hidden password and the same device ID, so keys and history stay; saves the new session and starts the sync. No hidden password, or the server refuses it: phase needsPin. isSoftLogout false: runs sign-out with alreadyLoggedOut (spec sign-out signOut, the server step is already done) and shows bipe_soft_logout_removed once."
+    },
+    "enterPin": {
+      "effect": "In needsPin: recovery-pin with factor token for the synced recovery token of this account. A good PIN signs the account in again (recovery-pin submit). Without a synced token for it: recovery-start."
+    },
+    "later": {
+      "effect": "Closes the PIN screen. The account stays on the phone without a session; the next foreground or app start asks again."
+    }
+  },
+  "strings": [
+    "bipe_soft_logout_title",
+    "bipe_soft_logout_body",
+    "bipe_soft_logout_removed",
+    "bipe_app_cancel"
+  ],
+  "sdk": [
+    "Client.setDelegate",
+    "ClientDelegate.didReceiveAuthError",
+    "Client.login",
+    "Client.deviceId",
+    "Client.session",
+    "SyncService.stop"
+  ],
+  "parity": ["phone-account"],
+  "notes": [
+    "The person never types a password and never sees a homeserver name or a Matrix ID (ADR 0057). No English-only text on this path.",
+    "A network error during the quiet sign-in keeps phase signingIn and tries again on the next foreground. It never deletes the hidden password, the saved session or the SDK store.",
+    "needsPin removes only the saved SDK session of the account, whose token the server refused, so recovery-start can offer the account's synced token. The hidden password and the store stay until a sign-in replaces them.",
+    "A device that another device signed out (linked-devices signOut) must not sign in again by itself: that is how a person locks out a lost phone. Hence removed, never a quiet sign-in.",
+    "bipe_soft_logout_body and bipe_soft_logout_removed take the account's display name.",
+    "With several accounts on the phone (ADR 0086), only the account whose token failed is affected; the others keep working.",
+    "The recovery-start row beta (bipe_recovery_beta, e-mail and password of the old beta) shows only in developer builds (gate flag:developer in registries/onboarding.json): iOS DEBUG, Android BuildConfig.DEBUG."
+  ]
+}

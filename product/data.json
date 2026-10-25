@@ -319,6 +319,23 @@
       }
     },
     {
+      "id": "theft-guardians",
+      "basis": "legitimate-interest",
+      "places": ["server"],
+      "pt": {
+        "name": "Guardiões e marca de roubo",
+        "what": "Quem você escolheu como guardião, quando uma conta foi marcada como roubada, quem marcou e quando a marca saiu. Um código aleatório do celular para cada conta nele, para a marca cobrir as contas do mesmo celular.",
+        "why": "Deixar uma pessoa de confiança desconectar sua conta de todos os aparelhos se roubarem seu celular, e avisar seus contatos.",
+        "retention": "Os guardiões até você trocar. A marca e quem marcou ficam enquanto a conta existe. O código do celular fica até o aparelho sair da conta."
+      },
+      "en": {
+        "name": "Guardians and theft mark",
+        "what": "Who you chose as a guardian, when an account was marked as stolen, who marked it and when the mark was cleared. A random phone code for each account on it, so the mark covers the accounts on the same phone.",
+        "why": "To let a person you trust sign your account out of every device if your phone is stolen, and to warn your contacts.",
+        "retention": "Guardians until you change them. The mark and who set it stay while the account exists. The phone code stays until the device leaves the account."
+      }
+    },
+    {
       "id": "invites",
       "basis": "legitimate-interest",
       "places": ["server"],

@@ -202,6 +202,8 @@ public enum BipeRegistries {
     public static let maxPersonalAccounts = ${reg.accounts.maxPersonalAccounts}
     /// Wait between the full-access warning and the biometric check of a web sign-in approval (ADR 0118).
     public static let webLinkCooldownSeconds = ${reg.accounts.webLinkCooldownSeconds}
+    /// Wait between an account deletion request and the deletion; every signed-in device can cancel (ADR 0140).
+    public static let deletionCooldownHours = ${reg.accounts.deletionCooldownHours}
     /// Recovery reminder card (bipe#531): first show after these days on this phone; each "Agora não" hides it for the
     /// next snooze, and the last snooze repeats.
     public static let recoveryReminderFirstAfterDays = ${reg.accounts.recoveryReminder.firstAfterDays}
@@ -458,6 +460,9 @@ object BipeRegistries {
 
     // Wait between the full-access warning and the biometric check of a web sign-in approval (ADR 0118).
     const val WEB_LINK_COOLDOWN_SECONDS = ${reg.accounts.webLinkCooldownSeconds}
+
+    // Wait between an account deletion request and the deletion; every signed-in device can cancel (ADR 0140).
+    const val DELETION_COOLDOWN_HOURS = ${reg.accounts.deletionCooldownHours}
 
     // Recovery reminder card (bipe#531): first show after these days on this phone; each "Agora não" hides it for the
     // next snooze, and the last snooze repeats.

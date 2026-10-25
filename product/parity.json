@@ -1687,8 +1687,18 @@
         "status": "n/a",
         "reason": "Plain Matrix events; no Bipe server code"
       },
-      "ios-new": "planned",
-      "android-new": "planned",
+      "ios-new": {
+        "status": "built",
+        "evidence": [
+          "bipe-app/ios/Bipe/Polls/QuestionCard.swift"
+        ]
+      },
+      "android-new": {
+        "status": "built",
+        "evidence": [
+          "bipe-app/android/app/src/main/kotlin/chat/bipe/app/polls/QuestionCard.kt"
+        ]
+      },
       "issue": 244
     },
     {
@@ -3096,8 +3106,20 @@
         "status": "n/a",
         "reason": "Runs on the device only; the description travels in the encrypted event"
       },
-      "ios-new": "planned",
-      "android-new": "planned",
+      "ios-new": {
+        "status": "built",
+        "evidence": [
+          "bipe-app/ios/BipeKit/Sources/BipeKit/BipeImageDescription.swift",
+          "bipe-app/ios/Bipe/Media/Upload/UploadPreviewView.swift"
+        ]
+      },
+      "android-new": {
+        "status": "built",
+        "evidence": [
+          "bipe-app/android/libraries/bipe/src/main/kotlin/chat/bipe/shared/media/BipeImageDescription.kt",
+          "bipe-app/android/app/src/main/kotlin/chat/bipe/app/media/upload/UploadPreviewScreen.kt"
+        ]
+      },
       "issue": 501
     },
     {
@@ -3119,8 +3141,20 @@
         "status": "n/a",
         "reason": "Runs on the device only"
       },
-      "ios-new": "planned",
-      "android-new": "planned",
+      "ios-new": {
+        "status": "built",
+        "evidence": [
+          "bipe-app/ios/Bipe/Media/DataUse.swift",
+          "bipe-app/ios/Bipe/Settings/DataUseView.swift"
+        ]
+      },
+      "android-new": {
+        "status": "built",
+        "evidence": [
+          "bipe-app/android/app/src/main/kotlin/chat/bipe/app/media/DataUse.kt",
+          "bipe-app/android/app/src/main/kotlin/chat/bipe/app/settings/DataUseScreen.kt"
+        ]
+      },
       "issue": 242
     },
     {
@@ -3145,8 +3179,20 @@
           "bipe-api/src/badges.ts"
         ]
       },
-      "ios-new": "planned",
-      "android-new": "planned",
+      "ios-new": {
+        "status": "built",
+        "evidence": [
+          "bipe-app/ios/BipeKit/Sources/BipeKit/BipeBrandMarks.swift",
+          "bipe-app/ios/Bipe/People/BrandMarkViews.swift"
+        ]
+      },
+      "android-new": {
+        "status": "built",
+        "evidence": [
+          "bipe-app/android/libraries/bipe/src/main/kotlin/chat/bipe/shared/company/BipeBrandMarks.kt",
+          "bipe-app/android/app/src/main/kotlin/chat/bipe/app/people/BrandMarkViews.kt"
+        ]
+      },
       "issue": 485
     },
     {
@@ -3170,8 +3216,18 @@
           "bipe-api/src/brand-marks.ts"
         ]
       },
-      "ios-new": "planned",
-      "android-new": "planned",
+      "ios-new": {
+        "status": "built",
+        "evidence": [
+          "bipe-app/ios/Bipe/Business/BrandMarksView.swift"
+        ]
+      },
+      "android-new": {
+        "status": "built",
+        "evidence": [
+          "bipe-app/android/app/src/main/kotlin/chat/bipe/app/business/BrandMarksScreen.kt"
+        ]
+      },
       "issue": 486
     },
     {
@@ -3193,8 +3249,18 @@
         "status": "n/a",
         "reason": "Runs on the device only; no audio leaves the phone"
       },
-      "ios-new": "planned",
-      "android-new": "planned",
+      "ios-new": {
+        "status": "built",
+        "evidence": [
+          "bipe-app/ios/Bipe/Media/Voice/ListenerTranscripts.swift"
+        ]
+      },
+      "android-new": {
+        "status": "built",
+        "evidence": [
+          "bipe-app/android/app/src/main/kotlin/chat/bipe/app/media/voice/ListenerTranscripts.kt"
+        ]
+      },
       "issue": 500
     }
   ],

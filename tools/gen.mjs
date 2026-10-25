@@ -153,6 +153,9 @@ public enum BipeRegistries {
     public static let handlePattern = ${swiftString(reg.handles.pattern)}
     /// Owned handles (ADR 0065): only these may be shorter than \`handleMinLength\`, down to \`handleOwnerMinLength\`.
     public static let handleOwnerMinLength = ${reg.handles.ownerMinLength}
+    /// Escolha seu @ (bipe-chat/bipe#200): how many free suggestions show, and how many candidates to check.
+    public static let handleSuggestionsShown = ${reg.handles.suggestions.shown}
+    public static let handleSuggestionCandidates = ${reg.handles.suggestions.candidates}
     public static let ownedHandles: Set<String> = ${Object.keys(reg.owners.handles).length ? swiftArray(Object.keys(reg.owners.handles).map(swiftString)) : "[]"}
 
     /// Full Matrix user IDs of official Bipe accounts. Match exactly; names and handles are not proof.
@@ -432,6 +435,9 @@ object BipeRegistries {
     /** Username (handle) rules. The server is the authority; clients check early for feedback. */
     const val HANDLE_MIN_LENGTH = ${reg.handles.minLength}
     const val HANDLE_MAX_LENGTH = ${reg.handles.maxLength}
+    /** Escolha seu @ (bipe-chat/bipe#200): how many free suggestions show, and how many candidates to check. */
+    const val HANDLE_SUGGESTIONS_SHOWN = ${reg.handles.suggestions.shown}
+    const val HANDLE_SUGGESTION_CANDIDATES = ${reg.handles.suggestions.candidates}
     const val HANDLE_PATTERN = ${kotlinString(reg.handles.pattern)}
 
     /** Owned handles (ADR 0065): only these may be shorter than [HANDLE_MIN_LENGTH], down to [HANDLE_OWNER_MIN_LENGTH]. */

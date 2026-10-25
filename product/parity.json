@@ -2930,6 +2930,29 @@
           "bipe-app/android/app/src/main/kotlin/chat/bipe/app/chatlist/ChatListScreen.kt"
         ]
       }
+    },
+    {
+      "id": "image-descriptions",
+      "name": "Image descriptions for photos (bipe#501)",
+      "ios": {
+        "status": "n/a",
+        "reason": "Fork frozen (ADR 0155); built in the own client"
+      },
+      "android": {
+        "status": "n/a",
+        "reason": "Fork frozen (ADR 0155); built in the own client"
+      },
+      "web": {
+        "status": "n/a",
+        "reason": "No web chat (ADR 0004); the site shows a demo at most"
+      },
+      "server": {
+        "status": "n/a",
+        "reason": "Runs on the device only; the description travels in the encrypted event"
+      },
+      "ios-new": "planned",
+      "android-new": "planned",
+      "issue": 501
     }
   ],
   "differences": [

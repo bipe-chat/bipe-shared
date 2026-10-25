@@ -149,3 +149,64 @@ export function buildBrCode({ key, info, name, city, amount, txid = "***", url, 
     + (amount ? f("54", amount) : "") + f("58", "BR") + f("59", name) + f("60", city) + f("62", f("05", txid)) + "6304";
   return body + crc16(body);
 }
+
+// --- Pix request marks (ADR 0046, bipe-chat/bipe#130; registries/pix-marks.json) -------------------
+
+const MARK_FROM = { sent: ["issued", "sent", "not_received"], received: ["issued", "sent", "not_received"], not_received: ["sent", "received"] };
+
+/** The BR Code txid of a request card: the request ID with letters and digits only, at most txidMaxLength. */
+export function pixTxid(requestId, marks) {
+  return String(requestId ?? "").replace(/[^A-Za-z0-9]/g, "").slice(0, marks.txidMaxLength);
+}
+
+/** true when the E2E ID has the format of a Pix end-to-end ID. The app cannot check that the payment exists. */
+export function pixE2eIdValid(id, marks) {
+  return typeof id === "string" && new RegExp(marks.e2eIdPattern).test(id);
+}
+
+/**
+ * The lines of a request card from its mark events.
+ * card: { event_id, requester, payers: [user IDs] }. events: [{ event_id, sender, ts, content }].
+ * Returns { lines: [{ payer, state, e2e_id, paid, history: [{ event_id, mark }] }] in payer order, rejected: [event IDs] }.
+ */
+export function pixMarkLines(card, events, marks) {
+  const lines = new Map((card.payers ?? []).map((payer) => [payer, { payer, state: "issued", e2e_id: null, paid: false, history: [] }]));
+  const rejected = [];
+  const ordered = [...(events ?? [])].sort((a, b) => (a.ts - b.ts) || (a.event_id < b.event_id ? -1 : a.event_id > b.event_id ? 1 : 0));
+  for (const event of ordered) {
+    const line = pixMarkLine(card, event, lines, marks);
+    if (!line) {
+      rejected.push(event.event_id);
+      continue;
+    }
+    const mark = event.content.mark;
+    line.state = mark;
+    if (mark === "sent") line.e2e_id = event.content.e2e_id ?? null;
+    line.paid = mark === "received";
+    line.history.push({ event_id: event.event_id, mark });
+  }
+  return { lines: [...lines.values()], rejected };
+}
+
+// The line an event may change, or null when the event breaks a rule.
+function pixMarkLine(card, event, lines, marks) {
+  const content = event?.content;
+  if (!content || typeof content !== "object" || Array.isArray(content)) return null;
+  const rel = content["m.relates_to"];
+  if (!rel || rel.rel_type !== marks.relType || rel.event_id !== card.event_id) return null;
+  const mark = content.mark;
+  if (!marks.marks.includes(mark)) return null;
+  if ("payer" in content && typeof content.payer !== "string") return null;
+  if ("e2e_id" in content && (mark !== "sent" || !pixE2eIdValid(content.e2e_id, marks))) return null;
+  let payer;
+  if (mark === "sent") {
+    if (content.payer !== undefined && content.payer !== event.sender) return null;
+    payer = event.sender;
+  } else {
+    if (event.sender !== card.requester) return null;
+    payer = content.payer ?? (lines.size === 1 ? [...lines.keys()][0] : undefined);
+  }
+  const line = lines.get(payer);
+  if (!line || !MARK_FROM[mark].includes(line.state)) return null;
+  return line;
+}

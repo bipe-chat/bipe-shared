@@ -54,7 +54,7 @@
     "The verified address stays in use until the new one is confirmed (api/openapi.yaml /v1/me/email). The server sends the link and, after a change, a notice to the old address.",
     "The address is never logged. The app does not keep it on the phone; it reads it from GET /v1/me/account.",
     "Remove (DELETE /v1/me/email) is not on this screen: removing a way back needs its own spec with the same owner check.",
-    "Local e-mail check: BipeHandle.isPlausibleEmail (iOS), BipeSignupRules.isPlausibleEmail (Android).",
+    "Local e-mail check: BipeSignupRules.isPlausibleEmail (iOS and Android).",
     "Bipe logic: BipeAPIClient.setRecoveryEmail (BipeKit); BipeApiClient.setRecoveryEmail (libraries/bipe)."
   ]
 }

@@ -1,0 +1,120 @@
+{
+  "id": "queue-customer",
+  "title": "Fila virtual for the customer",
+  "flow": "business",
+  "summary": "The customer joins a business's queue of the day from the counter QR code, its profile or the chat, sees the position and a wait range, and can leave. A card in the chat shows the place while it is active (ADR 0107).",
+  "types": {
+    "QueuePlace": {
+      "id": {
+        "type": "string",
+        "description": "Place ID."
+      },
+      "customerUserId": {
+        "type": "string",
+        "description": "Signed-in customer. Absent for a name-only walk-in.",
+        "optional": true
+      },
+      "customerName": {
+        "type": "string",
+        "description": "Name-only walk-in typed by the owner.",
+        "optional": true
+      },
+      "serviceId": {
+        "type": "string",
+        "description": "Optional catálogo service.",
+        "optional": true
+      },
+      "status": {
+        "type": "enum",
+        "description": "Status from bipe-api.",
+        "values": [
+          "waiting",
+          "called",
+          "served",
+          "noShow",
+          "left"
+        ]
+      },
+      "joinedAt": {
+        "type": "date",
+        "description": "When the place joined."
+      },
+      "calledAt": {
+        "type": "date",
+        "description": "When it was last called.",
+        "optional": true
+      }
+    }
+  },
+  "state": {
+    "business": {
+      "type": "string",
+      "description": "Handle or Matrix ID."
+    },
+    "open": {
+      "type": "bool",
+      "description": "GET /v1/businesses/{business}/queue open."
+    },
+    "place": {
+      "type": "QueuePlace",
+      "description": "The caller's active place from GET .../queue/me.",
+      "optional": true
+    },
+    "position": {
+      "type": "int",
+      "description": "0 when called; from 1 while waiting.",
+      "optional": true
+    },
+    "waitMin": {
+      "type": "int",
+      "description": "Wait range lower bound in minutes.",
+      "optional": true
+    },
+    "waitMax": {
+      "type": "int",
+      "description": "Wait range upper bound in minutes.",
+      "optional": true
+    }
+  },
+  "actions": {
+    "load": {
+      "effect": "Reads the queue and the caller's place. While the screen or the chat card shows and the place is active, reads again every 30 seconds."
+    },
+    "join": {
+      "effect": "POST .../queue/join. already_in_queue shows bipe_queue_error_already_joined; queue_closed shows bipe_queue_closed. Success shows bipe_queue_joined."
+    },
+    "leave": {
+      "effect": "Asks bipe_queue_leave_confirm, then POST .../queue/places/{id}/leave."
+    }
+  },
+  "strings": [
+    "bipe_queue_title",
+    "bipe_queue_join",
+    "bipe_queue_leave",
+    "bipe_queue_leave_confirm",
+    "bipe_queue_position",
+    "bipe_queue_position_number",
+    "bipe_queue_wait",
+    "bipe_queue_wait_range",
+    "bipe_queue_wait_unknown",
+    "bipe_queue_estimate_hint",
+    "bipe_queue_called",
+    "bipe_queue_closed",
+    "bipe_queue_joined",
+    "bipe_queue_error_already_joined",
+    "bipe_queue_error_inactive",
+    "bipe_queue_error",
+    "bipe_queue_load_failed",
+    "bipe_app_cancel"
+  ],
+  "sdk": [],
+  "parity": [
+    "queue"
+  ],
+  "notes": [
+    "The counter QR code holds https://bipe.chat/@<handle>?fila. The app opens queue-customer for it; the site shows the profile with Baixe o Bipe.",
+    "Bipe never asks for the customer's location (ADR 0107).",
+    "The wait is a range and an estimate (bipe_queue_estimate_hint); with no data it says bipe_queue_wait_unknown, never zero.",
+    "Push when 2 people are ahead and when called waits for the push path (bipe-chat/bipe#320); until then the screen reads again while open."
+  ]
+}

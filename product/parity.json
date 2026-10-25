@@ -306,9 +306,28 @@
         "status": "n/a",
         "reason": "Sign-up and recovery are in the apps"
       },
-      "server": "planned",
-      "ios-new": "planned",
-      "android-new": "planned",
+      "server": {
+        "status": "built",
+        "evidence": [
+          "bipe-api/src/transfer.ts",
+          "bipe-api/src/accounts.ts"
+        ]
+      },
+      "ios-new": {
+        "status": "built",
+        "evidence": [
+          "bipe-app/ios/BipeKit/Sources/BipeKit/BipeKeychainMove.swift",
+          "bipe-app/ios/Bipe/Account/KeychainMove.swift",
+          "bipe-app/ios/Bipe/Recovery/RecoveryReminder.swift"
+        ]
+      },
+      "android-new": {
+        "status": "built",
+        "evidence": [
+          "bipe-app/android/app/src/main/kotlin/chat/bipe/app/recovery/RecoveryReminder.kt",
+          "bipe-app/android/libraries/bipe/src/main/kotlin/chat/bipe/shared/account/BipeRecoveryReminder.kt"
+        ]
+      },
       "note": "bipe/docs/team-transfer-recovery.md: iOS moves its keychain items into the app-group group; both apps show the recovery reminder and the add-e-mail screen; the server records the moves and counts the share"
     },
     {
@@ -367,6 +386,29 @@
       "ios-new": "planned",
       "android-new": "planned",
       "note": "BadgeVerifier exists on both apps, nothing shows a seal"
+    },
+    {
+      "id": "trust-facts",
+      "name": "Identity proof, personal confirmation and identity changes shown apart in a profile (ADR 0074, bipe#227, bipe#229)",
+      "issue": 227,
+      "ios": {
+        "status": "n/a",
+        "reason": "Not built in the fork; the forks are frozen (ADR 0155)"
+      },
+      "android": {
+        "status": "n/a",
+        "reason": "Not built in the fork; the forks are frozen (ADR 0155)"
+      },
+      "web": {
+        "status": "n/a",
+        "reason": "No web chat (ADR 0004); the site shows a demo at most"
+      },
+      "server": {
+        "status": "n/a",
+        "reason": "Runs on the device; the rules are registries/trust-facts.json"
+      },
+      "ios-new": "planned",
+      "android-new": "planned"
     },
     {
       "id": "cnpj-badge",
@@ -508,9 +550,27 @@
         "status": "n/a",
         "reason": "No web chat (ADR 0004); the site shows a demo at most"
       },
-      "server": "planned",
-      "ios-new": "planned",
-      "android-new": "planned"
+      "server": {
+        "status": "built",
+        "evidence": [
+          "bipe-api/src/news.ts",
+          "bipe-api/src/matrix-bot.ts"
+        ]
+      },
+      "ios-new": {
+        "status": "built",
+        "evidence": [
+          "bipe-app/ios/BipeKit/Sources/BipeKit/BipeNews.swift",
+          "bipe-app/ios/Bipe/Notifications/NotificationSettingsModel.swift"
+        ]
+      },
+      "android-new": {
+        "status": "built",
+        "evidence": [
+          "bipe-app/android/libraries/bipe/src/main/kotlin/chat/bipe/shared/settings/BipeNews.kt",
+          "bipe-app/android/app/src/main/kotlin/chat/bipe/app/notifications/NotificationSettingsModel.kt"
+        ]
+      }
     },
     {
       "id": "lookalikes",

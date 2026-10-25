@@ -143,10 +143,12 @@ paths:
               schema: { $ref: "#/components/schemas/VerificationStatus" }
   /v1/attest/challenge:
     post:
-      summary: One-time App Attest challenge for sign-up (valid 5 minutes, single use)
+      summary: One-time attestation challenge for sign-up (valid 5 minutes, single use)
       description: >
-        No auth. The iOS app hashes the UTF-8 bytes of the challenge (SHA-256) and passes
-        that as clientDataHash to DCAppAttestService.attestKey. Rate-limited per IP.
+        No auth. iOS: the app hashes the UTF-8 bytes of the challenge (SHA-256) and passes
+        that as clientDataHash to DCAppAttestService.attestKey. Android: the app passes the
+        UTF-8 bytes of the challenge to KeyGenParameterSpec.Builder.setAttestationChallenge
+        for a new Android Keystore key (Key Attestation, ADR 0043). Rate-limited per IP.
       responses:
         "200":
           description: Challenge
@@ -4445,11 +4447,24 @@ components:
         terms_version: { type: string, description: "The current legalVersion (ADR 0113). The only value POST /v1/signup and POST /v1/me/terms accept." }
     Attestation:
       type: object
-      required: [key_id, attestation_object, challenge]
-      description: Apple App Attest result. Required while the server runs with SIGNUP_ATTEST_REQUIRED (not false). Android uses Play Integrity later.
+      required: [challenge]
+      description: >
+        Device check at sign-up (ADR 0022, ADR 0043). Exactly one form: iOS sends key_id and attestation_object
+        (Apple App Attest); Android sends key_attestation_chain (Android Key Attestation, no Google library,
+        bipe-chat/bipe#92). Anything else is bad_request. A given iOS attestation must be valid, else attestation_invalid.
+        Android: a chain that does not verify (not signed up to a Google attestation root, revoked, other challenge,
+        other app) is attestation_invalid. A valid chain from a phone that is not attested (software keystore,
+        boot state not verified, unlocked bootloader) counts as no attestation: the sign-up goes on unless the server
+        requires one (SIGNUP_ATTEST_REQUIRED, company accounts). The server keeps the result; the app never decides it.
       properties:
-        key_id: { type: string, description: "Base64 key ID from DCAppAttestService.generateKey" }
-        attestation_object: { type: string, description: "Base64 attestation object" }
+        key_id: { type: string, description: "iOS. Base64 key ID from DCAppAttestService.generateKey" }
+        attestation_object: { type: string, description: "iOS. Base64 attestation object" }
+        key_attestation_chain:
+          type: array
+          minItems: 2
+          maxItems: 8
+          description: "Android. Standard base64 of each DER certificate from KeyStore.getCertificateChain(alias), leaf first, root last."
+          items: { type: string, maxLength: 8192 }
         challenge: { type: string, description: "From POST /v1/attest/challenge" }
     MessagingSetting:
       type: object

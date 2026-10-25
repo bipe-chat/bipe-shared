@@ -101,8 +101,11 @@ const NOT_IN_APPS = {
 
 // Known gaps: "<platform>:<Schema>" or "<platform>:<Schema>.<field>" -> issue. Remove the entry when the gap closes.
 const GAPS = {
-  "android:Attestation": "bipe-chat/bipe#92 (Play Integrity)",
-  "android:SignupRequest.attestation": "bipe-chat/bipe#92 (Play Integrity)",
+  // The fork is frozen (ADR 0155). Bipe Next sends Key Attestation from bipe-app (bipe-chat/bipe#92).
+  "android:Attestation": "bipe-chat/bipe#92 (Key Attestation in bipe-app; the fork is frozen)",
+  "android:SignupRequest.attestation": "bipe-chat/bipe#92 (Key Attestation in bipe-app; the fork is frozen)",
+  // Android-only field: iOS sends Apple App Attest (key_id, attestation_object) instead.
+  "ios:Attestation.key_attestation_chain": "bipe-chat/bipe#92 (Android-only field)",
   "ios:Error.error.cnpj_invalid": "bipe-chat/bipe#115 (business UI in the apps)",
   "ios:Error.error.cnpj_not_active": "bipe-chat/bipe#115 (business UI in the apps)",
   "ios:Error.error.cnpj_taken": "bipe-chat/bipe#115 (business UI in the apps)",

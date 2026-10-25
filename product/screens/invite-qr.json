@@ -6,6 +6,7 @@
   "state": {
     "inviteId": { "type": "string", "description": "The pending invite." },
     "link": { "type": "url", "description": "The invite link kept on this phone (https://bipe.chat/convite/<code>). The QR code holds exactly this URL." },
+    "code": { "type": "string", "description": "The invite code from link (BipeInviteLink.normalizedCode), shown under the QR code in monospace with the label bipe_signup_invite_code. The other person can read it and type it on signup-invite-code." },
     "name": { "type": "string", "optional": true, "description": "Invite.name, the screen title when present." },
     "expiresAt": { "type": "date", "description": "Invite.expires_at, for bipe_invites_expires (date only)." }
   },
@@ -18,6 +19,7 @@
   },
   "strings": [
     "bipe_invites_link",
+    "bipe_signup_invite_code",
     "bipe_invites_expires",
     "bipe_invites_qr_footer",
     "bipe_invites_share_message",

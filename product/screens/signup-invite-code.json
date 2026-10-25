@@ -20,6 +20,9 @@
     "pasteCode": {
       "effect": "Reads the clipboard once, only after a tap (iOS: the system PasteButton, so no paste prompt; Android: a text button with bipe_onboarding_paste_invite). The text becomes code, then submit runs. Text with no code ends in phase invalid, as for typed text."
     },
+    "scanCode": {
+      "effect": "bipe_onboarding_scan_invite opens a sheet with the camera (bipe_app_invite_scan_title, bipe_app_invite_scan_body, the same QR reader as link-computer-scan) and bipe_app_cancel. The first QR code read closes the sheet; its text becomes code, then submit runs, as for pasteCode. Text with no code ends in phase invalid. Camera denied: bipe_camera_permission_body and a button to the app settings."
+    },
     "submit": {
       "effect": "Takes the code from the text and runs GET /v1/invites/{code}. valid true: goes to signup-name with the invite. valid false: phase invalid. Continue is off while code is blank."
     },
@@ -32,6 +35,13 @@
     "bipe_invite_code_body",
     "bipe_signup_invite_code",
     "bipe_onboarding_paste_invite",
+    "bipe_onboarding_scan_invite",
+    "bipe_app_invite_scan_title",
+    "bipe_app_invite_scan_body",
+    "bipe_camera_permission_body",
+    "bipe_contacts_open_settings",
+    "bipe_contacts_open_settings_android",
+    "bipe_app_cancel",
     "bipe_action_continue",
     "bipe_invite_code_none",
     "bipe_app_invite_checking",

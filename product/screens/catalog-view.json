@@ -1,0 +1,125 @@
+{
+  "id": "catalog-view",
+  "title": "Catálogo",
+  "flow": "business",
+  "summary": "The customer opens a business's catálogo from its profile or the chat: items grouped by category with photo, name and price, and an item detail with the description (ADR 0104).",
+  "types": {
+    "CatalogItem": {
+      "id": {
+        "type": "string",
+        "description": "Item ID."
+      },
+      "kind": {
+        "type": "enum",
+        "description": "Service or product.",
+        "values": [
+          "service",
+          "product"
+        ]
+      },
+      "name": {
+        "type": "string",
+        "description": "Name."
+      },
+      "priceText": {
+        "type": "string",
+        "description": "Display price: the business's text, bipe_catalog_price_from with it, or bipe_catalog_price_on_request."
+      },
+      "description": {
+        "type": "string",
+        "description": "Plain text. Links are never clickable (security rule 10).",
+        "optional": true
+      },
+      "category": {
+        "type": "string",
+        "description": "Group heading. Items with none go under bipe_catalog_uncategorised.",
+        "optional": true
+      },
+      "photoUrl": {
+        "type": "url",
+        "description": "Public photo URL from bipe-api.",
+        "optional": true
+      },
+      "active": {
+        "type": "bool",
+        "description": "Shown to customers."
+      },
+      "soldOutToday": {
+        "type": "bool",
+        "description": "Esgotado hoje."
+      }
+    }
+  },
+  "state": {
+    "business": {
+      "type": "string",
+      "description": "Handle or Matrix ID."
+    },
+    "items": {
+      "type": "list",
+      "description": "GET /v1/businesses/{business}/catalog, in the business's order.",
+      "of": {
+        "type": "CatalogItem",
+        "description": "One active item."
+      }
+    },
+    "selected": {
+      "type": "string",
+      "description": "Item ID of the open detail.",
+      "optional": true
+    },
+    "loading": {
+      "type": "bool",
+      "description": "true while loading."
+    }
+  },
+  "actions": {
+    "load": {
+      "effect": "Reads the catalogue. A failure shows bipe_catalog_load_failed with bipe_app_retry."
+    },
+    "openItem": {
+      "effect": "Shows the item detail.",
+      "params": {
+        "itemId": {
+          "type": "string",
+          "description": "The item."
+        }
+      }
+    },
+    "book": {
+      "effect": "For a service when the business can take bookings: opens agenda-book with the service picked.",
+      "params": {
+        "itemId": {
+          "type": "string",
+          "description": "The service."
+        }
+      }
+    }
+  },
+  "strings": [
+    "bipe_catalog_title",
+    "bipe_catalog_empty",
+    "bipe_catalog_sold_out_today",
+    "bipe_catalog_price_from",
+    "bipe_catalog_price_on_request",
+    "bipe_catalog_uncategorised",
+    "bipe_catalog_kind_service",
+    "bipe_catalog_kind_product",
+    "bipe_catalog_load_failed",
+    "bipe_catalog_item_open_a11y",
+    "bipe_catalog_photo_a11y",
+    "bipe_agenda_book",
+    "bipe_agenda_duration",
+    "bipe_app_retry",
+    "bipe_app_close"
+  ],
+  "sdk": [],
+  "parity": [
+    "catalog"
+  ],
+  "notes": [
+    "No search across businesses: the catálogo is not a marketplace (ADR 0104).",
+    "Prices are text. Bipe moves no money (ADR 0012).",
+    "Descriptions render as plain text with no link detection."
+  ]
+}

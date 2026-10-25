@@ -6,6 +6,8 @@ info:
     Verification, badges and directories. Skeleton contract: shapes are stable
     identifiers shared by iOS, Android and the web console. Auth: Matrix access
     token validated against MAS (OIDC).
+    Business tool routes /v1/businesses/{handle}/... take the company's @handle or, for a company with no handle,
+    its Matrix ID (percent-encoded). Any other account answers 404 not_found.
 servers:
   - url: https://api.bipe.net.br
 paths:
@@ -1788,6 +1790,40 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/Catalog"
+        default: { $ref: "#/components/responses/AgendaError" }
+  /v1/businesses/{handle}/catalog/items/{itemId}/photo:
+    get:
+      summary: "Read the public photo of a catalogue item"
+      operationId: "getV1BusinessesHandleCatalogItemsItemIdPhoto"
+      tags:
+        - "Catálogo"
+      security: []
+      description: "Public, rate limited per IP. CatalogItem.photo links here with ?v=<version>; a new photo gets a new version. Active items only. The JPEG was stripped of APPn and COM metadata on upload. handle may also be the company's Matrix ID."
+      parameters:
+        -
+          name: "handle"
+          in: "path"
+          required: true
+          schema:
+            type: "string"
+            minLength: 1
+            maxLength: 255
+        -
+          name: "itemId"
+          in: "path"
+          required: true
+          schema:
+            type: "string"
+            minLength: 1
+            maxLength: 128
+      responses:
+        "200":
+          description: "The photo"
+          content:
+            image/jpeg:
+              schema:
+                type: "string"
+                format: "binary"
         default: { $ref: "#/components/responses/AgendaError" }
   /v1/me/business/catalog/items/{itemId}/photo:
     put:

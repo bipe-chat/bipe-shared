@@ -1,0 +1,19 @@
+{
+  "$comment": "Work side opening hours (bipe-chat/bipe#511, registries/work-hours.json). Reference: isWithinWorkHours() in tools/lib/registries.mjs. Each case: the account's days and time zone, an instant in UTC, and whether it falls inside the hours. Ranges are half-open.",
+  "version": 1,
+  "cases": [
+    { "name": "weekday morning inside", "timeZone": "America/Sao_Paulo", "days": [{ "day": 1, "ranges": [{ "start": "08:00", "end": "18:00" }] }], "at": "2026-10-26T13:00:00Z", "open": true },
+    { "name": "start is inside", "timeZone": "America/Sao_Paulo", "days": [{ "day": 1, "ranges": [{ "start": "08:00", "end": "18:00" }] }], "at": "2026-10-26T11:00:00Z", "open": true },
+    { "name": "end is outside", "timeZone": "America/Sao_Paulo", "days": [{ "day": 1, "ranges": [{ "start": "08:00", "end": "18:00" }] }], "at": "2026-10-26T21:00:00Z", "open": false },
+    { "name": "one minute before end", "timeZone": "America/Sao_Paulo", "days": [{ "day": 1, "ranges": [{ "start": "08:00", "end": "18:00" }] }], "at": "2026-10-26T20:59:00Z", "open": true },
+    { "name": "before start", "timeZone": "America/Sao_Paulo", "days": [{ "day": 1, "ranges": [{ "start": "08:00", "end": "18:00" }] }], "at": "2026-10-26T10:59:00Z", "open": false },
+    { "name": "day without ranges is closed", "timeZone": "America/Sao_Paulo", "days": [{ "day": 1, "ranges": [{ "start": "08:00", "end": "18:00" }] }], "at": "2026-10-25T14:00:00Z", "open": false },
+    { "name": "local weekday, not UTC weekday", "timeZone": "America/Sao_Paulo", "days": [{ "day": 7, "ranges": [{ "start": "20:00", "end": "24:00" }] }], "at": "2026-10-26T01:30:00Z", "open": true },
+    { "name": "midnight end", "timeZone": "America/Sao_Paulo", "days": [{ "day": 7, "ranges": [{ "start": "20:00", "end": "24:00" }] }], "at": "2026-10-26T02:59:00Z", "open": true },
+    { "name": "lunch break between two ranges", "timeZone": "America/Sao_Paulo", "days": [{ "day": 3, "ranges": [{ "start": "08:00", "end": "12:00" }, { "start": "13:00", "end": "18:00" }] }], "at": "2026-10-28T15:30:00Z", "open": false },
+    { "name": "afternoon range", "timeZone": "America/Sao_Paulo", "days": [{ "day": 3, "ranges": [{ "start": "08:00", "end": "12:00" }, { "start": "13:00", "end": "18:00" }] }], "at": "2026-10-28T16:00:00Z", "open": true },
+    { "name": "another time zone", "timeZone": "America/Manaus", "days": [{ "day": 1, "ranges": [{ "start": "08:00", "end": "18:00" }] }], "at": "2026-10-26T11:30:00Z", "open": false },
+    { "name": "another time zone inside", "timeZone": "America/Manaus", "days": [{ "day": 1, "ranges": [{ "start": "08:00", "end": "18:00" }] }], "at": "2026-10-26T12:00:00Z", "open": true },
+    { "name": "no days at all", "timeZone": "America/Sao_Paulo", "days": [], "at": "2026-10-26T12:00:00Z", "open": false }
+  ]
+}

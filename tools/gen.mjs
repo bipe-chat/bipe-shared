@@ -179,6 +179,18 @@ public enum BipeRegistries {
     public static let phoneMaxInputLength = ${reg.phones.maxInputLength}
     public static let phoneInternationalMinDigits = ${reg.phones.internationalMinDigits}
     public static let phoneInternationalMaxDigits = ${reg.phones.internationalMaxDigits}
+    /// Yearly confirmation of a linked number (bipe-chat/bipe#470): findable for this many months after the last proof,
+    /// and the apps warn this many days before confirm_by.
+    public static let phoneLinkConfirmMonths = ${reg.phones.linkConfirmMonths}
+    public static let phoneLinkConfirmWarnDays = ${reg.phones.linkConfirmWarnDays}
+
+    /// Work side opening hours (registries/work-hours.json, bipe-chat/bipe#511).
+    public static let workHoursDefaultTimeZone = ${swiftString(reg.workHours.defaultTimeZone)}
+    public static let workHoursMaxRangesPerDay = ${reg.workHours.maxRangesPerDay}
+    /// ISO weekday (1 Monday ... 7 Sunday) and its ranges, local HH:MM, half-open.
+    public static let workHoursDefaultDays: [(day: Int, ranges: [(start: String, end: String)])] = [
+${reg.workHours.defaultDays.map((d) => `        (day: ${d.day}, ranges: [${d.ranges.map((r) => `(start: ${swiftString(r.start)}, end: ${swiftString(r.end)})`).join(", ")}]),`).join("\n")}
+    ]
 
     /// Device-first accounts (ADR 0057, ADR 0059; registries/accounts.json). Check PINs with the rule there;
     /// test-vectors/pins.json has the cases. The server is the authority.
@@ -219,6 +231,9 @@ public enum BipeRegistries {
     public static let privacyPath = ${swiftString(reg.legal.privacyPath)}
     public static let enTermsPath = ${swiftString(reg.legal.enTermsPath)}
     public static let enPrivacyPath = ${swiftString(reg.legal.enPrivacyPath)}
+    /// The site home pages that onboarding-welcome learnMore opens.
+    public static let homePath = ${swiftString(reg.legal.homePath)}
+    public static let enHomePath = ${swiftString(reg.legal.enHomePath)}
 
     /// Badge signing keys a release build trusts (ADR 0123; registries/badge-keys.json): kid to raw Ed25519 public key, base64url.
     public static let badgeKeys: [String: String] = ${Object.keys(reg.badgeKeys.keys).length ? swiftMap(reg.badgeKeys.keys) : "[:]"}
@@ -235,6 +250,10 @@ public enum BipeRegistries {
     public static let pixMarkRelType = ${swiftString(reg.pixMarks.relType)}
     public static let pixE2eIdPattern = ${swiftString(reg.pixMarks.e2eIdPattern)}
     public static let pixTxidMaxLength = ${reg.pixMarks.txidMaxLength}
+
+    /// Data use (bipe-chat/bipe#242; registries/data-use.json): the budget of a normal day and the default of the data saver switch.
+    public static let dataUseBudgetMegabytesPerDay = ${reg.dataUse.budgetMegabytesPerDay}
+    public static let dataSaverDefault = ${reg.dataUse.dataSaverDefault}
 }
 `;
 }
@@ -444,6 +463,17 @@ object BipeRegistries {
     const val PHONE_MAX_INPUT_LENGTH = ${reg.phones.maxInputLength}
     const val PHONE_INTERNATIONAL_MIN_DIGITS = ${reg.phones.internationalMinDigits}
     const val PHONE_INTERNATIONAL_MAX_DIGITS = ${reg.phones.internationalMaxDigits}
+    /** Yearly confirmation of a linked number (bipe-chat/bipe#470): months findable, and the warning days before confirm_by. */
+    const val PHONE_LINK_CONFIRM_MONTHS = ${reg.phones.linkConfirmMonths}
+    const val PHONE_LINK_CONFIRM_WARN_DAYS = ${reg.phones.linkConfirmWarnDays}
+
+    /** Work side opening hours (registries/work-hours.json, bipe-chat/bipe#511). */
+    const val WORK_HOURS_DEFAULT_TIME_ZONE = ${kotlinString(reg.workHours.defaultTimeZone)}
+    const val WORK_HOURS_MAX_RANGES_PER_DAY = ${reg.workHours.maxRangesPerDay}
+    /** ISO weekday (1 Monday ... 7 Sunday) and its ranges, local HH:MM, half-open. */
+    val workHoursDefaultDays: List<Pair<Int, List<Pair<String, String>>>> = listOf(
+${reg.workHours.defaultDays.map((d) => `        ${d.day} to listOf(${d.ranges.map((r) => `${kotlinString(r.start)} to ${kotlinString(r.end)}`).join(", ")}),`).join("\n")}
+    )
 
     /**
      * Device-first accounts (ADR 0057, ADR 0059; registries/accounts.json). Check PINs with the rule there;
@@ -491,6 +521,9 @@ object BipeRegistries {
     const val PRIVACY_PATH = ${kotlinString(reg.legal.privacyPath)}
     const val EN_TERMS_PATH = ${kotlinString(reg.legal.enTermsPath)}
     const val EN_PRIVACY_PATH = ${kotlinString(reg.legal.enPrivacyPath)}
+    // The site home pages that onboarding-welcome learnMore opens.
+    const val HOME_PATH = ${kotlinString(reg.legal.homePath)}
+    const val EN_HOME_PATH = ${kotlinString(reg.legal.enHomePath)}
 
     /** Badge signing keys a release build trusts (ADR 0123; registries/badge-keys.json): kid to raw Ed25519 public key, base64url. */
     val badgeKeys: Map<String, String> = ${kotlinList("mapOf", Object.entries(reg.badgeKeys.keys).map(([k, v]) => `${kotlinString(k)} to ${kotlinString(v)}`))}
@@ -507,6 +540,10 @@ object BipeRegistries {
     const val PIX_MARK_REL_TYPE = ${kotlinString(reg.pixMarks.relType)}
     const val PIX_E2E_ID_PATTERN = ${kotlinString(reg.pixMarks.e2eIdPattern)}
     const val PIX_TXID_MAX_LENGTH = ${reg.pixMarks.txidMaxLength}
+
+    /** Data use (bipe-chat/bipe#242; registries/data-use.json): the budget of a normal day and the default of the data saver switch. */
+    const val DATA_USE_BUDGET_MEGABYTES_PER_DAY = ${reg.dataUse.budgetMegabytesPerDay}
+    const val DATA_SAVER_DEFAULT = ${reg.dataUse.dataSaverDefault}
 }
 `;
 }

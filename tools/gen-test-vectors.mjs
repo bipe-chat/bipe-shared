@@ -4,7 +4,7 @@ import { createPrivateKey, createPublicKey, sign } from "node:crypto";
 import { mkdirSync, readFileSync, writeFileSync } from "node:fs";
 import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
-import { buildBrCode, crc16, pixCheck } from "./lib/pix.mjs";
+import { buildBrCode, crc16, pixCheck, pixMarkLines, pixTxid } from "./lib/pix.mjs";
 import { cvmLines } from "./lib/cvm.mjs";
 import { loadSchedulingVectors, writeSchedulingApiFixture } from "./lib/scheduling-vectors.mjs";
 import { photoDistance, photoHash, photoMatches, relationshipNameWarning, newestDmRooms, clearedChatHidden, clearedChatKeepsEvent, clearedChatMarker, clearedChatsWithClear, compareAppVersions, extractInviteCode, handleProblem, pinProblem, remoteBannerState, normalizeCnpj, normalizePhone, handleSkeleton, loadRegistries, normalize, scamMatchIDs, scamWarningKind, trustFacts } from "./lib/registries.mjs";
@@ -402,6 +402,16 @@ write("cleared-chats.json", {
   hidden: clearedFixture.hidden.map((c) => ({ ...c, expected: clearedChatHidden(c.marker, c.latest_ts) })),
   keeps: clearedFixture.keeps.map((c) => ({ ...c, expected: clearedChatKeepsEvent(c.marker, c.event_ts) })),
   clear: clearedFixture.clear.map((c) => ({ ...c, expected: clearedChatsWithClear(c.content, c.room_id, c.ts) })),
+});
+
+// --- Pix request marks (ADR 0046, bipe-chat/bipe#130) -------------------------
+
+const pixMarksFixture = JSON.parse(readFileSync(join(root, "fixtures/pix-marks.json"), "utf8"));
+write("pix-marks.json", {
+  $comment: pixMarksFixture.$comment,
+  event_type: reg.pixMarks.eventType,
+  lines: pixMarksFixture.lines.map((c) => ({ ...c, expected: pixMarkLines(c.card, c.events, reg.pixMarks) })),
+  txid: pixMarksFixture.txid.map((c) => ({ ...c, expected: pixTxid(c.request_id, reg.pixMarks) })),
 });
 
 // --- One DM per person (ADR 0141) ------------------------------------------

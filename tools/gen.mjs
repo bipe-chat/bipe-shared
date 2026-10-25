@@ -223,6 +223,12 @@ public enum BipeRegistries {
     /// Image descriptions (bipe-chat/bipe#501; registries/image-descriptions.json): the m.image content field and its length limit.
     public static let imageDescriptionField = ${swiftString(reg.imageDescriptions.field)}
     public static let imageDescriptionMaxLength = ${reg.imageDescriptions.maxLength}
+
+    /// Pix request marks (ADR 0046, bipe-chat/bipe#130; registries/pix-marks.json). Rules: BipePixMarks, test-vectors/pix-marks.json.
+    public static let pixMarkEventType = ${swiftString(reg.pixMarks.eventType)}
+    public static let pixMarkRelType = ${swiftString(reg.pixMarks.relType)}
+    public static let pixE2eIdPattern = ${swiftString(reg.pixMarks.e2eIdPattern)}
+    public static let pixTxidMaxLength = ${reg.pixMarks.txidMaxLength}
 }
 `;
 }
@@ -480,6 +486,12 @@ object BipeRegistries {
     /** Image descriptions (bipe-chat/bipe#501; registries/image-descriptions.json): the m.image content field and its length limit. */
     const val IMAGE_DESCRIPTION_FIELD = ${kotlinString(reg.imageDescriptions.field)}
     const val IMAGE_DESCRIPTION_MAX_LENGTH = ${reg.imageDescriptions.maxLength}
+
+    /** Pix request marks (ADR 0046, bipe-chat/bipe#130; registries/pix-marks.json). Rules: PixMarks, test-vectors/pix-marks.json. */
+    const val PIX_MARK_EVENT_TYPE = ${kotlinString(reg.pixMarks.eventType)}
+    const val PIX_MARK_REL_TYPE = ${kotlinString(reg.pixMarks.relType)}
+    const val PIX_E2E_ID_PATTERN = ${kotlinString(reg.pixMarks.e2eIdPattern)}
+    const val PIX_TXID_MAX_LENGTH = ${reg.pixMarks.txidMaxLength}
 }
 `;
 }

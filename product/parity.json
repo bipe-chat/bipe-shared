@@ -2426,15 +2426,39 @@
       "id": "account-deletion",
       "name": "Delete the account in the app, with a 72-hour wait (ADR 0140)",
       "issue": 528,
-      "ios": "planned",
-      "android": "planned",
+      "ios": {
+        "status": "n/a",
+        "reason": "Not built in the fork; the forks are frozen (ADR 0155)"
+      },
+      "android": {
+        "status": "n/a",
+        "reason": "Not built in the fork; the forks are frozen (ADR 0155)"
+      },
       "web": {
         "status": "n/a",
         "reason": "In the apps only; the privacy policy says how"
       },
-      "server": "planned",
-      "ios-new": "planned",
-      "android-new": "planned"
+      "server": {
+        "status": "built",
+        "evidence": [
+          "bipe-api/src/deletion.ts",
+          "bipe-api/src/synapse-admin.ts"
+        ]
+      },
+      "ios-new": {
+        "status": "built",
+        "evidence": [
+          "bipe-app/ios/Bipe/Settings/AccountDeleteView.swift",
+          "bipe-app/ios/Bipe/Recovery/RecoveryAlertView.swift"
+        ]
+      },
+      "android-new": {
+        "status": "built",
+        "evidence": [
+          "bipe-app/android/app/src/main/kotlin/chat/bipe/app/settings/AccountDelete.kt",
+          "bipe-app/android/app/src/main/kotlin/chat/bipe/app/recovery/RecoveryAlert.kt"
+        ]
+      }
     },
     {
       "id": "data-export",

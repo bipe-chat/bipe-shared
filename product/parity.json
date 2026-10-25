@@ -1172,7 +1172,14 @@
           "bipe-app/ios/Bipe/Signup/SignupFlowModel.swift"
         ]
       },
-      "android-new": "planned",
+      "android-new": {
+        "status": "built",
+        "evidence": [
+          "bipe-app/android/app/src/main/kotlin/chat/bipe/app/signup/SignupFlowModel.kt",
+          "bipe-app/android/app/src/main/kotlin/chat/bipe/app/signup/InstallReferrerInvite.kt",
+          "bipe-app/android/app/src/play/kotlin/chat/bipe/app/signup/InstallReferrers.kt"
+        ]
+      },
       "issue": 599
     },
     {

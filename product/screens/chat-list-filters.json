@@ -2,7 +2,7 @@
   "id": "chat-list-filters",
   "title": "Chat list tabs, filters and empty states",
   "flow": "home",
-  "summary": "Splits the chat list into the Conversas and Grupos tabs (ADR 0053) with an Unread filter on each, shows group invites at the top of Grupos, and gives each empty case its own message.",
+  "summary": "Splits the chat list into the Conversas and Grupos tabs (ADR 0053), shows group invites at the top of Grupos, and gives each empty case its own message. No filter chips (MZ decision 25 Oct 2026, bipe#592).",
   "types": {
     "GroupInvite": {
       "roomId": { "type": "string", "description": "The invited group." },
@@ -17,7 +17,6 @@
       "values": ["chats", "groups"],
       "description": "chats: DMs (RoomInfo.isDm). groups: every other joined room."
     },
-    "unreadOnly": { "type": "bool", "description": "The Unread filter of the current tab." },
     "groupInvites": {
       "type": "list",
       "of": { "type": "GroupInvite", "description": "One invite." },
@@ -25,7 +24,7 @@
     },
     "empty": {
       "type": "enum",
-      "values": ["none", "noChats", "noGroups", "noUnread"],
+      "values": ["none", "noChats", "noGroups"],
       "description": "Which empty message shows. none: the list has rows."
     },
     "chatsBadge": { "type": "int", "description": "Tab badge of Conversas: unread DMs." },
@@ -34,10 +33,7 @@
   "actions": {
     "selectTab": {
       "params": { "tab": { "type": "string", "description": "chats or groups." } },
-      "effect": "Switches the tab and sets the room list filter. unreadOnly is kept per tab."
-    },
-    "toggleUnread": {
-      "effect": "Turns the Unread filter of the current tab on or off."
+      "effect": "Switches the tab and sets the room list filter."
     },
     "acceptInvite": {
       "params": { "roomId": { "type": "string", "description": "The group invite." } },
@@ -54,12 +50,10 @@
   "strings": [
     "bipe_tab_chats",
     "bipe_tab_groups",
-    "bipe_app_chat_list_filter_unread",
     "bipe_chats_empty_title",
     "bipe_chats_empty_body",
     "bipe_action_start_chat",
     "bipe_app_groups_empty",
-    "bipe_app_chat_list_no_unread",
     "bipe_group_notification_room_invite_body_with_sender",
     "bipe_app_request_accept",
     "bipe_app_request_decline",
@@ -72,7 +66,6 @@
     "RoomListDynamicEntriesController.addOnePage",
     "RoomListEntriesDynamicFilterKind",
     "RoomCategory",
-    "ReadReceiptsCategory",
     "Room.roomInfo",
     "RoomInfo",
     "Room.join",
@@ -81,15 +74,14 @@
   ],
   "parity": ["requests", "dm-delete", "dm-one-row"],
   "notes": [
-    "Filters: chats is All of Joined, NonSpace, DeduplicateVersions and Category People; groups is the same with Category Group. Unread adds ReadReceipts with ReadReceiptsCategory Messages (unread messages, or marked unread). The Category rule follows RoomInfo.isDm (ADR 0141: one DM test), so a DM with a third member moves to groups.",
+    "Filters: chats is All of Joined, NonSpace, DeduplicateVersions and Category People; groups is the same with Category Group. The Category rule follows RoomInfo.isDm (ADR 0141: one DM test), so a DM with a third member moves to groups.",
     "ADR 0053: a group of two that is not a DM stays in groups. The self-chat shows in neither tab; it is the first item of Você.",
     "Two DMs with one person (ADR 0141): the list keeps only the newest room; the older one is hidden, not deleted.",
     "Cleared DMs stay hidden until a new message arrives (dm-delete spec, clearedChatHidden). Move, do not rewrite: BipeKit ClearedChats.swift, libraries/bipe clearedchats/ClearedChats.kt; rules in registries/cleared-chats.json and test-vectors/cleared-chats.json.",
     "Requests (DM invites) never show in either tab; the requests row of chat-requests sits at the top of Conversas.",
     "Group invite rows use bipe_group_notification_room_invite_body_with_sender with the inviter name, and Accept and Decline buttons.",
-    "Empty states: noChats is bipe_chats_empty_title, bipe_chats_empty_body and the bipe_action_start_chat button. noGroups is bipe_app_groups_empty. noUnread is bipe_app_chat_list_no_unread, with a tap that turns the filter off.",
-    "The filter chips are only Unread: no favourites, low priority or people and rooms chips (plan section 4, ADR 0141).",
-    "An Unread chip that is on shows a check before its label, so the state does not depend on colour (bipe#497), and screen readers read it as selected.",
+    "Empty states: noChats is bipe_chats_empty_title, bipe_chats_empty_body and the bipe_action_start_chat button. noGroups is bipe_app_groups_empty.",
+    "No filter chips (MZ decision 25 Oct 2026, bipe#592): the Unread (Não lidas) chip is gone, so the list stays simple. No favourites, low priority or people and rooms chips either (plan section 4, ADR 0141). Unread chats show by their badge.",
     "Groups badge counts what notifies in a quiet group (ADR 0026, ADR 0053): RoomInfo numUnreadMentions plus replies to the person.",
     "Own-client swipes archive, not delete (bipe#588, chat-archive spec). Archive filtering follows newest-DM selection and is independent of cleared history. Archived access remains visible with an empty active list."
   ]

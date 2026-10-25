@@ -45,6 +45,18 @@ Company fields (`lvl: "cnpj"`, a verified company, ADR 0042):
 | `trade_name` | string, optional | Nome fantasia, when the registry has one |
 | `method` | `"ecnpj"` \| `"partner"` \| `"staff"` | How the company proved control |
 | `checked_month` | string | The Receita Federal release that last showed the CNPJ as active, `YYYY-MM` |
+| `cvm` | object, optional | The CVM register line (ADR 0077, bipe-chat/bipe#237). Absent: no CVM line (no registration and no financial CNAE, or the server's CVM table is older than 7 days) |
+
+`cvm` has `st` and the fields of that state:
+
+| `st` | Fields | Line in the seal detail (`test-vectors/cvm-lines.json`, reference `tools/lib/cvm.mjs`) |
+|---|---|---|
+| `"registered"` | `cat`: 1 to 10 category names from CVM's data, lower case | One `bipe_cvm_registered` line per category |
+| `"cancelled"` | `on`: `YYYY-MM-DD`, the newest cancel date | `bipe_cvm_cancelled` |
+| `"stop_order"` | `on`: `YYYY-MM-DD`, the newest stop order (ato declaratório) for the CNPJ | `bipe_cvm_stop_order`, red; it overrides the other lines, and chats from the account show `bipe_cvm_stop_order_card` |
+| `"no_registration"` | none | `bipe_cvm_no_registration` and `bipe_cvm_bank_note`, neutral. Only for a CNPJ whose main or secondary CNAE is in division 64, 65 or 66 |
+
+The detail shows `bipe_cvm_source` under a CVM line. A `cvm` value that is not well formed, or an unknown `st`, shows no CVM line and does not change the badge verdict. The field is signed with the rest of the payload, so the apps never call CVM or bipe-api for it.
 
 Life: `exp - iat` is `lifeDays` in `registries/badge-keys.json` (7 days). A revoked claim or a leaked key stops working within that time without a revocation list (ADR 0123).
 

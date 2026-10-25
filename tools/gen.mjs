@@ -244,6 +244,10 @@ ${reg.workHours.defaultDays.map((d) => `        (day: ${d.day}, ranges: [${d.ran
     public static let pixMarkRelType = ${swiftString(reg.pixMarks.relType)}
     public static let pixE2eIdPattern = ${swiftString(reg.pixMarks.e2eIdPattern)}
     public static let pixTxidMaxLength = ${reg.pixMarks.txidMaxLength}
+
+    /// Data use (bipe-chat/bipe#242; registries/data-use.json): the budget of a normal day and the default of the data saver switch.
+    public static let dataUseBudgetMegabytesPerDay = ${reg.dataUse.budgetMegabytesPerDay}
+    public static let dataSaverDefault = ${reg.dataUse.dataSaverDefault}
 }
 `;
 }
@@ -521,6 +525,10 @@ ${reg.workHours.defaultDays.map((d) => `        ${d.day} to listOf(${d.ranges.ma
     const val PIX_MARK_REL_TYPE = ${kotlinString(reg.pixMarks.relType)}
     const val PIX_E2E_ID_PATTERN = ${kotlinString(reg.pixMarks.e2eIdPattern)}
     const val PIX_TXID_MAX_LENGTH = ${reg.pixMarks.txidMaxLength}
+
+    /** Data use (bipe-chat/bipe#242; registries/data-use.json): the budget of a normal day and the default of the data saver switch. */
+    const val DATA_USE_BUDGET_MEGABYTES_PER_DAY = ${reg.dataUse.budgetMegabytesPerDay}
+    const val DATA_SAVER_DEFAULT = ${reg.dataUse.dataSaverDefault}
 }
 `;
 }

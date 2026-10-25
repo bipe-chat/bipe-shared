@@ -33,8 +33,8 @@ Binding. A badge binds to one device or to the account:
 
 | Field | Levels | Meaning |
 |---|---|---|
-| `dev` | `pix`, `govbr`, `institution` | Fingerprint of the device key the badge is bound to (Matrix device Ed25519 key, base64) |
-| `msk` | `cnpj`, `brand-mark` | The account's cross-signing master key (Matrix unpadded base64), as the homeserver has it when the server signs. A company account has several devices (ADR 0087), so the badge binds to the account, not one device (bipe#270) |
+| `dev` | `pix`, `govbr` | Fingerprint of the device key the badge is bound to (Matrix device Ed25519 key, base64) |
+| `msk` | `cnpj`, `institution`, `brand-mark` | The account's cross-signing master key (Matrix unpadded base64), as the homeserver has it when the server signs. A company or institution account has several devices (ADR 0087), so the badge binds to the account, not one device (bipe#270). The Matrix SDK also gives no sending device per event, so a device-bound institution badge could not show on a notice (bipe-chat/bipe#245) |
 
 Company fields (`lvl: "cnpj"`, a verified company, ADR 0042):
 
@@ -58,6 +58,15 @@ Company fields (`lvl: "cnpj"`, a verified company, ADR 0042):
 
 The detail shows `bipe_cvm_source` under a CVM line. A `cvm` value that is not well formed, or an unknown `st`, shows no CVM line and does not change the badge verdict. The field is signed with the rest of the payload, so the apps never call CVM or bipe-api for it.
 
+Institution fields (`lvl: "institution"`, a verified institution: a level 5 public body or the Instituição tier, ADR 0083; bipe-chat/bipe#245):
+
+| Field | Type | Meaning |
+|---|---|---|
+| `cnpj` | string | The normalised CNPJ, as for `cnpj` |
+| `domains` | list of strings, optional | The institution's verified domains (ADR 0036): lower-case host names with at least one dot, no scheme, no port. Absent or empty: no link in its notices is clickable |
+
+Messages from an account with a valid `institution` badge show as official notice cards (`product/screens/chat-timeline.json`, `notice`). A link in a notice is clickable only when `test-vectors/notice-links.json` says so (reference `tools/lib/notice.mjs`): `https`, no user info, no port, and the host is a domain of `domains` or a subdomain of one. Every other link shows as plain text. Who may write first (institutions.md decision 10.1) is a server rule, not an app rule. No issuer signs `institution` badges yet.
+
 Brand mark fields (`lvl: "brand-mark"`, ADR 0162, bipe-chat/bipe#483). A verified brand vouches for a reseller's work account. `sub` is the reseller; `msk` is the reseller account's master key. One envelope per mark:
 
 | Field | Type | Meaning |
@@ -78,11 +87,11 @@ Inputs: the envelope, the sender's user ID, the sending device's key fingerprint
 1. `v` equals 1, else `unsupported_version`.
 2. `kid` is known, else `unknown_kid`.
 3. Ed25519 signature over the decoded payload bytes is valid, else `invalid_signature`.
-4. Payload parses and all required fields for its `lvl` are present and well formed, else `malformed`. An unknown `lvl` is `malformed`. For `cnpj`: `cnpj` matches `^[0-9A-Z]{12}[0-9]{2}$`, `legal_name` and `msk` are not empty, `method` is one of the three values, `checked_month` matches `^[0-9]{4}-(0[1-9]|1[0-2])$`. A `cnpj` badge without `msk` is `malformed`, also when it has `dev`. For `brand-mark`: `mark`, `brand`, `name` and `msk` are not empty, `cnpj` matches the `cnpj` pattern, and `label` is in `registries/brand-marks.json`; no `dev`.
+4. Payload parses and all required fields for its `lvl` are present and well formed, else `malformed`. An unknown `lvl` is `malformed`. For `cnpj`: `cnpj` matches `^[0-9A-Z]{12}[0-9]{2}$`, `legal_name` and `msk` are not empty, `method` is one of the three values, `checked_month` matches `^[0-9]{4}-(0[1-9]|1[0-2])$`. A `cnpj` badge without `msk` is `malformed`, also when it has `dev`. For `institution`: `cnpj` matches the same pattern, `msk` is not empty, and `domains`, when present, is a list of strings that each match `^[a-z0-9-]+(\.[a-z0-9-]+)+$`. An `institution` badge without `msk` is `malformed`, also when it has `dev`. For `brand-mark`: `mark`, `brand`, `name` and `msk` are not empty, `cnpj` matches the `cnpj` pattern, and `label` is in `registries/brand-marks.json`; no `dev`.
 5. `iat <= now < exp`, else `expired` (or `not_yet_valid`).
 6. `sub` equals the sender's user ID, else `subject_mismatch`.
 7. Binding:
-   - `cnpj` and `brand-mark`: `msk` equals the sender's master key, else `master_key_mismatch`. No known master key is also `master_key_mismatch`. A mismatch means the account reset its cryptographic identity: the badge is suspended until the server signs a new one.
+   - `cnpj`, `institution` and `brand-mark`: `msk` equals the sender's master key, else `master_key_mismatch`. No known master key is also `master_key_mismatch`. A mismatch means the account reset its cryptographic identity: the badge is suspended until the server signs a new one.
    - Other levels: `dev` equals the sending device's key fingerprint, else `device_mismatch`. A mismatch means the account moved to a new device: the badge is suspended (security rule 4).
 
 Fail closed: any other error means no badge.

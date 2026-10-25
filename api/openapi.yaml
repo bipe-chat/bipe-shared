@@ -673,6 +673,60 @@ paths:
         "403": { $ref: "#/components/responses/Error" }
         "409": { $ref: "#/components/responses/Error" }
         "429": { $ref: "#/components/responses/Error" }
+  /v1/me/deletion:
+    post:
+      summary: Ask to delete the caller's account after the cooldown (ADR 0140)
+      description: >
+        The app asks for the device owner check (Face ID, Touch ID or the phone's passcode) first, then
+        sends the senha (PIN), which the server checks like POST /v1/me/pin/check (403 pin_wrong with
+        tries_left, 403 pin_blocked, 409 pin_not_set). The server stores the request with due_at = now +
+        deletionCooldownHours (registries/accounts.json, 72 hours) and the device of the token. Until
+        due_at the account works and every other signed-in device sees the request in GET /v1/me/account
+        and can cancel. 409 deletion_pending when a request already waits; nothing changes. The server
+        sends a notice to the verified recovery email. At due_at the server hands each group the user owns
+        to the oldest admin, else to the oldest member; redacts the user's events when redact_messages is
+        true; deactivates the account in MAS and Synapse (with erase); puts the @ on hold for
+        releaseHoldDays (registries/handles.json); deletes every row this API keeps about the user, except
+        the CPF hash and the badge record, which stay for deletionVerificationKeepDays. A company account
+        also loses its business tools and records. The job is idempotent and retries a failed step. 3 per
+        hour per account.
+      security: [{ matrix: [] }]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [pin, redact_messages]
+              properties:
+                pin: { type: string, maxLength: 64 }
+                redact_messages: { type: boolean, description: "Apagar todas as minhas mensagens: redact the user's events in every room before the account goes." }
+      responses:
+        "201":
+          description: Requested
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/AccountDeletion" }
+        "400": { $ref: "#/components/responses/Error" }
+        "401": { $ref: "#/components/responses/Error" }
+        "403": { $ref: "#/components/responses/Error" }
+        "409": { $ref: "#/components/responses/Error" }
+        "429": { $ref: "#/components/responses/Error" }
+  /v1/me/deletions/{deletionId}/cancel:
+    post:
+      summary: Cancel a waiting account deletion (ADR 0140)
+      description: >
+        Any signed-in device of the account can cancel until due_at. The app asks for the device owner
+        check first; no PIN, so a phone without the senha can still stop a deletion started on a stolen
+        phone. 404 not_found when the request is not waiting or due_at has passed. The server sends a
+        notice to the verified recovery email.
+      security: [{ matrix: [] }]
+      parameters:
+        - { name: deletionId, in: path, required: true, schema: { type: string, maxLength: 64 } }
+      responses:
+        "204": { description: Cancelled }
+        "401": { $ref: "#/components/responses/Error" }
+        "404": { $ref: "#/components/responses/Error" }
   /v1/me/recoveries/{recoveryId}/cancel:
     post:
       summary: Cancel a waiting recovery of the caller's account (old device)
@@ -5637,6 +5691,15 @@ components:
         created_at: { type: string, format: date-time }
         ready_at: { type: string, format: date-time, description: "When the delay ends." }
         ended_at: { type: string, format: date-time }
+    AccountDeletion:
+      type: object
+      required: [id, created_at, due_at, redact_messages, from_this_device]
+      properties:
+        id: { type: string }
+        created_at: { type: string, format: date-time }
+        due_at: { type: string, format: date-time, description: "When the server deletes the account: created_at plus deletionCooldownHours." }
+        redact_messages: { type: boolean }
+        from_this_device: { type: boolean, description: "True when the caller's token has the device that asked. False on every other device, and for a token without a device." }
     RecoveryStarted:
       type: object
       required: [recovery_id, claim_secret, purpose, ready_at]
@@ -5748,6 +5811,7 @@ components:
         links: { type: array, items: { $ref: "#/components/schemas/LinkedAccount" }, description: "ADR 0096: the linked Apple and Google accounts, provider only. Absent from an older server: none." }
         link_events: { type: array, items: { $ref: "#/components/schemas/LinkEvent" }, description: "Links and unlinks of the last 7 days, newest first. The other devices show each once." }
         independent_recovery: { type: boolean, description: "bipe#531: true when the account has a recovery factor that does not depend on the Apple Team ID and that the server can check: a verified recovery email or a linked Google account (ADR 0096; a linked Apple account does not count). The app shows the recovery-reminder card when false. Absent from an older server: the app shows no card." }
+        deletion: { $ref: "#/components/schemas/AccountDeletion", description: "ADR 0140: the waiting deletion request. Absent when none. The device that asked shows a banner with due_at and Cancelar; every other device shows the deletion alert." }
     TermsAcceptance:
       type: object
       required: [terms_version]
@@ -5759,7 +5823,7 @@ components:
       properties:
         error:
           type: string
-          enum: [bad_request, invite_invalid, invite_quota_exhausted, email_taken, handle_invalid, handle_taken, handle_cooldown, password_weak, attestation_invalid, profile_invalid, photo_invalid, unauthorized, not_found, rate_limited, internal, cnpj_invalid, cnpj_not_active, cnpj_taken, signature_invalid, pin_weak, pin_wrong, pin_blocked, pin_not_set, recovery_invalid, email_unavailable, terms_required, support_unavailable, link_taken, link_unavailable, brand_not_verified, brand_mark_limit]
+          enum: [bad_request, invite_invalid, invite_quota_exhausted, email_taken, handle_invalid, handle_taken, handle_cooldown, password_weak, attestation_invalid, profile_invalid, photo_invalid, unauthorized, not_found, rate_limited, internal, cnpj_invalid, cnpj_not_active, cnpj_taken, signature_invalid, pin_weak, pin_wrong, pin_blocked, pin_not_set, recovery_invalid, email_unavailable, terms_required, support_unavailable, link_taken, link_unavailable, brand_not_verified, brand_mark_limit, deletion_pending]
         reason: { type: string, description: "Detail, e.g. a HandleProblem or PinProblem id." }
         tries_left: { type: integer, description: "With pin_wrong: wrong PINs left before the PIN blocks." }
     BadgeEnvelope:

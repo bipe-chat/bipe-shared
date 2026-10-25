@@ -2,7 +2,7 @@
   "id": "business-chat-bar",
   "title": "Business tools in a chat and on a profile",
   "flow": "business",
-  "summary": "In a chat with a company account, and on its profile, the customer finds the tools the business has turned on (Agendar, Ver catálogo) and the cards of their open records with it, drawn from bipe-api and pinned above the timeline (ADR 0102).",
+  "summary": "In a chat with a company account, and on its profile, the customer finds the tools the business has turned on (Agendar, Ver catálogo, Fazer pedido, Pedir orçamento, Entrar na fila) and the cards of their open records with it, drawn from bipe-api and pinned above the timeline (ADR 0102).",
   "types": {
     "Booking": {
       "id": {
@@ -99,23 +99,51 @@
         "type": "Booking",
         "description": "One booking."
       }
+    },
+    "queueOpen": {
+      "type": "bool",
+      "description": "true when GET /v1/businesses/{business}/queue says open: Entrar na fila shows."
+    },
+    "canOrder": {
+      "type": "bool",
+      "description": "true when the catalogue has an active product with a fixed price and amount_cents: Fazer pedido shows."
+    },
+    "cards": {
+      "type": "list",
+      "of": {
+        "type": "string",
+        "description": "One card: agenda-booking-card, the open order (order-customer), offered or recent quotes (quote-card) and the active queue place (queue-customer)."
+      },
+      "description": "Every card with this business, from GET /v1/me/bookings, /v1/me/orders, /v1/me/quotes and /v1/me/queue-places filtered by business."
     }
   },
   "actions": {
     "load": {
-      "effect": "Reads the account type, then (for a company) the handle, the public services, the catalogue and GET /v1/me/bookings. Runs when the chat or profile opens and when the app comes to the front. A failure hides the tool, never the chat."
+      "effect": "Reads the account type, then (for a company) the handle, the public services, the catalogue, the queue and the caller's bookings, orders, quotes and queue places. Runs when the chat or profile opens and when the app comes to the front. A failure hides the tool, never the chat."
     },
     "openBooking": {
       "effect": "Opens agenda-book for this business."
     },
     "openCatalog": {
       "effect": "Opens catalog-view for this business."
+    },
+    "openOrder": {
+      "effect": "Opens order-customer."
+    },
+    "requestQuote": {
+      "effect": "Runs quote-card request."
+    },
+    "joinQueue": {
+      "effect": "Opens queue-customer."
     }
   },
   "strings": [
     "bipe_agenda_book",
     "bipe_catalog_open",
-    "bipe_business_tools_a11y"
+    "bipe_business_tools_a11y",
+    "bipe_order_make",
+    "bipe_quote_request",
+    "bipe_queue_join"
   ],
   "sdk": [
     "Room.members",
@@ -123,13 +151,15 @@
   ],
   "parity": [
     "agenda",
-    "catalog"
+    "catalog",
+    "orders",
+    "quotes",
+    "queue"
   ],
   "notes": [
     "Entry points: the chat header menu with the business (one menu item per tool), and buttons under the name on person-profile of a company account (ADR 0103: the button is Agendar).",
     "The company side of the chat shows the same cards for the customer of this DM, from the company's own GET /v1/me/bookings filtered by customer.user_id (agenda-booking-card owner mode).",
     "Nothing is posted into the room: the cards come only from the API (ADR 0102). Another Matrix client sees nothing.",
-    "A business with no tool on shows no bar and no menu item.",
-    "Later tools (Pedidos, Orçamento, Fila virtual) add their item and card here."
+    "A business with no tool on shows no bar and no menu item."
   ]
 }

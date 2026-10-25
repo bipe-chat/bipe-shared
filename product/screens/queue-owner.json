@@ -1,0 +1,160 @@
+{
+  "id": "queue-owner",
+  "title": "Fila virtual for the owner",
+  "flow": "business",
+  "summary": "The company account opens and closes today's queue, calls the next person, marks served or did not arrive, calls again, adds a name-only walk-in, sets the arrival window and shows the counter QR code (ADR 0107).",
+  "types": {
+    "QueuePlace": {
+      "id": {
+        "type": "string",
+        "description": "Place ID."
+      },
+      "customerUserId": {
+        "type": "string",
+        "description": "Signed-in customer. Absent for a name-only walk-in.",
+        "optional": true
+      },
+      "customerName": {
+        "type": "string",
+        "description": "Name-only walk-in typed by the owner.",
+        "optional": true
+      },
+      "serviceId": {
+        "type": "string",
+        "description": "Optional catálogo service.",
+        "optional": true
+      },
+      "status": {
+        "type": "enum",
+        "description": "Status from bipe-api.",
+        "values": [
+          "waiting",
+          "called",
+          "served",
+          "noShow",
+          "left"
+        ]
+      },
+      "joinedAt": {
+        "type": "date",
+        "description": "When the place joined."
+      },
+      "calledAt": {
+        "type": "date",
+        "description": "When it was last called.",
+        "optional": true
+      }
+    }
+  },
+  "state": {
+    "open": {
+      "type": "bool",
+      "description": "Today's queue open."
+    },
+    "places": {
+      "type": "list",
+      "description": "GET /v1/me/business/queue/places: waiting and called first, then the rest of today.",
+      "of": {
+        "type": "QueuePlace",
+        "description": "One place."
+      }
+    },
+    "noShowAfterMinutes": {
+      "type": "int",
+      "description": "Policy, default 10."
+    }
+  },
+  "actions": {
+    "open": {
+      "effect": "POST /v1/me/business/queue/open."
+    },
+    "close": {
+      "effect": "POST .../queue/close. Places already in it stay."
+    },
+    "callNext": {
+      "effect": "POST .../queue/call-next. Hidden when nobody waits."
+    },
+    "served": {
+      "effect": "POST .../places/{id}/served.",
+      "params": {
+        "placeId": {
+          "type": "string",
+          "description": "The place."
+        }
+      }
+    },
+    "noShow": {
+      "effect": "POST .../places/{id}/no-show.",
+      "params": {
+        "placeId": {
+          "type": "string",
+          "description": "The place."
+        }
+      }
+    },
+    "recall": {
+      "effect": "POST .../places/{id}/recall.",
+      "params": {
+        "placeId": {
+          "type": "string",
+          "description": "The place."
+        }
+      }
+    },
+    "addWalkIn": {
+      "effect": "Asks for a name (or a person from the business's chats), then POST .../queue/places."
+    },
+    "setWindow": {
+      "effect": "PUT .../queue/policy with the minutes.",
+      "params": {
+        "minutes": {
+          "type": "int",
+          "description": "1 to 240."
+        }
+      }
+    },
+    "showQr": {
+      "effect": "Shows a QR code of https://bipe.chat/@<handle>?fila with bipe_queue_qr_body, to show on screen or share as an image to print."
+    },
+    "refresh": {
+      "effect": "Reads again; also every 30 seconds while the screen shows."
+    }
+  },
+  "strings": [
+    "bipe_queue_title",
+    "bipe_queue_open",
+    "bipe_queue_close",
+    "bipe_queue_open_now",
+    "bipe_queue_closed",
+    "bipe_queue_owner_empty",
+    "bipe_queue_waiting_count",
+    "bipe_queue_call_next",
+    "bipe_queue_mark_served",
+    "bipe_queue_mark_no_show",
+    "bipe_queue_recall",
+    "bipe_queue_add_walk_in",
+    "bipe_queue_status_waiting",
+    "bipe_queue_called",
+    "bipe_queue_status_served",
+    "bipe_queue_status_no_show",
+    "bipe_queue_status_left",
+    "bipe_queue_settings",
+    "bipe_queue_no_show_window",
+    "bipe_queue_qr_title",
+    "bipe_queue_qr_body",
+    "bipe_agenda_customer_name",
+    "bipe_agenda_customer_from_chats",
+    "bipe_queue_error",
+    "bipe_queue_load_failed",
+    "bipe_app_save",
+    "bipe_app_cancel",
+    "bipe_app_share"
+  ],
+  "sdk": [],
+  "parity": [
+    "queue"
+  ],
+  "notes": [
+    "Opens from business-tools. The queue resets every day."
+  ]
+}

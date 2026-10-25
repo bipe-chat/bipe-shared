@@ -1,0 +1,133 @@
+{
+  "id": "quote-card",
+  "title": "Quote card and request",
+  "flow": "business",
+  "summary": "The customer taps Pedir orçamento in the chat with a business; the business answers with a quote card pinned in the chat, drawn from the API, with Aceitar (into a booking or an order) and Recusar, and older versions readable (ADR 0106).",
+  "types": {
+    "Quote": {
+      "id": {
+        "type": "string",
+        "description": "Quote ID."
+      },
+      "businessId": {
+        "type": "string",
+        "description": "The company."
+      },
+      "customerId": {
+        "type": "string",
+        "description": "The customer."
+      },
+      "status": {
+        "type": "enum",
+        "description": "From bipe-api; expired when the current version's validity passed.",
+        "values": [
+          "offered",
+          "accepted",
+          "refused",
+          "expired"
+        ]
+      },
+      "currentVersion": {
+        "type": "int",
+        "description": "The version that can be accepted."
+      },
+      "lines": {
+        "type": "list",
+        "description": "Lines of the version on screen: name, quantity, unit price, line total.",
+        "of": {
+          "type": "string",
+          "description": "A line."
+        }
+      },
+      "totalCents": {
+        "type": "int",
+        "description": "Total of the version on screen."
+      },
+      "validUntil": {
+        "type": "date",
+        "description": "Validity of the version on screen."
+      },
+      "visitServiceId": {
+        "type": "string",
+        "description": "A catálogo service to book a visit for.",
+        "optional": true
+      }
+    }
+  },
+  "state": {
+    "quote": {
+      "type": "Quote",
+      "description": "From GET /v1/me/quotes filtered by business."
+    },
+    "shownVersion": {
+      "type": "int",
+      "description": "The version on screen; older ones open from bipe_quote_previous_versions."
+    },
+    "ownerMode": {
+      "type": "bool",
+      "description": "true on the company side: Enviar nova versão instead of Aceitar and Recusar."
+    }
+  },
+  "actions": {
+    "request": {
+      "effect": "POST /v1/businesses/{business}/quotes/requests, then bipe_quote_requested. The description and photos go in the chat as messages."
+    },
+    "acceptOrder": {
+      "effect": "POST .../quotes/{id}/accept with target order, pickup or delivery, in_person. Shows the order card after."
+    },
+    "acceptBooking": {
+      "effect": "Opens agenda-book with the visit service; its confirm calls accept with target booking and the chosen time instead of hold."
+    },
+    "refuse": {
+      "effect": "POST .../quotes/{id}/refuse with the current version."
+    },
+    "showVersion": {
+      "effect": "Shows an older version, read only.",
+      "params": {
+        "version": {
+          "type": "int",
+          "description": "The version."
+        }
+      }
+    },
+    "revise": {
+      "effect": "Owner: opens quote-builder for a new version."
+    }
+  },
+  "strings": [
+    "bipe_quote_request",
+    "bipe_quote_request_body",
+    "bipe_quote_requested",
+    "bipe_quote_card_title",
+    "bipe_quote_version",
+    "bipe_quote_valid_until",
+    "bipe_quote_total",
+    "bipe_quote_accept",
+    "bipe_quote_accept_order",
+    "bipe_quote_accept_booking",
+    "bipe_quote_decline",
+    "bipe_quote_status_offered",
+    "bipe_quote_status_accepted",
+    "bipe_quote_status_refused",
+    "bipe_quote_status_expired",
+    "bipe_quote_previous_versions",
+    "bipe_quote_send_revision",
+    "bipe_quote_visit",
+    "bipe_quote_error_expired",
+    "bipe_quote_error_version",
+    "bipe_quote_error",
+    "bipe_order_pickup",
+    "bipe_order_delivery",
+    "bipe_order_pay_on_site",
+    "bipe_order_line"
+  ],
+  "sdk": [],
+  "parity": [
+    "quotes"
+  ],
+  "notes": [
+    "A business cannot send a quote without a request (ADR 0037, ADR 0106).",
+    "Pix charges on accept wait for Pix charge cards (ADR 0080); the app offers pay on site only. Bipe moves no money (ADR 0012).",
+    "Amounts are BRL in centavos from the API, shown with the phone's locale."
+  ]
+}

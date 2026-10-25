@@ -48,10 +48,11 @@
       "values": [
         "conversas",
         "grupos",
+        "agenda",
         "voce",
         "search"
       ],
-      "description": "The visible tab. search is a tab on iOS (search tab role) and a top-bar action on Android (ADR 0053)."
+      "description": "The visible tab. search is a tab on iOS (search tab role) and a top-bar action on Android (ADR 0053). agenda shows only for a company account (agenda-owner)."
     },
     "accounts": {
       "type": "list",
@@ -82,6 +83,7 @@
           "values": [
             "conversas",
             "grupos",
+            "agenda",
             "voce",
             "search"
           ],
@@ -112,7 +114,8 @@
     "bipe_tab_you",
     "bipe_app_tab_search",
     "bipe_app_account_current_a11y",
-    "bipe_app_tab_you_switch_hint"
+    "bipe_app_tab_you_switch_hint",
+    "bipe_tab_agenda"
   ],
   "sdk": [
     "Client.roomListService",
@@ -120,12 +123,13 @@
     "Client.session"
   ],
   "parity": [
-    "settings-structure"
+    "settings-structure",
+    "agenda"
   ],
   "notes": [
     "Conversas holds DMs (rooms with two members) and the Pedidos row; Grupos holds rooms with more than two members (ADR 0053). chat-list renders both with its scope.",
     "Each account has its own SDK client and session store, keyed by user ID (ADR 0086). Only the current account's sync runs in front; the others sync in the background for the badge and the dot.",
     "The tab bar shows the same on iPhone and as a rail on iPad (ADR 0135 point 6).",
-    "Agenda (bipe_tab_agenda) and Status come later and are not in this spec."
+    "A company account gets the Agenda tab after Grupos (ADR 0103, agenda-owner). Status comes later and is not in this spec."
   ]
 }

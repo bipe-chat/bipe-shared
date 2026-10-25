@@ -86,6 +86,7 @@ const NOT_IN_APPS = {
   BugReportSummary: "staff view and Starlings link only (bipe#367); the apps send the rageshake form",
   BugReport: "staff view and Starlings link only (bipe#367); the apps send the rageshake form",
   RetentionReport: "staff page on the site only (bipe#368)",
+  TransferReadiness: "staff report only (bipe#531): CLI transfer report and the staff route",
   VisitCount: "staff page on the site only (ADR 0098)",
   VisitReport: "staff page on the site only (ADR 0098)",
   Error: "clients read error and reason into their error type; the enum is checked as Error.error",
@@ -109,6 +110,9 @@ const GAPS = {
   "android:SignupRequest.attestation": "bipe-chat/bipe#92 (Key Attestation in bipe-app; the fork is frozen)",
   // Android-only field: iOS sends Apple App Attest (key_id, attestation_object) instead.
   "ios:Attestation.key_attestation_chain": "bipe-chat/bipe#92 (Android-only field)",
+  // The forks are frozen (ADR 0155); Bipe Next reads independent_recovery (bipe#531).
+  "ios:AccountStatus.independent_recovery": "bipe-chat/bipe#531 (Bipe Next only; the fork is frozen)",
+  "android:AccountStatus.independent_recovery": "bipe-chat/bipe#531 (Bipe Next only; the fork is frozen)",
   "ios:Error.error.cnpj_invalid": "bipe-chat/bipe#115 (business UI in the apps)",
   "ios:Error.error.cnpj_not_active": "bipe-chat/bipe#115 (business UI in the apps)",
   "ios:Error.error.cnpj_taken": "bipe-chat/bipe#115 (business UI in the apps)",

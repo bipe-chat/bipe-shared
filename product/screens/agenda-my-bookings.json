@@ -1,0 +1,116 @@
+{
+  "id": "agenda-my-bookings",
+  "title": "My bookings",
+  "flow": "settings",
+  "summary": "Settings lists the customer's upcoming bookings across businesses, from GET /v1/me/bookings. A tap opens the chat with the business.",
+  "types": {
+    "Booking": {
+      "id": {
+        "type": "string",
+        "description": "Booking ID from bipe-api."
+      },
+      "businessId": {
+        "type": "string",
+        "description": "Matrix ID of the company account."
+      },
+      "serviceId": {
+        "type": "string",
+        "description": "The Catálogo item of kind service."
+      },
+      "serviceName": {
+        "type": "string",
+        "description": "The service name, from the business's public services or the owner's catalogue."
+      },
+      "agendaId": {
+        "type": "string",
+        "description": "The person or station."
+      },
+      "agendaName": {
+        "type": "string",
+        "description": "Name of the person or station.",
+        "optional": true
+      },
+      "start": {
+        "type": "date",
+        "description": "Start, shown in the phone's time zone and locale."
+      },
+      "end": {
+        "type": "date",
+        "description": "End."
+      },
+      "status": {
+        "type": "enum",
+        "description": "Status from bipe-api.",
+        "values": [
+          "held",
+          "requested",
+          "confirmed",
+          "done",
+          "cancelled",
+          "noShow"
+        ]
+      },
+      "customerUserId": {
+        "type": "string",
+        "description": "The customer's Matrix ID. Absent for a name-only booking.",
+        "optional": true
+      },
+      "customerName": {
+        "type": "string",
+        "description": "Name-only customer (encaixe). Absent for a signed-in customer.",
+        "optional": true
+      },
+      "source": {
+        "type": "enum",
+        "description": "Who made it.",
+        "values": [
+          "customer",
+          "owner"
+        ]
+      }
+    }
+  },
+  "state": {
+    "bookings": {
+      "type": "list",
+      "description": "Upcoming bookings, soonest first.",
+      "of": {
+        "type": "Booking",
+        "description": "One booking, drawn as agenda-booking-card."
+      }
+    },
+    "loading": {
+      "type": "bool",
+      "description": "true while the list loads."
+    }
+  },
+  "actions": {
+    "load": {
+      "effect": "GET /v1/me/bookings, then the service names from each business's public services."
+    },
+    "openChat": {
+      "effect": "Opens the DM with the business, or starts it when there is none.",
+      "params": {
+        "businessId": {
+          "type": "string",
+          "description": "The business."
+        }
+      }
+    }
+  },
+  "strings": [
+    "bipe_agenda_my_bookings",
+    "bipe_agenda_no_bookings",
+    "bipe_agenda_load_failed"
+  ],
+  "sdk": [
+    "Client.getDmRoom",
+    "Client.createRoom"
+  ],
+  "parity": [
+    "agenda"
+  ],
+  "notes": [
+    "The row sits in settings-root under the account section for personal accounts."
+  ]
+}

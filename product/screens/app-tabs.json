@@ -2,7 +2,7 @@
   "id": "app-tabs",
   "title": "Tab bar",
   "flow": "home",
-  "summary": "The app's root after account-start: the tab bar Conversas · Grupos · Você plus search (ADR 0053). The Você tab is the only account switcher: a double tap switches to the next account, a long press opens account-switcher (ADR 0135).",
+  "summary": "The app's root after account-start: the tab bar Conversas · Grupos · Você plus search (ADR 0053). A company account has Conversas · Trabalho · Você plus search: Trabalho takes the place of Grupos, and Conversas holds its groups too. The Você tab is the only account switcher: a double tap switches to the next account, a long press opens account-switcher (ADR 0135).",
   "types": {
     "AccountSummary": {
       "userId": {
@@ -48,11 +48,11 @@
       "values": [
         "conversas",
         "grupos",
-        "agenda",
+        "trabalho",
         "voce",
         "search"
       ],
-      "description": "The visible tab. search is a tab on iOS (search tab role) and a top-bar action on Android (ADR 0053). agenda shows only for a company account (agenda-owner)."
+      "description": "The visible tab. search is a tab on iOS (search tab role) and a top-bar action on Android (ADR 0053). trabalho shows only for a company account, in place of grupos (business-tools)."
     },
     "accounts": {
       "type": "list",
@@ -64,7 +64,7 @@
     },
     "conversasUnread": {
       "type": "int",
-      "description": "Unread DMs and Pedidos for the Conversas badge."
+      "description": "Unread DMs and Pedidos for the Conversas badge. For a company account the badge adds gruposAttention, because its groups are in Conversas."
     },
     "gruposAttention": {
       "type": "int",
@@ -83,7 +83,7 @@
           "values": [
             "conversas",
             "grupos",
-            "agenda",
+            "trabalho",
             "voce",
             "search"
           ],
@@ -111,6 +111,7 @@
   "strings": [
     "bipe_tab_chats",
     "bipe_tab_groups",
+    "bipe_tab_work",
     "bipe_tab_you",
     "bipe_app_tab_search",
     "bipe_app_account_current_a11y",
@@ -132,6 +133,7 @@
     "Conversas holds DMs (rooms with two members) and the Pedidos row; Grupos holds rooms with more than two members (ADR 0053). chat-list renders both with its scope.",
     "Each account has its own SDK client and session store, keyed by user ID (ADR 0086). Only the current account's sync runs in front; the others sync in the background for the badge and the dot.",
     "The tab bar shows the same on iPhone and as a rail on iPad (ADR 0135 point 6).",
-    "A company account gets the Agenda tab after Grupos (ADR 0103, agenda-owner). Status comes later and is not in this spec."
+    "Company account: Trabalho (bipe_tab_work) replaces Grupos in the same place, and there is no separate Agenda tab (agenda-owner opens from Trabalho). Trabalho shows business-tools; each tool opens its owner screen inside the tab. Conversas shows DMs and groups together, with the group invites under the Pedidos row, and a notification for a group opens Conversas. On Android, search is the trailing action of the Conversas top bar only. When the current account changes from company to personal on Trabalho, or from personal to company on Grupos, Conversas shows.",
+    "Status comes later and is not in this spec."
   ]
 }

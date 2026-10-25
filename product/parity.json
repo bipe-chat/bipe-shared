@@ -2236,6 +2236,40 @@
           "bipe-app/android/app/src/main/kotlin/chat/bipe/app/groups/DmDelete.kt"
         ]
       }
+    },
+    {
+      "id": "screen-reader-labels",
+      "name": "Screen reader labels on every control, with an audit in CI (bipe#495)",
+      "ios": {
+        "status": "n/a",
+        "reason": "Fork frozen (ADR 0155); built in the own client"
+      },
+      "android": {
+        "status": "n/a",
+        "reason": "Fork frozen (ADR 0155); built in the own client"
+      },
+      "web": {
+        "status": "n/a",
+        "reason": "The site has its own screen reader work (product/accessibility.json, bipe#493)"
+      },
+      "server": {
+        "status": "n/a",
+        "reason": "Runs on the device only"
+      },
+      "ios-new": {
+        "status": "built",
+        "evidence": [
+          "bipe-app/ios/Phosphor/Sources/Phosphor/PhosphorIcon.swift",
+          "bipe-app/ios/Bipe/Settings/PinPadView.swift"
+        ]
+      },
+      "android-new": {
+        "status": "built",
+        "evidence": [
+          "bipe-app/android/app/src/main/kotlin/chat/bipe/app/settings/PinPad.kt",
+          "bipe-app/android/app/src/main/kotlin/chat/bipe/app/settings/SettingsScreens.kt"
+        ]
+      }
     }
   ],
   "differences": [

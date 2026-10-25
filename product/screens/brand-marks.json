@@ -1,0 +1,89 @@
+{
+  "id": "brand-marks",
+  "title": "Reseller marks of a work account",
+  "flow": "business",
+  "summary": "Trabalho → Selos de revenda, on a company account (ADR 0162, bipe-chat/bipe#486). A reseller enters a brand's code or link, sees what the brand will and will not see, and accepts or refuses the mark; the reseller removes a mark at any time. A brand with a verified seal makes single-use codes for one mark, sees which accounts hold its mark and ends a mark.",
+  "types": {
+    "HeldMark": {
+      "id": { "type": "string", "description": "HeldBrandMark.id." },
+      "line": { "type": "string", "description": "bipe_brand_mark_label_<label> with brand_name." }
+    },
+    "Offer": {
+      "brandName": { "type": "string", "description": "BrandMarkInvitePreview.brand_name." },
+      "cnpj": { "type": "string", "description": "The brand's CNPJ, with formatCnpj." },
+      "line": { "type": "string", "description": "The mark's line with the brand's name." }
+    },
+    "GrantedRow": {
+      "id": { "type": "string", "description": "GrantedBrandMark.id." },
+      "reseller": { "type": "string", "description": "The reseller's display name from the Matrix profile, else the Matrix ID." },
+      "line": { "type": "string", "description": "The mark's line with the brand's own name." }
+    }
+  },
+  "state": {
+    "held": { "type": "list", "of": { "type": "HeldMark", "description": "One mark." }, "description": "GET /v1/me/brand-marks. Empty: bipe_brand_marks_held_empty." },
+    "code": { "type": "string", "description": "The field bipe_brand_marks_code_field. The app takes the 16-character code out of a pasted link or message." },
+    "offer": { "type": "Offer", "optional": true, "description": "GET /v1/brand-marks/invites/{code}: a sheet with the line, the brand's CNPJ, bipe_brand_marks_brand_sees and bipe_brand_marks_brand_not_sees, then accept and refuse." },
+    "brandName": { "type": "string", "optional": true, "description": "GET /v1/me/business: the trade name, else the legal name, of a verified claim with an active registry record. Absent: the grant section shows bipe_brand_marks_not_verified only." },
+    "createdCode": { "type": "string", "optional": true, "description": "CreatedBrandMarkInvite.code and link, shown once with copy and share, and bipe_brand_marks_code_ready with the invite's days." },
+    "openCodes": { "type": "list", "of": { "type": "string", "description": "An open invite: its line and expiry, with bipe_brand_marks_cancel_code." }, "description": "GrantedBrandMarks.invites." },
+    "granted": { "type": "list", "of": { "type": "GrantedRow", "description": "One reseller." }, "description": "GrantedBrandMarks.marks." },
+    "error": { "type": "enum", "values": ["none", "codeInvalid", "limit", "alreadyHeld", "ownBrand", "notVerified", "failed"], "optional": true, "description": "codeInvalid: 404 (never says why). limit: 409 brand_mark_limit. alreadyHeld, ownBrand: 400 bad_request with that reason. notVerified: 403 brand_not_verified. failed: anything else, bipe_brand_marks_failed." }
+  },
+  "actions": {
+    "appear": { "effect": "GET /v1/me/brand-marks, GET /v1/me/brand-marks/granted and GET /v1/me/business (brandName)." },
+    "check": { "effect": "Previews the code in the field." },
+    "accept": { "effect": "POST /v1/brand-marks/invites/{code}/accept, then reloads held. The mark shows to customers at their next check." },
+    "refuse": { "effect": "POST /v1/brand-marks/invites/{code}/refuse. The code is used; no mark." },
+    "remove": { "params": { "id": { "type": "string", "description": "A held mark." } }, "effect": "Confirms with bipe_brand_marks_remove_confirm, then DELETE /v1/me/brand-marks/{id}." },
+    "makeCode": { "params": { "label": { "type": "string", "description": "One id of brandMarkLabels." } }, "effect": "POST /v1/me/brand-marks/invites with the label picked under bipe_brand_mark_title; shows createdCode." },
+    "cancelCode": { "params": { "id": { "type": "string", "description": "An open invite." } }, "effect": "DELETE /v1/me/brand-marks/invites/{id}." },
+    "end": { "params": { "id": { "type": "string", "description": "A granted mark." } }, "effect": "Confirms with bipe_brand_marks_end_confirm, then DELETE /v1/me/brand-marks/{id}." }
+  },
+  "strings": [
+    "bipe_brand_marks_title",
+    "bipe_brand_marks_held_header",
+    "bipe_brand_marks_held_empty",
+    "bipe_brand_marks_held_footer",
+    "bipe_brand_marks_remove",
+    "bipe_brand_marks_remove_confirm",
+    "bipe_brand_marks_code_field",
+    "bipe_brand_marks_check",
+    "bipe_brand_marks_code_invalid",
+    "bipe_brand_marks_offer_title",
+    "bipe_brand_marks_brand_sees",
+    "bipe_brand_marks_brand_not_sees",
+    "bipe_brand_marks_accept",
+    "bipe_brand_marks_refuse",
+    "bipe_brand_marks_limit",
+    "bipe_brand_marks_already_held",
+    "bipe_brand_marks_own_brand",
+    "bipe_brand_marks_failed",
+    "bipe_brand_marks_grant_header",
+    "bipe_brand_marks_grant_footer",
+    "bipe_brand_marks_not_verified",
+    "bipe_brand_marks_make_code",
+    "bipe_brand_marks_code_ready",
+    "bipe_brand_marks_open_codes",
+    "bipe_brand_marks_cancel_code",
+    "bipe_brand_marks_granted_header",
+    "bipe_brand_marks_end",
+    "bipe_brand_marks_end_confirm",
+    "bipe_brand_mark_title",
+    "bipe_brand_mark_label_revendedora",
+    "bipe_brand_mark_label_revendedor",
+    "bipe_brand_mark_label_corretor",
+    "bipe_brand_mark_label_representante",
+    "bipe_badge_company_cnpj",
+    "bipe_app_copy",
+    "bipe_app_share",
+    "bipe_app_cancel"
+  ],
+  "sdk": ["Client.getProfile"],
+  "parity": ["brand-marks-manage"],
+  "notes": [
+    "No mark without the reseller's yes (ADR 0162 point 2): accept is a separate tap after the offer, and the offer says what the brand sees and does not see.",
+    "The brand side is in the same screen because the brand also uses a company account. The grant section needs the account's verified claim; the API still checks it (403 brand_not_verified).",
+    "A mark ended by either side goes from customers' phones within brandMarkRecheckMinutes (spec brand-mark).",
+    "The code never goes into a log. The link is PUBLIC_SITE_URL/marca/#<code>; the app does not open it as a deep link yet, so the reseller pastes it."
+  ]
+}

@@ -531,9 +531,27 @@
         "status": "n/a",
         "reason": "No web chat (ADR 0004); the site shows a demo at most"
       },
-      "server": "planned",
-      "ios-new": "planned",
-      "android-new": "planned"
+      "server": {
+        "status": "built",
+        "evidence": [
+          "bipe-api/src/news.ts",
+          "bipe-api/src/matrix-bot.ts"
+        ]
+      },
+      "ios-new": {
+        "status": "built",
+        "evidence": [
+          "bipe-app/ios/BipeKit/Sources/BipeKit/BipeNews.swift",
+          "bipe-app/ios/Bipe/Notifications/NotificationSettingsModel.swift"
+        ]
+      },
+      "android-new": {
+        "status": "built",
+        "evidence": [
+          "bipe-app/android/libraries/bipe/src/main/kotlin/chat/bipe/shared/settings/BipeNews.kt",
+          "bipe-app/android/app/src/main/kotlin/chat/bipe/app/notifications/NotificationSettingsModel.kt"
+        ]
+      }
     },
     {
       "id": "lookalikes",

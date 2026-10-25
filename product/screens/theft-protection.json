@@ -1,0 +1,69 @@
+{
+  "id": "theft-protection",
+  "title": "Theft protection",
+  "flow": "settings",
+  "summary": "Sua conta → Proteção contra roubo (ADR 0044, ADR 0051, security.md rule 14, bipe-chat/bipe#600). The owner picks 1 to 3 guardians from verified contacts. A guardian sees the accounts they protect and can mark one as stolen, or clear the mark.",
+  "types": {
+    "GuardianRow": {
+      "userId": { "type": "string", "description": "The guardian's Matrix ID." },
+      "name": { "type": "string", "description": "The display name the app knows, else the @ (POST /v1/handles/resolve), else the Matrix ID." }
+    },
+    "GuardedRow": {
+      "userId": { "type": "string", "description": "The Matrix ID of an account that chose the user." },
+      "name": { "type": "string", "description": "As in GuardianRow." },
+      "markedAt": { "type": "date", "optional": true, "description": "Set while a mark is on (GuardedAccount.mark.stolen_at)." }
+    }
+  },
+  "state": {
+    "guardians": { "type": "list", "of": { "type": "GuardianRow", "description": "One guardian." }, "description": "At most maxGuardians (registries/theft-protection.json), in the order the server returns." },
+    "guarding": { "type": "list", "of": { "type": "GuardedRow", "description": "One protected account." }, "description": "Accounts that chose the user. Empty: bipe_theft_guarding_empty." },
+    "lastMark": { "type": "string", "optional": true, "description": "bipe_theft_last_mark (guardian name, date) when GuardianState.last_mark is set." },
+    "picker": { "type": "list", "of": { "type": "GuardianRow", "description": "A verified contact that is not a guardian yet." }, "optional": true, "description": "Set while the picker sheet is open. Empty: bipe_theft_picker_empty." },
+    "confirm": { "type": "enum", "values": ["none", "mark", "clear"], "description": "The confirmation dialog on screen." },
+    "phase": { "type": "enum", "values": ["loading", "shown", "saving", "failed"], "description": "failed: error shows." },
+    "error": { "type": "string", "optional": true, "description": "bipe_theft_error or bipe_error_network." }
+  },
+  "actions": {
+    "appear": { "effect": "Reads GET /v1/me/guardians and sets guardians, guarding and lastMark. Runs again when the app comes to the foreground." },
+    "openPicker": { "effect": "Lists verified contacts (UserIdentity.isVerified, the in-person check of rule 3) that are not guardians. Disabled with bipe_theft_guardians_full at maxGuardians." },
+    "addGuardian": { "params": { "userId": { "type": "string", "description": "The chosen contact." } }, "effect": "PUT /v1/me/guardians with the list plus userId. Closes the picker." },
+    "removeGuardian": { "params": { "userId": { "type": "string", "description": "The guardian." } }, "effect": "PUT /v1/me/guardians without userId." },
+    "askMark": { "params": { "userId": { "type": "string", "description": "A protected account without a mark." } }, "effect": "confirm mark: bipe_theft_mark_confirm_title and bipe_theft_mark_confirm_body with the name." },
+    "mark": { "params": { "userId": { "type": "string", "description": "The protected account." } }, "effect": "After the owner check of the device (biometric or device PIN): POST /v1/theft/{userId}/mark, then appear." },
+    "askClear": { "params": { "userId": { "type": "string", "description": "A protected account with a mark." } }, "effect": "confirm clear: bipe_theft_clear_confirm_title and bipe_theft_clear_confirm_body." },
+    "clear": { "params": { "userId": { "type": "string", "description": "The protected account." } }, "effect": "After the owner check: POST /v1/theft/{userId}/clear, then appear." }
+  },
+  "strings": [
+    "bipe_theft_title",
+    "bipe_theft_intro",
+    "bipe_theft_guardians_section",
+    "bipe_theft_guardians_footer",
+    "bipe_theft_add_guardian",
+    "bipe_theft_remove_guardian",
+    "bipe_theft_guardians_full",
+    "bipe_theft_picker_title",
+    "bipe_theft_picker_empty",
+    "bipe_theft_guarding_section",
+    "bipe_theft_guarding_empty",
+    "bipe_theft_mark_action",
+    "bipe_theft_mark_confirm_title",
+    "bipe_theft_mark_confirm_body",
+    "bipe_theft_marked_at",
+    "bipe_theft_clear_action",
+    "bipe_theft_clear_confirm_title",
+    "bipe_theft_clear_confirm_body",
+    "bipe_theft_last_mark",
+    "bipe_theft_error",
+    "bipe_error_network",
+    "bipe_app_cancel"
+  ],
+  "sdk": ["Encryption.userIdentity", "UserIdentity.isVerified"],
+  "parity": ["theft-protection"],
+  "notes": [
+    "One guardian is enough to mark (ADR 0044 working default). The mark locks the account on the server and ends every session; the stolen phone cannot clear it.",
+    "Clearing by CPF with the 72-hour wait (ADR 0051) is not in this version (MZ decision on bipe-chat/bipe#538): a guardian clears, or support after a CPF check by hand.",
+    "Every account on the phone sends the phone ID once per start (PUT /v1/me/phone, a random value kept on the phone, never from hardware). A mark then covers the personal accounts on that phone and ends that phone's sessions of a company account (bipe-chat/bipe#268).",
+    "The owner sees who set the last mark (lastMark). The mark is account metadata: messages and E2EE do not change.",
+    "Never show a Matrix ID where a name or an @ is known."
+  ]
+}

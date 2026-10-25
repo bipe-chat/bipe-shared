@@ -1667,6 +1667,142 @@ paths:
         "400": { $ref: "#/components/responses/Error" }
         "401": { $ref: "#/components/responses/Error" }
         "429": { $ref: "#/components/responses/Error" }
+  /v1/me/guardians:
+    get:
+      summary: The caller's guardians, the accounts the caller guards, and the theft marks (ADR 0044, ADR 0051)
+      description: >
+        Sua conta → Proteção contra roubo, and the guardian's view. guarding lists the accounts that
+        chose the caller, each with its mark when one is on. The app reads it when the screen opens
+        and when the app comes to the foreground (the API sends no push of its own, bipe#600).
+      security: [{ matrix: [] }]
+      responses:
+        "200":
+          description: Guardian state.
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/GuardianState" }
+        "401": { $ref: "#/components/responses/Error" }
+    put:
+      summary: Sets the caller's guardians (0 to 3)
+      description: >
+        Replaces the list. The app offers only verified contacts (security rule 3, scanned in person);
+        the server checks that each ID is an account on this homeserver and not the caller. Errors:
+        400 bad_request with reason guardian_self, guardian_unknown or guardian_too_many. A guardian
+        removed here can no longer mark or clear. While a mark is on, the list cannot change
+        (400 reason guardian_marked).
+      security: [{ matrix: [] }]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [user_ids]
+              properties:
+                user_ids: { type: array, maxItems: 3, items: { type: string } }
+      responses:
+        "200":
+          description: Guardian state after the change.
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/GuardianState" }
+        "400": { $ref: "#/components/responses/Error" }
+        "401": { $ref: "#/components/responses/Error" }
+  /v1/me/phone:
+    put:
+      summary: Records this phone for the account (bipe#268)
+      description: >
+        Every account on a phone sends the same random per-install phone ID (16 to 64 URL-safe
+        characters, never derived from hardware). The server keeps it with the device ID from the
+        token. A theft mark on one account covers the other accounts that reported the same phone:
+        it marks the personal ones and ends only that phone's sessions of a company account
+        (ADR 0087, ADR 0138 rule 6).
+      security: [{ matrix: [] }]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [phone_id]
+              properties:
+                phone_id: { type: string, minLength: 16, maxLength: 64 }
+      responses:
+        "204": { description: Recorded. }
+        "400": { $ref: "#/components/responses/Error" }
+        "401": { $ref: "#/components/responses/Error" }
+  /v1/theft/{userId}/mark:
+    post:
+      summary: A guardian marks the account as stolen (ADR 0044, ADR 0051)
+      description: >
+        Only a guardian of userId (else 404 not_found, so the route never tells who guards whom).
+        One guardian is enough. The server sets stolen_at, locks the MAS user, then ends every
+        active OAuth 2.0, compatibility and browser session page by page (the lock first, so the
+        thief cannot sign in again). The same runs for the personal accounts on the same phone; a
+        company account on that phone loses that phone's sessions only. The badge answers 410
+        stolen while the mark is on. A mark that is already on answers 200 with it. A MAS failure
+        answers 500 internal reason theft_unavailable after the parts that worked; the guardian
+        tries again.
+      security: [{ matrix: [] }]
+      parameters:
+        - { name: userId, in: path, required: true, schema: { type: string } }
+      responses:
+        "200":
+          description: The mark.
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/TheftMark" }
+        "401": { $ref: "#/components/responses/Error" }
+        "404": { $ref: "#/components/responses/Error" }
+        "500": { $ref: "#/components/responses/Error" }
+  /v1/theft/{userId}/clear:
+    post:
+      summary: A guardian clears the mark (ADR 0051)
+      description: >
+        Only a guardian of userId (else 404 not_found). Unlocks the MAS user at once and the
+        personal accounts the same mark covered. The owner then signs in on a new device and
+        restores old messages with the recovery key. Clearing by CPF with the 72-hour wait is not
+        in this version: support clears by hand after a CPF check (bipe-api CLI theft clear).
+      security: [{ matrix: [] }]
+      parameters:
+        - { name: userId, in: path, required: true, schema: { type: string } }
+      responses:
+        "204": { description: Cleared, or no mark was on. }
+        "401": { $ref: "#/components/responses/Error" }
+        "404": { $ref: "#/components/responses/Error" }
+        "500": { $ref: "#/components/responses/Error" }
+  /v1/theft-marks:
+    post:
+      summary: Signed theft marks for Matrix IDs (ADR 0044)
+      description: >
+        The app sends the Matrix IDs of its 1:1 partners and of group members it shows (at most 100).
+        For each account with a mark on, the answer holds one signed statement (docs/theft-mark.md):
+        the same envelope as a badge, payload typ "theft". The app verifies it with the badge keys,
+        shows the red banner in chats with that account and marks its messages from the hour before
+        stolen_at. Accounts without a mark are absent: no statement, no banner.
+      security: [{ matrix: [] }]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [user_ids]
+              properties:
+                user_ids: { type: array, minItems: 1, maxItems: 100, items: { type: string } }
+      responses:
+        "200":
+          description: Statements for the marked accounts among the IDs.
+          content:
+            application/json:
+              schema:
+                type: object
+                required: [marks]
+                properties:
+                  marks: { type: array, items: { $ref: "#/components/schemas/BadgeEnvelope" } }
+        "400": { $ref: "#/components/responses/Error" }
+        "401": { $ref: "#/components/responses/Error" }
+        "429": { $ref: "#/components/responses/Error" }
   /v1/profiles/{handle}:
     get:
       summary: Public profile by exact handle (ADR 0041)
@@ -5636,6 +5772,33 @@ components:
         created_at: { type: string, format: date-time, description: "Account creation time. Absent when Synapse does not answer." }
         name_changes: { type: array, items: { type: string, format: date-time }, description: "Display-name changes in the window, oldest first." }
         photo_changes: { type: array, items: { type: string, format: date-time }, description: "Photo changes in the window, oldest first." }
+    TheftMark:
+      type: object
+      required: [user_id, stolen_at, marked_by]
+      properties:
+        user_id: { type: string }
+        stolen_at: { type: string, format: date-time }
+        marked_by: { type: string, description: "The guardian who set the mark. The owner sees it (ADR 0044)." }
+        cleared_at: { type: string, format: date-time, description: "Set when the mark was cleared." }
+    Guardian:
+      type: object
+      required: [user_id, added_at]
+      properties:
+        user_id: { type: string }
+        added_at: { type: string, format: date-time }
+    GuardedAccount:
+      type: object
+      required: [user_id]
+      properties:
+        user_id: { type: string, description: "An account that chose the caller as a guardian." }
+        mark: { $ref: "#/components/schemas/TheftMark" }
+    GuardianState:
+      type: object
+      required: [guardians, guarding]
+      properties:
+        guardians: { type: array, maxItems: 3, items: { $ref: "#/components/schemas/Guardian" } }
+        guarding: { type: array, items: { $ref: "#/components/schemas/GuardedAccount" } }
+        last_mark: { $ref: "#/components/schemas/TheftMark", description: "The caller's most recent mark, after it was cleared (a marked account has no session). The owner sees who set it (ADR 0044). Absent when the account was never marked." }
     PublicProfile:
       type: object
       required: [handle, name]
@@ -5840,10 +6003,11 @@ components:
       properties:
         reason:
           type: string
-          enum: [revoked, not_active, not_found, staff]
+          enum: [revoked, not_active, not_found, staff, stolen]
           description: >
             not_active and not_found: a registry scan found the CNPJ no longer active or missing.
             staff: staff revoked the claim. revoked: any other end of the verification.
+            stolen: a theft mark is on (ADR 0044); the badge comes back when the mark is cleared.
     BrandMarks:
       type: object
       required: [marks]

@@ -1,0 +1,104 @@
+{
+  "$comment": "A link in an official notice from an account with a valid institution badge (docs/badge-attestation.md, domains) is clickable only when clickable is true. Reference: tools/lib/notice.mjs. The rule is lexical: https, then the text up to the first /, ? or # is the host; it must be ASCII letters, digits, dots and hyphens only, and after lower-casing and one trailing dot removed it equals a domain or ends with '.' + a domain. Every other link shows as plain text.",
+  "domains": [
+    "exemplo.sp.gov.br",
+    "bipe.chat"
+  ],
+  "vectors": [
+    {
+      "name": "the verified domain",
+      "url": "https://exemplo.sp.gov.br/iptu",
+      "clickable": true
+    },
+    {
+      "name": "a subdomain",
+      "url": "https://servicos.exemplo.sp.gov.br/agendar?dia=2",
+      "clickable": true
+    },
+    {
+      "name": "upper-case scheme and host",
+      "url": "HTTPS://Exemplo.SP.gov.br/",
+      "clickable": true
+    },
+    {
+      "name": "host only",
+      "url": "https://exemplo.sp.gov.br",
+      "clickable": true
+    },
+    {
+      "name": "a trailing dot",
+      "url": "https://exemplo.sp.gov.br./",
+      "clickable": true
+    },
+    {
+      "name": "a fragment right after the host",
+      "url": "https://bipe.chat#inicio",
+      "clickable": true
+    },
+    {
+      "name": "http, not https",
+      "url": "http://exemplo.sp.gov.br/iptu",
+      "clickable": false
+    },
+    {
+      "name": "another domain",
+      "url": "https://exemplo-sp.gov.com/iptu",
+      "clickable": false
+    },
+    {
+      "name": "the domain as a prefix",
+      "url": "https://exemplo.sp.gov.br.golpe.com/iptu",
+      "clickable": false
+    },
+    {
+      "name": "the domain glued to another name",
+      "url": "https://falsoexemplo.sp.gov.br/",
+      "clickable": false
+    },
+    {
+      "name": "user info before the host",
+      "url": "https://exemplo.sp.gov.br@golpe.com/",
+      "clickable": false
+    },
+    {
+      "name": "a port",
+      "url": "https://exemplo.sp.gov.br:8443/",
+      "clickable": false
+    },
+    {
+      "name": "an IP address",
+      "url": "https://192.168.0.1/",
+      "clickable": false
+    },
+    {
+      "name": "an IPv6 literal",
+      "url": "https://[::1]/",
+      "clickable": false
+    },
+    {
+      "name": "a non-ASCII host",
+      "url": "https://exemplo.sp.gоv.br/",
+      "clickable": false
+    },
+    {
+      "name": "a punycode host not in the list",
+      "url": "https://xn--exmplo-6ua.sp.gov.br/",
+      "clickable": false
+    },
+    {
+      "name": "no scheme",
+      "url": "exemplo.sp.gov.br/iptu",
+      "clickable": false
+    },
+    {
+      "name": "empty host",
+      "url": "https:///iptu",
+      "clickable": false
+    },
+    {
+      "name": "javascript",
+      "url": "javascript:alert(1)",
+      "clickable": false
+    }
+  ]
+}

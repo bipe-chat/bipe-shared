@@ -17,7 +17,7 @@
     "rows": {
       "type": "list",
       "of": { "type": "RecoveryRow", "description": "One way back in." },
-      "description": "In registries/onboarding.json recovery order. token shows only when a synced recovery token is on the phone (syncedToken). oldPhone stays hidden until bipe-chat/bipe#203."
+      "description": "In registries/onboarding.json recovery order. token shows only when a synced recovery token is on the phone (syncedToken). bipe-app shows oldPhone (bipe-chat/bipe#608); the forks keep its planned:203 gate and hide it."
     },
     "hasSyncedToken": { "type": "bool", "description": "true when the iCloud Keychain or Block Store holds a recovery token for an account that is not signed in on this phone." }
   },
@@ -29,7 +29,7 @@
       "effect": "Opens recovery-pin for the synced token."
     },
     "chooseOldPhone": {
-      "effect": "Opens the QR scan of the new-phone flow (bipe-chat/bipe#203; hidden until it ships)."
+      "effect": "Opens recovery-old-phone: the camera scans the code that the old phone shows on link-phone-show (ADR 0059)."
     },
     "chooseEmail": {
       "effect": "Opens recovery-email."

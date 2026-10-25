@@ -1,0 +1,110 @@
+{
+  "id": "recovery-old-phone",
+  "title": "New phone: scan the code of the old phone",
+  "flow": "recovery",
+  "summary": "On a phone without the account: scans the QR code that the old phone shows on link-phone-show, shows the 2-digit check code to type on the old phone, waits for the approval there and signs in through MAS (MSC4108 login side). Cross-signing and the backup key arrive with the session, so the history shows at once (ADR 0059).",
+  "state": {
+    "phase": {
+      "type": "enum",
+      "values": ["cameraDenied", "scanning", "connecting", "showCheckCode", "waitingForApproval", "syncing", "failed"],
+      "description": "cameraDenied: no camera permission (the paste field still works where canPaste). scanning: the camera looks for a code. connecting: a code was read; QrLoginProgress.starting. showCheckCode: QrLoginProgress.establishingSecureChannel; the user types checkCode on the old phone. waitingForApproval: QrLoginProgress.waitingForToken; the user approves on the old phone. syncing: QrLoginProgress.syncingSecrets. failed: see error."
+    },
+    "checkCode": { "type": "string", "optional": true, "description": "checkCodeString of QrLoginProgress.establishingSecureChannel: always 2 characters, a leading zero kept." },
+    "canPaste": { "type": "bool", "description": "true only in Debug builds or on the iOS Simulator or Android emulator: shows the bipe_app_old_phone_paste field next to the camera. false in Release builds on real phones." },
+    "pasted": { "type": "string", "description": "The text in the paste field." },
+    "error": {
+      "type": "string",
+      "optional": true,
+      "description": "String key of the failed phase: bipe_app_old_phone_not_bipe_code, bipe_app_old_phone_expired, bipe_app_old_phone_insecure, bipe_app_old_phone_declined, bipe_app_old_phone_not_supported, bipe_app_old_phone_stopped, bipe_error_network or bipe_error_generic."
+    }
+  },
+  "actions": {
+    "open": {
+      "effect": "From recovery-start chooseOldPhone. Asks for the camera and sets scanning or cameraDenied."
+    },
+    "codeRead": {
+      "params": { "bytes": { "type": "string", "description": "The raw bytes that the camera's QR decoder read." } },
+      "effect": "QrCodeData.fromBytes. When decoding fails, or QrCodeData.intent is not QrCodeIntent.reciprocate (a code that a signed-in device shows), sets failed with bipe_app_old_phone_not_bipe_code and keeps the camera on. Else builds a new client for QrCodeData.serverName (else the Bipe homeserver) in a fresh store, then Client.newLoginWithQrCodeHandler and LoginWithQrCodeHandler.scan with a QrLoginProgressListener; sets connecting."
+    },
+    "editPasted": {
+      "params": { "text": { "type": "string", "description": "What the user pasted." } },
+      "effect": "Only when canPaste. Keeps the text."
+    },
+    "submitPasted": {
+      "effect": "Only when canPaste. Decodes pasted as base64 (spaces and line breaks dropped) and runs codeRead with the bytes. Text that is not base64 sets failed with bipe_app_old_phone_not_bipe_code."
+    },
+    "progress": {
+      "params": { "update": { "type": "string", "description": "The QrLoginProgress case that onUpdate got." } },
+      "effect": "establishingSecureChannel: sets showCheckCode with checkCode. waitingForToken: sets waitingForApproval. syncingSecrets: sets syncing. done: saves the session (Client.session), moves the store to the account's folder, restores it, starts the sync and opens chat-list with no further step."
+    },
+    "taskFailed": {
+      "params": { "reason": { "type": "string", "description": "The HumanQrLoginError case that LoginWithQrCodeHandler.scan threw." } },
+      "effect": "Deletes the fresh store. notFound and expired → bipe_app_old_phone_expired; connectionInsecure, checkCodeAlreadySent and checkCodeCannotBeSent → bipe_app_old_phone_insecure; declined → bipe_app_old_phone_declined; cancelled → bipe_app_old_phone_stopped; linkingNotSupported, slidingSyncNotAvailable and oAuthMetadataInvalid → bipe_app_old_phone_not_supported; unsupportedQrCodeType and otherDeviceNotSignedIn → bipe_app_old_phone_not_bipe_code; a network failure → bipe_error_network; anything else → bipe_error_generic. Sets failed."
+    },
+    "scanAgain": {
+      "effect": "From failed: drops the task and sets scanning."
+    },
+    "openSystemSettings": {
+      "effect": "From cameraDenied: opens the app's page in the system settings."
+    },
+    "cancel": {
+      "effect": "Cancels the scan task, deletes the fresh store and goes back to recovery-start."
+    }
+  },
+  "strings": [
+    "bipe_recovery_qr",
+    "bipe_app_old_phone_title",
+    "bipe_recovery_qr_body",
+    "bipe_app_old_phone_where",
+    "bipe_recovery_qr_never_from_others",
+    "bipe_app_old_phone_paste",
+    "bipe_app_old_phone_paste_hint",
+    "bipe_app_old_phone_paste_submit",
+    "bipe_app_old_phone_connecting",
+    "bipe_app_old_phone_check_code_title",
+    "bipe_app_old_phone_check_code_body",
+    "bipe_app_old_phone_waiting_title",
+    "bipe_app_old_phone_waiting_body",
+    "bipe_app_old_phone_syncing",
+    "bipe_app_old_phone_error_title",
+    "bipe_app_old_phone_not_bipe_code",
+    "bipe_app_old_phone_expired",
+    "bipe_app_old_phone_insecure",
+    "bipe_app_old_phone_declined",
+    "bipe_app_old_phone_not_supported",
+    "bipe_app_old_phone_stopped",
+    "bipe_app_link_computer_scan_again",
+    "bipe_camera_permission_body",
+    "bipe_contacts_open_settings",
+    "bipe_contacts_open_settings_android",
+    "bipe_error_network",
+    "bipe_error_generic",
+    "bipe_app_cancel"
+  ],
+  "sdk": [
+    "QrCodeData.fromBytes",
+    "QrCodeData.intent",
+    "QrCodeData.serverName",
+    "QrCodeIntent",
+    "ClientBuilder.serverNameOrHomeserverUrl",
+    "ClientBuilder.userAgent",
+    "Client.newLoginWithQrCodeHandler",
+    "LoginWithQrCodeHandler.scan",
+    "QrLoginProgressListener.onUpdate",
+    "QrLoginProgress",
+    "HumanQrLoginError",
+    "OAuthConfiguration",
+    "Client.session",
+    "Client.restoreSession"
+  ],
+  "parity": ["new-phone"],
+  "notes": [
+    "Direction (ADR 0059): this phone scans, the old phone shows. The scam guard bipe_recovery_qr_never_from_others shows under the camera.",
+    "No PIN on this path: ADR 0059 puts the PIN after the other factor of the recovery API paths (synced token, e-mail, guardians, CPF). Here the factor is the signed-in old phone with its biometric check, and the API takes no part. No identity-confirmation screen follows (bipe-chat/bipe#201): the secrets arrive with the session.",
+    "The OAuth client: OAuthConfiguration with clientName 'Bipe' plus the phone model (iOS the hardware model, Android Build.MANUFACTURER and Build.MODEL), clientUri https://bipe.chat, redirectUri chat.bipe:/callback (the reverse domain of clientUri; the device code grant never opens it), no static registration (MAS dynamic client registration). The client's user agent names Bipe, the version and the phone model, so the MAS consent page on the old phone shows the model.",
+    "The store: the Matrix ID is unknown until done, so the client opens a fresh store folder. At done the app stops that client, moves the folder to the account's folder and restores the session from it (the crypto store belongs to this device; never sign in again over it). A failure or cancel deletes the fresh folder.",
+    "The session is an OAuth session (Session.oauthData). The app saves and restores it like the others; the SDK refreshes the tokens and the session delegate saves them. This phone has no hidden password (it stays on the old phone, ADR 0059): link-computer-scan shows needsPin here, and the synced recovery token is not renewed by this path.",
+    "Paste fallback for the two-Simulator test (bipe-chat/bipe#608): only in Debug builds and on the Simulator or emulator, with the gates of link-phone-show. Release builds on real phones show the camera only.",
+    "Time: the old phone's code lives about 60 seconds. An expired code ends as notFound or expired; the user makes a new code on the old phone."
+  ]
+}

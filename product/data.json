@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "date": "2026-10-19",
+  "date": "2026-10-24",
   "encarregado": null,
   "pt": {
     "nav": "LGPD",
@@ -71,6 +71,7 @@
     { "id": "apple-push", "brazil": false, "pt": "Apple, serviço de notificações do iPhone", "en": "Apple, the iPhone notification service" },
     { "id": "email-relay", "brazil": null, "pt": "Serviço que entrega os e-mails do Bipe", "en": "The service that delivers Bipe's emails" },
     { "id": "icloud-keychain", "brazil": null, "pt": "Chaveiro do iCloud, na sua conta Apple", "en": "iCloud Keychain, in your Apple account" },
+    { "id": "google-block-store", "brazil": null, "pt": "Block Store do Google, na sua conta Google (Android)", "en": "Google Block Store, in your Google account (Android)" },
     { "id": "support-tool", "brazil": null, "pt": "Ferramenta da equipe do Bipe para ler e responder pedidos de ajuda. Recebe só texto, nunca arquivos", "en": "The tool the Bipe team uses to read and answer help requests. It gets text only, never files" },
     { "id": "starlings", "brazil": false, "pt": "Starlings, o sistema de trabalho da Envisioning, na União Europeia", "en": "Starlings, Envisioning's work system, in the European Union" }
   ],
@@ -141,6 +142,23 @@
         "what": "A code the app makes and keeps in iCloud Keychain, in your Apple account. Bipe gets no copy of it.",
         "why": "On a new iPhone with the same Apple account, the code takes you back into your account. It does not open old messages.",
         "retention": "As long as it stays in your iCloud Keychain."
+      }
+    },
+    {
+      "id": "recovery-token-android",
+      "basis": "contract",
+      "places": ["google-block-store"],
+      "pt": {
+        "name": "Código para voltar à conta (Android)",
+        "what": "No Bipe Next para Android, o app guarda o mesmo código no Block Store do Google, na sua conta Google, junto com o ID da sua conta no Bipe. O Bipe não recebe uma cópia dele.",
+        "why": "Num Android novo com a mesma conta Google, o código te leva de volta para a conta, com o seu PIN. Ele não abre as mensagens antigas.",
+        "retention": "Enquanto ele estiver no Block Store da sua conta Google."
+      },
+      "en": {
+        "name": "Code to get back into your account (Android)",
+        "what": "In Bipe Next for Android, the app keeps the same code in Google Block Store, in your Google account, with your Bipe account ID. Bipe gets no copy of it.",
+        "why": "On a new Android phone with the same Google account, the code takes you back into your account, with your PIN. It does not open old messages.",
+        "retention": "As long as it stays in the Block Store of your Google account."
       }
     },
     {

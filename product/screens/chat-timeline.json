@@ -55,7 +55,7 @@
       "effect": "Sends a failed own message again."
     },
     "inviteAgain": {
-      "effect": "peerAway left only. When RoomPowerLevels.canOwnUserInvite: Room.inviteUserById for the other person; the bar stays until the person joins. Else (a DM created with the DM power levels, where nobody can invite): a new DM with the person, as person-profile message does, and chat-timeline opens it. The new room is the newest, so dm-selection shows it and hides this one; nothing is deleted. A failure shows bipe_dm_invite_again_failed."
+      "effect": "peerAway left only. When RoomPowerLevels.canOwnUserInvite: Room.inviteUserById for the other person; peerAway turns none once the person is invited, so the bar goes away. Else (a DM created with the DM power levels, where nobody can invite): a new DM with the person, as person-profile message does, and chat-timeline opens it. The new room is the newest, so dm-selection shows it and hides this one; nothing is deleted. A failure shows bipe_dm_invite_again_failed."
     }
   },
   "strings": [

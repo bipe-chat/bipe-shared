@@ -2291,12 +2291,18 @@
         "reason": "Client behaviour; no Bipe server code"
       },
       "ios-new": {
-        "status": "planned",
-        "issue": 523
+        "status": "built",
+        "evidence": [
+          "bipe-app/ios/Bipe/ChatList/ChatListModel.swift",
+          "bipe-app/ios/BipeKit/Sources/BipeKit/BipeChatRowName.swift"
+        ]
       },
       "android-new": {
-        "status": "planned",
-        "issue": 523
+        "status": "built",
+        "evidence": [
+          "bipe-app/android/app/src/main/kotlin/chat/bipe/app/chatlist/ChatListModel.kt",
+          "bipe-app/android/libraries/bipe/src/main/kotlin/chat/bipe/shared/BipeChatRowName.kt"
+        ]
       }
     },
     {
@@ -2320,12 +2326,16 @@
         "reason": "Client behaviour; no Bipe server code"
       },
       "ios-new": {
-        "status": "planned",
-        "issue": 532
+        "status": "built",
+        "evidence": [
+          "bipe-app/ios/Bipe/People/PeopleService.swift"
+        ]
       },
       "android-new": {
-        "status": "planned",
-        "issue": 532
+        "status": "built",
+        "evidence": [
+          "bipe-app/android/app/src/main/kotlin/chat/bipe/app/people/PeopleService.kt"
+        ]
       }
     },
     {
@@ -2349,12 +2359,16 @@
         "reason": "Client behaviour; no Bipe server code"
       },
       "ios-new": {
-        "status": "planned",
-        "issue": 536
+        "status": "built",
+        "evidence": [
+          "bipe-app/ios/Bipe/Timeline/DmBars.swift"
+        ]
       },
       "android-new": {
-        "status": "planned",
-        "issue": 536
+        "status": "built",
+        "evidence": [
+          "bipe-app/android/app/src/main/kotlin/chat/bipe/app/timeline/DmBars.kt"
+        ]
       }
     },
     {
@@ -2378,12 +2392,18 @@
         "reason": "Client behaviour; no Bipe server code"
       },
       "ios-new": {
-        "status": "planned",
-        "issue": 533
+        "status": "built",
+        "evidence": [
+          "bipe-app/ios/Bipe/Timeline/DmBars.swift",
+          "bipe-app/ios/Bipe/Timeline/ChatTimelineModel.swift"
+        ]
       },
       "android-new": {
-        "status": "planned",
-        "issue": 533
+        "status": "built",
+        "evidence": [
+          "bipe-app/android/app/src/main/kotlin/chat/bipe/app/timeline/DmBars.kt",
+          "bipe-app/android/app/src/main/kotlin/chat/bipe/app/timeline/ChatTimelineModel.kt"
+        ]
       }
     },
     {

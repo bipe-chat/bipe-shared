@@ -147,6 +147,12 @@ public enum BipeRegistries {
     public static let photoMatchHeight = ${reg.photoMatch.height}
     public static let photoMatchMaxDistance = ${reg.photoMatch.maxDistance}
 
+    /// Profile change facts (ADR 0049, registries/profile-facts.json). Lines: test-vectors/profile-facts.json.
+    public static let profileFactsWindowDays = ${reg.profileFacts.windowDays}
+    public static let profileFactsNewAccountDays = ${reg.profileFacts.newAccountDays}
+    public static let profileFactsNoticePairHours = ${reg.profileFacts.noticePairHours}
+    public static let profileFactsNoticeDays = ${reg.profileFacts.noticeDays}
+
     /// Username (handle) rules. The server is the authority; clients check early for feedback.
     public static let handleMinLength = ${reg.handles.minLength}
     public static let handleMaxLength = ${reg.handles.maxLength}
@@ -431,6 +437,12 @@ object BipeRegistries {
     const val PHOTO_MATCH_WIDTH = ${reg.photoMatch.width}
     const val PHOTO_MATCH_HEIGHT = ${reg.photoMatch.height}
     const val PHOTO_MATCH_MAX_DISTANCE = ${reg.photoMatch.maxDistance}
+
+    /** Profile change facts (ADR 0049, registries/profile-facts.json). Lines: test-vectors/profile-facts.json. */
+    const val PROFILE_FACTS_WINDOW_DAYS = ${reg.profileFacts.windowDays}
+    const val PROFILE_FACTS_NEW_ACCOUNT_DAYS = ${reg.profileFacts.newAccountDays}
+    const val PROFILE_FACTS_NOTICE_PAIR_HOURS = ${reg.profileFacts.noticePairHours}
+    const val PROFILE_FACTS_NOTICE_DAYS = ${reg.profileFacts.noticeDays}
 
     /** Username (handle) rules. The server is the authority; clients check early for feedback. */
     const val HANDLE_MIN_LENGTH = ${reg.handles.minLength}

@@ -285,6 +285,23 @@
       }
     },
     {
+      "id": "profile-change-dates",
+      "basis": "legitimate-interest",
+      "places": ["server"],
+      "pt": {
+        "name": "Datas de troca de nome e foto",
+        "what": "Quando cada conta trocou o nome ou a foto, só a data. O servidor guarda um resumo do nome e da foto atuais para notar a troca, nunca o nome antigo nem a imagem.",
+        "why": "Mostrar \"Foto alterada há 1 dia\" e \"Conta criada há 3 dias\" para quem recebe um pedido ou abre um perfil. Conta nova com foto nova é um sinal comum de golpe.",
+        "retention": "30 dias para as datas. O resumo fica enquanto a conta existe."
+      },
+      "en": {
+        "name": "Name and photo change dates",
+        "what": "When each account changed its name or photo, the date only. The server keeps a digest of the current name and photo to notice a change, never the old name or the image.",
+        "why": "To show \"Photo changed 1 day ago\" and \"Account created 3 days ago\" to people who get a request or open a profile. A new account with a new photo is a common scam sign.",
+        "retention": "30 days for the dates. The digest stays while the account exists."
+      }
+    },
+    {
       "id": "invites",
       "basis": "legitimate-interest",
       "places": ["server"],

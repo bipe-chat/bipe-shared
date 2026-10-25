@@ -2293,12 +2293,18 @@
         "reason": "Client behaviour; no Bipe server code"
       },
       "ios-new": {
-        "status": "planned",
-        "issue": 523
+        "status": "built",
+        "evidence": [
+          "bipe-app/ios/Bipe/ChatList/ChatListModel.swift",
+          "bipe-app/ios/BipeKit/Sources/BipeKit/BipeChatRowName.swift"
+        ]
       },
       "android-new": {
-        "status": "planned",
-        "issue": 523
+        "status": "built",
+        "evidence": [
+          "bipe-app/android/app/src/main/kotlin/chat/bipe/app/chatlist/ChatListModel.kt",
+          "bipe-app/android/libraries/bipe/src/main/kotlin/chat/bipe/shared/BipeChatRowName.kt"
+        ]
       }
     },
     {
@@ -2322,12 +2328,16 @@
         "reason": "Client behaviour; no Bipe server code"
       },
       "ios-new": {
-        "status": "planned",
-        "issue": 532
+        "status": "built",
+        "evidence": [
+          "bipe-app/ios/Bipe/People/PeopleService.swift"
+        ]
       },
       "android-new": {
-        "status": "planned",
-        "issue": 532
+        "status": "built",
+        "evidence": [
+          "bipe-app/android/app/src/main/kotlin/chat/bipe/app/people/PeopleService.kt"
+        ]
       }
     },
     {
@@ -2351,12 +2361,16 @@
         "reason": "Client behaviour; no Bipe server code"
       },
       "ios-new": {
-        "status": "planned",
-        "issue": 536
+        "status": "built",
+        "evidence": [
+          "bipe-app/ios/Bipe/Timeline/DmBars.swift"
+        ]
       },
       "android-new": {
-        "status": "planned",
-        "issue": 536
+        "status": "built",
+        "evidence": [
+          "bipe-app/android/app/src/main/kotlin/chat/bipe/app/timeline/DmBars.kt"
+        ]
       }
     },
     {
@@ -2380,12 +2394,18 @@
         "reason": "Client behaviour; no Bipe server code"
       },
       "ios-new": {
-        "status": "planned",
-        "issue": 533
+        "status": "built",
+        "evidence": [
+          "bipe-app/ios/Bipe/Timeline/DmBars.swift",
+          "bipe-app/ios/Bipe/Timeline/ChatTimelineModel.swift"
+        ]
       },
       "android-new": {
-        "status": "planned",
-        "issue": 533
+        "status": "built",
+        "evidence": [
+          "bipe-app/android/app/src/main/kotlin/chat/bipe/app/timeline/DmBars.kt",
+          "bipe-app/android/app/src/main/kotlin/chat/bipe/app/timeline/ChatTimelineModel.kt"
+        ]
       }
     },
     {
@@ -2524,6 +2544,74 @@
         "evidence": [
           "bipe-app/android/app/src/main/kotlin/chat/bipe/app/settings/PinPad.kt",
           "bipe-app/android/app/src/main/kotlin/chat/bipe/app/settings/SettingsScreens.kt"
+        ]
+      }
+    },
+    {
+      "id": "tap-targets-text-size",
+      "name": "Text follows the system size, tap targets 44 pt / 48 dp (bipe#498)",
+      "ios": {
+        "status": "n/a",
+        "reason": "Fork frozen (ADR 0155); built in the own client"
+      },
+      "android": {
+        "status": "n/a",
+        "reason": "Fork frozen (ADR 0155); built in the own client"
+      },
+      "web": {
+        "status": "n/a",
+        "reason": "The site has its own accessibility work (product/accessibility.json)"
+      },
+      "server": {
+        "status": "n/a",
+        "reason": "Runs on the device only"
+      },
+      "ios-new": {
+        "status": "built",
+        "evidence": [
+          "bipe-app/ios/Bipe/Common/TapTarget.swift",
+          "bipe-app/ios/Bipe/LinkComputer/LinkComputerView.swift"
+        ]
+      },
+      "android-new": {
+        "status": "built",
+        "evidence": [
+          "bipe-app/android/app/src/main/kotlin/chat/bipe/app/common/TapTarget.kt",
+          "bipe-app/android/app/src/main/kotlin/chat/bipe/app/encryption/DeviceVerificationScreen.kt"
+        ]
+      }
+    },
+    {
+      "id": "gesture-actions",
+      "name": "An accessible action for every gesture (bipe#499)",
+      "ios": {
+        "status": "n/a",
+        "reason": "Fork frozen (ADR 0155); built in the own client"
+      },
+      "android": {
+        "status": "n/a",
+        "reason": "Fork frozen (ADR 0155); built in the own client"
+      },
+      "web": {
+        "status": "n/a",
+        "reason": "The site has its own accessibility work (product/accessibility.json)"
+      },
+      "server": {
+        "status": "n/a",
+        "reason": "Runs on the device only"
+      },
+      "ios-new": {
+        "status": "built",
+        "evidence": [
+          "bipe-app/ios/Bipe/Timeline/TimelineRowView.swift",
+          "bipe-app/ios/Bipe/Media/VoiceMessageRow.swift"
+        ]
+      },
+      "android-new": {
+        "status": "built",
+        "evidence": [
+          "bipe-app/android/app/src/main/kotlin/chat/bipe/app/timeline/TimelineRowItem.kt",
+          "bipe-app/android/app/src/main/kotlin/chat/bipe/app/media/VoiceMessageRow.kt"
         ]
       }
     }

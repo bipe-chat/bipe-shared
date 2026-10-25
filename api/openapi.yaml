@@ -1947,6 +1947,76 @@ paths:
               schema: { $ref: "#/components/schemas/VisitReport" }
         "401": { $ref: "#/components/responses/Error" }
         "404": { $ref: "#/components/responses/Error" }
+  /v1/proposta/login:
+    post:
+      summary: A visitor signs in to the strategic pages (bipe.chat/proposta/)
+      description: >
+        ADR 0158 in bipe/docs/adr. The edge sends bipe.chat/proposta/_auth/login here, so the cookie belongs to bipe.chat.
+        Any well-formed email and the one shared password. The email only names the visitor in the visit log; the
+        first sign-in with an email makes the visitor. A wrong password answers 401 unauthorized, and so does every
+        sign-in while no password is set. On success the response sets the HttpOnly cookie bipe_proposta (Path
+        /proposta, Secure, SameSite Lax, 30 days). Rate-limited per IP.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: { $ref: "#/components/schemas/PropostaLoginRequest" }
+      responses:
+        "204": { description: Signed in; the cookie is set }
+        "400": { $ref: "#/components/responses/Error" }
+        "401": { $ref: "#/components/responses/Error" }
+        "429": { $ref: "#/components/responses/Error" }
+  /v1/proposta/logout:
+    post:
+      summary: The visitor signs out of the strategic pages
+      description: Ends the session in the bipe_proposta cookie and clears the cookie. Always 204.
+      responses:
+        "204": { description: Signed out }
+  /v1/proposta/check:
+    get:
+      summary: Edge check for each request to a strategic page (Caddy forward_auth)
+      description: >
+        ADR 0157, ADR 0158. Only the edge calls this route. It reads the bipe_proposta cookie, X-Forwarded-Method,
+        X-Forwarded-Uri and Referer. A valid session answers 204; a GET for a page (a path that ends in / or .html)
+        also writes a visit row with the path, the referrer origin, the utm_* tags and the GeoIP place. No IP is
+        stored. Anything else answers 401 unauthorized, and the edge serves the sign-in page.
+      responses:
+        "204": { description: Allowed }
+        "401": { $ref: "#/components/responses/Error" }
+  /v1/proposta/beacon:
+    post:
+      summary: The deck reports the slide on screen
+      description: >
+        ADR 0157, ADR 0158. Sent with sendBeacon as text/plain JSON from bipe.chat/proposta/_auth/beacon. Needs the
+        bipe_proposta cookie. Writes one visit row of kind slide. Always 204 when the body and the session are
+        good; the browser reads no response.
+      requestBody:
+        required: true
+        content:
+          text/plain:
+            schema: { $ref: "#/components/schemas/PropostaBeacon" }
+      responses:
+        "204": { description: Stored }
+        "400": { $ref: "#/components/responses/Error" }
+        "401": { $ref: "#/components/responses/Error" }
+        "429": { $ref: "#/components/responses/Error" }
+  /v1/admin/proposta:
+    get:
+      summary: Staff report of the strategic pages, per visitor
+      description: >
+        Only for users that MAS marks admin (ADR 0056); every other user gets 404 not_found. ADR 0158: named
+        visitors, so no MIN_CELL. Visits of the last `days` days, newest first, at most 1000.
+      security: [{ matrix: [] }]
+      parameters:
+        - { name: days, in: query, required: false, schema: { type: integer, minimum: 1, maximum: 365, default: 30 } }
+      responses:
+        "200":
+          description: Visitors and visits
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/PropostaReport" }
+        "401": { $ref: "#/components/responses/Error" }
+        "404": { $ref: "#/components/responses/Error" }
   /v1/me/business/catalog:
     get:
       summary: "Read the owner catalogue, including inactive items"
@@ -5154,6 +5224,49 @@ components:
       properties:
         visitors: { type: integer, description: "Umami sessions." }
         views: { type: integer, description: "Page views." }
+    PropostaLoginRequest:
+      type: object
+      required: [email, password]
+      properties:
+        email: { type: string, format: email, maxLength: 254 }
+        password: { type: string, minLength: 1, maxLength: 256 }
+    PropostaBeacon:
+      type: object
+      required: [path, slide]
+      properties:
+        path: { type: string, maxLength: 200, description: "Page path under /proposta/, no query." }
+        slide: { type: integer, minimum: 1, maximum: 200 }
+    PropostaVisitor:
+      type: object
+      required: [id, email, created_at, last_seen_at, page_views, max_slide]
+      properties:
+        id: { type: integer }
+        email: { type: string, description: "As the visitor typed it, in lower case. Not verified." }
+        created_at: { type: string, format: date-time }
+        last_seen_at: { type: [string, "null"], format: date-time }
+        page_views: { type: integer, description: "Page views in the report window." }
+        max_slide: { type: [integer, "null"], description: "Highest deck slide shown in the report window." }
+    PropostaVisit:
+      type: object
+      required: [at, visitor_id, kind, path, slide, referrer, utm, city, region, country]
+      properties:
+        at: { type: string, format: date-time }
+        visitor_id: { type: integer }
+        kind: { type: string, enum: [page, slide] }
+        path: { type: string }
+        slide: { type: [integer, "null"] }
+        referrer: { type: [string, "null"], description: "Origin only (scheme and host)." }
+        utm: { type: object, additionalProperties: { type: string }, description: "utm_source, utm_medium, utm_campaign, utm_content, utm_term when present." }
+        city: { type: [string, "null"] }
+        region: { type: [string, "null"] }
+        country: { type: [string, "null"] }
+    PropostaReport:
+      type: object
+      required: [days, visitors, visits]
+      properties:
+        days: { type: integer }
+        visitors: { type: array, items: { $ref: "#/components/schemas/PropostaVisitor" } }
+        visits: { type: array, items: { $ref: "#/components/schemas/PropostaVisit" } }
     VisitReport:
       type: object
       required: [days, brazil, other_countries, states, cities]

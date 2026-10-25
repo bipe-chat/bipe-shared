@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "date": "2026-10-24",
+  "date": "2026-10-25",
   "encarregado": null,
   "pt": {
     "nav": "LGPD",
@@ -537,6 +537,23 @@
         "what": "That you joined a business's queue in Bipe, the times you joined, were called and served, and your account. Bipe never asks for your location.",
         "why": "To show your position and the wait, and for the business to call the next person.",
         "retention": "30 days after the day of the queue."
+      }
+    },
+    {
+      "id": "proposta-visits",
+      "basis": "legitimate-interest",
+      "places": ["server"],
+      "pt": {
+        "name": "Acesso às páginas de proposta do Bipe",
+        "what": "Para quem entra nas páginas de proposta: o e-mail que você digita. A cada página e slide que você abre, a hora, a página, o site de onde você veio, as etiquetas utm do link e a cidade estimada pelo endereço de IP. O Bipe não guarda o IP.",
+        "why": "Saber quais páginas cada visitante leu.",
+        "retention": "As visitas ficam 365 dias. O e-mail fica até a equipe apagar ou você pedir."
+      },
+      "en": {
+        "name": "Access to Bipe's proposal pages",
+        "what": "For people who open the proposal pages: the email you type. For each page and slide you open: the time, the page, the site you came from, the link's utm tags and the city estimated from your IP address. Bipe does not keep the IP.",
+        "why": "To know which pages each visitor read.",
+        "retention": "Visits are kept for 365 days. The email stays until the team deletes it or you ask."
       }
     }
   ],

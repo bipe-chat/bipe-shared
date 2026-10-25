@@ -1,0 +1,50 @@
+{
+  "id": "data-use",
+  "title": "Data use",
+  "flow": "settings",
+  "summary": "Shows the data budget of a normal day, the media Bipe sent and downloaded on this phone today and this month, split by mobile data and Wi-Fi, and the switch that saves mobile data.",
+  "types": {
+    "DataUseCount": {
+      "sentBytes": { "type": "int", "description": "Media Bipe uploaded: photos, videos, voice messages, files and stickers." },
+      "receivedBytes": { "type": "int", "description": "Media Bipe downloaded: thumbnails, full files and voice messages." }
+    }
+  },
+  "state": {
+    "budgetLabel": { "type": "string", "description": "budgetMegabytesPerDay of registries/data-use.json, formatted by the system, for bipe_data_use_budget." },
+    "todayMobile": { "type": "DataUseCount", "description": "Today, on mobile data." },
+    "todayWifi": { "type": "DataUseCount", "description": "Today, on Wi-Fi or a cable." },
+    "monthMobile": { "type": "DataUseCount", "description": "This calendar month, on mobile data." },
+    "monthWifi": { "type": "DataUseCount", "description": "This calendar month, on Wi-Fi or a cable." },
+    "dataSaver": { "type": "bool", "description": "The switch bipe_data_use_saver, kept on the phone. Default dataSaverDefault." },
+    "systemSaverOn": { "type": "bool", "description": "true when the system Low Data Mode (iOS) or Data Saver (Android) is on: bipe_data_use_saver_system shows, and the app saves data as if the switch were on." }
+  },
+  "actions": {
+    "setDataSaver": {
+      "params": { "isOn": { "type": "bool", "description": "The new value." } },
+      "effect": "Keeps the switch on the phone. timeline-media reads it on the next row."
+    }
+  },
+  "strings": [
+    "bipe_chats_data_use",
+    "bipe_data_use_budget",
+    "bipe_data_use_today",
+    "bipe_data_use_month",
+    "bipe_data_use_mobile",
+    "bipe_data_use_wifi",
+    "bipe_data_use_sent",
+    "bipe_data_use_received",
+    "bipe_data_use_footer",
+    "bipe_data_use_saver",
+    "bipe_data_use_saver_footer",
+    "bipe_data_use_saver_system"
+  ],
+  "sdk": ["Client.getMediaContent", "Client.getMediaFile", "Timeline.sendImage", "Timeline.sendVideo", "Timeline.sendFile", "Timeline.sendVoiceMessage"],
+  "parity": ["data-use"],
+  "notes": [
+    "Opens from the row dataUse in Conversas e mídia (registries/settings.json).",
+    "Counting: the app adds the size of each media download (thumbnail, image, file, voice) and each upload it starts, to the counter of the network in use at that moment (iOS NWPathMonitor: cellular is mobile data; Android ConnectivityManager: TRANSPORT_CELLULAR is mobile data). Text, sync and calls are not counted: the SDK does not report them, and bipe_data_use_footer says so. The counters stay on the phone, never leave it and roll over at the start of each calendar month (today at midnight).",
+    "Sizes are formatted by the system (ByteCountFormatter on iOS, Formatter.formatShortFileSize on Android).",
+    "dataSaver or the system saver, on mobile data: timeline-media shows photos and stickers as tapToShow, like showMedia never. On Wi-Fi nothing changes. Videos and voice messages download only on a tap or play in every case.",
+    "The budget is an estimate (registries/data-use.json); a measured value replaces it after MZ measures a normal day on both platforms."
+  ]
+}

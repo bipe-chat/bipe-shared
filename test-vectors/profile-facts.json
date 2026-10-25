@@ -1,0 +1,197 @@
+{
+  "$comment": "Hand-written cases for profileFactLines (ADR 0049, registries/profile-facts.json). tools/gen-test-vectors.mjs checks each expected outcome against the reference implementation and writes test-vectors/profile-facts.json.",
+  "now": "2026-10-25T12:00:00.000Z",
+  "vectors": [
+    {
+      "name": "nothing",
+      "facts": {
+        "name_changes": [],
+        "photo_changes": []
+      },
+      "expected": {
+        "lines": [],
+        "notice": false
+      }
+    },
+    {
+      "name": "old account, no change",
+      "facts": {
+        "created_at": "2025-01-01T00:00:00.000Z",
+        "name_changes": [],
+        "photo_changes": []
+      },
+      "expected": {
+        "lines": [],
+        "notice": false
+      }
+    },
+    {
+      "name": "new account",
+      "facts": {
+        "created_at": "2026-10-22T09:00:00.000Z",
+        "name_changes": [],
+        "photo_changes": []
+      },
+      "expected": {
+        "lines": [
+          {
+            "fact": "created",
+            "at": "2026-10-22T09:00:00.000Z"
+          }
+        ],
+        "notice": false
+      }
+    },
+    {
+      "name": "one photo change",
+      "facts": {
+        "created_at": "2025-01-01T00:00:00.000Z",
+        "name_changes": [],
+        "photo_changes": [
+          "2026-10-24T12:00:00.000Z"
+        ]
+      },
+      "expected": {
+        "lines": [
+          {
+            "fact": "photo",
+            "count": 1,
+            "at": "2026-10-24T12:00:00.000Z"
+          }
+        ],
+        "notice": false
+      }
+    },
+    {
+      "name": "two name changes",
+      "facts": {
+        "name_changes": [
+          "2026-10-01T12:00:00.000Z",
+          "2026-10-20T12:00:00.000Z"
+        ],
+        "photo_changes": []
+      },
+      "expected": {
+        "lines": [
+          {
+            "fact": "name",
+            "count": 2,
+            "at": "2026-10-20T12:00:00.000Z"
+          }
+        ],
+        "notice": false
+      }
+    },
+    {
+      "name": "change older than 30 days is gone",
+      "facts": {
+        "name_changes": [
+          "2026-09-20T12:00:00.000Z"
+        ],
+        "photo_changes": []
+      },
+      "expected": {
+        "lines": [],
+        "notice": false
+      }
+    },
+    {
+      "name": "new account with photo and name within 24 hours",
+      "facts": {
+        "created_at": "2026-10-23T08:00:00.000Z",
+        "name_changes": [
+          "2026-10-24T20:00:00.000Z"
+        ],
+        "photo_changes": [
+          "2026-10-24T08:00:00.000Z"
+        ]
+      },
+      "expected": {
+        "lines": [
+          {
+            "fact": "created",
+            "at": "2026-10-23T08:00:00.000Z"
+          },
+          {
+            "fact": "photo",
+            "count": 1,
+            "at": "2026-10-24T08:00:00.000Z"
+          },
+          {
+            "fact": "name",
+            "count": 1,
+            "at": "2026-10-24T20:00:00.000Z"
+          }
+        ],
+        "notice": true
+      }
+    },
+    {
+      "name": "photo and name 25 hours apart",
+      "facts": {
+        "name_changes": [
+          "2026-10-24T09:00:00.000Z"
+        ],
+        "photo_changes": [
+          "2026-10-23T08:00:00.000Z"
+        ]
+      },
+      "expected": {
+        "lines": [
+          {
+            "fact": "photo",
+            "count": 1,
+            "at": "2026-10-23T08:00:00.000Z"
+          },
+          {
+            "fact": "name",
+            "count": 1,
+            "at": "2026-10-24T09:00:00.000Z"
+          }
+        ],
+        "notice": false
+      }
+    },
+    {
+      "name": "pair older than 7 days has no notice",
+      "facts": {
+        "name_changes": [
+          "2026-10-10T09:00:00.000Z"
+        ],
+        "photo_changes": [
+          "2026-10-10T10:00:00.000Z"
+        ]
+      },
+      "expected": {
+        "lines": [
+          {
+            "fact": "photo",
+            "count": 1,
+            "at": "2026-10-10T10:00:00.000Z"
+          },
+          {
+            "fact": "name",
+            "count": 1,
+            "at": "2026-10-10T09:00:00.000Z"
+          }
+        ],
+        "notice": false
+      }
+    },
+    {
+      "name": "future and bad dates are ignored",
+      "facts": {
+        "created_at": "2026-11-01T00:00:00.000Z",
+        "name_changes": [
+          "not a date",
+          "2026-10-26T00:00:00.000Z"
+        ],
+        "photo_changes": []
+      },
+      "expected": {
+        "lines": [],
+        "notice": false
+      }
+    }
+  ]
+}

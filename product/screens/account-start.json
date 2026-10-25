@@ -18,14 +18,24 @@
       "type": "string",
       "optional": true,
       "description": "The Matrix ID of the account, when one is known."
+    },
+    "legacyKept": {
+      "type": "bool",
+      "description": "true when phase is noAccount and this phone holds data of the earlier Bipe app (the fork, same app ID) that this app could not open yet: on iOS a keychain item in a legacy read group whose service this app never writes, on Android the fork's vault kept as bipe-account.fork or a SharedPreferences file this app never writes. Nothing of it is deleted or overwritten (bipe-chat/bipe#603)."
     }
   },
   "actions": {
     "start": {
-      "effect": "On launch: restore the saved SDK session if one exists; else finish a pending sign-up with POST /v1/signup/resume (signup-create, ADR 0094); else read the device credentials of every account on this phone (BipeKit BipeCredentialStore.password() on iOS, libraries/bipe on Android) and sign in with it; else go to noAccount."
+      "effect": "On launch: restore the saved SDK session if one exists; else finish a pending sign-up with POST /v1/signup/resume (signup-create, ADR 0094); else read the device credentials of every account on this phone (BipeKit BipeCredentialStore.password() on iOS, libraries/bipe on Android) and sign in with it; else go to noAccount. Before noAccount it checks for legacy data (legacyKept)."
     },
     "retry": {
       "effect": "From failed: run start again."
+    },
+    "recoverLegacy": {
+      "effect": "From legacyKept: opens recovery-start (\"Já tenho conta\"), where the synced recovery token of the earlier app (iCloud Keychain, Block Store) or the e-mail path gets the account back."
+    },
+    "startFresh": {
+      "effect": "From legacyKept: shows onboarding-welcome for this launch. The legacy data stays on the phone; the next launch checks again."
     }
   },
   "strings": [
@@ -33,7 +43,11 @@
     "bipe_app_start_no_account_title",
     "bipe_app_start_no_account_body",
     "bipe_app_start_error",
-    "bipe_app_retry"
+    "bipe_app_retry",
+    "bipe_app_start_legacy_title",
+    "bipe_app_start_legacy_body",
+    "bipe_app_start_legacy_recover",
+    "bipe_app_start_legacy_fresh"
   ],
   "sdk": [
     "ClientBuilder.serverNameOrHomeserverUrl",
@@ -54,6 +68,10 @@
     "While a recovery started on this phone is kept (recovery-waiting), start opens that screen instead of noAccount. A recovery that waits for this account on another phone shows recovery-alert after ready.",
     "Never log or show the password or the recovery token.",
     "Several accounts (ADR 0086): account-start opens every account on the phone. The current account is the one used last on this phone (saved by app-tabs switchAccount). On the first start, with nothing saved, it is the oldest account on the phone (the credential stored first), so the primary account opens, not a newer second one.",
-    "ready opens app-tabs."
+    "ready opens app-tabs.",
+    "Carry-over from the fork (bipe/docs/client-switch-plan.md step 3, bipe-chat/bipe#603): with the store ID set the app reads the earlier app's data in place and copies what it can read (keychain move on iOS, BipeForkVault on Android). It never deletes, moves over or writes into a legacy item, except the one move of the fork's vault file to bipe-account.fork on Android, which keeps every byte.",
+    "Never show an empty chat list or onboarding-welcome as if the phone had no account while legacyKept is true: noAccount shows bipe_app_start_legacy_title, bipe_app_start_legacy_body, then bipe_app_start_legacy_recover (recoverLegacy, primary) and bipe_app_start_legacy_fresh (startFresh).",
+    "Account isolation: every legacy item maps to the one Matrix ID it names. An item without a Matrix ID is never given to an account; it shows up only in the structure report.",
+    "Structure report (rehearsal evidence, bipe-chat/bipe#603): when legacy data is on the phone, problem-report adds it as one more compressed-log file, legacy-data.json, only when includeLogs is on. It lists names, sizes, value types, JSON key names and SQLite table names; never a value, a password, a token, a key, a message or a Matrix ID (Matrix IDs show as their server name only)."
   ]
 }

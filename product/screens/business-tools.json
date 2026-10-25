@@ -2,7 +2,7 @@
   "id": "business-tools",
   "title": "Business tools",
   "flow": "business",
-  "summary": "On the Você tab of a company account, a section lists the business tools: Agenda, Catálogo, Pedidos, Orçamentos and Fila virtual. Each row opens its owner screen.",
+  "summary": "The Trabalho tab of a company account (app-tabs) lists the business tools: Agenda, Catálogo, Pedidos, Orçamentos and Fila virtual. Each row opens its owner screen inside the tab. Você does not show them.",
   "state": {
     "isCompany": {
       "type": "bool",
@@ -15,7 +15,7 @@
   },
   "actions": {
     "openAgenda": {
-      "effect": "Selects the Agenda tab."
+      "effect": "Opens agenda-owner."
     },
     "openCatalog": {
       "effect": "Opens catalog-owner."
@@ -31,6 +31,7 @@
     }
   },
   "strings": [
+    "bipe_tab_work",
     "bipe_business_tools_title",
     "bipe_business_tools_footer",
     "bipe_tab_agenda",

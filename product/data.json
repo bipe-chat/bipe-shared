@@ -526,15 +526,15 @@
       "places": ["server"],
       "pt": {
         "name": "Acesso às páginas de proposta do Bipe",
-        "what": "Para quem recebeu um convite para as páginas de proposta: seu e-mail, um nome que a equipe dá ao convite e a senha, guardada só como hash. A cada página e slide que você abre, a hora, a página, o site de onde você veio, as etiquetas utm do link e a cidade estimada pelo endereço de IP. O Bipe não guarda o IP.",
-        "why": "Dar acesso só a quem foi convidado e saber quais páginas cada convidado leu.",
-        "retention": "As visitas ficam 365 dias. O convite fica até a equipe apagar ou você pedir."
+        "what": "Para quem entra nas páginas de proposta: o e-mail que você digita. A cada página e slide que você abre, a hora, a página, o site de onde você veio, as etiquetas utm do link e a cidade estimada pelo endereço de IP. O Bipe não guarda o IP.",
+        "why": "Saber quais páginas cada visitante leu.",
+        "retention": "As visitas ficam 365 dias. O e-mail fica até a equipe apagar ou você pedir."
       },
       "en": {
         "name": "Access to Bipe's proposal pages",
-        "what": "For people invited to the proposal pages: your email, a label the team gives the invite, and the password, stored only as a hash. For each page and slide you open: the time, the page, the site you came from, the link's utm tags and the city estimated from your IP address. Bipe does not keep the IP.",
-        "why": "To let only invited people in, and to know which pages each invitee read.",
-        "retention": "Visits are kept for 365 days. The invite stays until the team deletes it or you ask."
+        "what": "For people who open the proposal pages: the email you type. For each page and slide you open: the time, the page, the site you came from, the link's utm tags and the city estimated from your IP address. Bipe does not keep the IP.",
+        "why": "To know which pages each visitor read.",
+        "retention": "Visits are kept for 365 days. The email stays until the team deletes it or you ask."
       }
     }
   ],

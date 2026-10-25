@@ -481,6 +481,26 @@
       "android-new": "planned"
     },
     {
+      "id": "news-room",
+      "name": "Novidades do Bipe: one read-only news room per user, and the Settings switch to get news again (ADR 0117, bipe#383, bipe#387)",
+      "issue": 387,
+      "ios": {
+        "status": "n/a",
+        "reason": "Not built in the fork; the forks are frozen (ADR 0155)"
+      },
+      "android": {
+        "status": "n/a",
+        "reason": "Not built in the fork; the forks are frozen (ADR 0155)"
+      },
+      "web": {
+        "status": "n/a",
+        "reason": "No web chat (ADR 0004); the site shows a demo at most"
+      },
+      "server": "planned",
+      "ios-new": "planned",
+      "android-new": "planned"
+    },
+    {
       "id": "lookalikes",
       "name": "Disguised letters",
       "ios": "planned",

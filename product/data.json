@@ -400,6 +400,23 @@
       }
     },
     {
+      "id": "news-room",
+      "basis": "contract",
+      "places": ["server"],
+      "pt": {
+        "name": "Novidades do Bipe",
+        "what": "Seu ID no Bipe, a conversa de novidades que o Bipe criou para você, se você saiu dela ou desligou as novidades, e quais novidades chegaram para você. O texto das novidades é do Bipe e é igual para todo mundo.",
+        "why": "Mandar cada novidade do app uma vez só para cada pessoa, e parar quando a pessoa não quer mais.",
+        "retention": "Enquanto sua conta existir."
+      },
+      "en": {
+        "name": "Bipe news",
+        "what": "Your Bipe ID, the news chat Bipe made for you, whether you left it or turned news off, and which news items reached you. The news text is Bipe's and the same for everyone.",
+        "why": "To send each app news item once to each person, and to stop when the person no longer wants it.",
+        "retention": "While your account exists."
+      }
+    },
+    {
       "id": "problem-reports",
       "basis": "consent",
       "places": ["server", "support-tool"],

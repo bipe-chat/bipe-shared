@@ -531,8 +531,20 @@
           "bipe-api/src/ecnpj.ts"
         ]
       },
-      "ios-new": "planned",
-      "android-new": "planned"
+      "ios-new": {
+        "status": "built",
+        "evidence": [
+          "bipe-app/ios/BipeKit/Sources/BipeKit/BipeBusiness.swift",
+          "bipe-app/ios/Bipe/Voce/BusinessClaimView.swift"
+        ]
+      },
+      "android-new": {
+        "status": "built",
+        "evidence": [
+          "bipe-app/android/libraries/bipe/src/main/kotlin/chat/bipe/shared/company/BipeBusiness.kt",
+          "bipe-app/android/app/src/main/kotlin/chat/bipe/app/voce/BusinessClaim.kt"
+        ]
+      }
     },
     {
       "id": "official-notice",

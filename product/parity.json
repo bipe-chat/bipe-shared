@@ -2614,6 +2614,40 @@
           "bipe-app/android/app/src/main/kotlin/chat/bipe/app/media/VoiceMessageRow.kt"
         ]
       }
+    },
+    {
+      "id": "reduce-motion",
+      "name": "Reduce Motion in every Bipe animation (bipe#496)",
+      "ios": {
+        "status": "n/a",
+        "reason": "Fork frozen (ADR 0155); built in the own client"
+      },
+      "android": {
+        "status": "n/a",
+        "reason": "Fork frozen (ADR 0155); built in the own client"
+      },
+      "web": {
+        "status": "n/a",
+        "reason": "The site has its own accessibility work (product/accessibility.json)"
+      },
+      "server": {
+        "status": "n/a",
+        "reason": "Runs on the device only"
+      },
+      "ios-new": {
+        "status": "built",
+        "evidence": [
+          "bipe-app/ios/Bipe/Common/Motion.swift",
+          "bipe-app/ios/Bipe/Timeline/ChatTimelineView.swift"
+        ]
+      },
+      "android-new": {
+        "status": "built",
+        "evidence": [
+          "bipe-app/android/app/src/main/kotlin/chat/bipe/app/common/Motion.kt",
+          "bipe-app/android/app/src/main/kotlin/chat/bipe/app/BipeTheme.kt"
+        ]
+      }
     }
   ],
   "differences": [

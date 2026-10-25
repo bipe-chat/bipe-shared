@@ -153,6 +153,12 @@ public enum BipeRegistries {
     public static let profileFactsNoticePairHours = ${reg.profileFacts.noticePairHours}
     public static let profileFactsNoticeDays = ${reg.profileFacts.noticeDays}
 
+    /// Theft protection (ADR 0044, ADR 0051, registries/theft-protection.json). Statement: docs/theft-mark.md.
+    public static let theftMaxGuardians = ${reg.theft.maxGuardians}
+    public static let theftMarkedMessageMinutes = ${reg.theft.markedMessageMinutes}
+    public static let theftStatementLifeHours = ${reg.theft.statementLifeHours}
+    public static let theftCheckMinutes = ${reg.theft.checkMinutes}
+
     /// Username (handle) rules. The server is the authority; clients check early for feedback.
     public static let handleMinLength = ${reg.handles.minLength}
     public static let handleMaxLength = ${reg.handles.maxLength}
@@ -443,6 +449,12 @@ object BipeRegistries {
     const val PROFILE_FACTS_NEW_ACCOUNT_DAYS = ${reg.profileFacts.newAccountDays}
     const val PROFILE_FACTS_NOTICE_PAIR_HOURS = ${reg.profileFacts.noticePairHours}
     const val PROFILE_FACTS_NOTICE_DAYS = ${reg.profileFacts.noticeDays}
+
+    /** Theft protection (ADR 0044, ADR 0051, registries/theft-protection.json). Statement: docs/theft-mark.md. */
+    const val THEFT_MAX_GUARDIANS = ${reg.theft.maxGuardians}
+    const val THEFT_MARKED_MESSAGE_MINUTES = ${reg.theft.markedMessageMinutes}
+    const val THEFT_STATEMENT_LIFE_HOURS = ${reg.theft.statementLifeHours}
+    const val THEFT_CHECK_MINUTES = ${reg.theft.checkMinutes}
 
     /** Username (handle) rules. The server is the authority; clients check early for feedback. */
     const val HANDLE_MIN_LENGTH = ${reg.handles.minLength}

@@ -40,7 +40,7 @@
     },
     "invitingAgain": { "type": "bool", "description": "true while inviteAgain runs." },
     "profileNotice": {"type": "string", "optional": true, "description": "1:1 chats only: bipe_profile_notice_name_photo with the person's display name, when profileFactLines gives notice for the other person (name and photo changed at most noticePairHours apart, the later change younger than noticeDays). Amber (warning colour tokens), above the composer."},
-    "theftMark": {"type": "date", "optional": true, "description": "1:1 chats and group members: the stolen_at of a valid theft statement (docs/theft-mark.md) for the other person or the sender. Shows bipe_theft_banner_title and bipe_theft_banner_body (red, danger colour tokens) above the composer in a 1:1 chat, and bipe_theft_message_marker under each message from that account sent from stolen_at minus markedMessageMinutes on."}
+    "theftMark": {"type": "date", "optional": true, "description": "1:1 chats: the stolen_at of a valid theft statement (docs/theft-mark.md) for the other person. Shows bipe_theft_banner_title and bipe_theft_banner_body (red, danger colour tokens) above the composer in a 1:1 chat, and bipe_theft_message_marker under each message from that account sent from stolen_at minus markedMessageMinutes on."}
   },
   "actions": {
     "loadHistory": {
@@ -105,6 +105,6 @@
     "A blocked person's DM (ADR 0141, bipe-chat/bipe#536, block-person): bipe_app_blocked_bar with the person's name and bipe_action_unblock_person replaces the composer. The chat stays in the list. The bar wins over the peerAway bar.",
     "Brand marks (ADR 0162, spec brand-mark): in a DM with a reseller, the header shows the first verified mark's line under the title (bipe_brand_mark_more for the others), as text inside the title button that opens person-profile; the sheet opens from the line there. bipe_brand_mark_ended shows once there after a mark the phone saw is gone.",
     "Profile change notice (ADR 0049, bipe-chat/bipe#598): in a joined 1:1 chat the app reads POST /v1/profile-facts for the other person when the chat opens, at most once an hour. The notice is a fact, not a block: it never hides a message, and a failed call shows nothing. Not in groups and not for requests (chat-request shows the facts lines).",
-    "Theft mark (ADR 0044, bipe-chat/bipe#600): the app asks POST /v1/theft-marks for the other person of a 1:1 chat and the senders on screen in a group, when the chat opens and at most every checkMinutes (registries/theft-protection.json). It verifies each statement with the badge keys (test-vectors/theft-marks.json). A failed call or an invalid statement shows nothing."
+    "Theft mark (ADR 0044, bipe-chat/bipe#600): the app asks POST /v1/theft-marks for the other person of a 1:1 chat when the chat opens and at most every checkMinutes (registries/theft-protection.json). It verifies each statement with the badge keys (test-vectors/theft-marks.json). A failed call or an invalid statement shows nothing. Group chats do not check marks in this version."
   ]
 }

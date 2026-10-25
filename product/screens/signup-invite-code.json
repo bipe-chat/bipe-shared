@@ -10,7 +10,7 @@
       "values": ["editing", "checking", "invalid"],
       "description": "checking: GET /v1/invites/{code} runs. invalid: the server says valid false, or the text holds no code."
     },
-    "error": { "type": "string", "optional": true, "description": "String key of the error under the field: bipe_error_invite_invalid, bipe_error_network or bipe_error_rate_limited." }
+    "error": { "type": "string", "optional": true, "description": "String key of the error under the field: bipe_error_invite_invalid, bipe_invite_no_longer_valid (an invite from a link that stopped being valid, onboarding-welcome primary), bipe_error_network or bipe_error_rate_limited." }
   },
   "actions": {
     "editCode": {
@@ -32,6 +32,7 @@
     "bipe_invite_code_none",
     "bipe_app_invite_checking",
     "bipe_error_invite_invalid",
+    "bipe_invite_no_longer_valid",
     "bipe_error_network",
     "bipe_error_rate_limited"
   ],

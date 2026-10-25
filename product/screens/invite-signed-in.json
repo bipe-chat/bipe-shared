@@ -1,0 +1,48 @@
+{
+  "id": "invite-signed-in",
+  "title": "Invite opened on a signed-in phone",
+  "flow": "home",
+  "summary": "What a bipe.chat/convite/<code> link does when the phone already has an account (bipe-chat/bipe#460): the chat with the inviter when there is one, else a sheet to talk to the inviter or to make a new account with this invite.",
+  "state": {
+    "code": { "type": "string", "description": "The invite code from the link (BipeInviteLink.code). Never shown and never logged." },
+    "phase": {
+      "type": "enum",
+      "values": ["checking", "invited", "notValid", "failed"],
+      "description": "checking: GET /v1/invites/{code} and, with a handle, GET /v1/handles/{handle} run. invited: the sheet shows. notValid: valid false; the sheet shows bipe_invite_no_longer_valid. failed: no network; bipe_error_network and a retry."
+    },
+    "inviterHandle": { "type": "string", "optional": true, "description": "The inviter's handle without @, from the invite preview." },
+    "inviterName": { "type": "string", "optional": true, "description": "The inviter's display name from GET /v1/handles/{handle}, else @handle." }
+  },
+  "actions": {
+    "appear": {
+      "effect": "Previews the code. With an inviter that resolves to an account that already has a DM with the account on screen: closes the sheet and opens that chat. An inviter that is the account on screen or another account on this phone: invited without the chat row."
+    },
+    "chat": {
+      "effect": "Closes the sheet and opens profile-link-open for inviterHandle: the person, from where the first message follows the chat-request rules. Shown only with a handle."
+    },
+    "newAccount": {
+      "effect": "Opens account-new's sign-up at signup-name with this code (SignupStart without inviteId: a cancel does not revoke someone else's invite). The sign-up keeps its inviter: signup-done opens the chat with the inviter, as a first sign-up does."
+    },
+    "retry": { "effect": "From failed: runs appear again." },
+    "close": { "effect": "Closes the sheet. Nothing changes." }
+  },
+  "strings": [
+    "bipe_invite_signed_in_title",
+    "bipe_invite_signed_in_title_anonymous",
+    "bipe_invite_signed_in_body",
+    "bipe_invite_signed_in_chat",
+    "bipe_account_add",
+    "bipe_invite_no_longer_valid",
+    "bipe_error_network",
+    "bipe_app_retry",
+    "bipe_app_close"
+  ],
+  "sdk": ["Client.getDmRoom"],
+  "parity": ["invites", "deferred-invite"],
+  "notes": [
+    "Only the Conversas chat list takes the link, as with profile links (profile-link-open). A phone with no account keeps onboarding-welcome openInviteLink.",
+    "bipe_invite_signed_in_title takes inviterName. Without a handle the title is bipe_invite_signed_in_title_anonymous and there is no chat row.",
+    "Nova conta here follows account-new: the personal row's cap applies (bipe_account_cap_reached), and the invite step does not show.",
+    "The states around the first run (bipe-chat/bipe#460): a sign-in that fails after create shows bipe_signup_signin_failed with one retry (signup-create); a killed app resumes with POST /v1/signup/resume or the stored credential (account-start); offline steps keep their input and show bipe_error_network; an inviter whose account is gone gives no inviter chat (signup-done)."
+  ]
+}

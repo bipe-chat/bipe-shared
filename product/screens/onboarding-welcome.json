@@ -38,7 +38,7 @@
       "effect": "Reads the clipboard once, takes the invite code from the text (registries/invite-codes.json rules) and previews it. With no code, sets pasteResult to notAnInvite."
     },
     "primary": {
-      "effect": "Follows the primary button of the variant: invited and open go to signup-name with the invite (if any); inviteOnly goes to signup-invite-code."
+      "effect": "Follows the primary button of the variant: invited and open go to signup-name with the invite (if any); inviteOnly goes to signup-invite-code. A pending invite is checked again with GET /v1/invites/{code} first (bipe-chat/bipe#460): valid false goes to signup-invite-code with bipe_invite_no_longer_valid under the field; no network keeps the invite and goes on, as signup-create checks it again."
     },
     "haveAccount": {
       "effect": "Opens the way back into an existing account (recovery-start, bipe-chat/bipe#555)."

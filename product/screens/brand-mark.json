@@ -1,0 +1,47 @@
+{
+  "id": "brand-mark",
+  "title": "Brand mark",
+  "flow": "people",
+  "summary": "A reseller's brand marks next to the reseller's own name, and a sheet that names each brand, shows the brand's CNPJ seal and says what the mark does not mean (ADR 0162).",
+  "state": {
+    "userId": { "type": "string", "description": "The reseller's work account." },
+    "marks": {
+      "type": "list",
+      "of": { "type": "string", "description": "One verified mark: its line bipe_brand_mark_label_<label> with the brand's name, the brand's Matrix ID and the brand's CNPJ." },
+      "description": "The verified lvl brand-mark envelopes of GET /v1/brand-marks/{userId}, oldest grant first, at most brandMarkMaxPerAccount. Empty: nothing shows."
+    },
+    "brandSeal": {
+      "type": "enum",
+      "values": ["verified", "unknown"],
+      "description": "Per mark, in the sheet only: verified when the brand's own cnpj badge verifies (BipeCompanySeals) and its CNPJ equals the mark's cnpj; else unknown, with bipe_brand_mark_brand_unchecked."
+    },
+    "endedBrand": { "type": "string", "optional": true, "description": "The brand of a mark this phone saw on the account and that is gone now: bipe_brand_mark_ended once, then nothing." }
+  },
+  "actions": {
+    "openSheet": { "effect": "A tap on the mark line in person-profile opens the sheet. In the chat header the line is part of the title button, which opens person-profile; in the chat list it is part of the row." },
+    "close": { "effect": "Closes the sheet." }
+  },
+  "strings": [
+    "bipe_brand_mark_label_revendedora",
+    "bipe_brand_mark_label_revendedor",
+    "bipe_brand_mark_label_corretor",
+    "bipe_brand_mark_label_representante",
+    "bipe_brand_mark_more",
+    "bipe_brand_mark_title",
+    "bipe_brand_mark_body",
+    "bipe_brand_mark_brand_seal",
+    "bipe_brand_mark_brand_unchecked",
+    "bipe_brand_mark_ended",
+    "bipe_badge_company_cnpj",
+    "bipe_app_close"
+  ],
+  "sdk": ["Client.encryption", "Encryption.userIdentity", "UserIdentity"],
+  "parity": ["brand-mark"],
+  "notes": [
+    "Where (ADR 0162 point 4): next to the reseller's own name in the chat header (under the title), in person-profile (a line under the name) and in the chat list row (a short line under the name). The first mark's line, then bipe_brand_mark_more with the count of the others. Never instead of the name, and never the brand's seal on the reseller: the line has no seal icon (ADR 0108 point 3).",
+    "Verification on the device, as company-seal: each envelope from GET /v1/brand-marks/{userId}, the keys of registries/badge-keys.json, level brand-mark, sub equal to the reseller, binding to the reseller's cross-signing master key, exp in the future, and a label of registries/brand-marks.json. Any failure: that mark does not show (fail closed). The answer is kept brandMarkRecheckMinutes (10), so a mark the brand or the reseller ends goes from customers' phones within 10 minutes.",
+    "The sheet: one section per mark with its line, the brand's seal under bipe_brand_mark_brand_seal (the brand's CNPJ with formatCnpj when brandSeal is verified, else bipe_brand_mark_brand_unchecked), then bipe_brand_mark_body: the brand vouches for the reseller and does not read the chats.",
+    "Ended (ADR 0162 point 5): the phone keeps the mark IDs it showed per account. When a fresh answer no longer has one, bipe_brand_mark_ended with that brand's name shows once where the mark was, then the phone forgets it. A failed fetch is not an end: it shows no mark and no notice.",
+    "The mark is only on accounts of type company; a mark on a personal account never comes from the server."
+  ]
+}

@@ -71,6 +71,165 @@ paths:
           content:
             application/json:
               schema: { $ref: "#/components/schemas/BadgeGone" }
+  /v1/brand-marks/{userId}:
+    get:
+      summary: The signed brand marks of an account (ADR 0162)
+      description: >
+        Public, no auth, like GET /v1/badges/{userId}. One badge envelope of lvl brand-mark per active mark
+        (docs/badge-attestation.md), at most maxPerAccount (registries/brand-marks.json), oldest grant first. The server
+        signs a mark only while it is active, its brand has a verified claim with an active registry record, and the
+        reseller has a cross-signing master key; otherwise the mark is left out. An account without marks gets an empty
+        list. Apps verify each envelope locally and keep the answer for at most recheckMinutes.
+      parameters:
+        - name: userId
+          in: path
+          required: true
+          schema: { type: string }
+          description: Matrix user ID of the reseller's work account.
+      responses:
+        "200":
+          description: The marks
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/BrandMarks" }
+        "429": { $ref: "#/components/responses/Error" }
+  /v1/me/brand-marks/invites:
+    post:
+      summary: The brand makes a single-use invite for one mark (ADR 0162 points 1 and 2)
+      description: >
+        The caller is the brand: a company account with a verified claim (403 brand_not_verified otherwise). The code is
+        returned once; the server keeps only its SHA-256. The invite lasts inviteDays (registries/brand-marks.json) and
+        is used by one accept or one refuse. 30 invites per hour.
+      security: [{ matrix: [] }]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: { $ref: "#/components/schemas/BrandMarkInviteRequest" }
+      responses:
+        "201":
+          description: Created
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/CreatedBrandMarkInvite" }
+        "400": { $ref: "#/components/responses/Error" }
+        "401": { $ref: "#/components/responses/Error" }
+        "403": { $ref: "#/components/responses/Error" }
+        "429": { $ref: "#/components/responses/Error" }
+  /v1/me/brand-marks/invites/{inviteId}:
+    delete:
+      summary: The brand cancels an invite that nobody used
+      security: [{ matrix: [] }]
+      parameters:
+        - name: inviteId
+          in: path
+          required: true
+          schema: { type: string, format: uuid }
+      responses:
+        "204": { description: Cancelled }
+        "401": { $ref: "#/components/responses/Error" }
+        "404": { $ref: "#/components/responses/Error" }
+  /v1/me/brand-marks/granted:
+    get:
+      summary: The brand's open invites and the marks it granted
+      description: >
+        Only the accounts that hold an active mark and the open invites. The brand never sees the reseller's chats,
+        customers or contacts (ADR 0162 point 2).
+      security: [{ matrix: [] }]
+      responses:
+        "200":
+          description: Invites and marks
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/GrantedBrandMarks" }
+        "401": { $ref: "#/components/responses/Error" }
+  /v1/me/brand-marks:
+    get:
+      summary: The marks the caller's work account holds
+      security: [{ matrix: [] }]
+      responses:
+        "200":
+          description: Held marks
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/HeldBrandMarks" }
+        "401": { $ref: "#/components/responses/Error" }
+  /v1/me/brand-marks/{markId}:
+    delete:
+      summary: End a mark (ADR 0162 point 5)
+      description: >
+        The brand that granted it or the reseller who holds it ends the mark at once. GET /v1/brand-marks/{userId}
+        leaves it out from the next request. The reseller keeps the account, chats and customers. 404 for anyone else.
+      security: [{ matrix: [] }]
+      parameters:
+        - name: markId
+          in: path
+          required: true
+          schema: { type: string, format: uuid }
+      responses:
+        "204": { description: Ended }
+        "401": { $ref: "#/components/responses/Error" }
+        "404": { $ref: "#/components/responses/Error" }
+  /v1/brand-marks/invites/{code}:
+    get:
+      summary: What a brand mark invite grants, before the reseller answers
+      description: >
+        Signed-in only. 404 not_found for a code that is unknown, used, cancelled or expired, and for an invite whose
+        brand no longer has a verified claim; it never says which. 60 lookups per hour.
+      security: [{ matrix: [] }]
+      parameters:
+        - name: code
+          in: path
+          required: true
+          schema: { type: string }
+      responses:
+        "200":
+          description: The invite
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/BrandMarkInvitePreview" }
+        "401": { $ref: "#/components/responses/Error" }
+        "404": { $ref: "#/components/responses/Error" }
+        "429": { $ref: "#/components/responses/Error" }
+  /v1/brand-marks/invites/{code}/accept:
+    post:
+      summary: The reseller accepts the mark on their work account
+      description: >
+        Uses the invite. 404 not_found as for the preview. 400 bad_request with reason not_work_account (the caller is
+        not a company account), own_brand (the brand itself) or already_held (an active mark of this brand). 409
+        brand_mark_limit when the account already holds maxPerAccount marks; the invite stays open.
+      security: [{ matrix: [] }]
+      parameters:
+        - name: code
+          in: path
+          required: true
+          schema: { type: string }
+      responses:
+        "201":
+          description: Accepted
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/HeldBrandMark" }
+        "400": { $ref: "#/components/responses/Error" }
+        "401": { $ref: "#/components/responses/Error" }
+        "404": { $ref: "#/components/responses/Error" }
+        "409": { $ref: "#/components/responses/Error" }
+        "429": { $ref: "#/components/responses/Error" }
+  /v1/brand-marks/invites/{code}/refuse:
+    post:
+      summary: The reseller refuses the mark
+      description: Uses the invite; no mark is made. 404 not_found as for the preview.
+      security: [{ matrix: [] }]
+      parameters:
+        - name: code
+          in: path
+          required: true
+          schema: { type: string }
+      responses:
+        "204": { description: Refused }
+        "401": { $ref: "#/components/responses/Error" }
+        "404": { $ref: "#/components/responses/Error" }
+        "429": { $ref: "#/components/responses/Error" }
   /v1/verifications/pix:
     post:
       summary: Start a Pix verification for the caller
@@ -5622,7 +5781,7 @@ components:
       properties:
         error:
           type: string
-          enum: [bad_request, invite_invalid, invite_quota_exhausted, email_taken, handle_invalid, handle_taken, handle_cooldown, password_weak, attestation_invalid, profile_invalid, photo_invalid, unauthorized, not_found, rate_limited, internal, cnpj_invalid, cnpj_not_active, cnpj_taken, signature_invalid, pin_weak, pin_wrong, pin_blocked, pin_not_set, recovery_invalid, email_unavailable, terms_required, support_unavailable, link_taken, link_unavailable, deletion_pending]
+          enum: [bad_request, invite_invalid, invite_quota_exhausted, email_taken, handle_invalid, handle_taken, handle_cooldown, password_weak, attestation_invalid, profile_invalid, photo_invalid, unauthorized, not_found, rate_limited, internal, cnpj_invalid, cnpj_not_active, cnpj_taken, signature_invalid, pin_weak, pin_wrong, pin_blocked, pin_not_set, recovery_invalid, email_unavailable, terms_required, support_unavailable, link_taken, link_unavailable, brand_not_verified, brand_mark_limit, deletion_pending]
         reason: { type: string, description: "Detail, e.g. a HandleProblem or PinProblem id." }
         tries_left: { type: integer, description: "With pin_wrong: wrong PINs left before the PIN blocks." }
     BadgeEnvelope:
@@ -5643,6 +5802,72 @@ components:
           description: >
             not_active and not_found: a registry scan found the CNPJ no longer active or missing.
             staff: staff revoked the claim. revoked: any other end of the verification.
+    BrandMarks:
+      type: object
+      required: [marks]
+      properties:
+        marks:
+          type: array
+          maxItems: 3
+          items: { $ref: "#/components/schemas/BadgeEnvelope" }
+          description: "Envelopes of lvl brand-mark (docs/badge-attestation.md)."
+    BrandMarkInviteRequest:
+      type: object
+      required: [label]
+      properties:
+        label: { type: string, description: "One id of labels in registries/brand-marks.json." }
+    BrandMarkInvite:
+      type: object
+      required: [id, label, created_at, expires_at]
+      properties:
+        id: { type: string, format: uuid }
+        label: { type: string }
+        created_at: { type: string, format: date-time }
+        expires_at: { type: string, format: date-time }
+    CreatedBrandMarkInvite:
+      type: object
+      required: [invite, code, link]
+      properties:
+        invite: { $ref: "#/components/schemas/BrandMarkInvite" }
+        code: { type: string, description: "Returned only here. The server keeps its SHA-256." }
+        link: { type: string, description: "PUBLIC_SITE_URL/marca/#<code>. The apps take the code out of the link or a pasted message." }
+    GrantedBrandMark:
+      type: object
+      required: [id, reseller, label, granted_at]
+      properties:
+        id: { type: string, format: uuid }
+        reseller: { type: string, description: "Matrix user ID of the reseller's work account." }
+        label: { type: string }
+        granted_at: { type: string, format: date-time }
+    GrantedBrandMarks:
+      type: object
+      required: [invites, marks]
+      properties:
+        invites: { type: array, items: { $ref: "#/components/schemas/BrandMarkInvite" } }
+        marks: { type: array, items: { $ref: "#/components/schemas/GrantedBrandMark" } }
+    BrandMarkInvitePreview:
+      type: object
+      required: [brand, brand_name, cnpj, label, expires_at]
+      properties:
+        brand: { type: string, description: "Matrix user ID of the brand." }
+        brand_name: { type: string, description: "The name of the brand's CNPJ badge." }
+        cnpj: { type: string }
+        label: { type: string }
+        expires_at: { type: string, format: date-time }
+    HeldBrandMark:
+      type: object
+      required: [id, brand, brand_name, label, granted_at]
+      properties:
+        id: { type: string, format: uuid }
+        brand: { type: string }
+        brand_name: { type: string }
+        label: { type: string }
+        granted_at: { type: string, format: date-time }
+    HeldBrandMarks:
+      type: object
+      required: [marks]
+      properties:
+        marks: { type: array, items: { $ref: "#/components/schemas/HeldBrandMark" } }
     PixChallenge:
       type: object
       required: [verificationId, brcode, amountCents, expiresAt]

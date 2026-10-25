@@ -153,6 +153,9 @@ public enum BipeRegistries {
     public static let handlePattern = ${swiftString(reg.handles.pattern)}
     /// Owned handles (ADR 0065): only these may be shorter than \`handleMinLength\`, down to \`handleOwnerMinLength\`.
     public static let handleOwnerMinLength = ${reg.handles.ownerMinLength}
+    /// Escolha seu @ (bipe-chat/bipe#200): how many free suggestions show, and how many candidates to check.
+    public static let handleSuggestionsShown = ${reg.handles.suggestions.shown}
+    public static let handleSuggestionCandidates = ${reg.handles.suggestions.candidates}
     public static let ownedHandles: Set<String> = ${Object.keys(reg.owners.handles).length ? swiftArray(Object.keys(reg.owners.handles).map(swiftString)) : "[]"}
 
     /// Full Matrix user IDs of official Bipe accounts. Match exactly; names and handles are not proof.
@@ -254,6 +257,11 @@ ${reg.workHours.defaultDays.map((d) => `        (day: ${d.day}, ranges: [${d.ran
     /// Data use (bipe-chat/bipe#242; registries/data-use.json): the budget of a normal day and the default of the data saver switch.
     public static let dataUseBudgetMegabytesPerDay = ${reg.dataUse.budgetMegabytesPerDay}
     public static let dataSaverDefault = ${reg.dataUse.dataSaverDefault}
+
+    /// Brand marks for resellers (bipe ADR 0162; registries/brand-marks.json). Label ids, string key bipe_brand_mark_label_<id>.
+    public static let brandMarkLabels: [String] = [${reg.brandMarks.labels.map(swiftString).join(", ")}]
+    public static let brandMarkMaxPerAccount = ${reg.brandMarks.maxPerAccount}
+    public static let brandMarkRecheckMinutes = ${reg.brandMarks.recheckMinutes}
 }
 `;
 }
@@ -433,6 +441,9 @@ object BipeRegistries {
     /** Username (handle) rules. The server is the authority; clients check early for feedback. */
     const val HANDLE_MIN_LENGTH = ${reg.handles.minLength}
     const val HANDLE_MAX_LENGTH = ${reg.handles.maxLength}
+    /** Escolha seu @ (bipe-chat/bipe#200): how many free suggestions show, and how many candidates to check. */
+    const val HANDLE_SUGGESTIONS_SHOWN = ${reg.handles.suggestions.shown}
+    const val HANDLE_SUGGESTION_CANDIDATES = ${reg.handles.suggestions.candidates}
     const val HANDLE_PATTERN = ${kotlinString(reg.handles.pattern)}
 
     /** Owned handles (ADR 0065): only these may be shorter than [HANDLE_MIN_LENGTH], down to [HANDLE_OWNER_MIN_LENGTH]. */
@@ -544,6 +555,11 @@ ${reg.workHours.defaultDays.map((d) => `        ${d.day} to listOf(${d.ranges.ma
     /** Data use (bipe-chat/bipe#242; registries/data-use.json): the budget of a normal day and the default of the data saver switch. */
     const val DATA_USE_BUDGET_MEGABYTES_PER_DAY = ${reg.dataUse.budgetMegabytesPerDay}
     const val DATA_SAVER_DEFAULT = ${reg.dataUse.dataSaverDefault}
+
+    /** Brand marks for resellers (bipe ADR 0162; registries/brand-marks.json). Label ids, string key bipe_brand_mark_label_<id>. */
+    val BRAND_MARK_LABELS: List<String> = listOf(${reg.brandMarks.labels.map(kotlinString).join(", ")})
+    const val BRAND_MARK_MAX_PER_ACCOUNT = ${reg.brandMarks.maxPerAccount}
+    const val BRAND_MARK_RECHECK_MINUTES = ${reg.brandMarks.recheckMinutes}
 }
 `;
 }

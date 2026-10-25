@@ -268,6 +268,23 @@
       }
     },
     {
+      "id": "brand-marks",
+      "basis": "contract",
+      "places": ["server"],
+      "pt": {
+        "name": "Marcas de revenda",
+        "what": "Para uma conta de trabalho que revende uma marca: qual marca deu o selo, as palavras do selo, quando ele começou e quando terminou, e quem fez cada passo (só a conta, nunca a conversa). A marca vê só que o selo está ativo; nunca vê conversas, clientes ou contatos.",
+        "why": "Mostrar aos clientes que a marca confirma a revendedora, e tirar o selo assim que a marca ou a revendedora encerrar.",
+        "retention": "Enquanto o selo estiver ativo. Depois que termina, 365 dias. Um convite que ninguém usou some 30 dias depois de vencer."
+      },
+      "en": {
+        "name": "Brand marks for resellers",
+        "what": "For a work account that resells a brand: which brand granted the mark, the mark's words, when it started and ended, and who did each step (the account only, never the chat). The brand sees only that the mark is active; it never sees chats, customers or contacts.",
+        "why": "To show customers that the brand vouches for the reseller, and to remove the mark as soon as the brand or the reseller ends it.",
+        "retention": "While the mark is active. After it ends, 365 days. An invite that nobody used goes 30 days after it expires."
+      }
+    },
+    {
       "id": "handle-history",
       "basis": "legitimate-interest",
       "places": ["server"],

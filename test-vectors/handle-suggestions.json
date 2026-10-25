@@ -1,0 +1,186 @@
+{
+  "description": "handleSuggestions(displayName): handles of the right shape for Escolha seu @, in order (registries/handles.json suggestions). The app checks availability in this order and shows the first suggestions.shown that are free.",
+  "cases": [
+    {
+      "name": "Ana Souza",
+      "suggestions": [
+        "ana.souza",
+        "anasouza",
+        "ana_souza",
+        "ana",
+        "souza.ana",
+        "ana.souza1",
+        "anasouza1"
+      ]
+    },
+    {
+      "name": "Ana Maria de Souza",
+      "suggestions": [
+        "ana.souza",
+        "anasouza",
+        "ana_souza",
+        "ana",
+        "souza.ana",
+        "ana.souza1",
+        "anasouza1"
+      ]
+    },
+    {
+      "name": "José da Silva",
+      "suggestions": [
+        "jose.silva",
+        "josesilva",
+        "jose_silva",
+        "jose",
+        "silva.jose",
+        "jose.silva1",
+        "josesilva1"
+      ]
+    },
+    {
+      "name": "Zé",
+      "suggestions": [
+        "ze1",
+        "ze2",
+        "ze_"
+      ]
+    },
+    {
+      "name": "Ana",
+      "suggestions": [
+        "ana",
+        "ana1",
+        "ana2",
+        "ana_"
+      ]
+    },
+    {
+      "name": "Bo",
+      "suggestions": [
+        "bo1",
+        "bo2",
+        "bo_"
+      ]
+    },
+    {
+      "name": "Ângela Müller",
+      "suggestions": [
+        "angela.muller",
+        "angelamuller",
+        "angela_muller",
+        "angela",
+        "muller.angela",
+        "angela.muller1",
+        "angelamuller1"
+      ]
+    },
+    {
+      "name": "Maria-Luísa Prado",
+      "suggestions": [
+        "maria.prado",
+        "mariaprado",
+        "maria_prado",
+        "maria",
+        "prado.maria",
+        "maria.prado1",
+        "mariaprado1"
+      ]
+    },
+    {
+      "name": "  ana   souza  ",
+      "suggestions": [
+        "ana.souza",
+        "anasouza",
+        "ana_souza",
+        "ana",
+        "souza.ana",
+        "ana.souza1",
+        "anasouza1"
+      ]
+    },
+    {
+      "name": "李小龙",
+      "suggestions": []
+    },
+    {
+      "name": "Ana 2",
+      "suggestions": [
+        "ana.2",
+        "ana2",
+        "ana_2",
+        "ana",
+        "2.ana",
+        "ana.21",
+        "ana21"
+      ]
+    },
+    {
+      "name": "Pedro Henrique Alcântara de Oliveira Bragança",
+      "suggestions": [
+        "pedro.braganca",
+        "pedrobraganca",
+        "pedro_braganca",
+        "pedro",
+        "braganca.pedro",
+        "pedro.braganca1",
+        "pedrobraganca1"
+      ]
+    },
+    {
+      "name": "O'Neil",
+      "suggestions": [
+        "o.neil",
+        "oneil",
+        "o_neil",
+        "neil.o",
+        "o.neil1",
+        "oneil1"
+      ]
+    },
+    {
+      "name": "ana.souza",
+      "suggestions": [
+        "ana.souza",
+        "anasouza",
+        "ana_souza",
+        "ana",
+        "souza.ana",
+        "ana.souza1",
+        "anasouza1"
+      ]
+    },
+    {
+      "name": "",
+      "suggestions": []
+    },
+    {
+      "name": "Bipe",
+      "suggestions": [
+        "bipe",
+        "bipe1",
+        "bipe2",
+        "bipe_"
+      ]
+    },
+    {
+      "name": "123",
+      "suggestions": [
+        "123",
+        "1231",
+        "1232",
+        "123_"
+      ]
+    },
+    {
+      "name": "Dr. João Pedro",
+      "suggestions": [
+        "dr.pedro",
+        "drpedro",
+        "dr_pedro",
+        "pedro.dr",
+        "dr.pedro1",
+        "drpedro1"
+      ]
+    }
+  ]
+}

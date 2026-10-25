@@ -120,13 +120,13 @@
         "name": "Pedido para apagar a conta",
         "what": "Quando você pediu para apagar a conta, quando ela vai ser apagada, de qual aparelho veio o pedido e se você pediu para apagar suas mensagens. Depois que a conta é apagada, ficam só uma versão protegida do seu CPF, o registro do selo e a reserva do seu @. Nada mais sobre você fica.",
         "why": "Apagar a conta quando você pede (LGPD art. 18), dar 72 horas para cancelar um pedido que não foi seu e impedir que alguém escape de um bloqueio com uma conta nova.",
-        "retention": "O pedido fica até a conta ser apagada ou o pedido ser cancelado. A versão protegida do CPF e o registro do selo ficam 365 dias depois que a conta é apagada. A reserva do @ dura 90 dias."
+        "retention": "Um pedido cancelado é apagado na hora. Depois que a conta é apagada, ficam por 365 dias só a data, a versão protegida do CPF e o registro do selo. A reserva do @ dura 90 dias."
       },
       "en": {
         "name": "Account deletion request",
         "what": "When you asked to delete your account, when it will be deleted, which device asked and whether you asked to delete your messages. After the account is deleted, only a protected version of your CPF, the badge record and the reservation of your handle stay. Nothing else about you stays.",
         "why": "To delete the account when you ask (LGPD art. 18), to give 72 hours to cancel a request that was not yours, and to stop someone from getting around a block with a new account.",
-        "retention": "The request stays until the account is deleted or the request is cancelled. The protected version of the CPF and the badge record stay 365 days after the account is deleted. The handle reservation lasts 90 days."
+        "retention": "A cancelled request is deleted at once. After the account is deleted, only the date, the protected version of the CPF and the badge record stay, for 365 days. The handle reservation lasts 90 days."
       }
     },
     {

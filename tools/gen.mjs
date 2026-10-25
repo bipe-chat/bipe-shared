@@ -202,6 +202,10 @@ public enum BipeRegistries {
     public static let maxPersonalAccounts = ${reg.accounts.maxPersonalAccounts}
     /// Wait between the full-access warning and the biometric check of a web sign-in approval (ADR 0118).
     public static let webLinkCooldownSeconds = ${reg.accounts.webLinkCooldownSeconds}
+    /// Recovery reminder card (bipe#531): first show after these days on this phone; each "Agora não" hides it for the
+    /// next snooze, and the last snooze repeats.
+    public static let recoveryReminderFirstAfterDays = ${reg.accounts.recoveryReminder.firstAfterDays}
+    public static let recoveryReminderSnoozeDays: [Int] = ${swiftArray(reg.accounts.recoveryReminder.snoozeDays.map(String))}
 
     /// Terms and privacy accepted at sign-up (ADR 0113; registries/legal.json). Paths are on the public site.
     public static let legalVersion = ${swiftString(reg.legal.legalVersion)}
@@ -450,6 +454,11 @@ object BipeRegistries {
 
     // Wait between the full-access warning and the biometric check of a web sign-in approval (ADR 0118).
     const val WEB_LINK_COOLDOWN_SECONDS = ${reg.accounts.webLinkCooldownSeconds}
+
+    // Recovery reminder card (bipe#531): first show after these days on this phone; each "Agora não" hides it for the
+    // next snooze, and the last snooze repeats.
+    const val RECOVERY_REMINDER_FIRST_AFTER_DAYS = ${reg.accounts.recoveryReminder.firstAfterDays}
+    val RECOVERY_REMINDER_SNOOZE_DAYS: List<Int> = listOf(${reg.accounts.recoveryReminder.snoozeDays.join(", ")})
 
     // Terms and privacy accepted at sign-up (ADR 0113; registries/legal.json). Paths are on the public site.
     const val LEGAL_VERSION = ${kotlinString(reg.legal.legalVersion)}

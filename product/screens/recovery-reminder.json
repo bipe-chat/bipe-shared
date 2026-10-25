@@ -1,0 +1,41 @@
+{
+  "id": "recovery-reminder",
+  "title": "Recovery reminder card",
+  "flow": "home",
+  "summary": "A card above the chat list for an account without a way back that the server can check and that does not depend on the Apple Team ID (bipe#531, bipe/docs/team-transfer-recovery.md section 5). It asks for a recovery e-mail. It never blocks the app.",
+  "state": {
+    "visible": {
+      "type": "bool",
+      "description": "true when GET /v1/me/account says independent_recovery false, the account came to this phone at least recoveryReminderFirstAfterDays ago, the snooze has ended, scope is conversas and the handle prompt card is not showing. false while the account state is unknown (offline, older server without the field)."
+    },
+    "snoozeCount": {
+      "type": "int",
+      "description": "How many times the person tapped \"Agora não\" for this account on this phone. Picks the next value of recoveryReminderSnoozeDays; past the end, the last value repeats."
+    }
+  },
+  "actions": {
+    "addEmail": {
+      "effect": "Opens recovery-email-add. The card stays until the account state says independent_recovery true (after the person opens the confirm link)."
+    },
+    "dismiss": {
+      "effect": "\"Agora não\": hides the card for recoveryReminderSnoozeDays[snoozeCount] days (the last value when snoozeCount is past the end) and adds 1 to snoozeCount. Stored on this phone, per account."
+    }
+  },
+  "strings": [
+    "bipe_fallback_title",
+    "bipe_fallback_reminder",
+    "bipe_fallback_email",
+    "bipe_fallback_skip"
+  ],
+  "sdk": [],
+  "parity": ["transfer-safe-recovery", "new-phone"],
+  "notes": [
+    "Buttons and trigger: registries/onboarding.json prompts.recovery (BipeOnboardingPrompt.recovery). Timing: registries/accounts.json recoveryReminder (BipeRegistries.recoveryReminderFirstAfterDays, recoveryReminderSnoozeDays).",
+    "Same shape as the handle prompt card. One card at a time: the handle card goes first. The encryption-status banner and the remote banner are not cards and stay.",
+    "The rule for independent_recovery lives on the server (hasIndependentRecovery() in bipe-api). Today a verified recovery e-mail. When the linked-account work lands (bipe#307, bipe#308), a linked Google account counts and this card gets its link button; a linked Apple account does not count (bipe/docs/team-transfer-recovery.md section 2).",
+    "\"Came to this phone\": the time the app first saved this account's session on this phone. A new phone after recovery starts the count again.",
+    "The card never stops for good while the account has no factor: the loss is the whole account. It never becomes a blocking screen (MZ decision on bipe#538, default).",
+    "This card is the transfer part of the fallback prompt in bipe#202. The PIN reminders, the iCloud Keychain check and guardians stay there.",
+    "Android shows the same card (ADR 0031): a person can move from Android to iPhone, and the e-mail works on both."
+  ]
+}

@@ -291,6 +291,27 @@
       "note": "Token, PIN, QR and e-mail recovery are merged on both apps; guardians and CPF recovery are not"
     },
     {
+      "id": "transfer-safe-recovery",
+      "name": "A way back that survives the App Store transfer (bipe#531)",
+      "issue": 531,
+      "ios": {
+        "status": "n/a",
+        "reason": "Not built in the fork; the forks are frozen (ADR 0155)"
+      },
+      "android": {
+        "status": "n/a",
+        "reason": "Not built in the fork; the forks are frozen (ADR 0155)"
+      },
+      "web": {
+        "status": "n/a",
+        "reason": "Sign-up and recovery are in the apps"
+      },
+      "server": "planned",
+      "ios-new": "planned",
+      "android-new": "planned",
+      "note": "bipe/docs/team-transfer-recovery.md: iOS moves its keychain items into the app-group group; both apps show the recovery reminder and the add-e-mail screen; the server records the moves and counts the share"
+    },
+    {
       "id": "web-sign-in",
       "name": "Link a computer by QR code",
       "ios": {

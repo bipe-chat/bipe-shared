@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "date": "2026-10-24",
+  "date": "2026-10-25",
   "encarregado": null,
   "pt": {
     "nav": "LGPD",
@@ -73,7 +73,9 @@
     { "id": "icloud-keychain", "brazil": null, "pt": "Chaveiro do iCloud, na sua conta Apple", "en": "iCloud Keychain, in your Apple account" },
     { "id": "google-block-store", "brazil": null, "pt": "Block Store do Google, na sua conta Google (Android)", "en": "Google Block Store, in your Google account (Android)" },
     { "id": "support-tool", "brazil": null, "pt": "Ferramenta da equipe do Bipe para ler e responder pedidos de ajuda. Recebe só texto, nunca arquivos", "en": "The tool the Bipe team uses to read and answer help requests. It gets text only, never files" },
-    { "id": "starlings", "brazil": false, "pt": "Starlings, o sistema de trabalho da Envisioning, na União Europeia", "en": "Starlings, Envisioning's work system, in the European Union" }
+    { "id": "starlings", "brazil": false, "pt": "Starlings, o sistema de trabalho da Envisioning, na União Europeia", "en": "Starlings, Envisioning's work system, in the European Union" },
+    { "id": "apple-sign-in", "brazil": false, "pt": "Apple, quando você entra com a conta Apple para vincular ou voltar à conta", "en": "Apple, when you sign in with your Apple account to link it or to get back in" },
+    { "id": "google-sign-in", "brazil": false, "pt": "Google, quando você entra com a conta Google para vincular ou voltar à conta", "en": "Google, when you sign in with your Google account to link it or to get back in" }
   ],
   "items": [
     {
@@ -176,6 +178,23 @@
         "what": "The email you choose, your language and your account recovery requests.",
         "why": "To help you get back into the account and to tell you when something changes in it, such as a new PIN or a new device. No marketing.",
         "retention": "Until you remove the email from the account."
+      }
+    },
+    {
+      "id": "linked-account",
+      "basis": "contract",
+      "places": ["server", "apple-sign-in", "google-sign-in"],
+      "pt": {
+        "name": "Conta Apple ou Google vinculada (opcional)",
+        "what": "Um código feito a partir do identificador da conta Apple ou Google que você vinculou, e quando você vinculou ou desvinculou. O Bipe não guarda o e-mail, o nome nem nenhum acesso à conta Apple ou Google. A Apple e o Google só ficam sabendo que você usou a conta com o Bipe.",
+        "why": "Te ajudar a voltar para a conta se perder o celular, com sua senha de 8 números e uma espera de 24 horas. Avisar seus outros aparelhos quando uma conta é vinculada ou desvinculada.",
+        "retention": "Até você desvincular a conta. O aviso de vínculo fica 7 dias."
+      },
+      "en": {
+        "name": "Linked Apple or Google account (optional)",
+        "what": "A code made from the ID of the Apple or Google account you linked, and when you linked or unlinked it. Bipe keeps no email, no name and no access to the Apple or Google account. Apple and Google only learn that you used the account with Bipe.",
+        "why": "To help you get back into your account if you lose your phone, with your 8-digit PIN and a 24-hour wait. To tell your other devices when an account is linked or unlinked.",
+        "retention": "Until you unlink the account. The link notice stays 7 days."
       }
     },
     {
@@ -518,6 +537,23 @@
         "what": "That you joined a business's queue in Bipe, the times you joined, were called and served, and your account. Bipe never asks for your location.",
         "why": "To show your position and the wait, and for the business to call the next person.",
         "retention": "30 days after the day of the queue."
+      }
+    },
+    {
+      "id": "proposta-visits",
+      "basis": "legitimate-interest",
+      "places": ["server"],
+      "pt": {
+        "name": "Acesso às páginas de proposta do Bipe",
+        "what": "Para quem entra nas páginas de proposta: o e-mail que você digita. A cada página e slide que você abre, a hora, a página, o site de onde você veio, as etiquetas utm do link e a cidade estimada pelo endereço de IP. O Bipe não guarda o IP.",
+        "why": "Saber quais páginas cada visitante leu.",
+        "retention": "As visitas ficam 365 dias. O e-mail fica até a equipe apagar ou você pedir."
+      },
+      "en": {
+        "name": "Access to Bipe's proposal pages",
+        "what": "For people who open the proposal pages: the email you type. For each page and slide you open: the time, the page, the site you came from, the link's utm tags and the city estimated from your IP address. Bipe does not keep the IP.",
+        "why": "To know which pages each visitor read.",
+        "retention": "Visits are kept for 365 days. The email stays until the team deletes it or you ask."
       }
     }
   ],

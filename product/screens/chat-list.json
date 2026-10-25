@@ -67,10 +67,6 @@
         "grupos"
       ],
       "description": "conversas: rooms with two members, plus the Pedidos row at the top. grupos: rooms with more than two members."
-    },
-    "currentAccount": {
-      "type": "AccountSummary",
-      "description": "The account shown now. Its avatar sits in the top bar; a tap opens Você; no long press (ADR 0135 point 5)."
     }
   },
   "actions": {
@@ -85,9 +81,6 @@
     },
     "loadMore": {
       "effect": "Asks the room list service for the next page when the list scrolls near its end."
-    },
-    "openVoce": {
-      "effect": "A tap on the account avatar in the top bar opens the Você tab."
     }
   },
   "strings": [
@@ -97,7 +90,6 @@
     "bipe_requests_title",
     "bipe_groups_empty_title",
     "bipe_groups_empty_body",
-    "bipe_app_account_current_a11y",
     "bipe_dm_no_name",
     "bipe_badge_official",
     "bipe_badge_official_a11y"
@@ -110,7 +102,9 @@
     "RoomListEntriesUpdate",
     "Room.roomInfo",
     "RoomListService.subscribeToRooms",
-    "Room.latestEvent"
+    "Room.latestEvent",
+    "Room.timeline",
+    "Timeline.addListener"
   ],
   "parity": [
     "e2ee-only-rooms",
@@ -119,12 +113,14 @@
     "official-badge"
   ],
   "notes": [
+    "MZ decision 25 Oct 2026 (bipe#577): no current-account avatar in the top bar. Você shows the current account (spec voce). This replaces the top-bar avatar of ADR 0135 point 5 for Bipe Next.",
+    "Row date (MZ decision 25 Oct 2026, bipe#592): every row with a known event shows its date. The SDK latest event (Room.latestEvent) skips encrypted events that this phone cannot decrypt (matrix-sdk latest_events: m.room.encrypted is never a candidate), so a room whose recent events are all undecryptable has no latest event. The time of an event is not encrypted: such a row takes origin_server_ts of the newest message-like event of the room's local timeline (Room.timeline, the first Timeline.addListener update, no pagination, no network), undecryptable events included; else the newest local event of any kind. Bipe logic: BipeRowActivity (BipeKit, libraries/bipe). Read it again when the room changes in the room list. Rows with no local event stay without a date until the SDK has one.",
     "Keep a known latest-activity timestamp visible while the SDK briefly has no latest-event preview (bipe#590), scoped to this account session. The date label must have room beside a long chat title. Do not invent today's date for an unknown event or wait for network to draw the list. Truly unknown times remain unknown until local SDK data arrives.",
     "bipe_app_chat_list_unread is the accessibility label of the badge. The count comes in already formatted.",
     "A chat with an unread mention (RoomInfo.numUnreadMentions > 0) shows an @ mark before the count, so a mention differs by shape, not only by colour (bipe#497). The badge's accessibility label adds bipe_a11y_mention.",
     "Message requests, filters, search, invites and Bipe trust badges are later issues. The slice lists joined rooms only.",
     "Official accounts (ADR 0117, bipe-chat/bipe#384): the Bipe badge is a small capsule with the text bipe_badge_official in the verified colours, read as bipe_badge_official_a11y. It shows only for a DM whose other person (the hero user ID) is exactly a user ID in registries/official-accounts.json (BipeRegistries.officialAccountIDs / officialAccountIds). A display name, a handle or a lookalike user ID on another server never shows it. A group never shows it. The same rule holds in the chat header (chat-timeline) and person-profile. Bipe logic: BipeOfficialAccounts.isOfficial (BipeKit, libraries/bipe).",
-    "The current-account avatar and DM avatars show photos from the SDK, with initials when absent. A company avatar is a rounded square based on GET /v1/accounts/{userId}/type (ADR 0132), regardless of verification. Group avatars stay distinct room avatars.",
+    "DM avatars show photos from the SDK, with initials when absent. A company avatar is a rounded square based on GET /v1/accounts/{userId}/type (ADR 0132), regardless of verification. Group avatars stay distinct room avatars.",
     "The SDK room-list order is authoritative: it incorporates the server recency stamp even while an event preview is missing. Never re-sort all rows by optional locally cached latest-event timestamps. Preserve filtered-list order as well; append out-of-page archived rooms deterministically.",
     "Request SDK latest-event hydration for displayed and loaded-page rooms with RoomListService.subscribeToRooms. In SDK26.08.11 this REPLACES existing subscriptions, so one coordinator per immutable account session must combine owners from all active lists, including Unread, groups, requests and search. Releasing one owner must preserve other lists. Close on sign-out. Publish cached rows before background hydration; no network or decryption gate on opening the app.",
     "A group uses RoomInfo.displayName, including explicit room names, before hero/profile/localpart fallbacks. An absent hero never overrides an available SDK name with Unnamed chat. Do not read another client database or infer a missing date from current time.",

@@ -219,6 +219,10 @@ public enum BipeRegistries {
 
     /// Cleared DMs (bipe-chat/bipe#464; registries/cleared-chats.json): the global account data event with the markers.
     public static let clearedChatsEventType = ${swiftString(reg.clearedChats.eventType)}
+
+    /// Image descriptions (bipe-chat/bipe#501; registries/image-descriptions.json): the m.image content field and its length limit.
+    public static let imageDescriptionField = ${swiftString(reg.imageDescriptions.field)}
+    public static let imageDescriptionMaxLength = ${reg.imageDescriptions.maxLength}
 }
 `;
 }
@@ -472,6 +476,10 @@ object BipeRegistries {
 
     /** Cleared DMs (bipe-chat/bipe#464; registries/cleared-chats.json): the global account data event with the markers. */
     const val CLEARED_CHATS_EVENT_TYPE = ${kotlinString(reg.clearedChats.eventType)}
+
+    /** Image descriptions (bipe-chat/bipe#501; registries/image-descriptions.json): the m.image content field and its length limit. */
+    const val IMAGE_DESCRIPTION_FIELD = ${kotlinString(reg.imageDescriptions.field)}
+    const val IMAGE_DESCRIPTION_MAX_LENGTH = ${reg.imageDescriptions.maxLength}
 }
 `;
 }

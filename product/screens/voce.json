@@ -81,6 +81,7 @@
     "settings-structure"
   ],
   "notes": [
+    "MZ decision 25 Oct 2026 (bipe#577): the header shows the current account's avatar (photo, else initials). Since the chat list has no account avatar, Você is the one screen that shows it.",
     "The header never shows the Matrix ID (ADR 0112).",
     "The trust card (Perfil de confiança, ADR 0019) sits after Anotações: spec trust-card, which opens trust-profile.",
     "Below the invite row comes settings-root (Configurações).",

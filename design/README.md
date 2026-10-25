@@ -10,7 +10,7 @@ bipe-tokens is a fork of Element's compound-design-tokens (AGPL). Bipe's own cli
   - `themes`: the background and the 14 contrast targets (steps 100 to 1400) of the light and dark theme. The targets are the ones in `bipe/docs/design/identity.md`.
   - `rampParameters`: hue and peak chroma (OKLCH) of each ramp: `acai`, `gray`, `amber`, `red`, `green`.
   - `ramps`: the solved hex value of each step. Written by `ramps/ramp.mjs --write`. Never edit by hand.
-  - `semantic`: Bipe's semantic tokens (`surface`, `ink`, `glyph`, `line`, `accent`, `bubble`, `trust`, `status`). Each names a ramp step (or `background`) for `light`, `dark`, `lightHighContrast` and `darkHighContrast`.
+  - `semantic`: Bipe's semantic tokens (`surface`, `ink`, `glyph`, `line`, `accent`, `bubble`, `trust`, `status`). Each names a ramp step (or `background`) for `light`, `dark`, `lightHighContrast` and `darkHighContrast`. The `surface` tokens are literal hex values instead: they are the iOS system backgrounds, so custom screens match the standard iOS and Android lists (bipe-chat/bipe#612).
 - `ramps/ramp.mjs`: Bipe's ramp solver. For each step it finds the OKLCH lightness whose WCAG contrast with the theme background is the target. Chroma follows a bell over lightness and stays in sRGB.
 
 ## Change a token

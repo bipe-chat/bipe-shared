@@ -1,0 +1,60 @@
+{
+  "id": "chat-list-cards",
+  "title": "First chat list cards",
+  "flow": "home",
+  "summary": "A new account's Conversas is never empty (bipe-chat/bipe#198): cards to invite someone, share your @ and QR, and open Anotações, at the top of the list while it has few chats. Grupos without groups offers to create one.",
+  "state": {
+    "cards": {
+      "type": "list",
+      "of": { "type": "enum", "values": ["invite", "profile", "notes"], "description": "A card of registries/onboarding.json firstList.cards." },
+      "description": "The cards that show, in registry order: Conversas lists at most firstList.maxChats chats, the card was neither used nor dismissed on this account, and a card with when hasHandle shows only while the account has an @."
+    },
+    "handle": { "type": "string", "optional": true, "description": "The account's @ without the @, for bipe_first_card_profile_body." }
+  },
+  "actions": {
+    "shareInvite": {
+      "effect": "Makes a personal invite (BipeInviteCreator.createIfAvailable on iOS; myInvites and createInvite on Android) and opens the system share sheet with its link. No invites left: opens the invites screen, which says why. Marks the card used."
+    },
+    "shareProfile": {
+      "effect": "Opens the system share sheet with bipe.chat/@handle (BipeProfileLink.url). Marks the card used."
+    },
+    "profileQr": {
+      "effect": "Opens the profile QR (profile-link, QR shown). Marks the card used."
+    },
+    "notes": {
+      "effect": "Opens Anotações (voce openNotes). Marks the card used."
+    },
+    "dismiss": {
+      "effect": "Hides the card for good on this account."
+    },
+    "createGroup": {
+      "effect": "Grupos with no groups: opens group-create."
+    }
+  },
+  "strings": [
+    "bipe_first_card_invite_title",
+    "bipe_first_card_invite_body",
+    "bipe_first_card_invite_action",
+    "bipe_first_card_profile_title",
+    "bipe_first_card_profile_body",
+    "bipe_app_share",
+    "bipe_profile_qr_action",
+    "bipe_self_chat_title",
+    "bipe_first_card_notes_body",
+    "bipe_first_card_notes_action",
+    "bipe_fallback_skip",
+    "bipe_groups_empty_title",
+    "bipe_groups_empty_body",
+    "bipe_groups_empty_create"
+  ],
+  "sdk": [],
+  "parity": ["first-run", "invites"],
+  "notes": [
+    "Titles, bodies, buttons, the order and maxChats come from the generated onboarding code (BipeOnboardingCard, BipeOnboarding.firstListMaxChats); the apps never hard-code them.",
+    "The inviter's chat comes first on its own: signup-done opens it, and it is the first row of Conversas. Its one-tap first message is the inviter hint (signup-done notes, bipe_inviter_hint_action).",
+    "Without an @ the profile card does not show; the handle prompt (registries/onboarding.json prompts.handle, trigger chatListWithoutHandle) asks for one above the list instead.",
+    "Anotações stays in Você (voce openNotes, ADR 0112): the notes card opens it from the chat list and is not a pinned chat row.",
+    "Used and dismissed cards are kept per account on this phone and never come back.",
+    "Grupos: \"Entre com um link\" waits for joining a group by link, which Bipe Next does not have yet."
+  ]
+}

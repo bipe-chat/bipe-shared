@@ -369,6 +369,29 @@
       "note": "BadgeVerifier exists on both apps, nothing shows a seal"
     },
     {
+      "id": "trust-facts",
+      "name": "Identity proof, personal confirmation and identity changes shown apart in a profile (ADR 0074, bipe#227, bipe#229)",
+      "issue": 227,
+      "ios": {
+        "status": "n/a",
+        "reason": "Not built in the fork; the forks are frozen (ADR 0155)"
+      },
+      "android": {
+        "status": "n/a",
+        "reason": "Not built in the fork; the forks are frozen (ADR 0155)"
+      },
+      "web": {
+        "status": "n/a",
+        "reason": "No web chat (ADR 0004); the site shows a demo at most"
+      },
+      "server": {
+        "status": "n/a",
+        "reason": "Runs on the device; the rules are registries/trust-facts.json"
+      },
+      "ios-new": "planned",
+      "android-new": "planned"
+    },
+    {
       "id": "cnpj-badge",
       "name": "Business seal",
       "ios": {

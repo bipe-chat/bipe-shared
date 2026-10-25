@@ -1,0 +1,192 @@
+{
+  "id": "agenda-setup",
+  "title": "Set up the agenda",
+  "flow": "business",
+  "summary": "Ativar agenda on the phone in a few steps: pick a template, set the opening hours per day with ranges, add who works, review the services, then Publicar (docs/scheduling.md, owner setup).",
+  "types": {
+    "DayHours": {
+      "weekday": {
+        "type": "int",
+        "description": "ISO weekday, Monday 1 to Sunday 7."
+      },
+      "open": {
+        "type": "bool",
+        "description": "false: closed that day."
+      },
+      "ranges": {
+        "type": "list",
+        "description": "Local ranges, several per day for a lunch break.",
+        "of": {
+          "type": "string",
+          "description": "HH:MM-HH:MM."
+        }
+      }
+    }
+  },
+  "state": {
+    "step": {
+      "type": "enum",
+      "description": "The visible step.",
+      "values": [
+        "template",
+        "hours",
+        "people",
+        "services",
+        "publish"
+      ]
+    },
+    "templates": {
+      "type": "list",
+      "description": "From registries/agenda-templates.json (BipeAgendaTemplates).",
+      "of": {
+        "type": "string",
+        "description": "Template ID."
+      }
+    },
+    "hours": {
+      "type": "list",
+      "description": "Hours of the agenda on screen, from GET .../agendas/{id}/availability.",
+      "of": {
+        "type": "DayHours",
+        "description": "One weekday."
+      }
+    },
+    "agendas": {
+      "type": "list",
+      "description": "People and stations.",
+      "of": {
+        "type": "string",
+        "description": "Agenda name."
+      }
+    },
+    "services": {
+      "type": "list",
+      "description": "Services from AgendaState.services, each with name, duration, price and people.",
+      "of": {
+        "type": "string",
+        "description": "Service ID."
+      }
+    },
+    "saving": {
+      "type": "bool",
+      "description": "true while a call runs."
+    },
+    "error": {
+      "type": "string",
+      "description": "bipe_agenda_publish_incomplete or bipe_agenda_error_save.",
+      "optional": true
+    }
+  },
+  "actions": {
+    "pickTemplate": {
+      "effect": "POST /v1/me/business/agenda/activate with the template and the phone's time zone. The server makes the first agenda and the services as Catálogo items.",
+      "params": {
+        "templateId": {
+          "type": "string",
+          "description": "The template."
+        }
+      }
+    },
+    "setDay": {
+      "effect": "Turns a day on or off.",
+      "params": {
+        "weekday": {
+          "type": "int",
+          "description": "The day."
+        },
+        "open": {
+          "type": "bool",
+          "description": "On or off."
+        }
+      }
+    },
+    "addRange": {
+      "effect": "Adds a range to a day (bipe_agenda_add_range).",
+      "params": {
+        "weekday": {
+          "type": "int",
+          "description": "The day."
+        }
+      }
+    },
+    "saveHours": {
+      "effect": "PUT .../agendas/{id}/availability with the rules."
+    },
+    "addPerson": {
+      "effect": "POST /v1/me/business/agenda/agendas with the name. The person needs no Bipe account (ADR 0099).",
+      "params": {
+        "name": {
+          "type": "string",
+          "description": "Name of the person or station."
+        }
+      }
+    },
+    "renamePerson": {
+      "effect": "PUT .../agendas/{id}.",
+      "params": {
+        "agendaId": {
+          "type": "string",
+          "description": "Agenda."
+        },
+        "name": {
+          "type": "string",
+          "description": "New name."
+        }
+      }
+    },
+    "removePerson": {
+      "effect": "DELETE .../agendas/{id}. Bookings keep it.",
+      "params": {
+        "agendaId": {
+          "type": "string",
+          "description": "Agenda."
+        }
+      }
+    },
+    "editService": {
+      "effect": "Opens catalog-item-edit for that service, with duration, buffers and people."
+    },
+    "publish": {
+      "effect": "PUT /v1/me/business/agenda with published true. bad_request incomplete shows bipe_agenda_publish_incomplete. Success shows bipe_agenda_setup_done and opens agenda-owner."
+    },
+    "back": {
+      "effect": "Goes one step back."
+    }
+  },
+  "strings": [
+    "bipe_agenda_activate",
+    "bipe_agenda_pick_template",
+    "bipe_agenda_template_pet_grooming",
+    "bipe_agenda_template_barbershop",
+    "bipe_agenda_template_salon",
+    "bipe_agenda_template_clinic",
+    "bipe_agenda_template_classes",
+    "bipe_agenda_template_other",
+    "bipe_agenda_template_hint",
+    "bipe_agenda_setup_hours",
+    "bipe_agenda_setup_people",
+    "bipe_agenda_add_person",
+    "bipe_agenda_person_name",
+    "bipe_agenda_remove_person",
+    "bipe_agenda_add_range",
+    "bipe_agenda_closed",
+    "bipe_agenda_setup_review",
+    "bipe_agenda_add_service",
+    "bipe_agenda_duration",
+    "bipe_agenda_publish",
+    "bipe_agenda_publish_incomplete",
+    "bipe_agenda_setup_done",
+    "bipe_agenda_error_save",
+    "bipe_action_continue",
+    "bipe_a11y_back"
+  ],
+  "sdk": [],
+  "parity": [
+    "agenda"
+  ],
+  "notes": [
+    "The first agenda takes the business's public profile name or its handle; the owner renames it in the people step.",
+    "Hours are local wall times in the business time zone. A day can have several ranges; ranges cannot overlap.",
+    "A new person starts with the first person's hours."
+  ]
+}

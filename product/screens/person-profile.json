@@ -11,14 +11,21 @@
         "description": "verifiedName: bipe_badge_verified_name. company: bipe_badge_company, opens company-seal. companyRevoked: bipe_badge_company_revoked. companySuspended: bipe_badge_company_suspended. confirmedInPerson: bipe_badge_verified_contact. nameSuspended: bipe_badge_suspended with bipe_badge_suspended_body."
       },
       "text": { "type": "string", "description": "String key of the mark." }
+    },
+    "TrustFacts": {
+      "identity": { "type": "enum", "values": ["verified", "suspended", "unverified"], "description": "Identity proof. verified: the company mark with bipe_trust_identity_body under it. suspended: companySuspended. unverified: no mark." },
+      "contact": { "type": "enum", "values": ["confirmed", "unconfirmed"], "description": "Personal confirmation. confirmed: confirmedInPerson with bipe_trust_contact_body. unconfirmed with a known lifecycle: a neutral line bipe_trust_contact_unconfirmed." },
+      "change": { "type": "enum", "values": ["unknown", "none", "device", "identity", "deviceAndIdentity"], "description": "identity, device or deviceAndIdentity: an amber card with bipe_banner_security_change and bipe_trust_change_confirm_action. unknown after the read ran: bipe_trust_lifecycle_unknown with bipe_trust_lifecycle_retry_action." }
     }
   },
   "state": {
     "userId": { "type": "string", "description": "The person." },
     "person": { "type": "Person", "description": "Name, photo and @." },
+    "isOfficial": { "type": "bool", "description": "userId is exactly a user ID in registries/official-accounts.json: the Bipe badge after the name (bipe_badge_official, label bipe_badge_official_a11y), as in chat-list." },
     "isCompany": { "type": "bool", "description": "GET /v1/accounts/{userId}/type is company: the avatar is a rounded square, else a circle (ADR 0132)." },
     "marks": { "type": "list", "of": { "type": "TrustMark", "description": "One mark." }, "description": "Only marks that verify on this device (see notes). Empty for most people today." },
-    "reservedNameWarning": { "type": "bool", "description": "The name is a reserved name (normalize, registries/reserved-names.json) and no company mark verifies it: bipe_warning_reserved_name under the name." },
+    "facts": { "type": "TrustFacts", "description": "The separate trust facts of the person (ADR 0074, docs/trust-facts.md), from BipeTrustSources: identity, contact and change, each shown apart (see notes)." },
+    "reservedNameWarning": { "type": "bool", "description": "The name is a reserved name (normalize, registries/reserved-names.json), the person is not an official account (isOfficial) and no company mark verifies it: bipe_warning_reserved_name under the name." },
     "bio": { "type": "string", "optional": true, "description": "PublicProfile.bio when the person has a public profile on, with bipe_public_profile_not_verified under it." },
     "dmRoomId": { "type": "string", "optional": true, "description": "Client.getDmRoom: the newest DM with the person, when one exists." },
     "isBlocked": { "type": "bool", "description": "The user id is in Client.ignoredUsers: bipe_app_person_blocked, and block turns into unblock." },
@@ -43,6 +50,7 @@
     "deleteChat": { "effect": "fromDm only: opens dm-delete." },
     "block": { "effect": "Opens block-person to block or unblock." },
     "report": { "effect": "With a DM: opens report-chat for it. Without one there is nothing to report: the row is hidden." },
+    "retryFacts": { "effect": "Reads the person's identity again (Encryption.userIdentity with fallbackToServer true) and evaluates the facts." },
     "openSeal": { "effect": "isCompany with a company mark: opens company-seal." }
   },
   "strings": [
@@ -61,6 +69,8 @@
     "bipe_action_unblock_person",
     "bipe_app_person_blocked",
     "bipe_dm_report",
+    "bipe_badge_official",
+    "bipe_badge_official_a11y",
     "bipe_badge_verified_name",
     "bipe_badge_company",
     "bipe_badge_company_revoked",
@@ -71,7 +81,15 @@
     "bipe_warning_reserved_name",
     "bipe_public_profile_not_verified",
     "bipe_app_person_not_found",
-    "bipe_app_retry"
+    "bipe_app_retry",
+    "bipe_trust_identity_body",
+    "bipe_trust_contact_body",
+    "bipe_trust_contact_unconfirmed",
+    "bipe_banner_security_change",
+    "bipe_trust_change_confirm_action",
+    "bipe_trust_lifecycle_unknown",
+    "bipe_trust_lifecycle_retry_action",
+    "bipe_trust_warning_absence_body"
   ],
   "sdk": [
     "Client.getProfile",
@@ -89,13 +107,16 @@
     "UserIdentity.isVerified",
     "Room.inviteUserById"
   ],
-  "parity": ["handles", "public-profile", "cnpj-badge", "reserved-names", "who-can-message", "dm-power-levels"],
+  "parity": ["handles", "public-profile", "cnpj-badge", "reserved-names", "who-can-message", "dm-power-levels", "official-badge", "trust-facts"],
   "notes": [
     "One DM test (ADR 0141): the DM is Client.getDmRoom for this person, the newest room. The DM shows the person's name and photo, never m.room.name or m.room.avatar.",
     "A new DM (ADR 0141, bipe-chat/bipe#532): power levels that let neither person invite or change room settings, from registries/dm-power-levels.json (BipeDmPowerLevels). Client.createRoom gets a PowerLevels override with the user at 100 and the other person at 0, so that the server can write the first state and the invite. Right after, Room.sendStateEventRaw writes the m.room.power_levels content of BipeDmPowerLevels.content: both people at 0, invite, kick, ban, redact of other people's events and room settings at 100, messages, reactions, redactions of own events and call membership at 0. If that write fails, the DM stays usable and only the user can invite or change it. Old DMs keep their power levels. The other person's invite can be refused by their who-can-message setting (ADR 0038): show bipe_app_group_invite_refused with the name, and create nothing.",
     "Trust marks come from the badge envelope only (ADR 0041, security rule 2), verified on the device against the keys of registries/badge-keys.json, the sender and the account's cross-signing master key. The user cannot write a mark. Today no signer exists for names, so verifiedName and nameSuspended stay empty; company marks exist (ADR 0042, ADR 0123). Bipe logic: BadgeVerifier, BipeCompanySeals and BipeCompanySealState (BipeKit); BadgeVerifier, BipeCompanySeals.kt (libraries/bipe company).",
     "SDK gap: the badge check needs the person's master key. matrix-sdk-ffi has UserIdentity.masterKey only as pub(crate), so the bindings do not export it (22 Oct 2026). bipe-app needs it exported (an upstream change to matrix-rust-sdk) or reads it from the keys query of the Matrix client-server API. Until then, company marks fail closed: no seal.",
+    "Separate trust facts (ADR 0074, bipe-chat/bipe#227, #229): the screen evaluates BipeTrustFacts (registries/trust-facts.json, test-vectors/trust-facts.json) through the profile adapter BipeTrustSources (BipeKit, libraries/bipe). Its inputs are only authenticated sources: UserIdentity.masterKey (the key every fact binds to), UserIdentity.isVerified (confirmation in person), UserIdentity.hasVerificationViolation (the identity changed after the confirmation) and the verified company seal. The SDK gives states, not times, so the adapter writes the order it reports: a change at 1, a current proof at 2. No identity or no master key: lifecycle unknown, nothing verified. A seal never confirms the person; a confirmation never verifies a name. An identity change drops the confirmation and shows the amber card. bipe_trust_warning_absence_body shows under the facts whenever a positive fact shows: no warning is no safety assertion. The company mark and the seal next to the name follow facts.identity, so they fail closed with the facts.",
+    "Integration gaps (state them, never fake them): no signer for name badges yet (#31, #33), so verifiedName stays empty; the SDK has no complete device history, so change device is not reported; there is no flow to confirm another person in person yet, so bipe_trust_contact_confirm_action is not shown.",
     "confirmedInPerson: the person's identity is verified by the user (UserIdentity.isVerified, after an in-person QR or emoji check). It is a different fact from a verified name (linguagem.md: confirmar, not verificar).",
+    "Official accounts (ADR 0117, bipe-chat/bipe#384): isOfficial is an exact match of the full user ID with registries/official-accounts.json, never the name or the @ (a test account named Novidades do Bipe gets no badge and keeps reservedNameWarning). The official accounts own their reserved names, so they never get reservedNameWarning. Bipe logic: BipeOfficialAccounts.isOfficial (BipeKit, libraries/bipe).",
     "Reserved names (parity reserved-names): reservedNameWarning uses the same normalize() and registry as profile-edit. A company whose verified seal names it does not get the warning. Bipe logic: NameNormalizer.reservedCategory (BipeKit), NameNormalizer.kt (libraries/bipe).",
     "The @ comes from POST /v1/handles/resolve and is cached per user ID. Bipe logic: BipeHandleResolver (BipeKit, libraries/bipe). The public profile bio comes from GET /v1/profiles/{handle}; a 404 means no bio.",
     "No phone number shows, ever: the number is for discovery only (ADR 0015).",

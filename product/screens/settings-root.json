@@ -41,10 +41,11 @@
     "bipe_settings_account_paths_none",
     "bipe_account_paths_warning",
     "bipe_settings_notifications_on",
-    "bipe_settings_notifications_off"
+    "bipe_settings_notifications_off",
+    "bipe_agenda_my_bookings"
   ],
   "sdk": ["Client.encryption", "Encryption.recoveryState"],
-  "parity": ["settings-structure"],
+  "parity": ["settings-structure", "agenda"],
   "notes": [
     "The order, keys and titles come from the generated BipeSettings (registries/settings.json root and groups). Never hard-code the order. A new group needs a new ADR (ADR 0112).",
     "Privacy summary: everyone → bipe_settings_privacy_summary_everyone, verified → bipe_settings_privacy_summary_verified, contacts → bipe_settings_privacy_summary_contacts.",
@@ -52,6 +53,7 @@
     "Notifications summary: bipe_settings_notifications_on, or bipe_settings_notifications_off when the system permission is off.",
     "The rest of the Você tab (header with photo, name and @, account switcher, Anotações, Perfil de confiança, Convidar pessoas) is the people and profiles spec (bipe-chat/bipe#567). profile (Seu perfil) opens from the header, not from this list.",
     "Bipe logic: BipeWaysBack (count, needsWarning, summary) and BipeWhoCanMessage.settingsSummary in BipeKit BipeSettingsSupport.swift; BipeWayBack.kt and BipePrivacySettings.kt in libraries/bipe settings.",
+    "A personal account has a Meus agendamentos row (bipe_agenda_my_bookings) after the groups; it opens agenda-my-bookings.",
     "No Matrix or Element words in any row: no sala, sessão, dispositivo, criptografia, chave, homeserver (ADR 0112). Bipe has no haptics setting of its own: the system setting wins (design/haptics.md rule 6)."
   ]
 }

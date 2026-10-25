@@ -179,6 +179,25 @@
       }
     },
     {
+      "id": "keychain-moves",
+      "basis": "contract",
+      "places": [
+        "server"
+      ],
+      "pt": {
+        "name": "Preparo do iPhone para a troca de conta da loja",
+        "what": "Quais iPhones da sua conta já guardaram seus dados de acesso de um jeito que continua valendo quando o app mudar de conta na App Store. O código do aparelho e a data. Nenhuma senha.",
+        "why": "Saber quantas contas estão prontas antes de mudar o app de conta na App Store, para ninguém perder o acesso.",
+        "retention": "Enquanto a conta existir. A tabela é apagada 90 dias depois da troca."
+      },
+      "en": {
+        "name": "iPhone readiness for the App Store account change",
+        "what": "Which iPhones of your account already keep your sign-in data in a way that still works when the app moves to another App Store account. The device code and the date. No password.",
+        "why": "To know how many accounts are ready before the app moves to another App Store account, so nobody loses access.",
+        "retention": "As long as the account exists. The table is deleted 90 days after the move."
+      }
+    },
+    {
       "id": "handle",
       "basis": "contract",
       "places": ["server"],
@@ -400,6 +419,23 @@
       }
     },
     {
+      "id": "news-room",
+      "basis": "contract",
+      "places": ["server"],
+      "pt": {
+        "name": "Novidades do Bipe",
+        "what": "Seu ID no Bipe, a conversa de novidades que o Bipe criou para você, se você saiu dela ou desligou as novidades, e quais novidades chegaram para você. O texto das novidades é do Bipe e é igual para todo mundo.",
+        "why": "Mandar cada novidade do app uma vez só para cada pessoa, e parar quando a pessoa não quer mais.",
+        "retention": "Enquanto sua conta existir."
+      },
+      "en": {
+        "name": "Bipe news",
+        "what": "Your Bipe ID, the news chat Bipe made for you, whether you left it or turned news off, and which news items reached you. The news text is Bipe's and the same for everyone.",
+        "why": "To send each app news item once to each person, and to stop when the person no longer wants it.",
+        "retention": "While your account exists."
+      }
+    },
+    {
       "id": "problem-reports",
       "basis": "consent",
       "places": ["server", "support-tool"],
@@ -414,6 +450,74 @@
         "what": "What you write in Report a problem, the app and phone system versions and, if you choose, the app's technical logs and the screenshots.",
         "why": "To understand the problem, fix it and answer you. The team reads the text in the support tool. The logs and screenshots stay on the Bipe server only.",
         "retention": "90 days on the Bipe server. Earlier, if you ask."
+      }
+    },
+    {
+      "id": "business-bookings",
+      "basis": "contract",
+      "places": ["server"],
+      "pt": {
+        "name": "Agendamentos com negócios",
+        "what": "Os horários que você marca com um negócio no Bipe: o serviço, quem atende, o dia, a hora, a situação e a sua conta. Num encaixe feito pelo negócio, só o nome que ele digitou. O que você escreve sobre o horário fica na conversa, não no agendamento.",
+        "why": "Guardar o horário para você e para o negócio e mostrar o cartão na conversa. O negócio decide sobre a própria agenda; o Bipe guarda os dados para ele.",
+        "retention": "2 anos depois da data do horário. Se você apagar a conta, o negócio fica só com o nome, o serviço e a hora até o fim desse prazo."
+      },
+      "en": {
+        "name": "Bookings with businesses",
+        "what": "The times you book with a business in Bipe: the service, who serves you, the day, the time, the status and your account. For a walk-in the business adds, only the name it typed. What you write about the booking stays in the chat, not in the booking.",
+        "why": "To keep the time for you and for the business and to show the card in the chat. The business decides about its own schedule; Bipe keeps the data for it.",
+        "retention": "2 years after the date of the booking. If you delete your account, the business keeps only the name, the service and the time until then."
+      }
+    },
+    {
+      "id": "business-orders",
+      "basis": "contract",
+      "places": ["server"],
+      "pt": {
+        "name": "Pedidos a negócios",
+        "what": "Os pedidos que você faz a um negócio no Bipe: os itens, as quantidades, os preços do momento, o total, retirada ou entrega, a forma de pagamento, a situação e a sua conta. O endereço e os recados ficam na conversa, não no pedido.",
+        "why": "Mostrar o pedido para você e para o negócio. O negócio decide sobre os próprios pedidos; o Bipe guarda os dados para ele.",
+        "retention": "2 anos depois do pedido."
+      },
+      "en": {
+        "name": "Orders to businesses",
+        "what": "The orders you place with a business in Bipe: the items, quantities, prices at the time, total, pickup or delivery, payment choice, status and your account. The address and notes stay in the chat, not in the order.",
+        "why": "To show the order to you and to the business. The business decides about its own orders; Bipe keeps the data for it.",
+        "retention": "2 years after the order."
+      }
+    },
+    {
+      "id": "business-quotes",
+      "basis": "contract",
+      "places": ["server"],
+      "pt": {
+        "name": "Orçamentos de negócios",
+        "what": "Que você pediu um orçamento a um negócio, e quando. As linhas, os valores e a validade que o negócio mandou, e a sua resposta. O que você descreve e as fotos ficam na conversa, não no orçamento.",
+        "why": "Mostrar o orçamento para você e para o negócio, e transformar em pedido ou agendamento quando você aceita.",
+        "retention": "2 anos depois do orçamento."
+      },
+      "en": {
+        "name": "Quotes from businesses",
+        "what": "That you asked a business for a quote, and when. The lines, amounts and validity the business sent, and your answer. What you describe and the photos stay in the chat, not in the quote.",
+        "why": "To show the quote to you and to the business, and to turn it into an order or a booking when you accept.",
+        "retention": "2 years after the quote."
+      }
+    },
+    {
+      "id": "queue-places",
+      "basis": "contract",
+      "places": ["server"],
+      "pt": {
+        "name": "Lugar na fila de um negócio",
+        "what": "Que você entrou na fila de um negócio no Bipe, a hora em que entrou, foi chamado e atendido, e a sua conta. O Bipe nunca pede sua localização.",
+        "why": "Mostrar sua posição e a espera, e para o negócio chamar a próxima pessoa.",
+        "retention": "30 dias depois do dia da fila."
+      },
+      "en": {
+        "name": "Places in a business's queue",
+        "what": "That you joined a business's queue in Bipe, the times you joined, were called and served, and your account. Bipe never asks for your location.",
+        "why": "To show your position and the wait, and for the business to call the next person.",
+        "retention": "30 days after the day of the queue."
       }
     }
   ],

@@ -1,0 +1,60 @@
+{
+  "id": "recovery-email-add",
+  "title": "Add or change the recovery e-mail",
+  "flow": "settings",
+  "summary": "Adds or changes the recovery e-mail on a signed-in phone (ADR 0057). An owner check comes first (security.md rule 14, tier 3). The server sends a link; the e-mail counts as a way back only after the person opens it.",
+  "state": {
+    "phase": {
+      "type": "enum",
+      "values": ["confirmIdentity", "editing", "sending", "sent", "failed"],
+      "description": "confirmIdentity: the owner check. editing: the field. sending: PUT /v1/me/email runs. sent: bipe_email_sent with the address. failed: see error."
+    },
+    "email": { "type": "string", "description": "The field text. Starts with email_pending, else the verified email, else empty." },
+    "current": { "type": "string", "optional": true, "description": "The verified recovery e-mail from GET /v1/me/account. Shown under the title; absent shows bipe_account_email_none." },
+    "pending": { "type": "string", "optional": true, "description": "email_pending from GET /v1/me/account: shows bipe_email_pending under it." },
+    "emailInvalid": { "type": "bool", "description": "true after send when the address is not plausible. Shows bipe_signup_email_invalid." },
+    "error": { "type": "string", "optional": true, "description": "bipe_error_email_taken, bipe_error_email_unavailable, bipe_error_network, bipe_error_rate_limited or bipe_error_generic." }
+  },
+  "actions": {
+    "confirmIdentity": {
+      "effect": "Asks for the device owner check with bipe_email_change_reason. A pass sets editing; a fail or cancel closes the screen. A phone with no passcode and no biometrics asks for the app lock PIN when the lock is on, else goes on (the same rule as pin-change)."
+    },
+    "editEmail": {
+      "params": { "text": { "type": "string", "description": "The new field text." } },
+      "effect": "Sets email, clears emailInvalid and error."
+    },
+    "send": {
+      "effect": "Checks the address locally, then PUT /v1/me/email with email and the app language (pt or en). 202: sets sent and reloads the account state. 409 email_taken: failed with bipe_error_email_taken. 503 email_unavailable: failed with bipe_error_email_unavailable. 429: bipe_error_rate_limited. 400: emailInvalid. Other: bipe_error_generic or bipe_error_network."
+    },
+    "done": { "effect": "From sent: closes the screen." },
+    "cancel": { "effect": "Closes the screen. Nothing changes." }
+  },
+  "strings": [
+    "bipe_email_title",
+    "bipe_email_footer",
+    "bipe_email_change_reason",
+    "bipe_signup_email",
+    "bipe_signup_email_invalid",
+    "bipe_email_send",
+    "bipe_email_sent",
+    "bipe_email_pending",
+    "bipe_account_email_none",
+    "bipe_error_email_taken",
+    "bipe_error_email_unavailable",
+    "bipe_error_network",
+    "bipe_error_rate_limited",
+    "bipe_error_generic",
+    "bipe_app_cancel",
+    "bipe_app_close"
+  ],
+  "sdk": [],
+  "parity": ["transfer-safe-recovery", "new-phone"],
+  "notes": [
+    "Opens from the e-mail row of the Ways back group in settings (registries/settings.json waysBack.email) and from the recovery-reminder card.",
+    "The verified address stays in use until the new one is confirmed (api/openapi.yaml /v1/me/email). The server sends the link and, after a change, a notice to the old address.",
+    "The address is never logged. The app does not keep it on the phone; it reads it from GET /v1/me/account.",
+    "Remove (DELETE /v1/me/email) is not on this screen: removing a way back needs its own spec with the same owner check.",
+    "Local e-mail check: BipeSignupRules.isPlausibleEmail (iOS and Android).",
+    "Bipe logic: BipeAPIClient.setRecoveryEmail (BipeKit); BipeApiClient.setRecoveryEmail (libraries/bipe)."
+  ]
+}

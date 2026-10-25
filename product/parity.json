@@ -291,6 +291,46 @@
       "note": "Token, PIN, QR and e-mail recovery are merged on both apps; guardians and CPF recovery are not"
     },
     {
+      "id": "transfer-safe-recovery",
+      "name": "A way back that survives the App Store transfer (bipe#531)",
+      "issue": 531,
+      "ios": {
+        "status": "n/a",
+        "reason": "Not built in the fork; the forks are frozen (ADR 0155)"
+      },
+      "android": {
+        "status": "n/a",
+        "reason": "Not built in the fork; the forks are frozen (ADR 0155)"
+      },
+      "web": {
+        "status": "n/a",
+        "reason": "Sign-up and recovery are in the apps"
+      },
+      "server": {
+        "status": "built",
+        "evidence": [
+          "bipe-api/src/transfer.ts",
+          "bipe-api/src/accounts.ts"
+        ]
+      },
+      "ios-new": {
+        "status": "built",
+        "evidence": [
+          "bipe-app/ios/BipeKit/Sources/BipeKit/BipeKeychainMove.swift",
+          "bipe-app/ios/Bipe/Account/KeychainMove.swift",
+          "bipe-app/ios/Bipe/Recovery/RecoveryReminder.swift"
+        ]
+      },
+      "android-new": {
+        "status": "built",
+        "evidence": [
+          "bipe-app/android/app/src/main/kotlin/chat/bipe/app/recovery/RecoveryReminder.kt",
+          "bipe-app/android/libraries/bipe/src/main/kotlin/chat/bipe/shared/account/BipeRecoveryReminder.kt"
+        ]
+      },
+      "note": "bipe/docs/team-transfer-recovery.md: iOS moves its keychain items into the app-group group; both apps show the recovery reminder and the add-e-mail screen; the server records the moves and counts the share"
+    },
+    {
       "id": "web-sign-in",
       "name": "Link a computer by QR code",
       "ios": {
@@ -346,6 +386,29 @@
       "ios-new": "planned",
       "android-new": "planned",
       "note": "BadgeVerifier exists on both apps, nothing shows a seal"
+    },
+    {
+      "id": "trust-facts",
+      "name": "Identity proof, personal confirmation and identity changes shown apart in a profile (ADR 0074, bipe#227, bipe#229)",
+      "issue": 227,
+      "ios": {
+        "status": "n/a",
+        "reason": "Not built in the fork; the forks are frozen (ADR 0155)"
+      },
+      "android": {
+        "status": "n/a",
+        "reason": "Not built in the fork; the forks are frozen (ADR 0155)"
+      },
+      "web": {
+        "status": "n/a",
+        "reason": "No web chat (ADR 0004); the site shows a demo at most"
+      },
+      "server": {
+        "status": "n/a",
+        "reason": "Runs on the device; the rules are registries/trust-facts.json"
+      },
+      "ios-new": "planned",
+      "android-new": "planned"
     },
     {
       "id": "cnpj-badge",
@@ -433,6 +496,79 @@
         "status": "built",
         "evidence": [
           "bipe-app/android/app/src/main/kotlin/chat/bipe/app/handle/HandlePick.kt"
+        ]
+      }
+    },
+    {
+      "id": "official-badge",
+      "name": "Bipe badge on the official accounts (ADR 0117, bipe#384)",
+      "issue": 384,
+      "ios": {
+        "status": "n/a",
+        "reason": "Not built in the fork; the forks are frozen (ADR 0155)"
+      },
+      "android": {
+        "status": "n/a",
+        "reason": "Not built in the fork; the forks are frozen (ADR 0155)"
+      },
+      "web": {
+        "status": "n/a",
+        "reason": "No web chat (ADR 0004); the site shows a demo at most"
+      },
+      "server": {
+        "status": "n/a",
+        "reason": "Client behaviour; the account list is registries/official-accounts.json"
+      },
+      "ios-new": {
+        "status": "built",
+        "evidence": [
+          "bipe-app/ios/BipeKit/Sources/BipeKit/BipeOfficialAccounts.swift",
+          "bipe-app/ios/Bipe/Common/OfficialBadge.swift"
+        ]
+      },
+      "android-new": {
+        "status": "built",
+        "evidence": [
+          "bipe-app/android/libraries/bipe/src/main/kotlin/chat/bipe/shared/BipeOfficialAccounts.kt",
+          "bipe-app/android/app/src/main/kotlin/chat/bipe/app/common/OfficialBadge.kt"
+        ]
+      }
+    },
+    {
+      "id": "news-room",
+      "name": "Novidades do Bipe: one read-only news room per user, and the Settings switch to get news again (ADR 0117, bipe#383, bipe#387)",
+      "issue": 387,
+      "ios": {
+        "status": "n/a",
+        "reason": "Not built in the fork; the forks are frozen (ADR 0155)"
+      },
+      "android": {
+        "status": "n/a",
+        "reason": "Not built in the fork; the forks are frozen (ADR 0155)"
+      },
+      "web": {
+        "status": "n/a",
+        "reason": "No web chat (ADR 0004); the site shows a demo at most"
+      },
+      "server": {
+        "status": "built",
+        "evidence": [
+          "bipe-api/src/news.ts",
+          "bipe-api/src/matrix-bot.ts"
+        ]
+      },
+      "ios-new": {
+        "status": "built",
+        "evidence": [
+          "bipe-app/ios/BipeKit/Sources/BipeKit/BipeNews.swift",
+          "bipe-app/ios/Bipe/Notifications/NotificationSettingsModel.swift"
+        ]
+      },
+      "android-new": {
+        "status": "built",
+        "evidence": [
+          "bipe-app/android/libraries/bipe/src/main/kotlin/chat/bipe/shared/settings/BipeNews.kt",
+          "bipe-app/android/app/src/main/kotlin/chat/bipe/app/notifications/NotificationSettingsModel.kt"
         ]
       }
     },
@@ -2646,6 +2782,40 @@
         "evidence": [
           "bipe-app/android/app/src/main/kotlin/chat/bipe/app/common/Motion.kt",
           "bipe-app/android/app/src/main/kotlin/chat/bipe/app/BipeTheme.kt"
+        ]
+      }
+    },
+    {
+      "id": "increase-contrast",
+      "name": "Increase Contrast with the hc tokens, state not by colour alone (bipe#497)",
+      "ios": {
+        "status": "n/a",
+        "reason": "Fork frozen (ADR 0155); built in the own client"
+      },
+      "android": {
+        "status": "n/a",
+        "reason": "Fork frozen (ADR 0155); built in the own client"
+      },
+      "web": {
+        "status": "n/a",
+        "reason": "The site has its own accessibility work (product/accessibility.json)"
+      },
+      "server": {
+        "status": "n/a",
+        "reason": "Runs on the device only"
+      },
+      "ios-new": {
+        "status": "built",
+        "evidence": [
+          "bipe-app/ios/Bipe/Common/Contrast.swift",
+          "bipe-app/ios/BipeKit/Sources/BipeKit/Generated/BipeColors.swift"
+        ]
+      },
+      "android-new": {
+        "status": "built",
+        "evidence": [
+          "bipe-app/android/app/src/main/kotlin/chat/bipe/app/BipeTheme.kt",
+          "bipe-app/android/app/src/main/kotlin/chat/bipe/app/chatlist/ChatListScreen.kt"
         ]
       }
     }

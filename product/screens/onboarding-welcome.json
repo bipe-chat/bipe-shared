@@ -2,7 +2,7 @@
   "id": "onboarding-welcome",
   "title": "Welcome",
   "flow": "signup",
-  "summary": "The first screen when the phone has no Bipe account. It says what Bipe is and offers one filled button that starts sign-up, plus a row for people who already have an account. The button depends on the invite state (registries/onboarding.json start).",
+  "summary": "The first screen when the phone has no Bipe account. A short cover says what Bipe is and links to the site. Below it are two choices of equal width: the filled button that starts sign-up, and a quieter button for people who already have an account. The button depends on the invite state (registries/onboarding.json start).",
   "types": {
     "PendingInvite": {
       "code": { "type": "string", "description": "The invite code, normalised (BipeInviteLink.normalizedCode on iOS). Never shown in full." },
@@ -18,13 +18,7 @@
     },
     "invite": { "type": "PendingInvite", "optional": true, "description": "The invite that came with a link, the install referrer (Android) or a paste. Its presence is invitePending." },
     "inviteRequired": { "type": "bool", "description": "invite_required from GET /v1/signup/config. true when the app cannot read it." },
-    "termsVersion": { "type": "string", "optional": true, "description": "terms_version from GET /v1/signup/config. signup-name sends it after the checkbox." },
-    "clipboardHasText": { "type": "bool", "description": "true when the system clipboard holds text. Shows the paste row. The app reads the text only after a tap on that row." },
-    "pasteResult": {
-      "type": "enum",
-      "values": ["none", "notAnInvite"],
-      "description": "notAnInvite: the pasted text holds no Bipe invite. Shows bipe_onboarding_paste_invite_none."
-    }
+    "termsVersion": { "type": "string", "optional": true, "description": "terms_version from GET /v1/signup/config. signup-name sends it after the checkbox." }
   },
   "actions": {
     "appear": {
@@ -34,11 +28,11 @@
       "params": { "url": { "type": "url", "description": "A bipe.chat/convite/<code> link the app was opened with." } },
       "effect": "Takes the code from the link, previews it and sets variant to invited. A link that is not an invite does nothing."
     },
-    "pasteInvite": {
-      "effect": "Reads the clipboard once, takes the invite code from the text (registries/invite-codes.json rules) and previews it. With no code, sets pasteResult to notAnInvite."
-    },
     "primary": {
       "effect": "Follows the primary button of the variant: invited and open go to signup-name with the invite (if any); inviteOnly goes to signup-invite-code. A pending invite is checked again with GET /v1/invites/{code} first (bipe-chat/bipe#460): valid false goes to signup-invite-code with bipe_invite_no_longer_valid under the field; no network keeps the invite and goes on, as signup-create checks it again."
+    },
+    "learnMore": {
+      "effect": "Opens the public site home page in the in-app browser (SFSafariViewController on iOS, Custom Tabs on Android): PUBLIC_SITE_URL plus registries/legal.json homePath, or enHomePath on an English device. The sign-up state stays as it was."
     },
     "haveAccount": {
       "effect": "Opens the way back into an existing account (recovery-start, bipe-chat/bipe#555)."
@@ -46,25 +40,20 @@
   },
   "strings": [
     "bipe_onboarding_title",
-    "bipe_onboarding_point_scam",
-    "bipe_onboarding_point_brazil",
-    "bipe_onboarding_point_no_ads",
     "bipe_onboarding_invited_by",
     "bipe_onboarding_join_with_invite",
     "bipe_onboarding_have_invite",
     "bipe_onboarding_have_account",
-    "bipe_signup_title",
-    "bipe_onboarding_paste_invite_hint",
-    "bipe_onboarding_paste_invite",
-    "bipe_onboarding_paste_invite_none"
+    "bipe_onboarding_learn_more",
+    "bipe_signup_title"
   ],
   "sdk": [],
   "parity": ["first-run", "onboarding-welcome", "invites", "deferred-invite", "phone-account"],
   "notes": [
     "Each pair of invitePending and inviteRequired matches exactly one start variant in registries/onboarding.json. The generated onboarding code (gen.mjs) gives the title and buttons; the screen never hard-codes them.",
-    "The points list keeps the order of linguagem.md section 3: scam check, Brazil, no ads.",
+    "No points list: the welcome line and the title say what Bipe is. The scam check, Brazil and no-ads points belong to the store listing and the site (product/appstore.md), not to this screen. The bipe_onboarding_point_* strings stay for those surfaces.",
+    "Layout: a full-bleed açaí cover with the Bipe mark, the wordmark, the welcome line and the title; the cover also holds learnMore. The cover is not an inset card. Under it, the variant's primary button (filled) and its text buttons (haveAccount) as a tonal button of the same width. A tall window gives the cover all the height above the buttons; a wide window makes the cover the left half of the whole window, so the split meets the iPhone Duo fold. No paste row here: pasting an invite belongs to signup-invite-code.",
     "bipe_onboarding_invited_by takes the inviter's handle with @ in front. An invite without a handle, or not valid, shows the open or inviteOnly variant and keeps the code for signup-invite-code.",
-    "The clipboard is read only after a tap on the paste row, never on launch (iOS shows a paste notice).",
     "The screen talks only to bipe-api (no auth). The Matrix client does not exist yet. Bipe logic: BipeAPIClient.signupConfig and invitePreview, BipeInviteLink (iOS); BipeApiClient, BipeStartScreenInfo (Android).",
     "account-start shows this screen when its phase is noAccount."
   ]

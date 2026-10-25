@@ -213,6 +213,9 @@ public enum BipeRegistries {
     public static let privacyPath = ${swiftString(reg.legal.privacyPath)}
     public static let enTermsPath = ${swiftString(reg.legal.enTermsPath)}
     public static let enPrivacyPath = ${swiftString(reg.legal.enPrivacyPath)}
+    /// The site home pages that onboarding-welcome learnMore opens.
+    public static let homePath = ${swiftString(reg.legal.homePath)}
+    public static let enHomePath = ${swiftString(reg.legal.enHomePath)}
 
     /// Badge signing keys a release build trusts (ADR 0123; registries/badge-keys.json): kid to raw Ed25519 public key, base64url.
     public static let badgeKeys: [String: String] = ${Object.keys(reg.badgeKeys.keys).length ? swiftMap(reg.badgeKeys.keys) : "[:]"}
@@ -476,6 +479,9 @@ object BipeRegistries {
     const val PRIVACY_PATH = ${kotlinString(reg.legal.privacyPath)}
     const val EN_TERMS_PATH = ${kotlinString(reg.legal.enTermsPath)}
     const val EN_PRIVACY_PATH = ${kotlinString(reg.legal.enPrivacyPath)}
+    // The site home pages that onboarding-welcome learnMore opens.
+    const val HOME_PATH = ${kotlinString(reg.legal.homePath)}
+    const val EN_HOME_PATH = ${kotlinString(reg.legal.enHomePath)}
 
     /** Badge signing keys a release build trusts (ADR 0123; registries/badge-keys.json): kid to raw Ed25519 public key, base64url. */
     val badgeKeys: Map<String, String> = ${kotlinList("mapOf", Object.entries(reg.badgeKeys.keys).map(([k, v]) => `${kotlinString(k)} to ${kotlinString(v)}`))}

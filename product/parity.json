@@ -493,8 +493,20 @@
           "bipe-api/src/badges.ts"
         ]
       },
-      "ios-new": "planned",
-      "android-new": "planned"
+      "ios-new": {
+        "status": "built",
+        "evidence": [
+          "bipe-app/ios/BipeKit/Sources/BipeKit/BipeCvmLines.swift",
+          "bipe-app/ios/Bipe/People/CompanySealSheet.swift"
+        ]
+      },
+      "android-new": {
+        "status": "built",
+        "evidence": [
+          "bipe-app/android/libraries/bipe/src/main/kotlin/chat/bipe/shared/company/BipeCvmLines.kt",
+          "bipe-app/android/app/src/main/kotlin/chat/bipe/app/people/SafetyScreens.kt"
+        ]
+      }
     },
     {
       "id": "cnpj-claim",

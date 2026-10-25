@@ -995,7 +995,8 @@
       "server": {
         "status": "built",
         "evidence": [
-          "bipe-api/src/attest.ts"
+          "bipe-api/src/attest.ts",
+          "bipe-api/src/key-attest.ts"
         ]
       },
       "ios-new": {
@@ -1006,10 +1007,13 @@
         ]
       },
       "android-new": {
-        "status": "planned",
-        "issue": 92
+        "status": "built",
+        "evidence": [
+          "bipe-app/android/libraries/bipe/src/main/kotlin/chat/bipe/shared/account/BipeKeyAttestation.kt",
+          "bipe-app/android/app/src/main/kotlin/chat/bipe/app/signup/SignupFlowModel.kt"
+        ]
       },
-      "issue": 92
+      "issue": 606
     },
     {
       "id": "no-ads",

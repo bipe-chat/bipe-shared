@@ -477,8 +477,20 @@
         "status": "n/a",
         "reason": "Client behaviour; the account list is registries/official-accounts.json"
       },
-      "ios-new": "planned",
-      "android-new": "planned"
+      "ios-new": {
+        "status": "built",
+        "evidence": [
+          "bipe-app/ios/BipeKit/Sources/BipeKit/BipeOfficialAccounts.swift",
+          "bipe-app/ios/Bipe/Common/OfficialBadge.swift"
+        ]
+      },
+      "android-new": {
+        "status": "built",
+        "evidence": [
+          "bipe-app/android/libraries/bipe/src/main/kotlin/chat/bipe/shared/BipeOfficialAccounts.kt",
+          "bipe-app/android/app/src/main/kotlin/chat/bipe/app/common/OfficialBadge.kt"
+        ]
+      }
     },
     {
       "id": "news-room",

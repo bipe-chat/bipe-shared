@@ -12,7 +12,8 @@
       },
       "filename": { "type": "string", "description": "The file name." },
       "sizeLabel": { "type": "string", "description": "Size, formatted." },
-      "isTooLarge": { "type": "bool", "description": "true when the file is over the homeserver upload limit." }
+      "isTooLarge": { "type": "bool", "description": "true when the file is over the homeserver upload limit." },
+      "description": { "type": "string", "optional": true, "description": "image only: the sender's description of the photo for screen readers (bipe-chat/bipe#501), at most imageDescriptionMaxLength characters (registries/image-descriptions.json)." }
     }
   },
   "state": {
@@ -36,12 +37,19 @@
       "params": { "text": { "type": "string", "description": "The new caption." } },
       "effect": "Sets caption."
     },
+    "editDescription": {
+      "params": {
+        "index": { "type": "int", "description": "The image item." },
+        "text": { "type": "string", "description": "The new description." }
+      },
+      "effect": "Sets the description of that image item, cut at imageDescriptionMaxLength."
+    },
     "remove": {
       "params": { "index": { "type": "int", "description": "The item to drop." } },
       "effect": "Drops one item; the screen closes when none is left."
     },
     "send": {
-      "effect": "Sends each item as an attachment with its thumbnail and info, the caption on the first item, as a reply when replyingTo is set, then closes. Off while an item isTooLarge or isPreparing."
+      "effect": "Sends each item as an attachment with its thumbnail and info, the caption on the first item, an image's description in the content field of registries/image-descriptions.json (UploadParameters.extraContentJson; none when blank), as a reply when replyingTo is set, then closes. Off while an item isTooLarge or isPreparing."
     },
     "cancel": {
       "effect": "Closes without sending; the composer draft stays."
@@ -49,6 +57,9 @@
   },
   "strings": [
     "bipe_app_upload_caption_placeholder",
+    "bipe_app_upload_description",
+    "bipe_app_upload_description_placeholder",
+    "bipe_app_upload_description_footer",
     "bipe_app_upload_send",
     "bipe_app_upload_preparing",
     "bipe_app_upload_too_large",
@@ -75,6 +86,7 @@
     "Every image and video gets a thumbnail and a blurhash in its info, so timeline-media can show a placeholder at once.",
     "The SDK encrypts the file before upload; the homeserver stores only the encrypted file.",
     "The send queue keeps the upload when the app goes to the background or the network drops; a failure shows the row as failed with bipe_app_upload_failed and the message-actions retry.",
-    "Metadata: photos lose location and camera data before upload."
+    "Metadata: photos lose location and camera data before upload.",
+    "Image descriptions (bipe-chat/bipe#501, default (a) of the issue): each image item has its own optional description field (label bipe_app_upload_description, placeholder bipe_app_upload_description_placeholder, footer bipe_app_upload_description_footer). Videos and files have none. The description travels inside the encrypted event; no model describes photos and nothing leaves the phone."
   ]
 }

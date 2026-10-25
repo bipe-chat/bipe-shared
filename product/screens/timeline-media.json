@@ -23,7 +23,8 @@
         "values": ["placeholder", "tapToShow", "loading", "shown", "failed"],
         "description": "placeholder: blurhash only, before the thumbnail loads. tapToShow: the show-media setting hides it until a tap. loading: downloading. shown: the thumbnail or image shows. failed: the download failed."
       },
-      "uploadProgress": { "type": "int", "optional": true, "description": "Own media while sending: percent 0 to 100." }
+      "uploadProgress": { "type": "int", "optional": true, "description": "Own media while sending: percent 0 to 100." },
+      "description": { "type": "string", "optional": true, "description": "image only: the sender's description from the m.image content field of registries/image-descriptions.json (bipe-chat/bipe#501): a string, trimmed, not blank, at most imageDescriptionMaxLength characters." }
     }
   },
   "state": {
@@ -55,6 +56,7 @@
     "bipe_app_media_tap_to_show",
     "bipe_app_media_failed",
     "bipe_app_media_image",
+    "bipe_app_media_image_described",
     "bipe_app_media_video",
     "bipe_app_media_file",
     "bipe_app_media_sticker",
@@ -78,6 +80,8 @@
     "Client.getMediaThumbnail",
     "Client.getMediaContent",
     "Client.getMediaFile",
+    "EventTimelineItem.lazyProvider",
+    "LazyTimelineItemProvider.debugInfo",
     "MediaFileHandle",
     "EventSendState",
     "MediaUploadProgress",
@@ -92,6 +96,7 @@
     "Captions show under the media as text, and the scam warning reads the caption (scam-warning). A caption is edited with message-edit (EditedContent.MediaCaption).",
     "Stickers show without a bubble, at most 160 points wide, animated when ImageInfo.isAnimated. Saving stickers is the stickers issue (bipe_action_save_sticker).",
     "A photo that is a receipt image gets no special card here; the receipt scam check reads text only.",
-    "Delete and forward come from message-actions; media delete uses message-delete (bipe_dm_media_delete_body is the media library text, not this row)."
+    "Delete and forward come from message-actions; media delete uses message-delete (bipe_dm_media_delete_body is the media library text, not this row).",
+    "Image descriptions (bipe-chat/bipe#501): the accessibility label of an image row is bipe_app_media_image_described with the description when it has one, else bipe_app_media_image; VoiceOver and TalkBack read it before the caption. The SDK message types have no field for it, so the app reads it from the event JSON (EventTimelineItemDebugInfo.originalJson, the decrypted event). A field on any other message type is ignored."
   ]
 }

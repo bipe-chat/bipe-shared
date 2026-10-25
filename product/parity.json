@@ -3098,6 +3098,29 @@
       "ios-new": "planned",
       "android-new": "planned",
       "issue": 242
+    },
+    {
+      "id": "voice-transcript-receive",
+      "name": "Transcribe a received voice message on the listener's phone (bipe#500)",
+      "ios": {
+        "status": "n/a",
+        "reason": "Fork frozen (ADR 0155); built in the own client"
+      },
+      "android": {
+        "status": "n/a",
+        "reason": "Fork frozen (ADR 0155); built in the own client"
+      },
+      "web": {
+        "status": "n/a",
+        "reason": "No web chat (ADR 0004); the site shows a demo at most"
+      },
+      "server": {
+        "status": "n/a",
+        "reason": "Runs on the device only; no audio leaves the phone"
+      },
+      "ios-new": "planned",
+      "android-new": "planned",
+      "issue": 500
     }
   ],
   "differences": [

@@ -2,7 +2,7 @@
   "id": "voice-message",
   "title": "Voice message",
   "flow": "chat",
-  "summary": "The timeline row of a voice message or audio file: play and pause, a waveform with progress, the duration, and the sender's transcript under it (ADR 0023). The scam check reads the transcript.",
+  "summary": "The timeline row of a voice message or audio file: play and pause, a waveform with progress, the duration, and the sender's transcript under it (ADR 0023). A received voice message without one can be transcribed on the listener's phone (bipe#500). The scam check reads the sender's transcript.",
   "types": {
     "VoiceMessage": {
       "isVoice": { "type": "bool", "description": "true for a voice message (has the voice marker), false for an audio file." },
@@ -19,7 +19,13 @@
   },
   "state": {
     "voice": { "type": "VoiceMessage", "description": "The row." },
-    "transcriptExpanded": { "type": "bool", "description": "true after the person tapped show more." }
+    "transcriptExpanded": { "type": "bool", "description": "true after the person tapped show more." },
+    "localTranscript": {
+      "type": "enum",
+      "values": ["none", "working", "ready", "unavailable", "denied", "failed"],
+      "description": "The listener's own transcript (bipe#500). none: bipe_voice_transcribe shows. working: bipe_voice_transcribing. ready: the text with bipe_voice_transcript_title and bipe_voice_transcribed_here. unavailable: no on-device recognizer for the language (bipe_voice_transcribe_unavailable). denied: speech recognition not allowed (bipe_voice_transcribe_denied). failed: bipe_voice_transcribe_failed, and the button shows again."
+    },
+    "localTranscriptText": { "type": "string", "optional": true, "description": "ready only: the text the phone recognised." }
   },
   "actions": {
     "togglePlay": {
@@ -28,6 +34,9 @@
     "seek": {
       "params": { "percent": { "type": "int", "description": "Where to play from." } },
       "effect": "Drag on the waveform: moves the position."
+    },
+    "transcribe": {
+      "effect": "A received voice message (isVoice, not own) without a sender's transcript: downloads the audio to the cache when needed, then transcribes it on the phone only (iOS Speech with requiresOnDeviceRecognition; Android SpeechRecognizer.createOnDeviceSpeechRecognizer). Sets localTranscript."
     },
     "toggleTranscript": {
       "effect": "Shows the whole transcript, or collapses it to 3 lines."
@@ -40,7 +49,13 @@
     "bipe_app_voice_play",
     "bipe_app_voice_pause",
     "bipe_app_media_failed",
-    "bipe_app_media_voice"
+    "bipe_app_media_voice",
+    "bipe_voice_transcribe",
+    "bipe_voice_transcribing",
+    "bipe_voice_transcribed_here",
+    "bipe_voice_transcribe_unavailable",
+    "bipe_voice_transcribe_failed",
+    "bipe_voice_transcribe_denied"
   ],
   "sdk": [
     "MessageType",
@@ -54,7 +69,8 @@
   ],
   "parity": ["voice-transcript-display"],
   "notes": [
-    "ADR 0023: Bipe never captions a voice message in another way, so the caption of a voice message is the transcript. The reader's phone never transcribes.",
+    "ADR 0023: Bipe never captions a voice message in another way, so the caption of a voice message is the transcript.",
+    "Listener transcript (bipe#500, option (a) of the issue, which changes ADR 0023 point 1 for received messages): only on a tap of bipe_voice_transcribe, never automatic. Recognition runs on the phone only, with the phone's preferred languages then pt-BR, as on the sender side; the app never falls back to a server, and with no on-device recognizer it shows unavailable. The audio and the text never leave the phone: the text lives in memory for the session, is not stored, not sent and not shown to the sender. It is the listener's own reading, so it carries bipe_voice_transcribed_here and the scam check does not read it.",
     "Transcript block: bipe_voice_transcript_title, then the text in 3 lines. Over 140 characters, bipe_action_show_more and bipe_action_show_less toggle it (same rule as the forks).",
     "The scam check (scam-warning) reads the transcript of incoming voice messages; the card goes under the transcript.",
     "The transcript is the sender's text, not proof of what was said; the row does not claim otherwise.",

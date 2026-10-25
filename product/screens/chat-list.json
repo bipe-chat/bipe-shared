@@ -93,7 +93,8 @@
     "bipe_requests_title",
     "bipe_groups_empty_title",
     "bipe_groups_empty_body",
-    "bipe_app_account_current_a11y"
+    "bipe_app_account_current_a11y",
+    "bipe_dm_no_name"
   ],
   "sdk": [
     "Client.syncService",
@@ -106,7 +107,9 @@
     "Room.latestEvent"
   ],
   "parity": [
-    "e2ee-only-rooms"
+    "e2ee-only-rooms",
+    "dm-one-row",
+    "dm-name-photo"
   ],
   "notes": [
     "Keep a known latest-activity timestamp visible while the SDK briefly has no latest-event preview (bipe#590), scoped to this account session. The date label must have room beside a long chat title. Do not invent today's date for an unknown event or wait for network to draw the list. Truly unknown times remain unknown until local SDK data arrives.",
@@ -115,7 +118,8 @@
     "The current-account avatar and DM avatars show photos from the SDK, with initials when absent. A company avatar is a rounded square based on GET /v1/accounts/{userId}/type (ADR 0132), regardless of verification. Group avatars stay distinct room avatars.",
     "The SDK room-list order is authoritative: it incorporates the server recency stamp even while an event preview is missing. Never re-sort all rows by optional locally cached latest-event timestamps. Preserve filtered-list order as well; append out-of-page archived rooms deterministically.",
     "Request SDK latest-event hydration for displayed and loaded-page rooms with RoomListService.subscribeToRooms. In SDK26.08.11 this REPLACES existing subscriptions, so one coordinator per immutable account session must combine owners from all active lists, including Unread, groups, requests and search. Releasing one owner must preserve other lists. Close on sign-out. Publish cached rows before background hydration; no network or decryption gate on opening the app.",
-    "Use RoomInfo.displayName, including explicit room names, before hero/profile/localpart fallbacks. An absent hero never overrides an available SDK name with Unnamed chat. Retain a room avatar when its DM hero avatar is absent. Do not read another client database or infer a missing date from current time.",
+    "A group uses RoomInfo.displayName, including explicit room names, before hero/profile/localpart fallbacks. An absent hero never overrides an available SDK name with Unnamed chat. Do not read another client database or infer a missing date from current time.",
+    "A DM (RoomInfo.isDm, ADR 0141) always shows the other person: the name is the hero display name, then RoomInfo.displayName only when it is not the room's own m.room.name (RoomInfo.rawName), then the localpart of the hero user id, then bipe_dm_no_name. The photo is the hero avatar only, never RoomInfo.avatarUrl (m.room.avatar): without one the row shows initials. The same rule holds in search, the share picker, the timeline header, person-profile and notifications.",
     "MZ supplied screenshots of build32 and the previous app on 23 October 2026: list dates/previews are missing on several rows, room ordering differs and a named chat appears unnamed. These are conversation-list parity reports (bipe#590), distinct from individual message clock footers. Use synthetic fixtures in committed regression tests; never publish personal screenshot contents."
   ]
 }

@@ -91,7 +91,7 @@
     "MsgLikeKind",
     "MessageContent"
   ],
-  "parity": ["money-pause"],
+  "parity": ["money-pause", "dm-no-room-features"],
   "notes": [
     "MZ explicitly requested SF Symbols in iOS context-menu options on 23 October 2026. Native SwiftUI Label(systemImage:) supplies message-option and reaction-picker icons; Android keeps its current icon system. Action availability and permissions do not change.",
     "reply: canReply and the message is sent. edit: canEdit. copy: text messages only. retry: own message with send state failed. delete: canDelete, or an own message not sent yet. report: messages of other people that are sent.",

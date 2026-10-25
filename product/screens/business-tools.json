@@ -28,6 +28,9 @@
     },
     "openQueue": {
       "effect": "Opens queue-owner."
+    },
+    "openBrandMarks": {
+      "effect": "Opens brand-marks (ADR 0162)."
     }
   },
   "strings": [
@@ -41,7 +44,8 @@
     "bipe_agenda_not_published",
     "bipe_orders_title",
     "bipe_quotes_title",
-    "bipe_queue_title"
+    "bipe_queue_title",
+    "bipe_brand_marks_title"
   ],
   "sdk": [],
   "parity": [

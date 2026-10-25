@@ -48,7 +48,7 @@
   },
   "actions": {
     "loadHistory": {
-      "effect": "Back-paginates 20 events when the view scrolls near the top. Does nothing when reachedStart is true or a load runs."
+      "effect": "Back-paginates 20 events at a time when the view scrolls near the top, until the timeline has 10 more messages (events that give no row do not count), at most 5 pages. A failed page is tried 3 times, 1 s and 2 s apart, then the load stops. While the top stays on screen, the view runs loadHistory again after each load that did not fail and after each change of the messages. Does nothing when reachedStart is true or a load runs."
     },
     "editDraft": {
       "params": { "text": { "type": "string", "description": "The new composer text." } },

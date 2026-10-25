@@ -8,7 +8,7 @@ import { buildBrCode, crc16, pixCheck, pixMarkLines, pixTxid } from "./lib/pix.m
 import { cvmLines } from "./lib/cvm.mjs";
 import { noticeLinkClickable } from "./lib/notice.mjs";
 import { loadSchedulingVectors, writeSchedulingApiFixture } from "./lib/scheduling-vectors.mjs";
-import { photoDistance, photoHash, photoMatches, profileFactLines, relationshipNameWarning, newestDmRooms, clearedChatHidden, clearedChatKeepsEvent, clearedChatMarker, clearedChatsWithClear, compareAppVersions, extractInviteCode, handleProblem, handleSuggestions, pinProblem, remoteBannerState, normalizeCnpj, normalizePhone, handleSkeleton, loadRegistries, normalize, scamMatchIDs, scamWarningKind, trustFacts } from "./lib/registries.mjs";
+import { photoDistance, photoHash, photoMatches, profileFactLines, relationshipNameWarning, newestDmRooms, clearedChatHidden, clearedChatKeepsEvent, clearedChatMarker, clearedChatsWithClear, compareAppVersions, extractInviteCode, handleProblem, handleSuggestions, pinReminderNext, pinProblem, remoteBannerState, normalizeCnpj, normalizePhone, handleSkeleton, loadRegistries, normalize, scamMatchIDs, scamWarningKind, trustFacts } from "./lib/registries.mjs";
 
 const root = join(dirname(fileURLToPath(import.meta.url)), "..");
 const reg = loadRegistries(root);
@@ -414,6 +414,15 @@ const suggestionNames = [
 write("handle-suggestions.json", {
   description: "handleSuggestions(displayName): handles of the right shape for Escolha seu @, in order (registries/handles.json suggestions). The app checks availability in this order and shows the first suggestions.shown that are free.",
   cases: suggestionNames.map((name) => ({ name, suggestions: handleSuggestions(name, reg) })),
+});
+
+// --- Onboarding schedules (bipe-chat/bipe#202) --------------------------------
+
+const pinCases = [];
+for (const step of [0, 1, 2, 3, 4, 5, 9]) for (const result of ["right", "wrong", "later"]) pinCases.push({ step, result });
+write("onboarding-schedule.json", {
+  description: "Onboarding schedules (registries/onboarding.json pinReminder, bipe-chat/bipe#202). After a check at step with result (right, wrong, later): the next step and the days until the next reminder.",
+  pinReminder: pinCases.map((c) => ({ ...c, ...(({ step, gapDays }) => ({ nextStep: step, gapDays }))(pinReminderNext(c.step, c.result, reg)) })),
 });
 
 // --- Invite codes ------------------------------------------------------------

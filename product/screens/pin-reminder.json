@@ -1,0 +1,35 @@
+{
+  "id": "pin-reminder",
+  "title": "PIN reminder",
+  "flow": "home",
+  "summary": "A spaced \"Lembra sua senha?\" check so the person does not forget the PIN that brings the account back (bipe-chat/bipe#202, ADR 0057). A card at the top of Conversas opens the PIN field.",
+  "state": {
+    "due": { "type": "bool", "description": "The reminder time of this account has come (pinReminder schedule) and the prompt slot allows prompt pinReminder." },
+    "pin": { "type": "string", "description": "The digits typed, pinLength at most. Memory only, never logged." },
+    "phase": { "type": "enum", "values": ["editing", "checking", "right", "wrong", "failed"], "description": "checking: POST /v1/me/pin/check runs. right: bipe_pin_reminder_right. wrong: bipe_pin_reminder_wrong and the change PIN action. failed: no network." }
+  },
+  "actions": {
+    "open": { "effect": "Opens the PIN field from the card." },
+    "submit": { "effect": "At pinLength digits: POST /v1/me/pin/check. 204: phase right; the schedule goes one step on (pinReminderNext right). 403 pin_wrong: phase wrong; the schedule goes back to step 0. 403 pin_blocked: shows bipe_pin_blocked_body. One check per reminder: after wrong the field closes." },
+    "changePin": { "effect": "From wrong: opens pin-change (biometric check first)." },
+    "later": { "effect": "Agora não: keeps the step and asks again after 1 day (pinReminderNext later)." }
+  },
+  "strings": [
+    "bipe_pin_reminder_title",
+    "bipe_pin_reminder_body",
+    "bipe_pin_reminder_action",
+    "bipe_pin_reminder_right",
+    "bipe_pin_reminder_wrong",
+    "bipe_pin_change_title",
+    "bipe_pin_blocked_body",
+    "bipe_fallback_skip",
+    "bipe_error_network"
+  ],
+  "sdk": [],
+  "parity": ["phone-account"],
+  "notes": [
+    "A wrong PIN counts against the account like on the recovery paths (POST /v1/me/pin/check in api/openapi.yaml); a right PIN sets the count to 0. So the reminder allows one check, then offers to change the PIN.",
+    "The gaps come from the generated onboarding code (BipeOnboarding.pinReminderDays, pinReminderThenEveryDays). The first reminder comes pinReminderDays[0] after this phone first saw the account. The step and the next time are kept per account on this phone. Rule: pinReminderNext, test-vectors/onboarding-schedule.json.",
+    "bipe_pin_reminder_body takes pinLength. bipe_pin_blocked_body takes pinMaxWrongTries and names only the recovery email, the one PIN reset path that is built."
+  ]
+}

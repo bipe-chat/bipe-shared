@@ -274,6 +274,12 @@ ${reg.workHours.defaultDays.map((d) => `        (day: ${d.day}, ranges: [${d.ran
     public static let brandMarkLabels: [String] = [${reg.brandMarks.labels.map(swiftString).join(", ")}]
     public static let brandMarkMaxPerAccount = ${reg.brandMarks.maxPerAccount}
     public static let brandMarkRecheckMinutes = ${reg.brandMarks.recheckMinutes}
+
+    /// Voice transcript paragraphs (registries/voice-transcript.json). Rule: product/screens/voice-recording.json notes.
+    public static let voiceTranscriptPauseSeconds: Double = ${reg.voiceTranscript.pauseSeconds}
+    public static let voiceTranscriptMinCharacters = ${reg.voiceTranscript.minCharacters}
+    public static let voiceTranscriptMaxCharacters = ${reg.voiceTranscript.maxCharacters}
+    public static let voiceTranscriptSeparator = ${swiftString(reg.voiceTranscript.separator)}
 }
 `;
 }
@@ -584,6 +590,12 @@ ${reg.workHours.defaultDays.map((d) => `        ${d.day} to listOf(${d.ranges.ma
     val BRAND_MARK_LABELS: List<String> = listOf(${reg.brandMarks.labels.map(kotlinString).join(", ")})
     const val BRAND_MARK_MAX_PER_ACCOUNT = ${reg.brandMarks.maxPerAccount}
     const val BRAND_MARK_RECHECK_MINUTES = ${reg.brandMarks.recheckMinutes}
+
+    /** Voice transcript paragraphs (registries/voice-transcript.json). Rule: product/screens/voice-recording.json notes. */
+    const val VOICE_TRANSCRIPT_PAUSE_SECONDS: Double = ${reg.voiceTranscript.pauseSeconds}
+    const val VOICE_TRANSCRIPT_MIN_CHARACTERS = ${reg.voiceTranscript.minCharacters}
+    const val VOICE_TRANSCRIPT_MAX_CHARACTERS = ${reg.voiceTranscript.maxCharacters}
+    const val VOICE_TRANSCRIPT_SEPARATOR = ${kotlinString(reg.voiceTranscript.separator)}
 }
 `;
 }

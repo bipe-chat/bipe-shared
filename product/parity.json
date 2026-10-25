@@ -582,6 +582,29 @@
       "issue": 511
     },
     {
+      "id": "work-side-focus",
+      "name": "Work account in system Focus and modes",
+      "ios": {
+        "status": "n/a",
+        "reason": "The fork is frozen (ADR 0155)"
+      },
+      "android": {
+        "status": "n/a",
+        "reason": "The fork is frozen (ADR 0155)"
+      },
+      "web": {
+        "status": "n/a",
+        "reason": "No web chat (ADR 0004); notifications are a phone feature"
+      },
+      "server": {
+        "status": "n/a",
+        "reason": "A phone setting: the server is not involved"
+      },
+      "ios-new": "planned",
+      "android-new": "planned",
+      "issue": 512
+    },
+    {
       "id": "handles",
       "name": "Usernames",
       "ios": {

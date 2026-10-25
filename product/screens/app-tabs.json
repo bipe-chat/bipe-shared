@@ -96,7 +96,7 @@
       "effect": "Switches to the next account in accounts (wraps around) and plays the switch haptic (ADR 0134). With one account it does the same as a tap."
     },
     "longPressVoce": {
-      "effect": "Opens account-switcher."
+      "effect": "Opens account-switcher in place, anchored on the Você tab (MZ decision 25 Oct 2026)."
     },
     "switchAccount": {
       "params": {
@@ -127,6 +127,8 @@
     "agenda"
   ],
   "notes": [
+    "MZ decision 25 Oct 2026 (bipe#577): Buscar is the last tab, apart from Conversas, Grupos (Agenda) and Você. iOS uses the system search tab role (Tab(role: .search)); iOS 26 and later draw it apart at the trailing end of the tab bar. Android keeps the Material idiom: the bottom bar has only the main destinations and search is the trailing action of the top bar of Conversas and Grupos.",
+    "MZ decision 25 Oct 2026 (bipe#577): a long press (hold) on the Você tab opens account-switcher in place, as the native menu anchored on the tab (iOS context menu, Android dropdown menu). The tab bar of iOS 26 and later has its own press-and-drag gesture: the long press must still open the menu.",
     "Conversas holds DMs (rooms with two members) and the Pedidos row; Grupos holds rooms with more than two members (ADR 0053). chat-list renders both with its scope.",
     "Each account has its own SDK client and session store, keyed by user ID (ADR 0086). Only the current account's sync runs in front; the others sync in the background for the badge and the dot.",
     "The tab bar shows the same on iPhone and as a rail on iPad (ADR 0135 point 6).",

@@ -1,0 +1,90 @@
+{
+  "id": "account-delete",
+  "title": "Delete the account",
+  "flow": "settings",
+  "summary": "From the last row of Sua conta (ADR 0112): says what happens, offers to delete every message, asks for the device owner check and the senha, then asks the server to delete the account after a 72-hour wait (ADR 0140). While the request waits, Sua conta shows a banner with the due time and Cancelar.",
+  "types": {
+    "PendingDeletion": {
+      "id": { "type": "string", "description": "The request id from GET /v1/me/account deletion." },
+      "dueAt": { "type": "date", "description": "When the server deletes the account." },
+      "redactMessages": { "type": "bool", "description": "The person chose bipe_deletion_redact." },
+      "fromThisDevice": { "type": "bool", "description": "This phone asked. false: the deletion-alert shows instead of the banner." }
+    }
+  },
+  "state": {
+    "phase": {
+      "type": "enum",
+      "values": ["explain", "confirmIdentity", "enterPin", "requesting", "requested", "failed"],
+      "description": "explain: what happens and the switch. confirmIdentity: Face ID, Touch ID or the phone's passcode. enterPin: the senha for the server. requesting: POST /v1/me/deletion runs. requested: bipe_deletion_requested with dueAt."
+    },
+    "redactMessages": { "type": "bool", "description": "The switch bipe_deletion_redact. Off by default." },
+    "isCompany": { "type": "bool", "description": "account_type company in GET /v1/me/account: shows bipe_deletion_point_company." },
+    "isLastAccount": { "type": "bool", "description": "No other account on this phone: shows bipe_deletion_point_last_account." },
+    "pinTriesLeft": { "type": "int", "optional": true, "description": "From 403 pin_wrong tries_left, for bipe_pin_wrong." },
+    "pending": { "type": "PendingDeletion", "optional": true, "description": "The waiting request, from GET /v1/me/account deletion." },
+    "error": { "type": "string", "optional": true, "description": "bipe_deletion_error, bipe_pin_blocked_body, bipe_deletion_pin_not_set, bipe_deletion_cancel_error or bipe_error_rate_limited." }
+  },
+  "actions": {
+    "start": {
+      "effect": "From the delete row (registries/settings.json account, section leave). Opens phase explain. When pending is set, the row does not open the flow: the banner shows instead."
+    },
+    "toggleRedact": {
+      "params": { "isOn": { "type": "bool", "description": "The new value." } },
+      "effect": "Sets redactMessages. Nothing is sent yet."
+    },
+    "continue": {
+      "effect": "The device owner check (bipe_deletion_owner_reason). On a phone with no biometrics and no passcode: failed with bipe_deletion_error (fail closed). A pass opens enterPin; a cancel goes back to explain."
+    },
+    "submitPin": {
+      "params": { "pin": { "type": "string", "description": "The senha. Never logged, never kept." } },
+      "effect": "POST /v1/me/deletion with pin and redact_messages. 201: requested, sets pending. 403 pin_wrong: stays on enterPin with bipe_pin_wrong (tries_left), error haptic pin_wrong. 403 pin_blocked: failed with bipe_pin_blocked_body. 409 pin_not_set: failed with bipe_deletion_pin_not_set. 409 deletion_pending: reads GET /v1/me/account and shows the banner. 429: bipe_error_rate_limited. Anything else: bipe_deletion_error."
+    },
+    "cancelPending": {
+      "effect": "From the banner Cancelar: the device owner check (bipe_deletion_cancel_reason), then POST /v1/me/deletions/{deletionId}/cancel. 204 or 404: clears pending and shows bipe_deletion_cancelled. Anything else: bipe_deletion_cancel_error."
+    },
+    "dismiss": { "effect": "Closes the flow. Nothing is sent before submitPin." }
+  },
+  "strings": [
+    "bipe_account_delete",
+    "bipe_deletion_title",
+    "bipe_deletion_intro",
+    "bipe_deletion_point_handle",
+    "bipe_deletion_point_groups",
+    "bipe_deletion_point_data",
+    "bipe_deletion_point_kept",
+    "bipe_deletion_point_company",
+    "bipe_deletion_point_last_account",
+    "bipe_deletion_redact",
+    "bipe_deletion_redact_footer",
+    "bipe_action_continue",
+    "bipe_deletion_owner_reason",
+    "bipe_deletion_pin_title",
+    "bipe_deletion_requesting",
+    "bipe_deletion_requested",
+    "bipe_deletion_banner",
+    "bipe_deletion_cancel",
+    "bipe_a11y_deletion_cancel",
+    "bipe_deletion_cancel_reason",
+    "bipe_deletion_cancelled",
+    "bipe_deletion_error",
+    "bipe_deletion_cancel_error",
+    "bipe_deletion_pin_not_set",
+    "bipe_pin_wrong",
+    "bipe_pin_blocked_body",
+    "bipe_error_rate_limited",
+    "bipe_app_cancel"
+  ],
+  "sdk": [],
+  "parity": ["account-deletion"],
+  "notes": [
+    "ADR 0140: 72 hours (deletionCooldownHours in registries/accounts.json, generated as BipeRegistries.deletionCooldownHours and DELETION_COOLDOWN_HOURS; also deletionVerificationKeepDays and handleReleaseHoldDays), the device owner check plus the senha, the @ held for releaseHoldDays (registries/handles.json), the optional redaction, owned groups to the oldest admin else the oldest member, only the CPF hash and the badge record kept for deletionVerificationKeepDays.",
+    "bipe_deletion_intro takes deletionCooldownHours; bipe_deletion_point_handle takes releaseHoldDays; bipe_deletion_point_kept takes deletionVerificationKeepDays. Each point is its own line: never join them into one sentence (linguagem.md section 6).",
+    "Dates (dueAt) use the system date and time formatter, in the phone's time zone.",
+    "The banner shows at the top of Sua conta (settings-group account) and replaces the delete row while pending is set and fromThisDevice is true. On the other devices of the account, deletion-alert covers the screen.",
+    "The senha goes to the server; the phone never checks it (POST /v1/me/deletion counts a wrong one against pinMaxWrongTries like the recovery paths). The app lock PIN is not the senha.",
+    "Company account (ADR 0087): the business tools go with the account. A personal account with a company account on the same phone deletes only itself; the company account stays and is deleted from its own Sua conta.",
+    "Last account on the phone: the request is allowed. When the server has deleted it, the session ends and account-start shows bipe_deletion_done, then onboarding.",
+    "After dueAt the session stops working (MAS deactivation). If this phone had pending with dueAt in the past and the session fails, the app removes the account from the phone like sign-out and shows bipe_deletion_done on account-start.",
+    "Bipe logic: BipeAPIClient.requestDeletion and cancelDeletion, BipeAccountDeletion (BipeKit); BipeApiClient.requestDeletion and cancelDeletion, BipeAccountDeletion (libraries/bipe api)."
+  ]
+}

@@ -1,0 +1,44 @@
+{
+  "id": "deletion-alert",
+  "title": "Account deletion asked on another device",
+  "flow": "settings",
+  "summary": "On every signed-in device except the one that asked: a full alert while a deletion of this account waits, with \"Cancelar, não fui eu\" (ADR 0140). The same shape as recovery-alert.",
+  "state": {
+    "pending": { "type": "PendingDeletion", "optional": true, "description": "From GET /v1/me/account deletion, when fromThisDevice is false and the id is not dismissed on this phone." },
+    "phase": {
+      "type": "enum",
+      "values": ["shown", "cancelling", "cancelled", "failed"],
+      "description": "cancelling: POST /v1/me/deletions/{deletionId}/cancel runs."
+    }
+  },
+  "actions": {
+    "check": {
+      "effect": "On launch and on foreground, with recovery-alert check: reads GET /v1/me/account and sets pending. A deletion alert waits behind a recovery alert that is shown."
+    },
+    "cancel": {
+      "effect": "The device owner check (bipe_deletion_cancel_reason), then the cancel. 204 or 404: shows bipe_deletion_cancelled. Anything else: failed with bipe_error_network."
+    },
+    "keep": {
+      "effect": "It was me: dismisses the alert on this phone for this request id. The deletion goes on."
+    }
+  },
+  "strings": [
+    "bipe_deletion_alert_title",
+    "bipe_deletion_alert_body",
+    "bipe_recovery_alert_cancel",
+    "bipe_recovery_alert_keep",
+    "bipe_deletion_cancel_reason",
+    "bipe_deletion_cancelled",
+    "bipe_action_continue",
+    "bipe_error_network"
+  ],
+  "sdk": ["Client.session"],
+  "parity": ["account-deletion", "theft-protection"],
+  "notes": [
+    "The alert covers the screen. It is not a banner the person can miss: a stolen, unlocked phone with the senha can ask for a deletion, and every other device can cancel for 72 hours (ADR 0140).",
+    "Cancel needs the owner check only, not the senha: the person may not have the senha at hand on the other device.",
+    "bipe_deletion_alert_body takes dueAt formatted by the system.",
+    "Dismissed ids stay on this phone only. A new request has a new id and shows again.",
+    "Bipe logic: the same model as recovery-alert (RecoveryAlertModel on iOS, RecoveryAlert.kt on Android) with the deletion as a second kind of notice."
+  ]
+}

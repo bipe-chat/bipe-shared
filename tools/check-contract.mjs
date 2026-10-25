@@ -116,6 +116,7 @@ const NOT_IN_APPS = {
   ...Object.fromEntries(["LinkProviders", "LinkProvider", "LinkNonce", "LinkWebRequest", "LinkWebStart", "LinkProof", "LinkedAccount", "LinkEvent"].map((name) => [
     name, "linked Apple or Google recovery (ADR 0096) is built in Bipe Next only (bipe-chat/bipe#307, #308); the checked forks are frozen (ADR 0155)",
   ])),
+  AccountDeletion: "account deletion (ADR 0140) is built in Bipe Next only (bipe-chat/bipe#528); the checked forks are frozen (ADR 0155)",
 };
 
 // Known gaps: "<platform>:<Schema>" or "<platform>:<Schema>.<field>" -> issue. Remove the entry when the gap closes.
@@ -149,6 +150,13 @@ for (const platform of ["ios", "android"]) {
 for (const platform of ["ios", "android"]) {
   for (const g of ["AccountStatus.links", "AccountStatus.link_events", "Error.error.link_taken", "Error.error.link_unavailable"]) {
     GAPS[`${platform}:${g}`] = "bipe-chat/bipe#307 and #308 (built in Bipe Next; the fork is frozen)";
+  }
+}
+
+// Account deletion (ADR 0140): Bipe Next only. The checked forks are frozen (ADR 0155).
+for (const platform of ["ios", "android"]) {
+  for (const g of ["AccountStatus.deletion", "Error.error.deletion_pending"]) {
+    GAPS[`${platform}:${g}`] = "bipe-chat/bipe#528 (built in Bipe Next; the fork is frozen)";
   }
 }
 

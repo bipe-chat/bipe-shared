@@ -26,7 +26,7 @@
       "Retirar o consentimento, quando a base legal for o consentimento.",
       "Reclamar na Autoridade Nacional de Proteção de Dados (ANPD)."
     ],
-    "rightsHow": "Para qualquer pedido, [fale com a gente](/ajuda/). Durante os testes, a conta é apagada por pedido.",
+    "rightsHow": "Para apagar a conta, abra Você, Sua conta, Apagar conta no app. A conta é apagada 72 horas depois do pedido, e até lá qualquer aparelho conectado pode cancelar. Para qualquer outro pedido, [fale com a gente](/ajuda/).",
     "controllerTitle": "Quem cuida dos seus dados",
     "controller": "Durante os testes, o Bipe é tocado pela Envisioning, que é a controladora dos dados.",
     "encarregadoMissing": "O encarregado de dados ainda não foi nomeado. Até lá, os pedidos chegam pelo mesmo contato."
@@ -55,7 +55,7 @@
       "Withdraw consent, where consent is the legal basis.",
       "Complain to the Brazilian data protection authority (ANPD)."
     ],
-    "rightsHow": "For any request, [contact us](/en/help/). During testing, accounts are deleted on request.",
+    "rightsHow": "To delete your account, open You, Your account, Delete account in the app. The account is deleted 72 hours after you ask, and until then any signed-in device can cancel. For any other request, [contact us](/en/help/).",
     "controllerTitle": "Who looks after your data",
     "controller": "During testing, Bipe is run by Envisioning, the data controller.",
     "encarregadoMissing": "The data protection officer (encarregado) is not yet named. Until then, requests go to the same contact."
@@ -110,6 +110,23 @@
         "what": "A protected form of your PIN, of the password the app makes by itself and of the recovery code, and how many times the PIN was entered wrong. We never see the PIN or the password itself.",
         "why": "To let you sign in and to protect the account from someone guessing the PIN.",
         "retention": "As long as the account exists."
+      }
+    },
+    {
+      "id": "account-deletion",
+      "basis": "legal-obligation",
+      "places": ["server"],
+      "pt": {
+        "name": "Pedido para apagar a conta",
+        "what": "Quando você pediu para apagar a conta, quando ela vai ser apagada, de qual aparelho veio o pedido e se você pediu para apagar suas mensagens. Depois que a conta é apagada, ficam só uma versão protegida do seu CPF, o registro do selo e a reserva do seu @. Nada mais sobre você fica.",
+        "why": "Apagar a conta quando você pede (LGPD art. 18), dar 72 horas para cancelar um pedido que não foi seu e impedir que alguém escape de um bloqueio com uma conta nova.",
+        "retention": "Um pedido cancelado é apagado na hora. Depois que a conta é apagada, ficam por 365 dias só a data, a versão protegida do CPF e o registro do selo. A reserva do @ dura 90 dias."
+      },
+      "en": {
+        "name": "Account deletion request",
+        "what": "When you asked to delete your account, when it will be deleted, which device asked and whether you asked to delete your messages. After the account is deleted, only a protected version of your CPF, the badge record and the reservation of your handle stay. Nothing else about you stays.",
+        "why": "To delete the account when you ask (LGPD art. 18), to give 72 hours to cancel a request that was not yours, and to stop someone from getting around a block with a new account.",
+        "retention": "A cancelled request is deleted at once. After the account is deleted, only the date, the protected version of the CPF and the badge record stay, for 365 days. The handle reservation lasts 90 days."
       }
     },
     {
@@ -564,13 +581,13 @@
         "name": "Pedidos a negócios",
         "what": "Os pedidos que você faz a um negócio no Bipe: os itens, as quantidades, os preços do momento, o total, retirada ou entrega, a forma de pagamento, a situação e a sua conta. O endereço e os recados ficam na conversa, não no pedido.",
         "why": "Mostrar o pedido para você e para o negócio. O negócio decide sobre os próprios pedidos; o Bipe guarda os dados para ele.",
-        "retention": "2 anos depois do pedido."
+        "retention": "2 anos depois do pedido. Se você apagar a conta, o negócio fica só com os itens, o total e a hora até o fim desse prazo."
       },
       "en": {
         "name": "Orders to businesses",
         "what": "The orders you place with a business in Bipe: the items, quantities, prices at the time, total, pickup or delivery, payment choice, status and your account. The address and notes stay in the chat, not in the order.",
         "why": "To show the order to you and to the business. The business decides about its own orders; Bipe keeps the data for it.",
-        "retention": "2 years after the order."
+        "retention": "2 years after the order. If you delete your account, the business keeps only the items, the total and the time until then."
       }
     },
     {
@@ -581,13 +598,13 @@
         "name": "Orçamentos de negócios",
         "what": "Que você pediu um orçamento a um negócio, e quando. As linhas, os valores e a validade que o negócio mandou, e a sua resposta. O que você descreve e as fotos ficam na conversa, não no orçamento.",
         "why": "Mostrar o orçamento para você e para o negócio, e transformar em pedido ou agendamento quando você aceita.",
-        "retention": "2 anos depois do orçamento."
+        "retention": "2 anos depois do orçamento. Se você apagar a conta, seus orçamentos são apagados junto."
       },
       "en": {
         "name": "Quotes from businesses",
         "what": "That you asked a business for a quote, and when. The lines, amounts and validity the business sent, and your answer. What you describe and the photos stay in the chat, not in the quote.",
         "why": "To show the quote to you and to the business, and to turn it into an order or a booking when you accept.",
-        "retention": "2 years after the quote."
+        "retention": "2 years after the quote. If you delete your account, your quotes are deleted with it."
       }
     },
     {
@@ -598,13 +615,13 @@
         "name": "Lugar na fila de um negócio",
         "what": "Que você entrou na fila de um negócio no Bipe, a hora em que entrou, foi chamado e atendido, e a sua conta. O Bipe nunca pede sua localização.",
         "why": "Mostrar sua posição e a espera, e para o negócio chamar a próxima pessoa.",
-        "retention": "30 dias depois do dia da fila."
+        "retention": "30 dias depois do dia da fila. Se você apagar a conta, o negócio fica só com os horários."
       },
       "en": {
         "name": "Places in a business's queue",
         "what": "That you joined a business's queue in Bipe, the times you joined, were called and served, and your account. Bipe never asks for your location.",
         "why": "To show your position and the wait, and for the business to call the next person.",
-        "retention": "30 days after the day of the queue."
+        "retention": "30 days after the day of the queue. If you delete your account, the business keeps only the times."
       }
     },
     {

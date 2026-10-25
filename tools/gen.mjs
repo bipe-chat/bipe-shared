@@ -179,6 +179,10 @@ public enum BipeRegistries {
     public static let phoneMaxInputLength = ${reg.phones.maxInputLength}
     public static let phoneInternationalMinDigits = ${reg.phones.internationalMinDigits}
     public static let phoneInternationalMaxDigits = ${reg.phones.internationalMaxDigits}
+    /// Yearly confirmation of a linked number (bipe-chat/bipe#470): findable for this many months after the last proof,
+    /// and the apps warn this many days before confirm_by.
+    public static let phoneLinkConfirmMonths = ${reg.phones.linkConfirmMonths}
+    public static let phoneLinkConfirmWarnDays = ${reg.phones.linkConfirmWarnDays}
 
     /// Work side opening hours (registries/work-hours.json, bipe-chat/bipe#511).
     public static let workHoursDefaultTimeZone = ${swiftString(reg.workHours.defaultTimeZone)}
@@ -221,12 +225,25 @@ ${reg.workHours.defaultDays.map((d) => `        (day: ${d.day}, ranges: [${d.ran
     public static let privacyPath = ${swiftString(reg.legal.privacyPath)}
     public static let enTermsPath = ${swiftString(reg.legal.enTermsPath)}
     public static let enPrivacyPath = ${swiftString(reg.legal.enPrivacyPath)}
+    /// The site home pages that onboarding-welcome learnMore opens.
+    public static let homePath = ${swiftString(reg.legal.homePath)}
+    public static let enHomePath = ${swiftString(reg.legal.enHomePath)}
 
     /// Badge signing keys a release build trusts (ADR 0123; registries/badge-keys.json): kid to raw Ed25519 public key, base64url.
     public static let badgeKeys: [String: String] = ${Object.keys(reg.badgeKeys.keys).length ? swiftMap(reg.badgeKeys.keys) : "[:]"}
 
     /// Cleared DMs (bipe-chat/bipe#464; registries/cleared-chats.json): the global account data event with the markers.
     public static let clearedChatsEventType = ${swiftString(reg.clearedChats.eventType)}
+
+    /// Image descriptions (bipe-chat/bipe#501; registries/image-descriptions.json): the m.image content field and its length limit.
+    public static let imageDescriptionField = ${swiftString(reg.imageDescriptions.field)}
+    public static let imageDescriptionMaxLength = ${reg.imageDescriptions.maxLength}
+
+    /// Pix request marks (ADR 0046, bipe-chat/bipe#130; registries/pix-marks.json). Rules: BipePixMarks, test-vectors/pix-marks.json.
+    public static let pixMarkEventType = ${swiftString(reg.pixMarks.eventType)}
+    public static let pixMarkRelType = ${swiftString(reg.pixMarks.relType)}
+    public static let pixE2eIdPattern = ${swiftString(reg.pixMarks.e2eIdPattern)}
+    public static let pixTxidMaxLength = ${reg.pixMarks.txidMaxLength}
 }
 `;
 }
@@ -436,6 +453,9 @@ object BipeRegistries {
     const val PHONE_MAX_INPUT_LENGTH = ${reg.phones.maxInputLength}
     const val PHONE_INTERNATIONAL_MIN_DIGITS = ${reg.phones.internationalMinDigits}
     const val PHONE_INTERNATIONAL_MAX_DIGITS = ${reg.phones.internationalMaxDigits}
+    /** Yearly confirmation of a linked number (bipe-chat/bipe#470): months findable, and the warning days before confirm_by. */
+    const val PHONE_LINK_CONFIRM_MONTHS = ${reg.phones.linkConfirmMonths}
+    const val PHONE_LINK_CONFIRM_WARN_DAYS = ${reg.phones.linkConfirmWarnDays}
 
     /** Work side opening hours (registries/work-hours.json, bipe-chat/bipe#511). */
     const val WORK_HOURS_DEFAULT_TIME_ZONE = ${kotlinString(reg.workHours.defaultTimeZone)}
@@ -482,12 +502,25 @@ ${reg.workHours.defaultDays.map((d) => `        ${d.day} to listOf(${d.ranges.ma
     const val PRIVACY_PATH = ${kotlinString(reg.legal.privacyPath)}
     const val EN_TERMS_PATH = ${kotlinString(reg.legal.enTermsPath)}
     const val EN_PRIVACY_PATH = ${kotlinString(reg.legal.enPrivacyPath)}
+    // The site home pages that onboarding-welcome learnMore opens.
+    const val HOME_PATH = ${kotlinString(reg.legal.homePath)}
+    const val EN_HOME_PATH = ${kotlinString(reg.legal.enHomePath)}
 
     /** Badge signing keys a release build trusts (ADR 0123; registries/badge-keys.json): kid to raw Ed25519 public key, base64url. */
     val badgeKeys: Map<String, String> = ${kotlinList("mapOf", Object.entries(reg.badgeKeys.keys).map(([k, v]) => `${kotlinString(k)} to ${kotlinString(v)}`))}
 
     /** Cleared DMs (bipe-chat/bipe#464; registries/cleared-chats.json): the global account data event with the markers. */
     const val CLEARED_CHATS_EVENT_TYPE = ${kotlinString(reg.clearedChats.eventType)}
+
+    /** Image descriptions (bipe-chat/bipe#501; registries/image-descriptions.json): the m.image content field and its length limit. */
+    const val IMAGE_DESCRIPTION_FIELD = ${kotlinString(reg.imageDescriptions.field)}
+    const val IMAGE_DESCRIPTION_MAX_LENGTH = ${reg.imageDescriptions.maxLength}
+
+    /** Pix request marks (ADR 0046, bipe-chat/bipe#130; registries/pix-marks.json). Rules: PixMarks, test-vectors/pix-marks.json. */
+    const val PIX_MARK_EVENT_TYPE = ${kotlinString(reg.pixMarks.eventType)}
+    const val PIX_MARK_REL_TYPE = ${kotlinString(reg.pixMarks.relType)}
+    const val PIX_E2E_ID_PATTERN = ${kotlinString(reg.pixMarks.e2eIdPattern)}
+    const val PIX_TXID_MAX_LENGTH = ${reg.pixMarks.txidMaxLength}
 }
 `;
 }

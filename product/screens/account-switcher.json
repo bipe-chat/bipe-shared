@@ -2,7 +2,7 @@
   "id": "account-switcher",
   "title": "Account switcher",
   "flow": "home",
-  "summary": "The menu a long press on the Você tab opens (ADR 0135): every account on this phone with a check on the current one, then Nova conta (ADR 0086, bipe-chat/bipe#445).",
+  "summary": "The menu a long press (hold) on the Você tab opens in place, anchored on the tab (ADR 0135, MZ decision 25 Oct 2026): every account on this phone with a check on the current one, then Nova conta (ADR 0086, bipe-chat/bipe#445).",
   "state": {
     "accounts": {
       "type": "list",

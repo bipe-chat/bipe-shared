@@ -2,22 +2,41 @@
   "id": "recovery-waiting",
   "title": "Safety wait",
   "flow": "recovery",
-  "summary": "Shown on the new phone during the delay of a slow recovery (e-mail now; guardians and CPF later). It shows when the account or the new PIN takes effect, polls the server, and collects the credentials when the delay ends.",
+  "summary": "Shown on the new phone during the delay of a slow recovery (e-mail, a linked Apple or Google account; guardians and CPF later). It shows when the account or the new PIN takes effect, polls the server, and collects the credentials when the delay ends.",
   "state": {
     "purpose": {
       "type": "enum",
-      "values": ["access", "pinReset"],
+      "values": [
+        "access",
+        "pinReset"
+      ],
       "description": "access: the account comes to this phone. pinReset: the new PIN takes effect."
     },
     "method": {
       "type": "enum",
-      "values": ["email", "guardian", "cpf"],
-      "description": "The factor that started the delay. Sets which delay applies (recoveryDelayHours)."
+      "values": [
+        "email",
+        "guardian",
+        "cpf",
+        "apple",
+        "google"
+      ],
+      "description": "The factor that started the delay. Sets which delay applies (recoveryDelayHours; linkedRecovery.delayHours for apple and google)."
     },
-    "readyAt": { "type": "date", "description": "ready_at from the server. Shown with the system date formatter." },
+    "readyAt": {
+      "type": "date",
+      "description": "ready_at from the server. Shown with the system date formatter."
+    },
     "phase": {
       "type": "enum",
-      "values": ["waiting", "claiming", "ready", "cancelled", "expired", "failed"],
+      "values": [
+        "waiting",
+        "claiming",
+        "ready",
+        "cancelled",
+        "expired",
+        "failed"
+      ],
       "description": "claiming: the delay ended and POST /v1/recovery/{recoveryId}/claim runs. ready: done. cancelled: an old device cancelled. expired: the claim window passed."
     }
   },
@@ -42,15 +61,25 @@
     "bipe_recovery_cancelled",
     "bipe_error_recovery_invalid",
     "bipe_app_start_loading",
-    "bipe_error_network"
+    "bipe_error_network",
+    "bipe_recovery_linked_wait",
+    "bipe_recovery_linked_history"
   ],
-  "sdk": ["ClientBuilder.build", "Client.login", "Client.session"],
-  "parity": ["new-phone", "phone-account"],
+  "sdk": [
+    "ClientBuilder.build",
+    "Client.login",
+    "Client.session"
+  ],
+  "parity": [
+    "new-phone",
+    "phone-account"
+  ],
   "notes": [
     "The kept recovery lives on this device only (iOS Keychain ThisDeviceOnly, Android storage without backup) until the claim ends. The app can close during the wait; account-start opens this screen while a kept recovery exists.",
     "Delays: recoveryDelayHours in registries/accounts.json (email 24, guardian 24, cpf 72). After readyAt the phone has recoveryClaimDays to claim, then expired.",
     "bipe_recovery_waiting_body and bipe_recovery_waiting_pin_body take readyAt formatted by the system. bipe_recovery_history_note shows under ready for access: the account came back without the message history.",
     "guardian and cpf are not built on the server yet. The screen handles them so a server change needs no new app screen.",
-    "Bipe logic: BipeAPIClient.claimRecovery, BipeCredentialStore.pendingRecovery and deletePendingRecovery, BipeRecoveryStarted (iOS); BipeDeviceAccount.claim, pendingClaim and forgetPendingClaim (Android)."
+    "Bipe logic: BipeAPIClient.claimRecovery, BipeCredentialStore.pendingRecovery and deletePendingRecovery, BipeRecoveryStarted (iOS); BipeDeviceAccount.claim, pendingClaim and forgetPendingClaim (Android).",
+    "apple and google: bipe_recovery_linked_wait (readyAt) while waiting, bipe_recovery_linked_history under ready."
   ]
 }

@@ -4,7 +4,8 @@ import { createPrivateKey, createPublicKey, sign } from "node:crypto";
 import { mkdirSync, readFileSync, writeFileSync } from "node:fs";
 import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
-import { buildBrCode, crc16, pixCheck } from "./lib/pix.mjs";
+import { buildBrCode, crc16, pixCheck, pixMarkLines, pixTxid } from "./lib/pix.mjs";
+import { cvmLines } from "./lib/cvm.mjs";
 import { loadSchedulingVectors, writeSchedulingApiFixture } from "./lib/scheduling-vectors.mjs";
 import { photoDistance, photoHash, photoMatches, relationshipNameWarning, newestDmRooms, clearedChatHidden, clearedChatKeepsEvent, clearedChatMarker, clearedChatsWithClear, compareAppVersions, extractInviteCode, handleProblem, pinProblem, remoteBannerState, normalizeCnpj, normalizePhone, handleSkeleton, loadRegistries, normalize, scamMatchIDs, scamWarningKind, trustFacts } from "./lib/registries.mjs";
 
@@ -115,7 +116,32 @@ write("badges.json", {
     { name: "cnpj: expired", envelope: envelope({ ...cnpjPayload, exp: NOW - 1 }), ...cnpjContext, expect: "expired" },
     { name: "cnpj: subject mismatch", envelope: envelope(cnpjPayload), ...cnpjContext, sender: "@mallory:bipe.net.br", expect: "subject_mismatch" },
     { name: "cnpj: signed by unknown key", envelope: envelope(cnpjPayload, otherKey), ...cnpjContext, expect: "invalid_signature" },
+    { name: "cnpj: valid with a cvm field", envelope: envelope({ ...cnpjPayload, cvm: { st: "stop_order", on: "2026-05-12" } }), ...cnpjContext, expect: "valid" },
+    { name: "cnpj: valid with a cvm field the app does not know", envelope: envelope({ ...cnpjPayload, cvm: { st: "later", x: 1 } }), ...cnpjContext, expect: "valid" },
   ],
+});
+
+// --- CVM line in the company seal (ADR 0077, bipe#238) ----------------------
+
+const cvmCases = [
+  ["absent", undefined],
+  ["registered, one category", { st: "registered", cat: ["corretora"] }],
+  ["registered, several categories, one line each", { st: "registered", cat: ["corretora", "gestor de recursos"] }],
+  ["registered, a repeated category shows once", { st: "registered", cat: ["corretora", " corretora "] }],
+  ["registered without categories", { st: "registered", cat: [] }],
+  ["registered with an empty category", { st: "registered", cat: ["corretora", ""] }],
+  ["cancelled", { st: "cancelled", on: "2010-05-06" }],
+  ["cancelled without a date", { st: "cancelled" }],
+  ["cancelled with a bad date", { st: "cancelled", on: "2010-13-06" }],
+  ["stop order: red, overrides", { st: "stop_order", on: "2026-05-12" }],
+  ["stop order without a date", { st: "stop_order" }],
+  ["financial CNAE without registration", { st: "no_registration" }],
+  ["unknown state", { st: "authorised" }],
+  ["not an object", "registered"],
+];
+write("cvm-lines.json", {
+  $comment: "The signed badge field cvm (docs/badge-attestation.md) to the lines of the company seal detail (ADR 0077 point 3). Reference: tools/lib/cvm.mjs. lines: string keys with an optional argument; danger: the stop-order line is red and chats from the account show bipe_cvm_stop_order_card. A field that is missing or not well formed shows nothing. The detail ends with bipe_cvm_source when it shows a line.",
+  vectors: cvmCases.map(([name, cvm]) => ({ name, ...(cvm === undefined ? {} : { cvm }), ...cvmLines(cvm) })),
 });
 
 // --- Normalisation and reserved names --------------------------------------
@@ -376,6 +402,16 @@ write("cleared-chats.json", {
   hidden: clearedFixture.hidden.map((c) => ({ ...c, expected: clearedChatHidden(c.marker, c.latest_ts) })),
   keeps: clearedFixture.keeps.map((c) => ({ ...c, expected: clearedChatKeepsEvent(c.marker, c.event_ts) })),
   clear: clearedFixture.clear.map((c) => ({ ...c, expected: clearedChatsWithClear(c.content, c.room_id, c.ts) })),
+});
+
+// --- Pix request marks (ADR 0046, bipe-chat/bipe#130) -------------------------
+
+const pixMarksFixture = JSON.parse(readFileSync(join(root, "fixtures/pix-marks.json"), "utf8"));
+write("pix-marks.json", {
+  $comment: pixMarksFixture.$comment,
+  event_type: reg.pixMarks.eventType,
+  lines: pixMarksFixture.lines.map((c) => ({ ...c, expected: pixMarkLines(c.card, c.events, reg.pixMarks) })),
+  txid: pixMarksFixture.txid.map((c) => ({ ...c, expected: pixTxid(c.request_id, reg.pixMarks) })),
 });
 
 // --- One DM per person (ADR 0141) ------------------------------------------

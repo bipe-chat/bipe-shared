@@ -642,6 +642,211 @@ paths:
               schema: { $ref: "#/components/schemas/RecoveryClaim" }
         "403": { $ref: "#/components/responses/Error" }
         "429": { $ref: "#/components/responses/Error" }
+  /v1/links/providers:
+    get:
+      summary: Which linked-account providers this server offers (ADR 0096)
+      description: >
+        No auth. A provider is in the list only when the server has its configuration. native: the
+        server accepts an ID token from the platform's own sign-in (Apple on iOS). web: the server runs
+        the web flow (POST .../{provider}/web). The apps show a provider only when one of its paths
+        works on that platform, so a missing configuration hides the provider (fail closed).
+      responses:
+        "200":
+          description: Providers
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/LinkProviders" }
+  /v1/me/links/nonce:
+    post:
+      summary: A nonce for the platform's own sign-in, to link an account (ADR 0096)
+      description: >
+        Single use, valid linkedRecovery.flowMinutes (registries/accounts.json), bound to the
+        caller. The app puts it in the provider request (Apple: ASAuthorizationAppleIDRequest.nonce, as
+        is, not hashed); the ID token must carry it. Rate-limited per account.
+      security: [{ matrix: [] }]
+      responses:
+        "201":
+          description: Nonce
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/LinkNonce" }
+        "401": { $ref: "#/components/responses/Error" }
+        "429": { $ref: "#/components/responses/Error" }
+  /v1/me/links/{provider}/web:
+    post:
+      summary: Start the web flow to link an account (ADR 0096)
+      description: >
+        The server keeps the flow (state, nonce, PKCE verifier) and returns the provider's
+        authorization URL. The app opens it in ASWebAuthenticationSession or a Custom Tab. The
+        provider sends the person back to GET or POST /v1/links/callback/{provider}; the server checks
+        the ID token and redirects to `<app_id>:/link-done?flow=<flow_id>#<handoff>` (or
+        `?flow=<flow_id>&error=<reason>`). The app then sends flow_id and handoff to PUT
+        /v1/me/links/{provider}. 503 link_unavailable when the server has no web configuration for the
+        provider.
+      security: [{ matrix: [] }]
+      parameters:
+        - { name: provider, in: path, required: true, schema: { type: string, enum: [apple, google] } }
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: { $ref: "#/components/schemas/LinkWebRequest" }
+      responses:
+        "201":
+          description: Flow started
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/LinkWebStart" }
+        "400": { $ref: "#/components/responses/Error" }
+        "401": { $ref: "#/components/responses/Error" }
+        "429": { $ref: "#/components/responses/Error" }
+        "503": { $ref: "#/components/responses/Error" }
+  /v1/me/links/{provider}:
+    put:
+      summary: Link an Apple or Google account as a recovery factor (ADR 0096)
+      description: >
+        The app checks the device owner first (biometrics, security rule 14 tier 3). The body is the
+        ID token of the platform's own sign-in (with a nonce from POST /v1/me/links/nonce) or the
+        flow_id and handoff of a finished web flow. The server checks the token itself: signature
+        against the provider's published keys, issuer, audience (Bipe's client IDs), expiry and the
+        nonce. It keeps only HMAC-SHA256(pepper, issuer + sub): no email, no name, no provider token.
+        One account per provider: a new link replaces the old one. 409 link_taken when that provider
+        account is linked to another Bipe account. 403 recovery_invalid for a bad token, nonce or flow.
+        The other devices see the change in GET /v1/me/account link_events.
+      security: [{ matrix: [] }]
+      parameters:
+        - { name: provider, in: path, required: true, schema: { type: string, enum: [apple, google] } }
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: { $ref: "#/components/schemas/LinkProof" }
+      responses:
+        "204": { description: Linked }
+        "400": { $ref: "#/components/responses/Error" }
+        "401": { $ref: "#/components/responses/Error" }
+        "403": { $ref: "#/components/responses/Error" }
+        "409": { $ref: "#/components/responses/Error" }
+        "429": { $ref: "#/components/responses/Error" }
+        "503": { $ref: "#/components/responses/Error" }
+    delete:
+      summary: Unlink the caller's Apple or Google account
+      description: >
+        The app checks the device owner first. 404 when no account of that provider is linked. The
+        other devices see the change in GET /v1/me/account link_events.
+      security: [{ matrix: [] }]
+      parameters:
+        - { name: provider, in: path, required: true, schema: { type: string, enum: [apple, google] } }
+      responses:
+        "204": { description: Unlinked }
+        "401": { $ref: "#/components/responses/Error" }
+        "404": { $ref: "#/components/responses/Error" }
+  /v1/recovery/link/nonce:
+    post:
+      summary: A nonce for the platform's own sign-in, to get back in with a linked account
+      description: >
+        No auth. Single use, valid linkedRecovery.flowMinutes. Rate-limited per IP.
+      responses:
+        "201":
+          description: Nonce
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/LinkNonce" }
+        "429": { $ref: "#/components/responses/Error" }
+  /v1/recovery/link/{provider}/web:
+    post:
+      summary: Start the web flow to get back in with a linked account
+      description: >
+        No auth. Same flow and redirect as POST /v1/me/links/{provider}/web; the app sends flow_id and
+        handoff to POST /v1/recovery/link. Rate-limited per IP. 503 link_unavailable when the server
+        has no web configuration for the provider.
+      parameters:
+        - { name: provider, in: path, required: true, schema: { type: string, enum: [apple, google] } }
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: { $ref: "#/components/schemas/LinkWebRequest" }
+      responses:
+        "201":
+          description: Flow started
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/LinkWebStart" }
+        "400": { $ref: "#/components/responses/Error" }
+        "429": { $ref: "#/components/responses/Error" }
+        "503": { $ref: "#/components/responses/Error" }
+  /v1/recovery/link:
+    post:
+      summary: Start a recovery with a linked Apple or Google account and the PIN (ADR 0096)
+      description: >
+        No auth. The server checks the provider proof first (as PUT /v1/me/links/{provider}) and finds
+        the account by it, then the PIN (ADR 0059: the PIN comes last; 403 pin_wrong with tries_left,
+        403 pin_blocked). 403 recovery_invalid when the proof is bad or no account has that provider
+        account linked. There is no new_pin: a linked account never resets the PIN
+        (linkedRecovery.allowsPinReset false). Then the delay starts (linkedRecovery.delayHours), the
+        old devices see the recovery (method apple or google) in GET /v1/me/account and can cancel,
+        and the server sends a notice to the recovery email. Claim as for email: POST
+        /v1/recovery/{recoveryId}/claim. Access only: message history needs an old device or the
+        recovery key. Rate-limited per IP.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              allOf:
+                - { $ref: "#/components/schemas/LinkProof" }
+                - type: object
+                  required: [provider, pin]
+                  properties:
+                    provider: { type: string, enum: [apple, google] }
+                    pin: { type: string, maxLength: 64 }
+      responses:
+        "201":
+          description: Delay started
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/RecoveryStarted" }
+        "400": { $ref: "#/components/responses/Error" }
+        "403": { $ref: "#/components/responses/Error" }
+        "429": { $ref: "#/components/responses/Error" }
+        "503": { $ref: "#/components/responses/Error" }
+  /v1/links/callback/google:
+    get:
+      summary: Google's redirect at the end of the web flow
+      description: >
+        Google sends code and state. The server exchanges the code with the PKCE verifier and its
+        client secret, checks the ID token and the nonce, and answers 303 to the app's link-done URL.
+        Never logs the code, the token or the state. A flow and its handoff end after linkedRecovery.flowMinutes.
+      parameters:
+        - { name: state, in: query, required: true, schema: { type: string, maxLength: 128 } }
+        - { name: code, in: query, schema: { type: string, maxLength: 2048 } }
+        - { name: error, in: query, schema: { type: string, maxLength: 128 } }
+      responses:
+        "303": { description: To the app }
+        "400": { $ref: "#/components/responses/Error" }
+  /v1/links/callback/apple:
+    post:
+      summary: Apple's form_post at the end of the web flow
+      description: >
+        Apple posts id_token and state (response_mode form_post, no scope: Apple sends no name or
+        email). The server checks the ID token and the nonce and answers 303 to the app's link-done
+        URL. The server never exchanges the code, so it holds no Apple token.
+      requestBody:
+        required: true
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              type: object
+              required: [state]
+              properties:
+                state: { type: string, maxLength: 128 }
+                id_token: { type: string, maxLength: 8192 }
+                code: { type: string, maxLength: 2048 }
+                error: { type: string, maxLength: 128 }
+      responses:
+        "303": { description: To the app }
+        "400": { $ref: "#/components/responses/Error" }
   /v1/invites/{code}:
     get:
       summary: Preview an invite before sign-up
@@ -1779,6 +1984,76 @@ paths:
           content:
             application/json:
               schema: { $ref: "#/components/schemas/VisitReport" }
+        "401": { $ref: "#/components/responses/Error" }
+        "404": { $ref: "#/components/responses/Error" }
+  /v1/proposta/login:
+    post:
+      summary: A visitor signs in to the strategic pages (bipe.chat/proposta/)
+      description: >
+        ADR 0158 in bipe/docs/adr. The edge sends bipe.chat/proposta/_auth/login here, so the cookie belongs to bipe.chat.
+        Any well-formed email and the one shared password. The email only names the visitor in the visit log; the
+        first sign-in with an email makes the visitor. A wrong password answers 401 unauthorized, and so does every
+        sign-in while no password is set. On success the response sets the HttpOnly cookie bipe_proposta (Path
+        /proposta, Secure, SameSite Lax, 30 days). Rate-limited per IP.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: { $ref: "#/components/schemas/PropostaLoginRequest" }
+      responses:
+        "204": { description: Signed in; the cookie is set }
+        "400": { $ref: "#/components/responses/Error" }
+        "401": { $ref: "#/components/responses/Error" }
+        "429": { $ref: "#/components/responses/Error" }
+  /v1/proposta/logout:
+    post:
+      summary: The visitor signs out of the strategic pages
+      description: Ends the session in the bipe_proposta cookie and clears the cookie. Always 204.
+      responses:
+        "204": { description: Signed out }
+  /v1/proposta/check:
+    get:
+      summary: Edge check for each request to a strategic page (Caddy forward_auth)
+      description: >
+        ADR 0157, ADR 0158. Only the edge calls this route. It reads the bipe_proposta cookie, X-Forwarded-Method,
+        X-Forwarded-Uri and Referer. A valid session answers 204; a GET for a page (a path that ends in / or .html)
+        also writes a visit row with the path, the referrer origin, the utm_* tags and the GeoIP place. No IP is
+        stored. Anything else answers 401 unauthorized, and the edge serves the sign-in page.
+      responses:
+        "204": { description: Allowed }
+        "401": { $ref: "#/components/responses/Error" }
+  /v1/proposta/beacon:
+    post:
+      summary: The deck reports the slide on screen
+      description: >
+        ADR 0157, ADR 0158. Sent with sendBeacon as text/plain JSON from bipe.chat/proposta/_auth/beacon. Needs the
+        bipe_proposta cookie. Writes one visit row of kind slide. Always 204 when the body and the session are
+        good; the browser reads no response.
+      requestBody:
+        required: true
+        content:
+          text/plain:
+            schema: { $ref: "#/components/schemas/PropostaBeacon" }
+      responses:
+        "204": { description: Stored }
+        "400": { $ref: "#/components/responses/Error" }
+        "401": { $ref: "#/components/responses/Error" }
+        "429": { $ref: "#/components/responses/Error" }
+  /v1/admin/proposta:
+    get:
+      summary: Staff report of the strategic pages, per visitor
+      description: >
+        Only for users that MAS marks admin (ADR 0056); every other user gets 404 not_found. ADR 0158: named
+        visitors, so no MIN_CELL. Visits of the last `days` days, newest first, at most 1000.
+      security: [{ matrix: [] }]
+      parameters:
+        - { name: days, in: query, required: false, schema: { type: integer, minimum: 1, maximum: 365, default: 30 } }
+      responses:
+        "200":
+          description: Visitors and visits
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/PropostaReport" }
         "401": { $ref: "#/components/responses/Error" }
         "404": { $ref: "#/components/responses/Error" }
   /v1/me/business/catalog:
@@ -4988,6 +5263,49 @@ components:
       properties:
         visitors: { type: integer, description: "Umami sessions." }
         views: { type: integer, description: "Page views." }
+    PropostaLoginRequest:
+      type: object
+      required: [email, password]
+      properties:
+        email: { type: string, format: email, maxLength: 254 }
+        password: { type: string, minLength: 1, maxLength: 256 }
+    PropostaBeacon:
+      type: object
+      required: [path, slide]
+      properties:
+        path: { type: string, maxLength: 200, description: "Page path under /proposta/, no query." }
+        slide: { type: integer, minimum: 1, maximum: 200 }
+    PropostaVisitor:
+      type: object
+      required: [id, email, created_at, last_seen_at, page_views, max_slide]
+      properties:
+        id: { type: integer }
+        email: { type: string, description: "As the visitor typed it, in lower case. Not verified." }
+        created_at: { type: string, format: date-time }
+        last_seen_at: { type: [string, "null"], format: date-time }
+        page_views: { type: integer, description: "Page views in the report window." }
+        max_slide: { type: [integer, "null"], description: "Highest deck slide shown in the report window." }
+    PropostaVisit:
+      type: object
+      required: [at, visitor_id, kind, path, slide, referrer, utm, city, region, country]
+      properties:
+        at: { type: string, format: date-time }
+        visitor_id: { type: integer }
+        kind: { type: string, enum: [page, slide] }
+        path: { type: string }
+        slide: { type: [integer, "null"] }
+        referrer: { type: [string, "null"], description: "Origin only (scheme and host)." }
+        utm: { type: object, additionalProperties: { type: string }, description: "utm_source, utm_medium, utm_campaign, utm_content, utm_term when present." }
+        city: { type: [string, "null"] }
+        region: { type: [string, "null"] }
+        country: { type: [string, "null"] }
+    PropostaReport:
+      type: object
+      required: [days, visitors, visits]
+      properties:
+        days: { type: integer }
+        visitors: { type: array, items: { $ref: "#/components/schemas/PropostaVisitor" } }
+        visits: { type: array, items: { $ref: "#/components/schemas/PropostaVisit" } }
     VisitReport:
       type: object
       required: [days, brazil, other_countries, states, cities]
@@ -5112,7 +5430,7 @@ components:
       required: [id, method, purpose, state, created_at]
       properties:
         id: { type: string }
-        method: { type: string, enum: [token, email, guardian, cpf], description: "guardian and cpf are not built yet." }
+        method: { type: string, enum: [token, email, guardian, cpf, apple, google], description: "guardian and cpf are not built yet. apple and google: a linked account (ADR 0096)." }
         purpose: { type: string, enum: [access, pin_reset] }
         state: { type: string, enum: [waiting, completed, cancelled, expired] }
         created_at: { type: string, format: date-time }
@@ -5159,6 +5477,57 @@ components:
       properties:
         start: { type: string, pattern: "^([01][0-9]|2[0-3]):[0-5][0-9]$" }
         end: { type: string, pattern: "^([01][0-9]|2[0-3]):[0-5][0-9]$|^24:00$", description: "Half-open: the range ends before end. 24:00 is midnight." }
+    LinkProviders:
+      type: object
+      required: [providers]
+      properties:
+        providers: { type: array, items: { $ref: "#/components/schemas/LinkProvider" } }
+    LinkProvider:
+      type: object
+      required: [provider, native, web]
+      properties:
+        provider: { type: string, enum: [apple, google] }
+        native: { type: boolean, description: "The server accepts an ID token from the platform's own sign-in (Apple on iOS)." }
+        web: { type: boolean, description: "The server runs the web flow for this provider." }
+    LinkNonce:
+      type: object
+      required: [nonce, expires_at]
+      properties:
+        nonce: { type: string, description: "base64url, single use." }
+        expires_at: { type: string, format: date-time }
+    LinkWebRequest:
+      type: object
+      required: [app_id]
+      properties:
+        app_id: { type: string, enum: [chat.bipe.app, chat.bipe.app.next, chat.bipe.app.next.debug], description: "The app's ID. The redirect at the end goes to the URL scheme of that name, `<app_id>:/link-done`." }
+    LinkWebStart:
+      type: object
+      required: [flow_id, url, expires_at]
+      properties:
+        flow_id: { type: string, description: "Keep it in memory; the redirect carries it back with the handoff." }
+        url: { type: string, format: uri, description: "The provider's authorization URL." }
+        expires_at: { type: string, format: date-time }
+    LinkProof:
+      type: object
+      description: "Exactly one of id_token, or flow_id with handoff."
+      properties:
+        id_token: { type: string, maxLength: 8192, description: "From the platform's own sign-in, with a nonce from the server." }
+        flow_id: { type: string, maxLength: 64 }
+        handoff: { type: string, maxLength: 128, description: "From the fragment of the link-done redirect. Single use." }
+    LinkedAccount:
+      type: object
+      required: [provider, linked_at]
+      properties:
+        provider: { type: string, enum: [apple, google] }
+        linked_at: { type: string, format: date-time }
+    LinkEvent:
+      type: object
+      required: [id, provider, change, at]
+      properties:
+        id: { type: string }
+        provider: { type: string, enum: [apple, google] }
+        change: { type: string, enum: [linked, unlinked] }
+        at: { type: string, format: date-time }
     AccountStatus:
       type: object
       required: [user_id, pin_set, pin_blocked, pin_tries_left, device_first, recovery_token_set, recoveries]
@@ -5175,7 +5544,9 @@ components:
         terms_version: { type: string, description: "ADR 0113: the last legalVersion this account accepted. Absent when none (accounts made before ADR 0113). An app shows the re-accept screen when it differs from legalVersion." }
         max_accounts: { type: integer, minimum: 1, description: "ADR 0086: personal accounts one phone may hold. Company accounts do not count. Absent from an older server: the app uses maxPersonalAccounts in registries/accounts.json." }
         account_type: { type: string, enum: [personal, company], description: "ADR 0087. Absent from an older server: personal." }
-        independent_recovery: { type: boolean, description: "bipe#531: true when the account has a recovery factor that does not depend on the Apple Team ID and that the server can check: a verified recovery email (later also a linked Google account; a linked Apple account does not count). The app shows the recovery-reminder card when false. Absent from an older server: the app shows no card." }
+        links: { type: array, items: { $ref: "#/components/schemas/LinkedAccount" }, description: "ADR 0096: the linked Apple and Google accounts, provider only. Absent from an older server: none." }
+        link_events: { type: array, items: { $ref: "#/components/schemas/LinkEvent" }, description: "Links and unlinks of the last 7 days, newest first. The other devices show each once." }
+        independent_recovery: { type: boolean, description: "bipe#531: true when the account has a recovery factor that does not depend on the Apple Team ID and that the server can check: a verified recovery email or a linked Google account (ADR 0096; a linked Apple account does not count). The app shows the recovery-reminder card when false. Absent from an older server: the app shows no card." }
     TermsAcceptance:
       type: object
       required: [terms_version]
@@ -5187,7 +5558,7 @@ components:
       properties:
         error:
           type: string
-          enum: [bad_request, invite_invalid, invite_quota_exhausted, email_taken, handle_invalid, handle_taken, handle_cooldown, password_weak, attestation_invalid, profile_invalid, photo_invalid, unauthorized, not_found, rate_limited, internal, cnpj_invalid, cnpj_not_active, cnpj_taken, signature_invalid, pin_weak, pin_wrong, pin_blocked, pin_not_set, recovery_invalid, email_unavailable, terms_required, support_unavailable]
+          enum: [bad_request, invite_invalid, invite_quota_exhausted, email_taken, handle_invalid, handle_taken, handle_cooldown, password_weak, attestation_invalid, profile_invalid, photo_invalid, unauthorized, not_found, rate_limited, internal, cnpj_invalid, cnpj_not_active, cnpj_taken, signature_invalid, pin_weak, pin_wrong, pin_blocked, pin_not_set, recovery_invalid, email_unavailable, terms_required, support_unavailable, link_taken, link_unavailable]
         reason: { type: string, description: "Detail, e.g. a HandleProblem or PinProblem id." }
         tries_left: { type: integer, description: "With pin_wrong: wrong PINs left before the PIN blocks." }
     BadgeEnvelope:

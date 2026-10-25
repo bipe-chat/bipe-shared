@@ -1,15 +1,14 @@
 {
   "id": "invite-note",
-  "title": "Create an invite with a first message",
+  "title": "Create an invite",
   "flow": "invites",
-  "summary": "Creates one personal invite. The user can give it a name and a first message. The phone keeps the message and sends it into the chat with the invitee when they join (ADR 0136).",
+  "summary": "Creates one personal invite. One optional field asks who the invite is for (bipe_invites_name_action as the title). After create, the screen shows the invite card (invite-qr). No first message: MZ removed that step on 25 October 2026.",
   "state": {
     "name": { "type": "string", "description": "Who the invite is for. Optional, empty by default." },
-    "note": { "type": "string", "description": "The first message. Starts as bipe_invite_note_default. The user can edit or clear it." },
     "phase": {
       "type": "enum",
       "values": ["editing", "creating", "created", "failed"],
-      "description": "editing: the form. creating: bipe_app_invite_creating. created: the link with share, copy and QR code. failed: bipe_error_invite_quota when no invite is left, else bipe_error_network."
+      "description": "editing: the name field and the create button. creating: bipe_app_invite_creating. created: the invite card (invite-qr). failed: bipe_error_invite_quota when no invite is left, else bipe_error_network."
     },
     "link": { "type": "url", "optional": true, "description": "created only: CreatedInvite.url." },
     "expiresAt": { "type": "date", "optional": true, "description": "created only: CreatedInvite.expires_at, for bipe_invites_expires." }
@@ -19,16 +18,9 @@
       "params": { "name": { "type": "string", "description": "The new text." } },
       "effect": "Updates name."
     },
-    "setNote": {
-      "params": { "note": { "type": "string", "description": "The new text." } },
-      "effect": "Updates note."
-    },
     "create": {
-      "effect": "POST /v1/me/invites. Keeps the link and, when the trimmed note is not empty, the note on this phone, keyed by the invite id. With a name: PUT /v1/me/invites/{inviteId}. Then phase created."
+      "effect": "POST /v1/me/invites. Keeps the link on this phone, keyed by the invite id. With a name: PUT /v1/me/invites/{inviteId}. Then phase created. A retry never repeats POST."
     },
-    "share": { "effect": "created only: the system share sheet with bipe_invites_share_message and the link." },
-    "copy": { "effect": "created only: copies the link and shows bipe_app_copied." },
-    "showQr": { "effect": "created only: opens invite-qr." },
     "close": { "effect": "Closes the screen. A created invite stays in invites." }
   },
   "strings": [
@@ -36,21 +28,11 @@
     "bipe_invites_name_action",
     "bipe_invites_name_placeholder",
     "bipe_invites_name_footer",
-    "bipe_invite_note_title",
-    "bipe_invite_note_placeholder",
-    "bipe_invite_note_default",
-    "bipe_invite_note_footer",
     "bipe_app_invite_creating",
-    "bipe_invites_link",
-    "bipe_invites_expires",
-    "bipe_invites_share_message",
-    "bipe_app_share",
-    "bipe_app_copy",
-    "bipe_app_copied",
-    "bipe_invites_qr_action",
+    "bipe_app_cancel",
+    "bipe_app_retry",
     "bipe_error_invite_quota",
-    "bipe_error_network",
-    "bipe_app_close"
+    "bipe_error_network"
   ],
   "sdk": [
     "Client.getDmRoom",
@@ -60,7 +42,7 @@
   ],
   "parity": ["invite-note"],
   "notes": [
-    "The note never goes to the server with the invite (ADR 0136). It is sent once, as a normal end-to-end encrypted text message, into the DM with the person who joined, then deleted from this phone.",
+    "bipe-app sends no new notes. A note saved on this phone before 25 October 2026 is still sent as below. The note never goes to the server with the invite (ADR 0136). It is sent once, as a normal end-to-end encrypted text message, into the DM with the person who joined, then deleted from this phone.",
     "Sending: when GET /v1/me/invite-connections lists a new person for this invite, the app finds the DM with that person (Client.getDmRoom) and sends the note with Timeline.send. If the phone is off, the note waits. An invite made on another phone sends its note only from that phone. Bipe logic: BipeInviteNoteSender and BipeInviteJoinNotifier (libraries/bipe invites); BipeInviteStore.saveNote, notes and removeNote (BipeKit); BipeInviteCreator.create(note:) (BipeKit, libraries/bipe invites).",
     "bipe_invite_note_default and bipe_invites_share_message are in the people's voice (pra, spoken imperative), because the user sends them as their own words (linguagem.md section 2).",
     "The invitee side: until a message from the inviter arrives, the invitee's chat shows bipe_inviter_knows_you_joined, and the bipe_inviter_hint with Mandar um oi stays (chat-timeline). Bipe logic: BipeInviterHint (libraries/bipe ui).",

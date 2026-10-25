@@ -17,6 +17,9 @@
       "params": { "text": { "type": "string", "description": "The new field text." } },
       "effect": "Sets code and clears the error."
     },
+    "pasteCode": {
+      "effect": "Reads the clipboard once, only after a tap (iOS: the system PasteButton, so no paste prompt; Android: a text button with bipe_onboarding_paste_invite). The text becomes code, then submit runs. Text with no code ends in phase invalid, as for typed text."
+    },
     "submit": {
       "effect": "Takes the code from the text and runs GET /v1/invites/{code}. valid true: goes to signup-name with the invite. valid false: phase invalid. Continue is off while code is blank."
     },
@@ -28,6 +31,7 @@
     "bipe_invite_code_title",
     "bipe_invite_code_body",
     "bipe_signup_invite_code",
+    "bipe_onboarding_paste_invite",
     "bipe_action_continue",
     "bipe_invite_code_none",
     "bipe_app_invite_checking",

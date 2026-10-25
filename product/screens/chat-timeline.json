@@ -24,6 +24,7 @@
   },
   "state": {
     "roomName": { "type": "string", "description": "The chat name for the title." },
+    "isOfficial": { "type": "bool", "description": "DM only: the other person's full user ID is in registries/official-accounts.json. The header shows the Bipe badge after the name (bipe_badge_official, label bipe_badge_official_a11y), as in chat-list." },
     "messages": {
       "type": "list",
       "of": { "type": "TimelineMessage", "description": "One message." },
@@ -59,6 +60,8 @@
     }
   },
   "strings": [
+    "bipe_badge_official",
+    "bipe_badge_official_a11y",
     "bipe_app_timeline_composer_placeholder",
     "bipe_app_timeline_send",
     "bipe_app_timeline_sending",
@@ -84,8 +87,9 @@
     "Room.inviteUserById",
     "Client.getProfile"
   ],
-  "parity": ["e2ee", "dm-left-bar", "dm-block-bar"],
+  "parity": ["e2ee", "dm-left-bar", "dm-block-bar", "official-badge"],
   "notes": [
+    "Official accounts (ADR 0117, bipe-chat/bipe#384): isOfficial follows the chat-list rule (exact user ID in BipeRegistries.officialAccountIDs, a DM only). A group never shows the badge, even with an official account in it.",
     "Send is off while draft is blank after trimming.",
     "undecryptable shows the message-undecryptable row in place of the body (cause and help action there).",
     "timeline-rows replaces messages with rows. Replies, reactions, edits, deletions, read receipts, typing, the actions sheet, handle-change lines and scam warnings have their own specs (bipe-chat/bipe#559). Media is a later issue.",

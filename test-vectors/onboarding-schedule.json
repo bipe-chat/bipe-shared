@@ -1,0 +1,131 @@
+{
+  "description": "Onboarding schedules (registries/onboarding.json pinReminder, bipe-chat/bipe#202). After a check at step with result (right, wrong, later): the next step and the days until the next reminder.",
+  "pinReminder": [
+    {
+      "step": 0,
+      "result": "right",
+      "nextStep": 1,
+      "gapDays": 3
+    },
+    {
+      "step": 0,
+      "result": "wrong",
+      "nextStep": 0,
+      "gapDays": 1
+    },
+    {
+      "step": 0,
+      "result": "later",
+      "nextStep": 0,
+      "gapDays": 1
+    },
+    {
+      "step": 1,
+      "result": "right",
+      "nextStep": 2,
+      "gapDays": 7
+    },
+    {
+      "step": 1,
+      "result": "wrong",
+      "nextStep": 0,
+      "gapDays": 1
+    },
+    {
+      "step": 1,
+      "result": "later",
+      "nextStep": 1,
+      "gapDays": 1
+    },
+    {
+      "step": 2,
+      "result": "right",
+      "nextStep": 3,
+      "gapDays": 14
+    },
+    {
+      "step": 2,
+      "result": "wrong",
+      "nextStep": 0,
+      "gapDays": 1
+    },
+    {
+      "step": 2,
+      "result": "later",
+      "nextStep": 2,
+      "gapDays": 1
+    },
+    {
+      "step": 3,
+      "result": "right",
+      "nextStep": 4,
+      "gapDays": 30
+    },
+    {
+      "step": 3,
+      "result": "wrong",
+      "nextStep": 0,
+      "gapDays": 1
+    },
+    {
+      "step": 3,
+      "result": "later",
+      "nextStep": 3,
+      "gapDays": 1
+    },
+    {
+      "step": 4,
+      "result": "right",
+      "nextStep": 5,
+      "gapDays": 60
+    },
+    {
+      "step": 4,
+      "result": "wrong",
+      "nextStep": 0,
+      "gapDays": 1
+    },
+    {
+      "step": 4,
+      "result": "later",
+      "nextStep": 4,
+      "gapDays": 1
+    },
+    {
+      "step": 5,
+      "result": "right",
+      "nextStep": 6,
+      "gapDays": 60
+    },
+    {
+      "step": 5,
+      "result": "wrong",
+      "nextStep": 0,
+      "gapDays": 1
+    },
+    {
+      "step": 5,
+      "result": "later",
+      "nextStep": 5,
+      "gapDays": 1
+    },
+    {
+      "step": 9,
+      "result": "right",
+      "nextStep": 10,
+      "gapDays": 60
+    },
+    {
+      "step": 9,
+      "result": "wrong",
+      "nextStep": 0,
+      "gapDays": 1
+    },
+    {
+      "step": 9,
+      "result": "later",
+      "nextStep": 9,
+      "gapDays": 1
+    }
+  ]
+}

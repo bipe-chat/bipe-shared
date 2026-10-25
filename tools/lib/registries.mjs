@@ -726,3 +726,15 @@ export function relationshipNameWarning(savedName, verifiedName, nicknameConfirm
 export function chatArchived(marker, incoming) {
   return Number.isSafeInteger(marker) && marker >= 0 && !(Number.isSafeInteger(incoming) && incoming > marker);
 }
+
+// Onboarding schedules (bipe-chat/bipe#202).
+
+// The PIN reminder after a check. result: "right", "wrong" or "later". Returns the next step and the days until
+// the next reminder.
+export function pinReminderNext(step, result, reg) {
+  const pr = reg.onboarding.pinReminder;
+  const gap = (n) => (n < pr.days.length ? pr.days[n] : pr.thenEveryDays);
+  if (result === "later") return { step, gapDays: 1 };
+  const next = result === "right" ? step + 1 : 0;
+  return { step: next, gapDays: gap(next) };
+}

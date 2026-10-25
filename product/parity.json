@@ -1469,7 +1469,8 @@
         "evidence": [
           "bipe-app/ios/Bipe/Tabs/AppTabsModel.swift",
           "bipe-app/ios/Bipe/Tabs/AccountMenu.swift",
-          "bipe-app/ios/Bipe/Account/AccountStartModel.swift"
+          "bipe-app/ios/Bipe/Account/AccountStartModel.swift",
+          "bipe-app/ios/Bipe/Tabs/AccountNew.swift"
         ]
       },
       "android-new": {
@@ -1477,7 +1478,8 @@
         "evidence": [
           "bipe-app/android/app/src/main/kotlin/chat/bipe/app/tabs/AppTabsModel.kt",
           "bipe-app/android/app/src/main/kotlin/chat/bipe/app/tabs/AccountMenu.kt",
-          "bipe-app/android/app/src/main/kotlin/chat/bipe/app/account/AccountStartModel.kt"
+          "bipe-app/android/app/src/main/kotlin/chat/bipe/app/account/AccountStartModel.kt",
+          "bipe-app/android/app/src/main/kotlin/chat/bipe/app/tabs/AccountNew.kt"
         ]
       },
       "issue": 265

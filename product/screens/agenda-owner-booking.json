@@ -1,0 +1,174 @@
+{
+  "id": "agenda-owner-booking",
+  "title": "Booking sheet for the owner",
+  "flow": "business",
+  "summary": "One booking on the company side, or a new encaixe: service, person, date, time and customer, with Remarcar, Cancelar, Não veio, and Aceitar or Recusar for a requested booking.",
+  "types": {
+    "Booking": {
+      "id": {
+        "type": "string",
+        "description": "Booking ID from bipe-api."
+      },
+      "businessId": {
+        "type": "string",
+        "description": "Matrix ID of the company account."
+      },
+      "serviceId": {
+        "type": "string",
+        "description": "The Catálogo item of kind service."
+      },
+      "serviceName": {
+        "type": "string",
+        "description": "The service name, from the business's public services or the owner's catalogue."
+      },
+      "agendaId": {
+        "type": "string",
+        "description": "The person or station."
+      },
+      "agendaName": {
+        "type": "string",
+        "description": "Name of the person or station.",
+        "optional": true
+      },
+      "start": {
+        "type": "date",
+        "description": "Start, shown in the phone's time zone and locale."
+      },
+      "end": {
+        "type": "date",
+        "description": "End."
+      },
+      "status": {
+        "type": "enum",
+        "description": "Status from bipe-api.",
+        "values": [
+          "held",
+          "requested",
+          "confirmed",
+          "done",
+          "cancelled",
+          "noShow"
+        ]
+      },
+      "customerUserId": {
+        "type": "string",
+        "description": "The customer's Matrix ID. Absent for a name-only booking.",
+        "optional": true
+      },
+      "customerName": {
+        "type": "string",
+        "description": "Name-only customer (encaixe). Absent for a signed-in customer.",
+        "optional": true
+      },
+      "source": {
+        "type": "enum",
+        "description": "Who made it.",
+        "values": [
+          "customer",
+          "owner"
+        ]
+      }
+    }
+  },
+  "state": {
+    "mode": {
+      "type": "enum",
+      "description": "new makes an encaixe; existing shows a booking.",
+      "values": [
+        "new",
+        "existing"
+      ]
+    },
+    "booking": {
+      "type": "Booking",
+      "description": "The booking in existing mode.",
+      "optional": true
+    },
+    "serviceId": {
+      "type": "string",
+      "description": "Selected service."
+    },
+    "agendaId": {
+      "type": "string",
+      "description": "Selected person or station."
+    },
+    "start": {
+      "type": "date",
+      "description": "Selected start."
+    },
+    "customerUserId": {
+      "type": "string",
+      "description": "A person picked from the business's DMs.",
+      "optional": true
+    },
+    "customerName": {
+      "type": "string",
+      "description": "A typed name, for someone with no Bipe account.",
+      "optional": true
+    },
+    "saving": {
+      "type": "bool",
+      "description": "true while a call runs."
+    }
+  },
+  "actions": {
+    "save": {
+      "effect": "New: POST /v1/me/business/agenda/bookings (source owner). Existing with a new time or person: POST .../bookings/{id}/move. slot_taken shows bipe_agenda_error_slot_taken."
+    },
+    "cancel": {
+      "effect": "Asks bipe_agenda_cancel_confirm, then POST .../bookings/{id}/cancel. The customer sees the card change."
+    },
+    "noShow": {
+      "effect": "POST .../bookings/{id}/no-show. Shown only after the start."
+    },
+    "accept": {
+      "effect": "POST .../bookings/{id}/accept. Requested only."
+    },
+    "refuse": {
+      "effect": "POST .../bookings/{id}/refuse. Requested only."
+    },
+    "openChat": {
+      "effect": "Opens the DM with the signed-in customer."
+    }
+  },
+  "strings": [
+    "bipe_agenda_walk_in",
+    "bipe_agenda_service",
+    "bipe_agenda_person",
+    "bipe_agenda_date",
+    "bipe_agenda_time",
+    "bipe_agenda_customer",
+    "bipe_agenda_customer_from_chats",
+    "bipe_agenda_customer_name",
+    "bipe_agenda_walk_in_hint",
+    "bipe_agenda_reschedule",
+    "bipe_agenda_cancel",
+    "bipe_agenda_cancel_confirm",
+    "bipe_agenda_cancel_confirm_body",
+    "bipe_agenda_keep",
+    "bipe_agenda_mark_no_show",
+    "bipe_agenda_accept",
+    "bipe_agenda_decline",
+    "bipe_agenda_error_slot_taken",
+    "bipe_agenda_error_save",
+    "bipe_agenda_status_held",
+    "bipe_agenda_status_requested",
+    "bipe_agenda_status_confirmed",
+    "bipe_agenda_status_done",
+    "bipe_agenda_status_cancelled",
+    "bipe_agenda_status_no_show",
+    "bipe_app_save",
+    "bipe_app_cancel"
+  ],
+  "sdk": [
+    "RoomListService.allRooms",
+    "Room.members"
+  ],
+  "parity": [
+    "agenda"
+  ],
+  "notes": [
+    "The owner can place an encaixe outside the published hours; only an overlap with another booking is refused.",
+    "A name-only booking gets no card and no reminder (ADR 0100, bipe_agenda_walk_in_hint)."
+  ]
+}

@@ -1,0 +1,135 @@
+{
+  "id": "catalog-item-edit",
+  "title": "Edit a catalogue item",
+  "flow": "business",
+  "summary": "One form for a product or a service: photo, name, kind, price (fixed, a partir de, sob consulta), description, category, shown or hidden; for a service also duration, buffers and the people who do it.",
+  "state": {
+    "itemId": {
+      "type": "string",
+      "description": "Absent for a new item.",
+      "optional": true
+    },
+    "kind": {
+      "type": "enum",
+      "description": "Service or product.",
+      "values": [
+        "service",
+        "product"
+      ]
+    },
+    "name": {
+      "type": "string",
+      "description": "Up to 120 characters."
+    },
+    "priceMode": {
+      "type": "enum",
+      "description": "Price shape.",
+      "values": [
+        "fixed",
+        "from",
+        "onRequest"
+      ]
+    },
+    "amountCents": {
+      "type": "int",
+      "description": "The price in centavos, for fixed and from. The app writes the display text from it in BRL.",
+      "optional": true
+    },
+    "description": {
+      "type": "string",
+      "description": "Up to 500 characters, plain text."
+    },
+    "category": {
+      "type": "string",
+      "description": "Up to 80 characters."
+    },
+    "active": {
+      "type": "bool",
+      "description": "bipe_catalog_active."
+    },
+    "durationMinutes": {
+      "type": "int",
+      "description": "Service only, when the Agenda is on.",
+      "optional": true
+    },
+    "bufferBeforeMinutes": {
+      "type": "int",
+      "description": "Service only.",
+      "optional": true
+    },
+    "bufferAfterMinutes": {
+      "type": "int",
+      "description": "Service only.",
+      "optional": true
+    },
+    "agendaIds": {
+      "type": "list",
+      "description": "Service only: who does it.",
+      "of": {
+        "type": "string",
+        "description": "Agenda ID."
+      },
+      "optional": true
+    },
+    "photo": {
+      "type": "url",
+      "description": "Current photo.",
+      "optional": true
+    },
+    "saving": {
+      "type": "bool",
+      "description": "true while saving."
+    }
+  },
+  "actions": {
+    "pickPhoto": {
+      "effect": "Picks a photo from the library or camera, scales it down to JPEG under the profile photo limit and PUT .../items/{id}/photo after the item exists. bipe_catalog_photo_failed on error."
+    },
+    "removePhoto": {
+      "effect": "DELETE .../items/{id}/photo."
+    },
+    "save": {
+      "effect": "POST /v1/me/business/catalog/items or PUT .../items/{id}. Products never send scheduling fields. Shows bipe_catalog_saved, or bipe_catalog_save_failed and keeps the form."
+    },
+    "remove": {
+      "effect": "As catalog-owner remove."
+    }
+  },
+  "strings": [
+    "bipe_catalog_add_item",
+    "bipe_catalog_edit_item",
+    "bipe_catalog_item_name",
+    "bipe_catalog_item_kind",
+    "bipe_catalog_kind_service",
+    "bipe_catalog_kind_product",
+    "bipe_catalog_photo",
+    "bipe_catalog_add_photo",
+    "bipe_catalog_remove_photo",
+    "bipe_catalog_price",
+    "bipe_catalog_price_fixed",
+    "bipe_catalog_price_from_option",
+    "bipe_catalog_on_request_option",
+    "bipe_catalog_amount",
+    "bipe_catalog_description",
+    "bipe_catalog_category",
+    "bipe_catalog_active",
+    "bipe_catalog_save",
+    "bipe_catalog_saved",
+    "bipe_catalog_save_failed",
+    "bipe_catalog_photo_failed",
+    "bipe_catalog_remove",
+    "bipe_agenda_service_duration",
+    "bipe_agenda_buffer_before",
+    "bipe_agenda_buffer_after",
+    "bipe_agenda_setup_people",
+    "bipe_app_cancel"
+  ],
+  "sdk": [],
+  "parity": [
+    "catalog",
+    "agenda"
+  ],
+  "notes": [
+    "A fixed price with amount_cents is what Pedidos can order (ADR 0105)."
+  ]
+}

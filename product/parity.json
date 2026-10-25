@@ -568,8 +568,20 @@
         "reason": "No web chat (ADR 0004); the site shows a demo at most"
       },
       "server": "planned",
-      "ios-new": "planned",
-      "android-new": "planned"
+      "ios-new": {
+        "status": "built",
+        "evidence": [
+          "bipe-app/ios/BipeKit/Sources/BipeKit/BipeNoticeLinks.swift",
+          "bipe-app/ios/Bipe/Timeline/NoticeCard.swift"
+        ]
+      },
+      "android-new": {
+        "status": "built",
+        "evidence": [
+          "bipe-app/android/libraries/bipe/src/main/kotlin/chat/bipe/shared/BipeNoticeLinks.kt",
+          "bipe-app/android/app/src/main/kotlin/chat/bipe/app/timeline/NoticeCard.kt"
+        ]
+      }
     },
     {
       "id": "reserved-names",
@@ -1902,10 +1914,29 @@
         "status": "n/a",
         "reason": "No web chat (ADR 0004); the site shows a demo at most"
       },
-      "server": "planned",
-      "ios-new": "planned",
-      "android-new": "planned",
-      "issue": 124
+      "server": {
+        "status": "built",
+        "evidence": [
+          "bipe-api/src/theft.ts"
+        ]
+      },
+      "ios-new": {
+        "status": "built",
+        "evidence": [
+          "bipe-app/ios/BipeKit/Sources/BipeKit/BipeTheftProtection.swift",
+          "bipe-app/ios/Bipe/Settings/TheftProtectionView.swift",
+          "bipe-app/ios/Bipe/Timeline/TheftMarkChecks.swift"
+        ]
+      },
+      "android-new": {
+        "status": "built",
+        "evidence": [
+          "bipe-app/android/libraries/bipe/src/main/kotlin/chat/bipe/shared/BipeTheftProtection.kt",
+          "bipe-app/android/app/src/main/kotlin/chat/bipe/app/settings/TheftProtection.kt",
+          "bipe-app/android/app/src/main/kotlin/chat/bipe/app/timeline/TheftMarks.kt"
+        ]
+      },
+      "issue": 600
     },
     {
       "id": "handle-change-notice",

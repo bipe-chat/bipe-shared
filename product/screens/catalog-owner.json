@@ -1,0 +1,142 @@
+{
+  "id": "catalog-owner",
+  "title": "Catálogo for the owner",
+  "flow": "business",
+  "summary": "The company account lists, adds, reorders and edits its items, and marks one sold out today in one tap (ADR 0104).",
+  "types": {
+    "CatalogItem": {
+      "id": {
+        "type": "string",
+        "description": "Item ID."
+      },
+      "kind": {
+        "type": "enum",
+        "description": "Service or product.",
+        "values": [
+          "service",
+          "product"
+        ]
+      },
+      "name": {
+        "type": "string",
+        "description": "Name."
+      },
+      "priceText": {
+        "type": "string",
+        "description": "Display price: the business's text, bipe_catalog_price_from with it, or bipe_catalog_price_on_request."
+      },
+      "description": {
+        "type": "string",
+        "description": "Plain text. Links are never clickable (security rule 10).",
+        "optional": true
+      },
+      "category": {
+        "type": "string",
+        "description": "Group heading. Items with none go under bipe_catalog_uncategorised.",
+        "optional": true
+      },
+      "photoUrl": {
+        "type": "url",
+        "description": "Public photo URL from bipe-api.",
+        "optional": true
+      },
+      "active": {
+        "type": "bool",
+        "description": "Shown to customers."
+      },
+      "soldOutToday": {
+        "type": "bool",
+        "description": "Esgotado hoje."
+      }
+    }
+  },
+  "state": {
+    "items": {
+      "type": "list",
+      "description": "GET /v1/me/business/catalog, hidden items included.",
+      "of": {
+        "type": "CatalogItem",
+        "description": "One item. Hidden items show bipe_catalog_hidden."
+      }
+    },
+    "reordering": {
+      "type": "bool",
+      "description": "true while the list is in reorder mode."
+    },
+    "loading": {
+      "type": "bool",
+      "description": "true while loading."
+    }
+  },
+  "actions": {
+    "add": {
+      "effect": "Opens catalog-item-edit for a new item."
+    },
+    "edit": {
+      "effect": "Opens catalog-item-edit for that item.",
+      "params": {
+        "itemId": {
+          "type": "string",
+          "description": "The item."
+        }
+      }
+    },
+    "toggleSoldOut": {
+      "effect": "PUT the item with sold_out_today flipped. Shows bipe_catalog_mark_sold_out or bipe_catalog_mark_available.",
+      "params": {
+        "itemId": {
+          "type": "string",
+          "description": "The item."
+        }
+      }
+    },
+    "move": {
+      "effect": "Reorders locally; on done PUT /v1/me/business/catalog/order with every ID in the new order.",
+      "params": {
+        "fromIndex": {
+          "type": "int",
+          "description": "Old place."
+        },
+        "toIndex": {
+          "type": "int",
+          "description": "New place."
+        }
+      }
+    },
+    "remove": {
+      "effect": "Asks bipe_catalog_remove with bipe_catalog_remove_body, then DELETE the item (it is archived).",
+      "params": {
+        "itemId": {
+          "type": "string",
+          "description": "The item."
+        }
+      }
+    }
+  },
+  "strings": [
+    "bipe_catalog_title",
+    "bipe_catalog_add_item",
+    "bipe_catalog_owner_empty",
+    "bipe_catalog_reorder",
+    "bipe_catalog_hidden",
+    "bipe_catalog_sold_out_today",
+    "bipe_catalog_mark_sold_out",
+    "bipe_catalog_mark_available",
+    "bipe_catalog_remove",
+    "bipe_catalog_remove_body",
+    "bipe_catalog_removed",
+    "bipe_catalog_price_from",
+    "bipe_catalog_price_on_request",
+    "bipe_catalog_load_failed",
+    "bipe_catalog_save_failed",
+    "bipe_app_retry",
+    "bipe_app_cancel"
+  ],
+  "sdk": [],
+  "parity": [
+    "catalog"
+  ],
+  "notes": [
+    "Opens from business-tools on the Você tab of a company account."
+  ]
+}

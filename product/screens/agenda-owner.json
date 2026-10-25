@@ -1,0 +1,202 @@
+{
+  "id": "agenda-owner",
+  "title": "Agenda tab",
+  "flow": "business",
+  "summary": "The company account's Agenda tab: before activation an invitation to Ativar agenda; after it, a day view of the bookings for one person or Todos, with a now-line, Encaixe, Bloquear horário and Fechar hoje (docs/scheduling.md, owner flow).",
+  "types": {
+    "Booking": {
+      "id": {
+        "type": "string",
+        "description": "Booking ID from bipe-api."
+      },
+      "businessId": {
+        "type": "string",
+        "description": "Matrix ID of the company account."
+      },
+      "serviceId": {
+        "type": "string",
+        "description": "The Catálogo item of kind service."
+      },
+      "serviceName": {
+        "type": "string",
+        "description": "The service name, from the business's public services or the owner's catalogue."
+      },
+      "agendaId": {
+        "type": "string",
+        "description": "The person or station."
+      },
+      "agendaName": {
+        "type": "string",
+        "description": "Name of the person or station.",
+        "optional": true
+      },
+      "start": {
+        "type": "date",
+        "description": "Start, shown in the phone's time zone and locale."
+      },
+      "end": {
+        "type": "date",
+        "description": "End."
+      },
+      "status": {
+        "type": "enum",
+        "description": "Status from bipe-api.",
+        "values": [
+          "held",
+          "requested",
+          "confirmed",
+          "done",
+          "cancelled",
+          "noShow"
+        ]
+      },
+      "customerUserId": {
+        "type": "string",
+        "description": "The customer's Matrix ID. Absent for a name-only booking.",
+        "optional": true
+      },
+      "customerName": {
+        "type": "string",
+        "description": "Name-only customer (encaixe). Absent for a signed-in customer.",
+        "optional": true
+      },
+      "source": {
+        "type": "enum",
+        "description": "Who made it.",
+        "values": [
+          "customer",
+          "owner"
+        ]
+      }
+    }
+  },
+  "state": {
+    "activated": {
+      "type": "bool",
+      "description": "false when GET /v1/me/business/agenda answers not_found with reason agenda_off."
+    },
+    "published": {
+      "type": "bool",
+      "description": "AgendaState.published."
+    },
+    "date": {
+      "type": "date",
+      "description": "The day on screen, in the business time zone. Starts today."
+    },
+    "agendaFilter": {
+      "type": "string",
+      "description": "An agenda ID, or all for Todos."
+    },
+    "agendas": {
+      "type": "list",
+      "description": "People and stations, from AgendaState.",
+      "of": {
+        "type": "string",
+        "description": "Agenda ID."
+      }
+    },
+    "bookings": {
+      "type": "list",
+      "description": "GET /v1/me/business/agenda/bookings for the day (and agenda_id when filtered), by start.",
+      "of": {
+        "type": "Booking",
+        "description": "One booking. Cancelled and no-show ones show dimmed."
+      }
+    },
+    "loading": {
+      "type": "bool",
+      "description": "true while loading."
+    }
+  },
+  "actions": {
+    "activate": {
+      "effect": "Opens agenda-setup."
+    },
+    "pickDate": {
+      "effect": "Shows that day.",
+      "params": {
+        "date": {
+          "type": "date",
+          "description": "The day."
+        }
+      }
+    },
+    "pickAgenda": {
+      "effect": "Filters by one agenda or Todos.",
+      "params": {
+        "agendaId": {
+          "type": "string",
+          "description": "Agenda ID or all."
+        }
+      }
+    },
+    "openBooking": {
+      "effect": "Opens agenda-owner-booking for that booking.",
+      "params": {
+        "bookingId": {
+          "type": "string",
+          "description": "The booking."
+        }
+      }
+    },
+    "addWalkIn": {
+      "effect": "Opens agenda-owner-booking in new mode, with the date and, when given, the time.",
+      "params": {
+        "start": {
+          "type": "date",
+          "description": "A free time that was tapped.",
+          "optional": true
+        }
+      }
+    },
+    "block": {
+      "effect": "Asks for a start and an end on the day, then POST /v1/me/business/agenda/blocks for the agenda on screen (or every agenda for Todos)."
+    },
+    "closeToday": {
+      "effect": "Asks bipe_agenda_close_today with bipe_agenda_close_today_body, then POST /v1/me/business/agenda/close-day for the agenda on screen or all. Then offers bipe_agenda_close_today_message, which the owner edits, and bipe_agenda_close_today_send sends it as a text message into the DM with each signed-in customer of that day's open bookings."
+    },
+    "openSettings": {
+      "effect": "Opens agenda-settings."
+    },
+    "refresh": {
+      "effect": "Reloads the state and the day."
+    }
+  },
+  "strings": [
+    "bipe_tab_agenda",
+    "bipe_agenda_activate",
+    "bipe_agenda_tab_off_body",
+    "bipe_agenda_today",
+    "bipe_agenda_all_people",
+    "bipe_agenda_empty_day",
+    "bipe_agenda_walk_in",
+    "bipe_agenda_block",
+    "bipe_agenda_close_today",
+    "bipe_agenda_close_today_body",
+    "bipe_agenda_close_today_message",
+    "bipe_agenda_close_today_send",
+    "bipe_agenda_close_today_sent",
+    "bipe_agenda_now",
+    "bipe_agenda_published",
+    "bipe_agenda_not_published",
+    "bipe_agenda_settings_title",
+    "bipe_agenda_load_failed",
+    "bipe_agenda_time",
+    "bipe_app_cancel",
+    "bipe_app_save"
+  ],
+  "sdk": [
+    "Client.getDmRoom",
+    "Room.timeline",
+    "Timeline.send"
+  ],
+  "parity": [
+    "agenda"
+  ],
+  "notes": [
+    "The tab shows only when the current account is a company account (ADR 0103: the tab is Agenda). It sits after Grupos.",
+    "The close-day message goes through the encrypted chat from the owner's own phone; the server sends nothing (ADR 0102).",
+    "Moving by drag is not in this slice: Remarcar in agenda-owner-booking moves a booking.",
+    "Request mode badges (slice 2) count requested bookings on the tab."
+  ]
+}

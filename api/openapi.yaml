@@ -6,6 +6,8 @@ info:
     Verification, badges and directories. Skeleton contract: shapes are stable
     identifiers shared by iOS, Android and the web console. Auth: Matrix access
     token validated against MAS (OIDC).
+    Business tool routes /v1/businesses/{handle}/... take the company's @handle or, for a company with no handle,
+    its Matrix ID (percent-encoded). Any other account answers 404 not_found.
 servers:
   - url: https://api.bipe.net.br
 paths:
@@ -1332,6 +1334,68 @@ paths:
         "401": { $ref: "#/components/responses/Error" }
         "429": { $ref: "#/components/responses/Error" }
         "503": { $ref: "#/components/responses/Error" }
+  /v1/me/news:
+    get:
+      summary: Whether the caller gets Bipe news (the Settings switch)
+      description: >
+        ADR 0117, ADR 0119, bipe-chat/bipe#387. The API, as the news account (NEWS_USER_ID, default @bipe on the
+        server), keeps one read-only, end-to-end encrypted room per user ("Novidades do Bipe"), made at sign-up or by the
+        staff backfill. subscribed is true while the caller has a room and did not leave it or turn news off; room_id is
+        then that room. The app shows the switch on only when subscribed is true and the caller is joined to or invited
+        in room_id. 500 internal with reason news_unavailable when the news account is not set up (every method).
+      security: [{ matrix: [] }]
+      responses:
+        "200":
+          description: The switch state
+          content:
+            application/json:
+              schema:
+                type: object
+                required: [subscribed]
+                properties:
+                  subscribed: { type: boolean }
+                  room_id: { type: string, description: Matrix room ID, only when subscribed }
+        "401": { $ref: "#/components/responses/Error" }
+        "500": { $ref: "#/components/responses/Error" }
+    put:
+      summary: Turn Bipe news on
+      description: >
+        Keeps the caller's room when they are still joined or invited. Otherwise makes a new news room, invites the
+        caller and leaves the old room; the next item arrives there. The app joins room_id. 20 changes per hour.
+      security: [{ matrix: [] }]
+      responses:
+        "200":
+          description: News is on
+          content:
+            application/json:
+              schema:
+                type: object
+                required: [subscribed, room_id]
+                properties:
+                  subscribed: { type: boolean, enum: [true] }
+                  room_id: { type: string, description: Matrix room ID }
+        "401": { $ref: "#/components/responses/Error" }
+        "429": { $ref: "#/components/responses/Error" }
+        "500": { $ref: "#/components/responses/Error" }
+    delete:
+      summary: Turn Bipe news off
+      description: >
+        The bot sends no more items to the caller. The app also leaves the room. Leaving the room without this call has
+        the same effect once the bot sees the leave. 20 changes per hour.
+      security: [{ matrix: [] }]
+      responses:
+        "200":
+          description: News is off
+          content:
+            application/json:
+              schema:
+                type: object
+                required: [subscribed]
+                properties:
+                  subscribed: { type: boolean, enum: [false] }
+        "401": { $ref: "#/components/responses/Error" }
+        "429": { $ref: "#/components/responses/Error" }
+        "500": { $ref: "#/components/responses/Error" }
   /v1/support/starlings:
     post:
       summary: A Starlings member's reply, sent into the user's support room
@@ -1823,6 +1887,40 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/Catalog"
+        default: { $ref: "#/components/responses/AgendaError" }
+  /v1/businesses/{handle}/catalog/items/{itemId}/photo:
+    get:
+      summary: "Read the public photo of a catalogue item"
+      operationId: "getV1BusinessesHandleCatalogItemsItemIdPhoto"
+      tags:
+        - "Catálogo"
+      security: []
+      description: "Public, rate limited per IP. CatalogItem.photo links here with ?v=<version>; a new photo gets a new version. Active items only. The JPEG was stripped of APPn and COM metadata on upload. handle may also be the company's Matrix ID."
+      parameters:
+        -
+          name: "handle"
+          in: "path"
+          required: true
+          schema:
+            type: "string"
+            minLength: 1
+            maxLength: 255
+        -
+          name: "itemId"
+          in: "path"
+          required: true
+          schema:
+            type: "string"
+            minLength: 1
+            maxLength: 128
+      responses:
+        "200":
+          description: "The photo"
+          content:
+            image/jpeg:
+              schema:
+                type: "string"
+                format: "binary"
         default: { $ref: "#/components/responses/AgendaError" }
   /v1/me/business/catalog/items/{itemId}/photo:
     put:

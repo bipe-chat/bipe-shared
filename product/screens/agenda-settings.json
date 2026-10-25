@@ -1,0 +1,84 @@
+{
+  "id": "agenda-settings",
+  "title": "Agenda settings",
+  "flow": "business",
+  "summary": "The owner's booking policy and publish state: publish or unpublish, minimum notice, days ahead, minutes between times, cancellation window, open bookings per customer and request mode (ADR 0103).",
+  "state": {
+    "published": {
+      "type": "bool",
+      "description": "AgendaState.published."
+    },
+    "timeZone": {
+      "type": "string",
+      "description": "AgendaState.time_zone."
+    },
+    "minNoticeMinutes": {
+      "type": "int",
+      "description": "Policy.min_notice_minutes."
+    },
+    "horizonDays": {
+      "type": "int",
+      "description": "Policy.horizon_days."
+    },
+    "slotStepMinutes": {
+      "type": "int",
+      "description": "Policy.slot_step_minutes."
+    },
+    "cancelWindowMinutes": {
+      "type": "int",
+      "description": "Policy.cancel_window_minutes."
+    },
+    "maxOpenBookings": {
+      "type": "int",
+      "description": "Policy.max_open_bookings_per_customer."
+    },
+    "requestMode": {
+      "type": "bool",
+      "description": "Policy.confirm_mode request."
+    }
+  },
+  "actions": {
+    "setPublished": {
+      "effect": "PUT /v1/me/business/agenda. Publishing can fail with bipe_agenda_publish_incomplete.",
+      "params": {
+        "isOn": {
+          "type": "bool",
+          "description": "The new value."
+        }
+      }
+    },
+    "save": {
+      "effect": "PUT /v1/me/business/agenda/policy with every field; reminder_minutes stays as read."
+    },
+    "editSetup": {
+      "effect": "Opens agenda-setup at the hours step."
+    }
+  },
+  "strings": [
+    "bipe_agenda_settings_title",
+    "bipe_agenda_publish",
+    "bipe_agenda_unpublish",
+    "bipe_agenda_published",
+    "bipe_agenda_not_published",
+    "bipe_agenda_publish_incomplete",
+    "bipe_agenda_min_notice",
+    "bipe_agenda_horizon",
+    "bipe_agenda_slot_step",
+    "bipe_agenda_cancel_window",
+    "bipe_agenda_max_open",
+    "bipe_agenda_request_mode",
+    "bipe_agenda_request_mode_footer",
+    "bipe_agenda_time_zone",
+    "bipe_agenda_setup_hours",
+    "bipe_agenda_setup_people",
+    "bipe_agenda_error_save",
+    "bipe_app_save"
+  ],
+  "sdk": [],
+  "parity": [
+    "agenda"
+  ],
+  "notes": [
+    "Reminder times and the owner's morning summary wait for push reminders (bipe-chat/bipe#320). The ICS feed and busy import wait for bipe-chat/bipe#319."
+  ]
+}

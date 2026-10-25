@@ -1,0 +1,235 @@
+{
+  "id": "agenda-book",
+  "title": "Book a time",
+  "flow": "business",
+  "summary": "The customer books with a business: service, then person (or Qualquer pessoa), then a day on a week strip and a free time, then a confirm step with the business policy. The time is held for 5 minutes until confirm (docs/scheduling.md, customer flow).",
+  "types": {
+    "ServiceChoice": {
+      "id": {
+        "type": "string",
+        "description": "Catálogo item ID."
+      },
+      "name": {
+        "type": "string",
+        "description": "Service name."
+      },
+      "durationMinutes": {
+        "type": "int",
+        "description": "Duration."
+      },
+      "priceText": {
+        "type": "string",
+        "description": "The price as the business wrote it, bipe_catalog_price_from for from, bipe_catalog_price_on_request for on request."
+      }
+    },
+    "AgendaChoice": {
+      "id": {
+        "type": "string",
+        "description": "Agenda ID, or any."
+      },
+      "name": {
+        "type": "string",
+        "description": "Person or station name; bipe_agenda_anyone for any."
+      }
+    },
+    "DaySlots": {
+      "date": {
+        "type": "date",
+        "description": "Local date in the business time zone."
+      },
+      "slots": {
+        "type": "list",
+        "description": "Free start times.",
+        "of": {
+          "type": "date",
+          "description": "A start in UTC."
+        }
+      }
+    }
+  },
+  "state": {
+    "business": {
+      "type": "string",
+      "description": "Handle or Matrix ID of the business."
+    },
+    "step": {
+      "type": "enum",
+      "description": "The visible step.",
+      "values": [
+        "service",
+        "person",
+        "time",
+        "review"
+      ]
+    },
+    "services": {
+      "type": "list",
+      "description": "From GET /v1/businesses/{business}/agenda/services.",
+      "of": {
+        "type": "ServiceChoice",
+        "description": "One service."
+      }
+    },
+    "agendas": {
+      "type": "list",
+      "description": "From GET /v1/businesses/{business}/agenda/agendas?service_id. With one agenda the person step is skipped.",
+      "of": {
+        "type": "AgendaChoice",
+        "description": "One choice. Qualquer pessoa first when there are two or more."
+      }
+    },
+    "week": {
+      "type": "list",
+      "description": "Seven days from GET /v1/businesses/{business}/agenda/slots, one call per week. A day with no slot is greyed out.",
+      "of": {
+        "type": "DaySlots",
+        "description": "One day."
+      }
+    },
+    "selectedService": {
+      "type": "string",
+      "description": "Service ID.",
+      "optional": true
+    },
+    "selectedAgenda": {
+      "type": "string",
+      "description": "Agenda ID or any.",
+      "optional": true
+    },
+    "selectedDate": {
+      "type": "date",
+      "description": "Selected day.",
+      "optional": true
+    },
+    "selectedStart": {
+      "type": "date",
+      "description": "Selected start.",
+      "optional": true
+    },
+    "hold": {
+      "type": "Booking",
+      "description": "The held booking from POST hold, with hold_expires_at.",
+      "optional": true
+    },
+    "policyLine": {
+      "type": "string",
+      "description": "bipe_agenda_cancel_policy with the cancel window."
+    },
+    "moving": {
+      "type": "string",
+      "description": "Booking ID when the flow reschedules an existing booking (Remarcar). The review step then calls move instead of hold and confirm.",
+      "optional": true
+    },
+    "error": {
+      "type": "enum",
+      "description": "The last error, shown as text.",
+      "optional": true,
+      "values": [
+        "slotTaken",
+        "holdExpired",
+        "tooManyOpen",
+        "outsideNotice",
+        "outsideHorizon",
+        "notPublished",
+        "cancelWindow",
+        "other"
+      ]
+    }
+  },
+  "actions": {
+    "pickService": {
+      "effect": "Sets selectedService, loads the agendas, and goes to person (or to time when there is one agenda).",
+      "params": {
+        "serviceId": {
+          "type": "string",
+          "description": "The service."
+        }
+      }
+    },
+    "pickAgenda": {
+      "effect": "Sets selectedAgenda and goes to time.",
+      "params": {
+        "agendaId": {
+          "type": "string",
+          "description": "Agenda ID or any."
+        }
+      }
+    },
+    "showWeek": {
+      "effect": "Loads the seven days that start at the date. Back is not allowed before today.",
+      "params": {
+        "start": {
+          "type": "date",
+          "description": "First day of the week."
+        }
+      }
+    },
+    "pickDay": {
+      "effect": "Sets selectedDate and shows its free times; bipe_agenda_no_slots when none.",
+      "params": {
+        "date": {
+          "type": "date",
+          "description": "The day."
+        }
+      }
+    },
+    "pickTime": {
+      "effect": "POST /v1/businesses/{business}/agenda/hold with service, agenda and start. On success goes to review with the hold. On slot_taken shows bipe_agenda_error_slot_taken and reloads the week.",
+      "params": {
+        "start": {
+          "type": "date",
+          "description": "The start."
+        }
+      }
+    },
+    "confirm": {
+      "effect": "POST .../bookings/{id}/confirm. On success closes the flow, shows bipe_agenda_booked and the card appears in the chat. On hold_expired shows bipe_agenda_error_hold_expired and goes back to time. When moving, POST .../bookings/{id}/move with agenda and start instead."
+    },
+    "back": {
+      "effect": "Goes one step back. Leaving review keeps nothing: an unconfirmed hold ends by itself after 5 minutes."
+    },
+    "close": {
+      "effect": "Closes the flow."
+    }
+  },
+  "strings": [
+    "bipe_agenda_book",
+    "bipe_agenda_pick_service",
+    "bipe_agenda_pick_person",
+    "bipe_agenda_anyone",
+    "bipe_agenda_pick_time",
+    "bipe_agenda_review_title",
+    "bipe_agenda_confirm",
+    "bipe_agenda_duration",
+    "bipe_agenda_with",
+    "bipe_agenda_cancel_policy",
+    "bipe_agenda_hold",
+    "bipe_agenda_no_slots",
+    "bipe_agenda_booked",
+    "bipe_agenda_reschedule",
+    "bipe_agenda_load_failed",
+    "bipe_catalog_price_from",
+    "bipe_catalog_price_on_request",
+    "bipe_agenda_error_slot_taken",
+    "bipe_agenda_error_hold_expired",
+    "bipe_agenda_error_too_many_open",
+    "bipe_agenda_error_outside_notice",
+    "bipe_agenda_error_outside_horizon",
+    "bipe_agenda_error_not_published",
+    "bipe_agenda_error_cancel_window",
+    "bipe_agenda_error_save",
+    "bipe_app_cancel",
+    "bipe_a11y_back"
+  ],
+  "sdk": [],
+  "parity": [
+    "agenda"
+  ],
+  "notes": [
+    "Booking needs a Bipe account (ADR 0100): the flow runs only signed in.",
+    "Times show in the phone's time zone; the week strip and the day groups use the business time zone (SlotDays.time_zone), so a day matches the business's day.",
+    "The price is text for the customer. Bipe takes no payment (ADR 0012, ADR 0099).",
+    "The person and the price never come from the customer: the server derives the customer from the token.",
+    "Free text (the dog's name, an allergy) goes in the chat, never in the booking (ADR 0102)."
+  ]
+}

@@ -148,6 +148,9 @@ for (const platform of ["ios", "android"]) {
   }
 }
 
+// Voice audio expiry (ADR 0164): Bipe Next only. The checked forks are frozen (ADR 0155).
+for (const platform of ["ios", "android"]) GAPS[`${platform}:Error.error.keep_limit`] = "bipe-chat/bipe#622 (Bipe Next only; the fork is frozen)";
+
 // Linked Apple or Google recovery (ADR 0096): Bipe Next only. The checked forks are frozen (ADR 0155).
 for (const platform of ["ios", "android"]) {
   for (const g of ["AccountStatus.links", "AccountStatus.link_events", "Error.error.link_taken", "Error.error.link_unavailable"]) {

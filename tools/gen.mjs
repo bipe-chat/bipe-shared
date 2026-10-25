@@ -233,6 +233,8 @@ ${reg.workHours.defaultDays.map((d) => `        (day: ${d.day}, ranges: [${d.ran
     public static let deletionCooldownHours = ${reg.accounts.deletionCooldownHours}
     /// After a deletion, the CPF hash and the badge record stay this long (ADR 0140).
     public static let deletionVerificationKeepDays = ${reg.accounts.deletionVerificationKeepDays}
+    /// A new phone that waits for approval can send the approval nudge again after this wait (bipe-chat/bipe#628).
+    public static let approvalNudgeAgainSeconds = ${reg.accounts.approvalNudgeAgainSeconds}
     /// A released @ stays on hold this long (ADR 0016), also after an account deletion.
     public static let handleReleaseHoldDays = ${reg.handles.releaseHoldDays}
     /// Recovery reminder card (bipe#531): first show after these days on this phone; each "Agora não" hides it for the
@@ -552,6 +554,9 @@ ${reg.workHours.defaultDays.map((d) => `        ${d.day} to listOf(${d.ranges.ma
 
     // After a deletion, the CPF hash and the badge record stay this long (ADR 0140).
     const val DELETION_VERIFICATION_KEEP_DAYS = ${reg.accounts.deletionVerificationKeepDays}
+
+    // A new phone that waits for approval can send the approval nudge again after this wait (bipe-chat/bipe#628).
+    const val APPROVAL_NUDGE_AGAIN_SECONDS = ${reg.accounts.approvalNudgeAgainSeconds}
 
     // A released @ stays on hold this long (ADR 0016), also after an account deletion.
     const val HANDLE_RELEASE_HOLD_DAYS = ${reg.handles.releaseHoldDays}

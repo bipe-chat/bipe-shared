@@ -120,6 +120,7 @@
     "Reserved names (parity reserved-names): reservedNameWarning uses the same normalize() and registry as profile-edit. A company whose verified seal names it does not get the warning. Bipe logic: NameNormalizer.reservedCategory (BipeKit), NameNormalizer.kt (libraries/bipe).",
     "The @ comes from POST /v1/handles/resolve and is cached per user ID. Bipe logic: BipeHandleResolver (BipeKit, libraries/bipe). The public profile bio comes from GET /v1/profiles/{handle}; a 404 means no bio.",
     "No phone number shows, ever: the number is for discovery only (ADR 0015).",
-    "Calls are out of scope for this issue (client-rewrite-plan.md section 4, phase 3)."
+    "Calls are out of scope for this issue (client-rewrite-plan.md section 4, phase 3).",
+    "Brand marks (ADR 0162, spec brand-mark): a reseller's verified marks show as one line under the name (first mark, then bipe_brand_mark_more); a tap opens the brand-mark sheet. bipe_brand_mark_ended shows once there after a mark the phone saw is gone."
   ]
 }

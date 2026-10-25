@@ -107,6 +107,11 @@
   },
   "strings": [
     "bipe_app_notification_new_message",
+    "bipe_focus_filter_title",
+    "bipe_focus_filter_description",
+    "bipe_focus_filter_accounts",
+    "bipe_focus_filter_all",
+    "bipe_notifications_account_group",
     "bipe_app_notification_chat_request",
     "bipe_group_notification_room_invite_body_with_sender",
     "bipe_app_notification_reply",
@@ -141,7 +146,8 @@
     "messageEventContentNew"
   ],
   "parity": [
-    "e2ee"
+    "e2ee",
+    "work-side-time"
   ],
   "notes": [
     "iOS runs this in the notification service extension with NotificationProcessSetup MultipleProcesses: the extension and the app share the SDK store in the app group, and the extension has little memory. Android runs it in the app process with SingleProcess and the app's sync service.",
@@ -150,7 +156,8 @@
     "Invites: NotificationEvent.Invite in a DM is chatRequest (bipe_app_notification_chat_request with the sender name); in a group, groupInvite (bipe_group_notification_room_invite_body_with_sender). Requests open the requests box of #557.",
     "DM name and photo follow ADR 0141: the other person, never the room name. RoomInfo isDm decides; NotificationRoomInfo.isDm gives it here.",
     "Body: plain text, cut by the system. Photos, videos, files, voice messages and stickers use the existing timeline kind label. A nonblank attachment caption follows its kind label; raw filenames and media URLs are never used as a substitute caption. The extension/handler never downloads an attachment to make a preview. Text, emote and notice use their nonblank plain body. Unsupported or undecryptable content remains generic fallback. No Markdown or scam card (the card shows in chat, scam-warning).",
-    "Android channels: bipe_app_notification_channel_messages for messages, bipe_notifications_invites for requests and invites. Each chat is one conversation notification with its messages; a group shows each sender name.",
+    "Android channels: bipe_app_notification_channel_messages for messages, bipe_notifications_invites for requests and invites, one of each per account, in one channel group per account (bipe-chat/bipe#512, ADR 0138 rule 4). The group name is bipe_notifications_account_group with the account name, so Do Not Disturb and modes can allow one account and silence the other. Channel and group IDs carry a digest of the Matrix ID, never the ID. A push without an owner uses one ungrouped messages channel. Signing an account out deletes its group and channels. Each chat is one conversation notification with its messages; a group shows each sender name.",
+    "iOS Focus filter (bipe-chat/bipe#512): a SetFocusFilterIntent, title bipe_focus_filter_title, description bipe_focus_filter_description, parameter bipe_focus_filter_accounts (the accounts on this phone; none chosen shows bipe_focus_filter_all). Every notification sets filterCriteria to its accountUserId; the filter gives the system a predicate over the chosen accounts, and the system hides the others in that Focus. The choice stays on the phone.",
     "Inline reply failure: bipe_dm_inline_reply_failed in a DM, bipe_group_notification_inline_reply_failed in a group.",
     "Opening the chat, a read on another device, or markAsRead removes that chat's notifications. The badge follows the unread count of the chat list.",
     "Nothing from a notification leaves the phone except the reply and the read receipt. No analytics (plan section 2).",
@@ -160,6 +167,7 @@
     "Notification-client caches are scoped to the owning session. Sign-out detaches that account from action routing. Late work checks that the same session is still registered before showing, clearing or writing.",
     "APNs pusher default_payload carries a random account_route alongside aps. Only the phone stores the route-to-Matrix-ID map; the provider gets no Matrix account ID. The route survives restarts and account switches, is removed on sign-out and is replaced if that account is added again. Re-register older native pushers once. The future Android transport must resolve an immutable registered route locally before it supplies the owning session; provider setup and delivery acceptance remain separate gates.",
     "Local actions revalidate the stored registration-lifetime route before and after awaiting account restore, and before each SDK write. The same Matrix ID after sign-out is a new lifetime; old PendingIntents and delivered iOS actions must fail closed. Both native clients keep the local route map across process restart and clear only the signed-out owner’s routes.",
-    "Each generated local notification preserves its kind in the owner-bound payload. Tap routing uses that kind and consumes the pending route only in the restored owner’s view. Requests and group invites do not open an unjoined timeline or send a read receipt. Opening an invite destination shows the existing accept/decline controls; it never accepts automatically."
+    "Each generated local notification preserves its kind in the owner-bound payload. Tap routing uses that kind and consumes the pending route only in the restored owner’s view. Requests and group invites do not open an unjoined timeline or send a read receipt. Opening an invite destination shows the existing accept/decline controls; it never accepts automatically.",
+    "Per account (bipe-chat/bipe#511): the notification takes the owning account's sound and preview. preview false: title bipe_app_name, body bipe_app_notification_new_message, no sender. A company account with work-hours enabled and isWithinWorkHours false: no sound, iOS interruptionLevel passive, Android a silent notification (no sound, no vibration, no heads-up); it stays in the list. Another account's pushes are not affected."
   ]
 }

@@ -271,21 +271,26 @@
       "server": {
         "status": "built",
         "evidence": [
-          "bipe-api/src/accounts.ts"
+          "bipe-api/src/accounts.ts",
+          "bipe-api/src/links.ts"
         ]
       },
       "ios-new": {
         "status": "built",
         "evidence": [
           "bipe-app/ios/Bipe/Recovery/RecoveryViews.swift",
-          "bipe-app/ios/Bipe/Encryption/DeviceVerificationView.swift"
+          "bipe-app/ios/Bipe/Encryption/DeviceVerificationView.swift",
+          "bipe-app/ios/Bipe/Recovery/LinkSignIn.swift",
+          "bipe-app/ios/Bipe/Settings/LinkedAccountsView.swift"
         ]
       },
       "android-new": {
         "status": "built",
         "evidence": [
           "bipe-app/android/app/src/main/kotlin/chat/bipe/app/recovery/RecoveryScreens.kt",
-          "bipe-app/android/app/src/main/kotlin/chat/bipe/app/encryption/DeviceVerificationScreen.kt"
+          "bipe-app/android/app/src/main/kotlin/chat/bipe/app/encryption/DeviceVerificationScreen.kt",
+          "bipe-app/android/app/src/main/kotlin/chat/bipe/app/recovery/LinkWebFlow.kt",
+          "bipe-app/android/app/src/main/kotlin/chat/bipe/app/settings/LinkedAccounts.kt"
         ]
       },
       "note": "Token, PIN, QR and e-mail recovery are merged on both apps; guardians and CPF recovery are not"
@@ -698,6 +703,77 @@
       "android-new": "planned"
     },
     {
+      "id": "work-side-time",
+      "name": "Work side keeps its own time",
+      "ios": {
+        "status": "n/a",
+        "reason": "The fork is frozen (ADR 0155)"
+      },
+      "android": {
+        "status": "n/a",
+        "reason": "The fork is frozen (ADR 0155)"
+      },
+      "web": {
+        "status": "n/a",
+        "reason": "No web chat (ADR 0004); notifications are a phone feature"
+      },
+      "server": {
+        "status": "built",
+        "evidence": [
+          "bipe-api/src/work-hours.ts"
+        ]
+      },
+      "ios-new": {
+        "status": "built",
+        "evidence": [
+          "bipe-app/ios/Bipe/Notifications/WorkHoursView.swift",
+          "bipe-app/ios/NotificationService/NotificationService.swift"
+        ]
+      },
+      "android-new": {
+        "status": "built",
+        "evidence": [
+          "bipe-app/android/app/src/main/kotlin/chat/bipe/app/notifications/WorkHoursScreen.kt",
+          "bipe-app/android/app/src/main/kotlin/chat/bipe/app/notifications/PhoneNotifications.kt"
+        ]
+      },
+      "issue": 511
+    },
+    {
+      "id": "work-side-focus",
+      "name": "Work account in system Focus and modes",
+      "ios": {
+        "status": "n/a",
+        "reason": "The fork is frozen (ADR 0155)"
+      },
+      "android": {
+        "status": "n/a",
+        "reason": "The fork is frozen (ADR 0155)"
+      },
+      "web": {
+        "status": "n/a",
+        "reason": "No web chat (ADR 0004); notifications are a phone feature"
+      },
+      "server": {
+        "status": "n/a",
+        "reason": "A phone setting: the server is not involved"
+      },
+      "ios-new": {
+        "status": "built",
+        "evidence": [
+          "bipe-app/ios/Bipe/Notifications/AccountFocusFilter.swift",
+          "bipe-app/ios/NotificationService/NotificationService.swift"
+        ]
+      },
+      "android-new": {
+        "status": "built",
+        "evidence": [
+          "bipe-app/android/app/src/main/kotlin/chat/bipe/app/notifications/PhoneNotifications.kt"
+        ]
+      },
+      "issue": 512
+    },
+    {
       "id": "handles",
       "name": "Usernames",
       "ios": {
@@ -1094,14 +1170,16 @@
         "status": "built",
         "evidence": [
           "bipe-app/ios/Bipe/People/ContactsView.swift",
-          "bipe-app/ios/BipeKit/Sources/BipeKit/BipePhoneNumber.swift"
+          "bipe-app/ios/BipeKit/Sources/BipeKit/BipePhoneNumber.swift",
+          "bipe-app/ios/Bipe/Settings/PhoneConfirmNotice.swift"
         ]
       },
       "android-new": {
         "status": "built",
         "evidence": [
           "bipe-app/android/app/src/main/kotlin/chat/bipe/app/people/ContactsScreens.kt",
-          "bipe-app/android/libraries/bipe/src/main/kotlin/chat/bipe/shared/api/BipeApiPeople.kt"
+          "bipe-app/android/libraries/bipe/src/main/kotlin/chat/bipe/shared/api/BipeApiPeople.kt",
+          "bipe-app/android/app/src/main/kotlin/chat/bipe/app/settings/PhoneConfirmNotice.kt"
         ]
       },
       "issue": 162

@@ -181,6 +181,23 @@
       }
     },
     {
+      "id": "work-hours",
+      "basis": "contract",
+      "places": ["server"],
+      "pt": {
+        "name": "Horário de atendimento (conta de trabalho)",
+        "what": "Os dias e horários de atendimento que você define numa conta de trabalho, o fuso horário e se o silêncio fora do horário está ligado.",
+        "why": "Silenciar no celular as mensagens da conta de trabalho fora do horário, em todos os aparelhos dessa conta.",
+        "retention": "Enquanto a conta de trabalho existir."
+      },
+      "en": {
+        "name": "Opening hours (work account)",
+        "what": "The days and hours you set on a work account, its time zone and whether it goes quiet outside them.",
+        "why": "To silence the work account's messages on the phone outside opening hours, on every device of that account.",
+        "retention": "As long as the work account exists."
+      }
+    },
+    {
       "id": "linked-account",
       "basis": "contract",
       "places": ["server", "apple-sign-in", "google-sign-in"],

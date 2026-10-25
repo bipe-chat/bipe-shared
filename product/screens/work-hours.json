@@ -1,0 +1,49 @@
+{
+  "id": "work-hours",
+  "title": "Opening hours of a work account",
+  "flow": "settings",
+  "summary": "Configurações → Notificações → Horário de atendimento, on a company account only (ADR 0138 rule 4, bipe-chat/bipe#511). The owner sets the weekly hours of the work side. Outside them, the phone shows this account's pushes with no sound and no banner, and keeps them in the notification list. The personal side never goes quiet because of the work side.",
+  "types": {
+    "WorkDayRow": {
+      "day": { "type": "int", "description": "ISO weekday, 1 Monday to 7 Sunday. The name comes from the system calendar in the app language." },
+      "open": { "type": "bool", "description": "false: bipe_work_hours_closed." },
+      "start": { "type": "string", "description": "HH:MM, local. Edited with the system time picker." },
+      "end": { "type": "string", "description": "HH:MM, local; 24:00 is midnight." }
+    }
+  },
+  "state": {
+    "enabled": { "type": "bool", "description": "The switch bipe_work_hours_enabled." },
+    "timeZone": { "type": "string", "description": "From the API; a new account takes the phone's time zone, else defaultTimeZone." },
+    "days": { "type": "list", "of": { "type": "WorkDayRow", "description": "One weekday." }, "description": "Monday to Sunday, first range of each day." },
+    "openNow": { "type": "bool", "description": "Shown under the switch: bipe_work_hours_open_now or bipe_work_hours_closed_now, from isWithinWorkHours." },
+    "phase": { "type": "enum", "values": ["loading", "shown", "saving", "failed"], "description": "failed shows bipe_work_hours_save_error and puts the values back." }
+  },
+  "actions": {
+    "appear": { "effect": "GET /v1/me/work-hours. An account that never saved hours shows the registry defaults with enabled false." },
+    "setEnabled": { "params": { "isOn": { "type": "bool", "description": "The new value." } }, "effect": "Saves with PUT /v1/me/work-hours." },
+    "setDay": {
+      "params": { "day": { "type": "WorkDayRow", "description": "The changed day." } },
+      "effect": "Saves the whole week with PUT /v1/me/work-hours. A day keeps its first range only; a close time not after the open time is refused on the phone before the request."
+    }
+  },
+  "strings": [
+    "bipe_work_hours_title",
+    "bipe_work_hours_body",
+    "bipe_work_hours_enabled",
+    "bipe_work_hours_closed",
+    "bipe_work_hours_range",
+    "bipe_work_hours_open_now",
+    "bipe_work_hours_closed_now",
+    "bipe_work_hours_opens",
+    "bipe_work_hours_closes",
+    "bipe_work_hours_save_error"
+  ],
+  "sdk": [],
+  "parity": ["work-side-time"],
+  "notes": [
+    "Rule: registries/work-hours.json, reference isWithinWorkHours() in tools/lib/registries.mjs, cases in test-vectors/work-hours.json. Ranges are half-open in the account's time zone.",
+    "The app keeps a copy of the hours per account in the app group (iOS) or app storage (Android), so the notification service extension and the push handler decide without a request. The copy refreshes on every appear of this screen, on launch and on foreground.",
+    "The API allows up to maxRangesPerDay ranges a day (a lunch break). This screen edits the first range only; saving from it keeps one range a day.",
+    "The hours never block a message and never change push rules on the server: the decision is on the phone, per account."
+  ]
+}

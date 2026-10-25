@@ -184,6 +184,14 @@ public enum BipeRegistries {
     public static let phoneLinkConfirmMonths = ${reg.phones.linkConfirmMonths}
     public static let phoneLinkConfirmWarnDays = ${reg.phones.linkConfirmWarnDays}
 
+    /// Work side opening hours (registries/work-hours.json, bipe-chat/bipe#511).
+    public static let workHoursDefaultTimeZone = ${swiftString(reg.workHours.defaultTimeZone)}
+    public static let workHoursMaxRangesPerDay = ${reg.workHours.maxRangesPerDay}
+    /// ISO weekday (1 Monday ... 7 Sunday) and its ranges, local HH:MM, half-open.
+    public static let workHoursDefaultDays: [(day: Int, ranges: [(start: String, end: String)])] = [
+${reg.workHours.defaultDays.map((d) => `        (day: ${d.day}, ranges: [${d.ranges.map((r) => `(start: ${swiftString(r.start)}, end: ${swiftString(r.end)})`).join(", ")}]),`).join("\n")}
+    ]
+
     /// Device-first accounts (ADR 0057, ADR 0059; registries/accounts.json). Check PINs with the rule there;
     /// test-vectors/pins.json has the cases. The server is the authority.
     public static let pinLength = ${reg.accounts.pinLength}
@@ -452,6 +460,14 @@ object BipeRegistries {
     /** Yearly confirmation of a linked number (bipe-chat/bipe#470): months findable, and the warning days before confirm_by. */
     const val PHONE_LINK_CONFIRM_MONTHS = ${reg.phones.linkConfirmMonths}
     const val PHONE_LINK_CONFIRM_WARN_DAYS = ${reg.phones.linkConfirmWarnDays}
+
+    /** Work side opening hours (registries/work-hours.json, bipe-chat/bipe#511). */
+    const val WORK_HOURS_DEFAULT_TIME_ZONE = ${kotlinString(reg.workHours.defaultTimeZone)}
+    const val WORK_HOURS_MAX_RANGES_PER_DAY = ${reg.workHours.maxRangesPerDay}
+    /** ISO weekday (1 Monday ... 7 Sunday) and its ranges, local HH:MM, half-open. */
+    val workHoursDefaultDays: List<Pair<Int, List<Pair<String, String>>>> = listOf(
+${reg.workHours.defaultDays.map((d) => `        ${d.day} to listOf(${d.ranges.map((r) => `${kotlinString(r.start)} to ${kotlinString(r.end)}`).join(", ")}),`).join("\n")}
+    )
 
     /**
      * Device-first accounts (ADR 0057, ADR 0059; registries/accounts.json). Check PINs with the rule there;

@@ -106,6 +106,9 @@ const NOT_IN_APPS = {
   ...Object.fromEntries(["WorkHours", "WorkDay", "WorkRange"].map((name) => [
     name, "work side opening hours (bipe-chat/bipe#511) are built in Bipe Next only; the checked forks are frozen (ADR 0155)",
   ])),
+  ...Object.fromEntries(["BrandMarks", "BrandMarkInviteRequest", "BrandMarkInvite", "CreatedBrandMarkInvite", "GrantedBrandMark", "GrantedBrandMarks", "BrandMarkInvitePreview", "HeldBrandMark", "HeldBrandMarks"].map((name) => [
+    name, "brand marks for resellers (ADR 0162, bipe-chat/bipe#483, #485, #486) are built in Bipe Next only; the checked forks are frozen (ADR 0155)",
+  ])),
   ...Object.fromEntries(["LinkProviders", "LinkProvider", "LinkNonce", "LinkWebRequest", "LinkWebStart", "LinkProof", "LinkedAccount", "LinkEvent"].map((name) => [
     name, "linked Apple or Google recovery (ADR 0096) is built in Bipe Next only (bipe-chat/bipe#307, #308); the checked forks are frozen (ADR 0155)",
   ])),
@@ -130,6 +133,13 @@ const GAPS = {
   "android:Error.error.cnpj_taken": "bipe-chat/bipe#115 (business UI in the apps)",
   "android:Error.error.signature_invalid": "bipe-chat/bipe#115 (business UI in the apps)",
 };
+
+// Brand marks (ADR 0162): Bipe Next only. The checked forks are frozen (ADR 0155).
+for (const platform of ["ios", "android"]) {
+  for (const g of ["Error.error.brand_not_verified", "Error.error.brand_mark_limit"]) {
+    GAPS[`${platform}:${g}`] = "bipe-chat/bipe#486 (built in Bipe Next; the fork is frozen)";
+  }
+}
 
 // Linked Apple or Google recovery (ADR 0096): Bipe Next only. The checked forks are frozen (ADR 0155).
 for (const platform of ["ios", "android"]) {

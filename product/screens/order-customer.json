@@ -1,0 +1,174 @@
+{
+  "id": "order-customer",
+  "title": "Place an order",
+  "flow": "business",
+  "summary": "The customer builds an order from the catálogo's fixed-price products, picks retirada or entrega, sees pay on site, and sends it. The order card pins in the chat with the status; the address and notes go in the chat (ADR 0105).",
+  "types": {
+    "Order": {
+      "id": {
+        "type": "string",
+        "description": "Order ID."
+      },
+      "businessId": {
+        "type": "string",
+        "description": "The company."
+      },
+      "customerUserId": {
+        "type": "string",
+        "description": "Signed-in customer.",
+        "optional": true
+      },
+      "customerName": {
+        "type": "string",
+        "description": "Name-only order typed by the owner.",
+        "optional": true
+      },
+      "lines": {
+        "type": "list",
+        "description": "Name, quantity and line total, snapshotted by the server.",
+        "of": {
+          "type": "string",
+          "description": "A line."
+        }
+      },
+      "totalCents": {
+        "type": "int",
+        "description": "Total in centavos."
+      },
+      "fulfilment": {
+        "type": "enum",
+        "description": "Retirada or entrega.",
+        "values": [
+          "pickup",
+          "delivery"
+        ]
+      },
+      "status": {
+        "type": "enum",
+        "description": "From bipe-api.",
+        "values": [
+          "sent",
+          "accepted",
+          "refused",
+          "ready",
+          "done",
+          "cancelled"
+        ]
+      },
+      "refuseReason": {
+        "type": "enum",
+        "description": "When refused.",
+        "optional": true,
+        "values": [
+          "unavailable",
+          "closed",
+          "cannotDeliver",
+          "cannotFulfil"
+        ]
+      }
+    }
+  },
+  "state": {
+    "business": {
+      "type": "string",
+      "description": "Handle or Matrix ID."
+    },
+    "cart": {
+      "type": "list",
+      "description": "Item IDs with quantities.",
+      "of": {
+        "type": "string",
+        "description": "Item and quantity."
+      }
+    },
+    "fulfilment": {
+      "type": "enum",
+      "description": "Choice.",
+      "values": [
+        "pickup",
+        "delivery"
+      ]
+    },
+    "order": {
+      "type": "Order",
+      "description": "The open order with this business, from GET /v1/me/orders.",
+      "optional": true
+    }
+  },
+  "actions": {
+    "add": {
+      "effect": "Adds one of an active fixed-price product (from catalog-view).",
+      "params": {
+        "itemId": {
+          "type": "string",
+          "description": "The item."
+        }
+      }
+    },
+    "setQuantity": {
+      "effect": "Changes a quantity; 0 removes it.",
+      "params": {
+        "itemId": {
+          "type": "string",
+          "description": "The item."
+        },
+        "quantity": {
+          "type": "int",
+          "description": "0 to 999."
+        }
+      }
+    },
+    "send": {
+      "effect": "POST /v1/businesses/{business}/orders with lines, fulfilment and in_person. Maps order_already_open, orders_closed, item_unavailable, price_not_fixed to their strings. Success shows bipe_order_sent."
+    },
+    "cancel": {
+      "effect": "Asks bipe_order_cancel_confirm, then POST .../orders/{id}/cancel."
+    }
+  },
+  "strings": [
+    "bipe_order_make",
+    "bipe_order_cart",
+    "bipe_order_add",
+    "bipe_order_quantity",
+    "bipe_order_empty",
+    "bipe_order_fulfilment",
+    "bipe_order_pickup",
+    "bipe_order_delivery",
+    "bipe_order_payment",
+    "bipe_order_pay_on_site",
+    "bipe_order_address_in_chat",
+    "bipe_order_total",
+    "bipe_order_send",
+    "bipe_order_sent",
+    "bipe_order_card_title",
+    "bipe_order_line",
+    "bipe_order_status_sent",
+    "bipe_order_status_accepted",
+    "bipe_order_status_refused",
+    "bipe_order_status_ready",
+    "bipe_order_status_done",
+    "bipe_order_status_cancelled",
+    "bipe_order_refuse_reason_label",
+    "bipe_order_refuse_unavailable",
+    "bipe_order_refuse_closed",
+    "bipe_order_refuse_cannot_deliver",
+    "bipe_order_refuse_cannot_fulfil",
+    "bipe_order_cancel",
+    "bipe_order_cancel_confirm",
+    "bipe_order_error_already_open",
+    "bipe_order_error_closed",
+    "bipe_order_error_item",
+    "bipe_order_error_price",
+    "bipe_order_error",
+    "bipe_app_cancel"
+  ],
+  "sdk": [],
+  "parity": [
+    "orders"
+  ],
+  "notes": [
+    "Only active products with a fixed price and amount_cents can be ordered; a from or on-request price needs a quote (bipe_order_error_price).",
+    "Pix waits for Pix charge cards (ADR 0080): the app offers bipe_order_pay_on_site only. The card never says paid (security rule 12).",
+    "Status pushes wait for the push path (bipe-chat/bipe#320); the card refreshes when the chat opens and on foreground."
+  ]
+}

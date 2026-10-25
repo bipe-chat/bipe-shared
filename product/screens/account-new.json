@@ -13,7 +13,7 @@
   "state": {
     "currentName": { "type": "string", "description": "Display name of the account on screen, for bipe_account_new_invite_note." },
     "canAddPersonal": { "type": "bool", "description": "canAddAccount of account-switcher. false: the personal row is off and shows bipe_account_cap_reached with max_accounts." },
-    "canAddCompany": { "type": "bool", "description": "true only on a phone that can attest (iOS App Attest; Android stays false until bipe-chat/bipe#92) and when the account on screen is not a company." },
+    "canAddCompany": { "type": "bool", "description": "true when the account on screen is not a company and, on iOS, App Attest is supported. Android always tries Key Attestation at signup-create (bipe-chat/bipe#92); a phone the server cannot attest gets attestation_invalid there (ADR 0043, ADR 0087)." },
     "invitePhase": {
       "type": "enum",
       "values": ["loading", "ready", "noneLeft", "failed"],

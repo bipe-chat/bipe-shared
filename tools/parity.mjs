@@ -120,12 +120,9 @@ for (const f of product.features) {
 }
 
 // 2b. A gap row names an open issue (M2 exit test, docs/MILESTONES.md). A closed issue closes no gap.
-// Gap rows: items where iOS and Android differ, and differences of kind gap or undecided.
-const gapRows = [
-  ...(ledger.items ?? []).filter((i) => entry(i, "ios")?.status !== entry(i, "android")?.status).map((i) => ({ what: `item ${i.id}`, issue: i.issue })),
-  ...(ledger.differences ?? []).filter((d) => d.kind !== "idiom").map((d) => ({ what: `difference "${d.area}"`, issue: d.issue })),
-  ...newCheck.issueRefs,
-];
+// Only the own client's gaps count (ios-new / android-new). The forks are frozen (ADR 0155): their
+// iOS/Android gaps and differences stay recorded, but their issues may be closed.
+const gapRows = [...newCheck.issueRefs];
 if (checkIssues) {
   const numbers = [...new Set(gapRows.map((r) => r.issue).filter(Number.isInteger))];
   const state = new Map();

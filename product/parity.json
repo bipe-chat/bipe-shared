@@ -1259,9 +1259,29 @@
       "ios": "planned",
       "android": "planned",
       "web": "planned",
-      "server": "planned",
-      "ios-new": "planned",
-      "android-new": "planned"
+      "server": {
+        "status": "built",
+        "evidence": [
+          "bipe-api/src/agenda.ts",
+          "bipe-api/src/scheduling.ts"
+        ]
+      },
+      "ios-new": {
+        "status": "built",
+        "evidence": [
+          "bipe-app/ios/Bipe/Business/AgendaBookView.swift",
+          "bipe-app/ios/Bipe/Business/AgendaOwnerView.swift",
+          "bipe-app/ios/Bipe/Business/AgendaSetupView.swift"
+        ]
+      },
+      "android-new": {
+        "status": "built",
+        "evidence": [
+          "bipe-app/android/app/src/main/kotlin/chat/bipe/app/business/AgendaBook.kt",
+          "bipe-app/android/app/src/main/kotlin/chat/bipe/app/business/AgendaOwner.kt",
+          "bipe-app/android/app/src/main/kotlin/chat/bipe/app/business/AgendaSetup.kt"
+        ]
+      }
     },
     {
       "id": "catalog",
@@ -1269,9 +1289,24 @@
       "ios": "planned",
       "android": "planned",
       "web": "planned",
-      "server": "planned",
-      "ios-new": "planned",
-      "android-new": "planned"
+      "server": {
+        "status": "built",
+        "evidence": [
+          "bipe-api/src/catalog.ts"
+        ]
+      },
+      "ios-new": {
+        "status": "built",
+        "evidence": [
+          "bipe-app/ios/Bipe/Business/CatalogViews.swift"
+        ]
+      },
+      "android-new": {
+        "status": "built",
+        "evidence": [
+          "bipe-app/android/app/src/main/kotlin/chat/bipe/app/business/CatalogScreens.kt"
+        ]
+      }
     },
     {
       "id": "orders",
@@ -1282,9 +1317,24 @@
         "status": "n/a",
         "reason": "No web chat (ADR 0004); the site shows a demo at most"
       },
-      "server": "planned",
-      "ios-new": "planned",
-      "android-new": "planned"
+      "server": {
+        "status": "built",
+        "evidence": [
+          "bipe-api/src/orders.ts"
+        ]
+      },
+      "ios-new": {
+        "status": "built",
+        "evidence": [
+          "bipe-app/ios/Bipe/Business/OrderViews.swift"
+        ]
+      },
+      "android-new": {
+        "status": "built",
+        "evidence": [
+          "bipe-app/android/app/src/main/kotlin/chat/bipe/app/business/OrderScreens.kt"
+        ]
+      }
     },
     {
       "id": "quotes",
@@ -1295,9 +1345,24 @@
         "status": "n/a",
         "reason": "No web chat (ADR 0004); the site shows a demo at most"
       },
-      "server": "planned",
-      "ios-new": "planned",
-      "android-new": "planned"
+      "server": {
+        "status": "built",
+        "evidence": [
+          "bipe-api/src/quotes.ts"
+        ]
+      },
+      "ios-new": {
+        "status": "built",
+        "evidence": [
+          "bipe-app/ios/Bipe/Business/QuoteViews.swift"
+        ]
+      },
+      "android-new": {
+        "status": "built",
+        "evidence": [
+          "bipe-app/android/app/src/main/kotlin/chat/bipe/app/business/QuoteScreens.kt"
+        ]
+      }
     },
     {
       "id": "queue",
@@ -1308,9 +1373,24 @@
         "status": "n/a",
         "reason": "No web chat (ADR 0004); the site shows a demo at most"
       },
-      "server": "planned",
-      "ios-new": "planned",
-      "android-new": "planned"
+      "server": {
+        "status": "built",
+        "evidence": [
+          "bipe-api/src/queue.ts"
+        ]
+      },
+      "ios-new": {
+        "status": "built",
+        "evidence": [
+          "bipe-app/ios/Bipe/Business/QueueViews.swift"
+        ]
+      },
+      "android-new": {
+        "status": "built",
+        "evidence": [
+          "bipe-app/android/app/src/main/kotlin/chat/bipe/app/business/QueueScreens.kt"
+        ]
+      }
     },
     {
       "id": "pix-check",

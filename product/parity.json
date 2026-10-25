@@ -2391,6 +2391,20 @@
       }
     },
     {
+      "id": "account-deletion",
+      "name": "Delete the account in the app, with a 72-hour wait (ADR 0140)",
+      "issue": 528,
+      "ios": "planned",
+      "android": "planned",
+      "web": {
+        "status": "n/a",
+        "reason": "In the apps only; the privacy policy says how"
+      },
+      "server": "planned",
+      "ios-new": "planned",
+      "android-new": "planned"
+    },
+    {
       "id": "data-export",
       "name": "Download my data (LGPD art. 18)",
       "issue": 364,

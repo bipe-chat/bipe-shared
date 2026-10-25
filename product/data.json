@@ -468,6 +468,57 @@
         "why": "To keep the time for you and for the business and to show the card in the chat. The business decides about its own schedule; Bipe keeps the data for it.",
         "retention": "2 years after the date of the booking. If you delete your account, the business keeps only the name, the service and the time until then."
       }
+    },
+    {
+      "id": "business-orders",
+      "basis": "contract",
+      "places": ["server"],
+      "pt": {
+        "name": "Pedidos a negócios",
+        "what": "Os pedidos que você faz a um negócio no Bipe: os itens, as quantidades, os preços do momento, o total, retirada ou entrega, a forma de pagamento, a situação e a sua conta. O endereço e os recados ficam na conversa, não no pedido.",
+        "why": "Mostrar o pedido para você e para o negócio. O negócio decide sobre os próprios pedidos; o Bipe guarda os dados para ele.",
+        "retention": "2 anos depois do pedido."
+      },
+      "en": {
+        "name": "Orders to businesses",
+        "what": "The orders you place with a business in Bipe: the items, quantities, prices at the time, total, pickup or delivery, payment choice, status and your account. The address and notes stay in the chat, not in the order.",
+        "why": "To show the order to you and to the business. The business decides about its own orders; Bipe keeps the data for it.",
+        "retention": "2 years after the order."
+      }
+    },
+    {
+      "id": "business-quotes",
+      "basis": "contract",
+      "places": ["server"],
+      "pt": {
+        "name": "Orçamentos de negócios",
+        "what": "Que você pediu um orçamento a um negócio, e quando. As linhas, os valores e a validade que o negócio mandou, e a sua resposta. O que você descreve e as fotos ficam na conversa, não no orçamento.",
+        "why": "Mostrar o orçamento para você e para o negócio, e transformar em pedido ou agendamento quando você aceita.",
+        "retention": "2 anos depois do orçamento."
+      },
+      "en": {
+        "name": "Quotes from businesses",
+        "what": "That you asked a business for a quote, and when. The lines, amounts and validity the business sent, and your answer. What you describe and the photos stay in the chat, not in the quote.",
+        "why": "To show the quote to you and to the business, and to turn it into an order or a booking when you accept.",
+        "retention": "2 years after the quote."
+      }
+    },
+    {
+      "id": "queue-places",
+      "basis": "contract",
+      "places": ["server"],
+      "pt": {
+        "name": "Lugar na fila de um negócio",
+        "what": "Que você entrou na fila de um negócio no Bipe, a hora em que entrou, foi chamado e atendido, e a sua conta. O Bipe nunca pede sua localização.",
+        "why": "Mostrar sua posição e a espera, e para o negócio chamar a próxima pessoa.",
+        "retention": "30 dias depois do dia da fila."
+      },
+      "en": {
+        "name": "Places in a business's queue",
+        "what": "That you joined a business's queue in Bipe, the times you joined, were called and served, and your account. Bipe never asks for your location.",
+        "why": "To show your position and the wait, and for the business to call the next person.",
+        "retention": "30 days after the day of the queue."
+      }
     }
   ],
   "device": [

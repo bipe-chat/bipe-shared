@@ -97,6 +97,9 @@ const NOT_IN_APPS = {
   CnpjRegistryRecord: "CNPJ verification runs on the web console first; app UI is bipe-chat/bipe#115",
   BusinessDomain: "CNPJ verification runs on the web console first; app UI is bipe-chat/bipe#115",
   VerificationStatus: "Pix and gov.br verification are not built in the apps yet: bipe-chat/bipe#544, #545",
+  ...Object.fromEntries(["LinkProviders", "LinkProvider", "LinkNonce", "LinkWebRequest", "LinkWebStart", "LinkProof", "LinkedAccount", "LinkEvent"].map((name) => [
+    name, "linked Apple or Google recovery (ADR 0096) is built in Bipe Next only (bipe-chat/bipe#307, #308); the checked forks are frozen (ADR 0155)",
+  ])),
 };
 
 // Known gaps: "<platform>:<Schema>" or "<platform>:<Schema>.<field>" -> issue. Remove the entry when the gap closes.
@@ -115,6 +118,13 @@ const GAPS = {
   "android:Error.error.cnpj_taken": "bipe-chat/bipe#115 (business UI in the apps)",
   "android:Error.error.signature_invalid": "bipe-chat/bipe#115 (business UI in the apps)",
 };
+
+// Linked Apple or Google recovery (ADR 0096): Bipe Next only. The checked forks are frozen (ADR 0155).
+for (const platform of ["ios", "android"]) {
+  for (const g of ["AccountStatus.links", "AccountStatus.link_events", "Error.error.link_taken", "Error.error.link_unavailable"]) {
+    GAPS[`${platform}:${g}`] = "bipe-chat/bipe#307 and #308 (built in Bipe Next; the fork is frozen)";
+  }
+}
 
 // Device-first accounts (ADR 0057, ADR 0059): contract first, apps in bipe-chat/bipe#153 (iOS) and #154 (Android).
 // iOS closed these gaps (bipe-chat/bipe#153), Android too (#154). The list stays for a platform that adds the feature later.

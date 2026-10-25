@@ -1,0 +1,39 @@
+{
+  "id": "recovery-linked",
+  "title": "Get back in with a linked account",
+  "flow": "recovery",
+  "summary": "From recovery-start: the sign-in with the Apple or Google account that the person linked (ADR 0096). After it passes, recovery-pin asks for the PIN (factor linked); then recovery-waiting runs the 24-hour delay.",
+  "state": {
+    "provider": { "type": "enum", "values": ["apple", "google"], "description": "The row the person chose." },
+    "phase": {
+      "type": "enum",
+      "values": ["signingIn", "failed"],
+      "description": "signingIn: the nonce or web flow request and the provider sheet run. failed: shows error with a retry."
+    },
+    "error": { "type": "string", "optional": true, "description": "bipe_recovery_linked_invalid, bipe_error_network or bipe_error_rate_limited." }
+  },
+  "actions": {
+    "start": {
+      "effect": "iOS Apple: POST /v1/recovery/link/nonce, then the Sign in with Apple sheet with that nonce. Every other case: POST /v1/recovery/link/{provider}/web and the authorization URL in ASWebAuthenticationSession (iOS) or a Custom Tab (Android). The proof (the ID token, or flow_id and the handoff) stays in memory and recovery-pin opens with factor linked. A cancelled sheet goes back to recovery-start."
+    },
+    "retry": { "effect": "Runs start again." }
+  },
+  "strings": [
+    "bipe_recovery_apple",
+    "bipe_recovery_google",
+    "bipe_recovery_linked_body",
+    "bipe_recovery_linked_invalid",
+    "bipe_error_network",
+    "bipe_error_rate_limited",
+    "bipe_app_retry"
+  ],
+  "sdk": [],
+  "parity": ["new-phone"],
+  "notes": [
+    "The PIN comes last (ADR 0059). recovery-pin with factor linked sends POST /v1/recovery/link with the proof and the PIN; 201 keeps the RecoveryStarted and opens recovery-waiting with method apple or google.",
+    "recovery_invalid from POST /v1/recovery/link: the proof is bad or no Bipe account has that provider account linked. recovery-pin shows bipe_recovery_linked_invalid and goes back to recovery-start.",
+    "No PIN reset on this path (linkedRecovery.allowsPinReset false): forgotPin and pin_blocked show bipe_recovery_linked_pin_blocked and offer recovery-email.",
+    "Access only: recovery-waiting shows bipe_recovery_linked_history with the ready state.",
+    "Bipe logic: BipeAPIClient.recoverWithLink (iOS), BipeApiClient.recoverWithLink (Android)."
+  ]
+}

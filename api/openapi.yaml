@@ -1985,11 +1985,13 @@ paths:
         "401": { $ref: "#/components/responses/Error" }
   /v1/proposta/beacon:
     post:
-      summary: The deck reports the slide on screen
+      summary: A strategic page reports the slide on screen, or that the visitor left
       description: >
-        ADR 0157, ADR 0158. Sent with sendBeacon as text/plain JSON from bipe.chat/proposta/_auth/beacon. Needs the
-        bipe_proposta cookie. Writes one visit row of kind slide. Always 204 when the body and the session are
-        good; the browser reads no response.
+        ADR 0157, ADR 0158, ADR 0160. Sent with sendBeacon as text/plain JSON from bipe.chat/proposta/_auth/beacon.
+        Needs the bipe_proposta cookie. Event slide (the deck, with the slide number and title) writes a visit row
+        of kind slide; event leave (any page, when the tab is hidden or closed) writes a row of kind leave, which
+        ends the time on the last slide. Always 204 when the body and the session are good; the browser reads no
+        response.
       requestBody:
         required: true
         content:
@@ -5232,10 +5234,12 @@ components:
         password: { type: string, minLength: 1, maxLength: 256 }
     PropostaBeacon:
       type: object
-      required: [path, slide]
+      required: [path]
       properties:
+        event: { type: string, enum: [slide, leave], default: slide }
         path: { type: string, maxLength: 200, description: "Page path under /proposta/, no query." }
-        slide: { type: integer, minimum: 1, maximum: 200 }
+        slide: { type: integer, minimum: 1, maximum: 200, description: "Required for event slide." }
+        title: { type: string, maxLength: 80, description: "Slide title (its aria-label)." }
     PropostaVisitor:
       type: object
       required: [id, email, created_at, last_seen_at, page_views, max_slide]
@@ -5248,11 +5252,12 @@ components:
         max_slide: { type: [integer, "null"], description: "Highest deck slide shown in the report window." }
     PropostaVisit:
       type: object
-      required: [at, visitor_id, kind, path, slide, referrer, utm, city, region, country]
+      required: [at, visitor_id, kind, path, slide, title, referrer, utm, city, region, country]
       properties:
         at: { type: string, format: date-time }
         visitor_id: { type: integer }
-        kind: { type: string, enum: [page, slide] }
+        kind: { type: string, enum: [page, slide, leave] }
+        title: { type: [string, "null"], description: "Slide title, for kind slide." }
         path: { type: string }
         slide: { type: [integer, "null"] }
         referrer: { type: [string, "null"], description: "Origin only (scheme and host)." }
@@ -5262,11 +5267,36 @@ components:
         country: { type: [string, "null"] }
     PropostaReport:
       type: object
-      required: [days, visitors, visits]
+      required: [days, visitors, visits, sittings]
       properties:
         days: { type: integer }
         visitors: { type: array, items: { $ref: "#/components/schemas/PropostaVisitor" } }
         visits: { type: array, items: { $ref: "#/components/schemas/PropostaVisit" } }
+        sittings: { type: array, description: "Newest first (ADR 0160).", items: { $ref: "#/components/schemas/PropostaSitting" } }
+    PropostaSitting:
+      type: object
+      description: "One visitor's events with gaps under 30 minutes (ADR 0160)."
+      required: [visitor_id, email, started_at, ended_at, seconds, place, referrer, utm, steps]
+      properties:
+        visitor_id: { type: integer }
+        email: { type: string }
+        started_at: { type: string, format: date-time }
+        ended_at: { type: string, format: date-time }
+        seconds: { type: integer, description: "Sum of the step times." }
+        place: { type: [string, "null"], description: "City, state and country of the first event." }
+        referrer: { type: [string, "null"] }
+        utm: { type: object, additionalProperties: { type: string } }
+        steps: { type: array, items: { $ref: "#/components/schemas/PropostaStep" } }
+    PropostaStep:
+      type: object
+      description: "A page or slide in the order shown. Time is the gap to the next event, at most 10 minutes."
+      required: [at, path, slide, title, seconds]
+      properties:
+        at: { type: string, format: date-time }
+        path: { type: string }
+        slide: { type: [integer, "null"] }
+        title: { type: [string, "null"] }
+        seconds: { type: integer }
     VisitReport:
       type: object
       required: [days, brazil, other_countries, states, cities]

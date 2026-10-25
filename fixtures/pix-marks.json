@@ -1,0 +1,856 @@
+{
+  "$comment": "Pix request marks (ADR 0046, bipe-chat/bipe#130; registries/pix-marks.json). lines: pixMarkLines(card, events). txid: pixTxid(request_id). Expected values come from the reference implementation (tools/lib/pix.mjs).",
+  "lines": [
+    {
+      "name": "no marks",
+      "card": {
+        "event_id": "$card:bipe.net.br",
+        "requester": "@loja:bipe.net.br",
+        "payers": [
+          "@ana:bipe.net.br"
+        ]
+      },
+      "events": []
+    },
+    {
+      "name": "payer sent",
+      "card": {
+        "event_id": "$card:bipe.net.br",
+        "requester": "@loja:bipe.net.br",
+        "payers": [
+          "@ana:bipe.net.br"
+        ]
+      },
+      "events": [
+        {
+          "event_id": "$m1",
+          "sender": "@ana:bipe.net.br",
+          "ts": 10,
+          "content": {
+            "m.relates_to": {
+              "rel_type": "m.reference",
+              "event_id": "$card:bipe.net.br"
+            },
+            "mark": "sent"
+          }
+        }
+      ]
+    },
+    {
+      "name": "payer sent with E2E ID",
+      "card": {
+        "event_id": "$card:bipe.net.br",
+        "requester": "@loja:bipe.net.br",
+        "payers": [
+          "@ana:bipe.net.br"
+        ]
+      },
+      "events": [
+        {
+          "event_id": "$m1",
+          "sender": "@ana:bipe.net.br",
+          "ts": 10,
+          "content": {
+            "m.relates_to": {
+              "rel_type": "m.reference",
+              "event_id": "$card:bipe.net.br"
+            },
+            "mark": "sent",
+            "e2e_id": "E12345678202610251200abcDEF12345"
+          }
+        }
+      ]
+    },
+    {
+      "name": "sent then received is paid",
+      "card": {
+        "event_id": "$card:bipe.net.br",
+        "requester": "@loja:bipe.net.br",
+        "payers": [
+          "@ana:bipe.net.br"
+        ]
+      },
+      "events": [
+        {
+          "event_id": "$m1",
+          "sender": "@ana:bipe.net.br",
+          "ts": 10,
+          "content": {
+            "m.relates_to": {
+              "rel_type": "m.reference",
+              "event_id": "$card:bipe.net.br"
+            },
+            "mark": "sent",
+            "e2e_id": "E12345678202610251200abcDEF12345"
+          }
+        },
+        {
+          "event_id": "$m2",
+          "sender": "@loja:bipe.net.br",
+          "ts": 20,
+          "content": {
+            "m.relates_to": {
+              "rel_type": "m.reference",
+              "event_id": "$card:bipe.net.br"
+            },
+            "mark": "received"
+          }
+        }
+      ]
+    },
+    {
+      "name": "received without sent",
+      "card": {
+        "event_id": "$card:bipe.net.br",
+        "requester": "@loja:bipe.net.br",
+        "payers": [
+          "@ana:bipe.net.br"
+        ]
+      },
+      "events": [
+        {
+          "event_id": "$m1",
+          "sender": "@loja:bipe.net.br",
+          "ts": 10,
+          "content": {
+            "m.relates_to": {
+              "rel_type": "m.reference",
+              "event_id": "$card:bipe.net.br"
+            },
+            "mark": "received"
+          }
+        }
+      ]
+    },
+    {
+      "name": "sent then not received",
+      "card": {
+        "event_id": "$card:bipe.net.br",
+        "requester": "@loja:bipe.net.br",
+        "payers": [
+          "@ana:bipe.net.br"
+        ]
+      },
+      "events": [
+        {
+          "event_id": "$m1",
+          "sender": "@ana:bipe.net.br",
+          "ts": 10,
+          "content": {
+            "m.relates_to": {
+              "rel_type": "m.reference",
+              "event_id": "$card:bipe.net.br"
+            },
+            "mark": "sent"
+          }
+        },
+        {
+          "event_id": "$m2",
+          "sender": "@loja:bipe.net.br",
+          "ts": 20,
+          "content": {
+            "m.relates_to": {
+              "rel_type": "m.reference",
+              "event_id": "$card:bipe.net.br"
+            },
+            "mark": "not_received"
+          }
+        }
+      ]
+    },
+    {
+      "name": "not received before sent is rejected",
+      "card": {
+        "event_id": "$card:bipe.net.br",
+        "requester": "@loja:bipe.net.br",
+        "payers": [
+          "@ana:bipe.net.br"
+        ]
+      },
+      "events": [
+        {
+          "event_id": "$m1",
+          "sender": "@loja:bipe.net.br",
+          "ts": 10,
+          "content": {
+            "m.relates_to": {
+              "rel_type": "m.reference",
+              "event_id": "$card:bipe.net.br"
+            },
+            "mark": "not_received"
+          }
+        }
+      ]
+    },
+    {
+      "name": "requester cannot mark sent",
+      "card": {
+        "event_id": "$card:bipe.net.br",
+        "requester": "@loja:bipe.net.br",
+        "payers": [
+          "@ana:bipe.net.br"
+        ]
+      },
+      "events": [
+        {
+          "event_id": "$m1",
+          "sender": "@loja:bipe.net.br",
+          "ts": 10,
+          "content": {
+            "m.relates_to": {
+              "rel_type": "m.reference",
+              "event_id": "$card:bipe.net.br"
+            },
+            "mark": "sent"
+          }
+        }
+      ]
+    },
+    {
+      "name": "payer cannot mark received",
+      "card": {
+        "event_id": "$card:bipe.net.br",
+        "requester": "@loja:bipe.net.br",
+        "payers": [
+          "@ana:bipe.net.br"
+        ]
+      },
+      "events": [
+        {
+          "event_id": "$m1",
+          "sender": "@ana:bipe.net.br",
+          "ts": 10,
+          "content": {
+            "m.relates_to": {
+              "rel_type": "m.reference",
+              "event_id": "$card:bipe.net.br"
+            },
+            "mark": "sent"
+          }
+        },
+        {
+          "event_id": "$m2",
+          "sender": "@ana:bipe.net.br",
+          "ts": 20,
+          "content": {
+            "m.relates_to": {
+              "rel_type": "m.reference",
+              "event_id": "$card:bipe.net.br"
+            },
+            "mark": "received"
+          }
+        }
+      ]
+    },
+    {
+      "name": "stranger marks are rejected",
+      "card": {
+        "event_id": "$card:bipe.net.br",
+        "requester": "@loja:bipe.net.br",
+        "payers": [
+          "@ana:bipe.net.br"
+        ]
+      },
+      "events": [
+        {
+          "event_id": "$m1",
+          "sender": "@outro:bipe.net.br",
+          "ts": 10,
+          "content": {
+            "m.relates_to": {
+              "rel_type": "m.reference",
+              "event_id": "$card:bipe.net.br"
+            },
+            "mark": "sent"
+          }
+        },
+        {
+          "event_id": "$m2",
+          "sender": "@outro:bipe.net.br",
+          "ts": 20,
+          "content": {
+            "m.relates_to": {
+              "rel_type": "m.reference",
+              "event_id": "$card:bipe.net.br"
+            },
+            "mark": "received",
+            "payer": "@ana:bipe.net.br"
+          }
+        }
+      ]
+    },
+    {
+      "name": "malformed E2E ID rejects the mark",
+      "card": {
+        "event_id": "$card:bipe.net.br",
+        "requester": "@loja:bipe.net.br",
+        "payers": [
+          "@ana:bipe.net.br"
+        ]
+      },
+      "events": [
+        {
+          "event_id": "$m1",
+          "sender": "@ana:bipe.net.br",
+          "ts": 10,
+          "content": {
+            "m.relates_to": {
+              "rel_type": "m.reference",
+              "event_id": "$card:bipe.net.br"
+            },
+            "mark": "sent",
+            "e2e_id": "E123"
+          }
+        }
+      ]
+    },
+    {
+      "name": "E2E ID on received rejects the mark",
+      "card": {
+        "event_id": "$card:bipe.net.br",
+        "requester": "@loja:bipe.net.br",
+        "payers": [
+          "@ana:bipe.net.br"
+        ]
+      },
+      "events": [
+        {
+          "event_id": "$m1",
+          "sender": "@ana:bipe.net.br",
+          "ts": 10,
+          "content": {
+            "m.relates_to": {
+              "rel_type": "m.reference",
+              "event_id": "$card:bipe.net.br"
+            },
+            "mark": "sent"
+          }
+        },
+        {
+          "event_id": "$m2",
+          "sender": "@loja:bipe.net.br",
+          "ts": 20,
+          "content": {
+            "m.relates_to": {
+              "rel_type": "m.reference",
+              "event_id": "$card:bipe.net.br"
+            },
+            "mark": "received",
+            "e2e_id": "E12345678202610251200abcDEF12345"
+          }
+        }
+      ]
+    },
+    {
+      "name": "correction: sent again after not received",
+      "card": {
+        "event_id": "$card:bipe.net.br",
+        "requester": "@loja:bipe.net.br",
+        "payers": [
+          "@ana:bipe.net.br"
+        ]
+      },
+      "events": [
+        {
+          "event_id": "$m1",
+          "sender": "@ana:bipe.net.br",
+          "ts": 10,
+          "content": {
+            "m.relates_to": {
+              "rel_type": "m.reference",
+              "event_id": "$card:bipe.net.br"
+            },
+            "mark": "sent"
+          }
+        },
+        {
+          "event_id": "$m2",
+          "sender": "@loja:bipe.net.br",
+          "ts": 20,
+          "content": {
+            "m.relates_to": {
+              "rel_type": "m.reference",
+              "event_id": "$card:bipe.net.br"
+            },
+            "mark": "not_received"
+          }
+        },
+        {
+          "event_id": "$m3",
+          "sender": "@ana:bipe.net.br",
+          "ts": 30,
+          "content": {
+            "m.relates_to": {
+              "rel_type": "m.reference",
+              "event_id": "$card:bipe.net.br"
+            },
+            "mark": "sent",
+            "e2e_id": "E12345678202610251200abcDEF12345"
+          }
+        }
+      ]
+    },
+    {
+      "name": "correction: received then not received",
+      "card": {
+        "event_id": "$card:bipe.net.br",
+        "requester": "@loja:bipe.net.br",
+        "payers": [
+          "@ana:bipe.net.br"
+        ]
+      },
+      "events": [
+        {
+          "event_id": "$m1",
+          "sender": "@ana:bipe.net.br",
+          "ts": 10,
+          "content": {
+            "m.relates_to": {
+              "rel_type": "m.reference",
+              "event_id": "$card:bipe.net.br"
+            },
+            "mark": "sent"
+          }
+        },
+        {
+          "event_id": "$m2",
+          "sender": "@loja:bipe.net.br",
+          "ts": 20,
+          "content": {
+            "m.relates_to": {
+              "rel_type": "m.reference",
+              "event_id": "$card:bipe.net.br"
+            },
+            "mark": "received"
+          }
+        },
+        {
+          "event_id": "$m3",
+          "sender": "@loja:bipe.net.br",
+          "ts": 30,
+          "content": {
+            "m.relates_to": {
+              "rel_type": "m.reference",
+              "event_id": "$card:bipe.net.br"
+            },
+            "mark": "not_received"
+          }
+        }
+      ]
+    },
+    {
+      "name": "sent after received is rejected",
+      "card": {
+        "event_id": "$card:bipe.net.br",
+        "requester": "@loja:bipe.net.br",
+        "payers": [
+          "@ana:bipe.net.br"
+        ]
+      },
+      "events": [
+        {
+          "event_id": "$m1",
+          "sender": "@loja:bipe.net.br",
+          "ts": 10,
+          "content": {
+            "m.relates_to": {
+              "rel_type": "m.reference",
+              "event_id": "$card:bipe.net.br"
+            },
+            "mark": "received"
+          }
+        },
+        {
+          "event_id": "$m2",
+          "sender": "@ana:bipe.net.br",
+          "ts": 20,
+          "content": {
+            "m.relates_to": {
+              "rel_type": "m.reference",
+              "event_id": "$card:bipe.net.br"
+            },
+            "mark": "sent"
+          }
+        }
+      ]
+    },
+    {
+      "name": "a new sent replaces the E2E ID",
+      "card": {
+        "event_id": "$card:bipe.net.br",
+        "requester": "@loja:bipe.net.br",
+        "payers": [
+          "@ana:bipe.net.br"
+        ]
+      },
+      "events": [
+        {
+          "event_id": "$m1",
+          "sender": "@ana:bipe.net.br",
+          "ts": 10,
+          "content": {
+            "m.relates_to": {
+              "rel_type": "m.reference",
+              "event_id": "$card:bipe.net.br"
+            },
+            "mark": "sent",
+            "e2e_id": "E12345678202610251200abcDEF12345"
+          }
+        },
+        {
+          "event_id": "$m2",
+          "sender": "@ana:bipe.net.br",
+          "ts": 20,
+          "content": {
+            "m.relates_to": {
+              "rel_type": "m.reference",
+              "event_id": "$card:bipe.net.br"
+            },
+            "mark": "sent"
+          }
+        }
+      ]
+    },
+    {
+      "name": "order by time, not by list",
+      "card": {
+        "event_id": "$card:bipe.net.br",
+        "requester": "@loja:bipe.net.br",
+        "payers": [
+          "@ana:bipe.net.br"
+        ]
+      },
+      "events": [
+        {
+          "event_id": "$m2",
+          "sender": "@loja:bipe.net.br",
+          "ts": 20,
+          "content": {
+            "m.relates_to": {
+              "rel_type": "m.reference",
+              "event_id": "$card:bipe.net.br"
+            },
+            "mark": "received"
+          }
+        },
+        {
+          "event_id": "$m1",
+          "sender": "@ana:bipe.net.br",
+          "ts": 10,
+          "content": {
+            "m.relates_to": {
+              "rel_type": "m.reference",
+              "event_id": "$card:bipe.net.br"
+            },
+            "mark": "sent"
+          }
+        }
+      ]
+    },
+    {
+      "name": "same time, order by event ID",
+      "card": {
+        "event_id": "$card:bipe.net.br",
+        "requester": "@loja:bipe.net.br",
+        "payers": [
+          "@ana:bipe.net.br"
+        ]
+      },
+      "events": [
+        {
+          "event_id": "$m2",
+          "sender": "@loja:bipe.net.br",
+          "ts": 10,
+          "content": {
+            "m.relates_to": {
+              "rel_type": "m.reference",
+              "event_id": "$card:bipe.net.br"
+            },
+            "mark": "not_received"
+          }
+        },
+        {
+          "event_id": "$m1",
+          "sender": "@ana:bipe.net.br",
+          "ts": 10,
+          "content": {
+            "m.relates_to": {
+              "rel_type": "m.reference",
+              "event_id": "$card:bipe.net.br"
+            },
+            "mark": "sent"
+          }
+        }
+      ]
+    },
+    {
+      "name": "mark for another card",
+      "card": {
+        "event_id": "$card:bipe.net.br",
+        "requester": "@loja:bipe.net.br",
+        "payers": [
+          "@ana:bipe.net.br"
+        ]
+      },
+      "events": [
+        {
+          "event_id": "$m1",
+          "sender": "@ana:bipe.net.br",
+          "ts": 10,
+          "content": {
+            "m.relates_to": {
+              "rel_type": "m.reference",
+              "event_id": "$other"
+            },
+            "mark": "sent"
+          }
+        }
+      ]
+    },
+    {
+      "name": "wrong relation type",
+      "card": {
+        "event_id": "$card:bipe.net.br",
+        "requester": "@loja:bipe.net.br",
+        "payers": [
+          "@ana:bipe.net.br"
+        ]
+      },
+      "events": [
+        {
+          "event_id": "$m1",
+          "sender": "@ana:bipe.net.br",
+          "ts": 10,
+          "content": {
+            "m.relates_to": {
+              "rel_type": "m.annotation",
+              "event_id": "$card:bipe.net.br"
+            },
+            "mark": "sent"
+          }
+        }
+      ]
+    },
+    {
+      "name": "unknown mark",
+      "card": {
+        "event_id": "$card:bipe.net.br",
+        "requester": "@loja:bipe.net.br",
+        "payers": [
+          "@ana:bipe.net.br"
+        ]
+      },
+      "events": [
+        {
+          "event_id": "$m1",
+          "sender": "@ana:bipe.net.br",
+          "ts": 10,
+          "content": {
+            "m.relates_to": {
+              "rel_type": "m.reference",
+              "event_id": "$card:bipe.net.br"
+            },
+            "mark": "paid"
+          }
+        }
+      ]
+    },
+    {
+      "name": "content not an object",
+      "card": {
+        "event_id": "$card:bipe.net.br",
+        "requester": "@loja:bipe.net.br",
+        "payers": [
+          "@ana:bipe.net.br"
+        ]
+      },
+      "events": [
+        {
+          "event_id": "$m1",
+          "sender": "@ana:bipe.net.br",
+          "ts": 10,
+          "content": []
+        }
+      ]
+    },
+    {
+      "name": "payer field must be a string",
+      "card": {
+        "event_id": "$card:bipe.net.br",
+        "requester": "@loja:bipe.net.br",
+        "payers": [
+          "@ana:bipe.net.br"
+        ]
+      },
+      "events": [
+        {
+          "event_id": "$m1",
+          "sender": "@ana:bipe.net.br",
+          "ts": 10,
+          "content": {
+            "m.relates_to": {
+              "rel_type": "m.reference",
+              "event_id": "$card:bipe.net.br"
+            },
+            "mark": "sent",
+            "payer": 5
+          }
+        }
+      ]
+    },
+    {
+      "name": "sent naming another payer is rejected",
+      "card": {
+        "event_id": "$card:bipe.net.br",
+        "requester": "@loja:bipe.net.br",
+        "payers": [
+          "@ana:bipe.net.br",
+          "@bia:bipe.net.br"
+        ]
+      },
+      "events": [
+        {
+          "event_id": "$m1",
+          "sender": "@ana:bipe.net.br",
+          "ts": 10,
+          "content": {
+            "m.relates_to": {
+              "rel_type": "m.reference",
+              "event_id": "$card:bipe.net.br"
+            },
+            "mark": "sent",
+            "payer": "@bia:bipe.net.br"
+          }
+        }
+      ]
+    },
+    {
+      "name": "split: one line per payer",
+      "card": {
+        "event_id": "$card:bipe.net.br",
+        "requester": "@loja:bipe.net.br",
+        "payers": [
+          "@ana:bipe.net.br",
+          "@bia:bipe.net.br"
+        ]
+      },
+      "events": [
+        {
+          "event_id": "$m1",
+          "sender": "@ana:bipe.net.br",
+          "ts": 10,
+          "content": {
+            "m.relates_to": {
+              "rel_type": "m.reference",
+              "event_id": "$card:bipe.net.br"
+            },
+            "mark": "sent"
+          }
+        },
+        {
+          "event_id": "$m2",
+          "sender": "@bia:bipe.net.br",
+          "ts": 11,
+          "content": {
+            "m.relates_to": {
+              "rel_type": "m.reference",
+              "event_id": "$card:bipe.net.br"
+            },
+            "mark": "sent",
+            "e2e_id": "E12345678202610251200abcDEF12345"
+          }
+        },
+        {
+          "event_id": "$m3",
+          "sender": "@loja:bipe.net.br",
+          "ts": 20,
+          "content": {
+            "m.relates_to": {
+              "rel_type": "m.reference",
+              "event_id": "$card:bipe.net.br"
+            },
+            "mark": "received",
+            "payer": "@bia:bipe.net.br"
+          }
+        }
+      ]
+    },
+    {
+      "name": "split: received needs the payer",
+      "card": {
+        "event_id": "$card:bipe.net.br",
+        "requester": "@loja:bipe.net.br",
+        "payers": [
+          "@ana:bipe.net.br",
+          "@bia:bipe.net.br"
+        ]
+      },
+      "events": [
+        {
+          "event_id": "$m1",
+          "sender": "@ana:bipe.net.br",
+          "ts": 10,
+          "content": {
+            "m.relates_to": {
+              "rel_type": "m.reference",
+              "event_id": "$card:bipe.net.br"
+            },
+            "mark": "sent"
+          }
+        },
+        {
+          "event_id": "$m2",
+          "sender": "@loja:bipe.net.br",
+          "ts": 20,
+          "content": {
+            "m.relates_to": {
+              "rel_type": "m.reference",
+              "event_id": "$card:bipe.net.br"
+            },
+            "mark": "received"
+          }
+        }
+      ]
+    },
+    {
+      "name": "split: payer not on the card",
+      "card": {
+        "event_id": "$card:bipe.net.br",
+        "requester": "@loja:bipe.net.br",
+        "payers": [
+          "@ana:bipe.net.br",
+          "@bia:bipe.net.br"
+        ]
+      },
+      "events": [
+        {
+          "event_id": "$m1",
+          "sender": "@loja:bipe.net.br",
+          "ts": 20,
+          "content": {
+            "m.relates_to": {
+              "rel_type": "m.reference",
+              "event_id": "$card:bipe.net.br"
+            },
+            "mark": "received",
+            "payer": "@outro:bipe.net.br"
+          }
+        }
+      ]
+    }
+  ],
+  "txid": [
+    {
+      "request_id": "pedido-2026-10-25-0001"
+    },
+    {
+      "request_id": "ABCdef0123456789XYZabc999999"
+    },
+    {
+      "request_id": ""
+    },
+    {
+      "request_id": "çã ñ 12"
+    }
+  ]
+}

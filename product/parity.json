@@ -3147,6 +3147,31 @@
       "issue": 485
     },
     {
+      "id": "brand-marks-manage",
+      "name": "A reseller accepts, refuses and removes a brand's mark; a verified brand grants and ends marks (ADR 0162, bipe#486)",
+      "ios": {
+        "status": "n/a",
+        "reason": "Fork frozen (ADR 0155); built in the own client"
+      },
+      "android": {
+        "status": "n/a",
+        "reason": "Fork frozen (ADR 0155); built in the own client"
+      },
+      "web": {
+        "status": "n/a",
+        "reason": "No web chat (ADR 0004); the site shows a demo at most"
+      },
+      "server": {
+        "status": "built",
+        "evidence": [
+          "bipe-api/src/brand-marks.ts"
+        ]
+      },
+      "ios-new": "planned",
+      "android-new": "planned",
+      "issue": 486
+    },
+    {
       "id": "voice-transcript-receive",
       "name": "Transcribe a received voice message on the listener's phone (bipe#500)",
       "ios": {

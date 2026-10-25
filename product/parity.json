@@ -407,8 +407,20 @@
         "status": "n/a",
         "reason": "Runs on the device; the rules are registries/trust-facts.json"
       },
-      "ios-new": "planned",
-      "android-new": "planned"
+      "ios-new": {
+        "status": "built",
+        "evidence": [
+          "bipe-app/ios/BipeKit/Sources/BipeKit/BipeTrustSources.swift",
+          "bipe-app/ios/Bipe/People/PersonProfileView.swift"
+        ]
+      },
+      "android-new": {
+        "status": "built",
+        "evidence": [
+          "bipe-app/android/libraries/bipe/src/main/kotlin/chat/bipe/shared/BipeTrustSources.kt",
+          "bipe-app/android/app/src/main/kotlin/chat/bipe/app/people/PersonProfile.kt"
+        ]
+      }
     },
     {
       "id": "cnpj-badge",
@@ -457,6 +469,26 @@
         ]
       },
       "issue": 252
+    },
+    {
+      "id": "cvm-line",
+      "name": "CVM register line in the company seal, and the stop-order card (ADR 0077, bipe#237, bipe#238)",
+      "issue": 238,
+      "ios": {
+        "status": "n/a",
+        "reason": "Not built in the fork; the forks are frozen (ADR 0155)"
+      },
+      "android": {
+        "status": "n/a",
+        "reason": "Not built in the fork; the forks are frozen (ADR 0155)"
+      },
+      "web": {
+        "status": "n/a",
+        "reason": "No web chat (ADR 0004); the site shows a demo at most"
+      },
+      "server": "planned",
+      "ios-new": "planned",
+      "android-new": "planned"
     },
     {
       "id": "reserved-names",

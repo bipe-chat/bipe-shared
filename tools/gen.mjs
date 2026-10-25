@@ -179,6 +179,10 @@ public enum BipeRegistries {
     public static let phoneMaxInputLength = ${reg.phones.maxInputLength}
     public static let phoneInternationalMinDigits = ${reg.phones.internationalMinDigits}
     public static let phoneInternationalMaxDigits = ${reg.phones.internationalMaxDigits}
+    /// Yearly confirmation of a linked number (bipe-chat/bipe#470): findable for this many months after the last proof,
+    /// and the apps warn this many days before confirm_by.
+    public static let phoneLinkConfirmMonths = ${reg.phones.linkConfirmMonths}
+    public static let phoneLinkConfirmWarnDays = ${reg.phones.linkConfirmWarnDays}
 
     /// Device-first accounts (ADR 0057, ADR 0059; registries/accounts.json). Check PINs with the rule there;
     /// test-vectors/pins.json has the cases. The server is the authority.
@@ -424,6 +428,9 @@ object BipeRegistries {
     const val PHONE_MAX_INPUT_LENGTH = ${reg.phones.maxInputLength}
     const val PHONE_INTERNATIONAL_MIN_DIGITS = ${reg.phones.internationalMinDigits}
     const val PHONE_INTERNATIONAL_MAX_DIGITS = ${reg.phones.internationalMaxDigits}
+    /** Yearly confirmation of a linked number (bipe-chat/bipe#470): months findable, and the warning days before confirm_by. */
+    const val PHONE_LINK_CONFIRM_MONTHS = ${reg.phones.linkConfirmMonths}
+    const val PHONE_LINK_CONFIRM_WARN_DAYS = ${reg.phones.linkConfirmWarnDays}
 
     /**
      * Device-first accounts (ADR 0057, ADR 0059; registries/accounts.json). Check PINs with the rule there;

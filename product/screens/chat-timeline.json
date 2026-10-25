@@ -31,7 +31,13 @@
     },
     "isLoadingHistory": { "type": "bool", "description": "true while back-pagination runs." },
     "reachedStart": { "type": "bool", "description": "true when the start of the chat is loaded." },
-    "draft": { "type": "string", "description": "The text in the composer." }
+    "draft": { "type": "string", "description": "The text in the composer." },
+    "peerAway": {
+      "type": "enum",
+      "values": ["none", "left", "accountGone"],
+      "description": "DM only (RoomInfo.isDm, ADR 0141). left: Room.member of the other person has membership leave (or ban). accountGone: also Client.getProfile for the person fails with ErrorKind notFound (a deactivated account has no profile). none: joined or invited, or a group."
+    },
+    "invitingAgain": { "type": "bool", "description": "true while inviteAgain runs." }
   },
   "actions": {
     "loadHistory": {
@@ -47,6 +53,9 @@
     "retrySend": {
       "params": { "id": { "type": "string", "description": "The failed message." } },
       "effect": "Sends a failed own message again."
+    },
+    "inviteAgain": {
+      "effect": "peerAway left only. When RoomPowerLevels.canOwnUserInvite: Room.inviteUserById for the other person; the bar stays until the person joins. Else (a DM created with the DM power levels, where nobody can invite): a new DM with the person, as person-profile message does, and chat-timeline opens it. The new room is the newest, so dm-selection shows it and hides this one; nothing is deleted. A failure shows bipe_dm_invite_again_failed."
     }
   },
   "strings": [
@@ -56,7 +65,11 @@
     "bipe_app_timeline_failed",
     "bipe_app_timeline_undecryptable",
     "bipe_app_timeline_loading_history",
-    "bipe_app_timeline_start"
+    "bipe_app_timeline_start",
+    "bipe_dm_left",
+    "bipe_action_invite_again",
+    "bipe_dm_invite_again_failed",
+    "bipe_dm_account_gone"
   ],
   "sdk": [
     "Client.getRoom",
@@ -64,12 +77,19 @@
     "Timeline.addListener",
     "Timeline.paginateBackwards",
     "Timeline.send",
-    "TimelineItem"
+    "TimelineItem",
+    "Room.member",
+    "Room.getPowerLevels",
+    "RoomPowerLevels.canOwnUserInvite",
+    "Room.inviteUserById",
+    "Client.getProfile"
   ],
-  "parity": ["e2ee"],
+  "parity": ["e2ee", "dm-left-bar", "dm-block-bar"],
   "notes": [
     "Send is off while draft is blank after trimming.",
     "undecryptable shows the message-undecryptable row in place of the body (cause and help action there).",
-    "timeline-rows replaces messages with rows. Replies, reactions, edits, deletions, read receipts, typing, the actions sheet, handle-change lines and scam warnings have their own specs (bipe-chat/bipe#559). Media is a later issue."
+    "timeline-rows replaces messages with rows. Replies, reactions, edits, deletions, read receipts, typing, the actions sheet, handle-change lines and scam warnings have their own specs (bipe-chat/bipe#559). Media is a later issue.",
+    "The other person left a DM (ADR 0141, bipe-chat/bipe#533): a lasting bar above the composer shows bipe_dm_left with the person's name and one button, bipe_action_invite_again. accountGone shows bipe_dm_account_gone with no button. There is no popup on composer focus. The composer stays on: a message waits in the room for a person who comes back.",
+    "A blocked person's DM (ADR 0141, bipe-chat/bipe#536, block-person): bipe_app_blocked_bar with the person's name and bipe_action_unblock_person replaces the composer. The chat stays in the list. The bar wins over the peerAway bar."
   ]
 }

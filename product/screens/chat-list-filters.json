@@ -79,7 +79,7 @@
     "Room.leave",
     "Room.inviter"
   ],
-  "parity": ["requests", "dm-delete"],
+  "parity": ["requests", "dm-delete", "dm-one-row"],
   "notes": [
     "Filters: chats is All of Joined, NonSpace, DeduplicateVersions and Category People; groups is the same with Category Group. Unread adds ReadReceipts with ReadReceiptsCategory Messages (unread messages, or marked unread). The Category rule follows RoomInfo.isDm (ADR 0141: one DM test), so a DM with a third member moves to groups.",
     "ADR 0053: a group of two that is not a DM stays in groups. The self-chat shows in neither tab; it is the first item of Você.",

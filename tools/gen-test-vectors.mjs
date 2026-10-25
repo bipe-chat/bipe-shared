@@ -7,7 +7,7 @@ import { fileURLToPath } from "node:url";
 import { buildBrCode, crc16, pixCheck, pixMarkLines, pixTxid } from "./lib/pix.mjs";
 import { cvmLines } from "./lib/cvm.mjs";
 import { loadSchedulingVectors, writeSchedulingApiFixture } from "./lib/scheduling-vectors.mjs";
-import { photoDistance, photoHash, photoMatches, relationshipNameWarning, newestDmRooms, clearedChatHidden, clearedChatKeepsEvent, clearedChatMarker, clearedChatsWithClear, compareAppVersions, extractInviteCode, handleProblem, pinProblem, remoteBannerState, normalizeCnpj, normalizePhone, handleSkeleton, loadRegistries, normalize, scamMatchIDs, scamWarningKind, trustFacts } from "./lib/registries.mjs";
+import { photoDistance, photoHash, photoMatches, relationshipNameWarning, newestDmRooms, clearedChatHidden, clearedChatKeepsEvent, clearedChatMarker, clearedChatsWithClear, compareAppVersions, extractInviteCode, handleProblem, handleSuggestions, pinProblem, remoteBannerState, normalizeCnpj, normalizePhone, handleSkeleton, loadRegistries, normalize, scamMatchIDs, scamWarningKind, trustFacts } from "./lib/registries.mjs";
 
 const root = join(dirname(fileURLToPath(import.meta.url)), "..");
 const reg = loadRegistries(root);
@@ -302,6 +302,18 @@ write("handles.json", {
     ...handleInputs.map((input) => ({ input, problem: handleProblem(input, reg), skeleton: handleSkeleton(input, reg) })),
     ...claimCases.map(({ input, claimant }) => ({ input, ...(claimant === undefined ? {} : { claimant }), problem: handleProblem(input, reg, claimant), skeleton: handleSkeleton(input, reg) })),
   ],
+});
+
+// --- Handle suggestions (bipe-chat/bipe#200) ----------------------------------
+
+const suggestionNames = [
+  "Ana Souza", "Ana Maria de Souza", "José da Silva", "Zé", "Ana", "Bo", "Ângela Müller", "Maria-Luísa Prado",
+  "  ana   souza  ", "李小龙", "Ana 2", "Pedro Henrique Alcântara de Oliveira Bragança", "O'Neil", "ana.souza", "",
+  "Bipe", "123", "Dr. João Pedro",
+];
+write("handle-suggestions.json", {
+  description: "handleSuggestions(displayName): handles of the right shape for Escolha seu @, in order (registries/handles.json suggestions). The app checks availability in this order and shows the first suggestions.shown that are free.",
+  cases: suggestionNames.map((name) => ({ name, suggestions: handleSuggestions(name, reg) })),
 });
 
 // --- Invite codes ------------------------------------------------------------

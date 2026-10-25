@@ -486,7 +486,39 @@
         "status": "n/a",
         "reason": "No web chat (ADR 0004); the site shows a demo at most"
       },
-      "server": "planned",
+      "server": {
+        "status": "built",
+        "evidence": [
+          "bipe-api/src/cvm.ts",
+          "bipe-api/src/badges.ts"
+        ]
+      },
+      "ios-new": "planned",
+      "android-new": "planned"
+    },
+    {
+      "id": "cnpj-claim",
+      "name": "Claim and verify a business in the app: CNPJ, e-CNPJ proof, websites, reserved names (ADR 0042, bipe#249)",
+      "issue": 249,
+      "ios": {
+        "status": "n/a",
+        "reason": "Not built in the fork; the forks are frozen (ADR 0155)"
+      },
+      "android": {
+        "status": "n/a",
+        "reason": "Not built in the fork; the forks are frozen (ADR 0155)"
+      },
+      "web": {
+        "status": "planned",
+        "note": "The same claim flow on the web, bipe-chat/bipe#188"
+      },
+      "server": {
+        "status": "built",
+        "evidence": [
+          "bipe-api/src/business.ts",
+          "bipe-api/src/ecnpj.ts"
+        ]
+      },
       "ios-new": "planned",
       "android-new": "planned"
     },

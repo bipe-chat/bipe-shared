@@ -47,6 +47,9 @@
     },
     "chooseHandle": {
       "effect": "Opens handle-pick."
+    },
+    "openClaim": {
+      "effect": "Company account: a tap on the cnpj, proof or domain step opens business-claim (bipe-chat/bipe#249). Those steps are todo until done."
     }
   },
   "strings": [

@@ -19,7 +19,12 @@
         "type": "enum",
         "values": ["sent", "sending", "failed"],
         "description": "Only own messages use sending and failed."
-      }
+      },
+      "notice": { "type": "OfficialNotice", "optional": true, "description": "Set on a text message from another account whose badge (GET /v1/badges/{userId}) verifies with lvl institution (docs/badge-attestation.md). The row shows as a notice card, not a chat bubble." }
+    },
+    "OfficialNotice": {
+      "name": { "type": "string", "description": "The verified name from the institution badge (payload name)." },
+      "domains": { "type": "list", "of": { "type": "string", "description": "One verified domain." }, "description": "The badge's domains. Empty: no link in the notice is clickable." }
     }
   },
   "state": {
@@ -60,6 +65,10 @@
     }
   },
   "strings": [
+    "bipe_notice_label",
+    "bipe_notice_level",
+    "bipe_notice_safety",
+    "bipe_notice_a11y",
     "bipe_cvm_stop_order_card",
     "bipe_badge_official",
     "bipe_badge_official_a11y",
@@ -88,7 +97,7 @@
     "Room.inviteUserById",
     "Client.getProfile"
   ],
-  "parity": ["e2ee", "dm-left-bar", "dm-block-bar", "official-badge", "cvm-line"],
+  "parity": ["e2ee", "dm-left-bar", "dm-block-bar", "official-badge", "cvm-line", "official-notice"],
   "notes": [
     "CVM stop order (ADR 0077, bipe-chat/bipe#238): in a DM whose other person has a verified company seal with a cvm stop order (test-vectors/cvm-lines.json danger true), a red caution card with bipe_cvm_stop_order_card and the date sits at the top of the timeline. It stays while the badge says so. It comes from the signed badge only.",
     "Official accounts (ADR 0117, bipe-chat/bipe#384): isOfficial follows the chat-list rule (exact user ID in BipeRegistries.officialAccountIDs, a DM only). A group never shows the badge, even with an official account in it.",
@@ -96,6 +105,7 @@
     "undecryptable shows the message-undecryptable row in place of the body (cause and help action there).",
     "timeline-rows replaces messages with rows. Replies, reactions, edits, deletions, read receipts, typing, the actions sheet, handle-change lines and scam warnings have their own specs (bipe-chat/bipe#559). Media is a later issue.",
     "The other person left a DM (ADR 0141, bipe-chat/bipe#533): a lasting bar above the composer shows bipe_dm_left with the person's name and one button, bipe_action_invite_again. accountGone shows bipe_dm_account_gone with no button. There is no popup on composer focus. The composer stays on: a message waits in the room for a person who comes back.",
-    "A blocked person's DM (ADR 0141, bipe-chat/bipe#536, block-person): bipe_app_blocked_bar with the person's name and bipe_action_unblock_person replaces the composer. The chat stays in the list. The bar wins over the peerAway bar."
+    "A blocked person's DM (ADR 0141, bipe-chat/bipe#536, block-person): bipe_app_blocked_bar with the person's name and bipe_action_unblock_person replaces the composer. The chat stays in the list. The bar wins over the peerAway bar.",
+    "Official notice (bipe-chat/bipe#245, ADR 0036, institutions.md 4.4): a message whose notice is set shows as a card, not a bubble: the institution's square avatar and name, bipe_notice_label, bipe_notice_level, the body, then bipe_notice_safety as a fixed line the sender cannot change. Accessibility: one element read as bipe_notice_a11y with the name, then the body. A link in the body is clickable only when test-vectors/notice-links.json says so for the badge's domains (reference tools/lib/notice.mjs); every other link is plain text, with no link preview. The notice comes from the signed badge only: the app never makes a notice from a display name, a room name or room state, and a badge that fails any check (expired, master key mismatch) gives an ordinary bubble. Who may write first (institutions.md decision 10.1) is a server rule, so the app does not refuse a notice in a chat the institution opened. No issuer signs institution badges yet, so no account shows the card today. Default chosen: the safety line is a draft until MZ settles the wording of institutions.md 10.3."
   ]
 }

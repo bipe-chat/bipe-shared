@@ -6,6 +6,7 @@ import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
 import { buildBrCode, crc16, pixCheck, pixMarkLines, pixTxid } from "./lib/pix.mjs";
 import { cvmLines } from "./lib/cvm.mjs";
+import { noticeLinkClickable } from "./lib/notice.mjs";
 import { loadSchedulingVectors, writeSchedulingApiFixture } from "./lib/scheduling-vectors.mjs";
 import { photoDistance, photoHash, photoMatches, relationshipNameWarning, newestDmRooms, clearedChatHidden, clearedChatKeepsEvent, clearedChatMarker, clearedChatsWithClear, compareAppVersions, extractInviteCode, handleProblem, pinProblem, remoteBannerState, normalizeCnpj, normalizePhone, handleSkeleton, loadRegistries, normalize, scamMatchIDs, scamWarningKind, trustFacts } from "./lib/registries.mjs";
 
@@ -80,6 +81,21 @@ const cnpjContext = { sender: cnpjPayload.sub, senderDevice: "Y29tcGFueS1zZWNvbm
 const without = (key) => (({ [key]: _, ...rest }) => rest)(cnpjPayload);
 if (normalizeCnpj(cnpjPayload.cnpj) !== cnpjPayload.cnpj) throw new Error("badges: the cnpj vector is not a normalised CNPJ");
 
+// A verified institution (lvl "institution", bipe#245): bound to the account's master key like a company, with
+// its verified link domains (ADR 0036).
+const institutionPayload = {
+  sub: "@prefeitura:bipe.net.br",
+  lvl: "institution",
+  name: "Prefeitura de Exemplo",
+  cnpj: "11222333000181",
+  domains: ["exemplo.sp.gov.br"],
+  msk: MASTER_KEY,
+  iat: NOW - 3600,
+  exp: NOW - 3600 + reg.badgeKeys.lifeDays * 86400,
+};
+const institutionContext = { sender: institutionPayload.sub, senderDevice: "cHJlZmVpdHVyYS1zZWF0LTI", senderMasterKey: MASTER_KEY };
+const withoutInst = (key) => (({ [key]: _, ...rest }) => rest)(institutionPayload);
+
 write("badges.json", {
   $comment: "TEST-ONLY key. Never trust kid test-only-* in a release build. See docs/badge-attestation.md for the verification order. senderMasterKey is the sender's cross-signing master key as the Matrix SDK reports it (unpadded base64), or null when the app does not know it.",
   now: NOW,
@@ -118,6 +134,22 @@ write("badges.json", {
     { name: "cnpj: signed by unknown key", envelope: envelope(cnpjPayload, otherKey), ...cnpjContext, expect: "invalid_signature" },
     { name: "cnpj: valid with a cvm field", envelope: envelope({ ...cnpjPayload, cvm: { st: "stop_order", on: "2026-05-12" } }), ...cnpjContext, expect: "valid" },
     { name: "cnpj: valid with a cvm field the app does not know", envelope: envelope({ ...cnpjPayload, cvm: { st: "later", x: 1 } }), ...cnpjContext, expect: "valid" },
+    { name: "institution: valid", envelope: envelope(institutionPayload), ...institutionContext, expect: "valid" },
+    { name: "institution: valid on any device of the account", envelope: envelope(institutionPayload), ...institutionContext, senderDevice: "b3V0cm8tYXBhcmVsaG8", expect: "valid" },
+    { name: "institution: valid without domains", envelope: envelope(withoutInst("domains")), ...institutionContext, expect: "valid" },
+    { name: "institution: valid with empty domains", envelope: envelope({ ...institutionPayload, domains: [] }), ...institutionContext, expect: "valid" },
+    { name: "institution: master key mismatch (identity reset)", envelope: envelope(institutionPayload), ...institutionContext, senderMasterKey: "bmV3LW1hc3Rlci1rZXk", expect: "master_key_mismatch" },
+    { name: "institution: sender master key unknown", envelope: envelope(institutionPayload), ...institutionContext, senderMasterKey: null, expect: "master_key_mismatch" },
+    { name: "institution: device-bound instead of msk", envelope: envelope({ ...withoutInst("msk"), dev: institutionContext.senderDevice }), ...institutionContext, expect: "malformed" },
+    { name: "institution: empty msk", envelope: envelope({ ...institutionPayload, msk: "" }), ...institutionContext, expect: "malformed" },
+    { name: "institution: missing cnpj", envelope: envelope(withoutInst("cnpj")), ...institutionContext, expect: "malformed" },
+    { name: "institution: cnpj with separators", envelope: envelope({ ...institutionPayload, cnpj: "11.222.333/0001-81" }), ...institutionContext, expect: "malformed" },
+    { name: "institution: domain with a scheme", envelope: envelope({ ...institutionPayload, domains: ["https://exemplo.sp.gov.br"] }), ...institutionContext, expect: "malformed" },
+    { name: "institution: upper-case domain", envelope: envelope({ ...institutionPayload, domains: ["Exemplo.sp.gov.br"] }), ...institutionContext, expect: "malformed" },
+    { name: "institution: domain without a dot", envelope: envelope({ ...institutionPayload, domains: ["localhost"] }), ...institutionContext, expect: "malformed" },
+    { name: "institution: domains not a list", envelope: envelope({ ...institutionPayload, domains: "exemplo.sp.gov.br" }), ...institutionContext, expect: "malformed" },
+    { name: "institution: subject mismatch", envelope: envelope(institutionPayload), ...institutionContext, sender: "@mallory:bipe.net.br", expect: "subject_mismatch" },
+    { name: "institution: expired", envelope: envelope({ ...institutionPayload, exp: NOW - 1 }), ...institutionContext, expect: "expired" },
   ],
 });
 
@@ -142,6 +174,36 @@ const cvmCases = [
 write("cvm-lines.json", {
   $comment: "The signed badge field cvm (docs/badge-attestation.md) to the lines of the company seal detail (ADR 0077 point 3). Reference: tools/lib/cvm.mjs. lines: string keys with an optional argument; danger: the stop-order line is red and chats from the account show bipe_cvm_stop_order_card. A field that is missing or not well formed shows nothing. The detail ends with bipe_cvm_source when it shows a line.",
   vectors: cvmCases.map(([name, cvm]) => ({ name, ...(cvm === undefined ? {} : { cvm }), ...cvmLines(cvm) })),
+});
+
+// --- Links in official notices (ADR 0036, bipe#245) -------------------------
+
+const noticeDomains = ["exemplo.sp.gov.br", "bipe.chat"];
+const noticeCases = [
+  ["the verified domain", "https://exemplo.sp.gov.br/iptu"],
+  ["a subdomain", "https://servicos.exemplo.sp.gov.br/agendar?dia=2"],
+  ["upper-case scheme and host", "HTTPS://Exemplo.SP.gov.br/"],
+  ["host only", "https://exemplo.sp.gov.br"],
+  ["a trailing dot", "https://exemplo.sp.gov.br./"],
+  ["a fragment right after the host", "https://bipe.chat#inicio"],
+  ["http, not https", "http://exemplo.sp.gov.br/iptu"],
+  ["another domain", "https://exemplo-sp.gov.com/iptu"],
+  ["the domain as a prefix", "https://exemplo.sp.gov.br.golpe.com/iptu"],
+  ["the domain glued to another name", "https://falsoexemplo.sp.gov.br/"],
+  ["user info before the host", "https://exemplo.sp.gov.br@golpe.com/"],
+  ["a port", "https://exemplo.sp.gov.br:8443/"],
+  ["an IP address", "https://192.168.0.1/"],
+  ["an IPv6 literal", "https://[::1]/"],
+  ["a non-ASCII host", "https://exemplo.sp.gоv.br/"],
+  ["a punycode host not in the list", "https://xn--exmplo-6ua.sp.gov.br/"],
+  ["no scheme", "exemplo.sp.gov.br/iptu"],
+  ["empty host", "https:///iptu"],
+  ["javascript", "javascript:alert(1)"],
+];
+write("notice-links.json", {
+  $comment: "A link in an official notice from an account with a valid institution badge (docs/badge-attestation.md, domains) is clickable only when clickable is true. Reference: tools/lib/notice.mjs. The rule is lexical: https, then the text up to the first /, ? or # is the host; it must be ASCII letters, digits, dots and hyphens only, and after lower-casing and one trailing dot removed it equals a domain or ends with '.' + a domain. Every other link shows as plain text.",
+  domains: noticeDomains,
+  vectors: noticeCases.map(([name, url]) => ({ name, url, clickable: noticeLinkClickable(noticeDomains, url) })),
 });
 
 // --- Normalisation and reserved names --------------------------------------

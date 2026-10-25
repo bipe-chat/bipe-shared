@@ -433,6 +433,214 @@
       "senderDevice": "Y29tcGFueS1zZWNvbmQtc2VhdA",
       "senderMasterKey": "dGVzdC1jcm9zcy1zaWduaW5nLW1hc3Rlci1rZXktMDE",
       "expect": "valid"
+    },
+    {
+      "name": "institution: valid",
+      "envelope": {
+        "v": 1,
+        "kid": "test-only-2026-10",
+        "payload": "eyJzdWIiOiJAcHJlZmVpdHVyYTpiaXBlLm5ldC5iciIsImx2bCI6Imluc3RpdHV0aW9uIiwibmFtZSI6IlByZWZlaXR1cmEgZGUgRXhlbXBsbyIsImNucGoiOiIxMTIyMjMzMzAwMDE4MSIsImRvbWFpbnMiOlsiZXhlbXBsby5zcC5nb3YuYnIiXSwibXNrIjoiZEdWemRDMWpjbTl6Y3kxemFXZHVhVzVuTFcxaGMzUmxjaTFyWlhrdE1ERSIsImlhdCI6MTc5MTcxNjQwMCwiZXhwIjoxNzkyMzIxMjAwfQ",
+        "sig": "4BLv9hiQgINXhAA70SP2pyrni-u9Gwow9LxhVVnAY8ZGNP1znlpSZD7wy0JPGuk9RzMhYkNZStuFhP6K05KbDg"
+      },
+      "sender": "@prefeitura:bipe.net.br",
+      "senderDevice": "cHJlZmVpdHVyYS1zZWF0LTI",
+      "senderMasterKey": "dGVzdC1jcm9zcy1zaWduaW5nLW1hc3Rlci1rZXktMDE",
+      "expect": "valid"
+    },
+    {
+      "name": "institution: valid on any device of the account",
+      "envelope": {
+        "v": 1,
+        "kid": "test-only-2026-10",
+        "payload": "eyJzdWIiOiJAcHJlZmVpdHVyYTpiaXBlLm5ldC5iciIsImx2bCI6Imluc3RpdHV0aW9uIiwibmFtZSI6IlByZWZlaXR1cmEgZGUgRXhlbXBsbyIsImNucGoiOiIxMTIyMjMzMzAwMDE4MSIsImRvbWFpbnMiOlsiZXhlbXBsby5zcC5nb3YuYnIiXSwibXNrIjoiZEdWemRDMWpjbTl6Y3kxemFXZHVhVzVuTFcxaGMzUmxjaTFyWlhrdE1ERSIsImlhdCI6MTc5MTcxNjQwMCwiZXhwIjoxNzkyMzIxMjAwfQ",
+        "sig": "4BLv9hiQgINXhAA70SP2pyrni-u9Gwow9LxhVVnAY8ZGNP1znlpSZD7wy0JPGuk9RzMhYkNZStuFhP6K05KbDg"
+      },
+      "sender": "@prefeitura:bipe.net.br",
+      "senderDevice": "b3V0cm8tYXBhcmVsaG8",
+      "senderMasterKey": "dGVzdC1jcm9zcy1zaWduaW5nLW1hc3Rlci1rZXktMDE",
+      "expect": "valid"
+    },
+    {
+      "name": "institution: valid without domains",
+      "envelope": {
+        "v": 1,
+        "kid": "test-only-2026-10",
+        "payload": "eyJzdWIiOiJAcHJlZmVpdHVyYTpiaXBlLm5ldC5iciIsImx2bCI6Imluc3RpdHV0aW9uIiwibmFtZSI6IlByZWZlaXR1cmEgZGUgRXhlbXBsbyIsImNucGoiOiIxMTIyMjMzMzAwMDE4MSIsIm1zayI6ImRHVnpkQzFqY205emN5MXphV2R1YVc1bkxXMWhjM1JsY2kxclpYa3RNREUiLCJpYXQiOjE3OTE3MTY0MDAsImV4cCI6MTc5MjMyMTIwMH0",
+        "sig": "cWBectLm_2IDF4OnwHEZBVAE6l_lxfIoDsRqV-i4F-8Vywk6c0Lj0in4U1cwdrxxL5juveTujmnvlabZf3q4Dw"
+      },
+      "sender": "@prefeitura:bipe.net.br",
+      "senderDevice": "cHJlZmVpdHVyYS1zZWF0LTI",
+      "senderMasterKey": "dGVzdC1jcm9zcy1zaWduaW5nLW1hc3Rlci1rZXktMDE",
+      "expect": "valid"
+    },
+    {
+      "name": "institution: valid with empty domains",
+      "envelope": {
+        "v": 1,
+        "kid": "test-only-2026-10",
+        "payload": "eyJzdWIiOiJAcHJlZmVpdHVyYTpiaXBlLm5ldC5iciIsImx2bCI6Imluc3RpdHV0aW9uIiwibmFtZSI6IlByZWZlaXR1cmEgZGUgRXhlbXBsbyIsImNucGoiOiIxMTIyMjMzMzAwMDE4MSIsImRvbWFpbnMiOltdLCJtc2siOiJkR1Z6ZEMxamNtOXpjeTF6YVdkdWFXNW5MVzFoYzNSbGNpMXJaWGt0TURFIiwiaWF0IjoxNzkxNzE2NDAwLCJleHAiOjE3OTIzMjEyMDB9",
+        "sig": "QdgIYQykKw9u9rPmDjTtaVLDvCRwLVRpmhTMWCl6rY-NaL-g6zrCZlRHK1HabP_8lU1PgzPykMfSAXlm3uiEBQ"
+      },
+      "sender": "@prefeitura:bipe.net.br",
+      "senderDevice": "cHJlZmVpdHVyYS1zZWF0LTI",
+      "senderMasterKey": "dGVzdC1jcm9zcy1zaWduaW5nLW1hc3Rlci1rZXktMDE",
+      "expect": "valid"
+    },
+    {
+      "name": "institution: master key mismatch (identity reset)",
+      "envelope": {
+        "v": 1,
+        "kid": "test-only-2026-10",
+        "payload": "eyJzdWIiOiJAcHJlZmVpdHVyYTpiaXBlLm5ldC5iciIsImx2bCI6Imluc3RpdHV0aW9uIiwibmFtZSI6IlByZWZlaXR1cmEgZGUgRXhlbXBsbyIsImNucGoiOiIxMTIyMjMzMzAwMDE4MSIsImRvbWFpbnMiOlsiZXhlbXBsby5zcC5nb3YuYnIiXSwibXNrIjoiZEdWemRDMWpjbTl6Y3kxemFXZHVhVzVuTFcxaGMzUmxjaTFyWlhrdE1ERSIsImlhdCI6MTc5MTcxNjQwMCwiZXhwIjoxNzkyMzIxMjAwfQ",
+        "sig": "4BLv9hiQgINXhAA70SP2pyrni-u9Gwow9LxhVVnAY8ZGNP1znlpSZD7wy0JPGuk9RzMhYkNZStuFhP6K05KbDg"
+      },
+      "sender": "@prefeitura:bipe.net.br",
+      "senderDevice": "cHJlZmVpdHVyYS1zZWF0LTI",
+      "senderMasterKey": "bmV3LW1hc3Rlci1rZXk",
+      "expect": "master_key_mismatch"
+    },
+    {
+      "name": "institution: sender master key unknown",
+      "envelope": {
+        "v": 1,
+        "kid": "test-only-2026-10",
+        "payload": "eyJzdWIiOiJAcHJlZmVpdHVyYTpiaXBlLm5ldC5iciIsImx2bCI6Imluc3RpdHV0aW9uIiwibmFtZSI6IlByZWZlaXR1cmEgZGUgRXhlbXBsbyIsImNucGoiOiIxMTIyMjMzMzAwMDE4MSIsImRvbWFpbnMiOlsiZXhlbXBsby5zcC5nb3YuYnIiXSwibXNrIjoiZEdWemRDMWpjbTl6Y3kxemFXZHVhVzVuTFcxaGMzUmxjaTFyWlhrdE1ERSIsImlhdCI6MTc5MTcxNjQwMCwiZXhwIjoxNzkyMzIxMjAwfQ",
+        "sig": "4BLv9hiQgINXhAA70SP2pyrni-u9Gwow9LxhVVnAY8ZGNP1znlpSZD7wy0JPGuk9RzMhYkNZStuFhP6K05KbDg"
+      },
+      "sender": "@prefeitura:bipe.net.br",
+      "senderDevice": "cHJlZmVpdHVyYS1zZWF0LTI",
+      "senderMasterKey": null,
+      "expect": "master_key_mismatch"
+    },
+    {
+      "name": "institution: device-bound instead of msk",
+      "envelope": {
+        "v": 1,
+        "kid": "test-only-2026-10",
+        "payload": "eyJzdWIiOiJAcHJlZmVpdHVyYTpiaXBlLm5ldC5iciIsImx2bCI6Imluc3RpdHV0aW9uIiwibmFtZSI6IlByZWZlaXR1cmEgZGUgRXhlbXBsbyIsImNucGoiOiIxMTIyMjMzMzAwMDE4MSIsImRvbWFpbnMiOlsiZXhlbXBsby5zcC5nb3YuYnIiXSwiaWF0IjoxNzkxNzE2NDAwLCJleHAiOjE3OTIzMjEyMDAsImRldiI6ImNISmxabVZwZEhWeVlTMXpaV0YwTFRJIn0",
+        "sig": "5wURTyKL0KHC0Zpq4uitzU0GkKCg-3gStA5vUavohrPTzGpKW-A7rWYOAGIiPfdlGm-cW70tLj3m3sM_1gLWAQ"
+      },
+      "sender": "@prefeitura:bipe.net.br",
+      "senderDevice": "cHJlZmVpdHVyYS1zZWF0LTI",
+      "senderMasterKey": "dGVzdC1jcm9zcy1zaWduaW5nLW1hc3Rlci1rZXktMDE",
+      "expect": "malformed"
+    },
+    {
+      "name": "institution: empty msk",
+      "envelope": {
+        "v": 1,
+        "kid": "test-only-2026-10",
+        "payload": "eyJzdWIiOiJAcHJlZmVpdHVyYTpiaXBlLm5ldC5iciIsImx2bCI6Imluc3RpdHV0aW9uIiwibmFtZSI6IlByZWZlaXR1cmEgZGUgRXhlbXBsbyIsImNucGoiOiIxMTIyMjMzMzAwMDE4MSIsImRvbWFpbnMiOlsiZXhlbXBsby5zcC5nb3YuYnIiXSwibXNrIjoiIiwiaWF0IjoxNzkxNzE2NDAwLCJleHAiOjE3OTIzMjEyMDB9",
+        "sig": "Y5gQ7Vwwa8JxU4xmaUytbDWKb-qKJOr3suCHQV9dwGZuc5fbZFEm2aSZoAeCSSQ4uvfGFk_icADOhG-t82s8CQ"
+      },
+      "sender": "@prefeitura:bipe.net.br",
+      "senderDevice": "cHJlZmVpdHVyYS1zZWF0LTI",
+      "senderMasterKey": "dGVzdC1jcm9zcy1zaWduaW5nLW1hc3Rlci1rZXktMDE",
+      "expect": "malformed"
+    },
+    {
+      "name": "institution: missing cnpj",
+      "envelope": {
+        "v": 1,
+        "kid": "test-only-2026-10",
+        "payload": "eyJzdWIiOiJAcHJlZmVpdHVyYTpiaXBlLm5ldC5iciIsImx2bCI6Imluc3RpdHV0aW9uIiwibmFtZSI6IlByZWZlaXR1cmEgZGUgRXhlbXBsbyIsImRvbWFpbnMiOlsiZXhlbXBsby5zcC5nb3YuYnIiXSwibXNrIjoiZEdWemRDMWpjbTl6Y3kxemFXZHVhVzVuTFcxaGMzUmxjaTFyWlhrdE1ERSIsImlhdCI6MTc5MTcxNjQwMCwiZXhwIjoxNzkyMzIxMjAwfQ",
+        "sig": "dgvhkc-UXKc6vCPUuzGm_zGfSJExDo-TDYfMC-GEAY999GDDWU8b0XaZjl33P3OZdgpdNnXaLuDZkgA9r6H2AQ"
+      },
+      "sender": "@prefeitura:bipe.net.br",
+      "senderDevice": "cHJlZmVpdHVyYS1zZWF0LTI",
+      "senderMasterKey": "dGVzdC1jcm9zcy1zaWduaW5nLW1hc3Rlci1rZXktMDE",
+      "expect": "malformed"
+    },
+    {
+      "name": "institution: cnpj with separators",
+      "envelope": {
+        "v": 1,
+        "kid": "test-only-2026-10",
+        "payload": "eyJzdWIiOiJAcHJlZmVpdHVyYTpiaXBlLm5ldC5iciIsImx2bCI6Imluc3RpdHV0aW9uIiwibmFtZSI6IlByZWZlaXR1cmEgZGUgRXhlbXBsbyIsImNucGoiOiIxMS4yMjIuMzMzLzAwMDEtODEiLCJkb21haW5zIjpbImV4ZW1wbG8uc3AuZ292LmJyIl0sIm1zayI6ImRHVnpkQzFqY205emN5MXphV2R1YVc1bkxXMWhjM1JsY2kxclpYa3RNREUiLCJpYXQiOjE3OTE3MTY0MDAsImV4cCI6MTc5MjMyMTIwMH0",
+        "sig": "p8l-nIkh8GA0D-3rLJxE3jC6aGaBCzLGs4E7ARytwZNBdR4mLSeH-UJSSGk2WBdFEArpTaTSRnKsmWZkXP1_CQ"
+      },
+      "sender": "@prefeitura:bipe.net.br",
+      "senderDevice": "cHJlZmVpdHVyYS1zZWF0LTI",
+      "senderMasterKey": "dGVzdC1jcm9zcy1zaWduaW5nLW1hc3Rlci1rZXktMDE",
+      "expect": "malformed"
+    },
+    {
+      "name": "institution: domain with a scheme",
+      "envelope": {
+        "v": 1,
+        "kid": "test-only-2026-10",
+        "payload": "eyJzdWIiOiJAcHJlZmVpdHVyYTpiaXBlLm5ldC5iciIsImx2bCI6Imluc3RpdHV0aW9uIiwibmFtZSI6IlByZWZlaXR1cmEgZGUgRXhlbXBsbyIsImNucGoiOiIxMTIyMjMzMzAwMDE4MSIsImRvbWFpbnMiOlsiaHR0cHM6Ly9leGVtcGxvLnNwLmdvdi5iciJdLCJtc2siOiJkR1Z6ZEMxamNtOXpjeTF6YVdkdWFXNW5MVzFoYzNSbGNpMXJaWGt0TURFIiwiaWF0IjoxNzkxNzE2NDAwLCJleHAiOjE3OTIzMjEyMDB9",
+        "sig": "KdYzs0W6IHVxkDP4DsH7nggmoK2ZuFVpEjMYF2o1I_kdQBcv_oauRXO0BOR4Ti492xRYkbIM3tldLK6qRjVZAA"
+      },
+      "sender": "@prefeitura:bipe.net.br",
+      "senderDevice": "cHJlZmVpdHVyYS1zZWF0LTI",
+      "senderMasterKey": "dGVzdC1jcm9zcy1zaWduaW5nLW1hc3Rlci1rZXktMDE",
+      "expect": "malformed"
+    },
+    {
+      "name": "institution: upper-case domain",
+      "envelope": {
+        "v": 1,
+        "kid": "test-only-2026-10",
+        "payload": "eyJzdWIiOiJAcHJlZmVpdHVyYTpiaXBlLm5ldC5iciIsImx2bCI6Imluc3RpdHV0aW9uIiwibmFtZSI6IlByZWZlaXR1cmEgZGUgRXhlbXBsbyIsImNucGoiOiIxMTIyMjMzMzAwMDE4MSIsImRvbWFpbnMiOlsiRXhlbXBsby5zcC5nb3YuYnIiXSwibXNrIjoiZEdWemRDMWpjbTl6Y3kxemFXZHVhVzVuTFcxaGMzUmxjaTFyWlhrdE1ERSIsImlhdCI6MTc5MTcxNjQwMCwiZXhwIjoxNzkyMzIxMjAwfQ",
+        "sig": "leElW8xLfIApKD6uoTWfi8NpjmLnm0kWjRgtN88vWx1IdEcDeXj1B4n0PH4lSKo6DY_17qiDMpamU4OUts1kCw"
+      },
+      "sender": "@prefeitura:bipe.net.br",
+      "senderDevice": "cHJlZmVpdHVyYS1zZWF0LTI",
+      "senderMasterKey": "dGVzdC1jcm9zcy1zaWduaW5nLW1hc3Rlci1rZXktMDE",
+      "expect": "malformed"
+    },
+    {
+      "name": "institution: domain without a dot",
+      "envelope": {
+        "v": 1,
+        "kid": "test-only-2026-10",
+        "payload": "eyJzdWIiOiJAcHJlZmVpdHVyYTpiaXBlLm5ldC5iciIsImx2bCI6Imluc3RpdHV0aW9uIiwibmFtZSI6IlByZWZlaXR1cmEgZGUgRXhlbXBsbyIsImNucGoiOiIxMTIyMjMzMzAwMDE4MSIsImRvbWFpbnMiOlsibG9jYWxob3N0Il0sIm1zayI6ImRHVnpkQzFqY205emN5MXphV2R1YVc1bkxXMWhjM1JsY2kxclpYa3RNREUiLCJpYXQiOjE3OTE3MTY0MDAsImV4cCI6MTc5MjMyMTIwMH0",
+        "sig": "0EwRGNOq_JxKoc9uzRyaIRTZo3T8cQUnkxHqwYKwodYo1IY4Cgc7pRyhSyWmY1kv00WdKvy9IH_CK8H4iQeYCw"
+      },
+      "sender": "@prefeitura:bipe.net.br",
+      "senderDevice": "cHJlZmVpdHVyYS1zZWF0LTI",
+      "senderMasterKey": "dGVzdC1jcm9zcy1zaWduaW5nLW1hc3Rlci1rZXktMDE",
+      "expect": "malformed"
+    },
+    {
+      "name": "institution: domains not a list",
+      "envelope": {
+        "v": 1,
+        "kid": "test-only-2026-10",
+        "payload": "eyJzdWIiOiJAcHJlZmVpdHVyYTpiaXBlLm5ldC5iciIsImx2bCI6Imluc3RpdHV0aW9uIiwibmFtZSI6IlByZWZlaXR1cmEgZGUgRXhlbXBsbyIsImNucGoiOiIxMTIyMjMzMzAwMDE4MSIsImRvbWFpbnMiOiJleGVtcGxvLnNwLmdvdi5iciIsIm1zayI6ImRHVnpkQzFqY205emN5MXphV2R1YVc1bkxXMWhjM1JsY2kxclpYa3RNREUiLCJpYXQiOjE3OTE3MTY0MDAsImV4cCI6MTc5MjMyMTIwMH0",
+        "sig": "-0j8vbfuSVw2KoraTIzR3rR2e2bpi5PIm6R8n51MGnMcnyQqtDz-6GDZQO8WnT6JVERm4LJVRq4aXkHsDCnOCg"
+      },
+      "sender": "@prefeitura:bipe.net.br",
+      "senderDevice": "cHJlZmVpdHVyYS1zZWF0LTI",
+      "senderMasterKey": "dGVzdC1jcm9zcy1zaWduaW5nLW1hc3Rlci1rZXktMDE",
+      "expect": "malformed"
+    },
+    {
+      "name": "institution: subject mismatch",
+      "envelope": {
+        "v": 1,
+        "kid": "test-only-2026-10",
+        "payload": "eyJzdWIiOiJAcHJlZmVpdHVyYTpiaXBlLm5ldC5iciIsImx2bCI6Imluc3RpdHV0aW9uIiwibmFtZSI6IlByZWZlaXR1cmEgZGUgRXhlbXBsbyIsImNucGoiOiIxMTIyMjMzMzAwMDE4MSIsImRvbWFpbnMiOlsiZXhlbXBsby5zcC5nb3YuYnIiXSwibXNrIjoiZEdWemRDMWpjbTl6Y3kxemFXZHVhVzVuTFcxaGMzUmxjaTFyWlhrdE1ERSIsImlhdCI6MTc5MTcxNjQwMCwiZXhwIjoxNzkyMzIxMjAwfQ",
+        "sig": "4BLv9hiQgINXhAA70SP2pyrni-u9Gwow9LxhVVnAY8ZGNP1znlpSZD7wy0JPGuk9RzMhYkNZStuFhP6K05KbDg"
+      },
+      "sender": "@mallory:bipe.net.br",
+      "senderDevice": "cHJlZmVpdHVyYS1zZWF0LTI",
+      "senderMasterKey": "dGVzdC1jcm9zcy1zaWduaW5nLW1hc3Rlci1rZXktMDE",
+      "expect": "subject_mismatch"
+    },
+    {
+      "name": "institution: expired",
+      "envelope": {
+        "v": 1,
+        "kid": "test-only-2026-10",
+        "payload": "eyJzdWIiOiJAcHJlZmVpdHVyYTpiaXBlLm5ldC5iciIsImx2bCI6Imluc3RpdHV0aW9uIiwibmFtZSI6IlByZWZlaXR1cmEgZGUgRXhlbXBsbyIsImNucGoiOiIxMTIyMjMzMzAwMDE4MSIsImRvbWFpbnMiOlsiZXhlbXBsby5zcC5nb3YuYnIiXSwibXNrIjoiZEdWemRDMWpjbTl6Y3kxemFXZHVhVzVuTFcxaGMzUmxjaTFyWlhrdE1ERSIsImlhdCI6MTc5MTcxNjQwMCwiZXhwIjoxNzkxNzE5OTk5fQ",
+        "sig": "E8TIRl96A5_yWgdo1GJbNGva-QdlKgS8mcrEONhencxLFr9lRiXhG2vjJ8RKl03uLrihLslcirc_1SaAZTkwBw"
+      },
+      "sender": "@prefeitura:bipe.net.br",
+      "senderDevice": "cHJlZmVpdHVyYS1zZWF0LTI",
+      "senderMasterKey": "dGVzdC1jcm9zcy1zaWduaW5nLW1hc3Rlci1rZXktMDE",
+      "expect": "expired"
     }
   ]
 }

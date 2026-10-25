@@ -180,6 +180,14 @@ public enum BipeRegistries {
     public static let phoneInternationalMinDigits = ${reg.phones.internationalMinDigits}
     public static let phoneInternationalMaxDigits = ${reg.phones.internationalMaxDigits}
 
+    /// Work side opening hours (registries/work-hours.json, bipe-chat/bipe#511).
+    public static let workHoursDefaultTimeZone = ${swiftString(reg.workHours.defaultTimeZone)}
+    public static let workHoursMaxRangesPerDay = ${reg.workHours.maxRangesPerDay}
+    /// ISO weekday (1 Monday ... 7 Sunday) and its ranges, local HH:MM, half-open.
+    public static let workHoursDefaultDays: [(day: Int, ranges: [(start: String, end: String)])] = [
+${reg.workHours.defaultDays.map((d) => `        (day: ${d.day}, ranges: [${d.ranges.map((r) => `(start: ${swiftString(r.start)}, end: ${swiftString(r.end)})`).join(", ")}]),`).join("\n")}
+    ]
+
     /// Device-first accounts (ADR 0057, ADR 0059; registries/accounts.json). Check PINs with the rule there;
     /// test-vectors/pins.json has the cases. The server is the authority.
     public static let pinLength = ${reg.accounts.pinLength}
@@ -428,6 +436,14 @@ object BipeRegistries {
     const val PHONE_MAX_INPUT_LENGTH = ${reg.phones.maxInputLength}
     const val PHONE_INTERNATIONAL_MIN_DIGITS = ${reg.phones.internationalMinDigits}
     const val PHONE_INTERNATIONAL_MAX_DIGITS = ${reg.phones.internationalMaxDigits}
+
+    /** Work side opening hours (registries/work-hours.json, bipe-chat/bipe#511). */
+    const val WORK_HOURS_DEFAULT_TIME_ZONE = ${kotlinString(reg.workHours.defaultTimeZone)}
+    const val WORK_HOURS_MAX_RANGES_PER_DAY = ${reg.workHours.maxRangesPerDay}
+    /** ISO weekday (1 Monday ... 7 Sunday) and its ranges, local HH:MM, half-open. */
+    val workHoursDefaultDays: List<Pair<Int, List<Pair<String, String>>>> = listOf(
+${reg.workHours.defaultDays.map((d) => `        ${d.day} to listOf(${d.ranges.map((r) => `${kotlinString(r.start)} to ${kotlinString(r.end)}`).join(", ")}),`).join("\n")}
+    )
 
     /**
      * Device-first accounts (ADR 0057, ADR 0059; registries/accounts.json). Check PINs with the rule there;

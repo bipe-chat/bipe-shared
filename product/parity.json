@@ -562,6 +562,26 @@
       "android-new": "planned"
     },
     {
+      "id": "work-side-time",
+      "name": "Work side keeps its own time",
+      "ios": {
+        "status": "n/a",
+        "reason": "The fork is frozen (ADR 0155)"
+      },
+      "android": {
+        "status": "n/a",
+        "reason": "The fork is frozen (ADR 0155)"
+      },
+      "web": {
+        "status": "n/a",
+        "reason": "No web chat (ADR 0004); notifications are a phone feature"
+      },
+      "server": "planned",
+      "ios-new": "planned",
+      "android-new": "planned",
+      "issue": 511
+    },
+    {
       "id": "handles",
       "name": "Usernames",
       "ios": {

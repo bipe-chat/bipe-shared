@@ -98,6 +98,9 @@ const NOT_IN_APPS = {
   CnpjRegistryRecord: "CNPJ verification runs on the web console first; app UI is bipe-chat/bipe#115",
   BusinessDomain: "CNPJ verification runs on the web console first; app UI is bipe-chat/bipe#115",
   VerificationStatus: "Pix and gov.br verification are not built in the apps yet: bipe-chat/bipe#544, #545",
+  ...Object.fromEntries(["WorkHours", "WorkDay", "WorkRange"].map((name) => [
+    name, "work side opening hours (bipe-chat/bipe#511) are built in Bipe Next only; the checked forks are frozen (ADR 0155)",
+  ])),
 };
 
 // Known gaps: "<platform>:<Schema>" or "<platform>:<Schema>.<field>" -> issue. Remove the entry when the gap closes.

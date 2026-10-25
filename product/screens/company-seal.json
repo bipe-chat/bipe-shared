@@ -15,6 +15,8 @@
     "cnpj": { "type": "string", "optional": true, "description": "verified only: BadgePayload.cnpj, shown with formatCnpj (12.ABC.345/01DE-35)." },
     "checkedAt": { "type": "date", "optional": true, "description": "verified only: the month of the registry import, under bipe_badge_company_checked." },
     "validUntil": { "type": "date", "optional": true, "description": "verified only: BadgePayload.exp, under bipe_badge_company_valid_until." },
+    "cvmLines": { "type": "list", "of": { "type": "string", "description": "One formatted line." }, "description": "verified only: the lines of BadgePayload.cvm (ADR 0077, test-vectors/cvm-lines.json), then bipe_cvm_source. Empty: no CVM section." },
+    "cvmDanger": { "type": "bool", "description": "verified only: the CVM line is a stop order: red text with a filled warning icon, above the other facts." },
     "goneReason": {
       "type": "enum",
       "values": ["revoked", "notActive", "notFound", "staff"],
@@ -36,16 +38,23 @@
     "bipe_badge_company_revoked",
     "bipe_badge_company_revoked_not_active",
     "bipe_badge_company_suspended",
-    "bipe_app_close"
+    "bipe_app_close",
+    "bipe_cvm_registered",
+    "bipe_cvm_cancelled",
+    "bipe_cvm_no_registration",
+    "bipe_cvm_bank_note",
+    "bipe_cvm_stop_order",
+    "bipe_cvm_source"
   ],
   "sdk": ["Client.encryption", "Encryption.userIdentity", "UserIdentity"],
-  "parity": ["cnpj-badge"],
+  "parity": ["cnpj-badge", "cvm-line"],
   "notes": [
     "Opens from the seal next to the name in person-profile, the chat header and the chat list. The seal itself (an icon with bipe_badge_company as its label) shows only in state verified. revoked and suspended show their notice once where a seal was seen before; never a seal.",
     "Verification on the device (security rule 2): the envelope from GET /v1/badges/{userId} (or PublicProfile.badge), the signing keys of registries/badge-keys.json, level cnpj, sub equal to the user ID, binding to the account's cross-signing master key, and exp in the future. The HTTP status alone never shows a seal. Failure of any step: no seal (fail closed). Reference: docs/badge-attestation.md. Bipe logic: BadgeVerifier, BadgeEnvelope, BadgePayload (BipeKit BadgeVerifier.swift); BipeCompanySeals, BipeCompanySealState, BipeCNPJ.formatted (BipeKit BipeCompanySeals.swift); BipeCompanySeals.kt (libraries/bipe company).",
     "SDK gap, as in person-profile: matrix-sdk-ffi does not export UserIdentity.masterKey (pub(crate), 22 Oct 2026). The build lane needs it exported upstream or reads it from the Matrix keys query.",
     "bipe_badge_company_body is the honest limit of the seal: Bipe checked the CNPJ and the account; it does not vouch for each offer or charge (linguagem.md section 3).",
     "The avatar shape (rounded square for a company) comes from the account type, not from the seal (ADR 0132). An unverified company still has the square and no seal.",
-    "The CNPJ is formatted with formatCnpj in tools/lib/registries.mjs (alphanumeric CNPJ)."
+    "The CNPJ is formatted with formatCnpj in tools/lib/registries.mjs (alphanumeric CNPJ).",
+    "CVM line (ADR 0077, bipe-chat/bipe#238): BadgePayload.cvm gives the lines by the rule of test-vectors/cvm-lines.json (reference tools/lib/cvm.mjs); both apps pass that file. A school, a shop or a church has no cvm field and shows nothing about CVM. A stop order shows only its red line and the source; the other states are neutral. Never a word like irregular or not authorised for a company that is simply not in the register. The line comes from the signed badge only: no call to CVM or the API per message. Bipe logic: BipeCvmLines (BipeKit, libraries/bipe company)."
   ]
 }

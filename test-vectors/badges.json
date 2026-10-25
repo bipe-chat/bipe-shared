@@ -407,6 +407,32 @@
       "senderDevice": "Y29tcGFueS1zZWNvbmQtc2VhdA",
       "senderMasterKey": "dGVzdC1jcm9zcy1zaWduaW5nLW1hc3Rlci1rZXktMDE",
       "expect": "invalid_signature"
+    },
+    {
+      "name": "cnpj: valid with a cvm field",
+      "envelope": {
+        "v": 1,
+        "kid": "test-only-2026-10",
+        "payload": "eyJzdWIiOiJAbG9qYWRhYW5hOmJpcGUubmV0LmJyIiwibHZsIjoiY25waiIsIm5hbWUiOiJEb2NlcyBkYSBBbmEiLCJjbnBqIjoiMTEyMjIzMzMwMDAxODEiLCJsZWdhbF9uYW1lIjoiQW5hIFNvdXphIERvY2VzIEx0ZGEiLCJ0cmFkZV9uYW1lIjoiRG9jZXMgZGEgQW5hIiwibWV0aG9kIjoiZWNucGoiLCJjaGVja2VkX21vbnRoIjoiMjAyNi0wOSIsIm1zayI6ImRHVnpkQzFqY205emN5MXphV2R1YVc1bkxXMWhjM1JsY2kxclpYa3RNREUiLCJpYXQiOjE3OTE3MTY0MDAsImV4cCI6MTc5MjMyMTIwMCwiY3ZtIjp7InN0Ijoic3RvcF9vcmRlciIsIm9uIjoiMjAyNi0wNS0xMiJ9fQ",
+        "sig": "oJcANv2V97DBKyQelyDVUlb7IdJjUgCmjVAu7ofk6VVnm2IFNdyt8RD5vrOfVB93Dy-h2qNh16RhK1Wped5oBA"
+      },
+      "sender": "@lojadaana:bipe.net.br",
+      "senderDevice": "Y29tcGFueS1zZWNvbmQtc2VhdA",
+      "senderMasterKey": "dGVzdC1jcm9zcy1zaWduaW5nLW1hc3Rlci1rZXktMDE",
+      "expect": "valid"
+    },
+    {
+      "name": "cnpj: valid with a cvm field the app does not know",
+      "envelope": {
+        "v": 1,
+        "kid": "test-only-2026-10",
+        "payload": "eyJzdWIiOiJAbG9qYWRhYW5hOmJpcGUubmV0LmJyIiwibHZsIjoiY25waiIsIm5hbWUiOiJEb2NlcyBkYSBBbmEiLCJjbnBqIjoiMTEyMjIzMzMwMDAxODEiLCJsZWdhbF9uYW1lIjoiQW5hIFNvdXphIERvY2VzIEx0ZGEiLCJ0cmFkZV9uYW1lIjoiRG9jZXMgZGEgQW5hIiwibWV0aG9kIjoiZWNucGoiLCJjaGVja2VkX21vbnRoIjoiMjAyNi0wOSIsIm1zayI6ImRHVnpkQzFqY205emN5MXphV2R1YVc1bkxXMWhjM1JsY2kxclpYa3RNREUiLCJpYXQiOjE3OTE3MTY0MDAsImV4cCI6MTc5MjMyMTIwMCwiY3ZtIjp7InN0IjoibGF0ZXIiLCJ4IjoxfX0",
+        "sig": "ueR6SMhc3f2wLnYymIPRVf1c0Bvhq8zWgJ86iZ1Sna4CspbDTDaSikcarKWe6ETopGzRo34bwU6SssCRMbTQCw"
+      },
+      "sender": "@lojadaana:bipe.net.br",
+      "senderDevice": "Y29tcGFueS1zZWNvbmQtc2VhdA",
+      "senderMasterKey": "dGVzdC1jcm9zcy1zaWduaW5nLW1hc3Rlci1rZXktMDE",
+      "expect": "valid"
     }
   ]
 }

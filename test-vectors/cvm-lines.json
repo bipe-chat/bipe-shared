@@ -1,0 +1,167 @@
+{
+  "$comment": "The signed badge field cvm (docs/badge-attestation.md) to the lines of the company seal detail (ADR 0077 point 3). Reference: tools/lib/cvm.mjs. lines: string keys with an optional argument; danger: the stop-order line is red and chats from the account show bipe_cvm_stop_order_card. A field that is missing or not well formed shows nothing. The detail ends with bipe_cvm_source when it shows a line.",
+  "vectors": [
+    {
+      "name": "absent",
+      "lines": [],
+      "danger": false
+    },
+    {
+      "name": "registered, one category",
+      "cvm": {
+        "st": "registered",
+        "cat": [
+          "corretora"
+        ]
+      },
+      "lines": [
+        {
+          "key": "bipe_cvm_registered",
+          "arg": "corretora"
+        }
+      ],
+      "danger": false
+    },
+    {
+      "name": "registered, several categories, one line each",
+      "cvm": {
+        "st": "registered",
+        "cat": [
+          "corretora",
+          "gestor de recursos"
+        ]
+      },
+      "lines": [
+        {
+          "key": "bipe_cvm_registered",
+          "arg": "corretora"
+        },
+        {
+          "key": "bipe_cvm_registered",
+          "arg": "gestor de recursos"
+        }
+      ],
+      "danger": false
+    },
+    {
+      "name": "registered, a repeated category shows once",
+      "cvm": {
+        "st": "registered",
+        "cat": [
+          "corretora",
+          " corretora "
+        ]
+      },
+      "lines": [
+        {
+          "key": "bipe_cvm_registered",
+          "arg": "corretora"
+        }
+      ],
+      "danger": false
+    },
+    {
+      "name": "registered without categories",
+      "cvm": {
+        "st": "registered",
+        "cat": []
+      },
+      "lines": [],
+      "danger": false
+    },
+    {
+      "name": "registered with an empty category",
+      "cvm": {
+        "st": "registered",
+        "cat": [
+          "corretora",
+          ""
+        ]
+      },
+      "lines": [],
+      "danger": false
+    },
+    {
+      "name": "cancelled",
+      "cvm": {
+        "st": "cancelled",
+        "on": "2010-05-06"
+      },
+      "lines": [
+        {
+          "key": "bipe_cvm_cancelled",
+          "arg": "06/05/2010"
+        }
+      ],
+      "danger": false
+    },
+    {
+      "name": "cancelled without a date",
+      "cvm": {
+        "st": "cancelled"
+      },
+      "lines": [],
+      "danger": false
+    },
+    {
+      "name": "cancelled with a bad date",
+      "cvm": {
+        "st": "cancelled",
+        "on": "2010-13-06"
+      },
+      "lines": [],
+      "danger": false
+    },
+    {
+      "name": "stop order: red, overrides",
+      "cvm": {
+        "st": "stop_order",
+        "on": "2026-05-12"
+      },
+      "lines": [
+        {
+          "key": "bipe_cvm_stop_order",
+          "arg": "12/05/2026"
+        }
+      ],
+      "danger": true
+    },
+    {
+      "name": "stop order without a date",
+      "cvm": {
+        "st": "stop_order"
+      },
+      "lines": [],
+      "danger": false
+    },
+    {
+      "name": "financial CNAE without registration",
+      "cvm": {
+        "st": "no_registration"
+      },
+      "lines": [
+        {
+          "key": "bipe_cvm_no_registration"
+        },
+        {
+          "key": "bipe_cvm_bank_note"
+        }
+      ],
+      "danger": false
+    },
+    {
+      "name": "unknown state",
+      "cvm": {
+        "st": "authorised"
+      },
+      "lines": [],
+      "danger": false
+    },
+    {
+      "name": "not an object",
+      "cvm": "registered",
+      "lines": [],
+      "danger": false
+    }
+  ]
+}

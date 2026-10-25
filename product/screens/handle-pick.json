@@ -4,6 +4,7 @@
   "flow": "signup",
   "summary": "Lets the person pick or change their @ (username), with a live check that it is free. After sign-up it opens from the handle prompt card above the chat list; settings open the same screen later.",
   "state": {
+    "suggestions": { "type": "list", "of": { "type": "string", "description": "A free handle without @." }, "description": "Escolha seu @ (bipe-chat/bipe#200): for an account with no @, BipeHandle.suggestions(displayName) checked in order with GET /v1/handles/{handle}/available; the first handleSuggestionsShown that are free. Shown under the field while input is empty." },
     "currentHandle": { "type": "string", "optional": true, "description": "The @ the account has now, from GET /v1/me/handle. Absent for a new account." },
     "nextChangeAt": { "type": "date", "optional": true, "description": "From GET /v1/me/handle: before this time a change is refused (cooldown)." },
     "input": { "type": "string", "description": "The field, without @, after BipeHandle sanitising (lower case, allowed characters only)." },
@@ -20,6 +21,7 @@
     "error": { "type": "string", "optional": true, "description": "String key of a save error: bipe_error_handle_cooldown, bipe_handle_taken, bipe_error_network or bipe_error_generic." }
   },
   "actions": {
+    "pickSuggestion": { "params": { "handle": { "type": "string", "description": "A suggestion." } }, "effect": "Runs editHandle with that handle." },
     "editHandle": {
       "params": { "text": { "type": "string", "description": "The new field text." } },
       "effect": "Sanitises the text, sets input, and starts the local check and then the availability check."
@@ -35,6 +37,7 @@
     }
   },
   "strings": [
+    "bipe_handle_suggestions",
     "bipe_handle_prompt_title",
     "bipe_handle_prompt_body",
     "bipe_handle_prompt_action",
@@ -61,6 +64,8 @@
   "sdk": ["Client.session"],
   "parity": ["handles", "first-run"],
   "notes": [
+    "The suggestion rule and its order live in bipe-shared (registries/handles.json suggestions, tools/lib/registries.mjs handleSuggestions, test-vectors/handle-suggestions.json). A failed availability call skips that candidate.",
+    "The handle prompt card above chat-list (prompts.handle) uses the prompt slot (registries/onboarding.json promptSlot, bipe-chat/bipe#200): it does not show on a day another slot prompt showed.",
     "The handle rule (length, pattern, cooldown) is in registries/handles.json with cases in test-vectors/handles.json. bipe_handle_too_short and bipe_handle_too_long take minLength and maxLength.",
     "Calls to bipe-api with auth send the Matrix access token from Client.session.",
     "During the cooldown the field is read-only and the footer shows bipe_handle_cooldown_until with nextChangeAt from the system date formatter.",

@@ -271,21 +271,26 @@
       "server": {
         "status": "built",
         "evidence": [
-          "bipe-api/src/accounts.ts"
+          "bipe-api/src/accounts.ts",
+          "bipe-api/src/links.ts"
         ]
       },
       "ios-new": {
         "status": "built",
         "evidence": [
           "bipe-app/ios/Bipe/Recovery/RecoveryViews.swift",
-          "bipe-app/ios/Bipe/Encryption/DeviceVerificationView.swift"
+          "bipe-app/ios/Bipe/Encryption/DeviceVerificationView.swift",
+          "bipe-app/ios/Bipe/Recovery/LinkSignIn.swift",
+          "bipe-app/ios/Bipe/Settings/LinkedAccountsView.swift"
         ]
       },
       "android-new": {
         "status": "built",
         "evidence": [
           "bipe-app/android/app/src/main/kotlin/chat/bipe/app/recovery/RecoveryScreens.kt",
-          "bipe-app/android/app/src/main/kotlin/chat/bipe/app/encryption/DeviceVerificationScreen.kt"
+          "bipe-app/android/app/src/main/kotlin/chat/bipe/app/encryption/DeviceVerificationScreen.kt",
+          "bipe-app/android/app/src/main/kotlin/chat/bipe/app/recovery/LinkWebFlow.kt",
+          "bipe-app/android/app/src/main/kotlin/chat/bipe/app/settings/LinkedAccounts.kt"
         ]
       },
       "note": "Token, PIN, QR and e-mail recovery are merged on both apps; guardians and CPF recovery are not"
@@ -712,9 +717,26 @@
         "status": "n/a",
         "reason": "No web chat (ADR 0004); notifications are a phone feature"
       },
-      "server": "planned",
-      "ios-new": "planned",
-      "android-new": "planned",
+      "server": {
+        "status": "built",
+        "evidence": [
+          "bipe-api/src/work-hours.ts"
+        ]
+      },
+      "ios-new": {
+        "status": "built",
+        "evidence": [
+          "bipe-app/ios/Bipe/Notifications/WorkHoursView.swift",
+          "bipe-app/ios/NotificationService/NotificationService.swift"
+        ]
+      },
+      "android-new": {
+        "status": "built",
+        "evidence": [
+          "bipe-app/android/app/src/main/kotlin/chat/bipe/app/notifications/WorkHoursScreen.kt",
+          "bipe-app/android/app/src/main/kotlin/chat/bipe/app/notifications/PhoneNotifications.kt"
+        ]
+      },
       "issue": 511
     },
     {
@@ -736,8 +758,19 @@
         "status": "n/a",
         "reason": "A phone setting: the server is not involved"
       },
-      "ios-new": "planned",
-      "android-new": "planned",
+      "ios-new": {
+        "status": "built",
+        "evidence": [
+          "bipe-app/ios/Bipe/Notifications/AccountFocusFilter.swift",
+          "bipe-app/ios/NotificationService/NotificationService.swift"
+        ]
+      },
+      "android-new": {
+        "status": "built",
+        "evidence": [
+          "bipe-app/android/app/src/main/kotlin/chat/bipe/app/notifications/PhoneNotifications.kt"
+        ]
+      },
       "issue": 512
     },
     {
@@ -1144,14 +1177,16 @@
         "status": "built",
         "evidence": [
           "bipe-app/ios/Bipe/People/ContactsView.swift",
-          "bipe-app/ios/BipeKit/Sources/BipeKit/BipePhoneNumber.swift"
+          "bipe-app/ios/BipeKit/Sources/BipeKit/BipePhoneNumber.swift",
+          "bipe-app/ios/Bipe/Settings/PhoneConfirmNotice.swift"
         ]
       },
       "android-new": {
         "status": "built",
         "evidence": [
           "bipe-app/android/app/src/main/kotlin/chat/bipe/app/people/ContactsScreens.kt",
-          "bipe-app/android/libraries/bipe/src/main/kotlin/chat/bipe/shared/api/BipeApiPeople.kt"
+          "bipe-app/android/libraries/bipe/src/main/kotlin/chat/bipe/shared/api/BipeApiPeople.kt",
+          "bipe-app/android/app/src/main/kotlin/chat/bipe/app/settings/PhoneConfirmNotice.kt"
         ]
       },
       "issue": 162
@@ -3047,6 +3082,52 @@
       "ios-new": "planned",
       "android-new": "planned",
       "issue": 501
+    },
+    {
+      "id": "data-use",
+      "name": "Data use: a budget for a normal day, light media defaults and a data saver (bipe#242)",
+      "ios": {
+        "status": "n/a",
+        "reason": "Fork frozen (ADR 0155); built in the own client"
+      },
+      "android": {
+        "status": "n/a",
+        "reason": "Fork frozen (ADR 0155); built in the own client"
+      },
+      "web": {
+        "status": "n/a",
+        "reason": "No web chat (ADR 0004); the site shows a demo at most"
+      },
+      "server": {
+        "status": "n/a",
+        "reason": "Runs on the device only"
+      },
+      "ios-new": "planned",
+      "android-new": "planned",
+      "issue": 242
+    },
+    {
+      "id": "voice-transcript-receive",
+      "name": "Transcribe a received voice message on the listener's phone (bipe#500)",
+      "ios": {
+        "status": "n/a",
+        "reason": "Fork frozen (ADR 0155); built in the own client"
+      },
+      "android": {
+        "status": "n/a",
+        "reason": "Fork frozen (ADR 0155); built in the own client"
+      },
+      "web": {
+        "status": "n/a",
+        "reason": "No web chat (ADR 0004); the site shows a demo at most"
+      },
+      "server": {
+        "status": "n/a",
+        "reason": "Runs on the device only; no audio leaves the phone"
+      },
+      "ios-new": "planned",
+      "android-new": "planned",
+      "issue": 500
     }
   ],
   "differences": [

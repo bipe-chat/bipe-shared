@@ -179,6 +179,25 @@
       }
     },
     {
+      "id": "keychain-moves",
+      "basis": "contract",
+      "places": [
+        "server"
+      ],
+      "pt": {
+        "name": "Preparo do iPhone para a troca de conta da loja",
+        "what": "Quais iPhones da sua conta já guardaram seus dados de acesso de um jeito que continua valendo quando o app mudar de conta na App Store. O código do aparelho e a data. Nenhuma senha.",
+        "why": "Saber quantas contas estão prontas antes de mudar o app de conta na App Store, para ninguém perder o acesso.",
+        "retention": "Enquanto a conta existir. A tabela é apagada 90 dias depois da troca."
+      },
+      "en": {
+        "name": "iPhone readiness for the App Store account change",
+        "what": "Which iPhones of your account already keep your sign-in data in a way that still works when the app moves to another App Store account. The device code and the date. No password.",
+        "why": "To know how many accounts are ready before the app moves to another App Store account, so nobody loses access.",
+        "retention": "As long as the account exists. The table is deleted 90 days after the move."
+      }
+    },
+    {
       "id": "handle",
       "basis": "contract",
       "places": ["server"],

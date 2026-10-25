@@ -248,6 +248,11 @@ ${reg.workHours.defaultDays.map((d) => `        (day: ${d.day}, ranges: [${d.ran
     /// Data use (bipe-chat/bipe#242; registries/data-use.json): the budget of a normal day and the default of the data saver switch.
     public static let dataUseBudgetMegabytesPerDay = ${reg.dataUse.budgetMegabytesPerDay}
     public static let dataSaverDefault = ${reg.dataUse.dataSaverDefault}
+
+    /// Brand marks for resellers (bipe ADR 0162; registries/brand-marks.json). Label ids, string key bipe_brand_mark_label_<id>.
+    public static let brandMarkLabels: [String] = [${reg.brandMarks.labels.map(swiftString).join(", ")}]
+    public static let brandMarkMaxPerAccount = ${reg.brandMarks.maxPerAccount}
+    public static let brandMarkRecheckMinutes = ${reg.brandMarks.recheckMinutes}
 }
 `;
 }
@@ -529,6 +534,11 @@ ${reg.workHours.defaultDays.map((d) => `        ${d.day} to listOf(${d.ranges.ma
     /** Data use (bipe-chat/bipe#242; registries/data-use.json): the budget of a normal day and the default of the data saver switch. */
     const val DATA_USE_BUDGET_MEGABYTES_PER_DAY = ${reg.dataUse.budgetMegabytesPerDay}
     const val DATA_SAVER_DEFAULT = ${reg.dataUse.dataSaverDefault}
+
+    /** Brand marks for resellers (bipe ADR 0162; registries/brand-marks.json). Label ids, string key bipe_brand_mark_label_<id>. */
+    val BRAND_MARK_LABELS: List<String> = listOf(${reg.brandMarks.labels.map(kotlinString).join(", ")})
+    const val BRAND_MARK_MAX_PER_ACCOUNT = ${reg.brandMarks.maxPerAccount}
+    const val BRAND_MARK_RECHECK_MINUTES = ${reg.brandMarks.recheckMinutes}
 }
 `;
 }

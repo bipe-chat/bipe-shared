@@ -80,6 +80,22 @@ const cnpjContext = { sender: cnpjPayload.sub, senderDevice: "Y29tcGFueS1zZWNvbm
 const without = (key) => (({ [key]: _, ...rest }) => rest)(cnpjPayload);
 if (normalizeCnpj(cnpjPayload.cnpj) !== cnpjPayload.cnpj) throw new Error("badges: the cnpj vector is not a normalised CNPJ");
 
+// A brand mark (lvl "brand-mark", ADR 0162, bipe#483): a verified brand vouches for a reseller's work account.
+const markPayload = {
+  sub: "@bia.revende:bipe.net.br",
+  lvl: "brand-mark",
+  name: "Doces da Ana",
+  mark: "0b6f8a52-6f43-4c1e-9d55-2a8b1f0c7e11",
+  brand: cnpjPayload.sub,
+  cnpj: cnpjPayload.cnpj,
+  label: reg.brandMarks.labels[0],
+  msk: "cmVzZWxsZXItbWFzdGVyLWtleS0wMS1mb3ItdGVzdHM",
+  iat: NOW - 3600,
+  exp: NOW - 3600 + reg.badgeKeys.lifeDays * 86400,
+};
+const markContext = { sender: markPayload.sub, senderDevice: "cmVzZWxsZXItcGhvbmU", senderMasterKey: markPayload.msk };
+const markWithout = (key) => (({ [key]: _, ...rest }) => rest)(markPayload);
+
 write("badges.json", {
   $comment: "TEST-ONLY key. Never trust kid test-only-* in a release build. See docs/badge-attestation.md for the verification order. senderMasterKey is the sender's cross-signing master key as the Matrix SDK reports it (unpadded base64), or null when the app does not know it.",
   now: NOW,
@@ -118,6 +134,21 @@ write("badges.json", {
     { name: "cnpj: signed by unknown key", envelope: envelope(cnpjPayload, otherKey), ...cnpjContext, expect: "invalid_signature" },
     { name: "cnpj: valid with a cvm field", envelope: envelope({ ...cnpjPayload, cvm: { st: "stop_order", on: "2026-05-12" } }), ...cnpjContext, expect: "valid" },
     { name: "cnpj: valid with a cvm field the app does not know", envelope: envelope({ ...cnpjPayload, cvm: { st: "later", x: 1 } }), ...cnpjContext, expect: "valid" },
+    { name: "brand-mark: valid", envelope: envelope(markPayload), ...markContext, expect: "valid" },
+    ...reg.brandMarks.labels.slice(1).map((label) => ({ name: `brand-mark: valid with label ${label}`, envelope: envelope({ ...markPayload, label }), ...markContext, expect: "valid" })),
+    { name: "brand-mark: valid on any device of the account", envelope: envelope(markPayload), ...markContext, senderDevice: "b3RoZXItcGhvbmU", expect: "valid" },
+    { name: "brand-mark: unknown label", envelope: envelope({ ...markPayload, label: "embaixadora" }), ...markContext, expect: "malformed" },
+    { name: "brand-mark: missing label", envelope: envelope(markWithout("label")), ...markContext, expect: "malformed" },
+    { name: "brand-mark: missing mark", envelope: envelope(markWithout("mark")), ...markContext, expect: "malformed" },
+    { name: "brand-mark: empty mark", envelope: envelope({ ...markPayload, mark: "" }), ...markContext, expect: "malformed" },
+    { name: "brand-mark: missing brand", envelope: envelope(markWithout("brand")), ...markContext, expect: "malformed" },
+    { name: "brand-mark: missing cnpj", envelope: envelope(markWithout("cnpj")), ...markContext, expect: "malformed" },
+    { name: "brand-mark: cnpj with separators", envelope: envelope({ ...markPayload, cnpj: "11.222.333/0001-81" }), ...markContext, expect: "malformed" },
+    { name: "brand-mark: device-bound instead of msk", envelope: envelope({ ...markWithout("msk"), dev: markContext.senderDevice }), ...markContext, expect: "malformed" },
+    { name: "brand-mark: master key mismatch (identity reset)", envelope: envelope(markPayload), ...markContext, senderMasterKey: MASTER_KEY, expect: "master_key_mismatch" },
+    { name: "brand-mark: sender master key unknown", envelope: envelope(markPayload), ...markContext, senderMasterKey: null, expect: "master_key_mismatch" },
+    { name: "brand-mark: the brand itself is not the subject", envelope: envelope(markPayload), ...markContext, sender: markPayload.brand, expect: "subject_mismatch" },
+    { name: "brand-mark: expired", envelope: envelope({ ...markPayload, exp: NOW - 1 }), ...markContext, expect: "expired" },
   ],
 });
 

@@ -1,0 +1,196 @@
+{
+  "id": "order-owner",
+  "title": "Pedidos for the owner",
+  "flow": "business",
+  "summary": "The company account's list of orders, newest first, with Aceitar, Recusar with a fixed reason, Pronto, Entregue and Cancelar, an owner-entered order, and the order days and cut-off (ADR 0105).",
+  "types": {
+    "Order": {
+      "id": {
+        "type": "string",
+        "description": "Order ID."
+      },
+      "businessId": {
+        "type": "string",
+        "description": "The company."
+      },
+      "customerUserId": {
+        "type": "string",
+        "description": "Signed-in customer.",
+        "optional": true
+      },
+      "customerName": {
+        "type": "string",
+        "description": "Name-only order typed by the owner.",
+        "optional": true
+      },
+      "lines": {
+        "type": "list",
+        "description": "Name, quantity and line total, snapshotted by the server.",
+        "of": {
+          "type": "string",
+          "description": "A line."
+        }
+      },
+      "totalCents": {
+        "type": "int",
+        "description": "Total in centavos."
+      },
+      "fulfilment": {
+        "type": "enum",
+        "description": "Retirada or entrega.",
+        "values": [
+          "pickup",
+          "delivery"
+        ]
+      },
+      "status": {
+        "type": "enum",
+        "description": "From bipe-api.",
+        "values": [
+          "sent",
+          "accepted",
+          "refused",
+          "ready",
+          "done",
+          "cancelled"
+        ]
+      },
+      "refuseReason": {
+        "type": "enum",
+        "description": "When refused.",
+        "optional": true,
+        "values": [
+          "unavailable",
+          "closed",
+          "cannotDeliver",
+          "cannotFulfil"
+        ]
+      }
+    }
+  },
+  "state": {
+    "orders": {
+      "type": "list",
+      "description": "GET /v1/me/business/orders.",
+      "of": {
+        "type": "Order",
+        "description": "One order."
+      }
+    },
+    "weekdays": {
+      "type": "list",
+      "description": "Order days, ISO weekdays.",
+      "of": {
+        "type": "int",
+        "description": "1 to 7."
+      }
+    },
+    "cutoff": {
+      "type": "string",
+      "description": "HH:MM local cut-off."
+    }
+  },
+  "actions": {
+    "accept": {
+      "effect": "POST .../orders/{id}/accept.",
+      "params": {
+        "orderId": {
+          "type": "string",
+          "description": "The order."
+        }
+      }
+    },
+    "refuse": {
+      "effect": "Asks bipe_order_refuse_title with the four reasons, then POST .../orders/{id}/refuse.",
+      "params": {
+        "orderId": {
+          "type": "string",
+          "description": "The order."
+        }
+      }
+    },
+    "ready": {
+      "effect": "POST .../orders/{id}/ready.",
+      "params": {
+        "orderId": {
+          "type": "string",
+          "description": "The order."
+        }
+      }
+    },
+    "done": {
+      "effect": "POST .../orders/{id}/done.",
+      "params": {
+        "orderId": {
+          "type": "string",
+          "description": "The order."
+        }
+      }
+    },
+    "cancel": {
+      "effect": "POST .../orders/{id}/cancel.",
+      "params": {
+        "orderId": {
+          "type": "string",
+          "description": "The order."
+        }
+      }
+    },
+    "newOrder": {
+      "effect": "Builds an order from the catálogo for a typed name or a person from the chats, then POST /v1/me/business/orders."
+    },
+    "saveSettings": {
+      "effect": "PUT /v1/me/business/orders/policy."
+    },
+    "openChat": {
+      "effect": "Opens the DM with the customer.",
+      "params": {
+        "orderId": {
+          "type": "string",
+          "description": "The order."
+        }
+      }
+    }
+  },
+  "strings": [
+    "bipe_orders_title",
+    "bipe_order_owner_empty",
+    "bipe_order_new",
+    "bipe_order_accept",
+    "bipe_order_refuse",
+    "bipe_order_refuse_title",
+    "bipe_order_refuse_unavailable",
+    "bipe_order_refuse_closed",
+    "bipe_order_refuse_cannot_deliver",
+    "bipe_order_refuse_cannot_fulfil",
+    "bipe_order_mark_ready",
+    "bipe_order_mark_done",
+    "bipe_order_cancel",
+    "bipe_order_settings",
+    "bipe_order_opening_days",
+    "bipe_order_cutoff",
+    "bipe_order_total",
+    "bipe_order_line",
+    "bipe_order_pickup",
+    "bipe_order_delivery",
+    "bipe_order_status_sent",
+    "bipe_order_status_accepted",
+    "bipe_order_status_refused",
+    "bipe_order_status_ready",
+    "bipe_order_status_done",
+    "bipe_order_status_cancelled",
+    "bipe_agenda_customer_name",
+    "bipe_agenda_customer_from_chats",
+    "bipe_order_error",
+    "bipe_order_load_failed",
+    "bipe_app_save",
+    "bipe_app_cancel"
+  ],
+  "sdk": [],
+  "parity": [
+    "orders"
+  ],
+  "notes": [
+    "Opens from business-tools. A name-only order gets no card (ADR 0105)."
+  ]
+}

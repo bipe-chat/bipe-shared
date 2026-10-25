@@ -1,0 +1,161 @@
+{
+  "id": "quote-builder",
+  "title": "Quotes for the owner",
+  "flow": "business",
+  "summary": "The company account lists quote requests and quotes, and builds a quote on the phone: lines from the catálogo or typed, quantities, unit prices, a validity date and an optional visit service. A new version replaces the old one (ADR 0106).",
+  "types": {
+    "Quote": {
+      "id": {
+        "type": "string",
+        "description": "Quote ID."
+      },
+      "businessId": {
+        "type": "string",
+        "description": "The company."
+      },
+      "customerId": {
+        "type": "string",
+        "description": "The customer."
+      },
+      "status": {
+        "type": "enum",
+        "description": "From bipe-api; expired when the current version's validity passed.",
+        "values": [
+          "offered",
+          "accepted",
+          "refused",
+          "expired"
+        ]
+      },
+      "currentVersion": {
+        "type": "int",
+        "description": "The version that can be accepted."
+      },
+      "lines": {
+        "type": "list",
+        "description": "Lines of the version on screen: name, quantity, unit price, line total.",
+        "of": {
+          "type": "string",
+          "description": "A line."
+        }
+      },
+      "totalCents": {
+        "type": "int",
+        "description": "Total of the version on screen."
+      },
+      "validUntil": {
+        "type": "date",
+        "description": "Validity of the version on screen."
+      },
+      "visitServiceId": {
+        "type": "string",
+        "description": "A catálogo service to book a visit for.",
+        "optional": true
+      }
+    }
+  },
+  "state": {
+    "requests": {
+      "type": "list",
+      "description": "GET /v1/me/business/quotes/requests: requests with no quote, newest first.",
+      "of": {
+        "type": "string",
+        "description": "Request ID with customer and time."
+      }
+    },
+    "quotes": {
+      "type": "list",
+      "description": "GET /v1/me/business/quotes.",
+      "of": {
+        "type": "Quote",
+        "description": "One quote."
+      }
+    },
+    "draftLines": {
+      "type": "list",
+      "description": "Lines being built.",
+      "of": {
+        "type": "string",
+        "description": "Item or name, quantity, unit price."
+      }
+    },
+    "validUntil": {
+      "type": "date",
+      "description": "Local date; sent as the end of that day in UTC."
+    },
+    "visitServiceId": {
+      "type": "string",
+      "description": "Optional visit service.",
+      "optional": true
+    }
+  },
+  "actions": {
+    "answer": {
+      "effect": "POST /v1/me/business/quotes/requests/{id}/quote with the draft.",
+      "params": {
+        "requestId": {
+          "type": "string",
+          "description": "The request."
+        }
+      }
+    },
+    "revise": {
+      "effect": "POST /v1/me/business/quotes/{id}/versions with the draft.",
+      "params": {
+        "quoteId": {
+          "type": "string",
+          "description": "The quote."
+        }
+      }
+    },
+    "addLine": {
+      "effect": "Adds a line from the catálogo (its fixed price as the default unit price) or a typed one."
+    },
+    "removeLine": {
+      "effect": "Removes a line.",
+      "params": {
+        "index": {
+          "type": "int",
+          "description": "The line."
+        }
+      }
+    },
+    "openChat": {
+      "effect": "Opens the DM with the customer."
+    }
+  },
+  "strings": [
+    "bipe_quotes_title",
+    "bipe_quote_requests_title",
+    "bipe_quote_owner_empty",
+    "bipe_quote_requested_at",
+    "bipe_quote_answer",
+    "bipe_quote_builder_title",
+    "bipe_quote_add_line",
+    "bipe_quote_from_catalog",
+    "bipe_quote_line_name",
+    "bipe_quote_quantity",
+    "bipe_quote_unit_price",
+    "bipe_quote_validity",
+    "bipe_quote_visit",
+    "bipe_quote_visit_none",
+    "bipe_quote_send",
+    "bipe_quote_send_revision",
+    "bipe_quote_new_version",
+    "bipe_quote_total",
+    "bipe_quote_status_offered",
+    "bipe_quote_status_accepted",
+    "bipe_quote_status_refused",
+    "bipe_quote_status_expired",
+    "bipe_quote_error",
+    "bipe_quote_load_failed",
+    "bipe_app_cancel"
+  ],
+  "sdk": [],
+  "parity": [
+    "quotes"
+  ],
+  "notes": [
+    "Opens from business-tools. Totals come from the server; the app shows the draft total as a preview only."
+  ]
+}

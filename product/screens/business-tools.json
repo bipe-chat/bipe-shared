@@ -2,7 +2,7 @@
   "id": "business-tools",
   "title": "Business tools",
   "flow": "business",
-  "summary": "On the Você tab of a company account, a section lists the business tools: Agenda and Catálogo. Each row opens its owner screen.",
+  "summary": "On the Você tab of a company account, a section lists the business tools: Agenda, Catálogo, Pedidos, Orçamentos and Fila virtual. Each row opens its owner screen.",
   "state": {
     "isCompany": {
       "type": "bool",
@@ -19,6 +19,15 @@
     },
     "openCatalog": {
       "effect": "Opens catalog-owner."
+    },
+    "openOrders": {
+      "effect": "Opens order-owner."
+    },
+    "openQuotes": {
+      "effect": "Opens quote-builder."
+    },
+    "openQueue": {
+      "effect": "Opens queue-owner."
     }
   },
   "strings": [
@@ -28,14 +37,17 @@
     "bipe_catalog_title",
     "bipe_agenda_activate",
     "bipe_agenda_published",
-    "bipe_agenda_not_published"
+    "bipe_agenda_not_published",
+    "bipe_orders_title",
+    "bipe_quotes_title",
+    "bipe_queue_title"
   ],
   "sdk": [],
   "parity": [
     "agenda",
-    "catalog"
-  ],
-  "notes": [
-    "Pedidos, Orçamentos and Fila virtual add their row here when they are built."
+    "catalog",
+    "orders",
+    "quotes",
+    "queue"
   ]
 }

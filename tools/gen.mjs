@@ -204,6 +204,10 @@ public enum BipeRegistries {
     public static let webLinkCooldownSeconds = ${reg.accounts.webLinkCooldownSeconds}
     /// Wait between an account deletion request and the deletion; every signed-in device can cancel (ADR 0140).
     public static let deletionCooldownHours = ${reg.accounts.deletionCooldownHours}
+    /// After a deletion, the CPF hash and the badge record stay this long (ADR 0140).
+    public static let deletionVerificationKeepDays = ${reg.accounts.deletionVerificationKeepDays}
+    /// A released @ stays on hold this long (ADR 0016), also after an account deletion.
+    public static let handleReleaseHoldDays = ${reg.handles.releaseHoldDays}
     /// Recovery reminder card (bipe#531): first show after these days on this phone; each "Agora não" hides it for the
     /// next snooze, and the last snooze repeats.
     public static let recoveryReminderFirstAfterDays = ${reg.accounts.recoveryReminder.firstAfterDays}
@@ -463,6 +467,12 @@ object BipeRegistries {
 
     // Wait between an account deletion request and the deletion; every signed-in device can cancel (ADR 0140).
     const val DELETION_COOLDOWN_HOURS = ${reg.accounts.deletionCooldownHours}
+
+    // After a deletion, the CPF hash and the badge record stay this long (ADR 0140).
+    const val DELETION_VERIFICATION_KEEP_DAYS = ${reg.accounts.deletionVerificationKeepDays}
+
+    // A released @ stays on hold this long (ADR 0016), also after an account deletion.
+    const val HANDLE_RELEASE_HOLD_DAYS = ${reg.handles.releaseHoldDays}
 
     // Recovery reminder card (bipe#531): first show after these days on this phone; each "Agora não" hides it for the
     // next snooze, and the last snooze repeats.

@@ -77,7 +77,7 @@
   "sdk": [],
   "parity": ["account-deletion"],
   "notes": [
-    "ADR 0140: 72 hours (deletionCooldownHours in registries/accounts.json, generated as BipeRegistries.deletionCooldownHours and BipeRegistries.DELETION_COOLDOWN_HOURS), the device owner check plus the senha, the @ held for releaseHoldDays (registries/handles.json), the optional redaction, owned groups to the oldest admin else the oldest member, only the CPF hash and the badge record kept for deletionVerificationKeepDays.",
+    "ADR 0140: 72 hours (deletionCooldownHours in registries/accounts.json, generated as BipeRegistries.deletionCooldownHours and DELETION_COOLDOWN_HOURS; also deletionVerificationKeepDays and handleReleaseHoldDays), the device owner check plus the senha, the @ held for releaseHoldDays (registries/handles.json), the optional redaction, owned groups to the oldest admin else the oldest member, only the CPF hash and the badge record kept for deletionVerificationKeepDays.",
     "bipe_deletion_intro takes deletionCooldownHours; bipe_deletion_point_handle takes releaseHoldDays; bipe_deletion_point_kept takes deletionVerificationKeepDays. Each point is its own line: never join them into one sentence (linguagem.md section 6).",
     "Dates (dueAt) use the system date and time formatter, in the phone's time zone.",
     "The banner shows at the top of Sua conta (settings-group account) and replaces the delete row while pending is set and fromThisDevice is true. On the other devices of the account, deletion-alert covers the screen.",

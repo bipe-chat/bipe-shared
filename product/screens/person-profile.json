@@ -80,6 +80,8 @@
     "Client.createRoom",
     "CreateRoomParameters",
     "PowerLevels",
+    "Room.sendStateEventRaw",
+    "PowerLevels",
     "Client.ignoredUsers",
     "Client.subscribeToIgnoredUsers",
     "Client.encryption",
@@ -87,10 +89,10 @@
     "UserIdentity.isVerified",
     "Room.inviteUserById"
   ],
-  "parity": ["handles", "public-profile", "cnpj-badge", "reserved-names", "who-can-message"],
+  "parity": ["handles", "public-profile", "cnpj-badge", "reserved-names", "who-can-message", "dm-power-levels"],
   "notes": [
     "One DM test (ADR 0141): the DM is Client.getDmRoom for this person, the newest room. The DM shows the person's name and photo, never m.room.name or m.room.avatar.",
-    "A new DM (ADR 0141): power levels that let neither person invite or change room settings. PowerLevels with invite, state_default and the events for m.room.name, m.room.avatar and m.room.topic above both users' level. The other person's invite can be refused by their who-can-message setting (ADR 0038): show bipe_app_group_invite_refused with the name, and create nothing.",
+    "A new DM (ADR 0141, bipe-chat/bipe#532): power levels that let neither person invite or change room settings, from registries/dm-power-levels.json (BipeDmPowerLevels). Client.createRoom gets a PowerLevels override with the user at 100 and the other person at 0, so that the server can write the first state and the invite. Right after, Room.sendStateEventRaw writes the m.room.power_levels content of BipeDmPowerLevels.content: both people at 0, invite, kick, ban, redact of other people's events and room settings at 100, messages, reactions, redactions of own events and call membership at 0. If that write fails, the DM stays usable and only the user can invite or change it. Old DMs keep their power levels. The other person's invite can be refused by their who-can-message setting (ADR 0038): show bipe_app_group_invite_refused with the name, and create nothing.",
     "Trust marks come from the badge envelope only (ADR 0041, security rule 2), verified on the device against the keys of registries/badge-keys.json, the sender and the account's cross-signing master key. The user cannot write a mark. Today no signer exists for names, so verifiedName and nameSuspended stay empty; company marks exist (ADR 0042, ADR 0123). Bipe logic: BadgeVerifier, BipeCompanySeals and BipeCompanySealState (BipeKit); BadgeVerifier, BipeCompanySeals.kt (libraries/bipe company).",
     "SDK gap: the badge check needs the person's master key. matrix-sdk-ffi has UserIdentity.masterKey only as pub(crate), so the bindings do not export it (22 Oct 2026). bipe-app needs it exported (an upstream change to matrix-rust-sdk) or reads it from the keys query of the Matrix client-server API. Until then, company marks fail closed: no seal.",
     "confirmedInPerson: the person's identity is verified by the user (UserIdentity.isVerified, after an in-person QR or emoji check). It is a different fact from a verified name (linguagem.md: confirmar, not verificar).",

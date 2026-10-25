@@ -20,6 +20,7 @@ import { loadScreens } from "./lib/screens.mjs";
 import { generateColors } from "./lib/gen-tokens.mjs";
 import { generateChatArchive } from "./lib/gen-chat-archive.mjs";
 import { generateDmSelection } from "./lib/gen-dm-selection.mjs";
+import { generateDmPowerLevels } from "./lib/gen-dm-power-levels.mjs";
 import { generateRelationshipNames } from "./lib/gen-relationship-names.mjs";
 
 const root = join(dirname(fileURLToPath(import.meta.url)), "..");
@@ -566,9 +567,13 @@ if (appIndex >= 0 || existsSync(appOut)) {
   const swiftDir = join(appOut, "ios/BipeKit/Sources/BipeKit/Generated");
   writeSwift(swiftDir, { post: appPost, cast: false });
   writeFileSync(join(swiftDir, "BipeScreen.swift"), appPost(appScreens("swift"), "swift"));
+  // DM power levels (ADR 0141, bipe-chat/bipe#532): bipe-app only. The forks are frozen (ADR 0155).
+  writeFileSync(join(swiftDir, "BipeDmPowerLevels.swift"), appPost(generateDmPowerLevels(reg.dmPowerLevels, "swift", HEADER, swiftString), "swift"));
   const kotlinMain = join(appOut, "android/libraries/bipe/src/main");
   writeKotlin(kotlinMain, { packageName: APP_KOTLIN_PACKAGE, post: appPost });
   writeFileSync(join(kotlinMain, "kotlin", ...APP_KOTLIN_PACKAGE.split("."), "BipeScreen.kt"), appPost(appScreens("kotlin"), "kotlin"));
+  writeFileSync(join(kotlinMain, "kotlin", ...APP_KOTLIN_PACKAGE.split("."), "BipeDmPowerLevels.kt"),
+    appPost(generateDmPowerLevels(reg.dmPowerLevels, "kotlin", KOTLIN_HEADER, kotlinString), "kotlin"));
   // Colour tokens (bipe-chat/bipe#551): bipe-app only. The forks keep bipe-tokens.
   const TOKENS_HEADER = HEADER.replace("bipe-shared/registries and bipe-shared/strings", "bipe-shared/design/tokens.json");
   writeFileSync(join(swiftDir, "BipeColors.swift"), appPost(`${TOKENS_HEADER}\n${generateColors("swift")}`, "swift"));

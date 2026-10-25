@@ -59,7 +59,7 @@
     "Timeline.markAsRead",
     "ReceiptType"
   ],
-  "parity": [],
+  "parity": ["dm-ticks"],
   "notes": [
     "Receipts are always public (ADR 0050): the client sends ReceiptType.Read only, never ReadPrivate, and always shows the receipts of others. No setting turns them off.",
     "DM (ADR 0141): two ticks only, sent and read. No avatar row and no read-by sheet. Matrix has no delivered signal, so there is no delivered tick.",

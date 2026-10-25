@@ -61,7 +61,7 @@
     "RoomNotificationMode",
     "RoomInfo.isDm"
   ],
-  "parity": ["group-types"],
+  "parity": ["group-types", "dm-notify-modes"],
   "notes": [
     "Quiet is mentions and keywords plus the account override rule chat.bipe.poll_start (event type *.poll.start), so a new poll notifies in a quiet group (groups.md, #97). BipeQuietGroups sets that rule and the group default once per account (libraries/bipe groups/BipeQuietGroups.kt). This screen never writes the poll rule.",
     "Quiet in an encrypted group needs the server to push encrypted events (NotificationSettings.canHomeserverPushEncryptedEventToDevice, Synapse msc4028). Without it, mentions-only silences the group. While the answer is false, the group shows only all and mute, and a group whose rule is already mentions-only shows as quiet with no footer. Parity note: inert until Synapse pushes encrypted events (#118).",

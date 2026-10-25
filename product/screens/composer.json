@@ -74,7 +74,7 @@
     "RoomPowerLevels.canOwnUserSendMessage",
     "RoomPowerLevels.canOwnUserTriggerRoomNotification"
   ],
-  "parity": ["stickers", "voice-transcript-send"],
+  "parity": ["stickers", "voice-transcript-send", "dm-no-room-features"],
   "notes": [
     "Markdown, not rich text (client-rewrite-plan.md section 4; a Bipe rich-text composer is phase 3). The field shows plain text; the sent message carries the HTML that messageEventContentFromMarkdown makes. Bold, italic, strike, code and links render in the timeline.",
     "Mentions (ADR 0141): groups only. A DM has no @ suggestions and no # room links. The whole-group entry shows only with RoomPowerLevels.canOwnUserTriggerRoomNotification. A mention of the user in a quiet group notifies (chat-notifications).",

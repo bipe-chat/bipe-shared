@@ -2236,6 +2236,260 @@
           "bipe-app/android/app/src/main/kotlin/chat/bipe/app/groups/DmDelete.kt"
         ]
       }
+    },
+    {
+      "id": "dm-one-row",
+      "name": "One DM row per person: the newest room (ADR 0141, bipe#535)",
+      "issue": 535,
+      "ios": {
+        "status": "n/a",
+        "reason": "Not built in the fork; the forks are frozen (ADR 0155)"
+      },
+      "android": {
+        "status": "n/a",
+        "reason": "Not built in the fork; the forks are frozen (ADR 0155)"
+      },
+      "web": {
+        "status": "n/a",
+        "reason": "Stock Element Web cannot do this by config; accepted gap until after launch (ADR 0141, bipe#477)"
+      },
+      "server": {
+        "status": "n/a",
+        "reason": "Client behaviour; no Bipe server code"
+      },
+      "ios-new": {
+        "status": "built",
+        "evidence": [
+          "bipe-app/ios/Bipe/ChatList/NativeDmSelection.swift"
+        ]
+      },
+      "android-new": {
+        "status": "built",
+        "evidence": [
+          "bipe-app/android/app/src/main/kotlin/chat/bipe/app/chatlist/NativeDmSelection.kt"
+        ]
+      }
+    },
+    {
+      "id": "dm-name-photo",
+      "name": "A DM shows the other person's name and photo, never m.room.name or m.room.avatar (ADR 0141, bipe#523)",
+      "issue": 523,
+      "ios": {
+        "status": "n/a",
+        "reason": "Not built in the fork; the forks are frozen (ADR 0155)"
+      },
+      "android": {
+        "status": "n/a",
+        "reason": "Not built in the fork; the forks are frozen (ADR 0155)"
+      },
+      "web": {
+        "status": "n/a",
+        "reason": "Stock Element Web cannot do this by config; accepted gap until after launch (ADR 0141, bipe#477)"
+      },
+      "server": {
+        "status": "n/a",
+        "reason": "Client behaviour; no Bipe server code"
+      },
+      "ios-new": {
+        "status": "planned",
+        "issue": 523
+      },
+      "android-new": {
+        "status": "planned",
+        "issue": 523
+      }
+    },
+    {
+      "id": "dm-power-levels",
+      "name": "New DMs with power levels that block invites and room changes (ADR 0141, bipe#532)",
+      "issue": 532,
+      "ios": {
+        "status": "n/a",
+        "reason": "Not built in the fork; the forks are frozen (ADR 0155)"
+      },
+      "android": {
+        "status": "n/a",
+        "reason": "Not built in the fork; the forks are frozen (ADR 0155)"
+      },
+      "web": {
+        "status": "n/a",
+        "reason": "Stock Element Web cannot do this by config; accepted gap until after launch (ADR 0141, bipe#477)"
+      },
+      "server": {
+        "status": "n/a",
+        "reason": "Client behaviour; no Bipe server code"
+      },
+      "ios-new": {
+        "status": "planned",
+        "issue": 532
+      },
+      "android-new": {
+        "status": "planned",
+        "issue": 532
+      }
+    },
+    {
+      "id": "dm-block-bar",
+      "name": "Blocking in a DM keeps the chat with the composer off and an unblock bar (ADR 0141, bipe#536)",
+      "issue": 536,
+      "ios": {
+        "status": "n/a",
+        "reason": "Not built in the fork; the forks are frozen (ADR 0155)"
+      },
+      "android": {
+        "status": "n/a",
+        "reason": "Not built in the fork; the forks are frozen (ADR 0155)"
+      },
+      "web": {
+        "status": "n/a",
+        "reason": "Stock Element Web cannot do this by config; accepted gap until after launch (ADR 0141, bipe#477)"
+      },
+      "server": {
+        "status": "n/a",
+        "reason": "Client behaviour; no Bipe server code"
+      },
+      "ios-new": {
+        "status": "planned",
+        "issue": 536
+      },
+      "android-new": {
+        "status": "planned",
+        "issue": 536
+      }
+    },
+    {
+      "id": "dm-left-bar",
+      "name": "A lasting \"saiu da conversa\" bar with \"Convidar de novo\" in a DM (ADR 0141, bipe#533)",
+      "issue": 533,
+      "ios": {
+        "status": "n/a",
+        "reason": "Not built in the fork; the forks are frozen (ADR 0155)"
+      },
+      "android": {
+        "status": "n/a",
+        "reason": "Not built in the fork; the forks are frozen (ADR 0155)"
+      },
+      "web": {
+        "status": "n/a",
+        "reason": "Stock Element Web cannot do this by config; accepted gap until after launch (ADR 0141, bipe#477)"
+      },
+      "server": {
+        "status": "n/a",
+        "reason": "Client behaviour; no Bipe server code"
+      },
+      "ios-new": {
+        "status": "planned",
+        "issue": 533
+      },
+      "android-new": {
+        "status": "planned",
+        "issue": 533
+      }
+    },
+    {
+      "id": "dm-notify-modes",
+      "name": "DM notifications are only all messages or mute (ADR 0141, bipe#534)",
+      "issue": 534,
+      "ios": {
+        "status": "n/a",
+        "reason": "Not built in the fork; the forks are frozen (ADR 0155)"
+      },
+      "android": {
+        "status": "n/a",
+        "reason": "Not built in the fork; the forks are frozen (ADR 0155)"
+      },
+      "web": {
+        "status": "n/a",
+        "reason": "Stock Element Web cannot do this by config; accepted gap until after launch (ADR 0141, bipe#477)"
+      },
+      "server": {
+        "status": "n/a",
+        "reason": "Client behaviour; no Bipe server code"
+      },
+      "ios-new": {
+        "status": "built",
+        "evidence": [
+          "bipe-app/ios/Bipe/Groups/ChatNotificationsModel.swift",
+          "bipe-app/ios/Bipe/Notifications/NotificationSettingsView.swift"
+        ]
+      },
+      "android-new": {
+        "status": "built",
+        "evidence": [
+          "bipe-app/android/app/src/main/kotlin/chat/bipe/app/groups/ChatNotificationsModel.kt",
+          "bipe-app/android/app/src/main/kotlin/chat/bipe/app/notifications/NotificationSettingsScreen.kt"
+        ]
+      }
+    },
+    {
+      "id": "dm-no-room-features",
+      "name": "A DM has no threads, pins, encryption badges, message links, # or @ suggestions or room-noise lines (ADR 0141, bipe#525)",
+      "issue": 525,
+      "ios": {
+        "status": "n/a",
+        "reason": "Not built in the fork; the forks are frozen (ADR 0155)"
+      },
+      "android": {
+        "status": "n/a",
+        "reason": "Not built in the fork; the forks are frozen (ADR 0155)"
+      },
+      "web": {
+        "status": "n/a",
+        "reason": "Stock Element Web cannot do this by config; accepted gap until after launch (ADR 0141, bipe#477)"
+      },
+      "server": {
+        "status": "n/a",
+        "reason": "Client behaviour; no Bipe server code"
+      },
+      "ios-new": {
+        "status": "built",
+        "evidence": [
+          "bipe-app/ios/Bipe/Timeline/TimelineRows.swift",
+          "bipe-app/ios/Bipe/Timeline/ChatTimelineModel.swift"
+        ]
+      },
+      "android-new": {
+        "status": "built",
+        "evidence": [
+          "bipe-app/android/app/src/main/kotlin/chat/bipe/app/timeline/TimelineRows.kt",
+          "bipe-app/android/app/src/main/kotlin/chat/bipe/app/timeline/ChatTimelineModel.kt"
+        ]
+      }
+    },
+    {
+      "id": "dm-ticks",
+      "name": "Sent and read ticks in a DM, no avatar row (ADR 0141, bipe#537)",
+      "issue": 537,
+      "ios": {
+        "status": "n/a",
+        "reason": "Not built in the fork; the forks are frozen (ADR 0155)"
+      },
+      "android": {
+        "status": "n/a",
+        "reason": "Not built in the fork; the forks are frozen (ADR 0155)"
+      },
+      "web": {
+        "status": "n/a",
+        "reason": "Stock Element Web cannot do this by config; accepted gap until after launch (ADR 0141, bipe#477)"
+      },
+      "server": {
+        "status": "n/a",
+        "reason": "Client behaviour; no Bipe server code"
+      },
+      "ios-new": {
+        "status": "built",
+        "evidence": [
+          "bipe-app/ios/Bipe/Timeline/TimelineRows.swift",
+          "bipe-app/ios/Bipe/Timeline/TimelineRowView.swift"
+        ]
+      },
+      "android-new": {
+        "status": "built",
+        "evidence": [
+          "bipe-app/android/app/src/main/kotlin/chat/bipe/app/timeline/TimelineRows.kt",
+          "bipe-app/android/app/src/main/kotlin/chat/bipe/app/timeline/TimelineRowItem.kt"
+        ]
+      }
     }
   ],
   "differences": [

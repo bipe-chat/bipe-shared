@@ -7,7 +7,7 @@ import { fileURLToPath } from "node:url";
 import { buildBrCode, crc16, pixCheck, pixMarkLines, pixTxid } from "./lib/pix.mjs";
 import { cvmLines } from "./lib/cvm.mjs";
 import { loadSchedulingVectors, writeSchedulingApiFixture } from "./lib/scheduling-vectors.mjs";
-import { photoDistance, photoHash, photoMatches, relationshipNameWarning, newestDmRooms, clearedChatHidden, clearedChatKeepsEvent, clearedChatMarker, clearedChatsWithClear, compareAppVersions, extractInviteCode, handleProblem, handleSuggestions, pinProblem, remoteBannerState, normalizeCnpj, normalizePhone, handleSkeleton, loadRegistries, normalize, scamMatchIDs, scamWarningKind, trustFacts } from "./lib/registries.mjs";
+import { photoDistance, photoHash, photoMatches, profileFactLines, relationshipNameWarning, newestDmRooms, clearedChatHidden, clearedChatKeepsEvent, clearedChatMarker, clearedChatsWithClear, compareAppVersions, extractInviteCode, handleProblem, handleSuggestions, pinProblem, remoteBannerState, normalizeCnpj, normalizePhone, handleSkeleton, loadRegistries, normalize, scamMatchIDs, scamWarningKind, trustFacts } from "./lib/registries.mjs";
 
 const root = join(dirname(fileURLToPath(import.meta.url)), "..");
 const reg = loadRegistries(root);
@@ -28,6 +28,14 @@ for (const vector of trustVectors.vectors) {
   }
 }
 write("trust-facts.json", trustVectors);
+
+const profileFactVectors = JSON.parse(readFileSync(join(root, "fixtures/profile-facts.json"), "utf8"));
+for (const vector of profileFactVectors.vectors) {
+  if (JSON.stringify(profileFactLines(vector.facts, Date.parse(profileFactVectors.now), reg)) !== JSON.stringify(vector.expected)) {
+    throw new Error(`profile-facts: expected outcome differs for ${vector.name}`);
+  }
+}
+write("profile-facts.json", profileFactVectors);
 
 // --- Badges ---------------------------------------------------------------
 

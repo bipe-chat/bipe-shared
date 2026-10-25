@@ -109,6 +109,7 @@ const NOT_IN_APPS = {
   ...Object.fromEntries(["BrandMarks", "BrandMarkInviteRequest", "BrandMarkInvite", "CreatedBrandMarkInvite", "GrantedBrandMark", "GrantedBrandMarks", "BrandMarkInvitePreview", "HeldBrandMark", "HeldBrandMarks"].map((name) => [
     name, "brand marks for resellers (ADR 0162, bipe-chat/bipe#483, #485, #486) are built in Bipe Next only; the checked forks are frozen (ADR 0155)",
   ])),
+  ProfileFacts: "profile change facts (ADR 0049, bipe-chat/bipe#598) are built in Bipe Next only; the checked forks are frozen (ADR 0155)",
   ...Object.fromEntries(["LinkProviders", "LinkProvider", "LinkNonce", "LinkWebRequest", "LinkWebStart", "LinkProof", "LinkedAccount", "LinkEvent"].map((name) => [
     name, "linked Apple or Google recovery (ADR 0096) is built in Bipe Next only (bipe-chat/bipe#307, #308); the checked forks are frozen (ADR 0155)",
   ])),

@@ -2,7 +2,7 @@
   "id": "agenda-owner",
   "title": "Agenda tab",
   "flow": "business",
-  "summary": "The company account's Agenda tab: before activation an invitation to Ativar agenda; after it, a day view of the bookings for one person or Todos, with a now-line, Encaixe, Bloquear horário and Fechar hoje (docs/scheduling.md, owner flow).",
+  "summary": "The company account's Agenda, opened from Trabalho (business-tools): before activation an invitation to Ativar agenda; after it, a day view of the bookings for one person or Todos, with a now-line, Encaixe, Bloquear horário and Fechar hoje (docs/scheduling.md, owner flow).",
   "types": {
     "Booking": {
       "id": {

@@ -2,7 +2,7 @@
   "id": "invites",
   "title": "Invite people to Bipe",
   "flow": "invites",
-  "summary": "The user's personal invites to Bipe: how many are left, the invites not used yet, and the people who joined with one. Creating an invite opens invite-note.",
+  "summary": "The user's personal invites to Bipe: how many are left, the invites not used yet, and the people who joined with one. Layout: one create button with the quota footer, then the pending list, then the joined list. Creating an invite opens invite-note. A pending row opens its card (invite-qr).",
   "types": {
     "PersonalInvite": {
       "id": { "type": "string", "description": "Invite.id from GET /v1/me/invites." },
@@ -14,8 +14,7 @@
       "name": { "type": "string", "optional": true, "description": "Invite.name: who the invite is for. Only the user sees it." },
       "expiresAt": { "type": "date", "description": "Invite.expires_at, for bipe_invites_expires." },
       "link": { "type": "url", "optional": true, "description": "The link kept on this phone. Absent when the invite was made on another device: bipe_invites_other_device, no share." },
-      "joined": { "type": "Person", "optional": true, "description": "used only: the person who joined (Invite.joined_user_id)." },
-      "hasNote": { "type": "bool", "description": "pending only: a note waits on this phone (ADR 0136)." }
+      "joined": { "type": "Person", "optional": true, "description": "used only: the person who joined (Invite.joined_user_id)." }
     }
   },
   "state": {
@@ -32,24 +31,9 @@
   "actions": {
     "appear": { "effect": "GET /v1/me/invites. Drops the kept links of invites that are no longer pending." },
     "create": { "effect": "available above 0 only: opens invite-note." },
-    "share": {
-      "params": { "id": { "type": "string", "description": "A pending invite with a link." } },
-      "effect": "Opens the system share sheet with bipe_invites_share_message and the link."
-    },
-    "showQr": {
-      "params": { "id": { "type": "string", "description": "A pending invite with a link." } },
-      "effect": "Opens invite-qr."
-    },
-    "setName": {
-      "params": {
-        "id": { "type": "string", "description": "The invite." },
-        "name": { "type": "string", "description": "The name. Empty removes it." }
-      },
-      "effect": "PUT /v1/me/invites/{inviteId}."
-    },
-    "revoke": {
+    "openCard": {
       "params": { "id": { "type": "string", "description": "A pending invite." } },
-      "effect": "DELETE /v1/me/invites/{inviteId}. Also deletes the link and the note kept on this phone."
+      "effect": "Opens invite-qr for this invite. Share, copy, rename and revoke live there."
     },
     "openChat": {
       "params": { "id": { "type": "string", "description": "A used invite." } },
@@ -66,21 +50,14 @@
     "bipe_invites_empty",
     "bipe_invites_pending_header",
     "bipe_invites_joined_header",
-    "bipe_invites_status_pending",
     "bipe_invites_status_used",
     "bipe_invites_status_expired",
     "bipe_invites_status_revoked",
+    "bipe_invites_link",
     "bipe_invites_expires",
     "bipe_invites_other_device",
-    "bipe_invites_name_action",
-    "bipe_invites_name_placeholder",
-    "bipe_invites_name_footer",
-    "bipe_invites_share_message",
-    "bipe_invites_qr_action",
-    "bipe_invites_revoke",
     "bipe_invites_chat",
     "bipe_invites_joined",
-    "bipe_app_share",
     "bipe_error_network",
     "bipe_app_retry"
   ],

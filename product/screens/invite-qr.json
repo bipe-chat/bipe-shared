@@ -1,22 +1,36 @@
 {
   "id": "invite-qr",
-  "title": "Invite as a QR code",
+  "title": "Invite card",
   "flow": "invites",
-  "summary": "Shows one pending personal invite as a QR code, so a person next to the user can scan it with the camera of their phone.",
+  "summary": "One pending personal invite: the QR code, share and copy, then rename and revoke. invites opens it from a pending row; invite-note shows it after create. Title: Invite.name, else bipe_invites_link.",
   "state": {
     "inviteId": { "type": "string", "description": "The pending invite." },
     "link": { "type": "url", "description": "The invite link kept on this phone (https://bipe.chat/convite/<code>). The QR code holds exactly this URL." },
-    "name": { "type": "string", "optional": true, "description": "Invite.name, shown above the code when present." }
+    "name": { "type": "string", "optional": true, "description": "Invite.name, the screen title when present." },
+    "expiresAt": { "type": "date", "description": "Invite.expires_at, for bipe_invites_expires (date only)." }
   },
   "actions": {
-    "share": { "effect": "The system share sheet with bipe_invites_share_message and the link." },
+    "share": { "effect": "Primary button. The system share sheet with bipe_invites_share_message and the link." },
+    "copy": { "effect": "Copies the link. The button label changes to bipe_app_copied." },
+    "setName": { "effect": "bipe_invites_name_action: a dialog with the name field. PUT /v1/me/invites/{inviteId}." },
+    "revoke": { "effect": "bipe_invites_revoke with a confirmation. DELETE /v1/me/invites/{inviteId}, then closes the card." },
     "close": { "effect": "Closes the screen." }
   },
   "strings": [
-    "bipe_invites_qr_title",
+    "bipe_invites_link",
+    "bipe_invites_expires",
     "bipe_invites_qr_footer",
     "bipe_invites_share_message",
+    "bipe_invites_other_device",
+    "bipe_invites_name_action",
+    "bipe_invites_name_placeholder",
+    "bipe_invites_name_footer",
+    "bipe_invites_revoke",
     "bipe_app_share",
+    "bipe_app_copy",
+    "bipe_app_copied",
+    "bipe_app_save",
+    "bipe_app_cancel",
     "bipe_app_close"
   ],
   "sdk": [],
@@ -24,7 +38,7 @@
   "notes": [
     "The code is drawn on the device (parity invite-qr: server n/a). bipe-app draws it with a permissively licensed QR encoder, the same one as the profile QR code (bipe-chat/bipe#567). Dark modules on a light background in both themes, so every camera reads it.",
     "The link is a universal link (iOS) and an app link (Android). Without the app, it opens the invite page on bipe.chat, which leads to the store. After the install, the person scans again and the app opens with the invite filled in (bipe_invites_qr_footer).",
-    "Only pending invites with a link on this phone have a QR code. An invite made on another device shows bipe_invites_other_device in invites, with no QR code.",
+    "Only pending invites with a link on this phone have a QR code, share and copy. An invite made on another device shows bipe_invites_other_device in their place; rename and revoke stay.",
     "The screen keeps the display brightness as it is."
   ]
 }

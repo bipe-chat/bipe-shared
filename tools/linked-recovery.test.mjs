@@ -8,6 +8,6 @@ test("linked recovery cannot bypass the existing PIN, delay or provider limit", 
   validateLinkedRecovery(accounts);
   for (const patch of [
     { delayHours: 0 }, { requiresPin: false }, { allowsPinReset: true },
-    { maxAccountsPerProvider: 2 }, { providers: ["google"] }, { providers: ["apple", "google", "other"] },
+    { maxAccountsPerProvider: 2 }, { providers: ["google"] }, { providers: ["apple", "google", "other"] }, { flowMinutes: 0 }, { flowMinutes: 60 },
   ]) assert.throws(() => validateLinkedRecovery({ ...accounts, linkedRecovery: { ...accounts.linkedRecovery, ...patch } }), /linked recovery/);
 });

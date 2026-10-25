@@ -1,0 +1,64 @@
+{
+  "id": "linked-accounts",
+  "title": "Accounts for Bipe recovery",
+  "flow": "settings",
+  "summary": "Settings → Conta → Contas para voltar ao Bipe (ADR 0096). Links an Apple or a Google account as a recovery factor, shows the linked ones and unlinks them. A linked account never signs in alone and never resets the PIN.",
+  "types": {
+    "LinkRow": {
+      "provider": { "type": "enum", "values": ["apple", "google"], "description": "The provider." },
+      "linked": { "type": "bool", "description": "true when GET /v1/me/account links has this provider." },
+      "available": { "type": "bool", "description": "true when GET /v1/links/providers offers a path for it on this platform: Apple native on iOS, else web. An unavailable provider that is not linked is hidden." }
+    }
+  },
+  "state": {
+    "rows": { "type": "list", "of": { "type": "LinkRow", "description": "One provider." }, "description": "Apple first, then Google." },
+    "phase": {
+      "type": "enum",
+      "values": ["loading", "shown", "linking", "unlinking", "failed"],
+      "description": "linking: the provider sign-in or PUT /v1/me/links/{provider} runs. unlinking: DELETE runs."
+    },
+    "error": { "type": "string", "optional": true, "description": "bipe_linked_account_error, bipe_linked_account_taken, bipe_linked_account_unlink_error or bipe_error_network." },
+    "notice": { "type": "string", "optional": true, "description": "bipe_linked_account_unlinked after an unlink." }
+  },
+  "actions": {
+    "appear": { "effect": "Reads GET /v1/links/providers and GET /v1/me/account (links) and sets rows." },
+    "link": {
+      "params": { "provider": { "type": "enum", "values": ["apple", "google"], "description": "The provider." } },
+      "effect": "Asks for the owner check (bipe_linked_account_biometric). Then iOS Apple: POST /v1/me/links/nonce, the Sign in with Apple sheet with that nonce, PUT /v1/me/links/apple with the ID token. Every other case: POST /v1/me/links/{provider}/web, the authorization URL in ASWebAuthenticationSession (iOS) or a Custom Tab (Android), and PUT /v1/me/links/{provider} with flow_id and the handoff of the link-done redirect. A cancelled sheet or tab changes nothing."
+    },
+    "unlink": {
+      "params": { "provider": { "type": "enum", "values": ["apple", "google"], "description": "The provider." } },
+      "effect": "Asks to confirm (bipe_linked_account_unlink_title, bipe_linked_account_unlink_body), then the owner check (bipe_linked_account_unlink_biometric), then DELETE /v1/me/links/{provider}. Shows bipe_linked_account_unlinked."
+    }
+  },
+  "strings": [
+    "bipe_linked_accounts_title",
+    "bipe_linked_account_body",
+    "bipe_linked_account_no_pin_reset",
+    "bipe_link_apple",
+    "bipe_link_google",
+    "bipe_linked_apple",
+    "bipe_linked_google",
+    "bipe_linked_account_biometric",
+    "bipe_linked_account_unlink",
+    "bipe_linked_account_unlink_title",
+    "bipe_linked_account_unlink_body",
+    "bipe_linked_account_unlink_biometric",
+    "bipe_linked_account_unlinked",
+    "bipe_linked_account_error",
+    "bipe_linked_account_taken",
+    "bipe_linked_account_unlink_error",
+    "bipe_error_network",
+    "bipe_app_cancel"
+  ],
+  "sdk": [],
+  "parity": ["new-phone"],
+  "notes": [
+    "bipe_linked_account_body takes linkedRecovery.delayHours from registries/accounts.json.",
+    "Both providers on both platforms (ADR 0096). No Google SDK on iOS. Android uses the web flow for both providers in both flavours: Credential Manager needs the Google ID library, which ADR 0150 does not list.",
+    "The redirect of the web flow comes back to the app's own URL scheme, `<app id>:/link-done`. The handoff in its fragment works once, only with the flow_id that this phone kept in memory.",
+    "A link or an unlink shows on the other devices as a recovery-alert notice (link_events).",
+    "Never log or show the ID token, the nonce, the handoff or the provider's account ID.",
+    "Bipe logic: BipeAPIClient link methods and BipeLinkWebFlow (iOS); BipeApiClient link methods and BipeLinkWebFlow (Android)."
+  ]
+}

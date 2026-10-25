@@ -1,0 +1,135 @@
+{
+  "id": "business-chat-bar",
+  "title": "Business tools in a chat and on a profile",
+  "flow": "business",
+  "summary": "In a chat with a company account, and on its profile, the customer finds the tools the business has turned on (Agendar, Ver catálogo) and the cards of their open records with it, drawn from bipe-api and pinned above the timeline (ADR 0102).",
+  "types": {
+    "Booking": {
+      "id": {
+        "type": "string",
+        "description": "Booking ID from bipe-api."
+      },
+      "businessId": {
+        "type": "string",
+        "description": "Matrix ID of the company account."
+      },
+      "serviceId": {
+        "type": "string",
+        "description": "The Catálogo item of kind service."
+      },
+      "serviceName": {
+        "type": "string",
+        "description": "The service name, from the business's public services or the owner's catalogue."
+      },
+      "agendaId": {
+        "type": "string",
+        "description": "The person or station."
+      },
+      "agendaName": {
+        "type": "string",
+        "description": "Name of the person or station.",
+        "optional": true
+      },
+      "start": {
+        "type": "date",
+        "description": "Start, shown in the phone's time zone and locale."
+      },
+      "end": {
+        "type": "date",
+        "description": "End."
+      },
+      "status": {
+        "type": "enum",
+        "description": "Status from bipe-api.",
+        "values": [
+          "held",
+          "requested",
+          "confirmed",
+          "done",
+          "cancelled",
+          "noShow"
+        ]
+      },
+      "customerUserId": {
+        "type": "string",
+        "description": "The customer's Matrix ID. Absent for a name-only booking.",
+        "optional": true
+      },
+      "customerName": {
+        "type": "string",
+        "description": "Name-only customer (encaixe). Absent for a signed-in customer.",
+        "optional": true
+      },
+      "source": {
+        "type": "enum",
+        "description": "Who made it.",
+        "values": [
+          "customer",
+          "owner"
+        ]
+      }
+    }
+  },
+  "state": {
+    "businessId": {
+      "type": "string",
+      "description": "Matrix ID of the company account (the other member of the DM)."
+    },
+    "handle": {
+      "type": "string",
+      "description": "The business @handle from POST /v1/handles/resolve. The routes also take the Matrix ID when there is no handle.",
+      "optional": true
+    },
+    "isCompany": {
+      "type": "bool",
+      "description": "true only when GET /v1/accounts/{userId}/type says company. The bar is hidden otherwise."
+    },
+    "canBook": {
+      "type": "bool",
+      "description": "true when GET /v1/businesses/{business}/agenda/services answers with one or more services."
+    },
+    "hasCatalog": {
+      "type": "bool",
+      "description": "true when GET /v1/businesses/{business}/catalog has one or more items."
+    },
+    "bookings": {
+      "type": "list",
+      "description": "Open bookings with this business, from GET /v1/me/bookings filtered by businessId. Each shows as agenda-booking-card.",
+      "of": {
+        "type": "Booking",
+        "description": "One booking."
+      }
+    }
+  },
+  "actions": {
+    "load": {
+      "effect": "Reads the account type, then (for a company) the handle, the public services, the catalogue and GET /v1/me/bookings. Runs when the chat or profile opens and when the app comes to the front. A failure hides the tool, never the chat."
+    },
+    "openBooking": {
+      "effect": "Opens agenda-book for this business."
+    },
+    "openCatalog": {
+      "effect": "Opens catalog-view for this business."
+    }
+  },
+  "strings": [
+    "bipe_agenda_book",
+    "bipe_catalog_open",
+    "bipe_business_tools_a11y"
+  ],
+  "sdk": [
+    "Room.members",
+    "Client.userId"
+  ],
+  "parity": [
+    "agenda",
+    "catalog"
+  ],
+  "notes": [
+    "Entry points: the chat header menu with the business (one menu item per tool), and buttons under the name on person-profile of a company account (ADR 0103: the button is Agendar).",
+    "The company side of the chat shows the same cards for the customer of this DM, from the company's own GET /v1/me/bookings filtered by customer.user_id (agenda-booking-card owner mode).",
+    "Nothing is posted into the room: the cards come only from the API (ADR 0102). Another Matrix client sees nothing.",
+    "A business with no tool on shows no bar and no menu item.",
+    "Later tools (Pedidos, Orçamento, Fila virtual) add their item and card here."
+  ]
+}

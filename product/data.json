@@ -432,6 +432,23 @@
         "why": "To understand the problem, fix it and answer you. The team reads the text in the support tool. The logs and screenshots stay on the Bipe server only.",
         "retention": "90 days on the Bipe server. Earlier, if you ask."
       }
+    },
+    {
+      "id": "business-bookings",
+      "basis": "contract",
+      "places": ["server"],
+      "pt": {
+        "name": "Agendamentos com negócios",
+        "what": "Os horários que você marca com um negócio no Bipe: o serviço, quem atende, o dia, a hora, a situação e a sua conta. Num encaixe feito pelo negócio, só o nome que ele digitou. O que você escreve sobre o horário fica na conversa, não no agendamento.",
+        "why": "Guardar o horário para você e para o negócio e mostrar o cartão na conversa. O negócio decide sobre a própria agenda; o Bipe guarda os dados para ele.",
+        "retention": "2 anos depois da data do horário. Se você apagar a conta, o negócio fica só com o nome, o serviço e a hora até o fim desse prazo."
+      },
+      "en": {
+        "name": "Bookings with businesses",
+        "what": "The times you book with a business in Bipe: the service, who serves you, the day, the time, the status and your account. For a walk-in the business adds, only the name it typed. What you write about the booking stays in the chat, not in the booking.",
+        "why": "To keep the time for you and for the business and to show the card in the chat. The business decides about its own schedule; Bipe keeps the data for it.",
+        "retention": "2 years after the date of the booking. If you delete your account, the business keeps only the name, the service and the time until then."
+      }
     }
   ],
   "device": [

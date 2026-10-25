@@ -1,0 +1,41 @@
+{
+  "id": "business-tools",
+  "title": "Business tools",
+  "flow": "business",
+  "summary": "On the Você tab of a company account, a section lists the business tools: Agenda and Catálogo. Each row opens its owner screen.",
+  "state": {
+    "isCompany": {
+      "type": "bool",
+      "description": "Shown only for a company account (ADR 0132 account type)."
+    },
+    "agendaPublished": {
+      "type": "bool",
+      "description": "Subtitle bipe_agenda_published or bipe_agenda_not_published, or bipe_agenda_activate before activation."
+    }
+  },
+  "actions": {
+    "openAgenda": {
+      "effect": "Selects the Agenda tab."
+    },
+    "openCatalog": {
+      "effect": "Opens catalog-owner."
+    }
+  },
+  "strings": [
+    "bipe_business_tools_title",
+    "bipe_business_tools_footer",
+    "bipe_tab_agenda",
+    "bipe_catalog_title",
+    "bipe_agenda_activate",
+    "bipe_agenda_published",
+    "bipe_agenda_not_published"
+  ],
+  "sdk": [],
+  "parity": [
+    "agenda",
+    "catalog"
+  ],
+  "notes": [
+    "Pedidos, Orçamentos and Fila virtual add their row here when they are built."
+  ]
+}

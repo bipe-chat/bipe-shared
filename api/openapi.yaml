@@ -1961,6 +1961,100 @@ paths:
         "401": { $ref: "#/components/responses/Error" }
         "404": { $ref: "#/components/responses/Error" }
         "429": { $ref: "#/components/responses/Error" }
+  /v1/me/voice-media/{server}/{mediaId}:
+    put:
+      summary: Register the caller's upload as the audio of a voice message (ADR 0164)
+      description: >
+        bipe-chat/bipe#622. The sending app calls it once, after the voice event is sent, with the server name and media
+        ID of the event's mxc URI (the encrypted file's url). The API checks in the media repository that the caller
+        uploaded this media on this server; otherwise, or for another server, 404 not_found. transcript true when the
+        event carries the sender's transcript (ADR 0023). The API deletes the file transcriptDays (transcript) or
+        noTranscriptDays (no transcript) after the upload (registries/voice-media.json), unless an account keeps it
+        (PUT /v1/me/kept-media). Idempotent: a repeat changes nothing. 120 per hour.
+      security: [{ matrix: [] }]
+      parameters:
+        - { name: server, in: path, required: true, schema: { type: string, maxLength: 255 } }
+        - { name: mediaId, in: path, required: true, schema: { type: string, pattern: "^[A-Za-z0-9_-]{1,255}$" } }
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [transcript]
+              properties:
+                transcript: { type: boolean, description: "The voice event carries the sender's transcript." }
+      responses:
+        "204": { description: Registered }
+        "400": { $ref: "#/components/responses/Error" }
+        "401": { $ref: "#/components/responses/Error" }
+        "404": { $ref: "#/components/responses/Error" }
+        "429": { $ref: "#/components/responses/Error" }
+  /v1/me/kept-media:
+    get:
+      summary: The voice message audio the caller keeps (ADR 0164)
+      description: >
+        bipe-chat/bipe#622. At most maxKeptPerAccount items (registries/voice-media.json), newest first. The app reads it
+        to show "Guardar áudio" or "Não guardar mais" on a voice message.
+      security: [{ matrix: [] }]
+      responses:
+        "200":
+          description: Kept media
+          content:
+            application/json:
+              schema:
+                type: object
+                required: [media]
+                properties:
+                  media:
+                    type: array
+                    items:
+                      type: object
+                      required: [media_id, reason, kept_at]
+                      properties:
+                        media_id: { type: string, description: "mxc://<server>/<mediaId>" }
+                        reason: { type: string, enum: [kept, scam], description: "kept: the person chose Guardar áudio. scam: the app kept it because of a scam warning." }
+                        kept_at: { type: string, format: date-time }
+        "401": { $ref: "#/components/responses/Error" }
+  /v1/me/kept-media/{server}/{mediaId}:
+    put:
+      summary: Keep a voice message's audio so that it never expires (ADR 0164)
+      description: >
+        bipe-chat/bipe#622. Any account can keep any media ID: the server cannot read encrypted rooms, so it does not
+        check membership. Keeping only stops the deletion; it gives no access. Media that nobody registered never
+        expires, so keeping it changes nothing, and the answer is the same 204. 409 keep_limit when the caller already
+        keeps maxKeptPerAccount items (a repeat of a kept item is not counted). A repeat updates reason. 120 per hour.
+      security: [{ matrix: [] }]
+      parameters:
+        - { name: server, in: path, required: true, schema: { type: string, maxLength: 255 } }
+        - { name: mediaId, in: path, required: true, schema: { type: string, pattern: "^[A-Za-z0-9_-]{1,255}$" } }
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [reason]
+              properties:
+                reason: { type: string, enum: [kept, scam] }
+      responses:
+        "204": { description: Kept }
+        "400": { $ref: "#/components/responses/Error" }
+        "401": { $ref: "#/components/responses/Error" }
+        "409": { $ref: "#/components/responses/Error" }
+        "429": { $ref: "#/components/responses/Error" }
+    delete:
+      summary: Stop keeping a voice message's audio
+      description: >
+        bipe-chat/bipe#622. Idempotent. When no other account keeps it and its time is past, the next purge deletes it.
+      security: [{ matrix: [] }]
+      parameters:
+        - { name: server, in: path, required: true, schema: { type: string, maxLength: 255 } }
+        - { name: mediaId, in: path, required: true, schema: { type: string, pattern: "^[A-Za-z0-9_-]{1,255}$" } }
+      responses:
+        "204": { description: Not kept }
+        "401": { $ref: "#/components/responses/Error" }
+        "429": { $ref: "#/components/responses/Error" }
   /v1/me/news:
     get:
       summary: Whether the caller gets Bipe news (the Settings switch)
@@ -6016,7 +6110,7 @@ components:
       properties:
         error:
           type: string
-          enum: [bad_request, invite_invalid, invite_quota_exhausted, email_taken, handle_invalid, handle_taken, handle_cooldown, password_weak, attestation_invalid, profile_invalid, photo_invalid, unauthorized, not_found, rate_limited, internal, cnpj_invalid, cnpj_not_active, cnpj_taken, signature_invalid, pin_weak, pin_wrong, pin_blocked, pin_not_set, recovery_invalid, email_unavailable, terms_required, support_unavailable, link_taken, link_unavailable, brand_not_verified, brand_mark_limit, deletion_pending]
+          enum: [bad_request, invite_invalid, invite_quota_exhausted, email_taken, handle_invalid, handle_taken, handle_cooldown, password_weak, attestation_invalid, profile_invalid, photo_invalid, unauthorized, not_found, rate_limited, internal, cnpj_invalid, cnpj_not_active, cnpj_taken, signature_invalid, pin_weak, pin_wrong, pin_blocked, pin_not_set, recovery_invalid, email_unavailable, terms_required, support_unavailable, link_taken, link_unavailable, brand_not_verified, brand_mark_limit, deletion_pending, keep_limit]
         reason: { type: string, description: "Detail, e.g. a HandleProblem or PinProblem id." }
         tries_left: { type: integer, description: "With pin_wrong: wrong PINs left before the PIN blocks." }
     BadgeEnvelope:

@@ -377,13 +377,30 @@
         "name": "Fotos e arquivos",
         "what": "O que você envia, até 50 MB por arquivo. Em conversas criptografadas, o arquivo também fica embaralhado.",
         "why": "Quem recebe conseguir baixar.",
-        "retention": "Enquanto a conversa existir no servidor."
+        "retention": "Enquanto a conversa existir no servidor. O áudio das mensagens de voz enviadas pelo Bipe sai antes: veja Prazo dos áudios."
       },
       "en": {
         "name": "Photos and files",
         "what": "What you send, up to 50 MB per file. In encrypted conversations, the file is scrambled too.",
         "why": "So the people who receive it can download it.",
-        "retention": "As long as the conversation exists on the server."
+        "retention": "As long as the conversation exists on the server. The audio of voice messages sent from Bipe leaves earlier: see Voice message expiry."
+      }
+    },
+    {
+      "id": "voice-media",
+      "basis": "contract",
+      "places": ["server"],
+      "pt": {
+        "name": "Prazo dos áudios",
+        "what": "Para cada mensagem de voz que você envia: o código do arquivo no servidor, se ela tem transcrição e a data do envio. Para cada áudio que você guarda: o código e a data.",
+        "why": "Apagar o áudio do servidor 30 dias depois do envio quando ele tem transcrição, ou 90 dias quando não tem, e não apagar os áudios que alguém guardou. A mensagem e a transcrição continuam na conversa.",
+        "retention": "Até o áudio sair do servidor. Um áudio guardado fica até você deixar de guardar ou apagar a conta."
+      },
+      "en": {
+        "name": "Voice message expiry",
+        "what": "For each voice message you send: the file's code on the server, whether it has a transcript, and the date you sent it. For each audio you keep: the code and the date.",
+        "why": "To delete the audio from the server 30 days after you send it when it has a transcript, or 90 days when it has none, and to keep the audio someone chose to keep. The message and the transcript stay in the conversation.",
+        "retention": "Until the audio leaves the server. A kept audio stays until you stop keeping it or delete your account."
       }
     },
     {

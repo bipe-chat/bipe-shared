@@ -70,6 +70,7 @@
     "Bipe logic: VoiceTranscriber.transcribe and VoiceTranscriptDraft (BipeKit VoiceTranscriber.swift, Apple Speech with on-device recognition); BipeVoiceTranscriber.kt (libraries/bipe voice). Android needs an on-device recogniser; without one the transcript stays off.",
     "Wire format: m.audio with the voice flag (MSC3245) and Ogg Opus, which every Matrix client plays (bipe/docs/audio.md). The app sets the bitrate itself; a lower bitrate saves data on Brazilian carriers.",
     "Maximum length: Bipe has not decided one. Open point for the build lane to raise with MZ.",
-    "The reader side (the bubble, three lines of transcript, playback speed) and the scam check on transcripts belong to the timeline media spec (bipe-chat/bipe#561)."
+    "The reader side (the bubble, three lines of transcript, playback speed) and the scam check on transcripts belong to the timeline media spec (bipe-chat/bipe#561).",
+    "After send, the timeline registers the voice message's media with the API once the event is sent (voice-message register, ADR 0164), so the server can expire its audio."
   ]
 }

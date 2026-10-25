@@ -25,7 +25,17 @@
       "values": ["none", "working", "ready", "unavailable", "denied", "failed"],
       "description": "The listener's own transcript (bipe#500). none: bipe_voice_transcribe shows. working: bipe_voice_transcribing. ready: the text with bipe_voice_transcript_title and bipe_voice_transcribed_here. unavailable: no on-device recognizer for the language (bipe_voice_transcribe_unavailable). denied: speech recognition not allowed (bipe_voice_transcribe_denied). failed: bipe_voice_transcribe_failed, and the button shows again."
     },
-    "localTranscriptText": { "type": "string", "optional": true, "description": "ready only: the text the phone recognised." }
+    "localTranscriptText": { "type": "string", "optional": true, "description": "ready only: the text the phone recognised." },
+    "media": {
+      "type": "enum",
+      "values": ["available", "expired"],
+      "description": "expired: a voice message whose audio download answered 404 (M_NOT_FOUND), because the server deleted it after its time (ADR 0164, registries/voice-media.json). The row shows bipe_voice_expired with no player and no waveform; the transcript stays. The app keeps expired per event for the session."
+    },
+    "kept": {
+      "type": "enum",
+      "values": ["no", "kept", "scam"],
+      "description": "From GET /v1/me/kept-media, read once per session and after each change. kept: a line bipe_voice_kept under the player. scam: a line bipe_voice_kept_scam under the scam card."
+    }
   },
   "actions": {
     "togglePlay": {
@@ -40,6 +50,18 @@
     },
     "toggleTranscript": {
       "effect": "Shows the whole transcript, or collapses it to 3 lines."
+    },
+    "keep": {
+      "effect": "From the message menu (message-actions keepAudio): PUT /v1/me/kept-media with reason kept. 409 keep_limit shows bipe_voice_keep_limit with voiceMediaMaxKeptPerAccount. Sets kept."
+    },
+    "unkeep": {
+      "effect": "From the message menu (message-actions unkeepAudio): DELETE /v1/me/kept-media. Sets kept to no."
+    },
+    "register": {
+      "effect": "Automatic. An own voice message (isVoice, own) whose event is sent (it has an event ID) registers its media once per device: PUT /v1/me/voice-media with the server name and media ID of its mxc URI, and transcript true when the caption is not blank. The app keeps the registered media IDs on the phone so that it does not send them again. A failure is retried the next time the row shows."
+    },
+    "keepScam": {
+      "effect": "Automatic. When the scam card (scam-warning) shows on an incoming voice message, the app keeps its audio once with reason scam. A keep_limit answer does nothing more."
     }
   },
   "strings": [
@@ -55,7 +77,11 @@
     "bipe_voice_transcribed_here",
     "bipe_voice_transcribe_unavailable",
     "bipe_voice_transcribe_failed",
-    "bipe_voice_transcribe_denied"
+    "bipe_voice_transcribe_denied",
+    "bipe_voice_expired",
+    "bipe_voice_kept",
+    "bipe_voice_kept_scam",
+    "bipe_voice_keep_limit"
   ],
   "sdk": [
     "MessageType",
@@ -75,6 +101,7 @@
     "The scam check (scam-warning) reads the transcript of incoming voice messages; the card goes under the transcript.",
     "The transcript is the sender's text, not proof of what was said; the row does not claim otherwise.",
     "Playback goes on with the screen locked and stops when another row plays or a call or other audio starts. Speaker by default; the earpiece when the phone is at the ear.",
+    "Audio expiry (ADR 0164, bipe-chat/bipe#622): the server deletes the audio of a registered voice message transcriptDays after the upload with a transcript, noTranscriptDays without one, unless an account keeps it. Only Bipe apps register media, so audio from other Matrix clients never expires. Expiry deletes the server copy only; a copy in the phone's cache still plays.",
     "Audio files (no voice marker) show the same player with the file name and no transcript.",
     "bipe_app_voice_play and bipe_app_voice_pause are the button accessibility labels. bipe_app_media_voice is the preview text for replies, the chat list and notifications.",
     "Recording and the sender-side transcript (voice-transcript-send, BipeKit VoiceTranscriber.swift, libraries/bipe voice/BipeVoiceTranscriber.kt) are the composer issue, not this spec."

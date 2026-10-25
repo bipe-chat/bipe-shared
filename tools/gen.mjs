@@ -275,6 +275,11 @@ ${reg.workHours.defaultDays.map((d) => `        (day: ${d.day}, ranges: [${d.ran
     public static let brandMarkMaxPerAccount = ${reg.brandMarks.maxPerAccount}
     public static let brandMarkRecheckMinutes = ${reg.brandMarks.recheckMinutes}
 
+    /// Voice message audio expiry (ADR 0164, bipe-chat/bipe#622; registries/voice-media.json).
+    public static let voiceMediaTranscriptDays = ${reg.voiceMedia.transcriptDays}
+    public static let voiceMediaNoTranscriptDays = ${reg.voiceMedia.noTranscriptDays}
+    public static let voiceMediaMaxKeptPerAccount = ${reg.voiceMedia.maxKeptPerAccount}
+
     /// Voice transcript paragraphs (registries/voice-transcript.json). Rule: product/screens/voice-recording.json notes.
     public static let voiceTranscriptPauseSeconds: Double = ${reg.voiceTranscript.pauseSeconds}
     public static let voiceTranscriptMinCharacters = ${reg.voiceTranscript.minCharacters}
@@ -590,6 +595,11 @@ ${reg.workHours.defaultDays.map((d) => `        ${d.day} to listOf(${d.ranges.ma
     val BRAND_MARK_LABELS: List<String> = listOf(${reg.brandMarks.labels.map(kotlinString).join(", ")})
     const val BRAND_MARK_MAX_PER_ACCOUNT = ${reg.brandMarks.maxPerAccount}
     const val BRAND_MARK_RECHECK_MINUTES = ${reg.brandMarks.recheckMinutes}
+
+    /** Voice message audio expiry (ADR 0164, bipe-chat/bipe#622; registries/voice-media.json). */
+    const val VOICE_MEDIA_TRANSCRIPT_DAYS = ${reg.voiceMedia.transcriptDays}
+    const val VOICE_MEDIA_NO_TRANSCRIPT_DAYS = ${reg.voiceMedia.noTranscriptDays}
+    const val VOICE_MEDIA_MAX_KEPT_PER_ACCOUNT = ${reg.voiceMedia.maxKeptPerAccount}
 
     /** Voice transcript paragraphs (registries/voice-transcript.json). Rule: product/screens/voice-recording.json notes. */
     const val VOICE_TRANSCRIPT_PAUSE_SECONDS: Double = ${reg.voiceTranscript.pauseSeconds}

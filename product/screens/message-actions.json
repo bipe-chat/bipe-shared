@@ -11,6 +11,8 @@
           "reply",
           "edit",
           "copy",
+          "keepAudio",
+          "unkeepAudio",
           "retry",
           "delete",
           "report"
@@ -67,7 +69,7 @@
           "description": "The row."
         }
       },
-      "effect": "Closes the sheet and runs: reply, message-reply startReply; edit, message-edit startEdit; copy, puts the text on the clipboard and shows bipe_app_copied; retry, chat-timeline retrySend; delete, message-delete askDelete; report, message-report open."
+      "effect": "Closes the sheet and runs: reply, message-reply startReply; edit, message-edit startEdit; copy, puts the text on the clipboard and shows bipe_app_copied; keepAudio, voice-message keep; unkeepAudio, voice-message unkeep; retry, chat-timeline retrySend; delete, message-delete askDelete; report, message-report open."
     },
     "close": {
       "effect": "Closes the sheet."
@@ -83,7 +85,9 @@
     "bipe_app_message_action_delete",
     "bipe_app_message_action_report",
     "bipe_app_message_action_more_reactions",
-    "bipe_pause_countdown"
+    "bipe_pause_countdown",
+    "bipe_voice_keep",
+    "bipe_voice_unkeep"
   ],
   "sdk": [
     "EventTimelineItem",
@@ -91,10 +95,13 @@
     "MsgLikeKind",
     "MessageContent"
   ],
-  "parity": ["money-pause", "dm-no-room-features"],
+  "parity": [
+    "money-pause",
+    "dm-no-room-features"
+  ],
   "notes": [
     "MZ explicitly requested SF Symbols in iOS context-menu options on 23 October 2026. Native SwiftUI Label(systemImage:) supplies message-option and reaction-picker icons; Android keeps its current icon system. Action availability and permissions do not change.",
-    "reply: canReply and the message is sent. edit: canEdit. copy: text messages only. retry: own message with send state failed. delete: canDelete, or an own message not sent yet. report: messages of other people that are sent.",
+    "reply: canReply and the message is sent. edit: canEdit. copy: text messages only. keepAudio: a sent voice message (isVoice) with media available that the caller does not keep (voice-message kept no); its title is bipe_voice_keep. unkeepAudio: a voice message the caller keeps; its title is bipe_voice_unkeep. retry: own message with send state failed. delete: canDelete, or an own message not sent yet. report: messages of other people that are sent.",
     "Undecryptable rows: report only, and the message-undecryptable help when its cause has one. Deleted rows have no sheet.",
     "Not in this sheet (ADR 0141 and plan section 4): threads, pin, copy link to the message, forward, view source. Forward and media save come with #561.",
     "The sheet shows the message on top, so the person sees what they act on. The haptic follows ADR 0134 (registries haptics, selection).",

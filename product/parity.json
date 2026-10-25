@@ -459,6 +459,26 @@
       "issue": 252
     },
     {
+      "id": "cvm-line",
+      "name": "CVM register line in the company seal, and the stop-order card (ADR 0077, bipe#237, bipe#238)",
+      "issue": 238,
+      "ios": {
+        "status": "n/a",
+        "reason": "Not built in the fork; the forks are frozen (ADR 0155)"
+      },
+      "android": {
+        "status": "n/a",
+        "reason": "Not built in the fork; the forks are frozen (ADR 0155)"
+      },
+      "web": {
+        "status": "n/a",
+        "reason": "No web chat (ADR 0004); the site shows a demo at most"
+      },
+      "server": "planned",
+      "ios-new": "planned",
+      "android-new": "planned"
+    },
+    {
       "id": "reserved-names",
       "name": "Reserved names",
       "ios": {

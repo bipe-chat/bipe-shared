@@ -34,6 +34,11 @@
       "isCompany": {
         "type": "bool",
         "description": "True only when GET /v1/accounts/{userId}/type or the authenticated account status says company (ADR 0132). Company avatars are rounded squares; personal and unknown accounts are circles."
+      },
+      "ownerName": {
+        "type": "string",
+        "optional": true,
+        "description": "For a company account made on this phone: the display name of its owner, the personal account that was on screen at chooseCompany of account-new (bipe-chat/bipe#444). Absent when the owner is not on this phone."
       }
     }
   },

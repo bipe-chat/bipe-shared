@@ -34,6 +34,8 @@ export function resolveTokens(tokens = loadTokens()) {
       const theme = THEME_OF[variant];
       let hex;
       if (ref === "background") hex = tokens.themes[theme].background;
+      // A literal hex is for a platform system value that no ramp step matches (surface.*, bipe-chat/bipe#612).
+      else if (/^#[0-9A-F]{6}$/.test(ref ?? "")) hex = ref;
       else {
         const [ramp, step] = (ref ?? "").split(".");
         hex = tokens.ramps[ramp]?.[theme]?.[step];

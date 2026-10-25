@@ -477,6 +477,38 @@
         "status": "n/a",
         "reason": "Client behaviour; the account list is registries/official-accounts.json"
       },
+      "ios-new": {
+        "status": "built",
+        "evidence": [
+          "bipe-app/ios/BipeKit/Sources/BipeKit/BipeOfficialAccounts.swift",
+          "bipe-app/ios/Bipe/Common/OfficialBadge.swift"
+        ]
+      },
+      "android-new": {
+        "status": "built",
+        "evidence": [
+          "bipe-app/android/libraries/bipe/src/main/kotlin/chat/bipe/shared/BipeOfficialAccounts.kt",
+          "bipe-app/android/app/src/main/kotlin/chat/bipe/app/common/OfficialBadge.kt"
+        ]
+      }
+    },
+    {
+      "id": "news-room",
+      "name": "Novidades do Bipe: one read-only news room per user, and the Settings switch to get news again (ADR 0117, bipe#383, bipe#387)",
+      "issue": 387,
+      "ios": {
+        "status": "n/a",
+        "reason": "Not built in the fork; the forks are frozen (ADR 0155)"
+      },
+      "android": {
+        "status": "n/a",
+        "reason": "Not built in the fork; the forks are frozen (ADR 0155)"
+      },
+      "web": {
+        "status": "n/a",
+        "reason": "No web chat (ADR 0004); the site shows a demo at most"
+      },
+      "server": "planned",
       "ios-new": "planned",
       "android-new": "planned"
     },

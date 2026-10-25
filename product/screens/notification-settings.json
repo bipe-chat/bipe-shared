@@ -24,7 +24,13 @@
       "description": "The message sound on this phone. phone: the system default sound. soft: Bipe's soft sound. silent: no sound."
     },
     "mentionsMayMiss": { "type": "bool", "description": "true when the homeserver cannot push encrypted events to the device, so mentions mode can miss messages." },
-    "hasOlderChoices": { "type": "bool", "description": "true when the push rules hold choices this screen does not show (keywords, older modes)." }
+    "hasOlderChoices": { "type": "bool", "description": "true when the push rules hold choices this screen does not show (keywords, older modes)." },
+    "news": {
+      "type": "enum",
+      "values": ["unknown", "on", "off"],
+      "description": "The switch bipe_settings_news with bipe_settings_news_body under it (ADR 0117, bipe-chat/bipe#387). on: GET /v1/me/news has subscribed true and Client.getRoom(room_id) is joined or invited. off: anything else. unknown: not read yet, or the API answered an error: the switch is hidden."
+    },
+    "newsBusy": { "type": "bool", "description": "true while setNews runs: the switch is disabled." }
   },
   "actions": {
     "appear": {
@@ -48,6 +54,10 @@
     "setInvites": {
       "params": { "isOn": { "type": "bool", "description": "The new value." } },
       "effect": "Turns the invite-for-me push rule on or off."
+    },
+    "setNews": {
+      "params": { "isOn": { "type": "bool", "description": "The new value." } },
+      "effect": "on: PUT /v1/me/news, then Client.joinRoomById(room_id) (the user's new or kept news room). off: Room.leave on the news room, then DELETE /v1/me/news. A failure puts the switch back and shows bipe_settings_news_failed."
     },
     "setSound": {
       "params": { "sound": { "type": "string", "description": "phone, soft or silent." } },
@@ -79,7 +89,10 @@
     "bipe_notifications_mismatch_body",
     "bipe_action_continue",
     "bipe_app_cancel",
-    "bipe_error_generic"
+    "bipe_error_generic",
+    "bipe_settings_news",
+    "bipe_settings_news_body",
+    "bipe_settings_news_failed"
   ],
   "sdk": [
     "Client.getNotificationSettings",
@@ -93,9 +106,13 @@
     "NotificationSettings.isInviteForMeEnabled",
     "NotificationSettings.setInviteForMeEnabled",
     "NotificationSettings.canPushEncryptedEventToDevice",
-    "NotificationSettings.containsKeywordsRules"
+    "NotificationSettings.containsKeywordsRules",
+    "Client.getRoom",
+    "Room.membership",
+    "Client.joinRoomById",
+    "Room.leave"
   ],
-  "parity": ["settings-structure"],
+  "parity": ["settings-structure", "news-room"],
   "notes": [
     "Opens from settings-root, key notifications (registries/settings.json, screen element in the forks). settings-root shows bipe_settings_notifications_on or bipe_settings_notifications_off from phoneEnabled.",
     "phoneEnabled false: a card at the top with bipe_settings_notifications_off, bipe_notifications_permission_body and the button bipe_notifications_enable. The rows below stay editable: they are account rules and apply on every device.",
@@ -106,6 +123,7 @@
     "Sound is a phone setting, not a push rule. bipe_notifications_tone_current is the accessibility value. Ringtones wait for calls (plan section 8: no calls at first).",
     "A failed rule change puts the row back and shows bipe_error_generic.",
     "Groups are quiet by default (ADR 0026, ADR 0053): a new account starts with groupsMode mentions and chatsMode all. The app sets these defaults once, at the first sign-in of an account that has no default rules of its own yet.",
-    "Per-chat modes are chat-notifications."
+    "Per-chat modes are chat-notifications.",
+    "News (ADR 0117): the news account (@bipe, registries/official-accounts.json) keeps one read-only room per user. Leaving that room, from the chat or with this switch, stops news; the switch turns it on again with a new room. The switch is the last row of the group, below the sound. Novidades items of importance normal are m.notice (no push by the default rule .m.rule.suppress_notices); important items are m.text."
   ]
 }

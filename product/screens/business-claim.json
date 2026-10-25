@@ -1,0 +1,237 @@
+{
+  "id": "business-claim",
+  "title": "My business: claim and verify the company",
+  "flow": "voce",
+  "summary": "A company account claims its CNPJ, sees what the Receita Federal registry says, proves control with the e-CNPJ, adds its websites and sees its reserved names (ADR 0042, ADR 0036). The result shows in trust-profile.",
+  "types": {
+    "ClaimDomain": {
+      "domain": {
+        "type": "string",
+        "description": "The website domain."
+      },
+      "txtName": {
+        "type": "string",
+        "description": "BusinessDomain.txt_name, under bipe_claim_domain_txt_name, with bipe_claim_copy."
+      },
+      "txtValue": {
+        "type": "string",
+        "description": "BusinessDomain.txt_value, under bipe_claim_domain_txt_value, with bipe_claim_copy."
+      },
+      "verified": {
+        "type": "bool",
+        "description": "BusinessDomain.verified_at is set: bipe_claim_domain_verified with a check icon, and no TXT rows."
+      }
+    },
+    "ReservedName": {
+      "name": {
+        "type": "string",
+        "description": "The reserved name the registered names match."
+      },
+      "approved": {
+        "type": "bool",
+        "description": "bipe_claim_reserved_approved, else bipe_claim_reserved_pending."
+      }
+    }
+  },
+  "state": {
+    "phase": {
+      "type": "enum",
+      "values": [
+        "loading",
+        "noClaim",
+        "claim",
+        "failed"
+      ],
+      "description": "loading: GET /v1/me/business runs. noClaim: 404, the CNPJ form shows. claim: the claim below. failed: bipe_error_network or bipe_error_generic with bipe_app_retry."
+    },
+    "cnpjInput": {
+      "type": "string",
+      "description": "noClaim: the CNPJ field (label bipe_badge_company_cnpj), digits and letters, formatted as the user types with formatCnpj. submit stays off until normalizeCnpj accepts it (test-vectors/cnpj.json)."
+    },
+    "status": {
+      "type": "enum",
+      "values": [
+        "registryPending",
+        "awaitingProof",
+        "verified",
+        "rejected",
+        "revoked"
+      ],
+      "description": "BusinessClaim.status. registryPending: bipe_claim_registry_pending. awaitingProof: bipe_claim_awaiting_proof and the proof section. verified: bipe_claim_verified. rejected: bipe_claim_rejected. revoked: bipe_badge_company_revoked_not_active for reason not_active or not_found, else bipe_badge_company_revoked."
+    },
+    "cnpj": {
+      "type": "string",
+      "description": "BusinessClaim.cnpj, shown with formatCnpj."
+    },
+    "legalName": {
+      "type": "string",
+      "optional": true,
+      "description": "registry.legal_name under bipe_badge_company_legal_name."
+    },
+    "tradeName": {
+      "type": "string",
+      "optional": true,
+      "description": "registry.trade_name under bipe_badge_company_trade_name."
+    },
+    "registryActive": {
+      "type": "bool",
+      "optional": true,
+      "description": "registry.active: bipe_claim_registry_active or bipe_claim_registry_inactive, with registry.checked_month under bipe_badge_company_checked."
+    },
+    "challenge": {
+      "type": "string",
+      "optional": true,
+      "description": "awaitingProof only: BusinessClaim.challenge, the exact text to sign, selectable, with bipe_claim_copy_text and bipe_claim_send_text."
+    },
+    "domains": {
+      "type": "list",
+      "of": {
+        "type": "ClaimDomain",
+        "description": "One website."
+      },
+      "description": "BusinessClaim.domains, up to 5."
+    },
+    "domainInput": {
+      "type": "string",
+      "description": "The new website field, placeholder bipe_claim_domain_placeholder."
+    },
+    "reservedNames": {
+      "type": "list",
+      "of": {
+        "type": "ReservedName",
+        "description": "One name."
+      },
+      "description": "BusinessClaim.reserved_names. Empty: the section is hidden."
+    },
+    "busy": {
+      "type": "bool",
+      "description": "A request runs: its button shows progress and the other buttons wait."
+    },
+    "notice": {
+      "type": "string",
+      "optional": true,
+      "description": "The last error or confirmation, under the part it belongs to."
+    }
+  },
+  "actions": {
+    "appear": {
+      "effect": "GET /v1/me/business. 404: noClaim."
+    },
+    "submitCnpj": {
+      "params": {
+        "cnpj": {
+          "type": "string",
+          "description": "The normalised CNPJ."
+        }
+      },
+      "effect": "POST /v1/me/business. 201: the claim. 400 cnpj_invalid: bipe_claim_cnpj_invalid. 409 cnpj_taken: bipe_claim_cnpj_taken. 429: bipe_error_rate_limited."
+    },
+    "copyChallenge": {
+      "effect": "Copies the challenge to the clipboard; bipe_claim_copied."
+    },
+    "sendChallenge": {
+      "effect": "Opens the system share sheet with the challenge text, for a computer or an e-mail."
+    },
+    "pickSignature": {
+      "effect": "Opens the system file picker (Files on iOS, the document picker on Android) for one file, 64 KB at most. Reads it, sends base64 of the bytes as POST /v1/me/business/ecnpj signature. 200: the claim (verified). 400 or 403 signature_invalid: bipe_claim_signature_invalid. A file that is not DER or too large: bipe_claim_signature_unreadable."
+    },
+    "addDomain": {
+      "params": {
+        "domain": {
+          "type": "string",
+          "description": "Lower case, without scheme or path."
+        }
+      },
+      "effect": "POST /v1/me/business/domains. 201: the domain with its TXT record. 400: bipe_claim_domain_invalid."
+    },
+    "copyTxt": {
+      "params": {
+        "value": {
+          "type": "string",
+          "description": "txtName or txtValue."
+        }
+      },
+      "effect": "Copies the value; bipe_claim_copied."
+    },
+    "checkDomain": {
+      "params": {
+        "domain": {
+          "type": "string",
+          "description": "The website."
+        }
+      },
+      "effect": "POST /v1/me/business/domains/{domain}/check. verified_at set: verified. Else bipe_claim_domain_not_yet. 429: bipe_error_rate_limited."
+    },
+    "requestReserved": {
+      "effect": "Opens support-open: the request goes to the Bipe team as a chat (no staff queue API yet, bipe-chat/bipe#253)."
+    },
+    "withdraw": {
+      "effect": "A confirmation with bipe_claim_withdraw_confirm, bipe_claim_withdraw and bipe_app_cancel, then DELETE /v1/me/business and noClaim."
+    }
+  },
+  "strings": [
+    "bipe_claim_title",
+    "bipe_claim_intro",
+    "bipe_claim_submit",
+    "bipe_claim_cnpj_invalid",
+    "bipe_claim_cnpj_taken",
+    "bipe_claim_registry_pending",
+    "bipe_claim_awaiting_proof",
+    "bipe_claim_rejected",
+    "bipe_claim_registry_active",
+    "bipe_claim_registry_inactive",
+    "bipe_claim_proof_title",
+    "bipe_claim_proof_ecnpj",
+    "bipe_claim_proof_ecnpj_body",
+    "bipe_claim_copy_text",
+    "bipe_claim_send_text",
+    "bipe_claim_pick_signature",
+    "bipe_claim_signature_invalid",
+    "bipe_claim_signature_unreadable",
+    "bipe_claim_verified",
+    "bipe_claim_domains_title",
+    "bipe_claim_domains_body",
+    "bipe_claim_domain_placeholder",
+    "bipe_claim_domain_add",
+    "bipe_claim_domain_invalid",
+    "bipe_claim_domain_txt_name",
+    "bipe_claim_domain_txt_value",
+    "bipe_claim_copy",
+    "bipe_claim_copied",
+    "bipe_claim_domain_check",
+    "bipe_claim_domain_verified",
+    "bipe_claim_domain_not_yet",
+    "bipe_claim_reserved_title",
+    "bipe_claim_reserved_body",
+    "bipe_claim_reserved_approved",
+    "bipe_claim_reserved_pending",
+    "bipe_claim_reserved_request",
+    "bipe_claim_withdraw",
+    "bipe_claim_withdraw_confirm",
+    "bipe_badge_company_cnpj",
+    "bipe_badge_company_legal_name",
+    "bipe_badge_company_trade_name",
+    "bipe_badge_company_checked",
+    "bipe_badge_company_revoked",
+    "bipe_badge_company_revoked_not_active",
+    "bipe_error_network",
+    "bipe_error_generic",
+    "bipe_error_rate_limited",
+    "bipe_app_retry",
+    "bipe_app_cancel"
+  ],
+  "sdk": [],
+  "parity": [
+    "cnpj-claim"
+  ],
+  "notes": [
+    "Opens from trust-profile on a company account (ADR 0087): the cnpj, proof and domain steps are todo until done and open this screen. Default chosen: not a new Settings group, because a new group needs an ADR (ADR 0112).",
+    "Only a company account sees it. The server makes every decision (ADR 0042): the registry result, the proof check and the seal. The app shows the claim as GET /v1/me/business returns it and never shows a seal from local data.",
+    "Proof choices (bipe/docs/cnpj-verification.md): only the e-CNPJ ships. Owner match (MEI, empresário individual) and partner match (QSA) need a verified person (Pix or gov.br) and an API route that does not exist yet (bipe-chat/bipe#250, #138). The screen shows them when the claim offers them; today it does not.",
+    "The challenge is shown exactly as the API gives it, selectable, so the signed text is byte for byte the same. The app never changes or trims it. The signing guide (bipe-chat/bipe#139) has no page yet: bipe_claim_proof_ecnpj_body says what to do.",
+    "The .p7s file never leaves the phone except in the POST body, and the app keeps no copy. The server never stores a signature or a certificate.",
+    "The TXT name and value are selectable and each has bipe_claim_copy. Up to 5 domains (the API refuses more).",
+    "Reserved names come from BusinessClaim.reserved_names. The request button opens the Suporte Bipe chat until the staff queue exists (bipe-chat/bipe#253).",
+    "Bipe logic: BipeBusinessClaim and the /v1/me/business calls (BipeKit BipeBusiness.swift; libraries/bipe BipeBusiness.kt), formatCnpj and normalizeCnpj (BipeCNPJ)."
+  ]
+}

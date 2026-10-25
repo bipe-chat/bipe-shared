@@ -89,6 +89,11 @@ const NOT_IN_APPS = {
   TransferReadiness: "staff report only (bipe#531): CLI transfer report and the staff route",
   VisitCount: "staff page on the site only (ADR 0098)",
   VisitReport: "staff page on the site only (ADR 0098)",
+  PropostaLoginRequest: "strategic pages sign-in on the site only (ADR 0158)",
+  PropostaBeacon: "strategic pages deck beacon on the site only (ADR 0158)",
+  PropostaVisitor: "staff report only (ADR 0158): CLI proposta visits and the staff route",
+  PropostaVisit: "staff report only (ADR 0158): CLI proposta visits and the staff route",
+  PropostaReport: "staff report only (ADR 0158): CLI proposta visits and the staff route",
   Error: "clients read error and reason into their error type; the enum is checked as Error.error",
   BadgeEnvelope: "verified on device by BadgeVerifier; covered by test-vectors/badges.json",
   BadgeGone: "a 410 means no seal; the apps fetch badges in the seal work (bipe-chat/bipe#252)",
@@ -100,6 +105,9 @@ const NOT_IN_APPS = {
   VerificationStatus: "Pix and gov.br verification are not built in the apps yet: bipe-chat/bipe#544, #545",
   ...Object.fromEntries(["WorkHours", "WorkDay", "WorkRange"].map((name) => [
     name, "work side opening hours (bipe-chat/bipe#511) are built in Bipe Next only; the checked forks are frozen (ADR 0155)",
+  ])),
+  ...Object.fromEntries(["LinkProviders", "LinkProvider", "LinkNonce", "LinkWebRequest", "LinkWebStart", "LinkProof", "LinkedAccount", "LinkEvent"].map((name) => [
+    name, "linked Apple or Google recovery (ADR 0096) is built in Bipe Next only (bipe-chat/bipe#307, #308); the checked forks are frozen (ADR 0155)",
   ])),
 };
 
@@ -122,6 +130,13 @@ const GAPS = {
   "android:Error.error.cnpj_taken": "bipe-chat/bipe#115 (business UI in the apps)",
   "android:Error.error.signature_invalid": "bipe-chat/bipe#115 (business UI in the apps)",
 };
+
+// Linked Apple or Google recovery (ADR 0096): Bipe Next only. The checked forks are frozen (ADR 0155).
+for (const platform of ["ios", "android"]) {
+  for (const g of ["AccountStatus.links", "AccountStatus.link_events", "Error.error.link_taken", "Error.error.link_unavailable"]) {
+    GAPS[`${platform}:${g}`] = "bipe-chat/bipe#307 and #308 (built in Bipe Next; the fork is frozen)";
+  }
+}
 
 // Device-first accounts (ADR 0057, ADR 0059): contract first, apps in bipe-chat/bipe#153 (iOS) and #154 (Android).
 // iOS closed these gaps (bipe-chat/bipe#153), Android too (#154). The list stays for a platform that adds the feature later.

@@ -1,0 +1,49 @@
+{
+  "id": "question-card",
+  "title": "Question card",
+  "flow": "chat",
+  "summary": "A company's structured question (ADR 0081) in the timeline: the company name with its seal, the question, 2 to 10 large options and one tap to answer. After the tap the card shows the chosen option. It replaces the poll card for these questions only.",
+  "types": {
+    "QuestionOption": {
+      "answerId": { "type": "string", "description": "PollAnswer.id: the option ID the company sent." },
+      "text": { "type": "string", "description": "PollAnswer.text." },
+      "isChosen": { "type": "bool", "description": "true when the own user's latest response is this option." }
+    }
+  },
+  "state": {
+    "eventId": { "type": "string", "description": "The poll start event." },
+    "companyName": { "type": "string", "description": "The sender's display name, for bipe_app_question_from." },
+    "question": { "type": "string", "description": "The question." },
+    "options": { "type": "list", "of": { "type": "QuestionOption", "description": "One option." }, "description": "In the order the company wrote them." },
+    "chosen": { "type": "string", "optional": true, "description": "The text of the chosen option, for bipe_app_question_your_answer." },
+    "isClosed": { "type": "bool", "description": "The company ended the question (the poll has an end time): bipe_app_question_closed, options off." },
+    "isSending": { "type": "bool", "description": "true from the tap until the response is in the send queue." }
+  },
+  "actions": {
+    "answer": {
+      "params": { "answerId": { "type": "string", "description": "The tapped option." } },
+      "effect": "Timeline.sendPollResponse with this one answer. Tapping the chosen option again does nothing. A failure shows bipe_app_poll_vote_error and the old answer stays."
+    },
+    "openSeal": { "effect": "Opens company-seal for the sender." }
+  },
+  "strings": [
+    "bipe_app_question_from",
+    "bipe_app_question_hint",
+    "bipe_app_question_your_answer",
+    "bipe_app_question_change_hint",
+    "bipe_app_question_closed",
+    "bipe_app_poll_vote_error",
+    "bipe_badge_company"
+  ],
+  "sdk": ["MsgLikeKind", "PollAnswer", "PollKind", "Timeline.sendPollResponse"],
+  "parity": ["question-card"],
+  "notes": [
+    "When: a timeline poll (MsgLikeKind poll) whose sender has a verified company seal (company-seal state verified: BipeCompanySeals) and which is single-choice (maxSelections 1) with 2 to 10 answers. Every other poll, a company's too, keeps the poll card of poll-detail. The seal check fails closed: while it loads, or when it fails, the poll card shows.",
+    "The card never shows vote counts or who answered: the company reads the answers (ADR 0081, ADR 0082). After the tap the card shows bipe_app_question_your_answer with the chosen text and marks that option; bipe_app_question_change_hint says a tap on another option changes it until the company ends the question.",
+    "Large text and contrast for people aged 60 and older (bipe#244): the question in the title text style, each option a full-width button at least 56 points (iOS) or 56 dp (Android) high with the body text style, a visible border in inkPrimary, text that wraps instead of being cut, and the system text size honoured (Dynamic Type, font scale). The chosen option has a filled accent background and a check icon; state is never colour alone.",
+    "The header shows the sealCheck icon (label bipe_badge_company) and bipe_app_question_from with the company name; tapping the header opens company-seal.",
+    "Each option is a button for VoiceOver and TalkBack: its label is the option text, the chosen one has the selected trait or state. A closed question reads its options as plain text.",
+    "The long-press context menu of the poll row is the poll row's own (message-actions, bipe#589); this card does not add or change it.",
+    "The Matrix text fallback of the poll (the numbered list the bridge sends, ADR 0081) is for other clients; Bipe draws the card from the poll content."
+  ]
+}

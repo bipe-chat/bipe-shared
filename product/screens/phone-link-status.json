@@ -1,0 +1,49 @@
+{
+  "id": "phone-link-status",
+  "title": "Your number: link state and yearly confirmation",
+  "flow": "settings",
+  "summary": "The state of the person's linked phone number in Configurações → Privacidade → Seu número, and the one in-app notice before the yearly confirmation runs out (bipe-chat/bipe#470, bipe/docs/phone-link.md). A linked number stays findable for linkConfirmMonths after its last proof; after that, lookup skips it until the person confirms it again.",
+  "types": {
+    "PhoneLinkState": {
+      "kind": {
+        "type": "enum",
+        "values": ["notLinked", "linked", "confirmSoon", "expired"],
+        "description": "notLinked: GET /v1/me/phone linked false. linked: confirm_by is more than linkConfirmWarnDays away. confirmSoon: confirm_by is within linkConfirmWarnDays. expired: confirm_by has passed."
+      },
+      "confirmBy": { "type": "date", "optional": true, "description": "confirm_by from GET /v1/me/phone. Shown with the system date formatter, date only." }
+    }
+  },
+  "state": {
+    "phone": { "type": "PhoneLinkState", "optional": true, "description": "null until GET /v1/me/phone answers." },
+    "noticeShown": { "type": "bool", "description": "true when the confirmSoon or expired notice for this confirm_by was shown on this phone." }
+  },
+  "actions": {
+    "appear": {
+      "effect": "Reads GET /v1/me/phone and sets phone. The privacy row number shows the value: bipe_privacy_number_not_linked, bipe_phone_linked_until (linked), bipe_phone_confirm_soon (confirmSoon, with the caution colour and the warning mark) or bipe_phone_confirm_expired (expired, same colour and mark)."
+    },
+    "checkNotice": {
+      "effect": "On launch and on foreground, for each signed-in account: when phone is confirmSoon or expired and no notice was shown for this confirm_by, shows one notice (bipe_phone_confirm_notice_title with bipe_phone_confirm_soon or bipe_phone_confirm_expired) and keeps that confirm_by as shown. One notice per confirm_by, never again."
+    },
+    "confirm": {
+      "effect": "Hidden until bipe-chat/bipe#63 ships the SMS proof (gate planned:63). Then: runs the same proof as the link, and the API sets confirmed_at to now. A confirmation of the same number never starts a move (bipe-chat/bipe#469)."
+    }
+  },
+  "strings": [
+    "bipe_privacy_number",
+    "bipe_privacy_number_not_linked",
+    "bipe_phone_linked_until",
+    "bipe_phone_confirm_soon",
+    "bipe_phone_confirm_expired",
+    "bipe_phone_confirm_notice_title",
+    "bipe_phone_confirm_action",
+    "bipe_action_continue"
+  ],
+  "sdk": [],
+  "parity": ["phone-discovery"],
+  "notes": [
+    "Thresholds: linkConfirmMonths and linkConfirmWarnDays in registries/phone-numbers.json. The API uses linkConfirmMonths for lookup and for confirm_by; the apps use linkConfirmWarnDays. Same copy and same thresholds on both apps.",
+    "Links made by staff with the admin CLI (method admin) follow the same rule: confirmed_at is the time of the link.",
+    "The number itself never shows: GET /v1/me/phone returns only the state.",
+    "Bipe logic: BipePhoneLinkState (BipeKit), BipePhoneLinkState.kt (libraries/bipe)."
+  ]
+}

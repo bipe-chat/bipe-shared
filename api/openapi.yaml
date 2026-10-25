@@ -620,6 +620,25 @@ paths:
         "400": { $ref: "#/components/responses/Error" }
         "401": { $ref: "#/components/responses/Error" }
         "429": { $ref: "#/components/responses/Error" }
+  /v1/me/approval-nudge:
+    post:
+      summary: Push a nudge to the caller's other devices while a new device waits for approval (bipe-chat/bipe#628)
+      description: >
+        Bipe Next sends it after SessionVerificationController.requestDeviceVerification (spec device-verification).
+        Matrix sends the verification request as a to-device event, and the homeserver does not push to-device
+        events. The server reads the account's pushers (Synapse admin API) and sends, through Sygnal, one push to
+        each enabled HTTP pusher with format event_id_only and an account_route in its default_payload (Bipe Next),
+        except the pusher of the calling device. The push carries bipe_push_kind device_approval and event_id
+        $device_approval, no room and no device name (spec notification-service). It approves nothing. The device
+        comes from the access token; a token without a device answers 400 bad_request. 204 also when no other
+        device has a pusher, or when the server has no push configuration: the nudge is best effort. At most
+        approvalNudgeMaxPerHour (registries/accounts.json) per account; more answer 429. No body.
+      security: [{ matrix: [] }]
+      responses:
+        "204": { description: Sent, or nothing to send }
+        "400": { $ref: "#/components/responses/Error" }
+        "401": { $ref: "#/components/responses/Error" }
+        "429": { $ref: "#/components/responses/Error" }
   /v1/me/email:
     put:
       summary: Add or change the caller's recovery email

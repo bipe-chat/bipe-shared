@@ -34,7 +34,10 @@
   },
   "actions": {
     "request": {
-      "effect": "newPhone: SessionVerificationController.requestDeviceVerification. Sets phase waitingForOther."
+      "effect": "newPhone: SessionVerificationController.requestDeviceVerification. Sets phase waitingForOther. Then POST /v1/me/approval-nudge (bipe-chat/bipe#628), so the other devices of the account get a push. A nudge failure does not change the phase."
+    },
+    "notifyAgain": {
+      "effect": "newPhone, phase waitingForOther, from accounts.approvalNudgeAgainSeconds (registries) after the last nudge: POST /v1/me/approval-nudge again. Shows bipe_app_verify_notify_again. A rate_limited answer is ignored."
     },
     "receive": {
       "effect": "approver: SessionVerificationControllerDelegate.didReceiveVerificationRequest with SessionVerificationRequestDetails. Acknowledges it and shows phase incoming over the app."
@@ -67,6 +70,8 @@
     "bipe_app_verify_match",
     "bipe_app_verify_no_match",
     "bipe_app_verify_mismatch",
+    "bipe_app_verify_notify_again",
+    "bipe_app_verify_nudge_body",
     "bipe_app_verify_done",
     "bipe_app_verify_cancelled",
     "bipe_device_approval_never_for_others",
@@ -100,6 +105,8 @@
     "The approver sees the other device's name and time before anything else, and a biometric check comes before the accept (ADR 0059 QR approval rule, applied here too). bipe_device_approval_never_for_others shows on the incoming screen.",
     "Symbols and their labels come from the SDK (Matrix spec SAS, m.sas.v1). The labels are in English; show the symbol large and the label small.",
     "The new phone that comes back through QR from the old phone (bipe-chat/bipe#203, #573) needs no verification: the QR login already shares the secrets.",
-    "When Encryption.hasDevicesToVerifyAgainst is false, the new phone does not offer this screen; encryption-status offers only the recovery key."
+    "When Encryption.hasDevicesToVerifyAgainst is false, the new phone does not offer this screen; encryption-status offers only the recovery key.",
+    "Approval nudge (bipe-chat/bipe#628): Matrix sends the request as a to-device event, and the homeserver does not push to-device events. So after request the new phone calls POST /v1/me/approval-nudge. bipe-api pushes to the other devices of the account that have a Bipe Next pusher (notification-service, kind deviceApproval). The push only opens Bipe there: the sync then delivers the request and receive shows phase incoming. The push approves nothing and carries no device name.",
+    "notifyAgain shows on the waiting screen only when the account has another device. A device with notifications off gets no push; the text bipe_app_verify_body stays the instruction for that case."
   ]
 }

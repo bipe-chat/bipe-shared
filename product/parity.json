@@ -437,6 +437,29 @@
       }
     },
     {
+      "id": "official-badge",
+      "name": "Bipe badge on the official accounts (ADR 0117, bipe#384)",
+      "issue": 384,
+      "ios": {
+        "status": "n/a",
+        "reason": "Not built in the fork; the forks are frozen (ADR 0155)"
+      },
+      "android": {
+        "status": "n/a",
+        "reason": "Not built in the fork; the forks are frozen (ADR 0155)"
+      },
+      "web": {
+        "status": "n/a",
+        "reason": "No web chat (ADR 0004); the site shows a demo at most"
+      },
+      "server": {
+        "status": "n/a",
+        "reason": "Client behaviour; the account list is registries/official-accounts.json"
+      },
+      "ios-new": "planned",
+      "android-new": "planned"
+    },
+    {
       "id": "lookalikes",
       "name": "Disguised letters",
       "ios": "planned",

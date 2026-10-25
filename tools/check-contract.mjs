@@ -94,6 +94,8 @@ const NOT_IN_APPS = {
   PropostaVisitor: "staff report only (ADR 0158): CLI proposta visits and the staff route",
   PropostaVisit: "staff report only (ADR 0158): CLI proposta visits and the staff route",
   PropostaReport: "staff report only (ADR 0158): CLI proposta visits and the staff route",
+  PropostaSitting: "staff report only (ADR 0160): CLI proposta sessions, the staff route and the summary email",
+  PropostaStep: "staff report only (ADR 0160): CLI proposta sessions, the staff route and the summary email",
   Error: "clients read error and reason into their error type; the enum is checked as Error.error",
   BadgeEnvelope: "verified on device by BadgeVerifier; covered by test-vectors/badges.json",
   BadgeGone: "a 410 means no seal; the apps fetch badges in the seal work (bipe-chat/bipe#252)",

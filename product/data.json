@@ -627,17 +627,17 @@
     {
       "id": "proposta-visits",
       "basis": "legitimate-interest",
-      "places": ["server"],
+      "places": ["server", "email-relay"],
       "pt": {
         "name": "Acesso às páginas de proposta do Bipe",
-        "what": "Para quem entra nas páginas de proposta: o e-mail que você digita. A cada página e slide que você abre, a hora, a página, o site de onde você veio, as etiquetas utm do link e a cidade estimada pelo endereço de IP. O Bipe não guarda o IP.",
-        "why": "Saber quais páginas cada visitante leu.",
+        "what": "Para quem entra nas páginas de proposta: o e-mail que você digita. A cada página e slide que você abre, a hora, a página, o título do slide, quanto tempo você ficou nele, o site de onde você veio, as etiquetas utm do link e a cidade estimada pelo endereço de IP. O Bipe não guarda o IP.",
+        "why": "Saber quais páginas cada visitante leu e por quanto tempo. Depois de cada visita, a equipe do Bipe recebe um resumo por e-mail.",
         "retention": "As visitas ficam 365 dias. O e-mail fica até a equipe apagar ou você pedir."
       },
       "en": {
         "name": "Access to Bipe's proposal pages",
-        "what": "For people who open the proposal pages: the email you type. For each page and slide you open: the time, the page, the site you came from, the link's utm tags and the city estimated from your IP address. Bipe does not keep the IP.",
-        "why": "To know which pages each visitor read.",
+        "what": "For people who open the proposal pages: the email you type. For each page and slide you open: the time, the page, the slide title, how long you stayed on it, the site you came from, the link's utm tags and the city estimated from your IP address. Bipe does not keep the IP.",
+        "why": "To know which pages each visitor read and for how long. After each visit, the Bipe team gets a summary by email.",
         "retention": "Visits are kept for 365 days. The email stays until the team deletes it or you ask."
       }
     }

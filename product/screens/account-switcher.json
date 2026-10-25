@@ -2,7 +2,7 @@
   "id": "account-switcher",
   "title": "Account switcher",
   "flow": "home",
-  "summary": "The menu a long press on the Você tab opens (ADR 0135): every account on this phone with a check on the current one, then Nova conta while the cap allows one more (ADR 0086).",
+  "summary": "The menu a long press on the Você tab opens (ADR 0135): every account on this phone with a check on the current one, then Nova conta (ADR 0086, bipe-chat/bipe#445).",
   "state": {
     "accounts": {
       "type": "list",
@@ -14,7 +14,7 @@
     },
     "canAddAccount": {
       "type": "bool",
-      "description": "true while the phone holds fewer personal accounts than max_accounts (bipe-api GET /v1/me/account, fallback MAX_PERSONAL_ACCOUNTS in the registries)."
+      "description": "true while the phone holds fewer personal accounts than max_accounts (bipe-api GET /v1/me/account, fallback MAX_PERSONAL_ACCOUNTS in the registries). account-new turns its personal row off when false; Nova conta shows either way, for a company account or an existing one."
     }
   },
   "actions": {
@@ -28,7 +28,7 @@
       "effect": "Closes the menu and runs app-tabs switchAccount."
     },
     "newAccount": {
-      "effect": "Closes the menu and opens onboarding-welcome to create a second account on this phone. The first account stays signed in."
+      "effect": "Closes the menu and opens account-new. The accounts on the phone stay signed in."
     },
     "dismiss": {
       "effect": "Closes the menu."

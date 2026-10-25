@@ -1,0 +1,73 @@
+{
+  "id": "account-new",
+  "title": "New account",
+  "flow": "home",
+  "summary": "The Nova conta window (MZ, 19 October 2026, bipe-chat/bipe#445): one sheet for every new account on a phone that already has one. A personal or company sign-up takes its invite from the account on screen, so the invite code step never shows.",
+  "types": {
+    "SignupStart": {
+      "inviteId": { "type": "string", "description": "id of the invite POST /v1/me/invites made for this sign-up. A cancel before signup-create revokes it." },
+      "code": { "type": "string", "description": "The invite code. Never shown and never logged." },
+      "accountType": { "type": "enum", "values": ["personal", "company"], "description": "account_type of POST /v1/signup (ADR 0087)." }
+    }
+  },
+  "state": {
+    "currentName": { "type": "string", "description": "Display name of the account on screen, for bipe_account_new_invite_note." },
+    "canAddPersonal": { "type": "bool", "description": "canAddAccount of account-switcher. false: the personal row is off and shows bipe_account_cap_reached with max_accounts." },
+    "canAddCompany": { "type": "bool", "description": "true only on a phone that can attest (iOS App Attest; Android stays false until bipe-chat/bipe#92) and when the account on screen is not a company." },
+    "invitePhase": {
+      "type": "enum",
+      "values": ["loading", "ready", "noneLeft", "failed"],
+      "description": "loading: GET /v1/me/invites of the account on screen runs. ready: available > 0. noneLeft: available is 0; the personal and company rows are off and the window shows BipeInviteQuota.noneLeft. failed: the quota did not load; the rows stay on and a tap tries again."
+    },
+    "busy": { "type": "bool", "description": "true while POST /v1/me/invites runs after a tap. The rows are off." },
+    "error": { "type": "string", "optional": true, "description": "bipe_error_network, bipe_error_rate_limited or bipe_error_invite_quota after a failed tap." }
+  },
+  "actions": {
+    "appear": {
+      "effect": "Reads GET /v1/me/invites with the token of the account on screen (BipeInviteCreator.quota). Creates nothing."
+    },
+    "choosePersonal": {
+      "effect": "Runs BipeInviteCreator.createIfAvailable for the account on screen. created: opens signup-name with a SignupStart of type personal. noneLeft: sets invitePhase noneLeft."
+    },
+    "chooseCompany": {
+      "effect": "The same as choosePersonal with a SignupStart of type company. signup-name then asks for bipe_company_name."
+    },
+    "chooseExisting": {
+      "effect": "Opens recovery-start in the same sheet. A recovered account joins the phone as with account-start didRecover."
+    },
+    "cancelSignup": {
+      "effect": "Closes the sign-up before signup-create and revokes the SignupStart invite (DELETE /v1/me/invites/{inviteId}), so the slot comes back. After signup-create started, the invite stays."
+    },
+    "close": {
+      "effect": "Closes the window."
+    }
+  },
+  "strings": [
+    "bipe_account_new_title",
+    "bipe_account_new_personal",
+    "bipe_account_new_personal_body",
+    "bipe_account_new_company",
+    "bipe_account_new_company_body",
+    "bipe_account_new_existing",
+    "bipe_account_new_existing_body",
+    "bipe_account_new_invite_note",
+    "bipe_account_cap_reached",
+    "bipe_invites_none_left",
+    "bipe_invites_next",
+    "bipe_company_name",
+    "bipe_error_network",
+    "bipe_error_rate_limited",
+    "bipe_error_invite_quota",
+    "bipe_app_cancel"
+  ],
+  "sdk": [],
+  "parity": ["multi-account", "invites"],
+  "notes": [
+    "Every new account needs an invite (ADR 0072). Here the invite comes from the quota of the account on screen; POST /v1/me/invites uses its token.",
+    "A sign-up from this window starts at signup-name. onboarding-welcome and signup-invite-code do not show. signup-invite-code shows only when signup-create gets invite_invalid (action fix).",
+    "A sign-up from this window has no inviter: signup-name does not show bipe_signup_invited_by, signup-done does not open a chat with the account on screen, and no inviter greeting is stored (ADR 0034, ADR 0138 rules 2 and 5).",
+    "The invite is made on the tap, never on appear, so opening and closing the window costs no invite.",
+    "A first sign-up on a phone with no account keeps onboarding-welcome and signup-invite-code (account-start noAccount).",
+    "Bipe logic: BipeInviteCreator and BipeInviteQuota (iOS BipeKit); myInvites, createInvite and revokeInvite in libraries/bipe BipeApiInvites (Android)."
+  ]
+}

@@ -1,0 +1,35 @@
+{
+  "id": "bring-people-reminder",
+  "title": "Bring your people: weekly reminder",
+  "flow": "invites",
+  "summary": "A prompt above Conversas, at most once a week, that names one person from bring-people who has not joined yet and offers to send the invite again, or a new one when it expired.",
+  "state": {
+    "name": { "type": "string", "description": "The slot's name, for bipe_bring_people_reminder_title." },
+    "kind": {
+      "type": "enum",
+      "values": ["pending", "expired"],
+      "description": "pending: the invite still works, body bipe_bring_people_reminder_pending, action bipe_bring_people_resend. expired: body bipe_bring_people_reminder_expired, action bipe_bring_people_expired_action."
+    },
+    "inviteId": { "type": "string", "description": "The invite of the named slot." }
+  },
+  "actions": {
+    "act": { "effect": "pending: opens the system share sheet with the same link (invite-qr when the link is on another phone). expired: makes a new invite with the same name, as bring-people replaceExpired." },
+    "notNow": { "effect": "Hides the prompt and adds one decline. After bringPeople.stopAfterDeclines declines (2), across the first sheet and the reminders, no bring-people ask shows again on this account." }
+  },
+  "strings": [
+    "bipe_bring_people_reminder_title",
+    "bipe_bring_people_reminder_pending",
+    "bipe_bring_people_reminder_expired",
+    "bipe_bring_people_resend",
+    "bipe_bring_people_expired_action",
+    "bipe_fallback_skip"
+  ],
+  "sdk": [],
+  "parity": ["bring-people"],
+  "notes": [
+    "Trigger bringPeopleDue: Conversas is on screen; at least bringPeople.followUpEveryDays (7) days since the last bring-people ask on this account; fewer than 2 declines; and a slot is sent for at least bringPeople.pendingAfterDays (3) days, or expired. Pick the oldest such slot. No slot qualifies: no reminder.",
+    "Every reminder names one person. No generic \"invite someone\" reminder.",
+    "Slot prompt: shares the 24-hour slot with the handle, photo and PIN prompts (registries/onboarding.json promptSlot). A slot that joined or is filled again leaves the reminder pool.",
+    "The reminder stops for good when every slot joined, or after the second decline."
+  ]
+}

@@ -3363,6 +3363,679 @@
         ]
       },
       "issue": 500
+    },
+    {
+      "id": "timeline-notice-emote",
+      "name": "Notice and emote messages in the timeline (bipe#659)",
+      "ios": {
+        "status": "built",
+        "evidence": [
+          "bipe-ios/ElementX/Sources/Services/Timeline/TimelineItems/Items/Messages/NoticeRoomTimelineItem.swift",
+          "bipe-ios/ElementX/Sources/Services/Timeline/TimelineItems/Items/Messages/EmoteRoomTimelineItem.swift"
+        ]
+      },
+      "android": {
+        "status": "built",
+        "evidence": [
+          "bipe-android/features/messages/impl/src/main/kotlin/io/element/android/features/messages/impl/timeline/model/event/TimelineItemNoticeContent.kt",
+          "bipe-android/features/messages/impl/src/main/kotlin/io/element/android/features/messages/impl/timeline/model/event/TimelineItemEmoteContent.kt"
+        ]
+      },
+      "web": {
+        "status": "n/a",
+        "reason": "No web chat (ADR 0004); the site shows a demo at most"
+      },
+      "server": {
+        "status": "n/a",
+        "reason": "Plain Matrix events; no Bipe server code"
+      },
+      "ios-new": {
+        "status": "planned",
+        "issue": 659
+      },
+      "android-new": {
+        "status": "planned",
+        "issue": 659
+      },
+      "issue": 659
+    },
+    {
+      "id": "timeline-links-formatting",
+      "name": "Tappable links, mention pills and received formatting in messages (bipe#660)",
+      "ios": {
+        "status": "built",
+        "evidence": [
+          "bipe-ios/ElementX/Sources/Other/HTMLParsing/AttributedStringBuilder.swift"
+        ]
+      },
+      "android": {
+        "status": "built",
+        "evidence": [
+          "bipe-android/libraries/htmlrenderer",
+          "bipe-android/features/messages/impl/src/main/kotlin/io/element/android/features/messages/impl/timeline/components/event/TimelineItemTextView.kt"
+        ]
+      },
+      "web": {
+        "status": "n/a",
+        "reason": "No web chat (ADR 0004); the site shows a demo at most"
+      },
+      "server": {
+        "status": "n/a",
+        "reason": "Plain Matrix events; no Bipe server code"
+      },
+      "ios-new": {
+        "status": "planned",
+        "issue": 660
+      },
+      "android-new": {
+        "status": "planned",
+        "issue": 660
+      },
+      "issue": 660
+    },
+    {
+      "id": "group-state-lines",
+      "name": "State lines in group timelines: joined, left, removed, renamed, photo and description changed (bipe#661)",
+      "ios": {
+        "status": "built",
+        "evidence": [
+          "bipe-ios/ElementX/Sources/Services/Timeline/TimelineItems/RoomStateEventStringBuilder.swift"
+        ]
+      },
+      "android": {
+        "status": "built",
+        "evidence": [
+          "bipe-android/libraries/eventformatter/impl/src/main/kotlin/io/element/android/libraries/eventformatter/impl/StateContentFormatter.kt",
+          "bipe-android/libraries/eventformatter/impl/src/main/kotlin/io/element/android/libraries/eventformatter/impl/RoomMembershipContentFormatter.kt"
+        ]
+      },
+      "web": {
+        "status": "n/a",
+        "reason": "No web chat (ADR 0004); the site shows a demo at most"
+      },
+      "server": {
+        "status": "n/a",
+        "reason": "Plain Matrix events; no Bipe server code"
+      },
+      "ios-new": {
+        "status": "planned",
+        "issue": 661
+      },
+      "android-new": {
+        "status": "planned",
+        "issue": 661
+      },
+      "issue": 661
+    },
+    {
+      "id": "archive-sync",
+      "name": "Archive syncs to other devices and the web (m.lowpriority tag) (bipe#662)",
+      "ios": {
+        "status": "built",
+        "evidence": [
+          "bipe-ios/ElementX/Sources/Application/BipeRoomListScope.swift",
+          "bipe-ios/ElementX/Sources/Screens/HomeScreen/View/BipeArchivedRow.swift"
+        ]
+      },
+      "android": {
+        "status": "built",
+        "evidence": [
+          "bipe-android/features/home/impl/src/main/kotlin/io/element/android/features/home/impl/roomlist/RoomListPresenter.kt"
+        ]
+      },
+      "web": {
+        "status": "n/a",
+        "reason": "No web chat (ADR 0004); the site shows a demo at most"
+      },
+      "server": {
+        "status": "n/a",
+        "reason": "Plain Matrix events; no Bipe server code"
+      },
+      "ios-new": {
+        "status": "planned",
+        "issue": 662
+      },
+      "android-new": {
+        "status": "planned",
+        "issue": 662
+      },
+      "issue": 662
+    },
+    {
+      "id": "matrix-links",
+      "name": "matrix.to and matrix: links open the app; join a group from a room link (bipe#663)",
+      "ios": {
+        "status": "built",
+        "evidence": [
+          "bipe-ios/ElementX/Sources/Application/Navigation/AppRoutes.swift",
+          "bipe-ios/ElementX/Sources/Screens/JoinRoomScreen"
+        ]
+      },
+      "android": {
+        "status": "built",
+        "evidence": [
+          "bipe-android/app/src/main/AndroidManifest.xml",
+          "bipe-android/features/joinroom"
+        ]
+      },
+      "web": {
+        "status": "n/a",
+        "reason": "No web chat (ADR 0004); the site shows a demo at most"
+      },
+      "server": {
+        "status": "n/a",
+        "reason": "Plain Matrix events; no Bipe server code"
+      },
+      "ios-new": {
+        "status": "planned",
+        "issue": 663
+      },
+      "android-new": {
+        "status": "planned",
+        "issue": 663
+      },
+      "issue": 663
+    },
+    {
+      "id": "message-forward",
+      "name": "Forward a message or media to another chat (bipe#664)",
+      "ios": {
+        "status": "built",
+        "evidence": [
+          "bipe-ios/ElementX/Sources/Screens/MessageForwardingScreen"
+        ]
+      },
+      "android": {
+        "status": "built",
+        "evidence": [
+          "bipe-android/features/forward"
+        ]
+      },
+      "web": {
+        "status": "n/a",
+        "reason": "No web chat (ADR 0004); the site shows a demo at most"
+      },
+      "server": {
+        "status": "n/a",
+        "reason": "Plain Matrix events; no Bipe server code"
+      },
+      "ios-new": {
+        "status": "planned",
+        "issue": 664
+      },
+      "android-new": {
+        "status": "planned",
+        "issue": 664
+      },
+      "issue": 664
+    },
+    {
+      "id": "message-pins",
+      "name": "Pin and unpin messages in groups, pinned banner and pinned list (bipe#665)",
+      "ios": {
+        "status": "built",
+        "evidence": [
+          "bipe-ios/ElementX/Sources/Screens/PinnedEventsTimelineScreen"
+        ]
+      },
+      "android": {
+        "status": "built",
+        "evidence": [
+          "bipe-android/features/messages/impl/src/main/kotlin/io/element/android/features/messages/impl/pinned/DefaultPinnedEventsTimelineProvider.kt",
+          "bipe-android/features/messages/impl/src/main/kotlin/io/element/android/features/messages/impl/pinned/banner/PinnedMessagesBannerView.kt"
+        ]
+      },
+      "web": {
+        "status": "n/a",
+        "reason": "No web chat (ADR 0004); the site shows a demo at most"
+      },
+      "server": {
+        "status": "n/a",
+        "reason": "Plain Matrix events; no Bipe server code"
+      },
+      "ios-new": {
+        "status": "planned",
+        "issue": 665
+      },
+      "android-new": {
+        "status": "planned",
+        "issue": 665
+      },
+      "issue": 665
+    },
+    {
+      "id": "message-link-copy",
+      "name": "Copy a link to a message in a group (bipe#666)",
+      "ios": {
+        "status": "built",
+        "evidence": [
+          "bipe-ios/ElementX/Sources/Screens/Timeline/View/ItemMenu/TimelineItemMenuAction.swift"
+        ]
+      },
+      "android": {
+        "status": "built",
+        "evidence": [
+          "bipe-android/features/messages/impl/src/main/kotlin/io/element/android/features/messages/impl/actionlist/ActionListPresenter.kt"
+        ]
+      },
+      "web": {
+        "status": "n/a",
+        "reason": "No web chat (ADR 0004); the site shows a demo at most"
+      },
+      "server": {
+        "status": "n/a",
+        "reason": "Plain Matrix events; no Bipe server code"
+      },
+      "ios-new": {
+        "status": "planned",
+        "issue": 666
+      },
+      "android-new": {
+        "status": "planned",
+        "issue": 666
+      },
+      "issue": 666
+    },
+    {
+      "id": "threads",
+      "name": "Threads in groups: reply in thread, thread view, thread list (bipe#667)",
+      "ios": {
+        "status": "built",
+        "evidence": [
+          "bipe-ios/ElementX/Sources/Screens/ThreadTimelineScreen"
+        ]
+      },
+      "android": {
+        "status": "built",
+        "evidence": [
+          "bipe-android/features/messages/impl/src/main/kotlin/io/element/android/features/messages/impl/threads/ThreadedMessagesNode.kt",
+          "bipe-android/features/messages/impl/src/main/kotlin/io/element/android/features/messages/impl/threads/list/ThreadsListView.kt"
+        ]
+      },
+      "web": {
+        "status": "n/a",
+        "reason": "No web chat (ADR 0004); the site shows a demo at most"
+      },
+      "server": {
+        "status": "n/a",
+        "reason": "Plain Matrix events; no Bipe server code"
+      },
+      "ios-new": {
+        "status": "planned",
+        "issue": 667
+      },
+      "android-new": {
+        "status": "planned",
+        "issue": 667
+      },
+      "issue": 667
+    },
+    {
+      "id": "media-captions-edit",
+      "name": "Add, edit, remove and copy the caption of a sent media message (bipe#668)",
+      "ios": {
+        "status": "built",
+        "evidence": [
+          "bipe-ios/ElementX/Sources/Screens/Timeline/View/ItemMenu/TimelineItemMenuAction.swift"
+        ]
+      },
+      "android": {
+        "status": "built",
+        "evidence": [
+          "bipe-android/features/messages/impl/src/main/kotlin/io/element/android/features/messages/impl/actionlist/ActionListPresenter.kt"
+        ]
+      },
+      "web": {
+        "status": "n/a",
+        "reason": "No web chat (ADR 0004); the site shows a demo at most"
+      },
+      "server": {
+        "status": "n/a",
+        "reason": "Plain Matrix events; no Bipe server code"
+      },
+      "ios-new": {
+        "status": "planned",
+        "issue": 668
+      },
+      "android-new": {
+        "status": "planned",
+        "issue": 668
+      },
+      "issue": 668
+    },
+    {
+      "id": "polls-edit-history",
+      "name": "Edit a poll before the first vote, poll history in group details (bipe#669)",
+      "ios": {
+        "status": "built",
+        "evidence": [
+          "bipe-ios/ElementX/Sources/Screens/RoomPollsHistoryScreen",
+          "bipe-ios/ElementX/Sources/Screens/CreatePollScreen"
+        ]
+      },
+      "android": {
+        "status": "built",
+        "evidence": [
+          "bipe-android/features/poll/impl/src/main/kotlin/io/element/android/features/poll/impl/history/PollHistoryView.kt"
+        ]
+      },
+      "web": {
+        "status": "n/a",
+        "reason": "No web chat (ADR 0004); the site shows a demo at most"
+      },
+      "server": {
+        "status": "n/a",
+        "reason": "Plain Matrix events; no Bipe server code"
+      },
+      "ios-new": {
+        "status": "planned",
+        "issue": 669
+      },
+      "android-new": {
+        "status": "planned",
+        "issue": 669
+      },
+      "issue": 669
+    },
+    {
+      "id": "sticker-save-received",
+      "name": "Save a received sticker to my sticker pack (bipe#670)",
+      "ios": {
+        "status": "built",
+        "evidence": [
+          "bipe-ios/ElementX/Sources/Screens/Timeline/View/ItemMenu/TimelineItemMenuAction.swift"
+        ]
+      },
+      "android": {
+        "status": "built",
+        "evidence": [
+          "bipe-android/features/messages/impl/src/main/kotlin/io/element/android/features/messages/impl/actionlist/ActionListPresenter.kt"
+        ]
+      },
+      "web": {
+        "status": "n/a",
+        "reason": "No web chat (ADR 0004); the site shows a demo at most"
+      },
+      "server": {
+        "status": "n/a",
+        "reason": "Plain Matrix events; no Bipe server code"
+      },
+      "ios-new": {
+        "status": "planned",
+        "issue": 670
+      },
+      "android-new": {
+        "status": "planned",
+        "issue": 670
+      },
+      "issue": 670
+    },
+    {
+      "id": "message-search",
+      "name": "Message search across chats and in one chat (bipe#671)",
+      "ios": {
+        "status": "built",
+        "evidence": [
+          "bipe-ios/ElementX/Sources/Screens/SearchScreen"
+        ]
+      },
+      "android": {
+        "status": "built",
+        "evidence": [
+          "bipe-android/features/home/impl/src/main/kotlin/io/element/android/features/home/impl/search/GlobalSearchView.kt"
+        ]
+      },
+      "web": {
+        "status": "n/a",
+        "reason": "No web chat (ADR 0004); the site shows a demo at most"
+      },
+      "server": {
+        "status": "n/a",
+        "reason": "Plain Matrix events; no Bipe server code"
+      },
+      "ios-new": {
+        "status": "planned",
+        "issue": 671
+      },
+      "android-new": {
+        "status": "planned",
+        "issue": 671
+      },
+      "issue": 671
+    },
+    {
+      "id": "chat-media-gallery",
+      "name": "Media and files gallery for a chat, from chat details (bipe#672)",
+      "ios": {
+        "status": "built",
+        "evidence": [
+          "bipe-ios/ElementX/Sources/Screens/MediaEventsTimelineScreen"
+        ]
+      },
+      "android": {
+        "status": "built",
+        "evidence": [
+          "bipe-android/libraries/mediaviewer/impl/src/main/kotlin/io/element/android/libraries/mediaviewer/impl/gallery/MediaGalleryPresenter.kt"
+        ]
+      },
+      "web": {
+        "status": "n/a",
+        "reason": "No web chat (ADR 0004); the site shows a demo at most"
+      },
+      "server": {
+        "status": "n/a",
+        "reason": "Plain Matrix events; no Bipe server code"
+      },
+      "ios-new": {
+        "status": "planned",
+        "issue": 672
+      },
+      "android-new": {
+        "status": "planned",
+        "issue": 672
+      },
+      "issue": 672
+    },
+    {
+      "id": "chat-favourites-filters",
+      "name": "Favourite a chat; unread and favourites filters in the chat list (bipe#673)",
+      "ios": {
+        "status": "built",
+        "evidence": [
+          "bipe-ios/ElementX/Sources/Screens/HomeScreen/View/Filters/RoomListFiltersView.swift",
+          "bipe-ios/ElementX/Sources/Screens/HomeScreen/HomeScreenModels.swift"
+        ]
+      },
+      "android": {
+        "status": "built",
+        "evidence": [
+          "bipe-android/features/home/impl/src/main/kotlin/io/element/android/features/home/impl/filters/RoomListFilter.kt"
+        ]
+      },
+      "web": {
+        "status": "n/a",
+        "reason": "No web chat (ADR 0004); the site shows a demo at most"
+      },
+      "server": {
+        "status": "n/a",
+        "reason": "Plain Matrix events; no Bipe server code"
+      },
+      "ios-new": {
+        "status": "planned",
+        "issue": 673
+      },
+      "android-new": {
+        "status": "planned",
+        "issue": 673
+      },
+      "issue": 673
+    },
+    {
+      "id": "group-report",
+      "name": "Report a group to the Bipe team from group details (bipe#674)",
+      "ios": {
+        "status": "built",
+        "evidence": [
+          "bipe-ios/ElementX/Sources/Screens/ReportRoomScreen"
+        ]
+      },
+      "android": {
+        "status": "built",
+        "evidence": [
+          "bipe-android/features/reportroom/impl/src/main/kotlin/io/element/android/features/reportroom/impl/ReportRoomView.kt"
+        ]
+      },
+      "web": {
+        "status": "n/a",
+        "reason": "No web chat (ADR 0004); the site shows a demo at most"
+      },
+      "server": {
+        "status": "n/a",
+        "reason": "Plain Matrix events; no Bipe server code"
+      },
+      "ios-new": {
+        "status": "planned",
+        "issue": 674
+      },
+      "android-new": {
+        "status": "planned",
+        "issue": 674
+      },
+      "issue": 674
+    },
+    {
+      "id": "group-unban",
+      "name": "Banned members list and unban in groups (bipe#675)",
+      "ios": {
+        "status": "built",
+        "evidence": [
+          "bipe-ios/ElementX/Sources/Screens/RoomMemberListScreen"
+        ]
+      },
+      "android": {
+        "status": "built",
+        "evidence": [
+          "bipe-android/features/roommembermoderation"
+        ]
+      },
+      "web": {
+        "status": "n/a",
+        "reason": "No web chat (ADR 0004); the site shows a demo at most"
+      },
+      "server": {
+        "status": "n/a",
+        "reason": "Plain Matrix events; no Bipe server code"
+      },
+      "ios-new": {
+        "status": "planned",
+        "issue": 675
+      },
+      "android-new": {
+        "status": "planned",
+        "issue": 675
+      },
+      "issue": 675
+    },
+    {
+      "id": "settings-rows-wired",
+      "name": "Every settings row works: appearance, media quality, live location (bipe#676)",
+      "ios": {
+        "status": "built",
+        "evidence": [
+          "bipe-ios/ElementX/Sources/Screens/BipeSettingsGroupScreen/View/BipeSettingsGroupScreen.swift"
+        ]
+      },
+      "android": {
+        "status": "built",
+        "evidence": [
+          "bipe-android/features/preferences/impl/src/main/kotlin/io/element/android/features/preferences/impl/bipe/BipeSettingsGroupView.kt"
+        ]
+      },
+      "web": {
+        "status": "n/a",
+        "reason": "No web chat (ADR 0004); the site shows a demo at most"
+      },
+      "server": {
+        "status": "n/a",
+        "reason": "Plain Matrix events; no Bipe server code"
+      },
+      "ios-new": {
+        "status": "planned",
+        "issue": 676
+      },
+      "android-new": {
+        "status": "planned",
+        "issue": 676
+      },
+      "issue": 676
+    },
+    {
+      "id": "phone-discoverable-switch",
+      "name": "Discoverable by phone switch in privacy settings (bipe#677)",
+      "ios": {
+        "status": "built",
+        "evidence": [
+          "bipe-ios/ElementX/Sources/Screens/BipeSettingsGroupScreen/BipeSettingsGroupScreenModels.swift"
+        ]
+      },
+      "android": {
+        "status": "built",
+        "evidence": [
+          "bipe-android/features/preferences/impl/src/main/kotlin/io/element/android/features/preferences/impl/bipe/BipeSettingsGroupView.kt"
+        ]
+      },
+      "web": {
+        "status": "n/a",
+        "reason": "No web chat (ADR 0004); the site shows a demo at most"
+      },
+      "server": {
+        "status": "built",
+        "evidence": [
+          "bipe-api/src/phones.ts"
+        ]
+      },
+      "ios-new": {
+        "status": "planned",
+        "issue": 677
+      },
+      "android-new": {
+        "status": "planned",
+        "issue": 677
+      },
+      "issue": 677
+    },
+    {
+      "id": "group-missed-summary",
+      "name": "\"O que você perdeu\" block above unread messages in groups (bipe#98)",
+      "ios": {
+        "status": "built",
+        "evidence": [
+          "bipe-ios/ElementX/Sources/Screens/Timeline/BipeMissedSummary.swift"
+        ]
+      },
+      "android": {
+        "status": "built",
+        "evidence": [
+          "bipe-android/features/messages/impl/src/main/kotlin/io/element/android/features/messages/impl/timeline/BipeMissedSummaryFactory.kt"
+        ]
+      },
+      "web": {
+        "status": "n/a",
+        "reason": "No web chat (ADR 0004); the site shows a demo at most"
+      },
+      "server": {
+        "status": "n/a",
+        "reason": "Plain Matrix events; no Bipe server code"
+      },
+      "ios-new": {
+        "status": "planned",
+        "issue": 98
+      },
+      "android-new": {
+        "status": "planned",
+        "issue": 98
+      },
+      "issue": 98
     }
   ],
   "differences": [

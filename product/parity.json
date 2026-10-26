@@ -552,6 +552,17 @@
       "note": "NameNormalizer runs on both apps for reserved names and link hosts; no lookalike warning on user names"
     },
     {
+      "id": "bot-mark",
+      "name": "Bots always marked",
+      "ios": "planned",
+      "android": "planned",
+      "web": {
+        "status": "n/a",
+        "reason": "No web chat (ADR 0004); the site shows a demo at most"
+      },
+      "server": "planned"
+    },
+    {
       "id": "family-check",
       "name": "Is that really Mom?",
       "ios": "planned",

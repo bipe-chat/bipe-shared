@@ -688,7 +688,8 @@
         "points": [
           "A lista tem bancos, órgãos públicos e o próprio Bipe.",
           "A checagem compara a forma simplificada do nome, sem acento e sem letra disfarçada.",
-          "Só a conta com o CNPJ certo e o selo usa o nome."
+          "Só a conta com o CNPJ certo e o selo usa o nome.",
+          "Nomes de políticos, candidatos e partidos vão entrar na lista quando existir o selo político, conferido nos dados públicos do TSE."
         ]
       },
       "en": {
@@ -697,7 +698,8 @@
         "points": [
           "The list holds banks, public bodies and Bipe itself.",
           "The check compares the simplified form of the name, with no accents and no disguised letters.",
-          "Only the account with the right CNPJ and the seal can use the name."
+          "Only the account with the right CNPJ and the seal can use the name.",
+          "Names of office holders, candidates and parties will join the list once the political seal exists, checked against public TSE data."
         ]
       },
       "code": [
@@ -740,6 +742,39 @@
         "names-ios",
         "names-android"
       ]
+    },
+    {
+      "id": "bot-mark",
+      "area": "identity",
+      "icon": "bot",
+      "milestone": "Later",
+      "slug": {
+        "pt": "bot-marcado",
+        "en": "marked-bots"
+      },
+      "figures": [
+        "bot-marcado"
+      ],
+      "pt": {
+        "name": "Bot sempre marcado",
+        "body": "Toda conta automática é um bot. O bot aparece sempre marcado, com o nome de quem responde por ele.",
+        "points": [
+          "A marca aparece na lista de conversas, ao lado do nome, em cada mensagem e na notificação. O bot não consegue esconder a marca.",
+          "O perfil mostra de quem é o bot: de uma pessoa verificada ou de uma empresa com selo de CNPJ.",
+          "Numa conversa com um bot, uma linha fixa no topo avisa que ele lê as mensagens dali.",
+          "O bot nunca manda a primeira mensagem. Ele só escreve para quem começou a conversa, ou num grupo onde quem cuida adicionou o bot."
+        ]
+      },
+      "en": {
+        "name": "Bots always marked",
+        "body": "Every automated account is a bot. A bot always shows its mark and the name of its owner.",
+        "points": [
+          "The mark shows in the chat list, next to the name, on every message and in the notification. The bot can't hide it.",
+          "The profile shows who owns the bot: a verified person or a company with the business seal.",
+          "In a chat with a bot, a fixed line at the top says that it reads the messages there.",
+          "A bot never sends the first message. It only writes to someone who started the chat, or in a group where the organisers added it."
+        ]
+      }
     },
     {
       "id": "family-check",
@@ -973,19 +1008,19 @@
       ],
       "pt": {
         "name": "Ponta a ponta",
-        "body": "Toda conversa nova é protegida de ponta a ponta.",
+        "body": "Toda conversa nova, a dois ou em grupo, é protegida de ponta a ponta.",
         "points": [
           "Só quem está na conversa lê as mensagens. O Bipe não lê.",
-          "Vale para conversa a dois e para grupo.",
+          "Quando o Bipe tiver canais públicos, eles vão aparecer com a marca Público. Um canal público é aberto para qualquer pessoa, por isso não tem proteção de ponta a ponta.",
           "Usa a criptografia do Matrix, um padrão aberto que qualquer pessoa pode conferir."
         ]
       },
       "en": {
         "name": "End to end",
-        "body": "Every new chat is encrypted end to end.",
+        "body": "Every new chat, one to one or in a group, is encrypted end to end.",
         "points": [
           "Only the people in the chat can read the messages. Bipe can't.",
-          "It applies to one-to-one chats and to groups.",
+          "When Bipe has public channels, they will carry the label Público (Public). A public channel is open to anyone, so it isn't encrypted end to end.",
           "It uses Matrix encryption, an open standard anyone can check."
         ]
       }

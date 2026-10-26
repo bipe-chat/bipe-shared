@@ -1,0 +1,127 @@
+{
+  "$comment": "Hand-written. MatrixRTC call formats of Bipe's own client (bipe-chat/bipe#758, ADR 0186): MSC4143 membership, MSC4195 SFU token request, the media key event. They are the formats that Element Web reads, so calls work across clients. Compare JSON objects by value, not by key order. Keys are base64 without padding; readers accept padding too.",
+  "stateKeys": [
+    { "userId": "@ana:bipe.net.br", "deviceId": "ABCDEFGHIJ", "stateKey": "_@ana:bipe.net.br_ABCDEFGHIJ", "livekitIdentity": "@ana:bipe.net.br:ABCDEFGHIJ" },
+    { "userId": "@joao.silva:bipe.net.br", "deviceId": "Q1W2E3", "stateKey": "_@joao.silva:bipe.net.br_Q1W2E3", "livekitIdentity": "@joao.silva:bipe.net.br:Q1W2E3" }
+  ],
+  "memberships": [
+    {
+      "name": "video call",
+      "deviceId": "ABCDEFGHIJ",
+      "roomId": "!sala:bipe.net.br",
+      "focusUrl": "https://rtc.bipe.net.br",
+      "createdTs": 1761500000000,
+      "video": true,
+      "content": {
+        "application": "m.call",
+        "call_id": "",
+        "scope": "m.room",
+        "device_id": "ABCDEFGHIJ",
+        "focus_active": { "type": "livekit", "focus_selection": "oldest_membership" },
+        "foci_preferred": [{ "type": "livekit", "livekit_service_url": "https://rtc.bipe.net.br", "livekit_alias": "!sala:bipe.net.br" }],
+        "created_ts": 1761500000000,
+        "m.call.intent": "video"
+      }
+    },
+    {
+      "name": "voice call",
+      "deviceId": "Q1W2E3",
+      "roomId": "!dm:bipe.net.br",
+      "focusUrl": "https://rtc.bipe.net.br",
+      "createdTs": 1761500123456,
+      "video": false,
+      "content": {
+        "application": "m.call",
+        "call_id": "",
+        "scope": "m.room",
+        "device_id": "Q1W2E3",
+        "focus_active": { "type": "livekit", "focus_selection": "oldest_membership" },
+        "foci_preferred": [{ "type": "livekit", "livekit_service_url": "https://rtc.bipe.net.br", "livekit_alias": "!dm:bipe.net.br" }],
+        "created_ts": 1761500123456,
+        "m.call.intent": "audio"
+      }
+    }
+  ],
+  "leaveContent": {},
+  "sfuRequests": [
+    {
+      "roomId": "!sala:bipe.net.br",
+      "deviceId": "ABCDEFGHIJ",
+      "openId": { "accessToken": "openid-token-1", "tokenType": "Bearer", "matrixServerName": "bipe.net.br", "expiresInSeconds": 3600 },
+      "body": {
+        "room": "!sala:bipe.net.br",
+        "openid_token": { "access_token": "openid-token-1", "token_type": "Bearer", "matrix_server_name": "bipe.net.br", "expires_in": 3600 },
+        "device_id": "ABCDEFGHIJ"
+      },
+      "response": { "url": "wss://rtc.bipe.net.br", "jwt": "header.payload.signature" }
+    }
+  ],
+  "keyEvents": [
+    {
+      "name": "first key",
+      "index": 0,
+      "keyHex": "000102030405060708090a0b0c0d0e0f",
+      "deviceId": "ABCDEFGHIJ",
+      "sentTs": 1761500000500,
+      "content": { "keys": [{ "index": 0, "key": "AAECAwQFBgcICQoLDA0ODw" }], "device_id": "ABCDEFGHIJ", "call_id": "", "sent_ts": 1761500000500 }
+    },
+    {
+      "name": "key at index 3 (from another client)",
+      "index": 3,
+      "keyHex": "ffeeddccbbaa99887766554433221100",
+      "deviceId": "Q1W2E3",
+      "sentTs": 1761500099000,
+      "content": { "keys": [{ "index": 3, "key": "/+7dzLuqmYh3ZlVEMyIRAA" }], "device_id": "Q1W2E3", "call_id": "", "sent_ts": 1761500099000 }
+    }
+  ],
+  "keyReads": [
+    {
+      "name": "room event",
+      "sender": "@ana:bipe.net.br",
+      "content": { "keys": [{ "index": 2, "key": "AAECAwQFBgcICQoLDA0ODw" }], "device_id": "ABCDEFGHIJ", "call_id": "", "sent_ts": 1 },
+      "keys": [{ "identity": "@ana:bipe.net.br:ABCDEFGHIJ", "index": 2, "keyHex": "000102030405060708090a0b0c0d0e0f" }]
+    },
+    {
+      "name": "padded base64",
+      "sender": "@ana:bipe.net.br",
+      "content": { "keys": [{ "index": 1, "key": "AAECAwQFBgcICQoLDA0ODw==" }], "device_id": "ABCDEFGHIJ", "call_id": "", "sent_ts": 1 },
+      "keys": [{ "identity": "@ana:bipe.net.br:ABCDEFGHIJ", "index": 1, "keyHex": "000102030405060708090a0b0c0d0e0f" }]
+    },
+    {
+      "name": "to-device message",
+      "sender": "@joao.silva:bipe.net.br",
+      "content": { "keys": { "index": 4, "key": "/+7dzLuqmYh3ZlVEMyIRAA" }, "member": { "claimed_device_id": "Q1W2E3" }, "room_id": "!sala:bipe.net.br", "session": { "application": "m.call", "call_id": "", "scope": "m.room" }, "sent_ts": 1 },
+      "keys": [{ "identity": "@joao.silva:bipe.net.br:Q1W2E3", "index": 4, "keyHex": "ffeeddccbbaa99887766554433221100" }]
+    },
+    {
+      "name": "other call id",
+      "sender": "@ana:bipe.net.br",
+      "content": { "keys": [{ "index": 0, "key": "AAECAwQFBgcICQoLDA0ODw" }], "device_id": "ABCDEFGHIJ", "call_id": "outra", "sent_ts": 1 },
+      "keys": []
+    },
+    {
+      "name": "key of the wrong length",
+      "sender": "@ana:bipe.net.br",
+      "content": { "keys": [{ "index": 0, "key": "AAEC" }], "device_id": "ABCDEFGHIJ", "call_id": "", "sent_ts": 1 },
+      "keys": []
+    }
+  ],
+  "foci": [
+    { "name": "Bipe well-known", "wellKnown": { "m.homeserver": { "base_url": "https://matrix.bipe.net.br" }, "org.matrix.msc4143.rtc_foci": [{ "type": "livekit", "livekit_service_url": "https://rtc.bipe.net.br" }] }, "focusUrl": "https://rtc.bipe.net.br" },
+    { "name": "no foci", "wellKnown": { "m.homeserver": { "base_url": "https://matrix.bipe.net.br" } }, "focusUrl": null },
+    { "name": "other type first", "wellKnown": { "org.matrix.msc4143.rtc_foci": [{ "type": "other" }, { "type": "livekit", "livekit_service_url": "https://sfu.example.org" }] }, "focusUrl": "https://sfu.example.org" },
+    { "name": "http is refused", "wellKnown": { "org.matrix.msc4143.rtc_foci": [{ "type": "livekit", "livekit_service_url": "http://rtc.bipe.net.br" }] }, "focusUrl": null }
+  ],
+  "members": {
+    "now": 1761500100000,
+    "events": [
+      { "name": "active", "sender": "@ana:bipe.net.br", "stateKey": "_@ana:bipe.net.br_ABCDEFGHIJ", "originServerTs": 1761500000000, "content": { "application": "m.call", "call_id": "", "scope": "m.room", "device_id": "ABCDEFGHIJ", "focus_active": { "type": "livekit", "focus_selection": "oldest_membership" }, "foci_preferred": [{ "type": "livekit", "livekit_service_url": "https://rtc.bipe.net.br", "livekit_alias": "!sala:bipe.net.br" }], "created_ts": 1761500000000 }, "member": { "userId": "@ana:bipe.net.br", "deviceId": "ABCDEFGHIJ", "createdTs": 1761500000000, "focusUrl": "https://rtc.bipe.net.br" } },
+      { "name": "left", "sender": "@ana:bipe.net.br", "stateKey": "_@ana:bipe.net.br_OLDDEVICE", "originServerTs": 1761500050000, "content": {}, "member": null },
+      { "name": "no created_ts uses the event time", "sender": "@joao.silva:bipe.net.br", "stateKey": "_@joao.silva:bipe.net.br_Q1W2E3", "originServerTs": 1761499000000, "content": { "application": "m.call", "call_id": "", "scope": "m.room", "device_id": "Q1W2E3", "focus_active": { "type": "livekit", "focus_selection": "oldest_membership" }, "foci_preferred": [{ "type": "livekit", "livekit_service_url": "https://sfu.example.org", "livekit_alias": "!sala:bipe.net.br" }] }, "member": { "userId": "@joao.silva:bipe.net.br", "deviceId": "Q1W2E3", "createdTs": 1761499000000, "focusUrl": "https://sfu.example.org" } },
+      { "name": "expired", "sender": "@bia:bipe.net.br", "stateKey": "_@bia:bipe.net.br_DEV9", "originServerTs": 1761480000000, "content": { "application": "m.call", "call_id": "", "scope": "m.room", "device_id": "DEV9", "focus_active": { "type": "livekit", "focus_selection": "oldest_membership" }, "foci_preferred": [{ "type": "livekit", "livekit_service_url": "https://rtc.bipe.net.br" }], "created_ts": 1761480000000, "expires": 3600000 }, "member": null },
+      { "name": "other application", "sender": "@bia:bipe.net.br", "stateKey": "_@bia:bipe.net.br_DEV8", "originServerTs": 1761500000000, "content": { "application": "m.other", "call_id": "", "scope": "m.room", "device_id": "DEV8" }, "member": null },
+      { "name": "state key of another user", "sender": "@bia:bipe.net.br", "stateKey": "_@ana:bipe.net.br_DEV7", "originServerTs": 1761500000000, "content": { "application": "m.call", "call_id": "", "scope": "m.room", "device_id": "DEV7", "foci_preferred": [{ "type": "livekit", "livekit_service_url": "https://rtc.bipe.net.br" }], "created_ts": 1761500000000 }, "member": null }
+    ],
+    "oldestFocus": { "own": "https://rtc.bipe.net.br", "focusUrl": "https://sfu.example.org", "alone": "https://rtc.bipe.net.br" }
+  }
+}

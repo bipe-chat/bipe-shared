@@ -1,0 +1,184 @@
+{
+  "id": "call",
+  "title": "Voice and video call",
+  "flow": "chat",
+  "summary": "Starts or joins the call of a chat and shows it full screen: video tiles, the own preview, the controls and the time. Calls are MatrixRTC on Bipe's LiveKit SFU and always end-to-end encrypted (ADR 0186).",
+  "types": {
+    "CallMember": {
+      "userId": {
+        "type": "string",
+        "description": "The member's Matrix user id."
+      },
+      "deviceId": {
+        "type": "string",
+        "description": "The device in the call. One user can join from two devices."
+      },
+      "name": {
+        "type": "string",
+        "description": "Display name in the room."
+      },
+      "avatarUrl": {
+        "type": "url",
+        "optional": true,
+        "description": "mxc avatar."
+      },
+      "speaking": {
+        "type": "bool",
+        "description": "LiveKit says the member speaks now."
+      },
+      "microphoneOn": {
+        "type": "bool",
+        "description": "false: bipe_call_muted on the tile."
+      },
+      "cameraOn": {
+        "type": "bool",
+        "description": "false: the avatar instead of video, and bipe_call_camera_off for screen readers."
+      }
+    }
+  },
+  "state": {
+    "roomId": {
+      "type": "string",
+      "description": "The chat of the call."
+    },
+    "video": {
+      "type": "bool",
+      "description": "true: started from bipe_call_video, the camera starts on. false: bipe_call_voice, the camera starts off."
+    },
+    "phase": {
+      "type": "enum",
+      "values": [
+        "connecting",
+        "calling",
+        "connected",
+        "reconnecting",
+        "ended",
+        "failed"
+      ],
+      "description": "connecting: bipe_call_state_connecting while the membership, the SFU token and LiveKit come up. calling: bipe_call_state_calling while the own device is the only member. connected: the time since the own join. reconnecting: bipe_call_state_reconnecting while LiveKit reconnects. ended: bipe_call_state_ended for 2 seconds, then the screen closes. failed: bipe_call_error_connect."
+    },
+    "members": {
+      "type": "list",
+      "of": {
+        "type": "CallMember",
+        "description": "One member device."
+      },
+      "description": "Other members, oldest join first. The first 8 get a video tile; more show under bipe_call_members as a list."
+    },
+    "microphoneOn": {
+      "type": "bool",
+      "description": "The own microphone. Starts on."
+    },
+    "cameraOn": {
+      "type": "bool",
+      "description": "The own camera."
+    },
+    "frontCamera": {
+      "type": "bool",
+      "description": "Front or back camera."
+    },
+    "speakerOn": {
+      "type": "bool",
+      "description": "Audio out through the loudspeaker. Starts on for video, off (earpiece) for voice. A headset or Bluetooth device wins."
+    },
+    "microphoneDenied": {
+      "type": "bool",
+      "description": "true: bipe_call_microphone_denied with bipe_contacts_open_settings (iOS) or bipe_contacts_open_settings_android, and no join."
+    },
+    "cameraDenied": {
+      "type": "bool",
+      "description": "true: bipe_call_camera_denied with the settings button; the call goes on without video."
+    },
+    "minimised": {
+      "type": "bool",
+      "description": "The user went back to the chat. The chat shows bipe_call_ongoing with bipe_call_return."
+    }
+  },
+  "actions": {
+    "start": {
+      "params": {
+        "video": {
+          "type": "bool",
+          "description": "Voice or video."
+        }
+      },
+      "effect": "From the chat header (bipe_call_voice, bipe_call_video). Shown only when the room is encrypted and the server names a LiveKit focus (Client.isLivekitRtcSupported, well-known org.matrix.msc4143.rtc_foci). Asks for the microphone, and the camera for video, then joins."
+    },
+    "join": {
+      "effect": "From the bar bipe_call_ongoing with bipe_call_join, shown while Room.hasActiveRoomCall. Same as start with video off."
+    },
+    "toggleMicrophone": {
+      "effect": "Mutes or unmutes the published microphone track (bipe_call_microphone)."
+    },
+    "toggleCamera": {
+      "effect": "Publishes or unpublishes the camera track (bipe_call_camera)."
+    },
+    "flipCamera": {
+      "effect": "Switches front and back camera (bipe_call_camera_flip). Camera on only."
+    },
+    "toggleSpeaker": {
+      "effect": "Loudspeaker or earpiece (bipe_call_speaker). iOS also shows the system route picker for Bluetooth."
+    },
+    "minimise": {
+      "effect": "bipe_call_minimise: back to the chat; the call goes on. iOS keeps the audio session, Android keeps the foreground service."
+    },
+    "end": {
+      "effect": "bipe_call_end. Unpublishes, disconnects LiveKit, sends the empty membership, cancels the delayed leave. phase ended."
+    }
+  },
+  "strings": [
+    "bipe_call_voice",
+    "bipe_call_video",
+    "bipe_call_state_calling",
+    "bipe_call_state_connecting",
+    "bipe_call_state_reconnecting",
+    "bipe_call_state_ended",
+    "bipe_call_microphone",
+    "bipe_call_camera",
+    "bipe_call_camera_flip",
+    "bipe_call_speaker",
+    "bipe_call_end",
+    "bipe_call_ongoing",
+    "bipe_call_join",
+    "bipe_call_return",
+    "bipe_call_minimise",
+    "bipe_call_error_connect",
+    "bipe_call_microphone_denied",
+    "bipe_call_camera_denied",
+    "bipe_call_muted",
+    "bipe_call_camera_off",
+    "bipe_call_members",
+    "bipe_call_mute",
+    "bipe_call_unmute",
+    "bipe_call_channel_ongoing",
+    "bipe_call_microphone_usage",
+    "bipe_call_camera_usage",
+    "bipe_contacts_open_settings",
+    "bipe_contacts_open_settings_android"
+  ],
+  "sdk": [
+    "Client.isLivekitRtcSupported",
+    "Client.requestOpenidToken",
+    "makeWidgetDriver",
+    "WidgetDriver.run",
+    "WidgetDriverHandle.send",
+    "WidgetDriverHandle.recv",
+    "WidgetCapabilitiesProvider.acquireCapabilities",
+    "Room.hasActiveRoomCall",
+    "Room.activeRoomCallParticipants",
+    "RoomInfo.hasRoomCall"
+  ],
+  "parity": [
+    "calls"
+  ],
+  "notes": [
+    "Matrix transport: the widget driver of matrix-sdk-ffi with Bipe's own widget id and no page to load. The app is the widget and speaks the widget API (MSC2762, MSC2871, MSC3819, MSC4157) to WidgetDriverHandle. Capabilities: read all org.matrix.msc3401.call.member state, send it with the own state key only, send and read io.element.call.encryption_keys as room events and to-device messages, send and update delayed events.",
+    "Membership (MSC4143): state event org.matrix.msc3401.call.member, state key _<user id>_<device id>, content as in test-vectors/calls/matrixrtc.json memberships. The client first sends a delayed empty membership (MSC4140, delay 20 seconds) and restarts it every 5 seconds while in the call, so a crash or a lost network ends the membership. A member is active when the content has application m.call, call_id empty, a device_id, a state key of the sender, and created_ts (or the event time) plus expires (default 4 hours) is in the future.",
+    "SFU (MSC4195): focus_selection oldest_membership. The SFU is the livekit_service_url of the oldest active member, else the own well-known focus. POST <url>/sfu/get with the body in the vectors gives url and jwt for LiveKit. The LiveKit identity is <user id>:<device id>.",
+    "Media keys: each device makes 16 random bytes, sends them as io.element.call.encryption_keys in the encrypted room (base64 without padding) and gives them to a per-participant LiveKit key provider (HKDF, ratchet window 10, key ring 16) as raw bytes. The device sends its key again when a member joins. When a member leaves, it makes a new key, sends it, and uses it 1 second later. The own key always has index 0: the LiveKit iOS and Android SDKs give the app no way to change the key index of a published track. Keys from other members go to the provider by LiveKit identity at the index they name (0 to 15). Keys also arrive as to-device messages from clients that send them that way.",
+    "No focus, or a room without encryption: no call buttons and no bar (ADR 0186).",
+    "Audio: iOS AVAudioSession playAndRecord, mode voiceChat or videoChat, with the system route picker. Android AudioManager communication devices, a foreground service of type microphone and camera with an ongoing notification (bipe_call_ongoing, actions bipe_call_return, bipe_call_mute or bipe_call_unmute, bipe_call_end) on channel bipe_call_channel_ongoing.",
+    "Permission texts: iOS NSMicrophoneUsageDescription is bipe_call_microphone_usage and NSCameraUsageDescription is bipe_call_camera_usage (pt-BR, in ios/project.yml). Android asks RECORD_AUDIO, CAMERA and BLUETOOTH_CONNECT at the first call.",
+    "Not in this version: screen sharing, picture in picture, ringing (spec incoming-call, bipe-chat/bipe#759), the lock screen (bipe-chat/bipe#760)."
+  ]
+}

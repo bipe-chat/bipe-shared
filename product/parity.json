@@ -3020,7 +3020,29 @@
     },
     {
       "id": "location-sharing",
-      "name": "Share a location, a pin or live location, maps from maps.bipe.net.br (ADR 0131, bipe#768)",
+      "name": "Share a location or a pin and show received locations, maps from maps.bipe.net.br (ADR 0131, bipe#768)",
+      "ios": {
+        "status": "planned",
+        "issue": 768
+      },
+      "android": {
+        "status": "planned",
+        "issue": 768
+      },
+      "web": {
+        "status": "n/a",
+        "reason": "No web chat (ADR 0004); the site shows a demo at most"
+      },
+      "server": {
+        "status": "n/a",
+        "reason": "Plain Matrix events; no Bipe server code"
+      },
+      "issue": 768,
+      "fork": true
+    },
+    {
+      "id": "live-location",
+      "name": "Share live location for 15 min, 1 h or 8 h, with a stop button (MSC3489, bipe#768)",
       "ios": {
         "status": "planned",
         "issue": 768

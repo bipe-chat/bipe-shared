@@ -1,0 +1,66 @@
+{
+  "id": "location-send",
+  "title": "Send location",
+  "flow": "chat",
+  "summary": "From the attachment picker: a map from maps.bipe.net.br centred on the phone's position with a fixed pin in the middle. The person sends the current location, or drags the map and sends the place under the pin.",
+  "types": {
+    "MapCentre": {
+      "latitude": { "type": "string", "description": "Decimal degrees, WGS 84." },
+      "longitude": { "type": "string", "description": "Decimal degrees, WGS 84." },
+      "zoom": { "type": "int", "description": "Map zoom, from registries/maps.json minZoom to maxZoom." }
+    }
+  },
+  "state": {
+    "roomId": { "type": "string", "description": "The chat." },
+    "centre": { "type": "MapCentre", "description": "The place under the pin. Starts at the phone's position, else at the centre of Brazil at minZoom until the position comes." },
+    "ownPosition": { "type": "MapCentre", "optional": true, "description": "The last position from the system, while location access is given." },
+    "isAtOwnPosition": { "type": "bool", "description": "true while centre is ownPosition (the person did not drag the map)." },
+    "locating": { "type": "bool", "description": "true while the first position is on its way (bipe_app_location_finding)." },
+    "problem": {
+      "type": "enum",
+      "values": ["none", "permission", "unavailable", "sendFailed"],
+      "description": "permission: bipe_app_location_permission with a button to the system settings. unavailable: bipe_app_location_unavailable. sendFailed: bipe_app_location_send_failed."
+    },
+    "isSending": { "type": "bool", "description": "true while Timeline.sendLocation runs." }
+  },
+  "actions": {
+    "appear": { "effect": "Asks for location access 'when in use' if the system has not asked yet, then reads one position. No background access, ever." },
+    "drag": {
+      "params": { "dx": { "type": "int", "description": "Points." }, "dy": { "type": "int", "description": "Points." } },
+      "effect": "Moves the map. At the end of the drag, centre becomes the place under the pin and a new static map loads. isAtOwnPosition becomes false."
+    },
+    "zoomIn": { "effect": "centre.zoom + 1, up to maxZoom." },
+    "zoomOut": { "effect": "centre.zoom - 1, down to minZoom." },
+    "myLocation": { "effect": "Sets centre to ownPosition at defaultZoom. Reads a position first when there is none." },
+    "send": { "effect": "Sends m.location with Timeline.sendLocation: asset sender when isAtOwnPosition, else pin. Closes the screen on success." },
+    "cancel": { "effect": "Closes the screen. Nothing is sent." }
+  },
+  "strings": [
+    "bipe_app_location_send_title",
+    "bipe_app_location_send_current",
+    "bipe_app_location_send_pin",
+    "bipe_app_location_drag_hint",
+    "bipe_app_location_finding",
+    "bipe_app_location_permission",
+    "bipe_app_location_unavailable",
+    "bipe_app_location_send_failed",
+    "bipe_app_location_my_location",
+    "bipe_app_location_zoom_in",
+    "bipe_app_location_zoom_out",
+    "bipe_app_location_body",
+    "bipe_contacts_open_settings",
+    "bipe_contacts_open_settings_android",
+    "bipe_app_cancel"
+  ],
+  "sdk": ["Timeline.sendLocation", "AssetType"],
+  "parity": ["location-sharing"],
+  "notes": [
+    "Maps come only from registries/maps.json baseUrl (ADR 0131). The map is a static image: staticPath with the style (dark when the app shows dark colours), centre and the view size in points, at most maxStaticSize per side. No tile SDK, no system map view (Apple and Google maps send the position outside Brazil).",
+    "The pin stays in the middle of the view. A drag moves the image; the place under the pin comes from the Web Mercator projection at 256-point tiles: one point at zoom z is 360 / (256 * 2^z) degrees of longitude.",
+    "The attribution © OpenStreetMap is drawn by the server into every image. Do not crop the image.",
+    "Send: body bipe_app_location_body with the geo URI; geoUri 'geo:<lat>,<lon>' with coordinateDecimals digits and ';u=<accuracy in metres>' when the position has one and the asset is sender; zoomLevel centre.zoom; assetType sender or pin; description none. The SDK also writes the MSC3488 org.matrix.msc3488.location and asset fields.",
+    "The send button says bipe_app_location_send_current while isAtOwnPosition, else bipe_app_location_send_pin.",
+    "iOS: CLLocationManager requestWhenInUseAuthorization, then requestLocation. Android: ACCESS_FINE_LOCATION and ACCESS_COARSE_LOCATION through the runtime permission dialog, then one current location from LocationManager (no Google Play services). A denied or approximate-only answer still lets the person drag the map and send a pin.",
+    "Live location (MSC3489) is not in this spec (bipe-chat/bipe#768 second slice)."
+  ]
+}

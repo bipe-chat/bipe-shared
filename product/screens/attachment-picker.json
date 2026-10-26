@@ -2,7 +2,7 @@
   "id": "attachment-picker",
   "title": "Attach",
   "flow": "chat",
-  "summary": "The sheet behind the composer's attach button: photos and videos, the camera, a file, a sticker or a poll. Each choice hands over to the system picker or to its own screen.",
+  "summary": "The sheet behind the composer's attach button: photos and videos, the camera, a file, a location, a sticker or a poll. Each choice hands over to the system picker or to its own screen.",
   "state": {
     "roomId": { "type": "string", "description": "The chat." },
     "canPoll": { "type": "bool", "description": "RoomPowerLevels.canOwnUserSendMessage for the poll start event." },
@@ -16,6 +16,7 @@
     "photos": { "effect": "Opens the system photo picker (several photos and videos). The picked items open upload-preview." },
     "camera": { "effect": "Opens the system camera for a photo or a video. The result opens upload-preview." },
     "file": { "effect": "Opens the system file picker (one file). The file opens upload-preview." },
+    "location": { "effect": "Closes the sheet and opens location-send." },
     "sticker": { "effect": "Closes the sheet and opens sticker-picker." },
     "poll": { "effect": "canPoll only: closes the sheet and opens poll-create (bipe-chat/bipe#569)." },
     "cancel": { "effect": "Closes the sheet." }
@@ -25,6 +26,7 @@
     "bipe_app_attach_photos",
     "bipe_app_attach_camera",
     "bipe_app_attach_file",
+    "bipe_app_attach_location",
     "bipe_action_stickers",
     "bipe_app_attach_poll",
     "bipe_app_attach_photos_permission",
@@ -34,10 +36,10 @@
     "bipe_app_cancel"
   ],
   "sdk": ["Room.getPowerLevels", "RoomPowerLevels.canOwnUserSendMessage", "MessageLikeEventType"],
-  "parity": ["stickers"],
+  "parity": ["stickers", "location-sharing"],
   "notes": [
     "The system pickers need no full library access: the iOS photo picker and the Android photo picker give only the chosen items. The permission problem shows only when the platform asks for access and the user said no.",
-    "Location sharing is out of scope (client-rewrite-plan.md phase 3). Contacts as vCard are out of scope.",
-    "Order of rows: photos and videos, camera, file, sticker, poll."
+    "Contacts as vCard are out of scope.",
+    "Order of rows: photos and videos, camera, file, location, sticker, poll."
   ]
 }

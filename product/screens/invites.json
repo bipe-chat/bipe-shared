@@ -35,6 +35,10 @@
       "params": { "id": { "type": "string", "description": "A pending invite." } },
       "effect": "Opens invite-qr for this invite. Share, copy, rename and revoke live there."
     },
+    "rowMenu": {
+      "params": { "id": { "type": "string", "description": "A pending invite." } },
+      "effect": "Long press on a pending row (iOS context menu, Android dropdown labelled bipe_invites_actions, also an accessibility action) gives the invite-qr actions without opening the card: bipe_app_share and bipe_app_copy when the link is on this phone, then bipe_invites_name_action and bipe_invites_revoke (destructive, confirmed). Joined rows have no menu."
+    },
     "openChat": {
       "params": { "id": { "type": "string", "description": "A used invite." } },
       "effect": "Opens the DM with the person who joined (bipe_invites_chat)."
@@ -57,6 +61,15 @@
     "bipe_invites_expires",
     "bipe_invites_other_device",
     "bipe_invites_chat",
+    "bipe_invites_actions",
+    "bipe_invites_name_action",
+    "bipe_invites_name_placeholder",
+    "bipe_invites_name_footer",
+    "bipe_invites_revoke",
+    "bipe_app_share",
+    "bipe_app_copy",
+    "bipe_app_save",
+    "bipe_app_cancel",
     "bipe_invites_joined",
     "bipe_error_network",
     "bipe_app_retry"

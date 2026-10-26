@@ -21,7 +21,7 @@
       "lastMessage": {
         "type": "string",
         "optional": true,
-        "description": "Plain-text preview of the latest event, as the SDK formats it."
+        "description": "Plain-text preview of the row's latest event: the SDK latest event, or a newer message of the local timeline (see the row text note)."
       },
       "lastActivity": {
         "type": "date",
@@ -115,6 +115,7 @@
   "notes": [
     "MZ decision 25 Oct 2026 (bipe#577): no current-account avatar in the top bar. Você shows the current account (spec voce). This replaces the top-bar avatar of ADR 0135 point 5 for Bipe Next.",
     "Row date (MZ decision 25 Oct 2026, bipe#592): every row with a known event shows its date. The SDK latest event (Room.latestEvent) skips encrypted events that this phone cannot decrypt (matrix-sdk latest_events: m.room.encrypted is never a candidate), so a room whose recent events are all undecryptable has no latest event. The time of an event is not encrypted: such a row takes origin_server_ts of the newest message-like event of the room's local timeline (Room.timeline, the first Timeline.addListener update, no pagination, no network), undecryptable events included; else the newest local event of any kind. Bipe logic: BipeRowActivity (BipeKit, libraries/bipe). Read it again when the room changes in the room list. Rows with no local event stay without a date until the SDK has one.",
+    "Row text (MZ, 26 Oct 2026, bipe#592 follow-up): the SDK picks its latest event once, when the event arrives. A message that arrives before its room key is m.room.encrypted at that moment and is never a candidate, and nothing recomputes the latest event after the timeline decrypts it, so the row kept an older event (for example the own join, \"You accepted the invite\"). Every row also reads its local timeline (the same read as the row date). When the newest message-like local event is newer than the SDK latest event, or there is no SDK latest event, the row takes that event's time and its preview (text, media kind label, sticker, or bipe_app_timeline_undecryptable while it still does not decrypt). Otherwise the SDK latest event stays. The row order stays the SDK's. Bipe logic: BipeRowActivity.",
     "Keep a known latest-activity timestamp visible while the SDK briefly has no latest-event preview (bipe#590), scoped to this account session. The date label must have room beside a long chat title. Do not invent today's date for an unknown event or wait for network to draw the list. Truly unknown times remain unknown until local SDK data arrives.",
     "bipe_app_chat_list_unread is the accessibility label of the badge. The count comes in already formatted.",
     "A chat with an unread mention (RoomInfo.numUnreadMentions > 0) shows an @ mark before the count, so a mention differs by shape, not only by colour (bipe#497). The badge's accessibility label adds bipe_a11y_mention.",

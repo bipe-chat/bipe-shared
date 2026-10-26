@@ -1,6 +1,6 @@
 # Badge attestation format (v1)
 
-A verified badge is a statement signed by the Bipe verification service. Apps verify the signature locally against public keys that ship in the app. Apps never read a badge from a Matrix profile field, display name or room state (security rule 2).
+A verified badge is a statement signed by an attestation issuer: the Bipe verification service (issuer `bipe`) or another accredited issuer (ADR 0170, see "Issuer"). Apps verify the signature locally against public keys that ship in the app. Apps never read a badge from a Matrix profile field, display name or room state (security rule 2).
 
 ## Envelope
 
@@ -15,6 +15,7 @@ A verified badge is a statement signed by the Bipe verification service. Apps ve
 
 - The signature covers the **exact payload bytes**. Verifiers do not re-serialise JSON, so no canonicalisation is needed across platforms.
 - `kid` selects the public key. Unknown `kid` means invalid.
+- `iss`, optional: the issuer ID (see "Issuer"). Absent means `bipe`. Together with `kid` it selects the key, before the signature check. The payload repeats it under the signature.
 - Algorithm: Ed25519 (Swift CryptoKit `Curve25519.Signing`, Android Ed25519 via the platform provider or Tink).
 
 ## Payload
@@ -28,6 +29,7 @@ Fields for every level:
 | `name` | string | Verified name. For `cnpj`: the trade name when the registry has one, else the legal name. For `brand-mark`: the brand's name, as `name` of the brand's own `cnpj` badge |
 | `iat` | integer | Issued at, Unix seconds |
 | `exp` | integer | Expires at, Unix seconds |
+| `iss` | string, optional | Issuer ID. Absent means `bipe`. Must equal the envelope `iss` (both absent is equal) |
 
 Binding. A badge binds to one device or to the account:
 
@@ -80,17 +82,31 @@ A brand mark never carries `legal_name`, `method` or `cvm`: those belong to the 
 
 Life: `exp - iat` is `lifeDays` in `registries/badge-keys.json` (7 days). A revoked claim or a leaked key stops working within that time without a revocation list (ADR 0123).
 
+## Issuer
+
+ADR 0170 lets several accredited issuers sign badges (bipe-chat/bipe#637). The issuer registry (`docs/signed-lists.md`) lists each issuer with its ID, name, keys and the levels it may sign.
+
+- The **trusted issuers** of a device are the `valid` entries of its current issuer registry. Before the device has a valid registry, the trusted issuers are only `bipe`, with the keys of `registries/badge-keys.json` and every level. After that, the registry alone counts.
+- Backward compatibility: a badge without `iss` is a badge from `bipe`, exactly as before. Every badge signed before this change stays valid. An app that does not know `iss` looks up `kid` in `badge-keys.json` only, so it rejects a badge from another issuer as `unknown_kid` (fail closed). bipe-api does not write `iss` for issuer `bipe` until every supported app version knows the field. Unverified (26 October 2026): whether the bipe-app verifiers ignore unknown envelope and payload fields; check before bipe-api writes `iss`.
+- The app shows the issuer `name` from the registry in the profile and in the seal sheet (#637 step 4, per platform).
+- Life: for an issuer other than `bipe`, `exp - iat` must not be more than `lifeDays` days. Without this, an issuer could sign a badge that no revocation reaches.
+- Test vectors: `test-vectors/badge-issuers.json`. `test-vectors/badges.json` stays as it is; all of its badges have no `iss`.
+
 ## Verification order
 
-Inputs: the envelope, the sender's user ID, the sending device's key fingerprint, and the sender's cross-signing master key from the Matrix SDK (or none when the app does not know it).
+Inputs: the envelope, the sender's user ID, the sending device's key fingerprint, the sender's cross-signing master key from the Matrix SDK (or none when the app does not know it), and the trusted issuers.
 
 1. `v` equals 1, else `unsupported_version`.
-2. `kid` is known, else `unknown_kid`.
-3. Ed25519 signature over the decoded payload bytes is valid, else `invalid_signature`.
-4. Payload parses and all required fields for its `lvl` are present and well formed, else `malformed`. An unknown `lvl` is `malformed`. For `cnpj`: `cnpj` matches `^[0-9A-Z]{12}[0-9]{2}$`, `legal_name` and `msk` are not empty, `method` is one of the three values, `checked_month` matches `^[0-9]{4}-(0[1-9]|1[0-2])$`. A `cnpj` badge without `msk` is `malformed`, also when it has `dev`. For `institution`: `cnpj` matches the same pattern, `msk` is not empty, and `domains`, when present, is a list of strings that each match `^[a-z0-9-]+(\.[a-z0-9-]+)+$`. An `institution` badge without `msk` is `malformed`, also when it has `dev`. For `brand-mark`: `mark`, `brand`, `name` and `msk` are not empty, `cnpj` matches the `cnpj` pattern, and `label` is in `registries/brand-marks.json`; no `dev`.
-5. `iat <= now < exp`, else `expired` (or `not_yet_valid`).
-6. `sub` equals the sender's user ID, else `subject_mismatch`.
-7. Binding:
+2. The issuer (envelope `iss`, absent means `bipe`) is a trusted issuer, else `unknown_issuer`.
+3. `kid` is a key of that issuer, else `unknown_kid`.
+4. Ed25519 signature over the decoded payload bytes is valid, else `invalid_signature`.
+5. Payload parses and all required fields for its `lvl` are present and well formed, else `malformed`. An unknown `lvl` is `malformed`. For `cnpj`: `cnpj` matches `^[0-9A-Z]{12}[0-9]{2}$`, `legal_name` and `msk` are not empty, `method` is one of the three values, `checked_month` matches `^[0-9]{4}-(0[1-9]|1[0-2])$`. A `cnpj` badge without `msk` is `malformed`, also when it has `dev`. For `institution`: `cnpj` matches the same pattern, `msk` is not empty, and `domains`, when present, is a list of strings that each match `^[a-z0-9-]+(\.[a-z0-9-]+)+$`. An `institution` badge without `msk` is `malformed`, also when it has `dev`. For `brand-mark`: `mark`, `brand`, `name` and `msk` are not empty, `cnpj` matches the `cnpj` pattern, and `label` is in `registries/brand-marks.json`; no `dev`.
+6. Payload `iss` (absent means `bipe`) equals the envelope issuer, else `issuer_mismatch`.
+7. `lvl` is in the issuer's `levels`, else `level_not_allowed`. Issuer `bipe` before a registry exists: every level.
+8. For an issuer other than `bipe`: `exp - iat <= lifeDays * 86400`, else `life_too_long`.
+9. `iat <= now < exp`, else `expired` (or `not_yet_valid`).
+10. `sub` equals the sender's user ID, else `subject_mismatch`.
+11. Binding:
    - `cnpj`, `institution` and `brand-mark`: `msk` equals the sender's master key, else `master_key_mismatch`. No known master key is also `master_key_mismatch`. A mismatch means the account reset its cryptographic identity: the badge is suspended until the server signs a new one.
    - Other levels: `dev` equals the sending device's key fingerprint, else `device_mismatch`. A mismatch means the account moved to a new device: the badge is suspended (security rule 4).
 
@@ -108,5 +124,5 @@ Brand marks: `GET /v1/brand-marks/{userId}` answers 200 with `{marks: [envelope,
 
 - Target: production signing keys live in an HSM or a managed KMS. They never touch a developer machine.
 - Now (ADR 0123): one Ed25519 key in the Kubernetes secret `bipe-badge-key` on the Magalu cluster, made there by bipe-infra `scripts/setup-badge-key.sh`. Only the bipe-api pod mounts it. Only its public key leaves the cluster. `kid` is `prod-YYYY-MM`. The move to an HSM or KMS (before the M3 store launch) makes a new `kid`; the apps then trust both until the old badges expire.
-- Apps ship the trusted `kid` to public-key list from `registries/badge-keys.json` (generated into `BipeRegistries.badgeKeys`). A release build never trusts a `test-only-*` kid; the registry validation refuses one.
+- Apps ship the trusted `kid` to public-key list from `registries/badge-keys.json` (generated into `BipeRegistries.badgeKeys`). These are the keys of issuer `bipe`. Keys of other issuers come only from the signed issuer registry (`docs/signed-lists.md`). A release build never trusts a `test-only-*` kid; the registry validation refuses one.
 - `test-vectors/badges.json` uses a **TEST-ONLY** key derived from a fixed seed. Never trust it in a release build.

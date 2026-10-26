@@ -1257,7 +1257,10 @@ paths:
         "429": { $ref: "#/components/responses/Error" }
   /v1/me/phone:
     get:
-      summary: The caller's linked phone number status (never the number)
+      summary: The caller's own linked phone number and its status
+      description: >
+        Only the caller's own link (ADR 0191, bipe#787). No other route returns a linked number. The server
+        keeps the number encrypted (AES-256-GCM, key from HKDF-SHA256 of PHONE_HMAC_SECRET) next to its HMAC.
       security: [{ matrix: [] }]
       responses:
         "200":
@@ -1272,6 +1275,7 @@ paths:
                   method: { type: string, enum: [admin, pix, sms] }
                   linked_at: { type: string, format: date-time }
                   confirm_by: { type: string, format: date-time, description: "After this date the number stops being discoverable until confirmed again." }
+                  number: { type: [string, "null"], description: "The caller's own linked number in E.164. null when not linked, or for a link made before the server stored numbers (ADR 0191)." }
                   discoverable_by_phone: { type: boolean }
         "401": { $ref: "#/components/responses/Error" }
     delete:

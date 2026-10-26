@@ -1,5 +1,5 @@
 {
-  "$comment": "Cases for normalizePhone (rule: registries/phone-numbers.json). Hand-written; tools/gen-test-vectors.mjs checks them against the reference implementation and fails closed.",
+  "$comment": "Cases for normalizePhone (rule: registries/phone-numbers.json). Hand-written; tools/gen-test-vectors.mjs checks them against the reference implementation and fails closed. display: cases for displayPhone (ADR 0191).",
   "vectors": [
     {
       "input": "+55 11 98765-4321",
@@ -124,6 +124,60 @@
     {
       "input": "06 11118869",
       "e164": null
+    }
+  ],
+  "display": [
+    {
+      "e164": "+5511987654321",
+      "display": "+55 11 98765-4321"
+    },
+    {
+      "e164": "+5585988887777",
+      "display": "+55 85 98888-7777"
+    },
+    {
+      "e164": "+31611118869",
+      "display": "+31 6 1111 8869"
+    },
+    {
+      "e164": "+31201234567",
+      "display": "+31201234567"
+    },
+    {
+      "e164": "+14155550123",
+      "display": "+1 415 555-0123"
+    },
+    {
+      "e164": "+351912345678",
+      "display": "+351 912 345 678"
+    },
+    {
+      "e164": "+447700900123",
+      "display": "+44 7700 900123"
+    },
+    {
+      "e164": "+34612345678",
+      "display": "+34 612 34 56 78"
+    },
+    {
+      "e164": "+33612345678",
+      "display": "+33 6 12 34 56 78"
+    },
+    {
+      "e164": "+4915112345678",
+      "display": "+4915112345678"
+    },
+    {
+      "e164": "+551198765432",
+      "display": "+551198765432"
+    },
+    {
+      "e164": "11987654321",
+      "display": "11987654321"
+    },
+    {
+      "e164": "",
+      "display": ""
     }
   ]
 }

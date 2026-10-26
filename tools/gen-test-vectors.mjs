@@ -8,7 +8,7 @@ import { buildBrCode, crc16, pixCheck, pixMarkLines, pixTxid } from "./lib/pix.m
 import { cvmLines } from "./lib/cvm.mjs";
 import { noticeLinkClickable } from "./lib/notice.mjs";
 import { loadSchedulingVectors, writeSchedulingApiFixture } from "./lib/scheduling-vectors.mjs";
-import { photoDistance, photoHash, photoMatches, profileFactLines, relationshipNameWarning, newestDmRooms, clearedChatHidden, clearedChatKeepsEvent, clearedChatMarker, clearedChatsWithClear, compareAppVersions, extractInviteCode, handleProblem, isBipeUserID, handleSuggestions, pinReminderNext, pinProblem, remoteBannerState, normalizeCnpj, normalizePhone, handleSkeleton, loadRegistries, normalize, scamMatchIDs, scamWarningKind, trustFacts } from "./lib/registries.mjs";
+import { photoDistance, photoHash, photoMatches, profileFactLines, relationshipNameWarning, newestDmRooms, clearedChatHidden, clearedChatKeepsEvent, clearedChatMarker, clearedChatsWithClear, compareAppVersions, extractInviteCode, handleProblem, isBipeUserID, handleSuggestions, pinReminderNext, pinProblem, remoteBannerState, normalizeCnpj, normalizePhone, displayPhone, handleSkeleton, loadRegistries, normalize, scamMatchIDs, scamWarningKind, trustFacts } from "./lib/registries.mjs";
 
 const root = join(dirname(fileURLToPath(import.meta.url)), "..");
 const reg = loadRegistries(root);
@@ -602,10 +602,15 @@ for (const { input, cnpj } of cnpjCases) {
 // --- Phone numbers -----------------------------------------------------------
 // Hand-written cases (test-vectors/phone-numbers.json). Check them against the reference; fail closed.
 
-const phoneCases = JSON.parse(readFileSync(join(root, "test-vectors", "phone-numbers.json"), "utf8")).vectors;
-for (const { input, e164 } of phoneCases) {
+const phoneFile = JSON.parse(readFileSync(join(root, "test-vectors", "phone-numbers.json"), "utf8"));
+for (const { input, e164 } of phoneFile.vectors) {
   const got = normalizePhone(input, reg);
   if (got !== e164) throw new Error(`phone-numbers.json: ${JSON.stringify(input)} gives ${got}, expected ${e164}`);
+}
+if (!(Array.isArray(phoneFile.display) && phoneFile.display.length > 0)) throw new Error("phone-numbers.json: display cases missing");
+for (const { e164, display } of phoneFile.display) {
+  const got = displayPhone(e164, reg);
+  if (got !== display) throw new Error(`phone-numbers.json display: ${JSON.stringify(e164)} gives ${got}, expected ${display}`);
 }
 
 // --- Bipe servers (ADR 0168, bipe-chat/bipe#680) -----------------------------

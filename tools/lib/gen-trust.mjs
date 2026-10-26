@@ -62,7 +62,7 @@ ${outputs}
 }
 `;
   return `${header}
-package io.element.android.libraries.bipe.generated
+package chat.bipe.shared.generated
 
 import kotlinx.serialization.Serializable
 

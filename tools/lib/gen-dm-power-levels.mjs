@@ -62,7 +62,7 @@ public enum BipeDmPowerLevels {
 `;
   if (language !== "kotlin") throw new Error(`unsupported DM power levels language: ${language}`);
   return `${header}
-package io.element.android.libraries.bipe.generated
+package chat.bipe.shared.generated
 
 /** The power levels of a new DM (ADR 0141): neither person can invite or change the room. */
 object BipeDmPowerLevels {

@@ -1,9 +1,9 @@
 # ADR 0031, ADR 0092: the shared rules, the generated code in every repo, the API clients and the parity ledger stay in step.
 # Needs the secret BIPE_REPOS_TOKEN: a fine-grained token with read access to contents of
-# bipe, bipe-ios, bipe-android, bipe-api, bipe-web, bipe-infra and bipe-app.
+# bipe, bipe-api, bipe-web, bipe-infra and bipe-app. The Element X forks are archived (ADR 0155) and not checked.
 # The parity step also reads issue state on bipe-chat/bipe with it (Issues: read).
 # Needs the secret BIPE_REGEN_TOKEN: a fine-grained token with read and write access to contents and
-# pull requests of bipe, bipe-api and bipe-app (the forks are frozen, ADR 0155). Without it, regen and land do nothing.
+# pull requests of bipe, bipe-api and bipe-app. Without it, regen and land do nothing.
 # bipe-app (Bipe's own client, bipe-chat/bipe#550) is skipped with a warning while a token cannot reach it.
 #
 # Flow for a pull request on branch B:
@@ -70,14 +70,11 @@ jobs:
           generated() {
             case "$1" in
               bipe) echo "docs/product.md" ;;
-              bipe-ios) echo "Components/BipeKit/Sources/BipeKit/Generated Components/BipeKit/Sources/BipeKit/Resources Tools/Bipe BIPE.md" ;;
-              bipe-android) echo "libraries/bipe/src/main plugins/src/main/kotlin BIPE.md" ;;
               bipe-api) echo "src/generated test/fixtures" ;;
               bipe-app) echo "ios/BipeKit/Sources/BipeKit/Generated ios/BipeKit/Sources/BipeKit/Resources android/libraries/bipe/src/main" ;;
             esac
           }
           repos=""
-          # ADR 0155: the forks (bipe-ios, bipe-android) are frozen and get no regenerated files.
           for repo in bipe bipe-api bipe-app; do
             url="https://x-access-token:${TOKEN}@github.com/bipe-chat/${repo}.git"
             repos="$repos $repo"
@@ -101,9 +98,6 @@ jobs:
           node bipe-shared/tools/gen.mjs
           node bipe-shared/tools/gen-test-vectors.mjs
           node bipe-shared/tools/gen-product-doc.mjs
-          # Writes the Differences tables in bipe-ios/BIPE.md and bipe-android/BIPE.md. A failed ledger
-          # check here must not stop the push: lockstep reports it.
-          node bipe-shared/tools/parity.mjs --write || true
           for repo in $repos; do
             # shellcheck disable=SC2046
             git -C "$repo" add -A -- $(generated "$repo")
@@ -170,7 +164,7 @@ jobs:
             done
             [ -z "$BRANCH" ] || echo "::warning::sibling regen pull requests for ${BRANCH} are still open: checking ${BRANCH}."
           fi
-          for repo in bipe bipe-ios bipe-android bipe-api bipe-web bipe-infra bipe-app; do
+          for repo in bipe bipe-api bipe-web bipe-infra bipe-app; do
             url="https://x-access-token:${TOKEN}@github.com/bipe-chat/${repo}.git"
             if [ -n "$BRANCH" ] && git ls-remote --exit-code --heads "$url" "$BRANCH" > /dev/null; then
               echo "${repo}: ${BRANCH}"

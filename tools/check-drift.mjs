@@ -1,18 +1,16 @@
-// Drift check (ADR 0031, rule 5; the frozen forks are skipped, ADR 0155): regenerates everything bipe-shared generates into a temporary
-// folder and compares it with the generated files in the sibling repos (Swift, Kotlin, API copy,
-// app version files, bipe/docs/product.md) and with test-vectors/. bipe-ios takes MARKETING_VERSION
-// from the generated Tools/Bipe/Version.xcconfig; a MARKETING_VERSION left in project.yml must match it (ADR 0088).
+// Drift check (ADR 0031, rule 5): regenerates everything bipe-shared generates into a temporary folder and
+// compares it with the generated files in the sibling repos (bipe-app Swift and Kotlin, the bipe-api copy,
+// bipe/docs/product.md) and with test-vectors/. The Element X forks are archived and not checked (ADR 0155).
 // Usage: node tools/check-drift.mjs [--against worktree|head] [--repos <dir>]
 //   worktree (default): compare with the files on disk. The pre-commit hook uses this.
 //   head: compare with each repo's committed HEAD. CI uses this.
-//   --repos: the folder that holds bipe, bipe-ios, bipe-android, bipe-api and bipe-app (default: next to this repo).
+//   --repos: the folder that holds bipe, bipe-api and bipe-app (default: next to this repo).
 // A missing sibling repo is skipped with a warning. Exit 1 on any difference.
 import { execFileSync } from "node:child_process";
 import { existsSync, mkdirSync, mkdtempSync, readdirSync, readFileSync, rmSync, statSync } from "node:fs";
 import { tmpdir } from "node:os";
 import { dirname, join, relative, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
-import { loadVersion } from "./lib/version.mjs";
 
 const root = join(dirname(fileURLToPath(import.meta.url)), "..");
 const args = process.argv.slice(2);
@@ -33,7 +31,7 @@ const TARGETS = [
     repoBase: "src/generated",
     generatedOnly: ["."],
   },
-  // App version name and build number (ADR 0088). The folders also hold hand-written files.
+  // Test fixtures from gen-test-vectors.mjs. The folder also holds hand-written files.
   { repo: "bipe-api", tmpBase: join(tmp, "api/test/fixtures"), repoBase: "test/fixtures", generatedOnly: [] },
   // Bipe's own client (bipe-chat/bipe#550).
   {
@@ -80,8 +78,7 @@ const problems = [];
 const warnings = [];
 try {
   mkdirSync(join(tmp, "api/src"), { recursive: true }); // gen.mjs writes the API copy only when ../.. exists
-  node("gen.mjs", "--swift", join(tmp, "ios/Sources/BipeKit/Generated"), "--kotlin", join(tmp, "android/src/main"), "--app", join(tmp, "app"), "--api", join(tmp, "api/src/generated"),
-    "--ios-version", join(tmp, "ios-version"), "--android-version", join(tmp, "android-version"));
+  node("gen.mjs", "--app", join(tmp, "app"), "--api", join(tmp, "api/src/generated"));
   node("gen-test-vectors.mjs", "--out", join(tmp, "test-vectors"), "--api-test-vectors", join(tmp, "api/test/fixtures"));
   node("gen-product-doc.mjs", "--out", join(tmp, "product.md"));
 
@@ -105,10 +102,6 @@ try {
       }
     }
   }
-
-  // project.yml is hand-edited (xcodegen input). Version.xcconfig is checked above; a MARKETING_VERSION
-  // in project.yml overrides it, so one that is left there must match.
-  // ADR 0155: the forks are frozen; their generated files and version are no longer checked.
 
 
   // bipe/docs/product.md is generated from product/.

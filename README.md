@@ -22,13 +22,13 @@ Single source of truth for Bipe logic that iOS, Android, the API and the website
 node tools/gen.mjs
 ```
 
-Writes `BipeRegistries.swift` and `BipeStrings.swift` into `../bipe-ios/Components/BipeKit/Sources/BipeKit/Generated`, `BipeRegistries.kt` plus `res/values*/bipe_strings.xml` into `../bipe-android/libraries/bipe/src/main`, and the registries with the reference library and `business-api.ts` into `../bipe-api/src/generated`. The business types come from the JSON Schema definitions referenced by OpenAPI. They describe the contract; they do not mean a route is live. Pass `--swift`, `--kotlin` or `--api <dir>` to override.
+Writes the Swift files into `../bipe-app/ios/BipeKit/Sources/BipeKit/Generated`, the Kotlin files plus `res/values*/bipe_strings.xml` into `../bipe-app/android/libraries/bipe/src/main`, and the registries with the reference library and `business-api.ts` into `../bipe-api/src/generated`. The business types come from the JSON Schema definitions referenced by OpenAPI. They describe the contract; they do not mean a route is live. Pass `--app` or `--api <dir>` to override. The archived Element X forks get nothing (ADR 0155).
 
 ```bash
 node tools/bump-build.mjs [--version YY.MM.N]
 ```
 
-Before each tester upload, on any platform (ADR 0088): adds 1 to `build` in `product/version.json`, sets the version name if given (it must not go down), then runs `gen.mjs`. That writes `bipe-ios/Tools/Bipe/version.env` (read by `testflight.sh`) and `bipe-android/plugins/src/main/kotlin/BipeVersion.kt` (read by `Versions.kt`). Commit and push bipe-shared, bipe-ios and bipe-android. The push to bipe-shared `main` claims the number: if it is rejected, pull and bump again. After `--version`, also set `MARKETING_VERSION` in `bipe-ios/project.yml` and run `xcodegen`; the drift check compares them.
+Adds 1 to `build` in `product/version.json` and sets the version name if given (it must not go down). That file is the version line of the archived fork app (ADR 0088, ADR 0163); bipe-app has its own `version.json`, and its store tools check that a new build number is above this one.
 
 ```bash
 node tools/gen-test-vectors.mjs
@@ -40,19 +40,19 @@ Regenerates `test-vectors/` from the registries and the reference implementation
 node tools/check-contract.mjs
 ```
 
-Checks the hand-written API clients (Swift in bipe-ios, Kotlin in bipe-android) against `api/openapi.yaml`: every field of every schema the apps use, and the error, invite-status and handle-problem enums. A new schema must be mapped in the script or listed as not used by the apps. Known gaps are listed with their issue. The Agenda and Catálogo app models remain tracked in #321 to #324 and #329/#330. The check also resolves business schema references and verifies their type generation. Fails closed.
+Checks the hand-written API clients of bipe-app (Swift in `ios/BipeKit`, Kotlin in `android/libraries/bipe`) against `api/openapi.yaml`: every field of every schema the apps use, and the error, invite-status and handle-problem enums. A new schema must be mapped in the script or listed as not used by the apps. Known gaps are listed with their issue. The Agenda and Catálogo app models remain tracked in #321 to #324 and #329/#330. The check also resolves business schema references and verifies their type generation. Fails closed.
 
 ```bash
 node tools/check-drift.mjs
 ```
 
-Regenerates everything into a temporary folder and compares it with the generated files in bipe-ios, bipe-android, bipe-api and `bipe/docs/product.md`, and with `test-vectors/`. Also checks `MARKETING_VERSION` in `bipe-ios/project.yml` against `product/version.json`. Default: the files on disk. `--against head`: the committed files (CI). Fails on any difference, and on stale files in generated-only folders.
+Regenerates everything into a temporary folder and compares it with the generated files in bipe-app, bipe-api and `bipe/docs/product.md`, and with `test-vectors/`. Default: the files on disk. `--against head`: the committed files (CI). Fails on any difference, and on stale files in generated-only folders.
 
 ```bash
-node tools/parity.mjs [--write] [--report]
+node tools/parity.mjs [--issues] [--report]
 ```
 
-The parity ledger (ADR 0092). `product/parity.json` holds each capability's status on iOS, Android, web and server, with evidence paths, the issue that closes each gap between the apps, and the deliberate differences between the apps. It is the one status per feature: bipe-web and `gen-product-doc.mjs` read it, and `product.json` has no status. The check fails on a missing evidence path, a gap without an issue, a `product.json` feature without a ledger item or with a `status` field, or an out-of-date Differences table in `bipe-ios/BIPE.md` or `bipe-android/BIPE.md`. `--issues` also fails when a gap names a closed or missing issue (`gh`, CI only). `--write` writes those tables. `ios-new` and `android-new` are Bipe's own client in bipe-app (Bipe Next, bipe#579): their evidence is merged code under `bipe-app/ios/` or `bipe-app/android/`, never a spec, and every item built or testing on an original app is built or testing there too, or planned with its open issue, or `n/a` with the excluding ADR (the switch scope, checked by `tools/lib/parity-new.mjs`, tests in `tools/parity.test.mjs`). `--report` prints the gap report, with the switch gaps; a weekly job (`.github/workflows/parity-report.yml`) writes it into the pinned issue bipe-chat/bipe#298.
+The parity ledger (ADR 0092). `product/parity.json` holds each capability's status on iOS, Android, web and server, with evidence paths, the issue that closes each gap between the apps, and the deliberate differences between the apps. It is the one status per feature: bipe-web and `gen-product-doc.mjs` read it, and `product.json` has no status. The check fails on a missing evidence path, a gap without an issue, or a `product.json` feature without a ledger item or with a `status` field. `--issues` also fails when a gap names a closed or missing issue (`gh`, CI only). `ios` and `android` are bipe-app: their evidence is merged code under `bipe-app/ios/` or `bipe-app/android/`, never a spec. An item with `fork: true` is one the archived fork app ships: it is built or testing on both apps, or planned with its open issue, or `n/a` with the excluding ADR (checked by `tools/lib/parity-apps.mjs`, tests in `tools/parity.test.mjs`). `--report` prints the gap report, with the fork items bipe-app does not ship yet; a weekly job (`.github/workflows/parity-report.yml`) writes it into the pinned issue bipe-chat/bipe#298.
 
 ```sh
 node tools/check-appstore.mjs
@@ -70,8 +70,8 @@ The store listing (bipe-chat/bipe#453). `product/appstore.md` holds the App Stor
 | Surface | Command | Suite |
 |---|---|---|
 | Reference (Node) | `node tools/gen-test-vectors.mjs` | Writes the generated vectors; checks invite codes |
-| iOS | `swift test` in `bipe-ios/Components/BipeKit` | `Tests/BipeKitTests/SharedVectorTests.swift` |
-| Android | `./gradlew :libraries:bipe:testDebugUnitTest` in `bipe-android` | `libraries/bipe/src/test/.../SharedVectorTest.kt` (not run yet: no JDK on the dev Mac) |
+| iOS | bipe-app CI (`ios/BipeKit`) | `Tests/BipeKitTests/SharedVectorTests.swift` |
+| Android | bipe-app CI (`android/libraries/bipe`) | `src/test/kotlin/chat/bipe/shared/SharedVectorTest.kt` |
 | API scheduling | `pnpm test:scheduling` in `bipe-api` | `test/scheduling.test.mjs`, using the generated fixture snapshot |
 
 Both app suites read the JSON files here directly. `BIPE_SHARED=<path>` points them at another checkout.
@@ -105,7 +105,7 @@ The pure engine accepts at most 366 days per calculation; callers can page longe
 ## Rules
 
 - Change a registry here, never in generated platform code.
-- Every registry or string change: run both generators, commit the generated code in `bipe-ios`, `bipe-android` and `bipe-api`, and the vectors here. Run both app suites. The drift check fails until every repo has the new output.
+- Every registry or string change: run both generators, commit the generated code in `bipe-app` and `bipe-api`, and the vectors here. Run both app suites. The drift check fails until every repo has the new output.
 - Every contract change: run `node tools/check-contract.mjs`, then update the Swift and Kotlin clients until it passes.
 - A rule that more than one surface uses lives here and is generated. Never copy a pattern or list into a platform by hand.
 - `test-vectors/badges.json` uses a TEST-ONLY key. Never trust `kid` `test-only-*` in a release build.

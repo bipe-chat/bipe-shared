@@ -37,7 +37,7 @@ public enum BipeDmSelection {
 `;
   if (language !== "kotlin") throw new Error(`unsupported DM selection language: ${language}`);
   return `${header}
-package io.element.android.libraries.bipe.generated
+package chat.bipe.shared.generated
 
 /** Local room facts for ADR 0141. Eligibility excludes left, invited and non-DM rooms. Clear markers stay separate. */
 data class BipeDmCandidate(val roomId: String, val peerUserId: String, val latestActivityMs: Long?, val eligible: Boolean, val cleared: Boolean = false)

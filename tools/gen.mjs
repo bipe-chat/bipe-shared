@@ -276,6 +276,18 @@ ${reg.workHours.defaultDays.map((d) => `        (day: ${d.day}, ranges: [${d.ran
     public static let voiceMediaNoTranscriptDays = ${reg.voiceMedia.noTranscriptDays}
     public static let voiceMediaMaxKeptPerAccount = ${reg.voiceMedia.maxKeptPerAccount}
 
+    /// Maps for location sharing (ADR 0131, bipe-chat/bipe#768; registries/maps.json). No other map host.
+    public static let mapsBaseUrl = ${swiftString(reg.maps.baseUrl)}
+    public static let mapsStyleLight = ${swiftString(reg.maps.styles.light)}
+    public static let mapsStyleDark = ${swiftString(reg.maps.styles.dark)}
+    public static let mapsStaticPath = ${swiftString(reg.maps.staticPath)}
+    public static let mapsAttribution = ${swiftString(reg.maps.attribution)}
+    public static let mapsDefaultZoom = ${reg.maps.defaultZoom}
+    public static let mapsMinZoom = ${reg.maps.minZoom}
+    public static let mapsMaxZoom = ${reg.maps.maxZoom}
+    public static let mapsMaxStaticSize = ${reg.maps.maxStaticSize}
+    public static let mapsCoordinateDecimals = ${reg.maps.coordinateDecimals}
+
     /// Voice transcript paragraphs (registries/voice-transcript.json). Rule: product/screens/voice-recording.json notes.
     public static let voiceTranscriptPauseSeconds: Double = ${reg.voiceTranscript.pauseSeconds}
     public static let voiceTranscriptMinCharacters = ${reg.voiceTranscript.minCharacters}
@@ -597,6 +609,18 @@ ${reg.workHours.defaultDays.map((d) => `        ${d.day} to listOf(${d.ranges.ma
     const val VOICE_MEDIA_TRANSCRIPT_DAYS = ${reg.voiceMedia.transcriptDays}
     const val VOICE_MEDIA_NO_TRANSCRIPT_DAYS = ${reg.voiceMedia.noTranscriptDays}
     const val VOICE_MEDIA_MAX_KEPT_PER_ACCOUNT = ${reg.voiceMedia.maxKeptPerAccount}
+
+    /** Maps for location sharing (ADR 0131, bipe-chat/bipe#768; registries/maps.json). No other map host. */
+    const val MAPS_BASE_URL = ${kotlinString(reg.maps.baseUrl)}
+    const val MAPS_STYLE_LIGHT = ${kotlinString(reg.maps.styles.light)}
+    const val MAPS_STYLE_DARK = ${kotlinString(reg.maps.styles.dark)}
+    const val MAPS_STATIC_PATH = ${kotlinString(reg.maps.staticPath)}
+    const val MAPS_ATTRIBUTION = ${kotlinString(reg.maps.attribution)}
+    const val MAPS_DEFAULT_ZOOM = ${reg.maps.defaultZoom}
+    const val MAPS_MIN_ZOOM = ${reg.maps.minZoom}
+    const val MAPS_MAX_ZOOM = ${reg.maps.maxZoom}
+    const val MAPS_MAX_STATIC_SIZE = ${reg.maps.maxStaticSize}
+    const val MAPS_COORDINATE_DECIMALS = ${reg.maps.coordinateDecimals}
 
     /** Voice transcript paragraphs (registries/voice-transcript.json). Rule: product/screens/voice-recording.json notes. */
     const val VOICE_TRANSCRIPT_PAUSE_SECONDS: Double = ${reg.voiceTranscript.pauseSeconds}

@@ -2976,12 +2976,18 @@
       "id": "phone-discoverable-switch",
       "name": "Discoverable by phone switch in privacy settings (bipe#677)",
       "ios": {
-        "status": "planned",
-        "issue": 677
+        "status": "built",
+        "evidence": [
+          "bipe-app/ios/Bipe/Settings/SettingsModel.swift",
+          "bipe-app/ios/Bipe/Settings/SettingsGroupView.swift"
+        ]
       },
       "android": {
-        "status": "planned",
-        "issue": 677
+        "status": "built",
+        "evidence": [
+          "bipe-app/android/app/src/main/kotlin/chat/bipe/app/settings/SettingsModel.kt",
+          "bipe-app/android/app/src/main/kotlin/chat/bipe/app/settings/SettingsScreens.kt"
+        ]
       },
       "web": {
         "status": "n/a",

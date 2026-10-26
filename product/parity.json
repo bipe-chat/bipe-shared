@@ -3019,6 +3019,160 @@
       "fork": true
     },
     {
+      "id": "location-sharing",
+      "name": "Share a location or a pin and show received locations, maps from maps.bipe.net.br (ADR 0131, bipe#768)",
+      "ios": {
+        "status": "planned",
+        "issue": 768
+      },
+      "android": {
+        "status": "planned",
+        "issue": 768
+      },
+      "web": {
+        "status": "n/a",
+        "reason": "No web chat (ADR 0004); the site shows a demo at most"
+      },
+      "server": {
+        "status": "n/a",
+        "reason": "Plain Matrix events; no Bipe server code"
+      },
+      "issue": 768,
+      "fork": true
+    },
+    {
+      "id": "live-location",
+      "name": "Share live location for 15 min, 1 h or 8 h, with a stop button (MSC3489, bipe#768)",
+      "ios": {
+        "status": "planned",
+        "issue": 768
+      },
+      "android": {
+        "status": "planned",
+        "issue": 768
+      },
+      "web": {
+        "status": "n/a",
+        "reason": "No web chat (ADR 0004); the site shows a demo at most"
+      },
+      "server": {
+        "status": "n/a",
+        "reason": "Plain Matrix events; no Bipe server code"
+      },
+      "issue": 768,
+      "fork": true
+    },
+    {
+      "id": "share-to-chat",
+      "name": "Share to a chat from other apps: photos, videos, files, links (bipe#769)",
+      "ios": {
+        "status": "planned",
+        "issue": 769
+      },
+      "android": {
+        "status": "planned",
+        "issue": 769
+      },
+      "web": {
+        "status": "n/a",
+        "reason": "No web chat (ADR 0004); the site shows a demo at most"
+      },
+      "server": {
+        "status": "n/a",
+        "reason": "Plain Matrix events; no Bipe server code"
+      },
+      "issue": 769,
+      "fork": true
+    },
+    {
+      "id": "identity-change-warning",
+      "name": "Warning when a contact's crypto identity changes (bipe#770)",
+      "ios": {
+        "status": "planned",
+        "issue": 770
+      },
+      "android": {
+        "status": "planned",
+        "issue": 770
+      },
+      "web": {
+        "status": "n/a",
+        "reason": "No web chat (ADR 0004); the site shows a demo at most"
+      },
+      "server": {
+        "status": "n/a",
+        "reason": "Plain Matrix events; no Bipe server code"
+      },
+      "issue": 770,
+      "fork": true
+    },
+    {
+      "id": "notification-sender-photo",
+      "name": "Sender photo in iOS notifications, conversations on Android (bipe#771)",
+      "ios": {
+        "status": "planned",
+        "issue": 771
+      },
+      "android": {
+        "status": "planned",
+        "issue": 771
+      },
+      "web": {
+        "status": "n/a",
+        "reason": "No web chat (ADR 0004); the site shows a demo at most"
+      },
+      "server": {
+        "status": "n/a",
+        "reason": "Plain Matrix events; no Bipe server code"
+      },
+      "issue": 771,
+      "fork": true
+    },
+    {
+      "id": "group-privacy-settings",
+      "name": "Group privacy settings: who can join, history for new members, address (bipe#772)",
+      "ios": {
+        "status": "planned",
+        "issue": 772
+      },
+      "android": {
+        "status": "planned",
+        "issue": 772
+      },
+      "web": {
+        "status": "n/a",
+        "reason": "No web chat (ADR 0004); the site shows a demo at most"
+      },
+      "server": {
+        "status": "n/a",
+        "reason": "Plain Matrix events; no Bipe server code"
+      },
+      "issue": 772,
+      "fork": true
+    },
+    {
+      "id": "archived-groups",
+      "name": "Archived groups: an upgraded group points to its new group (bipe#773)",
+      "ios": {
+        "status": "planned",
+        "issue": 773
+      },
+      "android": {
+        "status": "planned",
+        "issue": 773
+      },
+      "web": {
+        "status": "n/a",
+        "reason": "No web chat (ADR 0004); the site shows a demo at most"
+      },
+      "server": {
+        "status": "n/a",
+        "reason": "Plain Matrix events; no Bipe server code"
+      },
+      "issue": 773,
+      "fork": true
+    },
+    {
       "id": "calls",
       "name": "Voice and video calls, end-to-end encrypted, on Bipe's SFU (ADR 0186)",
       "ios": {

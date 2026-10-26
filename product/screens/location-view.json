@@ -1,0 +1,52 @@
+{
+  "id": "location-view",
+  "title": "Location",
+  "flow": "chat",
+  "summary": "A received or sent m.location: a static map with a pin in the timeline, and a full-screen map with the button to open the place in the phone's maps app.",
+  "types": {
+    "LocationMessage": {
+      "latitude": { "type": "string", "description": "From the geo URI, decimal degrees." },
+      "longitude": { "type": "string", "description": "From the geo URI, decimal degrees." },
+      "zoom": { "type": "int", "description": "zoom_level of the event, else registries/maps.json defaultZoom; clamped to minZoom and maxZoom." },
+      "asset": { "type": "enum", "values": ["sender", "pin"], "description": "MSC3488 asset type. Missing or unknown is sender." },
+      "description": { "type": "string", "optional": true, "description": "The event's description, shown under the map when present." }
+    }
+  },
+  "state": {
+    "rowId": { "type": "string", "description": "The timeline row." },
+    "location": { "type": "LocationMessage", "description": "The parsed event." },
+    "senderName": { "type": "string", "description": "Shown in the top bar of the full map." },
+    "centre": { "type": "LocationMessage", "description": "Full map only: the centre of the view; starts at the location. Dragging and zoom change it." },
+    "loadFailed": { "type": "bool", "description": "true when the static map did not load (bipe_app_media_failed, tap to try again)." }
+  },
+  "actions": {
+    "openFull": { "effect": "Tap on the timeline map: opens the full-screen map." },
+    "drag": {
+      "params": { "dx": { "type": "int", "description": "Points." }, "dy": { "type": "int", "description": "Points." } },
+      "effect": "Full map: moves the map; the pin stays on the place. A new static map loads at the end of the drag."
+    },
+    "zoomIn": { "effect": "Full map: zoom + 1, up to maxZoom." },
+    "zoomOut": { "effect": "Full map: zoom - 1, down to minZoom." },
+    "openInMaps": { "effect": "Hands the place to the phone's maps app: iOS opens Apple Maps (MKMapItem openInMaps); Android sends ACTION_VIEW with the geo URI 'geo:<lat>,<lon>?q=<lat>,<lon>' and lets the person pick the app." },
+    "close": { "effect": "Back to the chat." }
+  },
+  "strings": [
+    "bipe_app_location_title",
+    "bipe_app_location_current",
+    "bipe_app_location_pinned",
+    "bipe_app_location_open_maps",
+    "bipe_app_location_zoom_in",
+    "bipe_app_location_zoom_out",
+    "bipe_app_media_failed",
+    "bipe_app_close"
+  ],
+  "sdk": ["MessageType", "LocationContent", "AssetType"],
+  "parity": ["location-sharing"],
+  "notes": [
+    "The timeline row is a message row with its bubble, sender, time, reactions, reply and receipts like a media row. The map fills the bubble width at a 4:3 ratio; under it bipe_app_location_current (asset sender) or bipe_app_location_pinned (asset pin), then the description if any. Reply previews and the chat list use bipe_app_location_title.",
+    "The geo URI follows RFC 5870: 'geo:<lat>,<lon>[,<alt>][;u=<uncertainty>]...'. A URI the app cannot read gives an unsupported row.",
+    "Maps come only from registries/maps.json baseUrl (ADR 0131). Static images, dark style when the app shows dark colours. The server draws © OpenStreetMap into each image; do not crop it. The pin is drawn by the app over the image.",
+    "Opening in the maps app is the only way the place leaves Bipe, and only when the person taps the button.",
+    "Live location (MSC3489 beacon_info and beacon events) is not in this spec (bipe-chat/bipe#768 second slice)."
+  ]
+}

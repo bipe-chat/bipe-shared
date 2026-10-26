@@ -3051,7 +3051,7 @@
     ]
   },
   "home": {
-    "$comment": "The home page (bipe-web HomePage). proof: the always-true promises in a row under the hero. features: available features for people. business: available features for businesses, linked to /organizacoes/. Only features with testing or built status go here (ADR 0129: planned features stay on their pages).",
+    "$comment": "The home page (bipe-web HomePage). proof: the always-true promises in a row under the hero. features: features in the iPhone test app (ADR 0129: planned and built-only features stay on their pages; bipe-web selfTest checks it).",
     "proof": [
       "free",
       "no-ads",
@@ -3060,20 +3060,11 @@
     ],
     "features": [
       "scam-alerts",
-      "money-pause",
       "requests",
-      "handles",
       "no-sms",
+      "handles",
       "e2ee",
-      "group-types",
-      "polls",
-      "stickers"
-    ],
-    "business": [
-      "agenda",
-      "catalog",
-      "orders",
-      "queue"
+      "polls"
     ]
   }
 }

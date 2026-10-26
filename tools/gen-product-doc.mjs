@@ -132,12 +132,9 @@ for (const t of product.tentpoles) {
   for (const id of t.features) if (!featureIds.has(id)) fail(`tentpole ${t.id}: unknown feature ${id}`);
   for (const id of t.demos) if (!FIGURES.has(id)) fail(`tentpole ${t.id}: unknown demo ${id}`);
 }
-// Home page lists (ADR 0129): proof holds policies; features and business hold only features in a build on some app.
+// Home page lists (ADR 0129): proof holds policies; features holds only features in the iPhone test app (bipe-web selfTest checks the same).
 for (const id of product.home.proof) if (status(id)?.ios !== "policy") fail(`home.proof: ${id} is not a policy`);
-for (const k of ["features", "business"]) for (const id of product.home[k]) {
-  if (!featureIds.has(id)) fail(`home.${k}: unknown feature ${id}`);
-  if (!["ios", "android"].some((p) => ["testing", "built"].includes(status(id)[p]))) fail(`home.${k}: ${id} is not in a build`);
-}
+for (const id of product.home.features) if (status(id)?.ios !== "testing") fail(`home.features: ${id} is not in the iPhone test app`);
 for (const a of dist.social.accounts) if (!/^[a-z]+$/.test(a.id) || !a.name || !a.handle?.startsWith("@") || !a.url?.startsWith("https://")) fail(`social ${a.id}`);
 if (!dist.source?.org?.startsWith("https://github.com/bipe-chat")) fail("source.org");
 for (const r of dist.source.repos) {

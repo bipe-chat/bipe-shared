@@ -75,3 +75,20 @@ test("generated Swift and Kotlin hold every semantic token", () => {
   }
   assert.equal((kotlin.match(/^    trustVerifiedInk = Color\(0xFF[0-9A-F]{6}\),$/gm) ?? []).length, 4);
 });
+
+test("generated CSS holds the background, every ramp step and every semantic token in each mode", () => {
+  const css = generateColors("css");
+  assert.match(css, /^:root \{\n  --bipe-background: #FFFFFF;$/m);
+  assert.match(css, /^  --bipe-caju-1100: #[0-9A-F]{6};$/m);
+  assert.match(css, /^  --bipe-trust-verified-ink: #[0-9A-F]{6};$/m);
+  assert.equal((css.match(/--bipe-ink-on-accent:/g) ?? []).length, 4);
+  assert.equal((css.match(/--bipe-acai-1100:/g) ?? []).length, 2);
+  assert.match(css, /@media \(prefers-color-scheme: dark\) and \(prefers-contrast: more\)/);
+});
+
+// The expressive ramps are for bipe-web art only (design/README.md): no semantic token names one.
+test("no semantic token uses an expressive ramp", () => {
+  for (const [name, token] of Object.entries(tokens.semantic)) {
+    for (const variant of VARIANTS) assert.doesNotMatch(token[variant], /^(pitanga|caju|jabuticaba|jenipapo)\./, `${name}.${variant}`);
+  }
+});

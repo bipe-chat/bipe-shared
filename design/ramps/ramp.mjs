@@ -11,6 +11,9 @@
 // Colour model: OKLCH. For a hue, chroma follows a bell over lightness:
 //   chroma(L) = peakChroma * (L - 0.1) * (1 - L) / 0.2025      (peak at L = 0.55)
 // and is cut to the sRGB gamut. The solver finds L by bisection.
+// An optional `shade` turns the hue as the step gets darker: at lightness shade.lightness[1] and above
+// the hue is `hue`, at shade.lightness[0] and below it is shade.hue, linear in between. A warm hue
+// that loses its blue channel in the dark steps keeps its orange this way (caju).
 //
 // Usage:
 //   node design/ramps/ramp.mjs           prints every ramp with its contrast
@@ -101,25 +104,33 @@ export function chromaAt(L, peakChroma) {
   return Math.max(0, (peakChroma * (L - 0.1) * (1 - L)) / 0.2025);
 }
 
-export function colourAt(L, hue, peakChroma) {
-  const C = gamutChroma(L, chromaAt(L, peakChroma), hue);
-  return rgbToHex(oklchToLinear(L, C, hue).map(fromLinear));
+export function hueAt(L, hue, shade) {
+  if (!shade) return hue;
+  const [dark, light] = shade.lightness;
+  const t = Math.min(1, Math.max(0, (L - dark) / (light - dark)));
+  return shade.hue + (hue - shade.hue) * t;
+}
+
+export function colourAt(L, hue, peakChroma, shade) {
+  const H = hueAt(L, hue, shade);
+  const C = gamutChroma(L, chromaAt(L, peakChroma), H);
+  return rgbToHex(oklchToLinear(L, C, H).map(fromLinear));
 }
 
 // Solves one step: the colour of this hue whose contrast with `background` is `target`.
 // On a light background the step is darker than the background; on a dark one, lighter.
-export function solveStep(target, background, hue, peakChroma) {
+export function solveStep(target, background, hue, peakChroma, shade) {
   const darkBackground = luminance(background) < 0.18;
   let lo = darkBackground ? hexToOklch(background)[0] : 0;
   let hi = darkBackground ? 1 : hexToOklch(background)[0];
   for (let i = 0; i < 40; i++) {
     const mid = (lo + hi) / 2;
-    const c = contrast(colourAt(mid, hue, peakChroma), background);
+    const c = contrast(colourAt(mid, hue, peakChroma, shade), background);
     // Contrast grows as L moves away from the background.
     if (darkBackground ? c < target : c > target) lo = mid;
     else hi = mid;
   }
-  return colourAt((lo + hi) / 2, hue, peakChroma);
+  return colourAt((lo + hi) / 2, hue, peakChroma, shade);
 }
 
 export function solveRamps(tokens) {
@@ -128,7 +139,7 @@ export function solveRamps(tokens) {
     out[name] = {};
     for (const [theme, spec] of Object.entries(tokens.themes)) {
       out[name][theme] = Object.fromEntries(
-        STEPS.map((step, i) => [String(step), solveStep(spec.contrastTargets[i], spec.background, ramp.hue, ramp.peakChroma)]),
+        STEPS.map((step, i) => [String(step), solveStep(spec.contrastTargets[i], spec.background, ramp.hue, ramp.peakChroma, ramp.shade)]),
       );
     }
   }

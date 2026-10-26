@@ -1,5 +1,7 @@
 // Checks the hand-written API clients against api/openapi.yaml (ADR 0031, rule 3).
-// Usage: node tools/check-contract.mjs [--ios <BipeKit sources>] [--android <libraries/bipe sources>]
+// The clients are Bipe's app (bipe-app): iOS in ios/BipeKit, Android in android/libraries/bipe. The Element X forks
+// are archived (ADR 0155) and no longer checked.
+// Usage: node tools/check-contract.mjs [--ios <BipeKit sources>] [--android <libraries/bipe Kotlin sources>]
 // Fails (exit 1) when a schema field or enum value is missing in a client, or when the contract has a
 // schema this file does not map. Node built-ins only; the YAML reader handles the style of openapi.yaml.
 import { existsSync, readdirSync, readFileSync, statSync } from "node:fs";
@@ -10,8 +12,8 @@ import { loadBusinessSchemas, generateApiTypes } from "./lib/api-types.mjs";
 const root = join(dirname(fileURLToPath(import.meta.url)), "..");
 const args = process.argv.slice(2);
 const argPath = (flag, fallback) => resolve(args.includes(flag) ? args[args.indexOf(flag) + 1] : join(root, fallback));
-const iosDir = argPath("--ios", "../bipe-ios/Components/BipeKit/Sources/BipeKit");
-const androidDir = argPath("--android", "../bipe-android/libraries/bipe/src/main/kotlin");
+const iosDir = argPath("--ios", "../bipe-app/ios/BipeKit/Sources/BipeKit");
+const androidDir = argPath("--android", "../bipe-app/android/libraries/bipe/src/main/kotlin");
 
 // Contract schema -> client type per platform. null: the platform has no such type (see gaps).
 const MODELS = {
@@ -44,7 +46,7 @@ const MODELS = {
 // Contract enum -> client enum per platform. "Error.error" is the enum on the error property of Error.
 // null: the platform has no such enum yet (see gaps).
 const ENUMS = {
-  InviteStatus: { ios: "BipeInviteStatus", android: "BipeInviteStatus" },
+  InviteStatus: { ios: "BipeInviteStatus", android: null },
   HandleProblem: { ios: "BipeHandleProblem", android: "BipeHandleProblem" },
   ProfileProblem: { ios: "BipeProfileProblem", android: "BipeProfileProblem" },
   "Error.error": { ios: "BipeAPIErrorCode", android: "BipeApiErrorCode" },
@@ -106,64 +108,43 @@ const NOT_IN_APPS = {
   BusinessDomain: "CNPJ verification runs on the web console first; app UI is bipe-chat/bipe#115",
   VerificationStatus: "Pix and gov.br verification are not built in the apps yet: bipe-chat/bipe#544, #545",
   ...Object.fromEntries(["WorkHours", "WorkDay", "WorkRange"].map((name) => [
-    name, "work side opening hours (bipe-chat/bipe#511) are built in Bipe Next only; the checked forks are frozen (ADR 0155)",
+    name, "work side opening hours (bipe-chat/bipe#511) are built in bipe-app; not mapped here yet (bipe-chat/bipe#684)",
   ])),
   ...Object.fromEntries(["BrandMarks", "BrandMarkInviteRequest", "BrandMarkInvite", "CreatedBrandMarkInvite", "GrantedBrandMark", "GrantedBrandMarks", "BrandMarkInvitePreview", "HeldBrandMark", "HeldBrandMarks"].map((name) => [
-    name, "brand marks for resellers (ADR 0162, bipe-chat/bipe#483, #485, #486) are built in Bipe Next only; the checked forks are frozen (ADR 0155)",
+    name, "brand marks for resellers (ADR 0162, bipe-chat/bipe#483, #485, #486) are built in bipe-app; not mapped here yet (bipe-chat/bipe#684)",
   ])),
   ...Object.fromEntries(["TheftMark", "Guardian", "GuardedAccount", "GuardianState"].map((name) => [
-    name, "theft protection (ADR 0044, ADR 0051, bipe-chat/bipe#600, #268) is built in Bipe Next only; the checked forks are frozen (ADR 0155)",
+    name, "theft protection (ADR 0044, ADR 0051, bipe-chat/bipe#600, #268) is built in bipe-app; not mapped here yet (bipe-chat/bipe#684)",
   ])),
-  ProfileFacts: "profile change facts (ADR 0049, bipe-chat/bipe#598) are built in Bipe Next only; the checked forks are frozen (ADR 0155)",
+  ProfileFacts: "profile change facts (ADR 0049, bipe-chat/bipe#598) are built in bipe-app; not mapped here yet (bipe-chat/bipe#684)",
   ...Object.fromEntries(["LinkProviders", "LinkProvider", "LinkNonce", "LinkWebRequest", "LinkWebStart", "LinkProof", "LinkedAccount", "LinkEvent"].map((name) => [
-    name, "linked Apple or Google recovery (ADR 0096) is built in Bipe Next only (bipe-chat/bipe#307, #308); the checked forks are frozen (ADR 0155)",
+    name, "linked Apple or Google recovery (ADR 0096) is built in bipe-app; not mapped here yet (bipe-chat/bipe#684)",
   ])),
-  AccountDeletion: "account deletion (ADR 0140) is built in Bipe Next only (bipe-chat/bipe#528); the checked forks are frozen (ADR 0155)",
+  AccountDeletion: "account deletion (ADR 0140) is built in bipe-app; not mapped here yet (bipe-chat/bipe#684)",
 };
 
 // Known gaps: "<platform>:<Schema>" or "<platform>:<Schema>.<field>" -> issue. Remove the entry when the gap closes.
 const GAPS = {
-  // The fork is frozen (ADR 0155). Bipe Next sends Key Attestation from bipe-app (bipe-chat/bipe#92).
-  "android:Attestation": "bipe-chat/bipe#92 (Key Attestation in bipe-app; the fork is frozen)",
-  "android:SignupRequest.attestation": "bipe-chat/bipe#92 (Key Attestation in bipe-app; the fork is frozen)",
-  // Android-only field: iOS sends Apple App Attest (key_id, attestation_object) instead.
+  // Android sends Key Attestation (key_attestation_chain), iOS sends Apple App Attest (key_id, attestation_object).
+  "android:Attestation": "bipe-chat/bipe#92 (Android models its own attestation form, BipeAttestation)",
   "ios:Attestation.key_attestation_chain": "bipe-chat/bipe#92 (Android-only field)",
-  // The forks are frozen (ADR 0155); Bipe Next reads independent_recovery (bipe#531).
-  "ios:AccountStatus.independent_recovery": "bipe-chat/bipe#531 (Bipe Next only; the fork is frozen)",
-  "android:AccountStatus.independent_recovery": "bipe-chat/bipe#531 (Bipe Next only; the fork is frozen)",
-  "ios:Error.error.cnpj_invalid": "bipe-chat/bipe#115 (business UI in the apps)",
-  "ios:Error.error.cnpj_not_active": "bipe-chat/bipe#115 (business UI in the apps)",
-  "ios:Error.error.cnpj_taken": "bipe-chat/bipe#115 (business UI in the apps)",
-  "ios:Error.error.signature_invalid": "bipe-chat/bipe#115 (business UI in the apps)",
-  "android:Error.error.cnpj_invalid": "bipe-chat/bipe#115 (business UI in the apps)",
-  "android:Error.error.cnpj_not_active": "bipe-chat/bipe#115 (business UI in the apps)",
-  "android:Error.error.cnpj_taken": "bipe-chat/bipe#115 (business UI in the apps)",
-  "android:Error.error.signature_invalid": "bipe-chat/bipe#115 (business UI in the apps)",
+  // bipe-app Android reads only the parts the app uses now.
+  "android:SignupRequest.password": "bipe-chat/bipe#684",
+  "android:SignupRequest.handle": "bipe-chat/bipe#684",
+  "android:PublicProfile.badge": "bipe-chat/bipe#684",
+  "android:AccountStatus.pin_set": "bipe-chat/bipe#684",
+  "android:AccountStatus.pin_blocked": "bipe-chat/bipe#684",
+  "android:AccountStatus.pin_tries_left": "bipe-chat/bipe#684",
+  "android:AccountStatus.device_first": "bipe-chat/bipe#684",
+  "android:AccountStatus.recovery_token_set": "bipe-chat/bipe#684",
+  "android:AccountStatus.email": "bipe-chat/bipe#684",
+  "android:AccountStatus.email_pending": "bipe-chat/bipe#684",
+  "android:Recovery.ended_at": "bipe-chat/bipe#684",
+  "android:InviteStatus": "bipe-chat/bipe#684 (Android keeps status as a String)",
+  "android:AccountStatus.independent_recovery": "bipe-chat/bipe#684",
+  "android:Error.error.password_weak": "bipe-chat/bipe#684",
+  "android:Error.error.support_unavailable": "bipe-chat/bipe#684",
 };
-
-// Brand marks (ADR 0162): Bipe Next only. The checked forks are frozen (ADR 0155).
-for (const platform of ["ios", "android"]) {
-  for (const g of ["Error.error.brand_not_verified", "Error.error.brand_mark_limit"]) {
-    GAPS[`${platform}:${g}`] = "bipe-chat/bipe#486 (built in Bipe Next; the fork is frozen)";
-  }
-}
-
-// Voice audio expiry (ADR 0164): Bipe Next only. The checked forks are frozen (ADR 0155).
-for (const platform of ["ios", "android"]) GAPS[`${platform}:Error.error.keep_limit`] = "bipe-chat/bipe#622 (Bipe Next only; the fork is frozen)";
-
-// Linked Apple or Google recovery (ADR 0096): Bipe Next only. The checked forks are frozen (ADR 0155).
-for (const platform of ["ios", "android"]) {
-  for (const g of ["AccountStatus.links", "AccountStatus.link_events", "Error.error.link_taken", "Error.error.link_unavailable"]) {
-    GAPS[`${platform}:${g}`] = "bipe-chat/bipe#307 and #308 (built in Bipe Next; the fork is frozen)";
-  }
-}
-
-// Account deletion (ADR 0140): Bipe Next only. The checked forks are frozen (ADR 0155).
-for (const platform of ["ios", "android"]) {
-  for (const g of ["AccountStatus.deletion", "Error.error.deletion_pending"]) {
-    GAPS[`${platform}:${g}`] = "bipe-chat/bipe#528 (built in Bipe Next; the fork is frozen)";
-  }
-}
 
 // Device-first accounts (ADR 0057, ADR 0059): contract first, apps in bipe-chat/bipe#153 (iOS) and #154 (Android).
 // iOS closed these gaps (bipe-chat/bipe#153), Android too (#154). The list stays for a platform that adds the feature later.
@@ -219,8 +200,8 @@ function readSchemas(text) {
 
 // --- Client sources ----------------------------------------------------------
 
-// A fork checkout can be gone from disk (ADR 0155). Skip it with a warning, like check-drift.mjs;
-// CI clones the forks, so it still checks them. A path named with --ios or --android must exist.
+// A missing bipe-app checkout is skipped with a warning, like check-drift.mjs. CI clones it.
+// A path named with --ios or --android must exist.
 const skipped = new Set();
 function sources(dir, ext, platform, flag) {
   if (!existsSync(dir)) {
@@ -277,10 +258,13 @@ const PLATFORMS = {
   },
   android: {
     text: sources(androidDir, ".kt", "android", "--android"),
-    // Kotlin names every wire field with @SerialName.
+    // Kotlin names a wire field with @SerialName, or by the property name when the two are the same.
     fields(text, type) {
       const body = block(text, "class", type);
-      return body && new Set([...body.matchAll(/@SerialName\("([^"]+)"\)/g)].map((x) => x[1]));
+      if (!body) return body;
+      const named = [...body.matchAll(/@SerialName\("([^"]+)"\)/g)].map((x) => x[1]);
+      const bare = [...body.matchAll(/^\s*(?:override )?val (\w+)\s*:/gm)].filter((x) => !/@SerialName/.test(x.input.slice(x.input.lastIndexOf("\n", x.index) + 1, x.index + x[0].length))).map((x) => x[1]);
+      return new Set([...named, ...bare]);
     },
     hasField: (set, field) => set.has(field),
     enumValues(text, type) {

@@ -10,7 +10,7 @@ public nonisolated enum BipeChatArchive {
 `;
   if (language !== "kotlin") throw new Error("unsupported archive language");
   return `${header}
-package io.element.android.libraries.bipe.generated
+package chat.bipe.shared.generated
 
 object BipeChatArchive {
     fun isArchived(marker: Long?, incoming: Long?): Boolean =

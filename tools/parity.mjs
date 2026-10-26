@@ -1,21 +1,18 @@
-// Parity ledger (ADR 0092): product/parity.json holds each capability's status on iOS, Android,
-// the web (bipe-web) and the server (bipe-api, bipe-infra), and the deliberate differences between
-// the apps. This tool checks the ledger, writes the "Differences" tables in both BIPE.md files and
-// prints the gap report.
+// Parity ledger (ADR 0092): product/parity.json holds each capability's status on iOS and Android (Bipe's app,
+// bipe-app), the web (bipe-web) and the server (bipe-api, bipe-infra), and the deliberate differences between
+// the apps. This tool checks the ledger and prints the gap report.
 // The ledger is the one status per feature: bipe-web and gen-product-doc.mjs read it, product.json has none.
-// The new surfaces ios-new and android-new (Bipe's own client in bipe-app, bipe#579) and the switch
-// scope live in tools/lib/parity-new.mjs.
-// Usage: node tools/parity.mjs [--against worktree|head] [--repos <dir>] [--write] [--issues] [--report]
-//   (default) check: schema, evidence paths, gap issues, product.json features, BIPE.md tables. Exit 1 on a problem.
+// The app surfaces and the fork scope (items the archived Element X fork app ships) live in tools/lib/parity-apps.mjs.
+// Usage: node tools/parity.mjs [--against worktree|head] [--repos <dir>] [--issues] [--report]
+//   (default) check: schema, evidence paths, gap issues, product.json features. Exit 1 on a problem.
 //   --issues: also fail when the issue a gap names is closed or does not exist (M2 exit test). Needs `gh`.
-//   --write: write the "Differences" tables into bipe-ios/BIPE.md and bipe-android/BIPE.md, then check.
 //   --report: print the gap report (Markdown) to stdout. Reads issue state with `gh` when it is installed.
 //   --against, --repos: as in check-drift.mjs. head reads each repo's committed HEAD (CI).
 import { execFileSync } from "node:child_process";
-import { existsSync, readFileSync, writeFileSync } from "node:fs";
+import { existsSync, readFileSync } from "node:fs";
 import { dirname, join, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
-import { NEW_SURFACES, checkNewSurfaces, inSwitchScope, switchGaps } from "./lib/parity-new.mjs";
+import { checkApps, forkGaps } from "./lib/parity-apps.mjs";
 
 const root = join(dirname(fileURLToPath(import.meta.url)), "..");
 const args = process.argv.slice(2);
@@ -23,19 +20,16 @@ const option = (flag, fallback) => (args.includes(flag) ? args[args.indexOf(flag
 const against = option("--against", "worktree");
 if (!["worktree", "head"].includes(against)) throw new Error(`--against must be worktree or head, not ${against}`);
 const reposDir = resolve(option("--repos", join(root, "..")));
-const write = args.includes("--write");
 const report = args.includes("--report");
 const checkIssues = args.includes("--issues");
-if (write && against === "head") throw new Error("--write needs --against worktree");
 
-const SURFACES = { ios: ["bipe-ios"], android: ["bipe-android"], web: ["bipe-web"], server: ["bipe-api", "bipe-infra"] };
+// The app surfaces (ios, android) are checked in lib/parity-apps.mjs; these are the others.
+const SURFACES = { web: ["bipe-web"], server: ["bipe-api", "bipe-infra"] };
+const ALL = ["ios", "android", "web", "server"];
 const LABEL = { ios: "iOS", android: "Android", web: "Web", server: "Server" };
 const STATUSES = ["planned", "built", "testing", "policy", "n/a"];
 const SHIPPED = new Set(["built", "testing"]);
 const KINDS = ["idiom", "gap", "undecided"];
-const APPS = { ios: { repo: "bipe-ios", other: "android" }, android: { repo: "bipe-android", other: "ios" } };
-const START = "<!-- parity:differences (generated from bipe-shared/product/parity.json by tools/parity.mjs --write; do not edit) -->";
-const END = "<!-- /parity:differences -->";
 
 const repoPath = (repo) => (repo === "bipe-shared" ? root : join(reposDir, repo));
 function readRepo(repo, path) {
@@ -92,13 +86,9 @@ for (const item of ledger.items ?? []) {
       }
     } else if (e.evidence) problems.push(`${where}: ${s} is ${e.status}, evidence only goes with built or testing`);
   }
-  // Rule 3: iOS and Android differ, so an open issue must close the gap.
-  const ios = entry(item, "ios")?.status;
-  const android = entry(item, "android")?.status;
-  if (ios !== android && item.issue === undefined) problems.push(`${where}: iOS is ${ios}, Android is ${android}, and no issue closes the gap`);
 }
-// 1b. The new surfaces and the switch scope (bipe#579).
-const newCheck = checkNewSurfaces(ledger.items, (repo, path) => (existsSync(repoPath(repo)) ? existsInRepo(repo, path) : null));
+// 1b. The app surfaces, rule 3 (the lagging app names its issue) and the fork scope.
+const newCheck = checkApps(ledger.items, (repo, path) => (existsSync(repoPath(repo)) ? existsInRepo(repo, path) : null));
 problems.push(...newCheck.problems);
 for (const repo of newCheck.unchecked) missingRepos.add(repo);
 for (const repo of missingRepos) warnings.push(`${repo}: not found in ${reposDir}, its evidence was not checked`);
@@ -120,8 +110,6 @@ for (const f of product.features) {
 }
 
 // 2b. A gap row names an open issue (M2 exit test, docs/MILESTONES.md). A closed issue closes no gap.
-// Only the own client's gaps count (ios-new / android-new). The forks are frozen (ADR 0155): their
-// iOS/Android gaps and differences stay recorded, but their issues may be closed.
 const gapRows = [...newCheck.issueRefs];
 if (checkIssues) {
   const numbers = [...new Set(gapRows.map((r) => r.issue).filter(Number.isInteger))];
@@ -142,26 +130,7 @@ if (checkIssues) {
   }
 }
 
-// 3. The "Differences" tables in both BIPE.md files.
 const cell = (t) => t.replaceAll("|", "\\|");
-function differencesTable(app) {
-  const other = APPS[app].other;
-  const mark = { idiom: "", gap: " **Gap**", undecided: " **Undecided**" };
-  const rows = ledger.differences.map((d) => `| ${cell(d.area)} | ${cell(d[app])} | ${cell(d[other])} | ${cell(d.reason)}${mark[d.kind]} |`);
-  return [START, "", `| Area | ${LABEL[app]} | ${LABEL[other]} | Reason |`, "|---|---|---|---|", ...rows, "", END].join("\n");
-}
-for (const app of Object.keys(APPS)) {
-  const repo = APPS[app].repo;
-  if (!existsSync(repoPath(repo))) { warnings.push(`${repo}: not found, BIPE.md not checked`); continue; }
-  const text = readRepo(repo, "BIPE.md");
-  const start = text?.indexOf(START) ?? -1;
-  const end = text?.indexOf(END) ?? -1;
-  if (start < 0 || end < start) { problems.push(`${repo}/BIPE.md: no ${START.slice(0, 26)} markers`); continue; }
-  const next = text.slice(0, start) + differencesTable(app) + text.slice(end + END.length);
-  if (next === text) continue;
-  if (write) { writeFileSync(join(repoPath(repo), "BIPE.md"), next); console.log(`wrote ${repo}/BIPE.md`); }
-  else problems.push(`${repo}/BIPE.md: Differences table is out of date (run node tools/parity.mjs --write)`);
-}
 
 for (const w of warnings) console.warn(`warning: ${w}`);
 if (problems.length) {
@@ -179,7 +148,7 @@ function sinceDates() {
   const since = {};
   let log = "";
   try { log = execFileSync("git", ["-C", root, "log", "--format=%H %cs", "--", "product/parity.json"], { encoding: "utf8" }); } catch { return since; }
-  const key = (item) => Object.keys(SURFACES).map((s) => entry(item, s)?.status).join("/");
+  const key = (item) => ALL.map((s) => entry(item, s)?.status).join("/");
   const open = new Map(ledger.items.map((i) => [i.id, key(i)]));
   for (const line of log.split("\n").filter(Boolean)) {
     const [hash, date] = line.split(" ");
@@ -224,7 +193,7 @@ const status = (item, s) => entry(item, s).status;
 const shipped = (item, s) => SHIPPED.has(status(item, s));
 const ref = (n) => (n ? `#${n}` : "");
 const age = (item) => (since[item.id] ? `${since[item.id]} (${days(since[item.id])} d)` : "");
-const row = (item) => `| ${item.name} | ${Object.keys(SURFACES).map((s) => status(item, s)).join(" | ")} | ${ref(item.issue)} | ${age(item)} |`;
+const row = (item) => `| ${item.name} | ${ALL.map((s) => status(item, s)).join(" | ")} | ${ref(item.issue)} | ${age(item)} |`;
 const head = ["| Item | iOS | Android | Web | Server | Issue | Since |", "|---|---|---|---|---|---|---|"];
 
 const codeGaps = ledger.items.filter((i) => shipped(i, "ios") !== shipped(i, "android"));
@@ -238,8 +207,7 @@ const lines = [`# Platform parity report (${today})`, ""];
 lines.push(`Generated by \`node tools/parity.mjs --report\` in bipe-shared from \`product/parity.json\` (ADR 0092). Do not edit this issue by hand: change the ledger.`, "");
 const count = (s, st) => ledger.items.filter((i) => status(i, s) === st).length;
 lines.push("| Surface | testing | built | planned | n/a | policy |", "|---|---|---|---|---|---|");
-for (const s of Object.keys(SURFACES)) lines.push(`| ${LABEL[s]} | ${["testing", "built", "planned", "n/a", "policy"].map((st) => count(s, st)).join(" | ")} |`);
-for (const [s, surface] of Object.entries(NEW_SURFACES)) lines.push(`| ${surface.label} | ${["testing", "built", "planned", "n/a", "policy"].map((st) => count(s, st)).join(" | ")} |`);
+for (const s of ALL) lines.push(`| ${LABEL[s]} | ${["testing", "built", "planned", "n/a", "policy"].map((st) => count(s, st)).join(" | ")} |`);
 lines.push("");
 lines.push(`## Code gaps: one app has it, the other does not (${codeGaps.length})`, "");
 lines.push(...(codeGaps.length ? [...head, ...codeGaps.map(row)] : ["None."]), "");
@@ -250,17 +218,17 @@ lines.push(...(incomplete.length ? [...head, ...incomplete.map(row)] : ["None."]
 lines.push(`## Open differences between the apps (${openDiffs.length})`, "");
 lines.push(...(openDiffs.length ? ["| Area | iOS | Android | Kind | Issue |", "|---|---|---|---|---|", ...openDiffs.map((d) => `| ${cell(d.area)} | ${cell(d.ios)} | ${cell(d.android)} | ${d.kind} | ${ref(d.issue)} |`)] : ["None."]), "");
 
-// The switch (bipe#579): items built or testing on an original app that a new app does not ship yet.
+// Fork scope: items the archived fork app ships that bipe-app does not ship yet (docs/client-switch-plan.md).
 // Only merged bipe-app code with evidence counts; specs, draft PRs and branches do not.
-const scope = ledger.items.filter(inSwitchScope);
-const gaps = switchGaps(ledger.items);
-const newRef = (item, s) => {
+const scope = ledger.items.filter((i) => i.fork === true);
+const gaps = forkGaps(ledger.items);
+const appRef = (item, s) => {
   const e = entry(item, s);
   return SHIPPED.has(e.status) || e.status === "n/a" ? e.status : `${e.status}${e.issue ? ` (#${e.issue})` : ""}`;
 };
-lines.push(`## Switch to the own client: ${scope.length - gaps.length} of ${scope.length} shipped items covered on both new apps`, "");
-lines.push("Items built or testing on an original app that iOS (new) or Android (new) does not ship yet. Only merged bipe-app code with evidence counts.", "");
-lines.push(...(gaps.length ? ["| Item | iOS | Android | iOS (new) | Android (new) |", "|---|---|---|---|---|", ...gaps.map(({ item }) => `| ${item.name} | ${status(item, "ios")} | ${status(item, "android")} | ${newRef(item, "ios-new")} | ${newRef(item, "android-new")} |`)] : ["None."]), "");
+lines.push(`## Fork app items: ${scope.length - gaps.length} of ${scope.length} shipped on both apps`, "");
+lines.push("Items the archived Element X fork app ships that bipe-app does not ship yet. Only merged bipe-app code with evidence counts.", "");
+lines.push(...(gaps.length ? ["| Item | iOS | Android |", "|---|---|---|", ...gaps.map(({ item }) => `| ${item.name} | ${appRef(item, "ios")} | ${appRef(item, "android")} |`)] : ["None."]), "");
 
 lines.push("## Issues that disagree with the ledger", "");
 if (!fetched) lines.push("Not checked: `gh` is not installed or not signed in.", "");
@@ -270,7 +238,7 @@ else {
     const issue = fetched.get(item.issue);
     const gap = codeGaps.includes(item) || releaseGaps.includes(item);
     if (issue.state === "CLOSED" && gap) notes.push(`- ${item.name}: #${item.issue} is closed, but the gap is still open`);
-    for (const s of Object.keys(SURFACES)) {
+    for (const s of ALL) {
       const box = issue.boxes[s];
       if (box === undefined || box === null) continue;
       if (box && !shipped(item, s) && status(item, s) !== "n/a") notes.push(`- ${item.name}: ${LABEL[s]} box is ticked on #${item.issue}, the ledger says ${status(item, s)}`);

@@ -18,8 +18,7 @@ test("gen.mjs --app writes clean bipe-app output", () => {
   const tmp = mkdtempSync(join(tmpdir(), "bipe-gen-app-"));
   try {
     const out = (name) => join(tmp, name);
-    execFileSync(process.execPath, [join(root, "tools/gen.mjs"), "--swift", out("ios/Sources/BipeKit/Generated"), "--kotlin", out("android/src/main"),
-      "--app", out("app"), "--api", out("none/api/src/generated"), "--ios-version", out("ios-version"), "--android-version", out("android-version")], { stdio: "pipe" });
+    execFileSync(process.execPath, [join(root, "tools/gen.mjs"), "--app", out("app"), "--api", out("none/api/src/generated")], { stdio: "pipe" });
     const files = walk(out("app")).filter((f) => /\.(swift|kt)$/.test(f));
     assert.ok(files.some((f) => f.endsWith("ios/BipeKit/Sources/BipeKit/Generated/BipeScreen.swift")));
     assert.ok(files.some((f) => f.endsWith("android/libraries/bipe/src/main/kotlin/chat/bipe/shared/generated/BipeScreen.kt")));

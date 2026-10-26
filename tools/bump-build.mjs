@@ -1,7 +1,7 @@
-// Takes the next build number for a tester upload (ADR 0088), then regenerates the apps.
+// Takes the next build number of the archived fork app's version line (ADR 0088, ADR 0163), then regenerates.
 // Usage: node tools/bump-build.mjs [--version YY.MM.N]
 //   Adds 1 to build in product/version.json. --version also sets the version name; it must not go down.
-// Then commit and push bipe-shared, bipe-ios and bipe-android. The push to bipe-shared main claims the number.
+// Then commit and push bipe-shared. bipe-app's store tools check that a new build number is above this one.
 import { execFileSync } from "node:child_process";
 import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";

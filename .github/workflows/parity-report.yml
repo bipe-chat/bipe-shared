@@ -21,20 +21,6 @@ jobs:
           fetch-depth: 0 # the report dates each gap from the ledger's history
       - uses: actions/checkout@v4
         with:
-          repository: bipe-chat/bipe-ios
-          token: ${{ secrets.BIPE_REPOS_TOKEN }}
-          path: bipe-ios
-          lfs: false
-          submodules: false
-      - uses: actions/checkout@v4
-        with:
-          repository: bipe-chat/bipe-android
-          token: ${{ secrets.BIPE_REPOS_TOKEN }}
-          path: bipe-android
-          lfs: false
-          submodules: false
-      - uses: actions/checkout@v4
-        with:
           repository: bipe-chat/bipe-api
           token: ${{ secrets.BIPE_REPOS_TOKEN }}
           path: bipe-api
@@ -48,7 +34,7 @@ jobs:
           repository: bipe-chat/bipe-infra
           token: ${{ secrets.BIPE_REPOS_TOKEN }}
           path: bipe-infra
-      # Bipe Next (ios-new, android-new, bipe#579): evidence paths start with bipe-app/.
+      # The apps (ios, android): evidence paths start with bipe-app/.
       - uses: actions/checkout@v4
         with:
           repository: bipe-chat/bipe-app

@@ -3,26 +3,19 @@
   "version": 1,
   "promise": {
     "pt": {
-      "title": "Saiba com quem está falando.",
-      "lede": "Um app de mensagens brasileiro, gratuito e sem anúncio. Converse pelo seu @, com avisos para conferir possíveis golpes."
+      "title": "Converse com tranquilidade.",
+      "lede": "Um app de mensagens gratuito e sem anúncio, com seus dados no Brasil. Seu número fica com você, e o Bipe te avisa quando algo parecer estranho."
     },
     "en": {
-      "title": "Know who you are talking to.",
-      "lede": "A free Brazilian messenger with no ads. Chat using your @, with warnings to help you check possible scams."
+      "title": "Chat with peace of mind.",
+      "lede": "A free messaging app with no ads and your data in Brazil. Your number stays with you, and Bipe warns you when something looks off."
     }
   },
   "headlineTest": {
-    "$comment": "Issue #77 (ADR 0032, ADR 0047). The home page (pt-BR only) shows one arm per browser, chosen at random and kept. h0 is the control: promise.pt.title. The lede and everything else stay the same. active false shows promise.title to everyone. An arm id is never reused: retired ids stay in retired, so old counts never mix with a new headline. Copy review 2026-10-15 (bipe#230): h2/h4 retired; h0/h3 headline text and experiment ID unchanged. Surrounding safety copy changed on this date; compare daily counts with that boundary in mind. 2026-10-18: home shortened to four sections and lede updated (ADR 0129); preserve headline IDs and counts, and treat this as a new layout boundary.",
+    "$comment": "Issue #77 (ADR 0032, ADR 0047). The home page (pt-BR only) shows one arm per browser, chosen at random and kept. h0 is the control: promise.pt.title. The lede and everything else stay the same. active false shows promise.title to everyone. An arm id is never reused: retired ids stay in retired, so old counts never mix with a new headline. Copy review 2026-10-15 (bipe#230): h2/h4 retired; h0/h3 headline text and experiment ID unchanged. Surrounding safety copy changed on this date; compare daily counts with that boundary in mind. 2026-10-18: home shortened to four sections and lede updated (ADR 0129); preserve headline IDs and counts, and treat this as a new layout boundary. 2026-10-26: MZ chose a new home headline, \"Converse com tranquilidade.\" (promise.pt.title), because the old title and the h3 arm did not say what Bipe is and \"golpe\" reads as negative in a headline. The test is off and h3 is retired. h0 now has a different text, so a new test needs a new experiment id.",
     "experiment": "headline-77",
-    "active": true,
-    "arms": [
-      {
-        "id": "h3",
-        "angle": "no-ads",
-        "pt": "Sem anúncio. Seus dados não estão à venda.",
-        "en": "No ads. Your data is not for sale."
-      }
-    ],
+    "active": false,
+    "arms": [],
     "retired": [
       {
         "id": "h1",
@@ -46,6 +39,14 @@
         "en": "Here, a scam comes with a warning.",
         "date": "2026-10-15",
         "why": "ADR 0074 / bipe#230: absolute impersonation or detection guarantee; preserve the original text and counts."
+      },
+      {
+        "id": "h3",
+        "angle": "no-ads",
+        "pt": "Sem anúncio. Seus dados não estão à venda.",
+        "en": "No ads. Your data is not for sale.",
+        "date": "2026-10-26",
+        "why": "MZ: new headline \"Converse com tranquilidade.\"; test stopped."
       }
     ]
   },
@@ -3050,10 +3051,29 @@
     ]
   },
   "home": {
+    "$comment": "The home page (bipe-web HomePage). proof: the always-true promises in a row under the hero. features: available features for people. business: available features for businesses, linked to /organizacoes/. Only features with testing or built status go here (ADR 0129: planned features stay on their pages).",
+    "proof": [
+      "free",
+      "no-ads",
+      "brazil-servers",
+      "open-source"
+    ],
     "features": [
-      "handles",
+      "scam-alerts",
+      "money-pause",
       "requests",
-      "e2ee"
+      "handles",
+      "no-sms",
+      "e2ee",
+      "group-types",
+      "polls",
+      "stickers"
+    ],
+    "business": [
+      "agenda",
+      "catalog",
+      "orders",
+      "queue"
     ]
   }
 }

@@ -329,5 +329,22 @@
     "$comment": "ADR 0040: Envisioning is the named steward on every public surface.",
     "name": "Envisioning",
     "url": "https://envisioning.com"
+  },
+  "social": {
+    "$comment": "Bipe accounts on social networks. The site footer and the Organization JSON-LD (sameAs) link them.",
+    "accounts": [
+      {
+        "id": "instagram",
+        "name": "Instagram",
+        "handle": "@bipe.chat",
+        "url": "https://www.instagram.com/bipe.chat/"
+      },
+      {
+        "id": "x",
+        "name": "X",
+        "handle": "@bipechat",
+        "url": "https://x.com/bipechat"
+      }
+    ]
   }
 }

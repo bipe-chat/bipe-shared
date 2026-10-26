@@ -52,10 +52,12 @@
         "calling",
         "connected",
         "reconnecting",
+        "declined",
+        "noAnswer",
         "ended",
         "failed"
       ],
-      "description": "connecting: bipe_call_state_connecting while the membership, the SFU token and LiveKit come up. calling: bipe_call_state_calling while the own device is the only member. connected: the time since the own join. reconnecting: bipe_call_state_reconnecting while LiveKit reconnects. ended: bipe_call_state_ended for 2 seconds, then the screen closes. failed: bipe_call_error_connect."
+      "description": "connecting: bipe_call_state_connecting while the membership, the SFU token and LiveKit come up. calling: bipe_call_state_calling while the own device is the only member. connected: the time since the own join. reconnecting: bipe_call_state_reconnecting while LiveKit reconnects. declined: bipe_call_declined (a DM where the other person declined), then the screen closes. noAnswer: bipe_call_no_answer after the ring lifetime with nobody else in the call, then the screen closes. ended: bipe_call_state_ended for 2 seconds, then the screen closes. failed: bipe_call_error_connect."
     },
     "members": {
       "type": "list",
@@ -102,7 +104,7 @@
           "description": "Voice or video."
         }
       },
-      "effect": "From the chat header (bipe_call_voice, bipe_call_video). Shown only when the room is encrypted and the server names a LiveKit focus (Client.isLivekitRtcSupported, well-known org.matrix.msc4143.rtc_foci). Asks for the microphone, and the camera for video, then joins."
+      "effect": "From the chat header (bipe_call_voice, bipe_call_video). Shown only when the room is encrypted and the server names a LiveKit focus (Client.isLivekitRtcSupported, well-known org.matrix.msc4143.rtc_foci). Asks for the microphone, and the camera for video, then joins. In a room with no call the device also sends the ring event (test-vectors/calls/ringing.json ringContents): notification_type ring with the other person in m.mentions in a DM, notification with m.mentions room in a group, related to the own membership event. While phase is calling, Room.subscribeToCallDeclineEvents shows a decline; in a DM the call then ends with phase declined. After the lifetime (30 seconds) with nobody else in the call, the device leaves and shows phase noAnswer."
     },
     "join": {
       "effect": "From the bar bipe_call_ongoing with bipe_call_join, shown while Room.hasActiveRoomCall. Same as start with video off."
@@ -154,7 +156,9 @@
     "bipe_call_microphone_usage",
     "bipe_call_camera_usage",
     "bipe_contacts_open_settings",
-    "bipe_contacts_open_settings_android"
+    "bipe_contacts_open_settings_android",
+    "bipe_call_declined",
+    "bipe_call_no_answer"
   ],
   "sdk": [
     "Client.isLivekitRtcSupported",
@@ -166,7 +170,8 @@
     "WidgetCapabilitiesProvider.acquireCapabilities",
     "Room.hasActiveRoomCall",
     "Room.activeRoomCallParticipants",
-    "RoomInfo.hasRoomCall"
+    "RoomInfo.hasRoomCall",
+    "Room.subscribeToCallDeclineEvents"
   ],
   "parity": [
     "calls"
@@ -179,6 +184,7 @@
     "No focus, or a room without encryption: no call buttons and no bar (ADR 0186).",
     "Audio: iOS AVAudioSession playAndRecord, mode voiceChat or videoChat, with the system route picker. Android AudioManager communication devices, a foreground service of type microphone and camera with an ongoing notification (bipe_call_ongoing, actions bipe_call_return, bipe_call_mute or bipe_call_unmute, bipe_call_end) on channel bipe_call_channel_ongoing.",
     "Permission texts: iOS NSMicrophoneUsageDescription is bipe_call_microphone_usage and NSCameraUsageDescription is bipe_call_camera_usage (pt-BR, in ios/project.yml). Android asks RECORD_AUDIO, CAMERA and BLUETOOTH_CONNECT at the first call.",
-    "Not in this version: screen sharing, picture in picture, ringing (spec incoming-call, bipe-chat/bipe#759), the lock screen (bipe-chat/bipe#760)."
+    "Ring event (MSC4075): type org.matrix.msc4075.rtc.notification, sent through the call's widget driver after the own membership. The widget asks to send that type and to read org.matrix.msc4310.rtc.decline.",
+    "Not in this version: screen sharing, picture in picture, the lock screen (bipe-chat/bipe#760)."
   ]
 }

@@ -3022,12 +3022,18 @@
       "id": "location-sharing",
       "name": "Share a location or a pin and show received locations, maps from maps.bipe.net.br (ADR 0131, bipe#768)",
       "ios": {
-        "status": "planned",
-        "issue": 768
+        "status": "built",
+        "evidence": [
+          "bipe-app/ios/Bipe/Location/LocationSendView.swift",
+          "bipe-app/ios/Bipe/Location/LocationViews.swift"
+        ]
       },
       "android": {
-        "status": "planned",
-        "issue": 768
+        "status": "built",
+        "evidence": [
+          "bipe-app/android/app/src/main/kotlin/chat/bipe/app/location/LocationSendScreen.kt",
+          "bipe-app/android/app/src/main/kotlin/chat/bipe/app/location/LocationViews.kt"
+        ]
       },
       "web": {
         "status": "n/a",
@@ -3037,7 +3043,6 @@
         "status": "n/a",
         "reason": "Plain Matrix events; no Bipe server code"
       },
-      "issue": 768,
       "fork": true
     },
     {

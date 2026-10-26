@@ -5,7 +5,7 @@ The source of truth for the App Store and Google Play text, the screenshot panel
 Rules for the text:
 
 - Frame and claims: `bipe/docs/positioning.md` (ADR 0047). Voice: `bipe/docs/design/linguagem.md` (store text is Bipe voice: "para", never "pra").
-- Order: scam warning and knowing who is talking first, data in Brazil second, no ads third, the @ fourth.
+- Order: scam warning and knowing who is talking first, no ads second, the @ third. Data in Brazil is proof in the body (E MAIS), never a section heading, subtitle or panel title (bipe-chat/bipe#314, positioning.md).
 - Claim only features whose status in `parity.json` is `built`, `testing` or `policy` on that platform. Planned features stay out.
 - Every field passes the humanizer skill. No em or en dashes.
 
@@ -56,7 +56,7 @@ Saiba com quem está falando
 
 #### promotional_text
 
-Um aviso quando uma mensagem tem cara de golpe. Suas conversas ficam em servidores no Brasil, e as pessoas te acham pelo @, sem ver seu número.
+Um aviso quando uma mensagem tem cara de golpe. Quem você não conhece chega como pedido. Quem você conhece te acha pelo @, sem ver seu número.
 
 #### description
 
@@ -76,10 +76,6 @@ CONFIRA UM PIX ANTES DE PAGAR
 
 Recebeu uma chave Pix, um código copia e cola ou um print de QR code em outro app? Compartilhe com o Bipe e veja o nome, o valor e a chave que estão no código. O Bipe avisa se o código foi alterado. Não precisa de conta.
 
-SEUS DADOS NO BRASIL
-
-As conversas ficam em servidores no Brasil, de empresas brasileiras. Vale a lei brasileira, com a LGPD.
-
 SEM ANÚNCIO
 
 Nenhum anúncio em nenhuma tela. O Bipe não monta perfil seu para vender anúncio. Você nunca paga para usar o Bipe.
@@ -95,6 +91,7 @@ E MAIS
 • Selo de CNPJ: empresa, escola ou associação prova o CNPJ e mostra o nome que está na Receita.
 • Grupos que só tocam quando é com você, e enquetes para decidir junto.
 • Stickers, inclusive feitos de uma foto.
+• Servidores no Brasil, de empresas brasileiras. Vale a lei brasileira, com a LGPD.
 
 Por enquanto, o Bipe abre por convite. Peça um código de convite a alguém que já usa o Bipe.
 
@@ -120,7 +117,7 @@ Know who you're talking to
 
 #### promotional_text
 
-A warning when a message looks like a scam. Your chats live on servers in Brazil, and people find you by your @ without seeing your number.
+A warning when a message looks like a scam. Strangers arrive as a request. People you know find you by your @, without seeing your number.
 
 #### description
 
@@ -140,10 +137,6 @@ CHECK A PIX BEFORE YOU PAY
 
 Got a Pix key, a copy-and-paste code or a QR code screenshot in another app? Share it to Bipe and see the name, the amount and the key in the code. Bipe warns you if the code was changed. You don't need an account.
 
-YOUR DATA IN BRAZIL
-
-Chats live on servers in Brazil, run by Brazilian companies. Brazilian law applies, including the LGPD.
-
 NO ADS
 
 No ads on any screen. Bipe builds no profile of you to sell ads. You never pay to use Bipe.
@@ -159,6 +152,7 @@ AND MORE
 • Business seal: a company, school or association proves its CNPJ and shows the name on the federal register.
 • Groups that only ring when it's about you, and polls to decide together.
 • Stickers, including ones made from a photo.
+• Servers in Brazil, run by Brazilian companies. Brazilian law applies, including the LGPD.
 
 For now, Bipe opens by invite. Ask someone who uses it for an invite.
 
@@ -182,7 +176,7 @@ Bipe Chat
 
 #### short_description
 
-Saiba com quem está falando. Aviso de golpe e conversas em servidores no Brasil.
+Saiba com quem está falando. Aviso de golpe e seu @ sem mostrar o número.
 
 ### en-US
 
@@ -192,7 +186,7 @@ Bipe Chat
 
 #### short_description
 
-Know who you're talking to. Scam warnings, and chats on servers in Brazil.
+Know who you're talking to. Scam warnings, and your @ without your number.
 
 ## Screenshots
 
@@ -203,7 +197,6 @@ Know who you're talking to. Scam warnings, and chats on servers in Brazil.
 | aviso-golpe | scam-alerts | Aviso de golpe | Quando uma mensagem tem cara de golpe, o Bipe avisa. |
 | pedidos | requests | Pedidos de conversa | Quem não é seu contato chega como pedido, e você decide. |
 | conferir-pix | pix-check | Confira o Pix | Veja o nome e o valor do código antes de pagar. |
-| dados-no-brasil | - | Seus dados no Brasil | As conversas ficam em servidores no Brasil, de empresas brasileiras. |
 | seu-arroba | handles | Seu @, sem número | O link e o QR code abrem a conversa, sem mostrar seu número. |
 | selo-cnpj | cnpj-badge | Selo de CNPJ | Empresas mostram o nome que está na Receita. |
 | grupos | group-types | Grupos sem barulho | O grupo só toca quando é com você. |
@@ -216,7 +209,6 @@ Know who you're talking to. Scam warnings, and chats on servers in Brazil.
 | aviso-golpe | scam-alerts | Scam warnings | When a message looks like a scam, Bipe warns you. |
 | pedidos | requests | Message requests | People not in your contacts arrive as a request, and you decide. |
 | conferir-pix | pix-check | Check the Pix | See the name and the amount in the code before you pay. |
-| dados-no-brasil | - | Your data in Brazil | Chats live on servers in Brazil, run by Brazilian companies. |
 | seu-arroba | handles | Your @, no number | Your link and QR code open the chat without showing your number. |
 | selo-cnpj | cnpj-badge | CNPJ seal | Businesses show the name on the federal register. |
 | grupos | group-types | Quiet groups | A group only rings when it's about you. |

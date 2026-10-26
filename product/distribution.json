@@ -344,6 +344,12 @@
         "name": "X",
         "handle": "@bipechat",
         "url": "https://x.com/bipechat"
+      },
+      {
+        "id": "linkedin",
+        "name": "LinkedIn",
+        "handle": "@bipechat",
+        "url": "https://www.linkedin.com/company/bipechat"
       }
     ]
   }

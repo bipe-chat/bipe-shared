@@ -164,6 +164,9 @@ public enum BipeRegistries {
     public static let handleSuggestionCandidates = ${reg.handles.suggestions.candidates}
     public static let ownedHandles: Set<String> = ${Object.keys(reg.owners.handles).length ? swiftArray(Object.keys(reg.owners.handles).map(swiftString)) : "[]"}
 
+    /// Bipe homeservers (registries/bipe-servers.json, ADR 0168). Use \`\`BipeServers/isBipeUserID(_:)\`\`, never a suffix check.
+    public static let bipeServers: Set<String> = ${swiftArray(reg.bipeServers.servers.map(swiftString))}
+
     /// Full Matrix user IDs of official Bipe accounts. Match exactly; names and handles are not proof.
     public static let officialAccountIDs: Set<String> = ${swiftArray(Object.values(reg.officialAccounts.accounts).map((a) => swiftString(a.userId)))}
 
@@ -490,6 +493,9 @@ object BipeRegistries {
     /** Owned handles (ADR 0065): only these may be shorter than [HANDLE_MIN_LENGTH], down to [HANDLE_OWNER_MIN_LENGTH]. */
     const val HANDLE_OWNER_MIN_LENGTH = ${reg.handles.ownerMinLength}
     val ownedHandles: Set<String> = ${kotlinList("setOf", Object.keys(reg.owners.handles).map(kotlinString))}
+
+    /** Bipe homeservers (registries/bipe-servers.json, ADR 0168). Use [chat.bipe.shared.BipeServers.isBipeUserId], never a suffix check. */
+    val bipeServers: Set<String> = ${kotlinList("setOf", reg.bipeServers.servers.map(kotlinString))}
 
     /** Full Matrix user IDs of official Bipe accounts. Match exactly; names and handles are not proof. */
     val officialAccountIds: Set<String> = ${kotlinList("setOf", Object.values(reg.officialAccounts.accounts).map((a) => kotlinString(a.userId)))}

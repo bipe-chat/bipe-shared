@@ -35,11 +35,12 @@
       "values": ["loading", "loaded", "failed"],
       "description": "failed: bipe_app_person_not_found with bipe_app_retry."
     },
+    "savedNumbers": { "type": "list", "of": { "type": "string", "description": "One number, formatted with displayPhone when it normalises (registries/phone-numbers.json), else as saved." }, "description": "ADR 0191, bipe-chat/bipe#788: the numbers of the viewer's own address-book entry that POST /v1/contacts/lookup matched to userId. Empty without contacts permission or without a match: no row." },
     "profileFacts": {"type": "list", "of": {"type": "string", "description": "One formatted facts line."}, "description": "ADR 0049 facts of the person, in order (account age, photo, name), from POST /v1/profile-facts when the screen appears. Empty when there is nothing to show or the call fails."}
   },
   "actions": {
     "appear": {
-      "effect": "Client.getProfile for name and photo; POST /v1/handles/resolve for the @; GET /v1/accounts/{userId}/type; GET /v1/badges/{userId}, verified on the device; GET /v1/profiles/{handle} for the bio; Client.getDmRoom; Client.ignoredUsers. The screen shows what it has and fills in the rest."
+      "effect": "Client.getProfile for name and photo; POST /v1/handles/resolve for the @; GET /v1/accounts/{userId}/type; GET /v1/badges/{userId}, verified on the device; GET /v1/profiles/{handle} for the bio; Client.getDmRoom; Client.ignoredUsers. The screen shows what it has and fills in the rest. With contacts permission: savedNumbers (see notes)."
     },
     "message": {
       "effect": "Opens the DM in chat-timeline. Without one: Client.createRoom with isDirect true, isEncrypted true, preset trustedPrivateChat and the person invited, with the DM power levels of ADR 0141, then opens it."
@@ -82,6 +83,8 @@
     "bipe_warning_reserved_name",
     "bipe_public_profile_not_verified",
     "bipe_app_person_not_found",
+    "bipe_person_number",
+    "bipe_person_number_footer",
     "bipe_app_retry",
     "bipe_trust_identity_body",
     "bipe_trust_contact_body",
@@ -125,7 +128,7 @@
     "Official accounts (ADR 0117, bipe-chat/bipe#384): isOfficial is an exact match of the full user ID with registries/official-accounts.json, never the name or the @ (a test account named Novidades do Bipe gets no badge and keeps reservedNameWarning). The official accounts own their reserved names, so they never get reservedNameWarning. Bipe logic: BipeOfficialAccounts.isOfficial (BipeKit, libraries/bipe).",
     "Reserved names (parity reserved-names): reservedNameWarning uses the same normalize() and registry as profile-edit. A company whose verified seal names it does not get the warning. Bipe logic: NameNormalizer.reservedCategory (BipeKit), NameNormalizer.kt (libraries/bipe).",
     "The @ comes from POST /v1/handles/resolve and is cached per user ID. Bipe logic: BipeHandleResolver (BipeKit, libraries/bipe). The public profile bio comes from GET /v1/profiles/{handle}; a 404 means no bio.",
-    "No phone number shows, ever: the number is for discovery only (ADR 0015).",
+    "A person's number shows only from the viewer's own address book (ADR 0191, bipe-chat/bipe#788). The server never sends another person's number. With contacts permission, the app takes the address-book entry that POST /v1/contacts/lookup matched to userId (the match from the contacts screen or group-invite-members in this session; without one, one lookup of the address book per session, as contacts check) and reads that entry again to get its numbers. A row bipe_person_number lists savedNumbers, with bipe_person_number_footer. The app keeps the match in memory as user ID to address-book entry ID, never the numbers, and drops it when the permission goes. No permission or no match: no row. The number is for discovery only, never identity or sign-in (ADR 0015).",
     "Calls are out of scope for this issue (client-rewrite-plan.md section 4, phase 3).",
     "Brand marks (ADR 0162, spec brand-mark): a reseller's verified marks show as one line under the name (first mark, then bipe_brand_mark_more); a tap opens the brand-mark sheet. bipe_brand_mark_ended shows once there after a mark the phone saw is gone.",
     "Profile change facts (ADR 0049, bipe-chat/bipe#598): below the header, apart from the trust facts; appear reads POST /v1/profile-facts for the person. Each line of profileFactLines (registries/profile-facts.json, test-vectors/profile-facts.json) on POST /v1/profile-facts: created is bipe_profile_fact_created (%1$s the age since at, formatted by the system: \"3 dias\"); photo and name with count 1 are bipe_profile_fact_photo_once and bipe_profile_fact_name_once (%1$s the age since at), with a count of 2 or more bipe_profile_fact_photo_times and bipe_profile_fact_name_times (%1$s the count, %2$s windowDays). No lines: nothing shows, no empty row."

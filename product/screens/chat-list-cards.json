@@ -13,7 +13,7 @@
   },
   "actions": {
     "shareInvite": {
-      "effect": "Makes a personal invite (BipeInviteCreator.createIfAvailable on iOS; myInvites and createInvite on Android) and opens the system share sheet with its link. No invites left: opens the invites screen, which says why. Marks the card used."
+      "effect": "Opens bring-people (bipe-chat/bipe#752). No invites left: bring-people says why. Marks the card used."
     },
     "shareProfile": {
       "effect": "Opens the system share sheet with bipe.chat/@handle (BipeProfileLink.url). Marks the card used."

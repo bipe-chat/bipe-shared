@@ -848,6 +848,18 @@
       "fork": true
     },
     {
+      "id": "bring-people",
+      "name": "Bring your people (up to 4 named invites, weekly reminder)",
+      "ios": "planned",
+      "android": "planned",
+      "web": {
+        "status": "n/a",
+        "reason": "No web chat (ADR 0004); the site shows a demo at most"
+      },
+      "server": "planned",
+      "issue": 752
+    },
+    {
       "id": "inviter-prompt",
       "name": "Prompt to message the inviter after sign-up",
       "ios": {

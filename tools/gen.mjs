@@ -342,7 +342,8 @@ function writeSwift(out, { post = (text) => text, cast = true } = {}) {
   }
   console.log(`wrote Swift to ${out}`);
 }
-writeSwift(swiftOut);
+// The fork checkouts can be gone from disk (ADR 0155): write only when bipe-ios is there or --swift names a path.
+if (swiftIndex >= 0 || existsSync(resolve(swiftOut, "../../../../.."))) writeSwift(swiftOut);
 
 // Kotlin string literal. `$` is escaped because Kotlin templates use it.
 const kotlinString = (s) =>

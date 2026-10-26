@@ -1,0 +1,107 @@
+{
+  "id": "share-to-chat",
+  "title": "Share to a chat from other apps",
+  "flow": "share",
+  "summary": "Takes text, links, photos, videos and files shared from another app, lets the person pick a chat of the current account, then sends. Media go through upload-preview; text goes as a message.",
+  "types": {
+    "SharedItem": {
+      "kind": {
+        "type": "enum",
+        "values": ["text", "file"],
+        "description": "text: plain text or a web link, sent as typed. file: a photo, video or any other file, copied into the app while the provider's read grant is valid."
+      },
+      "text": { "type": "string", "optional": true, "description": "text only: the shared text or the link as text. Never fetched." },
+      "localFile": { "type": "url", "optional": true, "description": "file only: the local copy." },
+      "mimeType": { "type": "string", "optional": true, "description": "file only: the provider's type, else from the file name." }
+    },
+    "ShareChat": {
+      "roomId": { "type": "string", "description": "The chat." },
+      "name": { "type": "string", "description": "The chat name, as in chat-list." },
+      "isDm": { "type": "bool", "description": "RoomInfo.isDm." }
+    }
+  },
+  "state": {
+    "items": {
+      "type": "list",
+      "of": { "type": "SharedItem", "description": "One shared item." },
+      "description": "The items in provider order, at most 10."
+    },
+    "droppedOverLimit": { "type": "bool", "description": "true when the share had more than 10 items: bipe_share_too_many shows, and only the first 10 stay." },
+    "chats": {
+      "type": "list",
+      "of": { "type": "ShareChat", "description": "One chat." },
+      "description": "The joined chats of the current account in room list order (newest activity first), DMs and groups together."
+    },
+    "query": { "type": "string", "description": "The search text. Filters chats by name, ignoring case and accents." },
+    "message": { "type": "string", "description": "The optional message. Starts with the shared text of text items. With files it becomes the caption of upload-preview." },
+    "isSending": { "type": "bool", "description": "true while a text message goes out." },
+    "phase": {
+      "type": "enum",
+      "values": ["picking", "signedOut", "nothingRead", "failed"],
+      "description": "picking: the picker shows. signedOut: no account on this phone (bipe_share_signed_out); nothing is kept. nothingRead: no item could be read (bipe_share_nothing). failed: the room or the send failed (bipe_error_generic)."
+    }
+  },
+  "actions": {
+    "receive": {
+      "params": {
+        "items": { "type": "list", "of": { "type": "SharedItem", "description": "One shared item." }, "description": "The items of the platform share." }
+      },
+      "effect": "Copies the items while the grant is valid, keeps the first 10, and opens the picker. With no account, phase signedOut and every copy is deleted."
+    },
+    "search": {
+      "params": { "text": { "type": "string", "description": "The search text." } },
+      "effect": "Sets query."
+    },
+    "editMessage": {
+      "params": { "text": { "type": "string", "description": "The new message." } },
+      "effect": "Sets message."
+    },
+    "pick": {
+      "params": { "roomId": { "type": "string", "description": "The chosen chat." } },
+      "effect": "With file items: opens upload-preview for that chat with the files and message as caption; its Send sends. With text items only: selects the chat, and send sends the message there."
+    },
+    "send": {
+      "effect": "Text items only: sends message as one text message to the picked chat, then opens that chat. Off while message is blank or isSending."
+    },
+    "cancel": {
+      "effect": "Closes without sending and deletes every copy."
+    }
+  },
+  "strings": [
+    "bipe_share_send_to_chat",
+    "bipe_share_title",
+    "bipe_share_message_placeholder",
+    "bipe_share_handed_off",
+    "bipe_share_signed_out",
+    "bipe_share_too_many",
+    "bipe_share_nothing",
+    "bipe_pix_check_title",
+    "bipe_app_search_placeholder",
+    "bipe_app_search_no_results",
+    "bipe_app_chat_list_empty",
+    "bipe_app_timeline_send",
+    "bipe_app_cancel",
+    "bipe_app_close",
+    "bipe_error_generic"
+  ],
+  "sdk": [
+    "Client.getRoom",
+    "Room.timeline",
+    "Timeline.send",
+    "messageEventContentNew",
+    "RoomInfo.isDm"
+  ],
+  "parity": ["share-to-chat"],
+  "notes": [
+    "Sources: bipe-chat/bipe#769; Apple App Extension Programming Guide (Share) and shared app group containers; Android 'Receive simple data from other apps' and sharing shortcuts (ShortcutManagerCompat, share-target). No fork or Element source.",
+    "One share entry per platform (bipe-chat/bipe#740 reuses it for WhatsApp sticker import). Conferir no Bipe (pix-check-receive) stays next to it and keeps its own rules.",
+    "Types: text, web links, photos, videos and files of any type, at most 10 items in one share, like the attachment picker. Files go through upload-preview, so its limits, quality setting and metadata stripping apply.",
+    "iOS: the share extension shows two actions, bipe_share_send_to_chat and bipe_pix_check_title (Conferir no Bipe, text and images only). Send to a chat copies the items into the app group (a random one-use ID, protected files, out of backups, an atomic claim, deleted on expiry after 15 minutes, on claim or on cancel; no content in a URL), then shows bipe_share_handed_off and completes. The extension does not send: it has no SDK session. A share extension cannot open its app (no responder-chain workarounds), so the app takes the items on its next open. The extension reads the accountAvailable hint of pix-check-result: with no account it shows bipe_share_signed_out and keeps nothing.",
+    "iOS activation rule: text, web URL (1), images, movies and files, up to 10 each; the app caps the total at 10.",
+    "Android: MainActivity takes ACTION_SEND and ACTION_SEND_MULTIPLE for */* with CATEGORY_DEFAULT; PixCheckActivity keeps text/plain and image/*. Read EXTRA_TEXT and EXTRA_STREAM/ClipData, copy each content URI into the app cache at once, handle onNewIntent as well as cold launch, and consume the share once. With no account, a short message (bipe_share_signed_out) and nothing is kept.",
+    "Android sharing shortcuts: the 4 most recent chats of the current account are pushed as long-lived dynamic shortcuts with the share-target category, so the system share sheet offers them. A share through a shortcut opens the picker with that chat already picked. Shortcuts go when no account is left on the phone. Conversation shortcuts with avatars come with bipe-chat/bipe#771.",
+    "App lock (app-lock): the picker and upload-preview show only after the PIN. The items wait while the app is locked.",
+    "Only the current account sends. A share never goes to a chat without the person's tap on a chat and Send.",
+    "No shared text, file name or path goes to logs, analytics or the server before Send."
+  ]
+}

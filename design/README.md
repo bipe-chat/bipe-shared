@@ -1,6 +1,6 @@
 # Design tokens
 
-Colour tokens of Bipe's own client (`bipe-chat/bipe-app`, bipe-chat/bipe#551). The forks (bipe-ios, bipe-android) keep bipe-tokens and do not read this folder.
+Colour tokens of Bipe's own client (`bipe-chat/bipe-app`, bipe-chat/bipe#551) and of bipe.chat (`bipe-chat/bipe-web`).
 
 bipe-tokens is a fork of Element's compound-design-tokens (AGPL). Bipe's own client cannot use it (ADR 0143). This folder has none of its code, names or file layout.
 
@@ -8,7 +8,7 @@ bipe-tokens is a fork of Element's compound-design-tokens (AGPL). Bipe's own cli
 
 - `tokens.json`: the source.
   - `themes`: the background and the 14 contrast targets (steps 100 to 1400) of the light and dark theme. The targets are the ones in `bipe/docs/design/identity.md`.
-  - `rampParameters`: hue and peak chroma (OKLCH) of each ramp: `acai`, `gray`, `amber`, `red`, `green`.
+  - `rampParameters`: hue and peak chroma (OKLCH) of each ramp: `acai`, `gray`, `amber`, `red`, `green`, and the expressive ramps `pitanga`, `caju`, `jabuticaba`, `jenipapo`. An optional `shade` turns the hue in the dark steps (`ramps/ramp.mjs`). The expressive ramps are for bipe-web art only (link-preview cards, store panels, backgrounds): never text, borders or trust states, and no semantic token names them (`tools/tokens.test.mjs`).
   - `ramps`: the solved hex value of each step. Written by `ramps/ramp.mjs --write`. Never edit by hand.
   - `semantic`: Bipe's semantic tokens (`surface`, `ink`, `glyph`, `line`, `accent`, `bubble`, `trust`, `status`). Each names a ramp step (or `background`) for `light`, `dark`, `lightHighContrast` and `darkHighContrast`. The `surface` tokens are literal hex values instead: they are the iOS system backgrounds, so custom screens match the standard iOS and Android lists (bipe-chat/bipe#612).
 - `ramps/ramp.mjs`: Bipe's ramp solver. For each step it finds the OKLCH lightness whose WCAG contrast with the theme background is the target. Chroma follows a bell over lightness and stays in sRGB.
@@ -22,5 +22,7 @@ bipe-tokens is a fork of Element's compound-design-tokens (AGPL). Bipe's own cli
 Contrast rules (`tools/lib/gen-tokens.mjs`, from identity.md and trust-ui.md): ink and glyph tokens are AAA (7:1) on `surface.base`, 10:1 in high contrast; trust ink is AAA on its own wash; `ink.onAccent` is AAA on `accent.fill`; `ink.primary` is AAA on both bubbles.
 
 ## Output
+
+`tools/lib/gen-tokens.mjs` `generateColors("css")` gives the CSS custom properties of bipe-web: `--bipe-background`, `--bipe-<ramp>-<step>` and `--bipe-<group>-<role>` (for example `--bipe-trust-verified-ink`). bipe-web's `vite.config.ts` writes them at build time; nothing is committed in bipe-web.
 
 `tools/gen.mjs` writes `BipeColors.swift` (`BipeColor`, SwiftUI `Color` that follows dark mode and Increase Contrast) into `bipe-app/ios/BipeKit/Sources/BipeKit/Generated` and `BipeColors.kt` (`BipeColors` and four sets: `BipeLightColors`, `BipeDarkColors`, `BipeLightHighContrastColors`, `BipeDarkHighContrastColors`) into `bipe-app/android/libraries/bipe`.

@@ -1,0 +1,85 @@
+{
+  "$comment": "Hand-written. Ringing of Bipe's own client (bipe-chat/bipe#759, ADR 0186): the MSC4075 org.matrix.msc4075.rtc.notification content, the rule that makes a device ring, and the timeline call line. Compare JSON objects by value. Times are milliseconds.",
+  "ringContents": [
+    {
+      "name": "DM video call rings the other person",
+      "notificationType": "ring",
+      "senderTs": 1761500000000,
+      "membershipEventId": "$membro1",
+      "userIds": ["@bia:bipe.net.br"],
+      "video": true,
+      "content": {
+        "notification_type": "ring",
+        "sender_ts": 1761500000000,
+        "lifetime": 30000,
+        "m.mentions": { "user_ids": ["@bia:bipe.net.br"] },
+        "m.relates_to": { "rel_type": "m.reference", "event_id": "$membro1" },
+        "m.call.intent": "video"
+      }
+    },
+    {
+      "name": "group voice call notifies the room",
+      "notificationType": "notification",
+      "senderTs": 1761500100000,
+      "membershipEventId": "$membro2",
+      "userIds": [],
+      "video": false,
+      "content": {
+        "notification_type": "notification",
+        "sender_ts": 1761500100000,
+        "lifetime": 30000,
+        "m.mentions": { "room": true },
+        "m.relates_to": { "rel_type": "m.reference", "event_id": "$membro2" },
+        "m.call.intent": "audio"
+      }
+    }
+  ],
+  "ringReads": [
+    { "name": "DM ring inside its lifetime", "ownUserId": "@bia:bipe.net.br", "sender": "@ana:bipe.net.br", "originServerTs": 1761500000300, "now": 1761500010000,
+      "content": { "notification_type": "ring", "sender_ts": 1761500000000, "lifetime": 30000, "m.mentions": { "user_ids": ["@bia:bipe.net.br"] }, "m.call.intent": "video" },
+      "ring": true, "notify": false, "video": true, "expiresAt": 1761500030000 },
+    { "name": "after the lifetime", "ownUserId": "@bia:bipe.net.br", "sender": "@ana:bipe.net.br", "originServerTs": 1761500000300, "now": 1761500030000,
+      "content": { "notification_type": "ring", "sender_ts": 1761500000000, "lifetime": 30000, "m.mentions": { "user_ids": ["@bia:bipe.net.br"] } },
+      "ring": false, "notify": false, "video": false, "expiresAt": 1761500030000 },
+    { "name": "own ring never rings", "ownUserId": "@ana:bipe.net.br", "sender": "@ana:bipe.net.br", "originServerTs": 1761500000300, "now": 1761500001000,
+      "content": { "notification_type": "ring", "sender_ts": 1761500000000, "lifetime": 30000, "m.mentions": { "user_ids": ["@bia:bipe.net.br"] } },
+      "ring": false, "notify": false, "video": false, "expiresAt": 1761500030000 },
+    { "name": "ring for another person", "ownUserId": "@caio:bipe.net.br", "sender": "@ana:bipe.net.br", "originServerTs": 1761500000300, "now": 1761500001000,
+      "content": { "notification_type": "ring", "sender_ts": 1761500000000, "lifetime": 30000, "m.mentions": { "user_ids": ["@bia:bipe.net.br"] } },
+      "ring": false, "notify": false, "video": false, "expiresAt": 1761500030000 },
+    { "name": "sender clock 5 minutes off: the server time counts", "ownUserId": "@bia:bipe.net.br", "sender": "@ana:bipe.net.br", "originServerTs": 1761500300000, "now": 1761500310000,
+      "content": { "notification_type": "ring", "sender_ts": 1761500000000, "lifetime": 30000, "m.mentions": { "user_ids": ["@bia:bipe.net.br"] } },
+      "ring": true, "notify": false, "video": false, "expiresAt": 1761500330000 },
+    { "name": "lifetime longer than 2 minutes is cut to 2 minutes", "ownUserId": "@bia:bipe.net.br", "sender": "@ana:bipe.net.br", "originServerTs": 1761500000000, "now": 1761500150000,
+      "content": { "notification_type": "ring", "sender_ts": 1761500000000, "lifetime": 3600000, "m.mentions": { "user_ids": ["@bia:bipe.net.br"] } },
+      "ring": false, "notify": false, "video": false, "expiresAt": 1761500120000 },
+    { "name": "no lifetime: 30 seconds", "ownUserId": "@bia:bipe.net.br", "sender": "@ana:bipe.net.br", "originServerTs": 1761500000000, "now": 1761500020000,
+      "content": { "notification_type": "ring", "sender_ts": 1761500000000, "m.mentions": { "user_ids": ["@bia:bipe.net.br"] } },
+      "ring": true, "notify": false, "video": false, "expiresAt": 1761500030000 },
+    { "name": "group notification", "ownUserId": "@bia:bipe.net.br", "sender": "@ana:bipe.net.br", "originServerTs": 1761500000000, "now": 1761500005000,
+      "content": { "notification_type": "notification", "sender_ts": 1761500000000, "lifetime": 30000, "m.mentions": { "room": true }, "m.call.intent": "audio" },
+      "ring": false, "notify": true, "video": false, "expiresAt": 1761500030000 },
+    { "name": "unknown type", "ownUserId": "@bia:bipe.net.br", "sender": "@ana:bipe.net.br", "originServerTs": 1761500000000, "now": 1761500005000,
+      "content": { "notification_type": "other", "sender_ts": 1761500000000, "lifetime": 30000, "m.mentions": { "room": true } },
+      "ring": false, "notify": false, "video": false, "expiresAt": 1761500030000 }
+  ],
+  "lines": [
+    { "name": "call still running", "isDm": true, "sender": "@ana:bipe.net.br", "ringTs": 1761500000000, "active": true, "declinedBy": [],
+      "memberEvents": [{ "userId": "@ana:bipe.net.br", "ts": 1761499999000 }], "outcome": "ongoing", "minutes": null, "joined": [] },
+    { "name": "nobody answered", "isDm": true, "sender": "@ana:bipe.net.br", "ringTs": 1761500000000, "active": false, "declinedBy": [],
+      "memberEvents": [{ "userId": "@ana:bipe.net.br", "ts": 1761500031000 }], "outcome": "missed", "minutes": null, "joined": [] },
+    { "name": "declined in a DM", "isDm": true, "sender": "@ana:bipe.net.br", "ringTs": 1761500000000, "active": false, "declinedBy": ["@bia:bipe.net.br"],
+      "memberEvents": [{ "userId": "@ana:bipe.net.br", "ts": 1761500004000 }], "outcome": "declined", "minutes": null, "joined": [] },
+    { "name": "answered, 7 minutes", "isDm": true, "sender": "@ana:bipe.net.br", "ringTs": 1761500000000, "active": false, "declinedBy": [],
+      "memberEvents": [{ "userId": "@bia:bipe.net.br", "ts": 1761500005000 }, { "userId": "@bia:bipe.net.br", "ts": 1761500400000 }, { "userId": "@ana:bipe.net.br", "ts": 1761500420000 }],
+      "outcome": "ended", "minutes": 7, "joined": [] },
+    { "name": "short answered call counts 1 minute", "isDm": true, "sender": "@ana:bipe.net.br", "ringTs": 1761500000000, "active": false, "declinedBy": [],
+      "memberEvents": [{ "userId": "@bia:bipe.net.br", "ts": 1761500005000 }, { "userId": "@ana:bipe.net.br", "ts": 1761500015000 }],
+      "outcome": "ended", "minutes": 1, "joined": [] },
+    { "name": "group: who joined, in order", "isDm": false, "sender": "@ana:bipe.net.br", "ringTs": 1761500000000, "active": true, "declinedBy": [],
+      "memberEvents": [{ "userId": "@caio:bipe.net.br", "ts": 1761500003000 }, { "userId": "@bia:bipe.net.br", "ts": 1761500004000 }, { "userId": "@caio:bipe.net.br", "ts": 1761500009000 }],
+      "outcome": "ongoing", "minutes": null, "joined": ["@caio:bipe.net.br", "@bia:bipe.net.br"] },
+    { "name": "member events before the ring do not count", "isDm": true, "sender": "@ana:bipe.net.br", "ringTs": 1761500000000, "active": false, "declinedBy": [],
+      "memberEvents": [{ "userId": "@bia:bipe.net.br", "ts": 1761400000000 }], "outcome": "missed", "minutes": null, "joined": [] }
+  ]
+}

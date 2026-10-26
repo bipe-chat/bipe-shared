@@ -2225,8 +2225,8 @@
           "body": "Quem usa para conversar nunca paga. A proposta é que organizações ajudem a sustentar o serviço e empresas paguem pelo atendimento a clientes. O modelo está em estudo."
         },
         {
-          "heading": "Um experimento aberto",
-          "body": "O código é público. A ideia é que várias organizações cuidem do Bipe juntas. Por enquanto, a Envisioning cuida do desenvolvimento e dos servidores."
+          "heading": "De quem é o Bipe",
+          "body": "Hoje a Envisioning desenvolve o app e mantém os servidores, em São Paulo, numa empresa brasileira de nuvem. O código do app, da API e do site é público. O próximo passo é registrar uma associação sem fins lucrativos e passar para ela o nome, os domínios e as regras do serviço. Quem tiver conta verificada vai poder ser sócio de graça, com um voto, junto com as organizações que entrarem. Uma universidade ou uma cooperativa vai poder manter um servidor do Bipe para o pessoal dela, com as mesmas regras."
         }
       ]
     },
@@ -2239,8 +2239,8 @@
           "body": "People never pay to chat. The proposal is for organisations to help fund the service and for businesses to pay for customer service. The model is still being studied."
         },
         {
-          "heading": "An open experiment",
-          "body": "The code is public. The idea is for several organisations to look after Bipe together. For now, Envisioning looks after development and the servers."
+          "heading": "Who owns Bipe",
+          "body": "Today Envisioning builds the app and runs the servers, in São Paulo, with a Brazilian cloud company. The code for the app, the API and the site is public. The next step is to register a nonprofit association and hand it the name, the domains and the rules of the service. Anyone with a verified account will be able to join as a member for free, with one vote, together with the organisations that join. A university or a co-op will be able to run a Bipe server for its own people, under the same rules."
         }
       ]
     }

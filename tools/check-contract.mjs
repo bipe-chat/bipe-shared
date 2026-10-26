@@ -219,8 +219,16 @@ function readSchemas(text) {
 
 // --- Client sources ----------------------------------------------------------
 
-function sources(dir, ext) {
-  if (!existsSync(dir)) throw new Error(`missing ${dir}`);
+// A fork checkout can be gone from disk (ADR 0155). Skip it with a warning, like check-drift.mjs;
+// CI clones the forks, so it still checks them. A path named with --ios or --android must exist.
+const skipped = new Set();
+function sources(dir, ext, platform, flag) {
+  if (!existsSync(dir)) {
+    if (args.includes(flag)) throw new Error(`missing ${dir}`);
+    console.warn(`${platform}: ${dir} not found, skipped`);
+    skipped.add(platform);
+    return null;
+  }
   const out = [];
   const walk = (d) => {
     for (const name of readdirSync(d)) {
@@ -246,7 +254,7 @@ const camel = (snake) => snake.replace(/_([a-z0-9])/g, (_, c) => c.toUpperCase()
 
 const PLATFORMS = {
   ios: {
-    text: sources(iosDir, ".swift"),
+    text: sources(iosDir, ".swift", "ios", "--ios"),
     // Swift decodes with convertFromSnakeCase: user_id is the property userId.
     fields(text, type) {
       const body = block(text, "struct", type);
@@ -268,7 +276,7 @@ const PLATFORMS = {
     },
   },
   android: {
-    text: sources(androidDir, ".kt"),
+    text: sources(androidDir, ".kt", "android", "--android"),
     // Kotlin names every wire field with @SerialName.
     fields(text, type) {
       const body = block(text, "class", type);
@@ -308,6 +316,7 @@ for (const [schema, types] of Object.entries(MODELS)) {
   const spec = schemas[schema];
   if (!spec) { problems.push(`MODELS.${schema}: not in the contract any more`); continue; }
   for (const [platform, type] of Object.entries(types)) {
+    if (skipped.has(platform)) continue;
     const p = PLATFORMS[platform];
     if (type === null) { if (!gap(`${platform}:${schema}`)) problems.push(`${platform}: no type for ${schema}`); continue; }
     const fields = p.fields(p.text, type);
@@ -323,6 +332,7 @@ for (const [ref, types] of Object.entries(ENUMS)) {
   const values = prop ? schemas[schema]?.propertyEnums[prop] : schemas[schema]?.enum;
   if (!values) { problems.push(`ENUMS.${ref}: no enum in the contract`); continue; }
   for (const [platform, type] of Object.entries(types)) {
+    if (skipped.has(platform)) continue;
     const p = PLATFORMS[platform];
     if (type === null) { if (!gap(`${platform}:${ref}`)) problems.push(`${platform}: no enum for ${ref}`); continue; }
     const have = p.enumValues(p.text, type);
@@ -343,7 +353,7 @@ for (const name of PUBLIC_SCHEMAS) {
   }
 }
 
-for (const key of Object.keys(GAPS)) if (!gapsUsed.has(key)) problems.push(`GAPS["${key}"] is closed: remove it`);
+for (const key of Object.keys(GAPS)) if (!gapsUsed.has(key) && !skipped.has(key.split(":")[0])) problems.push(`GAPS["${key}"] is closed: remove it`);
 
 if (problems.length) {
   console.error(`contract check failed (${problems.length}):\n- ${problems.join("\n- ")}`);

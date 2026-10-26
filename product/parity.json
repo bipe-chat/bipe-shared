@@ -3066,12 +3066,20 @@
       "id": "share-to-chat",
       "name": "Share to a chat from other apps: photos, videos, files, links (bipe#769)",
       "ios": {
-        "status": "planned",
-        "issue": 769
+        "status": "built",
+        "evidence": [
+          "bipe-app/ios/ShareExtension/ShareRootView.swift",
+          "bipe-app/ios/Bipe/Share/ShareHandoff.swift",
+          "bipe-app/ios/Bipe/Share/ShareToChatView.swift"
+        ]
       },
       "android": {
-        "status": "planned",
-        "issue": 769
+        "status": "built",
+        "evidence": [
+          "bipe-app/android/app/src/main/kotlin/chat/bipe/app/share/ShareIntake.kt",
+          "bipe-app/android/app/src/main/kotlin/chat/bipe/app/share/ShareToChatScreen.kt",
+          "bipe-app/android/app/src/main/kotlin/chat/bipe/app/share/ShareShortcuts.kt"
+        ]
       },
       "web": {
         "status": "n/a",

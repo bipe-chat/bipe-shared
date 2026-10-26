@@ -350,6 +350,12 @@
         "name": "LinkedIn",
         "handle": "@bipechat",
         "url": "https://www.linkedin.com/company/bipechat"
+      },
+      {
+        "id": "reddit",
+        "name": "Reddit",
+        "handle": "r/bipe",
+        "url": "https://www.reddit.com/r/bipe/"
       }
     ]
   }

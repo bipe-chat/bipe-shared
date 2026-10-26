@@ -56,7 +56,7 @@
   "parity": ["location-sharing"],
   "notes": [
     "Maps come only from registries/maps.json baseUrl (ADR 0131). The map is a static image: staticPath with the style (dark when the app shows dark colours), centre and the view size in points, at most maxStaticSize per side. No tile SDK, no system map view (Apple and Google maps send the position outside Brazil).",
-    "The pin stays in the middle of the view. A drag moves the image; the place under the pin comes from the Web Mercator projection at 256-point tiles: one point at zoom z is 360 / (256 * 2^z) degrees of longitude.",
+    "The pin stays in the middle of the view. A drag moves the image; the place under the pin comes from the Web Mercator projection with 512-point tiles (the MapLibre convention of tileserver-gl): the world is 512 * 2^z points wide at zoom z.",
     "The attribution © OpenStreetMap is drawn by the server into every image. Do not crop the image.",
     "Send: body bipe_app_location_body with the geo URI; geoUri 'geo:<lat>,<lon>' with coordinateDecimals digits and ';u=<accuracy in metres>' when the position has one and the asset is sender; zoomLevel centre.zoom; assetType sender or pin; description none. The SDK also writes the MSC3488 org.matrix.msc3488.location and asset fields.",
     "The send button says bipe_app_location_send_current while isAtOwnPosition, else bipe_app_location_send_pin.",

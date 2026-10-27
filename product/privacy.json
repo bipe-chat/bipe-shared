@@ -1,7 +1,7 @@
 {
   "$comment": "Thing names start in lower case: pages put them after a level word. Who can read what (ADR 0109). Feeds /quem-pode-ler/ on bipe-web, its summary on the e2ee feature page and the privacy tentpole. Facts only from what runs today; each thing names the data.json items it explains. Source of the facts: bipe/docs/security.md rule 13 and 'Privacy: honest limits'. Validated by tools/gen-product-doc.mjs.",
   "version": 1,
-  "date": "2026-10-15",
+  "date": "2026-10-27",
   "feature": "e2ee",
   "tentpole": "no-ads",
   "slug": { "pt": "quem-pode-ler", "en": "who-can-read" },
@@ -26,6 +26,12 @@
       "en": "who is in each chat and when each message arrived"
     },
     {
+      "id": "archive",
+      "register": ["archived-chats"],
+      "pt": "quais conversas você arquivou",
+      "en": "which chats you archived"
+    },
+    {
       "id": "connection",
       "register": ["connection-logs"],
       "pt": "seu IP e a hora em que você se conecta",
@@ -35,19 +41,19 @@
   "parties": [
     {
       "id": "chat",
-      "access": { "content": "yes", "room": "yes", "who-when": "yes", "connection": "no" },
+      "access": { "content": "yes", "room": "yes", "who-when": "yes", "connection": "no", "archive": "partial" },
       "pt": {
         "name": "Você e quem está na conversa",
-        "note": "Os aparelhos de quem está na conversa têm a chave e abrem tudo. Quem recebe uma mensagem pode copiar, tirar print ou encaminhar, como em qualquer app."
+        "note": "Os aparelhos de quem está na conversa têm a chave e abrem tudo. Quem recebe uma mensagem pode copiar, tirar print ou encaminhar, como em qualquer app. Cada pessoa vê só a própria lista de conversas arquivadas."
       },
       "en": {
         "name": "You and the people in the chat",
-        "note": "The devices of the people in the chat hold the key and open everything. Someone who receives a message can copy it, take a screenshot or forward it, as in any app."
+        "note": "The devices of the people in the chat hold the key and open everything. Someone who receives a message can copy it, take a screenshot or forward it, as in any app. Each person sees only their own archived chat list."
       }
     },
     {
       "id": "bipe",
-      "access": { "content": "no", "room": "yes", "who-when": "yes", "connection": "yes" },
+      "access": { "content": "no", "room": "yes", "who-when": "yes", "connection": "yes", "archive": "yes" },
       "pt": {
         "name": "A equipe do Bipe",
         "note": "A equipe cuida do servidor, mas não tem a chave das conversas. Ela vê o que o servidor precisa para entregar as mensagens. O registro de conexão fica 6 meses porque o Marco Civil da Internet manda guardar. A exceção é a conversa com o Suporte Bipe: a equipe lê o que você escreve lá, numa ferramenta de atendimento."
@@ -59,7 +65,7 @@
     },
     {
       "id": "intruder",
-      "access": { "content": "no", "room": "yes", "who-when": "yes", "connection": "yes" },
+      "access": { "content": "no", "room": "yes", "who-when": "yes", "connection": "yes", "archive": "yes" },
       "pt": {
         "name": "Alguém que invada o servidor",
         "note": "Leva o mesmo que está no servidor: mensagens embaralhadas, sem a chave para abrir."
@@ -71,7 +77,7 @@
     },
     {
       "id": "court",
-      "access": { "content": "no", "room": "yes", "who-when": "yes", "connection": "yes" },
+      "access": { "content": "no", "room": "yes", "who-when": "yes", "connection": "yes", "archive": "yes" },
       "pt": {
         "name": "Polícia ou Justiça, com ordem judicial",
         "note": "O Bipe só consegue entregar o que tem. O que vocês escreveram fica trancado, e o Bipe não tem a chave para abrir."
@@ -83,7 +89,7 @@
     },
     {
       "id": "apple",
-      "access": { "content": "no", "room": "no", "who-when": "partial", "connection": "no" },
+      "access": { "content": "no", "room": "no", "who-when": "partial", "connection": "no", "archive": "no" },
       "pt": {
         "name": "A Apple, que entrega as notificações do iPhone",
         "note": "Recebe só um aviso de que chegou mensagem, com o código da conversa. No Bipe Next, recebe também um código aleatório para o celular escolher a conta, sem o ID dela. O texto não passa pela Apple: o app busca a mensagem no servidor do Bipe e abre no celular."
@@ -95,7 +101,7 @@
     },
     {
       "id": "phone",
-      "access": { "content": "yes", "room": "yes", "who-when": "yes", "connection": "no" },
+      "access": { "content": "yes", "room": "yes", "who-when": "yes", "connection": "no", "archive": "yes" },
       "pt": {
         "name": "Quem pega seu celular desbloqueado",
         "note": "A tranca protege a mensagem no caminho e no servidor. No seu celular, ela já está aberta para você ler. Por isso vale travar a tela."
@@ -137,6 +143,7 @@
     "limits": [
       "O nome e a foto de um grupo ficam abertos no servidor. Se o grupo se chama \"Família Silva\", o servidor sabe esse nome.",
       "O servidor sabe quem está em cada conversa e quando cada mensagem chegou. Ele precisa disso para entregar, e o Bipe não promete esconder quem fala com quem.",
+      "O servidor vê quais conversas você arquivou para manter a lista igual nos seus aparelhos. As outras pessoas da conversa não recebem essa escolha.",
       "Quem recebe uma mensagem pode copiar, tirar print ou encaminhar. A tranca não muda isso.",
       "Se você perder todos os seus aparelhos e também a chave de recuperação, as mensagens antigas se perdem. O Bipe não guarda cópia da sua chave, então não tem como devolver."
     ],
@@ -198,6 +205,7 @@
     "limits": [
       "A group's name and photo are open on the server. If the group is called \"Silva Family\", the server knows that name.",
       "The server knows who is in each chat and when each message arrived. It needs that to deliver, and Bipe does not promise to hide who talks to whom.",
+      "The server sees which chats you archived to keep the list the same on your devices. Other people in the chat do not receive that choice.",
       "Someone who receives a message can copy it, take a screenshot or forward it. The lock does not change that.",
       "If you lose all your devices and your recovery key too, old messages are gone. Bipe keeps no copy of your key, so it cannot give them back."
     ],

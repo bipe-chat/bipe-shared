@@ -15,11 +15,12 @@
   },
   "state": {
     "phone": { "type": "PhoneLinkState", "optional": true, "description": "null until GET /v1/me/phone answers." },
+    "number": { "type": "string", "optional": true, "description": "number from GET /v1/me/phone, the person's own linked number in E.164, formatted with displayPhone (registries/phone-numbers.json). null when not linked or for a link made before ADR 0191." },
     "noticeShown": { "type": "bool", "description": "true when the confirmSoon or expired notice for this confirm_by was shown on this phone." }
   },
   "actions": {
     "appear": {
-      "effect": "Reads GET /v1/me/phone and sets phone. The privacy row number shows the value: bipe_privacy_number_not_linked, bipe_phone_linked_until (linked), bipe_phone_confirm_soon (confirmSoon, with the caution colour and the warning mark) or bipe_phone_confirm_expired (expired, same colour and mark)."
+      "effect": "Reads GET /v1/me/phone and sets phone. The privacy row number shows the value: bipe_privacy_number_not_linked, bipe_phone_linked_until (linked), bipe_phone_confirm_soon (confirmSoon, with the caution colour and the warning mark) or bipe_phone_confirm_expired (expired, same colour and mark). With a number, the value is bipe_privacy_number_value (%1$s the formatted number, %2$s that state text)."
     },
     "checkNotice": {
       "effect": "On launch and on foreground, for each signed-in account: when phone is confirmSoon or expired and no notice was shown for this confirm_by, shows one notice (bipe_phone_confirm_notice_title with bipe_phone_confirm_soon or bipe_phone_confirm_expired) and keeps that confirm_by as shown. One notice per confirm_by, never again."
@@ -31,6 +32,7 @@
   "strings": [
     "bipe_privacy_number",
     "bipe_privacy_number_not_linked",
+    "bipe_privacy_number_value",
     "bipe_phone_linked_until",
     "bipe_phone_confirm_soon",
     "bipe_phone_confirm_expired",
@@ -43,7 +45,7 @@
   "notes": [
     "Thresholds: linkConfirmMonths and linkConfirmWarnDays in registries/phone-numbers.json. The API uses linkConfirmMonths for lookup and for confirm_by; the apps use linkConfirmWarnDays. Same copy and same thresholds on both apps.",
     "Links made by staff with the admin CLI (method admin) follow the same rule: confirmed_at is the time of the link.",
-    "The number itself never shows: GET /v1/me/phone returns only the state.",
+    "Own number (ADR 0191, bipe-chat/bipe#787): GET /v1/me/phone returns the caller's own number, and only there. The server keeps it encrypted. A link made before ADR 0191 has no stored number: the row shows the state only. Formatting: displayPhone (registries/phone-numbers.json display, test-vectors/phone-numbers.json display); Bipe logic BipePhoneNumber.display (BipeKit, libraries/bipe).",
     "Bipe logic: BipePhoneLinkState (BipeKit), BipePhoneLinkState.kt (libraries/bipe)."
   ]
 }

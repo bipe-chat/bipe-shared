@@ -268,6 +268,23 @@
       }
     },
     {
+      "id": "phone-number",
+      "basis": "consent",
+      "places": ["server"],
+      "pt": {
+        "name": "Seu número",
+        "what": "O número que você ligou à conta. O servidor guarda o número cifrado e um código feito a partir dele para a busca de contatos. O servidor só mostra o número para você.",
+        "why": "Para quem já tem seu número salvo te achar no Bipe, se você deixar. E para você ver qual número está ligado à conta.",
+        "retention": "Até você desligar o número ou apagar a conta."
+      },
+      "en": {
+        "name": "Your number",
+        "what": "The number you linked to your account. The server stores the number encrypted, plus a code made from it for the contact lookup. The server shows the number only to you.",
+        "why": "So people who already saved your number can find you on Bipe, if you allow it. And so you can see which number is linked to your account.",
+        "retention": "Until you unlink the number or delete the account."
+      }
+    },
+    {
       "id": "brand-marks",
       "basis": "contract",
       "places": ["server"],

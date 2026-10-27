@@ -2666,7 +2666,18 @@
           "No Bipe, o cliente precisa ter o app."
         ],
         "sourceLink": "Tabela da Meta",
-        "link": "Calcule a conta do WhatsApp e a do Bipe"
+        "link": "Calcule a conta do WhatsApp e a do Bipe",
+        "simple": {
+          "messages": "Mensagens que vocês mandam por mês",
+          "seats": "Atendentes",
+          "save": "Vocês economizariam",
+          "perMonth": "por mês",
+          "perYear": "%1$s por ano",
+          "cheaper": "Com esse volume, o WhatsApp sai mais barato que o Bipe.",
+          "compare": "WhatsApp: %1$s por mês. Bipe: %2$s por mês.",
+          "assumption": "A conta usa a tarifa de utilidade da Meta, a mais barata, para lembretes e avisos. Mensagem de marketing custa cerca de 9 vezes mais, então a economia real costuma ser maior.",
+          "detail": "Ver a conta completa"
+        }
       }
     },
     "en": {
@@ -2812,7 +2823,18 @@
           "On Bipe, the customer needs the app."
         ],
         "sourceLink": "Meta's rate card",
-        "link": "Work out your WhatsApp bill and the Bipe price"
+        "link": "Work out your WhatsApp bill and the Bipe price",
+        "simple": {
+          "messages": "Messages you send per month",
+          "seats": "Agents",
+          "save": "You would save",
+          "perMonth": "per month",
+          "perYear": "%1$s per year",
+          "cheaper": "At this volume, WhatsApp costs less than Bipe.",
+          "compare": "WhatsApp: %1$s per month. Bipe: %2$s per month.",
+          "assumption": "The bill uses Meta's utility rate, the cheapest one, for reminders and notices. A marketing message costs about 9 times more, so the real saving is usually larger.",
+          "detail": "See the full calculation"
+        }
       }
     },
     "whatsapp": {

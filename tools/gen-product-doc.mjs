@@ -120,6 +120,24 @@ for (const a of product.audiences) {
     audienceSlugs.add(`${l}/${slug}`);
   }
 }
+// Organisation audience pages (/organizacoes/<slug>/, bipe#790): built from feature pages, each with a phone scene and a form kind.
+const ORG_KINDS = new Set(["company", "institution", "association", "public_body", "partner", "other"]);
+for (const l of ["pt", "en"]) if (!product.organisations?.[l]?.audiencesHeading) fail(`organisations.${l}.audiencesHeading`);
+const orgAudienceSlugs = new Set();
+for (const a of product.organisationAudiences) {
+  if (!ORG_KINDS.has(a.kind)) fail(`organisation audience ${a.id}: kind ${a.kind}`);
+  if (!a.sections.length) fail(`organisation audience ${a.id}: no sections`);
+  if (!a.sections.some((s) => s.scene)) fail(`organisation audience ${a.id}: no scene`);
+  for (const s of a.sections) for (const id of s.features) if (!featureIds.has(id)) fail(`organisation audience ${a.id}: unknown feature ${id}`);
+  for (const s of a.sections) if (s.scene !== undefined && !FIGURES.has(s.scene)) fail(`organisation audience ${a.id}: unknown scene ${s.scene}`);
+  for (const l of ["pt", "en"]) {
+    for (const k of ["name", "title", "headline", "lede", "note", "cta"]) if (!a[l]?.[k]) fail(`organisation audience ${a.id}: ${l}.${k}`);
+    if (a[l].sections.length !== a.sections.length || a[l].sections.some((s) => !s.heading || !s.body)) fail(`organisation audience ${a.id}: ${l}.sections`);
+    const slug = a.slug?.[l];
+    if (!/^[a-z0-9-]+$/.test(slug ?? "") || orgAudienceSlugs.has(`${l}/${slug}`)) fail(`organisation audience ${a.id}: slug.${l}`);
+    orgAudienceSlugs.add(`${l}/${slug}`);
+  }
+}
 const tentpoleIds = new Set(product.tentpoles.map((t) => t.id));
 const sided = new Set();
 for (const s of product.sides) {
@@ -442,6 +460,14 @@ const lines = [
   "| Audience | ICP | Page (pt) | Features |",
   "|---|---|---|---|",
   ...product.audiences.map((a) => `| ${a.en.name} | ${a.icp} | /para/${a.slug.pt}/ | ${a.sections.flatMap((s) => s.features).join(", ")} |`),
+  "",
+  "### Organisation audiences",
+  "",
+  "Pages at `/organizacoes/<slug>/` and `/en/organisations/<slug>/` (bipe#790). Each preselects its kind in the organisation form.",
+  "",
+  "| Audience | Form kind | Page (pt) | Features |",
+  "|---|---|---|---|",
+  ...product.organisationAudiences.map((a) => `| ${a.en.name} | ${a.kind} | /organizacoes/${a.slug.pt}/ | ${a.sections.flatMap((s) => s.features).join(", ") || "none"} |`),
   "",
   "### Features by audience",
   "",

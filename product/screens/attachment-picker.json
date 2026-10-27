@@ -5,7 +5,7 @@
   "summary": "The sheet behind the composer's attach button: photos and videos, the camera, a file, a location, a sticker or a poll. Each choice hands over to the system picker or to its own screen.",
   "state": {
     "roomId": { "type": "string", "description": "The chat." },
-    "canPoll": { "type": "bool", "description": "RoomPowerLevels.canOwnUserSendMessage for the poll start event." },
+    "canPoll": { "type": "bool", "description": "false in a DM (RoomInfo.isDm, ADR 0192). Otherwise RoomPowerLevels.canOwnUserSendMessage for the poll start event." },
     "permissionProblem": {
       "type": "enum",
       "values": ["none", "photos", "camera"],

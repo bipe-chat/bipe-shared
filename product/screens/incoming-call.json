@@ -65,7 +65,8 @@
     "Room.declineCall",
     "Room.subscribeToRoomInfoUpdates",
     "RoomInfo.activeRoomCallParticipants",
-    "RoomInfo.hasRoomCall"
+    "RoomInfo.hasRoomCall",
+    "NotificationClient.getNotification"
   ],
   "parity": [
     "calls"
@@ -74,6 +75,7 @@
     "Group calls do not ring: notification_type notification gives a normal notification through the push rules (ringReads notify).",
     "Ringtone: Android plays the ringtone of bipe_notifications_call_sound (the system ringtone picker in notification settings, default the phone's ringtone) through RingtoneManager with USAGE_NOTIFICATION_RINGTONE, and vibrates when the phone is on vibrate. iOS has no public API for the system ringtones: the app plays its own ring tone with AVAudioSession soloAmbient, so the silent switch mutes it, and vibrates. CallKit uses the system ringtone (bipe-chat/bipe#760).",
     "Timeline (spec timeline-rows): an org.matrix.msc4075.rtc.notification item and the org.matrix.msc3401.call.member state events after it render as one call line: bipe_call_voice or bipe_call_video, bipe_call_missed, bipe_call_declined, or the duration bipe_call_duration, after the rule of test-vectors/calls/ringing.json lines. In a group, each member who joined gets bipe_call_joined. Membership events never show as raw state.",
-    "Locked phone and closed app: bipe-chat/bipe#760."
+    "Locked phone, app closed (bipe-chat/bipe#760), iOS: the notification service extension decrypts the pushed event; a DM ring for the own user inside its lifetime goes to CallKit with CXProvider.reportNewIncomingVoIPPushPayload (room, event, caller name, video, end of the ring), and the notification stays quiet. The app (PushKit, background mode voip) reports every VoIP push to CallKit at once, as Apple requires, then opens the account, checks Room.hasActiveRoomCall and ends the CallKit call as missed if the call is over or the ring ends. CallKit answer joins (spec call) with the audio session from didActivate; end before the answer declines (Room.declineCall); mute maps to the microphone. Calls this phone starts go through CXStartCallAction, so they show in Recents. The server keeps its normal APNs pusher: no VoIP pusher.",
+    "Locked phone, app closed, Android play: the FCM push gives the event; a ring posts a NotificationCompat.CallStyle.forIncomingCall notification on channel bipe_call_channel_incoming with a full-screen intent to this screen, in a foreground service of type phoneCall, and registers the call with androidx.core:core-telecom (Bluetooth, headset and car buttons, audio focus). Android 14 and later without the full-screen intent grant (canUseFullScreenIntent): a heads-up notification. The running call shows CallStyle.forOngoingCall. Android foss has no push: it rings only with a sync connection, and a ring with the app closed shows as bipe_call_missed at the next sync."
   ]
 }

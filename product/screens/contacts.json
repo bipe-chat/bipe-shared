@@ -58,7 +58,8 @@
     "Limits: 500 numbers per request, a daily budget per account (lower for accounts younger than 7 days), 30 requests per hour. On 429, stop and show bipe_error_rate_limited. Check runs when the user opens the screen or pulls to refresh, not in the background.",
     "Normalisation: normalizePhone in tools/lib/registries.mjs is the reference; cases in test-vectors/phone-numbers.json. Bipe logic: BipePhoneNumber.normalize (BipeKit), BipePhoneNumber.kt and BipeAddressBook.kt (libraries/bipe contacts).",
     "The user's own discoverability is the discovery switch of Privacidade (settings-group privacy: bipe_discovery_toggle, PUT /v1/me/discovery with by_phone). It needs a linked number (GET /v1/me/phone); without one, the row says bipe_phone_not_linked. ADR 0063 plans three values (everyone, contacts, nobody); the API has a boolean today, so the switch stays until the API changes.",
-    "The phone number is for discovery only, never identity or sign-in (ADR 0015). No screen shows another person's number.",
+    "The phone number is for discovery only, never identity or sign-in (ADR 0015). The only other number on a screen is the one the user saved: person-profile shows the numbers of the matched address-book entry (ADR 0191). The server never sends another person's number.",
+    "Each match keeps, in memory for this account, the address-book entry ID next to the user ID (never the number), so person-profile can read that entry again.",
     "Parity: iOS built; Android planned (no address-book match yet, bipe-chat/bipe#162). Both new apps implement it."
   ]
 }

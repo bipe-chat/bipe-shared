@@ -1,0 +1,38 @@
+{
+  "id": "live-location-banner",
+  "title": "My live location share",
+  "flow": "chat",
+  "summary": "While this account shares its live location: a bar at the top of the chat that shares, and a row at the top of the chat list, each with a stop button.",
+  "types": {
+    "OwnShare": {
+      "roomId": { "type": "string", "description": "The chat that gets the positions." },
+      "endsAt": { "type": "date", "description": "Start + the chosen duration." }
+    }
+  },
+  "state": {
+    "shares": {
+      "type": "list",
+      "of": { "type": "OwnShare", "description": "One running share." },
+      "description": "The running shares of the current account, from the app's live location service."
+    },
+    "foregroundOnly": { "type": "bool", "description": "iOS: location access is 'when in use' only; the bar shows bipe_app_location_live_open_only." }
+  },
+  "actions": {
+    "stop": { "effect": "Chat bar: Room.stopLiveLocationShare for this chat. Chat list row: stops every share of the account. The bar or row goes away." },
+    "openSettings": { "effect": "iOS, foregroundOnly: opens the app's page in iPhone Settings." }
+  },
+  "strings": [
+    "bipe_app_location_live_sharing",
+    "bipe_app_location_live_stop",
+    "bipe_app_location_live_until",
+    "bipe_app_location_live_open_only",
+    "bipe_contacts_open_settings"
+  ],
+  "sdk": ["Room.stopLiveLocationShare", "Room.sendLiveLocation"],
+  "parity": ["live-location"],
+  "notes": [
+    "The chat bar sits above the timeline, under the call bar: bipe_app_location_live_sharing, bipe_app_location_live_until with endsAt, and the button bipe_app_location_live_stop.",
+    "The chat list row sits above the list on both tabs: bipe_app_location_live_sharing and bipe_app_location_live_stop. One row for all running shares.",
+    "Android: the ongoing notification of the foreground service is the same share; its stop action stops every share of the account."
+  ]
+}

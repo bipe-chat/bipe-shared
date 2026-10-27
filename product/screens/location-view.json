@@ -2,7 +2,7 @@
   "id": "location-view",
   "title": "Location",
   "flow": "chat",
-  "summary": "A received or sent m.location: a static map with a pin in the timeline, and a full-screen map with the button to open the place in the phone's maps app.",
+  "summary": "A received or sent m.location or live location share (MSC3489 beacon_info with its beacons): a static map with a pin in the timeline, and a full-screen map with the button to open the place in the phone's maps app.",
   "types": {
     "LocationMessage": {
       "latitude": { "type": "string", "description": "From the geo URI, decimal degrees." },
@@ -10,6 +10,11 @@
       "zoom": { "type": "int", "description": "zoom_level of the event, else registries/maps.json defaultZoom; clamped to minZoom and maxZoom." },
       "asset": { "type": "enum", "values": ["sender", "pin"], "description": "MSC3488 asset type. Missing or unknown is sender." },
       "description": { "type": "string", "optional": true, "description": "The event's description, shown under the map when present." }
+    },
+    "LiveShare": {
+      "location": { "type": "LocationMessage", "optional": true, "description": "The newest beacon. Missing until the first beacon (bipe_app_location_live_waiting)." },
+      "endsAt": { "type": "date", "description": "beacon_info ts + timeout." },
+      "isLive": { "type": "bool", "description": "LiveLocationContent.isLive and now < endsAt. false shows bipe_app_location_live_ended." }
     }
   },
   "state": {
@@ -17,6 +22,7 @@
     "location": { "type": "LocationMessage", "description": "The parsed event." },
     "senderName": { "type": "string", "description": "Shown in the top bar of the full map." },
     "centre": { "type": "LocationMessage", "description": "Full map only: the centre of the view; starts at the location. Dragging and zoom change it." },
+    "live": { "type": "LiveShare", "optional": true, "description": "Set for a live location row (MsgLikeKind.liveLocation)." },
     "loadFailed": { "type": "bool", "description": "true when the static map did not load (bipe_app_media_failed, tap to try again)." }
   },
   "actions": {
@@ -38,15 +44,21 @@
     "bipe_app_location_zoom_in",
     "bipe_app_location_zoom_out",
     "bipe_app_media_failed",
-    "bipe_app_close"
+    "bipe_app_close",
+    "bipe_app_location_live_title",
+    "bipe_app_location_live_until",
+    "bipe_app_location_live_ended",
+    "bipe_app_location_live_waiting"
   ],
-  "sdk": ["MessageType", "LocationContent", "AssetType"],
-  "parity": ["location-sharing"],
+  "sdk": ["MessageType", "LocationContent", "AssetType", "MsgLikeKind.liveLocation", "LiveLocationContent", "BeaconInfo"],
+  "parity": ["location-sharing", "live-location"],
   "notes": [
     "The timeline row is a message row with its bubble, sender, time, reactions, reply and receipts like a media row. The map fills the bubble width at a 4:3 ratio; under it bipe_app_location_current (asset sender) or bipe_app_location_pinned (asset pin), then the description if any. Reply previews and the chat list use bipe_app_location_title.",
     "The geo URI follows RFC 5870: 'geo:<lat>,<lon>[,<alt>][;u=<uncertainty>]...'. A URI the app cannot read gives an unsupported row.",
     "Maps come only from registries/maps.json baseUrl (ADR 0131). Static images, dark style when the app shows dark colours. The server draws © OpenStreetMap into each image; do not crop it. The pin is drawn by the app over the image.",
     "Opening in the maps app is the only way the place leaves Bipe, and only when the person taps the button.",
-    "Live location (MSC3489 beacon_info and beacon events) is not in this spec (bipe-chat/bipe#768 second slice)."
+    "Live row (bipe-chat/bipe#768): the timeline item of the sender's beacon_info, MsgLikeKind.liveLocation, which the SDK fills with the beacons. The map follows the newest beacon: a new static map loads with each beacon (no tile SDK). Under the map: bipe_app_location_live_title, then bipe_app_location_live_until with the end time while isLive, else bipe_app_location_live_ended. The row checks the end time each minute.",
+    "The full map of a live row moves the pin with each beacon; the centre stays where the person dragged it. Its title is bipe_app_location_live_title and it shows the sender, and the end time or bipe_app_location_live_ended.",
+    "Previews: the chat list, reply quotes and notifications say bipe_app_location_live_title. Beacons (org.matrix.msc3672.beacon) never show a notification: the notification service drops them."
   ]
 }

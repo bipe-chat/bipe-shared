@@ -155,6 +155,9 @@ ${iconCases.join("\n")}
         }
     }
 
+    /// Colour of the mark on the app icon, as 0xRRGGBB.
+    public static let iconMark: UInt32 = ${hex24(tokens.appThemes.icon.markColour)}
+
     /// Name of the alternate app icon for UIApplication.setAlternateIconName; nil is the primary icon.
     public var alternateIconName: String? {
         switch self {
@@ -247,6 +250,9 @@ ${paletteEntries.join("\n")}
     companion object {
         /** The palette of a new install. */
         val DEFAULT: BipePalette = ${tokens.appThemes.default.toUpperCase()}
+
+        /** Colour of the mark on the app icon. */
+        val ICON_MARK: Color = Color(${hex32(tokens.appThemes.icon.markColour)})
 
         /** The stored palette id, or DEFAULT for a missing or unknown id. */
         fun fromId(id: String?): BipePalette = entries.firstOrNull { it.id == id } ?: DEFAULT

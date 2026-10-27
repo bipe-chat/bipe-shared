@@ -1,6 +1,6 @@
 // App icons of the app theme (bipe-chat/bipe#811, design/tokens.json appThemes): a white Bipe mark on the
 // icon background of each palette. iOS gets one 1024 px PNG per palette in an asset catalog; Android gets the
-// colours and the mark as resources for its adaptive icons.
+// colours, the mark and one adaptive icon (mipmap bipe_app_icon_<palette>) per palette as resources.
 // The PNG writer is Bipe's own (Node built-ins only): indexed colour, one fixed-Huffman deflate stream with
 // distance-1 runs. The output depends on nothing but the input, so the drift check is stable on every Node version.
 import { loadTokens } from "../../design/ramps/ramp.mjs";
@@ -192,7 +192,7 @@ function chunk(type, data) {
 
 const rgb = (hex) => [1, 3, 5].map((k) => parseInt(hex.slice(k, k + 2), 16));
 
-// An opaque, full-bleed square PNG: the mark in white on the background. iOS rounds the corners itself.
+// An opaque, full-bleed square PNG: the mark in markColour (white) on the background. iOS rounds the corners itself.
 export function iconPng(mark, background, size = IOS_ICON_SIZE) {
   const { path, viewBox, scale, offset } = mark;
   const unit = size / viewBox;
@@ -203,7 +203,8 @@ export function iconPng(mark, background, size = IOS_ICON_SIZE) {
   const levels = Uint8Array.from(cover, (c) => Math.round(Math.min(1, c) * 255));
   const used = [...new Set(levels)].sort((p, q) => p - q);
   const index = new Map(used.map((level, k) => [level, k]));
-  const plte = used.flatMap((level) => bg.map((c) => Math.round(c + ((255 - c) * level) / 255)));
+  const fg = rgb(mark.markColour);
+  const plte = used.flatMap((level) => bg.map((c, k) => Math.round(c + ((fg[k] - c) * level) / 255)));
   const raw = new Uint8Array(size * (size + 1));
   for (let row = 0; row < size; row++) {
     raw[row * (size + 1)] = 0; // filter: none
@@ -216,6 +217,7 @@ export function iconPng(mark, background, size = IOS_ICON_SIZE) {
 }
 
 // Files for bipe-app. Paths are relative to ios/BipeKit/Sources/BipeKit/Generated and android/libraries/bipe/src/main.
+// The app manifest has one launcher activity-alias per palette with icon @mipmap/bipe_app_icon_<palette>.
 export function generateAppIcons(tokens = loadTokens(), { xmlHeader }) {
   const mark = tokens.appThemes.icon;
   const icons = appIconColors(tokens);
@@ -231,7 +233,15 @@ export function generateAppIcons(tokens = loadTokens(), { xmlHeader }) {
   }
   // The adaptive icon canvas is 108 dp; the mark stays inside the 66 dp safe zone (androidScale of the 64-unit mark).
   const shift = (108 - mark.viewBox * mark.androidScale) / 2;
-  const android = {
+  const android = Object.fromEntries(icons.map(({ palette }) => [`res/mipmap-anydpi-v26/bipe_app_icon_${palette}.xml`, `<?xml version="1.0" encoding="utf-8"?>
+${xmlHeader}
+<adaptive-icon xmlns:android="http://schemas.android.com/apk/res/android">
+    <background android:drawable="@color/bipe_app_icon_${palette}" />
+    <foreground android:drawable="@drawable/bipe_app_icon_mark" />
+    <monochrome android:drawable="@drawable/bipe_app_icon_mark" />
+</adaptive-icon>
+`]));
+  Object.assign(android, {
     "res/values/bipe_app_icons.xml": `<?xml version="1.0" encoding="utf-8"?>
 ${xmlHeader}
 <resources>
@@ -251,11 +261,11 @@ ${xmlHeader}
         android:translateX="${shift}"
         android:translateY="${shift}">
         <path
-            android:fillColor="#FFFFFF"
+            android:fillColor="${mark.markColour}"
             android:pathData="${mark.path}" />
     </group>
 </vector>
 `,
-  };
+  });
   return { ios, android };
 }

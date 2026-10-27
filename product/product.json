@@ -2259,8 +2259,8 @@
     "/comparar/telegram/": "/compare/telegram/",
     "/para/igrejas/": "/para/grupos-e-comunidades/",
     "/en/for/churches/": "/en/for/groups-and-communities/",
-    "/parceiros/": "/organizacoes/",
-    "/en/partners/": "/en/organisations/"
+    "/parceiros/": "/organizacoes/parceiros/",
+    "/en/partners/": "/en/organisations/partners/"
   },
   "origin": {
     "pt": {
@@ -2783,7 +2783,8 @@
         "heading": "MEI, microempresa ou autônomo?",
         "body": "Você não precisa do formulário. Baixe o app e crie a conta da empresa em Você > Sua conta > Criar conta da empresa. Dá para criar sem CNPJ. O plano Pequeno negócio não tem mensalidade.",
         "button": "Baixar o app"
-      }
+      },
+      "audiencesHeading": "Para cada tipo de organização"
     },
     "en": {
       "nav": "For organisations",
@@ -2870,9 +2871,357 @@
         "heading": "MEI, micro company or self-employed?",
         "body": "You don't need the form. Get the app and create the company account in You > Your account > Create a company account. You can create it with no CNPJ. The Small business plan has no monthly fee.",
         "button": "Get the app"
-      }
+      },
+      "audiencesHeading": "For each kind of organisation"
     }
   },
+  "organisationAudiences": [
+    {
+      "id": "government",
+      "kind": "public_body",
+      "slug": {
+        "pt": "governo",
+        "en": "government"
+      },
+      "sections": [
+        {
+          "id": "name",
+          "features": [
+            "reserved-names",
+            "lookalikes",
+            "cnpj-badge"
+          ],
+          "scene": "nome-reservado"
+        },
+        {
+          "id": "notices",
+          "features": [
+            "scam-alerts",
+            "requests",
+            "bot-mark"
+          ]
+        },
+        {
+          "id": "data",
+          "features": [
+            "brazil-servers",
+            "open-source",
+            "e2ee"
+          ]
+        },
+        {
+          "id": "price",
+          "features": []
+        }
+      ],
+      "pt": {
+        "name": "Órgãos públicos",
+        "title": "Bipe para órgãos públicos",
+        "headline": "O cidadão sabe que a mensagem é mesmo do órgão.",
+        "lede": "Os dados e os servidores do Bipe ficam no Brasil, sob a lei brasileira. Prefeituras, secretarias e autarquias falam com o cidadão com o nome verificado pelo CNPJ, e o nome do órgão fica reservado para a conta dele. O Bipe para organizações ainda está em estudo, e o piloto é gratuito.",
+        "note": "Cada recurso mostra em que ponto está. Abra o recurso para ver o status no iPhone e no Android.",
+        "sections": [
+          {
+            "heading": "O nome do órgão fica com o órgão",
+            "body": "Nomes como INSS e Correios ficam reservados para a conta com o CNPJ verificado do órgão. Quem tenta o mesmo nome com uma letra trocada, como c0rreios, também é barrado. Assim o falso servidor não consegue usar o nome do órgão para pedir dados ou dinheiro."
+          },
+          {
+            "heading": "Aviso oficial com cara de aviso oficial",
+            "body": "Um aviso de uma conta com selo de instituição aparece diferente de uma conversa comum e só abre links do site do próprio órgão. Esse aviso está em desenvolvimento. A verificação de órgão público, que confere se o CNPJ é da administração pública, ainda é um plano."
+          },
+          {
+            "heading": "Dados no Brasil, código que dá para conferir",
+            "body": "Os servidores ficam no Brasil, em empresas brasileiras de hospedagem. O código é aberto, então a equipe técnica do órgão pode conferir o que o app e o servidor fazem. As conversas são protegidas de ponta a ponta, e o Bipe não lê."
+          },
+          {
+            "heading": "Preço fixo por ano, sem preço por mensagem",
+            "body": "Órgão público paga metade do plano Instituição, num contrato anual pelo número de pessoas que atende. Nenhum plano cobra por mensagem, então o custo não cresce a cada aviso. Os valores saem quando o piloto terminar."
+          }
+        ],
+        "cta": "Quer testar o Bipe num serviço do seu órgão? Conte como vocês falam com o cidadão hoje."
+      },
+      "en": {
+        "name": "Public bodies",
+        "title": "Bipe for public bodies",
+        "headline": "Citizens know the message really comes from the public body.",
+        "lede": "Bipe's data and servers stay in Brazil, under Brazilian law. City halls, departments and agencies talk to citizens under a name verified by CNPJ, and the body's name is reserved for its own account. Bipe for organisations is still a proposal, and the pilot is free.",
+        "note": "Each feature shows where it stands. Open a feature to see its status on iPhone and Android.",
+        "sections": [
+          {
+            "heading": "The body's name stays with the body",
+            "body": "Names like INSS and Correios are reserved for the account with the body's verified CNPJ. Someone who tries the same name with one letter swapped, like c0rreios, is blocked too. So a fake official can't use the body's name to ask for data or money."
+          },
+          {
+            "heading": "An official notice that looks official",
+            "body": "A notice from an account with an institution badge looks different from a normal chat and only opens links to the body's own site. This notice is in development. The public body check, which confirms that a CNPJ belongs to the public administration, is still a plan."
+          },
+          {
+            "heading": "Data in Brazil, code you can check",
+            "body": "The servers are in Brazil, at Brazilian hosting companies. The code is open, so the body's technical team can check what the app and the server do. Chats are end-to-end encrypted, and Bipe can't read them."
+          },
+          {
+            "heading": "A fixed yearly price, no price per message",
+            "body": "A public body pays half the Institution plan, on a yearly contract priced by the number of people it serves. No plan charges per message, so the cost doesn't grow with each notice. Amounts come out when the pilot ends."
+          }
+        ],
+        "cta": "Want to test Bipe in one of your services? Tell us how you talk to citizens today."
+      }
+    },
+    {
+      "id": "institutions",
+      "kind": "association",
+      "slug": {
+        "pt": "instituicoes",
+        "en": "institutions"
+      },
+      "sections": [
+        {
+          "id": "name",
+          "features": [
+            "cnpj-badge",
+            "reserved-names",
+            "pix-charges"
+          ],
+          "scene": "doacao-real"
+        },
+        {
+          "id": "groups",
+          "features": [
+            "group-types",
+            "polls",
+            "communities",
+            "verified-groups"
+          ]
+        },
+        {
+          "id": "scams",
+          "features": [
+            "scam-alerts",
+            "requests",
+            "money-pause"
+          ]
+        },
+        {
+          "id": "price",
+          "features": []
+        }
+      ],
+      "pt": {
+        "name": "Instituições e associações",
+        "title": "Bipe para instituições e associações",
+        "headline": "Avisos para todos, com o nome da instituição à vista.",
+        "lede": "Os dados e os servidores do Bipe ficam no Brasil, sob a lei brasileira. Escolas, igrejas, cooperativas e ONGs falam com membros e famílias com o nome verificado pelo CNPJ. Quem copia o nome e a foto da instituição não ganha o selo. O Bipe para organizações ainda está em estudo, e o piloto é gratuito.",
+        "note": "Cada recurso mostra em que ponto está. Abra o recurso para ver o status no iPhone e no Android.",
+        "sections": [
+          {
+            "heading": "A doação vai para o CNPJ, não para uma chave qualquer",
+            "body": "Na conversa com a instituição, o membro vê o selo e o CNPJ. Uma cobrança por Pix mostra o nome e o CNPJ verificados de quem vai receber, e o membro paga no app do banco. A cobrança por Pix ainda é um plano."
+          },
+          {
+            "heading": "Grupos que não viram barulho",
+            "body": "Num grupo novo, o celular só toca quando alguém marca a pessoa, responde a ela ou abre uma enquete. As comunidades vão juntar vários grupos e uma sala de avisos onde só a equipe escreve. Comunidades e grupos só com verificados ainda são planos."
+          },
+          {
+            "heading": "Menos golpe em nome da instituição",
+            "body": "Quem não está nos contatos chega como pedido de conversa. A checagem procura sinais de golpe e pode mostrar um aviso. Num pedido de dinheiro suspeito, o app trava o botão de pagar por 5 segundos."
+          },
+          {
+            "heading": "Metade do preço",
+            "body": "ONGs, igrejas e associações pagam metade do plano Empresa. Nenhum plano cobra por mensagem. Os valores saem quando o piloto terminar."
+          }
+        ],
+        "cta": "Quer testar o Bipe com a sua instituição? Conte como vocês falam com os membros hoje."
+      },
+      "en": {
+        "name": "Institutions and associations",
+        "title": "Bipe for institutions and associations",
+        "headline": "Notices for everyone, with the institution's name in plain sight.",
+        "lede": "Bipe's data and servers stay in Brazil, under Brazilian law. Schools, churches, cooperatives and NGOs talk to members and families under a name verified by CNPJ. Someone who copies the institution's name and photo doesn't get the badge. Bipe for organisations is still a proposal, and the pilot is free.",
+        "note": "Each feature shows where it stands. Open a feature to see its status on iPhone and Android.",
+        "sections": [
+          {
+            "heading": "Donations go to the CNPJ, not to any Pix key",
+            "body": "In the chat with the institution, members see the badge and the CNPJ. A Pix charge shows the verified name and CNPJ of who gets the money, and the member pays in their bank app. Pix charges are still a plan."
+          },
+          {
+            "heading": "Groups that don't turn into noise",
+            "body": "In a new group, the phone only rings when someone mentions the person, replies to them or opens a poll. Communities will bring several groups together with a notices room where only the team posts. Communities and verified-only groups are still plans."
+          },
+          {
+            "heading": "Fewer scams in the institution's name",
+            "body": "People who aren't in your contacts arrive as chat requests. The check looks for signs of a scam and can show a warning. On a suspicious request for money, the app locks the pay button for 5 seconds."
+          },
+          {
+            "heading": "Half the price",
+            "body": "NGOs, churches and associations pay half the Company plan. No plan charges per message. Amounts come out when the pilot ends."
+          }
+        ],
+        "cta": "Want to test Bipe with your institution? Tell us how you talk to members today."
+      }
+    },
+    {
+      "id": "finance",
+      "kind": "company",
+      "slug": {
+        "pt": "financeiro",
+        "en": "finance"
+      },
+      "sections": [
+        {
+          "id": "name",
+          "features": [
+            "reserved-names",
+            "lookalikes",
+            "cnpj-badge"
+          ],
+          "scene": "banco-real"
+        },
+        {
+          "id": "pix",
+          "features": [
+            "pix-charges",
+            "pix-check",
+            "money-pause"
+          ]
+        },
+        {
+          "id": "alerts",
+          "features": [
+            "scam-alerts",
+            "requests",
+            "no-sms"
+          ]
+        },
+        {
+          "id": "price",
+          "features": []
+        }
+      ],
+      "pt": {
+        "name": "Bancos e fintechs",
+        "title": "Bipe para bancos e fintechs",
+        "headline": "O falso atendente não consegue usar o nome do seu banco.",
+        "lede": "Os dados e os servidores do Bipe ficam no Brasil, sob a lei brasileira. No Bipe, o nome do banco fica reservado para a conta com o CNPJ verificado, e o cliente vê o selo em toda conversa. O Bipe para organizações ainda está em estudo, e o piloto é gratuito.",
+        "note": "Cada recurso mostra em que ponto está. Abra o recurso para ver o status no iPhone e no Android.",
+        "sections": [
+          {
+            "heading": "Só o banco usa o nome do banco",
+            "body": "O golpe do falso atendente começa com um perfil que copia o nome e a foto do banco. No Bipe, esse nome fica reservado para a conta com o CNPJ verificado, e nomes com uma letra trocada, como 1tau, também são barrados. O cliente vê o selo e o CNPJ na conversa com o banco de verdade."
+          },
+          {
+            "heading": "Pix com o nome de quem recebe",
+            "body": "Uma cobrança por Pix na conversa mostra o nome e o CNPJ verificados de quem vai receber, e o cliente paga no app do banco. Com o Conferir no Bipe, o cliente confere um código Pix antes de pagar. A cobrança por Pix ainda é um plano."
+          },
+          {
+            "heading": "Avisos para o cliente antes do golpe",
+            "body": "A checagem procura sinais de golpe nas mensagens e pode mostrar um aviso. Quem não está nos contatos chega como pedido de conversa. A conta do Bipe não usa código por SMS, então quem clona o chip do cliente não leva a conta dele."
+          },
+          {
+            "heading": "Contrato anual, sem preço por mensagem",
+            "body": "Bancos e fintechs ficam no plano Instituição: contrato anual pelo número de clientes, atendentes sem limite, todos os nomes da marca reservados e monitoramento de nomes parecidos. O selo não está à venda, e o plano paga só o serviço. Os valores saem quando o piloto terminar."
+          }
+        ],
+        "cta": "Quer testar o Bipe com os clientes do seu banco? Conte como vocês falam com eles hoje."
+      },
+      "en": {
+        "name": "Banks and fintechs",
+        "title": "Bipe for banks and fintechs",
+        "headline": "A fake support agent can't use your bank's name.",
+        "lede": "Bipe's data and servers stay in Brazil, under Brazilian law. On Bipe, the bank's name is reserved for the account with the verified CNPJ, and customers see the badge in every chat. Bipe for organisations is still a proposal, and the pilot is free.",
+        "note": "Each feature shows where it stands. Open a feature to see its status on iPhone and Android.",
+        "sections": [
+          {
+            "heading": "Only the bank uses the bank's name",
+            "body": "The fake support scam starts with a profile that copies the bank's name and photo. On Bipe, that name is reserved for the account with the verified CNPJ, and names with one letter swapped, like 1tau, are blocked too. Customers see the badge and the CNPJ in the chat with the real bank."
+          },
+          {
+            "heading": "Pix with the name of who gets paid",
+            "body": "A Pix charge in the chat shows the verified name and CNPJ of who gets the money, and the customer pays in their bank app. With Check it in Bipe, the customer checks a Pix code before paying. Pix charges are still a plan."
+          },
+          {
+            "heading": "Warnings for customers before the scam",
+            "body": "The check looks for signs of a scam in messages and can show a warning. People who aren't in your contacts arrive as chat requests. A Bipe account doesn't use SMS codes, so someone who clones the customer's SIM doesn't get their account."
+          },
+          {
+            "heading": "A yearly contract, no price per message",
+            "body": "Banks and fintechs are on the Institution plan: a yearly contract priced by the number of customers, unlimited agents, every name of the brand reserved and monitoring of lookalike names. The badge isn't for sale, and the plan pays only for the service. Amounts come out when the pilot ends."
+          }
+        ],
+        "cta": "Want to test Bipe with your bank's customers? Tell us how you talk to them today."
+      }
+    },
+    {
+      "id": "partners",
+      "kind": "partner",
+      "slug": {
+        "pt": "parceiros",
+        "en": "partners"
+      },
+      "sections": [
+        {
+          "id": "open",
+          "features": [
+            "open-source",
+            "e2ee",
+            "brazil-servers"
+          ]
+        },
+        {
+          "id": "api",
+          "features": [],
+          "scene": "empresa-pergunta"
+        },
+        {
+          "id": "network",
+          "features": []
+        }
+      ],
+      "pt": {
+        "name": "Parceiros de tecnologia",
+        "title": "Bipe para parceiros de tecnologia",
+        "headline": "Um padrão aberto e uma API para ligar o Bipe aos seus sistemas.",
+        "lede": "Os dados e os servidores do Bipe ficam no Brasil, sob a lei brasileira. O Bipe usa o Matrix, um protocolo aberto, e o código é aberto. Plataformas de atendimento, integradores e quem revende tecnologia podem levar o Bipe aos clientes deles. A API do Bipe para empresas ainda está em estudo.",
+        "note": "Cada recurso mostra em que ponto está. Abra o recurso para ver o status no iPhone e no Android.",
+        "sections": [
+          {
+            "heading": "Um padrão aberto",
+            "body": "O Bipe usa o Matrix, um protocolo aberto para conversas. O código do app e do servidor é aberto, então qualquer equipe pode conferir o que ele faz antes de integrar. As conversas são protegidas de ponta a ponta."
+          },
+          {
+            "heading": "Uma API para os seus sistemas",
+            "body": "A API do Bipe para empresas vai mandar mensagens, modelos e perguntas com opções, e avisar de volta quando o cliente responde. Uma plataforma de atendimento pode trazer o Bipe como mais um canal pela mesma API, e um parceiro pode instalar e rodar tudo para empresas menores. A API ainda não está no ar."
+          },
+          {
+            "heading": "Ajude a sustentar a rede",
+            "body": "A ideia é que nenhuma empresa seja dona do Bipe e que outras organizações rodem servidores do Bipe na mesma rede. Por enquanto, a Envisioning faz o app e roda os servidores no Brasil. Se sua organização quer ajudar a sustentar o Bipe, use o mesmo formulário."
+          }
+        ],
+        "cta": "Quer integrar o Bipe ou ajudar a sustentar o Bipe? Conte o que vocês fazem."
+      },
+      "en": {
+        "name": "Technology partners",
+        "title": "Bipe for technology partners",
+        "headline": "An open standard and an API to connect Bipe to your systems.",
+        "lede": "Bipe's data and servers stay in Brazil, under Brazilian law. Bipe uses Matrix, an open protocol, and the code is open. Customer service platforms, integrators and technology resellers can bring Bipe to their customers. Bipe's business API is still a proposal.",
+        "note": "Each feature shows where it stands. Open a feature to see its status on iPhone and Android.",
+        "sections": [
+          {
+            "heading": "An open standard",
+            "body": "Bipe uses Matrix, an open protocol for chat. The code of the app and the server is open, so any team can check what it does before it integrates. Chats are end-to-end encrypted."
+          },
+          {
+            "heading": "An API for your systems",
+            "body": "Bipe's business API will send messages, templates and questions with options, and call you back when the customer replies. A customer service platform can bring Bipe in as one more channel through the same API, and a partner can set up and run everything for smaller companies. The API isn't live yet."
+          },
+          {
+            "heading": "Help carry the network",
+            "body": "The idea is that no company owns Bipe and that other organisations run Bipe servers on the same network. For now, Envisioning makes the app and runs the servers in Brazil. If your organisation wants to help carry Bipe, use the same form."
+          }
+        ],
+        "cta": "Want to integrate Bipe or help carry it? Tell us what you do."
+      }
+    }
+  ],
   "technical": {
     "pt": {
       "nav": "Tecnologia",

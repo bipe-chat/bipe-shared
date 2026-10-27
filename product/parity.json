@@ -2710,12 +2710,18 @@
       "id": "archive-sync",
       "name": "Archive syncs to other devices and the web (m.lowpriority tag) (bipe#662)",
       "ios": {
-        "status": "planned",
-        "issue": 662
+        "status": "built",
+        "evidence": [
+          "bipe-app/ios/Bipe/ChatList/ChatArchiveModel.swift",
+          "bipe-app/ios/Bipe/ChatList/ChatListModel.swift"
+        ]
       },
       "android": {
-        "status": "planned",
-        "issue": 662
+        "status": "built",
+        "evidence": [
+          "bipe-app/android/app/src/main/kotlin/chat/bipe/app/chatlist/ChatArchiveModel.kt",
+          "bipe-app/android/app/src/main/kotlin/chat/bipe/app/chatlist/ChatListModel.kt"
+        ]
       },
       "web": {
         "status": "n/a",

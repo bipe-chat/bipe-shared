@@ -346,7 +346,7 @@ function writeSwift(out, { post = (text) => text } = {}) {
   mkdirSync(out, { recursive: true });
   write("BipeRegistries.swift", swiftRegistries());
   write("BipeTrustFacts.swift", generateTrust(reg.trust, "swift", HEADER));
-  write("BipeChatArchive.swift", generateChatArchive("swift", HEADER));
+  write("BipeChatArchive.swift", generateChatArchive("swift", HEADER, reg.chatArchive));
   write("BipeDmSelection.swift", generateDmSelection(reg.dmSelection, "swift", HEADER));
   write("BipeMessageFormatting.swift", generateMessageFormatting(reg.messageFormatting, "swift", HEADER, swiftString));
   write("BipeRelationshipNames.swift", generateRelationshipNames(reg.relationshipNames, "swift", HEADER));
@@ -689,7 +689,7 @@ function writeKotlin(out, { packageName = KOTLIN_PACKAGE, post = (text) => text 
   mkdirSync(kotlinDir, { recursive: true });
   write("BipeRegistries.kt", kotlinRegistries());
   write("BipeTrustFacts.kt", generateTrust(reg.trust, "kotlin", KOTLIN_HEADER));
-  write("BipeChatArchive.kt", generateChatArchive("kotlin", KOTLIN_HEADER));
+  write("BipeChatArchive.kt", generateChatArchive("kotlin", KOTLIN_HEADER, reg.chatArchive));
   write("BipeDmSelection.kt", generateDmSelection(reg.dmSelection, "kotlin", KOTLIN_HEADER));
   write("BipeMessageFormatting.kt", generateMessageFormatting(reg.messageFormatting, "kotlin", KOTLIN_HEADER, kotlinString));
   write("BipeRelationshipNames.kt", generateRelationshipNames(reg.relationshipNames, "kotlin", KOTLIN_HEADER, packageName));

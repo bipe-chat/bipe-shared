@@ -2326,6 +2326,34 @@
           ]
         },
         {
+          "heading": "Quanto custa falar com o cliente hoje",
+          "points": [
+            "Na API do WhatsApp Business, a Meta cobra por mensagem entregue. No Brasil, a tabela em vigor desde 1º de outubro de 2026 cobra R$ 0,3217 por mensagem de marketing e R$ 0,0350 por mensagem de utilidade, como um lembrete ou um aviso de entrega.",
+            "Desde a mesma data, a resposta ao cliente também tem preço: R$ 0,0350 por mensagem a partir da 1.001ª de cada número no mês.",
+            "Um exemplo: uma clínica que manda 10.000 lembretes e 2.000 ofertas por mês paga cerca de R$ 993 só para a Meta. A conta não inclui a taxa da empresa que revende a API nem os descontos por volume.",
+            "No Bipe, a empresa paga um valor fixo por mês, e o número de mensagens não muda o preço. Esse valor só sai depois do piloto, então esta página ainda não compara totais.",
+            "Tabela da Meta conferida em 27 de outubro de 2026, em whatsappbusiness.com. A Meta muda a tabela, e a sua conta pode ter outro valor."
+          ]
+        },
+        {
+          "heading": "Menos dependência de uma plataforma só",
+          "points": [
+            "Os dados e os servidores ficam no Brasil, sob a lei brasileira.",
+            "O código do app e do servidor é aberto, então qualquer pessoa pode conferir o que ele faz.",
+            "O Bipe usa o Matrix, um protocolo aberto para conversas.",
+            "As regras de preço são públicas: nenhum plano cobra por mensagem, e o selo não está à venda.",
+            "Hoje a Envisioning roda os servidores no Brasil. Outros jeitos de hospedar, como um servidor da própria organização, ainda estão em estudo."
+          ]
+        },
+        {
+          "heading": "Como o cliente chega ao Bipe",
+          "points": [
+            "O cliente precisa ter o Bipe instalado. Quem só usa o WhatsApp não recebe a sua mensagem no Bipe.",
+            "Por isso o cliente escreve primeiro, pelo link ou pelo QR code da empresa: no site, na nota ou no balcão.",
+            "No começo, o Bipe fica ao lado do canal que vocês já usam. Ele não precisa substituir esse canal no primeiro dia."
+          ]
+        },
+        {
           "heading": "Como o Bipe se pagaria",
           "points": [
             "Quem usa o Bipe para conversar nunca paga.",
@@ -2352,7 +2380,7 @@
           ]
         }
       ],
-      "cta": "Quer saber mais? Fale com a gente.",
+      "cta": "Quer testar no piloto? Conte como vocês falam com os clientes hoje.",
       "ctaSubject": "Bipe para empresas",
       "figureCaption": "Ilustração com dados de exemplo. A proposta ainda está em estudo."
     },
@@ -2408,6 +2436,34 @@
           ]
         },
         {
+          "heading": "What talking to customers costs today",
+          "points": [
+            "On the WhatsApp Business API, Meta charges per delivered message. In Brazil, the rate card in force since 1 October 2026 charges R$ 0.3217 per marketing message and R$ 0.0350 per utility message, such as a reminder or a delivery notice.",
+            "Since the same date, replies to customers have a price too: R$ 0.0350 per message from the 1,001st of each number in a month.",
+            "An example: a clinic that sends 10,000 reminders and 2,000 offers a month pays about R$ 993 to Meta alone. That doesn't include the fee of the company that resells the API, or volume discounts.",
+            "On Bipe, the company pays a fixed monthly amount, and the number of messages doesn't change the price. That amount comes out after the pilot, so this page doesn't compare totals yet.",
+            "Meta rate card checked on 27 October 2026, on whatsappbusiness.com. Meta changes its rates, and your account may pay a different amount."
+          ]
+        },
+        {
+          "heading": "Less dependence on a single platform",
+          "points": [
+            "Data and servers stay in Brazil, under Brazilian law.",
+            "The code of the app and the server is open, so anyone can check what it does.",
+            "Bipe uses Matrix, an open protocol for chat.",
+            "The pricing rules are public: no plan charges per message, and the badge isn't for sale.",
+            "Today Envisioning runs the servers in Brazil. Other ways to host, such as a server run by the organisation itself, are still a proposal."
+          ]
+        },
+        {
+          "heading": "How customers get to Bipe",
+          "points": [
+            "The customer needs Bipe installed. Someone who only uses WhatsApp doesn't get your message on Bipe.",
+            "So the customer writes first, through the company's link or QR code: on the website, on the receipt or at the counter.",
+            "At first, Bipe sits next to the channel you already use. It doesn't need to replace that channel on day one."
+          ]
+        },
+        {
           "heading": "How Bipe would pay for itself",
           "points": [
             "People who use Bipe to chat never pay.",
@@ -2434,7 +2490,7 @@
           ]
         }
       ],
-      "cta": "Want to talk about it? Write to us.",
+      "cta": "Want to test it in the pilot? Tell us how you talk to customers today.",
       "ctaSubject": "Bipe for business",
       "figureCaption": "Illustration with sample data. The proposal is still under study."
     }

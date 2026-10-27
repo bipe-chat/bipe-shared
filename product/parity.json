@@ -3055,12 +3055,18 @@
       "id": "live-location",
       "name": "Share live location for 15 min, 1 h or 8 h, with a stop button (MSC3489, bipe#768)",
       "ios": {
-        "status": "planned",
-        "issue": 768
+        "status": "built",
+        "evidence": [
+          "bipe-app/ios/Bipe/Location/LiveLocation.swift",
+          "bipe-app/ios/Bipe/Location/LiveLocationViews.swift"
+        ]
       },
       "android": {
-        "status": "planned",
-        "issue": 768
+        "status": "built",
+        "evidence": [
+          "bipe-app/android/app/src/main/kotlin/chat/bipe/app/location/LiveLocation.kt",
+          "bipe-app/android/app/src/main/kotlin/chat/bipe/app/location/LiveLocationViews.kt"
+        ]
       },
       "web": {
         "status": "n/a",
@@ -3070,7 +3076,6 @@
         "status": "n/a",
         "reason": "Plain Matrix events; no Bipe server code"
       },
-      "issue": 768,
       "fork": true
     },
     {

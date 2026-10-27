@@ -196,6 +196,10 @@ public enum BipeRegistries {
     /// and the apps warn this many days before confirm_by.
     public static let phoneLinkConfirmMonths = ${reg.phones.linkConfirmMonths}
     public static let phoneLinkConfirmWarnDays = ${reg.phones.linkConfirmWarnDays}
+    /// Number formats for reading (ADR 0191): the first entry whose country code, prefix and digit count fit.
+    public static let phoneDisplayFormats: [(countryCode: String, prefix: String, pattern: String)] = [
+${reg.phones.display.map((d) => `        (countryCode: ${swiftString(d.countryCode)}, prefix: ${swiftString(d.prefix)}, pattern: ${swiftString(d.pattern)}),`).join("\n")}
+    ]
 
     /// Work side opening hours (registries/work-hours.json, bipe-chat/bipe#511).
     public static let workHoursDefaultTimeZone = ${swiftString(reg.workHours.defaultTimeZone)}
@@ -532,6 +536,10 @@ object BipeRegistries {
     /** Yearly confirmation of a linked number (bipe-chat/bipe#470): months findable, and the warning days before confirm_by. */
     const val PHONE_LINK_CONFIRM_MONTHS = ${reg.phones.linkConfirmMonths}
     const val PHONE_LINK_CONFIRM_WARN_DAYS = ${reg.phones.linkConfirmWarnDays}
+    /** Number formats for reading (ADR 0191): country code, prefix, pattern; the first entry that fits wins. */
+    val phoneDisplayFormats: List<Triple<String, String, String>> = listOf(
+${reg.phones.display.map((d) => `        Triple(${kotlinString(d.countryCode)}, ${kotlinString(d.prefix)}, ${kotlinString(d.pattern)}),`).join("\n")}
+    )
 
     /** Work side opening hours (registries/work-hours.json, bipe-chat/bipe#511). */
     const val WORK_HOURS_DEFAULT_TIME_ZONE = ${kotlinString(reg.workHours.defaultTimeZone)}

@@ -7,7 +7,7 @@
     "MapCentre": {
       "latitude": { "type": "string", "description": "Decimal degrees, WGS 84." },
       "longitude": { "type": "string", "description": "Decimal degrees, WGS 84." },
-      "zoom": { "type": "int", "description": "Map zoom, from registries/maps.json minZoom to maxZoom." }
+      "zoom": { "type": "int", "description": "Map zoom, from registries/maps.json minZoom to maxZoom; outside detailBounds at most outsideMaxZoom, so a map abroad shows the low-zoom world map, not an empty area." }
     }
   },
   "state": {
@@ -30,7 +30,7 @@
       "params": { "dx": { "type": "int", "description": "Points." }, "dy": { "type": "int", "description": "Points." } },
       "effect": "Moves the map. At the end of the drag, centre becomes the place under the pin and a new static map loads. isAtOwnPosition becomes false."
     },
-    "zoomIn": { "effect": "centre.zoom + 1, up to maxZoom." },
+    "zoomIn": { "effect": "centre.zoom + 1, up to maxZoom (outsideMaxZoom when the centre is outside detailBounds)." },
     "zoomOut": { "effect": "centre.zoom - 1, down to minZoom." },
     "myLocation": { "effect": "Sets centre to ownPosition at defaultZoom. Reads a position first when there is none." },
     "send": { "effect": "Sends m.location with Timeline.sendLocation: asset sender when isAtOwnPosition, else pin. Closes the screen on success." },

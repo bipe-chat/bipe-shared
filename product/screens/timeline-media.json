@@ -50,7 +50,8 @@
     },
     "cancelUpload": {
       "effect": "Own media while sending: cancels the send and removes the row."
-    }
+    },
+    "playAnimation": { "params": { "rowId": { "type": "string", "description": "The sticker row." } }, "effect": "Plays an animated sticker that waits for a tap (see notes)." }
   },
   "strings": [
     "bipe_app_media_tap_to_show",
@@ -64,7 +65,8 @@
     "bipe_chats_show_media",
     "bipe_chats_show_media_always",
     "bipe_chats_show_media_private",
-    "bipe_chats_show_media_never"
+    "bipe_chats_show_media_never",
+    "bipe_a11y_sticker_play"
   ],
   "sdk": [
     "MsgLikeKind",
@@ -94,9 +96,10 @@
     "The row keeps its size from width and height before the media loads, so the timeline does not jump. Without size: a 4:3 box.",
     "bipe_app_media_image, _video, _file and _sticker are the accessibility labels, and the preview text in replies, the chat list and notifications (message-reply, notification-service).",
     "Captions show under the media as text, and the scam warning reads the caption (scam-warning). A caption is edited with message-edit (EditedContent.MediaCaption).",
-    "Stickers show without a bubble, at most 160 points wide, animated when ImageInfo.isAnimated. Saving stickers is the stickers issue (bipe_action_save_sticker).",
+    "Stickers show without a bubble, at most 160 points wide, animated when ImageInfo.isAnimated or the WebP has more than one frame (ADR 0205). Saving stickers is the stickers issue (bipe_action_save_sticker).",
     "A photo that is a receipt image gets no special card here; the receipt scam check reads text only.",
     "Delete and forward come from message-actions; media delete uses message-delete (bipe_dm_media_delete_body is the media library text, not this row).",
-    "Image descriptions (bipe-chat/bipe#501): the accessibility label of an image row is bipe_app_media_image_described with the description when it has one, else bipe_app_media_image; VoiceOver and TalkBack read it before the caption. The SDK message types have no field for it, so the app reads it from the event JSON (EventTimelineItemDebugInfo.originalJson, the decrypted event). A field on any other message type is ignored."
+    "Image descriptions (bipe-chat/bipe#501): the accessibility label of an image row is bipe_app_media_image_described with the description when it has one, else bipe_app_media_image; VoiceOver and TalkBack read it before the caption. The SDK message types have no field for it, so the app reads it from the event JSON (EventTimelineItemDebugInfo.originalJson, the decrypted event). A field on any other message type is ignored.",
+    "An animated sticker plays in a loop. It shows its first frame with a play mark (bipe_a11y_sticker_play) and waits for a tap (playAnimation) when the data saver is on and the phone is not on Wi-Fi (data-use), or with Reduce Motion (iOS) or animations off (Android)."
   ]
 }

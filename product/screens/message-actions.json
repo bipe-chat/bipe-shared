@@ -11,6 +11,8 @@
           "reply",
           "edit",
           "copy",
+          "saveSticker",
+          "viewStickerPack",
           "keepAudio",
           "unkeepAudio",
           "retry",
@@ -69,7 +71,7 @@
           "description": "The row."
         }
       },
-      "effect": "Closes the sheet and runs: reply, message-reply startReply; edit, message-edit startEdit; copy, puts the text on the clipboard and shows bipe_app_copied; keepAudio, voice-message keep; unkeepAudio, voice-message unkeep; retry, chat-timeline retrySend; delete, message-delete askDelete; report, message-report open."
+      "effect": "Closes the sheet and runs: reply, message-reply startReply; edit, message-edit startEdit; copy, puts the text on the clipboard and shows bipe_app_copied; saveSticker, adds the sticker to the user's pack (sticker-picker notes, bipe-chat/bipe#670) and shows bipe_sticker_saved or bipe_sticker_save_failed; viewStickerPack, opens sticker-pack with the event's stickerPackField; keepAudio, voice-message keep; unkeepAudio, voice-message unkeep; retry, chat-timeline retrySend; delete, message-delete askDelete; report, message-report open."
     },
     "close": {
       "effect": "Closes the sheet."
@@ -87,7 +89,11 @@
     "bipe_app_message_action_more_reactions",
     "bipe_pause_countdown",
     "bipe_voice_keep",
-    "bipe_voice_unkeep"
+    "bipe_voice_unkeep",
+    "bipe_action_save_sticker",
+    "bipe_sticker_saved",
+    "bipe_sticker_save_failed",
+    "bipe_action_view_sticker_pack"
   ],
   "sdk": [
     "EventTimelineItem",
@@ -97,7 +103,8 @@
   ],
   "parity": [
     "money-pause",
-    "dm-no-room-features"
+    "dm-no-room-features",
+    "stickers"
   ],
   "notes": [
     "MZ explicitly requested SF Symbols in iOS context-menu options on 23 October 2026. Native SwiftUI Label(systemImage:) supplies message-option and reaction-picker icons; Android keeps its current icon system. Action availability and permissions do not change.",
@@ -107,6 +114,7 @@
     "The sheet shows the message on top, so the person sees what they act on. The haptic follows ADR 0134 (registries haptics, selection).",
     "MZ explicitly requested long press only on 23 October 2026: native iOS contextMenu and Android DropdownMenu open from a normal long press, with no visible overflow button (bipe#589). Labelled accessibility actions keep the same commands available to VoiceOver and TalkBack. Do not attach a second long-press recognizer that competes with the native menu. Keep scrolling, swipe-to-reply and media/reply taps.",
     "Every command resolves the current row and checks current permissions again at dispatch. A removed, deleted, non-message or no-longer-authorised target cannot dispatch an old command. Menus belong to the timeline model of one immutable account session. New incoming rows do not change the target.",
-    "copy on a message with a running money pause (scam-warning pauseSecondsLeft above 0) is shown disabled with bipe_pause_countdown as its label, and comes back as Copiar at 0 (bipe#594)."
+    "copy on a message with a running money pause (scam-warning pauseSecondsLeft above 0) is shown disabled with bipe_pause_countdown as its label, and comes back as Copiar at 0 (bipe#594).",
+    "saveSticker: a sent m.sticker event whose image is not in the user's pack yet (same mxc URL). viewStickerPack: a sent m.sticker event with stickerPackField (registries/stickers.json) naming a room and a state key (ADR 0205)."
   ]
 }

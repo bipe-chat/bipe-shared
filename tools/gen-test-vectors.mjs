@@ -8,7 +8,7 @@ import { buildBrCode, crc16, pixCheck, pixMarkLines, pixTxid } from "./lib/pix.m
 import { cvmLines } from "./lib/cvm.mjs";
 import { noticeLinkClickable } from "./lib/notice.mjs";
 import { loadSchedulingVectors, writeSchedulingApiFixture } from "./lib/scheduling-vectors.mjs";
-import { photoDistance, photoHash, photoMatches, profileFactLines, relationshipNameWarning, newestDmRooms, clearedChatHidden, clearedChatKeepsEvent, clearedChatMarker, clearedChatsWithClear, compareAppVersions, extractInviteCode, handleProblem, isBipeUserID, handleSuggestions, pinReminderNext, pinProblem, remoteBannerState, normalizeCnpj, normalizePhone, displayPhone, handleSkeleton, loadRegistries, normalize, scamMatchIDs, scamWarningKind, trustFacts } from "./lib/registries.mjs";
+import { photoDistance, photoHash, photoMatches, profileFactLines, relationshipNameWarning, stickerEmojiKey, stickerMatches, stickerQueryTags, stickerSearchFold, newestDmRooms, clearedChatHidden, clearedChatKeepsEvent, clearedChatMarker, clearedChatsWithClear, compareAppVersions, extractInviteCode, handleProblem, isBipeUserID, handleSuggestions, pinReminderNext, pinProblem, remoteBannerState, normalizeCnpj, normalizePhone, displayPhone, handleSkeleton, loadRegistries, normalize, scamMatchIDs, scamWarningKind, trustFacts } from "./lib/registries.mjs";
 
 const root = join(dirname(fileURLToPath(import.meta.url)), "..");
 const reg = loadRegistries(root);
@@ -717,6 +717,16 @@ for (const vector of relationshipVectors.vectors) {
   if (relationshipNameWarning(vector.savedName, vector.verifiedName, vector.nicknameConfirmed, reg) !== vector.expected) throw new Error(`relationship-names: fixture differs for ${vector.name}`);
 }
 write("relationship-names.json", relationshipVectors);
+
+// --- Sticker search (ADR 0205) ---------------------------------------------
+const stickerFixture = JSON.parse(readFileSync(join(root, "fixtures/sticker-search.json"), "utf8"));
+write("sticker-search.json", {
+  $comment: stickerFixture.$comment,
+  fold: stickerFixture.fold.map((input) => ({ input, expected: stickerSearchFold(input) })),
+  emoji_key: stickerFixture.emojiKey.map((input) => ({ input, expected: stickerEmojiKey(input) })),
+  tags: stickerFixture.tags.map((query) => ({ query, expected: stickerQueryTags(query, reg) })),
+  matches: stickerFixture.matches.map((c) => ({ ...c, expected: stickerMatches(c.query, c.sticker, reg) })),
+});
 
 const archiveVectors = JSON.parse(readFileSync(join(root, "fixtures/chat-archive.json"), "utf8"));
 write("chat-archive.json", archiveVectors);

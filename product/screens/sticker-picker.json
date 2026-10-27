@@ -2,7 +2,7 @@
   "id": "sticker-picker",
   "title": "Stickers",
   "flow": "chat",
-  "summary": "Picks a sticker and sends it into the chat. Shows the user's own pack, the packs of this chat and the room packs the user turned on everywhere (ADR 0029, ADR 0033). Entries to make a sticker from a photo and to import stickers.",
+  "summary": "Picks a sticker and sends it into the chat. Shows the user's favourites, recents, own pack, the packs of this chat and the room packs the user turned on everywhere, with search on the phone (ADR 0029, ADR 0033, ADR 0205). Entries to make a sticker from a photo, to import stickers and to share a pack.",
   "types": {
     "StickerItem": {
       "packId": { "type": "string", "description": "The pack: user, or the room ID and state key." },
@@ -11,12 +11,16 @@
       "body": { "type": "string", "description": "The text for screen readers and for clients without stickers (bipe_a11y_sticker_send)." },
       "width": { "type": "int", "optional": true, "description": "Pixels." },
       "height": { "type": "int", "optional": true, "description": "Pixels." },
-      "mimeType": { "type": "string", "optional": true, "description": "The image type." }
+      "mimeType": { "type": "string", "optional": true, "description": "The image type." },
+      "tags": { "type": "list", "of": { "type": "string", "description": "A tag id from registries/stickers.json tags." }, "description": "The image's stickerTagsField. Empty when the image has none." },
+      "isAnimated": { "type": "bool", "description": "mimeType image/webp with more than one frame." },
+      "isFavourite": { "type": "bool", "description": "In the favourites list." }
     },
     "StickerPackView": {
       "id": { "type": "string", "description": "user, or the room ID and state key." },
       "title": { "type": "string", "description": "bipe_stickers_pack_personal for the user's pack, bipe_stickers_pack_room for this chat's packs, else the pack display name." },
-      "stickers": { "type": "list", "of": { "type": "StickerItem", "description": "One sticker." }, "description": "In pack order." }
+      "stickers": { "type": "list", "of": { "type": "StickerItem", "description": "One sticker." }, "description": "In pack order." },
+      "canShare": { "type": "bool", "description": "true for the user's own pack and for a room pack the user may write (state event power level)." }
     }
   },
   "state": {
@@ -26,17 +30,25 @@
       "type": "enum",
       "values": ["loading", "loaded", "failed"],
       "description": "failed: bipe_stickers_error_load with bipe_app_retry."
-    }
+    },
+    "favourites": { "type": "list", "of": { "type": "StickerItem", "description": "One sticker." }, "description": "From the global account data stickerFavouritesEventType, in its order. A sticker that is in no loaded pack drops out. Empty hides the row." },
+    "recents": { "type": "list", "of": { "type": "StickerItem", "description": "One sticker." }, "description": "From the global account data stickerRecentsEventType, newest first, without the favourites. A sticker that is in no loaded pack drops out. Empty hides the row." },
+    "query": { "type": "string", "description": "The search text. Empty shows favourites, recents and packs." },
+    "results": { "type": "list", "of": { "type": "StickerItem", "description": "One sticker." }, "description": "When query is not empty: every loaded sticker that stickerMatches the query, favourites first, then recents, then pack order, without duplicates. Empty: bipe_stickers_search_empty." }
   },
   "actions": {
     "appear": { "effect": "Loads the packs (see notes)." },
     "send": {
       "params": { "packId": { "type": "string", "description": "The pack." }, "shortcode": { "type": "string", "description": "The sticker." } },
-      "effect": "Sends an m.sticker event with body, url and info (w, h, mimetype, size) through Room.sendRaw, which encrypts in an encrypted room. Closes the picker. A failure shows bipe_app_sticker_send_failed."
+      "effect": "Sends an m.sticker event with body, url and info (w, h, mimetype, size) through Room.sendRaw, which encrypts in an encrypted room. A sticker from a room pack also carries stickerPackField with { room_id, state_key } of its pack. Then puts the sticker first in recents (see notes) and closes the picker. A failure shows bipe_app_sticker_send_failed."
     },
     "makeFromPhoto": { "effect": "Opens sticker-from-photo." },
     "importStickers": { "effect": "Opens sticker-import." },
-    "close": { "effect": "Closes the picker." }
+    "close": { "effect": "Closes the picker." },
+    "search": { "params": { "query": { "type": "string", "description": "The typed text." } }, "effect": "Sets query and results. On the phone only: no network call." },
+    "toggleFavourite": { "params": { "packId": { "type": "string", "description": "The pack." }, "shortcode": { "type": "string", "description": "The sticker." } }, "effect": "From a long press on a sticker: bipe_sticker_favourite_add or bipe_sticker_favourite_remove. Adds the sticker at the start of favourites, or removes it, and writes the account data (see notes). At stickerFavouritesMax the oldest favourite goes." },
+    "editTags": { "params": { "shortcode": { "type": "string", "description": "A sticker in the user's own pack." }, "tags": { "type": "list", "of": { "type": "string", "description": "A tag id." }, "description": "The chosen tag ids." } }, "effect": "From a long press on a sticker in the user's own pack: bipe_sticker_edit_tags opens the registry tags (string key bipe_sticker_tag_<id, - as _>), several can be on. Saving writes stickerTagsField on the image in im.ponies.user_emotes with a read-merge-write on the server copy." },
+    "sharePack": { "params": { "packId": { "type": "string", "description": "A pack with canShare." } }, "effect": "bipe_stickers_pack_share. The user's own pack: makes a pack room (see notes) with a copy of the pack and shares its link. A room pack: shares the link of its room. The link is stickerPackLinkBase plus the room ID, URL-encoded. Opens the system share sheet with the link." }
   },
   "strings": [
     "bipe_stickers_title",
@@ -50,7 +62,35 @@
     "bipe_stickers_import_action",
     "bipe_app_sticker_send_failed",
     "bipe_app_retry",
-    "bipe_app_close"
+    "bipe_app_close",
+    "bipe_stickers_favourites",
+    "bipe_stickers_recents",
+    "bipe_stickers_search_placeholder",
+    "bipe_stickers_search_empty",
+    "bipe_sticker_favourite_add",
+    "bipe_sticker_favourite_remove",
+    "bipe_sticker_edit_tags",
+    "bipe_stickers_pack_share",
+    "bipe_stickers_pack_share_failed",
+    "bipe_sticker_tag_riso",
+    "bipe_sticker_tag_amor",
+    "bipe_sticker_tag_bom_dia",
+    "bipe_sticker_tag_boa_tarde",
+    "bipe_sticker_tag_boa_noite",
+    "bipe_sticker_tag_parabens",
+    "bipe_sticker_tag_obrigado",
+    "bipe_sticker_tag_sextou",
+    "bipe_sticker_tag_tmj",
+    "bipe_sticker_tag_amem",
+    "bipe_sticker_tag_choro",
+    "bipe_sticker_tag_raiva",
+    "bipe_sticker_tag_surpresa",
+    "bipe_sticker_tag_ok",
+    "bipe_sticker_tag_tchau",
+    "bipe_sticker_tag_festa",
+    "bipe_sticker_tag_fome",
+    "bipe_sticker_tag_cansado",
+    "bipe_sticker_tag_duvida"
   ],
   "sdk": ["Client.session", "Client.homeserver", "Room.sendRaw", "Client.getMediaThumbnail", "MediaSource"],
   "parity": ["stickers"],
@@ -59,6 +99,13 @@
     "The SDK cannot read custom room state under sliding sync, so the packs load over the Matrix client-server API with the session's access token (GET account data and room state). Bipe logic: StickerPackEventType, StickerPack, Sticker, StickerPackClient.packs (BipeKit StickerPacks.swift); StickerPacks.kt and StickerPackRepository.kt (libraries/bipe stickers).",
     "Sent stickers are standard m.sticker events, so every Matrix client shows them (ADR 0029). Room.sendRaw sends without the timeline send queue: no local echo until the event comes back. The JSON content of the event follows Sticker's event content in BipeKit.",
     "Saving a received sticker to the user's pack (bipe_action_save_sticker, bipe_sticker_saved, bipe_sticker_save_failed) is an action on the sticker message (message-actions, bipe-chat/bipe#559): it adds the image to im.ponies.user_emotes with a read-merge-write on the server copy.",
-    "Product word: stickers, never figurinhas (ADR 0029, linguagem.md)."
+    "Product word: stickers, never figurinhas (ADR 0029, linguagem.md).",
+    "Order (ADR 0205): favourites (bipe_stickers_favourites), recents (bipe_stickers_recents), then the packs. The search field (bipe_stickers_search_placeholder) is on top.",
+    "Recents and favourites are global account data (registries/stickers.json stickerRecentsEventType, stickerFavouritesEventType) with content { \"stickers\": [ { \"pack\": packId, \"shortcode\": shortcode } ] }, so a second phone gets them. Recents: newest first, no duplicates, at most stickerRecentsMax. Favourites: at most stickerFavouritesMax. Write after the send or the change; a failed write keeps the list on this phone and tries again at the next change.",
+    "Search (ADR 0205 rule 3) runs on the phone over the loaded packs only, with the rules of test-vectors/sticker-search.json: stickerSearchFold, stickerEmojiKey, stickerQueryTags, stickerMatches. sticker.body is StickerItem.body, sticker.tags is StickerItem.tags, sticker.pack is StickerPackView.title. The search code makes no network call. The composer's sticker strip uses the same code.",
+    "Tags: the registry's tag ids only, no free text. An imported WhatsApp sticker gets the tags of its emoji (stickerEmoji) when the WebP carries them (sticker-import notes).",
+    "Animated stickers (isAnimated) play in the picker in a loop, except with data saver on mobile data, or with Reduce Motion (iOS) or animations off (Android): then the first frame shows (timeline-media notes).",
+    "Pack room (sharePack): a new room with join rule public, history visibility world_readable, no encryption (ADR 0179: a public room is plain text), the pack display name as room name, and room state im.ponies.room_emotes with state key \"\" holding the copy. Only the creator writes state. The copy does not follow later edits of the user's own pack. The chat list hides a room that has im.ponies.room_emotes state and no m.room.message. A failure shows bipe_stickers_pack_share_failed.",
+    "Long press on a sticker: toggleFavourite, and editTags in the user's own pack."
   ]
 }

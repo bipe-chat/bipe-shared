@@ -1,0 +1,18 @@
+{
+  "$comment": "Sticker search (ADR 0205; registries/stickers.json). tools/gen-test-vectors.mjs adds the expected values from the reference rules in tools/lib/registries.mjs. fold: stickerSearchFold. emojiKey: stickerEmojiKey. tags: stickerQueryTags. matches: stickerMatches with the sticker.",
+  "fold": ["kkkkkk", "KKK", "Bom Diaaa!!", "  sextou   ", "Fé em Deus", "obrigadaaa", "hahaha", "rsrsrs", "Ação", "aff", "123 vamos", "", "😂", "jóia👍"],
+  "emojiKey": ["❤️", "👍🏽", "🙏🏿", " 😂 ", "a"],
+  "tags": ["kkkkk", "KKK", "😂", "❤️", "👍🏽", "🙏", "par", "pa", "bom", "Bom Diaaa", "boa", "boa tarde", "sextouuu", "Aff", "fé", "morri", "obrigadaaa", "tmj", "tamo", "x", "", "🐶", "valeu!"],
+  "matches": [
+    { "name": "shared tag", "query": "kkkk", "sticker": { "body": "Gato", "tags": ["riso"], "pack": "Bichos" } },
+    { "name": "emoji to tag", "query": "😂", "sticker": { "body": "Gato", "tags": ["riso"], "pack": "Bichos" } },
+    { "name": "other tag", "query": "kkkk", "sticker": { "body": "Gato", "tags": ["choro"], "pack": "Bichos" } },
+    { "name": "body word start", "query": "gat", "sticker": { "body": "Gato rindo", "tags": [], "pack": "Bichos" } },
+    { "name": "body inside word", "query": "ato", "sticker": { "body": "Gato", "tags": [], "pack": "Bichos" } },
+    { "name": "pack name, accents", "query": "familia", "sticker": { "body": "Vó", "tags": [], "pack": "Família Souza" } },
+    { "name": "second word of body", "query": "rindo", "sticker": { "body": "Gato rindo", "tags": [] } },
+    { "name": "empty query", "query": "", "sticker": { "body": "Gato", "tags": ["riso"], "pack": "Bichos" } },
+    { "name": "unknown emoji", "query": "🐶", "sticker": { "body": "Cachorro", "tags": [], "pack": "Bichos" } },
+    { "name": "no tags, no pack", "query": "bom dia", "sticker": { "body": "Bom dia, flor", "tags": [] } }
+  ]
+}

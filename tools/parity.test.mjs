@@ -66,6 +66,13 @@ test("fork scope, n/a needs an ADR and policy is not allowed", () => {
   assert.match(problems([item({ ios: "policy", android: "policy" })])[0], /cannot be policy/);
 });
 
+test("fork scope, n/a with fork: false passes where the fork does not ship it", () => {
+  const androidOnly = item({ ios: { status: "n/a", reason: "r", fork: false }, android: { status: "planned", issue: 7 } });
+  assert.deepEqual(problems([androidOnly]), []);
+  const wrong = item({ ios: { status: "planned", issue: 7, fork: false }, android: { status: "planned", issue: 7 } });
+  assert.deepEqual(problems([wrong]), ["item x: ios fork: false only goes with n/a"]);
+});
+
 test("out of fork scope, planned needs no issue", () => {
   const { fork: _, ...notFork } = item({ ios: "planned", android: "planned" });
   const planned = notFork;

@@ -6,7 +6,8 @@
 // - built or testing, with evidence in bipe-app under ios/ or android/, that is, merged code.
 //   A screen spec, a draft PR or a branch is not evidence;
 // - or planned with the open issue that builds it;
-// - or n/a with a reason and the accepted ADR that excludes it.
+// - or n/a with a reason and the accepted ADR that excludes it;
+// - or n/a with a reason and fork: false, when the fork app does not ship it on this platform.
 
 export const APPS = {
   ios: { repo: "bipe-app", prefix: "bipe-app/ios/", label: "iOS", other: "android" },
@@ -15,7 +16,7 @@ export const APPS = {
 export const STATUSES = ["planned", "built", "testing", "policy", "n/a"];
 export const SHIPPED = new Set(["built", "testing"]);
 
-// A surface entry is a status string (planned, policy) or { status, evidence?, reason?, issue?, adr?, note? }.
+// A surface entry is a status string (planned, policy) or { status, evidence?, reason?, issue?, adr?, fork?, note? }.
 export const entry = (item, s) => (typeof item[s] === "string" ? { status: item[s] } : item[s]);
 
 export const inForkScope = (item) => item.fork === true;
@@ -54,7 +55,8 @@ export function checkApps(items, exists) {
       } else if (e.evidence) {
         problems.push(`${where}: ${s} is ${e.status}, evidence only goes with built or testing`);
       }
-      if (!scope) continue;
+      if (e.fork !== undefined && (e.fork !== false || e.status !== "n/a")) problems.push(`${where}: ${s} fork: false only goes with n/a`);
+      if (!scope || e.fork === false) continue;
       // Fork scope: covered on this app, or an open issue or an ADR says why not.
       if (e.status === "planned") {
         if (!Number.isInteger(e.issue)) problems.push(`${where}: the fork app ships it, ${s} is planned without the issue that builds it`);

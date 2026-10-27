@@ -39,6 +39,10 @@
       "isOfficial": {
         "type": "bool",
         "description": "A DM whose other person's full user ID is in registries/official-accounts.json: the row shows the Bipe badge after the name (bipe_badge_official, label bipe_badge_official_a11y). Never from a name or a handle."
+      },
+      "isLowPriority": {
+        "type": "bool",
+        "description": "The SDK RoomInfo.isLowPriority tag state for archive synchronization (chat-archive)."
       }
     }
   },

@@ -2,7 +2,7 @@
   "id": "chat-archive",
   "title": "Archived chats",
   "flow": "home",
-  "summary": "Archives a joined conversation or group on this device, keeping its history and membership. A newer incoming message returns it to the active list.",
+  "summary": "Archives a joined conversation or group through the Matrix m.lowpriority tag, synchronized across devices and clients. History and membership stay intact. A newer incoming message restores it.",
   "state": {
     "showingArchived": {
       "type": "bool",
@@ -10,7 +10,7 @@
     },
     "failed": {
       "type": "bool",
-      "description": "The account-owned local file could not be read or saved; show Retry without reporting success."
+      "description": "A tag mutation or local metadata read/write failed; preserve the prior state and offer Retry."
     }
   },
   "actions": {
@@ -21,7 +21,7 @@
           "description": "A joined chat owned by the current account."
         }
       },
-      "effect": "Atomically saves the latest known event timestamp and hides the chat from the active list."
+      "effect": "Sets Room.setIsLowPriority true and caches the latest known event timestamp only after the server accepts the write."
     },
     "unarchive": {
       "params": {
@@ -30,7 +30,7 @@
           "description": "An archived joined chat."
         }
       },
-      "effect": "Removes the local marker and restores the chat immediately."
+      "effect": "Clears Room.setIsLowPriority and removes the cached marker after the server accepts the write."
     },
     "openArchived": {
       "effect": "Shows archived chats in the current tab, with access even when the active list is empty."
@@ -45,7 +45,7 @@
       "effect": "Opens the existing timeline with all retained history."
     },
     "retry": {
-      "effect": "Retries the failed local read or write."
+      "effect": "Retries failed tag writes and local reads/writes without clearing unrelated archive state."
     }
   },
   "strings": [
@@ -61,15 +61,25 @@
   "sdk": [
     "Client.getRoom",
     "Room.latestEvent",
-    "Room.roomInfo"
+    "Room.roomInfo",
+    "Room.setIsLowPriority",
+    "RoomInfo.isLowPriority",
+    "RoomListEntriesDynamicFilterKind.LowPriority"
   ],
-  "parity": [],
+  "parity": [
+    "archive-sync"
+  ],
   "notes": [
     "MZ requested archive swipes in bipe#588. A trailing swipe offers Archive on active DMs and groups, and Unarchive in Archived. Long press and an accessible action offer the same operation. Delete remains explicit and confirmed elsewhere.",
-    "Default chosen: device-local markers partitioned by full account ID, in an atomic file excluded from device cloud backup. No network call or startup network gate. No message text is stored. MZ can overrule.",
+    "The m.lowpriority tag is authoritative. Local markers remain partitioned by full account ID, atomic, excluded from cloud backup, and contain no message text. A legacy marker without a synced flag migrates once when its joined room is available. Mark that marker synced only after a successful tag write or an already-present server tag. Newer incoming messages that already restored a legacy chat do not migrate it back into the archive.",
     "The registry chat-archive.json defines the shared rule. Only a strictly newer remote incoming message restores a chat; own sends, equal timestamps, backfill and room state changes do not. Successful restoration removes its marker.",
     "Archive is applied after newest-DM selection. It never writes cleared-chats markers, clears a timeline, marks read, leaves a room, or changes badge/notification policy. Search and Start chat can still open an archived room.",
     "Archived access resolves saved room IDs from the local SDK beyond the loaded page. The active list can request further pages even when all loaded rows are archived. Account switches cannot target another account store.",
-    "Corrupt or unreadable files are retained and reported. Mutations retry loading before writing so failed reads cannot silently replace saved markers. A failed write keeps the prior state and offers Retry. Phone acceptance stays pending until verified on both platforms."
+    "Corrupt or unreadable files are retained and reported. Mutations retry loading before writing so failed reads cannot silently replace saved markers. A failed write keeps the prior state and offers Retry. Phone acceptance stays pending until verified on both platforms.",
+    "Import a tag made by another client with a baseline of the newest known activity/incoming timestamp. A remote unarchive clears a synced local marker. A strictly newer incoming message clears the server tag too. Own sends, backfill, equal timestamps and state changes do not restore it.",
+    "Serialize tag writes per account, keep failed intents for Retry, and skip reconciliation of a room while its write is queued. A successful write may precede its SDK sync echo; keep the confirmed value for at most chat-archive.echoGraceMs, then honor the latest observed tag.",
+    "Observe a separate low-priority room-list stream so remote archives outside the active first page are discoverable. Loading another page also extends that stream.",
+    "A user action while the same room has a queued migration or tag write replaces the pending follow-up intent; it must not be silently dropped. Other rooms keep their own pending operations.",
+    "Room.setIsLowPriority uses the SDK priority semantics: setting m.lowpriority also removes m.favourite when present. Restoring a chat removes m.lowpriority; it does not recreate the favourite tag. Other room tags, history, membership and notification settings remain unchanged."
   ]
 }

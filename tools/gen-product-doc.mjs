@@ -138,6 +138,25 @@ for (const a of product.organisationAudiences) {
     orgAudienceSlugs.add(`${l}/${slug}`);
   }
 }
+// The calculator on /precos/ (bipe#812): Meta's rate card and Bipe's proposed amounts.
+{
+  const w = product.pricing.whatsapp;
+  const tiers = (name) => {
+    const t = w?.[name];
+    if (!Array.isArray(t) || !t.length || t[0][0] !== 0 || t.some(([from, rate], i) => !(rate > 0) || (i > 0 && !(from > t[i - 1][0]) ))) fail(`pricing.whatsapp.${name}: tiers from 0, ascending, positive rates`);
+  };
+  if (!/^\d{4}-\d{2}-\d{2}$/.test(w?.checked ?? "") || !/^\d{4}-\d{2}-\d{2}$/.test(w?.effective ?? "") || !w.source?.startsWith("https://")) fail("pricing.whatsapp: checked, effective, source");
+  if (!(w.marketing > 0) || !(w.service > 0) || !Number.isInteger(w.serviceFreePerNumber)) fail("pricing.whatsapp: marketing, service, serviceFreePerNumber");
+  tiers("utility");
+  tiers("authentication");
+  const pr = product.pricing.proposal;
+  if (!(pr?.company?.monthly > 0) || !(pr.company.extraSeat > 0) || !(pr.company.annualMonths > 0) || !(pr.nonprofitFactor > 0) || !(pr.publicBodyFactor > 0) || !Number.isInteger(pr.smallSeats)) fail("pricing.proposal: amounts");
+  if (!pr.institutionBands?.length || pr.institutionBands.at(-1).upTo !== null || pr.institutionBands.some((b) => !(b.yearly > 0))) fail("pricing.proposal.institutionBands");
+  for (const l of ["pt", "en"]) {
+    const c = product.pricing[l].calculator;
+    if (!c?.heading || !c.proposal || c.peopleBands?.length !== pr.institutionBands.length || !c.notes?.length) fail(`pricing.${l}.calculator`);
+  }
+}
 const tentpoleIds = new Set(product.tentpoles.map((t) => t.id));
 const sided = new Set();
 for (const s of product.sides) {

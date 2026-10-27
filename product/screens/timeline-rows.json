@@ -74,8 +74,9 @@
     "RoomInfo",
     "Room.latestEncryptionState"
   ],
-  "parity": ["e2ee-only-rooms", "handle-change-notice"],
+  "parity": ["e2ee-only-rooms", "handle-change-notice", "timeline-notice-emote"],
   "notes": [
+    "m.notice uses the normal text bubble. m.emote shows '* <sender name> <body>'. Any other message type without a supported media or location renderer shows its body as plain text, rather than disappearing (bipe#659). Keep the original body for copying, editing, replies and scam checks; the emote prefix is display text only. These messages participate in read receipts like other visible messages. Chat-list and notification previews keep their existing plain-body behaviour.",
     "Every event message has its original local-time timestamp, including text, media, voice, stickers, polls, undecryptable and deleted messages (bipe#590). Show a short clock time on each message and expose its full date and time to VoiceOver/TalkBack. Daily separators are additional labels, never a substitute for a message timestamp. Edits and deletion do not replace the original event time. Do not add message actions or receipts to a deleted row.",
     "Date separators: TimelineConfiguration.dateDividerMode Daily. VirtualTimelineItem.DateDivider gives the day. Today and yesterday use the two strings; other days use the system date formatter in the app language, with the year only when it is not the current year.",
     "VirtualTimelineItem.ReadMarker becomes readMarker. The marker stays until the chat closes, so the person sees where they stopped.",

@@ -152,6 +152,13 @@ for (const a of product.organisationAudiences) {
   const pr = product.pricing.proposal;
   if (!(pr?.company?.monthly > 0) || !(pr.company.extraSeat > 0) || !(pr.company.annualMonths > 0) || !(pr.nonprofitFactor > 0) || !(pr.publicBodyFactor > 0) || !Number.isInteger(pr.smallSeats)) fail("pricing.proposal: amounts");
   if (!pr.institutionBands?.length || pr.institutionBands.at(-1).upTo !== null || pr.institutionBands.some((b) => !(b.yearly > 0))) fail("pricing.proposal.institutionBands");
+  // Presets: illustrative examples (labelled so on the page). messages is a stop of the slider; mix sums to 1.
+  for (const x of product.pricing.calculatorPresets ?? []) {
+    const sum = ["marketing", "utility", "authentication", "service"].reduce((t, k) => t + (x.mix?.[k] ?? NaN), 0);
+    if (Math.abs(sum - 1) > 1e-9 || !(x.messages > 0) || !["small", "company", "nonprofit", "institution", "public"].includes(x.org)) fail(`pricing.calculatorPresets ${x.id}`);
+    if (["institution", "public"].includes(x.org) ? !(x.band >= 0 && x.band < pr.institutionBands.length) : !(x.seats >= 1)) fail(`pricing.calculatorPresets ${x.id}: seats or band`);
+    for (const l of ["pt", "en"]) if (!product.pricing[l].calculator?.presets?.[x.id]) fail(`pricing.${l}.calculator.presets.${x.id}`);
+  }
   for (const l of ["pt", "en"]) {
     const c = product.pricing[l].calculator;
     if (!c?.heading || !c.proposal || c.peopleBands?.length !== pr.institutionBands.length || !c.notes?.length) fail(`pricing.${l}.calculator`);

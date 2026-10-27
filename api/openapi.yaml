@@ -5360,6 +5360,11 @@ components:
         channels: { type: array, maxItems: 7, uniqueItems: true, items: { type: string, enum: [whatsapp_app, whatsapp_api, sms, email, phone, own_app, other] }, description: "Where the organisation talks to its customers today. Optional." }
         spend_band: { type: string, enum: [zero, lt_500, 500_2k, 2k_10k, 10k_50k, gt_50k, unknown], description: "What the organisation pays per month today, in R$, to talk to customers on those channels. Optional." }
         spend_note: { type: string, maxLength: 500, description: "Which platform and what it charges for. Optional." }
+        intent: { type: string, enum: [pilot, question, partnership], description: "What the organisation wants (bipe#792). Optional." }
+        use_case: { type: string, maxLength: 500, description: "What the organisation would use Bipe for. Optional." }
+        pain: { type: string, maxLength: 500, description: "Its main problem when it talks to customers today. Optional." }
+        timeframe: { type: string, enum: [now, quarter, year, exploring], description: "When it wants to start. Optional." }
+        landing_path: { type: string, maxLength: 200, pattern: "^/[a-z0-9/_-]*$", description: "The site page that sent the visitor (bipe#792). A value that does not match is dropped, not refused. Optional." }
         message: { type: string, maxLength: 2000, description: "Optional." }
         lang: { type: string, enum: [pt, en], default: pt }
         website: { type: string, maxLength: 200, description: "Honeypot. People leave it empty; a non-empty value is accepted and dropped." }

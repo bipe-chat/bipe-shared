@@ -2777,7 +2777,27 @@
         "submit": "Enviar",
         "done": "Recebemos. A gente responde por e-mail.",
         "error": "Não deu para enviar. Tente de novo daqui a pouco.",
-        "note": "Usamos esses dados só para responder e para entender quanto as organizações pagam hoje. A gente guarda tudo no Starlings, o sistema de trabalho da Envisioning, em servidores na União Europeia, e apaga depois de um ano."
+        "note": "Usamos esses dados só para responder e para entender quanto as organizações pagam hoje. A gente guarda tudo no Starlings, o sistema de trabalho da Envisioning, em servidores na União Europeia, e apaga depois de um ano.",
+        "intent": "O que vocês querem?",
+        "intents": {
+          "pilot": "Testar o Bipe no piloto",
+          "question": "Tirar uma dúvida",
+          "partnership": "Fazer uma parceria"
+        },
+        "useCase": "Para que vocês usariam o Bipe? (opcional)",
+        "pain": "Qual é o maior problema ao falar com os clientes hoje? (opcional)",
+        "timeframe": "Quando vocês querem começar? (opcional)",
+        "timeframes": {
+          "now": "Este mês",
+          "quarter": "Nos próximos 3 meses",
+          "year": "Este ano",
+          "exploring": "Só estamos conhecendo"
+        },
+        "doneByIntent": {
+          "pilot": "Recebemos. A gente responde por e-mail para conversar sobre o piloto. O piloto é gratuito.",
+          "question": "Recebemos. A gente responde a sua dúvida por e-mail.",
+          "partnership": "Recebemos. A gente responde por e-mail para conversar sobre a parceria."
+        }
       },
       "small": {
         "heading": "MEI, microempresa ou autônomo?",
@@ -2865,7 +2885,27 @@
         "submit": "Send",
         "done": "Got it. We will answer by email.",
         "error": "Could not send. Try again in a moment.",
-        "note": "We use this only to answer you and to learn what organisations pay today. We keep it in Starlings, Envisioning's work system, on servers in the European Union, and delete it after one year."
+        "note": "We use this only to answer you and to learn what organisations pay today. We keep it in Starlings, Envisioning's work system, on servers in the European Union, and delete it after one year.",
+        "intent": "What do you want?",
+        "intents": {
+          "pilot": "Test Bipe in the pilot",
+          "question": "Ask a question",
+          "partnership": "Partner with Bipe"
+        },
+        "useCase": "What would you use Bipe for? (optional)",
+        "pain": "What is the biggest problem when you talk to customers today? (optional)",
+        "timeframe": "When do you want to start? (optional)",
+        "timeframes": {
+          "now": "This month",
+          "quarter": "In the next 3 months",
+          "year": "This year",
+          "exploring": "We are only looking"
+        },
+        "doneByIntent": {
+          "pilot": "Got it. We will answer by email to talk about the pilot. The pilot is free.",
+          "question": "Got it. We will answer your question by email.",
+          "partnership": "Got it. We will answer by email to talk about the partnership."
+        }
       },
       "small": {
         "heading": "MEI, micro company or self-employed?",

@@ -3331,13 +3331,13 @@
       "id": "room-keys-cross-signed",
       "name": "Room keys only for cross-signed devices",
       "ios": {
-        "status": "built",
+        "status": "testing",
         "evidence": [
           "bipe-app/ios/Bipe/Account/AccountSession.swift"
         ]
       },
       "android": {
-        "status": "built",
+        "status": "testing",
         "evidence": [
           "bipe-app/android/app/src/main/kotlin/chat/bipe/app/account/AccountSession.kt"
         ]

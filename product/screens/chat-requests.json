@@ -65,6 +65,7 @@
     "Trust per row: verified shows the verified seal (bipe_badge_verified), unverified shows bipe_banner_unverified_title, external shows bipe_banner_external. Move, do not rewrite: BipeKit BipeTrustProfile.swift and BadgeVerifier.swift, libraries/bipe BipeTrustProfile.kt and BadgeVerifier.kt (GET /v1/badges/{userId}).",
     "hidePhotos: rows show the initials avatar, never the photo, until accepted.",
     "Empty box: bipe_app_requests_empty and a link row bipe_messaging_title to the setting.",
-    "A request from a blocked person never shows (Matrix ignore list)."
+    "A request from a blocked person never shows (Matrix ignore list).",
+    "Invite pairs (ADR 0034): a DM invite from an invite pair joins by itself and never shows as a request. The app keeps the last GET /v1/me/invite-connections answer and asks again at most once a minute. A DM invite from someone not in that answer asks again after 5 seconds, so the chat from a person who just joined with the user's invite opens in the chat list at once, with their first message."
   ]
 }

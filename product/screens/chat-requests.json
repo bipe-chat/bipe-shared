@@ -59,7 +59,7 @@
   ],
   "parity": ["requests", "who-can-message"],
   "notes": [
-    "A request is a room with membership invited and RoomInfo.isDm true (filter Invite plus Category People). Group invites are not requests: they show as invite rows in the Grupos tab (chat-list-filters).",
+    "A request is a room with membership invited whose invite is direct: RoomInfo.isDirect true (is_direct in the invite) and at most two active members, service members not counted. Not RoomInfo.isDm and not the Category filter: both read m.direct, which the invitee writes only when joining, so they put every DM invite with the groups. After the join the SDK writes m.direct and RoomInfo.isDm is the DM test again (ADR 0141). Group invites are not requests: they show as invite rows in the Grupos tab (chat-list-filters).",
     "The server already applies who can message me (ADR 0038): an invite that the setting refuses never arrives. The box holds what passed.",
     "Requests stay out of chat-list and out of the Conversas unread badge (ADR 0053: Pedidos is a row, not a tab). The row shows rowCount when it is above 0, with bipe_requests_title and bipe_requests_row_body.",
     "Trust per row: verified shows the verified seal (bipe_badge_verified), unverified shows bipe_banner_unverified_title, external shows bipe_banner_external. Move, do not rewrite: BipeKit BipeTrustProfile.swift and BadgeVerifier.swift, libraries/bipe BipeTrustProfile.kt and BadgeVerifier.kt (GET /v1/badges/{userId}).",

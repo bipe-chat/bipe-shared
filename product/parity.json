@@ -1,5 +1,5 @@
 {
-  "$comment": "Parity ledger (ADR 0092). One item per capability that can differ between surfaces, with a status on ios and android (Bipe's app, bipe-app), web (bipe-web) and server (bipe-api, bipe-infra): planned, built (merged, not in a tester build), testing (in a tester build), policy, or n/a with a reason. built and testing need evidence: paths that start with bipe-app/ios/ or bipe-app/android/ (merged code, never a spec), bipe-web/, bipe-api/ or bipe-infra/. fork: true marks an item that the archived Element X fork app ships (ADR 0155): until bipe-app replaces it in the stores, such an item is built or testing on ios and android, or planned with the open issue that builds it (issue), or n/a with a reason and the ADR that excludes it (adr). This is the one status per feature: product.json features have none, bipe-web and gen-product-doc.mjs read it by id. When iOS and Android differ, issue names the open issue that closes the gap (--issues checks that it is open). differences: deliberate behaviour differences between the apps; kind idiom, gap or undecided (gap and undecided need an issue). Check: node tools/parity.mjs. Report: --report.",
+  "$comment": "Parity ledger (ADR 0092). One item per capability that can differ between surfaces, with a status on ios and android (Bipe's app, bipe-app), web (bipe-web) and server (bipe-api, bipe-infra): planned, built (merged, not in a tester build), testing (in a tester build), policy, or n/a with a reason. built and testing need evidence: paths that start with bipe-app/ios/ or bipe-app/android/ (merged code, never a spec), bipe-web/, bipe-api/ or bipe-infra/. fork: true marks an item that the archived Element X fork app ships (ADR 0155): until bipe-app replaces it in the stores, such an item is built or testing on ios and android, or planned with the open issue that builds it (issue), or n/a with a reason and the ADR that excludes it (adr), or n/a with a reason and fork: false when the fork app does not ship it on that platform. This is the one status per feature: product.json features have none, bipe-web and gen-product-doc.mjs read it by id. When iOS and Android differ, issue names the open issue that closes the gap (--issues checks that it is open). differences: deliberate behaviour differences between the apps; kind idiom, gap or undecided (gap and undecided need an issue). Check: node tools/parity.mjs. Report: --report.",
   "version": 1,
   "items": [
     {
@@ -3266,6 +3266,51 @@
         "reason": "Plain Matrix events; no Bipe server code"
       },
       "issue": 773,
+      "fork": true
+    },
+    {
+      "id": "notification-checkup",
+      "name": "Android notification checkup and battery optimisation prompt (bipe#823)",
+      "ios": {
+        "status": "n/a",
+        "reason": "The fork ships the checkup on Android only; iOS has no battery optimisation that stops push",
+        "fork": false
+      },
+      "android": {
+        "status": "planned",
+        "issue": 823
+      },
+      "web": {
+        "status": "n/a",
+        "reason": "No web chat (ADR 0004); the site shows a demo at most"
+      },
+      "server": {
+        "status": "n/a",
+        "reason": "Device feature; no Bipe server code"
+      },
+      "issue": 823,
+      "fork": true
+    },
+    {
+      "id": "voice-playback-speed",
+      "name": "Voice message playback speed, 1.5x and 2x (bipe#824)",
+      "ios": {
+        "status": "planned",
+        "issue": 824
+      },
+      "android": {
+        "status": "planned",
+        "issue": 824
+      },
+      "web": {
+        "status": "n/a",
+        "reason": "No web chat (ADR 0004); the site shows a demo at most"
+      },
+      "server": {
+        "status": "n/a",
+        "reason": "Playback on the device; no Bipe server code"
+      },
+      "issue": 824,
       "fork": true
     },
     {

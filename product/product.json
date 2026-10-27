@@ -2677,9 +2677,10 @@
           "perYear": "%1$s por ano",
           "cheaper": "Com esse volume, o WhatsApp sai mais barato que o Bipe.",
           "compare": "WhatsApp: %1$s por mês. Bipe: %2$s por mês.",
-          "assumption": "Nos exemplos da rede de clínicas, da prefeitura e do banco, cada mensagem enviada recebe uma resposta. Cada tipo de mensagem tem o seu preço na Meta: marketing custa cerca de 9 vezes mais que utilidade. Ajuste os números na conta completa.",
+          "assumption": "Cada tipo de mensagem tem o seu preço na Meta: marketing custa cerca de 9 vezes mais que utilidade. Ajuste os tipos na conta completa.",
           "detail": "Ver a conta completa",
-          "mix": "Tipos de mensagem"
+          "mix": "Tipos de mensagem",
+          "people": "Pessoas atendidas"
         },
         "presetsLabel": "Exemplos",
         "presets": {
@@ -2687,6 +2688,19 @@
           "clinics": "Rede de clínicas",
           "city": "Prefeitura",
           "bank": "Banco médio"
+        },
+        "presetNotes": {
+          "shop": "Neste exemplo, 35% das mensagens são de marketing. Na Meta, marketing custa cerca de 9 vezes mais que utilidade. No Bipe, o tipo de mensagem não muda o preço.",
+          "clinics": "Neste exemplo, cada consulta gera um lembrete e uma confirmação, e cada mensagem recebe uma resposta. Desde 1º de outubro de 2026, a Meta cobra também as respostas.",
+          "city": "Neste exemplo, cada aviso de saúde recebe uma resposta, e a Meta cobra as duas.",
+          "bank": "Neste exemplo, metade das mensagens são avisos e metade são respostas. Acima de 250 mil avisos por mês, a Meta dá desconto por volume, e a conta já usa esse desconto."
+        },
+        "plans": {
+          "small": "Plano Pequeno negócio: R$ 0 com até %1$s atendentes.",
+          "company": "Plano Empresa: %1$s por mês com 1 atendente e %2$s por atendente a mais.",
+          "nonprofit": "ONG, igreja ou associação: metade do plano Empresa.",
+          "institution": "Plano Instituição: o preço segue as pessoas atendidas. Atendentes sem limite.",
+          "public": "Plano Órgão público: metade do plano Instituição, pelas pessoas atendidas. Atendentes sem limite."
         }
       },
       "pilotFreePrice": "Piloto gratuito"
@@ -2844,9 +2858,10 @@
           "perYear": "%1$s per year",
           "cheaper": "At this volume, WhatsApp costs less than Bipe.",
           "compare": "WhatsApp: %1$s per month. Bipe: %2$s per month.",
-          "assumption": "In the clinic network, city hall and bank examples, each message sent gets one reply. Each message type has its own Meta price: marketing costs about 9 times more than utility. Adjust the numbers in the full calculation.",
+          "assumption": "Each message type has its own Meta price: marketing costs about 9 times more than utility. Adjust the types in the full calculation.",
           "detail": "See the full calculation",
-          "mix": "Message types"
+          "mix": "Message types",
+          "people": "People served"
         },
         "presetsLabel": "Examples",
         "presets": {
@@ -2854,6 +2869,19 @@
           "clinics": "Clinic network",
           "city": "City hall",
           "bank": "Mid-size bank"
+        },
+        "presetNotes": {
+          "shop": "In this example, 35% of the messages are marketing. At Meta, marketing costs about 9 times more than utility. On Bipe, the message type doesn't change the price.",
+          "clinics": "In this example, each appointment gets a reminder and a confirmation, and each message gets a reply. Since 1 October 2026, Meta charges for the replies too.",
+          "city": "In this example, each health notice gets a reply, and Meta charges for both.",
+          "bank": "In this example, half the messages are notices and half are replies. Above 250,000 notices a month, Meta gives a volume discount, and the bill already uses it."
+        },
+        "plans": {
+          "small": "Small business plan: R$ 0 with up to %1$s agents.",
+          "company": "Company plan: %1$s a month with 1 agent and %2$s per extra agent.",
+          "nonprofit": "NGO, church or association: half the Company plan.",
+          "institution": "Institution plan: the price follows the people served. Unlimited agents.",
+          "public": "Public body plan: half the Institution plan, by people served. Unlimited agents."
         }
       },
       "pilotFreePrice": "Free pilot"
@@ -2960,7 +2988,8 @@
           "service": 0.2
         },
         "org": "company",
-        "seats": 5
+        "seats": 5,
+        "icon": "bag"
       },
       {
         "id": "clinics",
@@ -2972,7 +3001,8 @@
           "service": 0.5
         },
         "org": "institution",
-        "band": 0
+        "band": 0,
+        "icon": "heart"
       },
       {
         "id": "city",
@@ -2984,7 +3014,8 @@
           "service": 0.5
         },
         "org": "public",
-        "band": 0
+        "band": 0,
+        "icon": "bank"
       },
       {
         "id": "bank",
@@ -2996,7 +3027,8 @@
           "service": 0.5
         },
         "org": "institution",
-        "band": 2
+        "band": 2,
+        "icon": "card"
       }
     ]
   },

@@ -157,7 +157,8 @@ for (const a of product.organisationAudiences) {
     const sum = ["marketing", "utility", "authentication", "service"].reduce((t, k) => t + (x.mix?.[k] ?? NaN), 0);
     if (Math.abs(sum - 1) > 1e-9 || !(x.messages > 0) || !["small", "company", "nonprofit", "institution", "public"].includes(x.org)) fail(`pricing.calculatorPresets ${x.id}`);
     if (["institution", "public"].includes(x.org) ? !(x.band >= 0 && x.band < pr.institutionBands.length) : !(x.seats >= 1)) fail(`pricing.calculatorPresets ${x.id}: seats or band`);
-    for (const l of ["pt", "en"]) if (!product.pricing[l].calculator?.presets?.[x.id]) fail(`pricing.${l}.calculator.presets.${x.id}`);
+    for (const l of ["pt", "en"]) if (!product.pricing[l].calculator?.presets?.[x.id] || !product.pricing[l].calculator?.presetNotes?.[x.id]) fail(`pricing.${l}.calculator.presets/presetNotes.${x.id}`);
+    if (!x.icon) fail(`pricing.calculatorPresets ${x.id}: icon`);
   }
   for (const l of ["pt", "en"]) {
     const c = product.pricing[l].calculator;

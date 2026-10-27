@@ -2675,8 +2675,16 @@
           "perYear": "%1$s por ano",
           "cheaper": "Com esse volume, o WhatsApp sai mais barato que o Bipe.",
           "compare": "WhatsApp: %1$s por mês. Bipe: %2$s por mês.",
-          "assumption": "A conta usa a tarifa de utilidade da Meta, a mais barata, para lembretes e avisos. Mensagem de marketing custa cerca de 9 vezes mais, então a economia real costuma ser maior.",
-          "detail": "Ver a conta completa"
+          "assumption": "Nos exemplos da rede de clínicas, da prefeitura e do banco, cada mensagem enviada recebe uma resposta. Cada tipo de mensagem tem o seu preço na Meta: marketing custa cerca de 9 vezes mais que utilidade. Ajuste os números na conta completa.",
+          "detail": "Ver a conta completa",
+          "mix": "Tipos de mensagem"
+        },
+        "presetsLabel": "Exemplos",
+        "presets": {
+          "shop": "Loja online",
+          "clinics": "Rede de clínicas",
+          "city": "Prefeitura",
+          "bank": "Banco médio"
         }
       }
     },
@@ -2832,8 +2840,16 @@
           "perYear": "%1$s per year",
           "cheaper": "At this volume, WhatsApp costs less than Bipe.",
           "compare": "WhatsApp: %1$s per month. Bipe: %2$s per month.",
-          "assumption": "The bill uses Meta's utility rate, the cheapest one, for reminders and notices. A marketing message costs about 9 times more, so the real saving is usually larger.",
-          "detail": "See the full calculation"
+          "assumption": "In the clinic network, city hall and bank examples, each message sent gets one reply. Each message type has its own Meta price: marketing costs about 9 times more than utility. Adjust the numbers in the full calculation.",
+          "detail": "See the full calculation",
+          "mix": "Message types"
+        },
+        "presetsLabel": "Examples",
+        "presets": {
+          "shop": "Online shop",
+          "clinics": "Clinic network",
+          "city": "City hall",
+          "bank": "Mid-size bank"
         }
       }
     },
@@ -2927,7 +2943,57 @@
           "yearly": 540000
         }
       ]
-    }
+    },
+    "calculatorPresets": [
+      {
+        "id": "shop",
+        "messages": 50000,
+        "mix": {
+          "marketing": 0.35,
+          "utility": 0.45,
+          "authentication": 0,
+          "service": 0.2
+        },
+        "org": "company",
+        "seats": 5
+      },
+      {
+        "id": "clinics",
+        "messages": 80000,
+        "mix": {
+          "marketing": 0,
+          "utility": 0.5,
+          "authentication": 0,
+          "service": 0.5
+        },
+        "org": "institution",
+        "band": 0
+      },
+      {
+        "id": "city",
+        "messages": 100000,
+        "mix": {
+          "marketing": 0,
+          "utility": 0.5,
+          "authentication": 0,
+          "service": 0.5
+        },
+        "org": "public",
+        "band": 0
+      },
+      {
+        "id": "bank",
+        "messages": 10000000,
+        "mix": {
+          "marketing": 0,
+          "utility": 0.5,
+          "authentication": 0,
+          "service": 0.5
+        },
+        "org": "institution",
+        "band": 2
+      }
+    ]
   },
   "organisations": {
     "$comment": "The /organizacoes/ page (/en/organisations/): organisations that want to talk to their customers on Bipe, and partners who want to help carry it. ADR 0126; the stewardship paragraph follows ADR 0067. The form posts to POST /v1/organisations (bipe#410). No Pix analogy here (ADR 0071). Name no prospective partner, funder or institution until there is a signed agreement.",

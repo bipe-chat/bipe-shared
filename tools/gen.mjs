@@ -296,6 +296,12 @@ ${reg.workHours.defaultDays.map((d) => `        (day: ${d.day}, ranges: [${d.ran
     public static let mapsMaxZoom = ${reg.maps.maxZoom}
     public static let mapsMaxStaticSize = ${reg.maps.maxStaticSize}
     public static let mapsCoordinateDecimals = ${reg.maps.coordinateDecimals}
+    /// The area with full detail (west, south, east, north); outside it a map goes no deeper than mapsOutsideMaxZoom.
+    public static let mapsDetailWest = ${reg.maps.detailBounds.west}
+    public static let mapsDetailSouth = ${reg.maps.detailBounds.south}
+    public static let mapsDetailEast = ${reg.maps.detailBounds.east}
+    public static let mapsDetailNorth = ${reg.maps.detailBounds.north}
+    public static let mapsOutsideMaxZoom = ${reg.maps.outsideMaxZoom}
     /// Live location (MSC3489, bipe-chat/bipe#768; registries/maps.json live).
     public static let mapsLiveDurationsMinutes: [Int] = ${swiftArray(reg.maps.live.durationsMinutes.map(String))}
     public static let mapsLiveDistancesMetres: [Int] = ${swiftArray(reg.maps.live.distancesMetres.map(String))}
@@ -644,6 +650,12 @@ ${reg.workHours.defaultDays.map((d) => `        ${d.day} to listOf(${d.ranges.ma
     const val MAPS_MAX_ZOOM = ${reg.maps.maxZoom}
     const val MAPS_MAX_STATIC_SIZE = ${reg.maps.maxStaticSize}
     const val MAPS_COORDINATE_DECIMALS = ${reg.maps.coordinateDecimals}
+    /** The area with full detail (west, south, east, north); outside it a map goes no deeper than MAPS_OUTSIDE_MAX_ZOOM. */
+    const val MAPS_DETAIL_WEST = ${reg.maps.detailBounds.west}
+    const val MAPS_DETAIL_SOUTH = ${reg.maps.detailBounds.south}
+    const val MAPS_DETAIL_EAST = ${reg.maps.detailBounds.east}
+    const val MAPS_DETAIL_NORTH = ${reg.maps.detailBounds.north}
+    const val MAPS_OUTSIDE_MAX_ZOOM = ${reg.maps.outsideMaxZoom}
     /** Live location (MSC3489, bipe-chat/bipe#768; registries/maps.json live). */
     val MAPS_LIVE_DURATIONS_MINUTES: List<Int> = listOf(${reg.maps.live.durationsMinutes.join(", ")})
     val MAPS_LIVE_DISTANCES_METRES: List<Int> = listOf(${reg.maps.live.distancesMetres.join(", ")})

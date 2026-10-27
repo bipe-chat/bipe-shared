@@ -1,27 +1,53 @@
 {
   "id": "encryption-status",
-  "title": "Old messages",
+  "title": "Messages on this phone",
   "flow": "encryption",
-  "summary": "The one Bipe place that explains missing history (ADR 0073). It follows the SDK verification, recovery and backup state and, when this phone cannot read old messages, shows a quiet banner as the first row of the chat list that opens a sheet with the two ways to get them.",
+  "summary": "The Bipe place that explains why this phone cannot read messages. It follows the SDK verification, recovery and backup state. A quiet banner as the first chat-list row opens a sheet with approval and recovery-key options.",
   "state": {
     "verificationState": {
       "type": "enum",
-      "values": ["unknown", "verified", "unverified"],
-      "description": "Encryption.verificationState. unverified: this phone has no access to the history keys."
+      "values": [
+        "unknown",
+        "verified",
+        "unverified"
+      ],
+      "description": "Encryption.verificationState. An unverified phone needs approval or the recovery key to read protected messages; this includes new room keys under security rule 13."
     },
     "recoveryState": {
       "type": "enum",
-      "values": ["unknown", "enabled", "disabled", "incomplete"],
+      "values": [
+        "unknown",
+        "enabled",
+        "disabled",
+        "incomplete"
+      ],
       "description": "Encryption.recoveryState. Sets whether the recovery key row shows (enabled or incomplete) and whether settings shows bipe_account_recovery_key_saved."
     },
     "backupState": {
       "type": "enum",
-      "values": ["unknown", "creating", "enabling", "resuming", "enabled", "downloading", "disabling"],
+      "values": [
+        "unknown",
+        "creating",
+        "enabling",
+        "resuming",
+        "enabled",
+        "downloading",
+        "disabling"
+      ],
       "description": "Encryption.backupState. Never shown as words; only used to know when keys download."
     },
-    "hasOtherDevices": { "type": "bool", "description": "Encryption.hasDevicesToVerifyAgainst. Shows the approve row." },
-    "bannerDismissed": { "type": "bool", "description": "The person tapped Agora não. Stays on this phone; the banner comes back after 7 days while unverified." },
-    "sheetOpen": { "type": "bool", "description": "The sheet with the two ways is open." }
+    "hasOtherDevices": {
+      "type": "bool",
+      "description": "Encryption.hasDevicesToVerifyAgainst. Shows the approve row."
+    },
+    "bannerDismissed": {
+      "type": "bool",
+      "description": "The person tapped Agora não. Stays on this phone; the banner comes back after 7 days while unverified."
+    },
+    "sheetOpen": {
+      "type": "bool",
+      "description": "The sheet with the two ways is open."
+    }
   },
   "actions": {
     "observe": {
@@ -62,15 +88,27 @@
     "ClientBuilder.autoEnableBackups",
     "VerificationState",
     "RecoveryState",
-    "BackupState"
+    "BackupState",
+    "ClientBuilder.roomKeyRecipientStrategy",
+    "CollectStrategy.IdentityBasedStrategy",
+    "ClientBuilder.decryptionSettings",
+    "DecryptionSettings",
+    "TrustRequirement.CrossSignedOrLegacy"
   ],
-  "parity": ["e2ee", "onboarding-no-element-crypto", "new-phone"],
+  "parity": [
+    "e2ee",
+    "onboarding-no-element-crypto",
+    "new-phone"
+  ],
   "notes": [
     "MZ decision 25 Oct 2026 (bipe#611): the banner is the first row of the Conversas list, so it scrolls with the chats. It is never a fixed bar above the list or the timeline. The archived list does not show it.",
     "A new account on its first phone has nothing to verify and sees nothing (onboarding.md: no crypto words for new users). The banner shows only when verificationState is unverified and the account has history elsewhere (hasOtherDevices, or recoveryState enabled or incomplete).",
     "Entry points to the sheet: the banner, How to see it under an undecryptable message (message-undecryptable openHelp), and the settings row account.oldMessages in Sua conta › Aparelhos (settings-group, bipe-chat/bipe#793). The row shows while the banner condition holds, without the Skip pause. All three open the same sheet of the one model of the account.",
-    "With neither way, the sheet says bipe_app_history_none: old chats stay on the old phone, new messages work here (ADR 0073).",
+    "With neither way, the sheet says bipe_app_history_none: this phone still needs approval. Never promise that new encrypted messages arrive on an unsigned device. ADR 0073 predates the enforcement of security rule 13; its fallback promise needs a separate MZ decision (bipe#774).",
     "Build the client with autoEnableCrossSigning and autoEnableBackups on, so a new account gets cross-signing and key backup with no screen.",
-    "No Element crypto screens or words (parity onboarding-no-element-crypto): no reset of the identity, no 'verify this session', no key backup settings."
+    "No Element crypto screens or words (parity onboarding-no-element-crypto): no reset of the identity, no 'verify this session', no key backup settings.",
+    "Security rule 13 (bipe#774): every SDK client uses roomKeyRecipientStrategy IdentityBasedStrategy and decryptionSettings with senderDeviceTrustRequirement CrossSignedOrLegacy. Apply the same builder to sign-in, restore, reauthentication and the iOS notification service. No runtime switch or permissive fallback.",
+    "The owner must cross-sign a device before it receives room keys. Do not require manual trust of each contact (OnlyTrustedDevices). CrossSignedOrLegacy preserves sessions made before the SDK collected sender trust metadata; it does not permit current unsigned senders.",
+    "Changing this policy does not revoke plaintext or room keys a device already holds. The SDK rotates a previously shared outbound session when it excludes a recipient. No Bipe crypto implementation or automatic identity reset is added."
   ]
 }

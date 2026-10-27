@@ -426,15 +426,15 @@
       "places": ["server"],
       "pt": {
         "name": "Erros do servidor de mapas",
-        "what": "Quando um pedido de mapa falha: o endereço IP, a data e hora e o endereço do mapa pedido, que tem o ponto do mapa (latitude e longitude). Os pedidos que dão certo não ficam registrados.",
+        "what": "Quando um pedido de mapa falha: a data e hora e o endereço do mapa pedido, que tem o ponto do mapa (latitude e longitude). O Bipe não registra o endereço IP nem os pedidos que dão certo.",
         "why": "Achar e corrigir falhas nos mapas das conversas.",
-        "retention": "Não há prazo fixo. O registro fica só no servidor de mapas e some quando o servidor é trocado ou quando o sistema gira o arquivo. O Bipe não copia esse registro para outro lugar."
+        "retention": "No máximo 30 dias. O registro fica só no servidor de mapas, que o apaga duas vezes por mês. O Bipe não copia esse registro para outro lugar."
       },
       "en": {
         "name": "Map server errors",
-        "what": "When a map request fails: the IP address, the date and time and the address of the requested map, which holds the map point (latitude and longitude). Requests that succeed are not logged.",
+        "what": "When a map request fails: the date and time and the address of the requested map, which holds the map point (latitude and longitude). Bipe does not log the IP address or the requests that succeed.",
         "why": "To find and fix failures of the maps in chats.",
-        "retention": "No fixed period. The log stays only on the map server and goes away when the server is replaced or when the system rotates the file. Bipe does not copy this log anywhere else."
+        "retention": "At most 30 days. The log stays only on the map server, which deletes it twice a month. Bipe does not copy this log anywhere else."
       }
     },
     {

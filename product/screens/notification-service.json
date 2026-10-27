@@ -153,6 +153,7 @@
   ],
   "notes": [
     "iOS runs this in the notification service extension with NotificationProcessSetup MultipleProcesses: the extension and the app share the SDK store in the app group, and the extension has little memory. Android runs it in the app process with SingleProcess and the app's sync service.",
+    "The extension never makes an SDK store. When the account's store folder is missing or empty (the app was deleted, the keychain kept the saved session), it shows the push without content and leaves the account to the app, which signs in again with a new device (account-start). A saved session restored into a new store makes a second encryption identity for the old device ID: the server keeps the old one-time keys, every key upload fails with 'One time key already exists', and new contacts cannot send this device keys (bipe#854). The app deletes the saved session before it deletes the store and signs in.",
     "NotificationStatus: Event shows the item. EventFilteredOut, EventRedacted and EventNotFound show nothing (iOS: the extension delivers an empty notification so iOS does not show the gateway alert). An error or a timeout shows kind fallback: title bipe_app_name, body bipe_app_notification_new_message.",
     "Undecryptable events: kind fallback. The text never shows as an error in a notification.",
     "Invites: NotificationEvent.Invite in a DM is chatRequest (bipe_app_notification_chat_request with the sender name); in a group, groupInvite (bipe_group_notification_room_invite_body_with_sender). Requests open the requests box of #557.",

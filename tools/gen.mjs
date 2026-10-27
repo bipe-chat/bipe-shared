@@ -290,6 +290,12 @@ ${reg.workHours.defaultDays.map((d) => `        (day: ${d.day}, ranges: [${d.ran
     public static let mapsMaxZoom = ${reg.maps.maxZoom}
     public static let mapsMaxStaticSize = ${reg.maps.maxStaticSize}
     public static let mapsCoordinateDecimals = ${reg.maps.coordinateDecimals}
+    /// Live location (MSC3489, bipe-chat/bipe#768; registries/maps.json live).
+    public static let mapsLiveDurationsMinutes: [Int] = ${swiftArray(reg.maps.live.durationsMinutes.map(String))}
+    public static let mapsLiveDistancesMetres: [Int] = ${swiftArray(reg.maps.live.distancesMetres.map(String))}
+    public static let mapsLiveDefaultDistanceMetres = ${reg.maps.live.defaultDistanceMetres}
+    public static let mapsLiveMinIntervalSeconds = ${reg.maps.live.minIntervalSeconds}
+    public static let mapsLiveMaxIntervalSeconds = ${reg.maps.live.maxIntervalSeconds}
 
     /// Voice transcript paragraphs (registries/voice-transcript.json). Rule: product/screens/voice-recording.json notes.
     public static let voiceTranscriptPauseSeconds: Double = ${reg.voiceTranscript.pauseSeconds}
@@ -627,6 +633,12 @@ ${reg.workHours.defaultDays.map((d) => `        ${d.day} to listOf(${d.ranges.ma
     const val MAPS_MAX_ZOOM = ${reg.maps.maxZoom}
     const val MAPS_MAX_STATIC_SIZE = ${reg.maps.maxStaticSize}
     const val MAPS_COORDINATE_DECIMALS = ${reg.maps.coordinateDecimals}
+    /** Live location (MSC3489, bipe-chat/bipe#768; registries/maps.json live). */
+    val MAPS_LIVE_DURATIONS_MINUTES: List<Int> = listOf(${reg.maps.live.durationsMinutes.join(", ")})
+    val MAPS_LIVE_DISTANCES_METRES: List<Int> = listOf(${reg.maps.live.distancesMetres.join(", ")})
+    const val MAPS_LIVE_DEFAULT_DISTANCE_METRES = ${reg.maps.live.defaultDistanceMetres}
+    const val MAPS_LIVE_MIN_INTERVAL_SECONDS = ${reg.maps.live.minIntervalSeconds}
+    const val MAPS_LIVE_MAX_INTERVAL_SECONDS = ${reg.maps.live.maxIntervalSeconds}
 
     /** Voice transcript paragraphs (registries/voice-transcript.json). Rule: product/screens/voice-recording.json notes. */
     const val VOICE_TRANSCRIPT_PAUSE_SECONDS: Double = ${reg.voiceTranscript.pauseSeconds}

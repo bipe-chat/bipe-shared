@@ -79,6 +79,7 @@
     "Import a tag made by another client with a baseline of the newest known activity/incoming timestamp. A remote unarchive clears a synced local marker. A strictly newer incoming message clears the server tag too. Own sends, backfill, equal timestamps and state changes do not restore it.",
     "Serialize tag writes per account, keep failed intents for Retry, and skip reconciliation of a room while its write is queued. A successful write may precede its SDK sync echo; keep the confirmed value for at most chat-archive.echoGraceMs, then honor the latest observed tag.",
     "Observe a separate low-priority room-list stream so remote archives outside the active first page are discoverable. Loading another page also extends that stream.",
-    "A user action while the same room has a queued migration or tag write replaces the pending follow-up intent; it must not be silently dropped. Other rooms keep their own pending operations."
+    "A user action while the same room has a queued migration or tag write replaces the pending follow-up intent; it must not be silently dropped. Other rooms keep their own pending operations.",
+    "Room.setIsLowPriority uses the SDK priority semantics: setting m.lowpriority also removes m.favourite when present. Restoring a chat removes m.lowpriority; it does not recreate the favourite tag. Other room tags, history, membership and notification settings remain unchanged."
   ]
 }

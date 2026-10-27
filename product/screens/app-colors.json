@@ -1,0 +1,42 @@
+{
+  "id": "app-colors",
+  "title": "App colours",
+  "flow": "settings",
+  "summary": "The user picks one of the palettes of design/tokens.json appThemes. The choice sets the accent colours, the own chat bubble and the app icon at once, and the app redraws in the new colours.",
+  "types": {
+    "PaletteOption": {
+      "palette": { "type": "enum", "values": ["acai", "pitanga", "caju", "jabuticaba", "jenipapo"], "description": "The palette id, in appThemes order." },
+      "title": { "type": "string", "description": "String key bipe_colors_<palette>." },
+      "isSelected": { "type": "bool", "description": "true for the stored palette." }
+    }
+  },
+  "state": {
+    "options": { "type": "list", "of": { "type": "PaletteOption", "description": "One option per palette." }, "description": "All palettes, in appThemes order. The default palette (acai) is first." }
+  },
+  "actions": {
+    "pick": {
+      "params": { "palette": { "type": "string", "description": "The palette id." } },
+      "effect": "Keeps the palette on the phone, sets the app theme at once (no restart) and switches the app icon to the icon of the palette. Plays the tick haptic."
+    }
+  },
+  "strings": [
+    "bipe_chats_colors",
+    "bipe_chats_colors_footer",
+    "bipe_colors_acai",
+    "bipe_colors_pitanga",
+    "bipe_colors_caju",
+    "bipe_colors_jabuticaba",
+    "bipe_colors_jenipapo"
+  ],
+  "sdk": [],
+  "parity": ["app-colors"],
+  "notes": [
+    "Opens from the row colors in Conversas e mídia (registries/settings.json). The row value is the title of the stored palette.",
+    "Each option shows the app icon of the palette (a white mark on BipePalette.iconBackground, the same picture as the home screen icon), its title, and a check on the selected one. The selected state is the check and the accessibility selected trait, not the colour alone.",
+    "What follows the theme (bipe-chat/bipe#811, MZ 2026-10-27): the tokens in appThemes.themed (accent.ink, accent.fill, accent.fillPressed, accent.wash, bubble.own), in light, dark and high contrast. Trust colours (trust.verified included) never change. The Bipe logo and wordmark, the launch screen and onboarding stay acai.",
+    "Storage: the palette id under bipe.settings.palette, on the phone only. iOS keeps it in the app group defaults, so the share extension reads the same palette. A missing or unknown id is the default palette.",
+    "iOS: the icon changes with UIApplication.setAlternateIconName (BipePalette.alternateIconName; nil is the primary icon). iOS shows its own alert after each change; the app cannot hide it. A failed change keeps the theme and leaves the icon as it was.",
+    "Android: one launcher activity-alias per palette, all with the same intent filter; the app enables the alias of the palette and disables the others (PackageManager.DONT_KILL_APP). Some launchers move or drop the home screen icon after the change.",
+    "Before release, check the danger screens (scam warnings, the confirmed danger trust state) against the pitanga theme in light, dark and high contrast: pitanga (hue 33) is near danger red (hue 27)."
+  ]
+}

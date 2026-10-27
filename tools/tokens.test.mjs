@@ -1,7 +1,9 @@
 import assert from "node:assert/strict";
 import { test } from "node:test";
 import { contrast, hexToOklch, loadTokens, solveRamps, STEPS } from "../design/ramps/ramp.mjs";
-import { generateColors, resolveTokens, VARIANTS } from "./lib/gen-tokens.mjs";
+import { inflateSync } from "node:zlib";
+import { iconPng, parsePath, zlibFixed } from "./lib/gen-app-icons.mjs";
+import { appIconColors, appThemes, generateColors, resolveThemes, resolveTokens, VARIANTS } from "./lib/gen-tokens.mjs";
 
 const tokens = loadTokens();
 
@@ -69,7 +71,9 @@ test("semantic names are Bipe's own, not Compound's", () => {
 test("generated Swift and Kotlin hold every semantic token", () => {
   const swift = generateColors("swift");
   const kotlin = generateColors("kotlin");
-  assert.match(swift, /public static let accentFill = dynamic\(0x[0-9A-F]{6}, /);
+  assert.match(swift, /public static let inkPrimary = dynamic\(0x[0-9A-F]{6}, /);
+  assert.match(swift, /public static var accentFill: Color \{ accentFill\(BipeTheme.shared.palette\) \}/);
+  assert.match(swift, /private static let accentFillJenipapo = dynamic\(0x005678, /);
   for (const set of ["BipeLightColors", "BipeDarkColors", "BipeLightHighContrastColors", "BipeDarkHighContrastColors"]) {
     assert.match(kotlin, new RegExp(`val ${set}: BipeColors`));
   }
@@ -86,9 +90,62 @@ test("generated CSS holds the background, every ramp step and every semantic tok
   assert.match(css, /@media \(prefers-color-scheme: dark\) and \(prefers-contrast: more\)/);
 });
 
-// The expressive ramps are for bipe-web art only (design/README.md): no semantic token names one.
+// The expressive ramps reach the app only as an app theme (design/README.md, bipe-chat/bipe#811): no semantic
+// token names one; appThemes swaps the acai steps of the themed tokens.
 test("no semantic token uses an expressive ramp", () => {
   for (const [name, token] of Object.entries(tokens.semantic)) {
     for (const variant of VARIANTS) assert.doesNotMatch(token[variant], /^(pitanga|caju|jabuticaba|jenipapo)\./, `${name}.${variant}`);
   }
+});
+
+test("every palette passes the contrast rules and keeps the trust colours", () => {
+  const themes = resolveThemes(tokens);
+  assert.deepEqual(Object.keys(themes), ["acai", "pitanga", "caju", "jabuticaba", "jenipapo"]);
+  for (const [palette, resolved] of Object.entries(themes)) {
+    for (const name of Object.keys(resolved).filter((n) => n.startsWith("trust."))) {
+      assert.deepEqual(resolved[name], themes.acai[name], `${palette} ${name}`);
+    }
+  }
+  assert.equal(themes.jenipapo["accent.fill"].light, tokens.ramps.jenipapo.light["1100"]);
+  assert.equal(themes.pitanga["bubble.own"].dark, tokens.ramps.pitanga.dark["400"]);
+});
+
+test("app icon backgrounds are the icon step of each palette (MZ, bipe-chat/bipe#811)", () => {
+  assert.deepEqual(appIconColors(tokens).map(({ background }) => background), ["#802F7C", "#C13F26", "#A05B00", "#614381", "#005678"]);
+});
+
+test("appThemes fails closed", () => {
+  const trust = structuredClone(tokens);
+  trust.appThemes.themed.push("trust.verified.ink");
+  assert.throws(() => appThemes(trust), /must not theme trust.verified.ink/);
+  const notAcai = structuredClone(tokens);
+  notAcai.semantic["accent.wash"].light = "gray.200";
+  assert.throws(() => appThemes(notAcai), /themed accent.wash.light must name an acai step/);
+  const step = structuredClone(tokens);
+  step.appThemes.palettes.caju.iconStep = "950";
+  assert.throws(() => appThemes(step), /iconStep "950" is not a ramp step/);
+  const ramp = structuredClone(tokens);
+  ramp.appThemes.palettes.manga = { iconStep: "900" };
+  assert.throws(() => appThemes(ramp), /palette "manga" is not a ramp/);
+});
+
+test("the icon PNG decodes with zlib and puts the white mark on the background", () => {
+  const data = Uint8Array.from({ length: 5000 }, (_, i) => (i < 3000 ? 7 : i % 251));
+  assert.deepEqual(new Uint8Array(inflateSync(zlibFixed(data))), data);
+  const size = 64;
+  const png = iconPng(tokens.appThemes.icon, "#005678", size);
+  let offset = 8;
+  const chunks = {};
+  while (offset < png.length) {
+    const len = new DataView(png.buffer, offset).getUint32(0);
+    const type = String.fromCharCode(...png.slice(offset + 4, offset + 8));
+    chunks[type] = png.slice(offset + 8, offset + 8 + len);
+    offset += 12 + len;
+  }
+  const raw = inflateSync(chunks.IDAT);
+  const colour = (x, y) => [...chunks.PLTE.slice(raw[y * (size + 1) + 1 + x] * 3, raw[y * (size + 1) + 1 + x] * 3 + 3)];
+  assert.deepEqual(colour(0, 0), [0x00, 0x56, 0x78]);
+  assert.deepEqual(colour(32, 32), [255, 255, 255]);
+  assert.equal(parsePath(tokens.appThemes.icon.path).length, 1);
+  assert.deepEqual(iconPng(tokens.appThemes.icon, "#005678", size), png);
 });

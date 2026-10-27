@@ -1,0 +1,325 @@
+{
+  "$comment": "Sticker search (ADR 0205; registries/stickers.json). tools/gen-test-vectors.mjs adds the expected values from the reference rules in tools/lib/registries.mjs. fold: stickerSearchFold. emojiKey: stickerEmojiKey. tags: stickerQueryTags. matches: stickerMatches with the sticker.",
+  "fold": [
+    {
+      "input": "kkkkkk",
+      "expected": "k"
+    },
+    {
+      "input": "KKK",
+      "expected": "k"
+    },
+    {
+      "input": "Bom Diaaa!!",
+      "expected": "bom dia"
+    },
+    {
+      "input": "  sextou   ",
+      "expected": "sextou"
+    },
+    {
+      "input": "Fé em Deus",
+      "expected": "fe em deus"
+    },
+    {
+      "input": "obrigadaaa",
+      "expected": "obrigada"
+    },
+    {
+      "input": "hahaha",
+      "expected": "hahaha"
+    },
+    {
+      "input": "rsrsrs",
+      "expected": "rsrsrs"
+    },
+    {
+      "input": "Ação",
+      "expected": "acao"
+    },
+    {
+      "input": "aff",
+      "expected": "af"
+    },
+    {
+      "input": "123 vamos",
+      "expected": "123 vamos"
+    },
+    {
+      "input": "",
+      "expected": ""
+    },
+    {
+      "input": "😂",
+      "expected": ""
+    },
+    {
+      "input": "jóia👍",
+      "expected": "joia"
+    }
+  ],
+  "emoji_key": [
+    {
+      "input": "❤️",
+      "expected": "❤"
+    },
+    {
+      "input": "👍🏽",
+      "expected": "👍"
+    },
+    {
+      "input": "🙏🏿",
+      "expected": "🙏"
+    },
+    {
+      "input": " 😂 ",
+      "expected": "😂"
+    },
+    {
+      "input": "a",
+      "expected": "a"
+    }
+  ],
+  "tags": [
+    {
+      "query": "kkkkk",
+      "expected": [
+        "riso"
+      ]
+    },
+    {
+      "query": "KKK",
+      "expected": [
+        "riso"
+      ]
+    },
+    {
+      "query": "😂",
+      "expected": [
+        "riso"
+      ]
+    },
+    {
+      "query": "❤️",
+      "expected": [
+        "amor"
+      ]
+    },
+    {
+      "query": "👍🏽",
+      "expected": [
+        "ok"
+      ]
+    },
+    {
+      "query": "🙏",
+      "expected": [
+        "obrigado",
+        "amem"
+      ]
+    },
+    {
+      "query": "par",
+      "expected": [
+        "parabens"
+      ]
+    },
+    {
+      "query": "pa",
+      "expected": []
+    },
+    {
+      "query": "bom",
+      "expected": [
+        "bom-dia"
+      ]
+    },
+    {
+      "query": "Bom Diaaa",
+      "expected": [
+        "bom-dia"
+      ]
+    },
+    {
+      "query": "boa",
+      "expected": [
+        "boa-tarde",
+        "boa-noite"
+      ]
+    },
+    {
+      "query": "boa tarde",
+      "expected": [
+        "boa-tarde"
+      ]
+    },
+    {
+      "query": "sextouuu",
+      "expected": [
+        "sextou"
+      ]
+    },
+    {
+      "query": "Aff",
+      "expected": [
+        "raiva"
+      ]
+    },
+    {
+      "query": "fé",
+      "expected": [
+        "amem"
+      ]
+    },
+    {
+      "query": "morri",
+      "expected": [
+        "riso"
+      ]
+    },
+    {
+      "query": "obrigadaaa",
+      "expected": [
+        "obrigado"
+      ]
+    },
+    {
+      "query": "tmj",
+      "expected": [
+        "tmj"
+      ]
+    },
+    {
+      "query": "tamo",
+      "expected": [
+        "tmj"
+      ]
+    },
+    {
+      "query": "x",
+      "expected": []
+    },
+    {
+      "query": "",
+      "expected": []
+    },
+    {
+      "query": "🐶",
+      "expected": []
+    },
+    {
+      "query": "valeu!",
+      "expected": [
+        "obrigado"
+      ]
+    }
+  ],
+  "matches": [
+    {
+      "name": "shared tag",
+      "query": "kkkk",
+      "sticker": {
+        "body": "Gato",
+        "tags": [
+          "riso"
+        ],
+        "pack": "Bichos"
+      },
+      "expected": true
+    },
+    {
+      "name": "emoji to tag",
+      "query": "😂",
+      "sticker": {
+        "body": "Gato",
+        "tags": [
+          "riso"
+        ],
+        "pack": "Bichos"
+      },
+      "expected": true
+    },
+    {
+      "name": "other tag",
+      "query": "kkkk",
+      "sticker": {
+        "body": "Gato",
+        "tags": [
+          "choro"
+        ],
+        "pack": "Bichos"
+      },
+      "expected": false
+    },
+    {
+      "name": "body word start",
+      "query": "gat",
+      "sticker": {
+        "body": "Gato rindo",
+        "tags": [],
+        "pack": "Bichos"
+      },
+      "expected": true
+    },
+    {
+      "name": "body inside word",
+      "query": "ato",
+      "sticker": {
+        "body": "Gato",
+        "tags": [],
+        "pack": "Bichos"
+      },
+      "expected": false
+    },
+    {
+      "name": "pack name, accents",
+      "query": "familia",
+      "sticker": {
+        "body": "Vó",
+        "tags": [],
+        "pack": "Família Souza"
+      },
+      "expected": true
+    },
+    {
+      "name": "second word of body",
+      "query": "rindo",
+      "sticker": {
+        "body": "Gato rindo",
+        "tags": []
+      },
+      "expected": true
+    },
+    {
+      "name": "empty query",
+      "query": "",
+      "sticker": {
+        "body": "Gato",
+        "tags": [
+          "riso"
+        ],
+        "pack": "Bichos"
+      },
+      "expected": false
+    },
+    {
+      "name": "unknown emoji",
+      "query": "🐶",
+      "sticker": {
+        "body": "Cachorro",
+        "tags": [],
+        "pack": "Bichos"
+      },
+      "expected": false
+    },
+    {
+      "name": "no tags, no pack",
+      "query": "bom dia",
+      "sticker": {
+        "body": "Bom dia, flor",
+        "tags": []
+      },
+      "expected": true
+    }
+  ]
+}

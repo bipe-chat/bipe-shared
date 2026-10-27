@@ -285,6 +285,27 @@ ${reg.workHours.defaultDays.map((d) => `        (day: ${d.day}, ranges: [${d.ran
     public static let voiceMediaNoTranscriptDays = ${reg.voiceMedia.noTranscriptDays}
     public static let voiceMediaMaxKeptPerAccount = ${reg.voiceMedia.maxKeptPerAccount}
 
+    /// Stickers (bipe ADR 0205, bipe-chat/bipe#837; registries/stickers.json). Search rules: test-vectors/sticker-search.json.
+    public static let stickerImportMaxBytes = ${reg.stickers.importMaxBytes}
+    public static let stickerImportMaxPixels = ${reg.stickers.importMaxPixels}
+    public static let stickerImportTypes: [String] = [${reg.stickers.importTypes.map(swiftString).join(", ")}]
+    public static let stickerMadePixels = ${reg.stickers.madePixels}
+    public static let stickerMadeAnimatedMaxMilliseconds = ${reg.stickers.madeAnimatedMaxMilliseconds}
+    public static let stickerRecentsMax = ${reg.stickers.recentsMax}
+    public static let stickerFavouritesMax = ${reg.stickers.favouritesMax}
+    public static let stickerRecentsEventType = ${swiftString(reg.stickers.recentsEventType)}
+    public static let stickerFavouritesEventType = ${swiftString(reg.stickers.favouritesEventType)}
+    public static let stickerTagsField = ${swiftString(reg.stickers.tagsField)}
+    public static let stickerPackField = ${swiftString(reg.stickers.packField)}
+    public static let stickerPackLinkBase = ${swiftString(reg.stickers.packLinkBase)}
+    public static let stickerPrefixMinLength = ${reg.stickers.prefixMinLength}
+    /// Tag ids in display order.
+    public static let stickerTags: [String] = [${reg.stickers.tags.map(swiftString).join(", ")}]
+    /// Folded word to tag ids.
+    public static let stickerWords: [String: [String]] = ${swiftArray(Object.entries(reg.stickers.words).map(([k, v]) => `${swiftString(k)}: [${v.map(swiftString).join(", ")}]`))}
+    /// Emoji (no variation selector, no skin tone) to tag ids.
+    public static let stickerEmoji: [String: [String]] = ${swiftArray(Object.entries(reg.stickers.emoji).map(([k, v]) => `${swiftString(k)}: [${v.map(swiftString).join(", ")}]`))}
+
     /// Maps for location sharing (ADR 0131, bipe-chat/bipe#768; registries/maps.json). No other map host.
     public static let mapsBaseUrl = ${swiftString(reg.maps.baseUrl)}
     public static let mapsStyleLight = ${swiftString(reg.maps.styles.light)}
@@ -638,6 +659,27 @@ ${reg.workHours.defaultDays.map((d) => `        ${d.day} to listOf(${d.ranges.ma
     const val VOICE_MEDIA_TRANSCRIPT_DAYS = ${reg.voiceMedia.transcriptDays}
     const val VOICE_MEDIA_NO_TRANSCRIPT_DAYS = ${reg.voiceMedia.noTranscriptDays}
     const val VOICE_MEDIA_MAX_KEPT_PER_ACCOUNT = ${reg.voiceMedia.maxKeptPerAccount}
+
+    /** Stickers (bipe ADR 0205, bipe-chat/bipe#837; registries/stickers.json). Search rules: test-vectors/sticker-search.json. */
+    const val STICKER_IMPORT_MAX_BYTES = ${reg.stickers.importMaxBytes}
+    const val STICKER_IMPORT_MAX_PIXELS = ${reg.stickers.importMaxPixels}
+    val STICKER_IMPORT_TYPES: List<String> = listOf(${reg.stickers.importTypes.map(kotlinString).join(", ")})
+    const val STICKER_MADE_PIXELS = ${reg.stickers.madePixels}
+    const val STICKER_MADE_ANIMATED_MAX_MILLISECONDS = ${reg.stickers.madeAnimatedMaxMilliseconds}
+    const val STICKER_RECENTS_MAX = ${reg.stickers.recentsMax}
+    const val STICKER_FAVOURITES_MAX = ${reg.stickers.favouritesMax}
+    const val STICKER_RECENTS_EVENT_TYPE = ${kotlinString(reg.stickers.recentsEventType)}
+    const val STICKER_FAVOURITES_EVENT_TYPE = ${kotlinString(reg.stickers.favouritesEventType)}
+    const val STICKER_TAGS_FIELD = ${kotlinString(reg.stickers.tagsField)}
+    const val STICKER_PACK_FIELD = ${kotlinString(reg.stickers.packField)}
+    const val STICKER_PACK_LINK_BASE = ${kotlinString(reg.stickers.packLinkBase)}
+    const val STICKER_PREFIX_MIN_LENGTH = ${reg.stickers.prefixMinLength}
+    /** Tag ids in display order. */
+    val STICKER_TAGS: List<String> = listOf(${reg.stickers.tags.map(kotlinString).join(", ")})
+    /** Folded word to tag ids. */
+    val STICKER_WORDS: Map<String, List<String>> = ${kotlinList("mapOf", Object.entries(reg.stickers.words).map(([k, v]) => `${kotlinString(k)} to listOf(${v.map(kotlinString).join(", ")})`))}
+    /** Emoji (no variation selector, no skin tone) to tag ids. */
+    val STICKER_EMOJI: Map<String, List<String>> = ${kotlinList("mapOf", Object.entries(reg.stickers.emoji).map(([k, v]) => `${kotlinString(k)} to listOf(${v.map(kotlinString).join(", ")})`))}
 
     /** Maps for location sharing (ADR 0131, bipe-chat/bipe#768; registries/maps.json). No other map host. */
     const val MAPS_BASE_URL = ${kotlinString(reg.maps.baseUrl)}

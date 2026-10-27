@@ -1,0 +1,50 @@
+{
+  "id": "sticker-pack",
+  "title": "Sticker pack",
+  "flow": "chat",
+  "summary": "Shows a sticker pack from a pack link or from a received sticker, and adds it to the user's packs (ADR 0205).",
+  "state": {
+    "roomId": { "type": "string", "description": "The pack room." },
+    "stateKey": { "type": "string", "description": "The state key of the pack in the room. Empty for a pack link." },
+    "title": { "type": "string", "description": "The pack display name, else the room name." },
+    "authorHandle": { "type": "string", "optional": true, "description": "The @handle of the room creator from POST /v1/handles/resolve, for bipe_sticker_pack_by. Absent without a handle." },
+    "stickers": { "type": "list", "of": { "type": "StickerItem", "description": "One sticker." }, "description": "The images whose usage includes sticker or states no usage, in pack order." },
+    "phase": {
+      "type": "enum",
+      "values": ["loading", "loaded", "added", "failed"],
+      "description": "loading: a spinner. loaded: the pack and bipe_sticker_pack_add. added: bipe_sticker_pack_added. failed: bipe_sticker_pack_failed with bipe_app_retry."
+    }
+  },
+  "actions": {
+    "appear": {
+      "effect": "Reads the room state im.ponies.room_emotes with stateKey over the client-server API. A public room the user is not in is read without joining (world_readable). If the pack is already in im.ponies.emote_rooms, phase added."
+    },
+    "add": {
+      "effect": "Joins the room when the user is not in it, then adds roomId and stateKey to the global account data im.ponies.emote_rooms with a read-merge-write on the server copy. Then phase added; the pack shows in sticker-picker."
+    },
+    "close": { "effect": "Closes." }
+  },
+  "strings": [
+    "bipe_sticker_pack_add",
+    "bipe_sticker_pack_added",
+    "bipe_sticker_pack_by",
+    "bipe_sticker_pack_failed",
+    "bipe_app_retry",
+    "bipe_app_close"
+  ],
+  "sdk": [
+    "Client.session",
+    "Client.homeserver",
+    "Client.joinRoomByIdOrAlias",
+    "Client.getMediaThumbnail",
+    "MediaSource"
+  ],
+  "parity": [
+    "stickers"
+  ],
+  "notes": [
+    "Opens from a pack link (registries/stickers.json stickerPackLinkBase plus the room ID; the app handles it as a universal link and app link, and bipe-web serves the same path with the store links), and from message-actions viewStickerPack on a sticker that carries stickerPackField.",
+    "Adding a pack sends no message: it changes only the user's account data and joins a public room with no messages.",
+    "A room with no im.ponies.room_emotes at stateKey, or a room that is not world_readable and that the user is not in: phase failed."
+  ]
+}

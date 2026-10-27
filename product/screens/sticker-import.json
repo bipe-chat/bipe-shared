@@ -2,7 +2,7 @@
   "id": "sticker-import",
   "title": "Import stickers",
   "flow": "chat",
-  "summary": "Adds stickers from files to the user's own pack: a WhatsApp chat export (ZIP) or WebP and PNG files. Explains how to get the files and that imported stickers are stored without end-to-end encryption.",
+  "summary": "Adds stickers from files to the user's own pack: a WhatsApp chat export (ZIP) or WebP (also animated) and PNG files. Explains how to get the files and that imported stickers are stored without end-to-end encryption.",
   "state": {
     "phase": {
       "type": "enum",
@@ -31,9 +31,10 @@
   "sdk": ["Client.session", "Client.uploadMedia"],
   "parity": ["stickers"],
   "notes": [
-    "Candidates: a ZIP gives its .webp entries; a WebP or PNG file gives itself. The format comes from the magic bytes, not the file name. At most 1,000,000 bytes and 1024 pixels on each side. Duplicates go out by content hash; the shortcode is st_ plus the first 8 bytes of the SHA-256 in hex, so the same file imported twice is one sticker. Bipe logic: StickerImporter.candidates, StickerImportCandidate and StickerPackClient.importStickers (BipeKit StickerImport.swift, ZipReader.swift); StickerImport.kt (libraries/bipe stickers). Both apps share these limits, so they belong in registries/ (ADR 0031) when this moves.",
+    "Candidates: a ZIP gives its .webp entries; a WebP or PNG file gives itself. The format comes from the magic bytes, not the file name. At most registries/stickers.json importMaxBytes, and importMaxPixels on each side, of a type in importTypes. Animated WebP is accepted (ADR 0205); an animated GIF or APNG is not. Duplicates go out by content hash; the shortcode is st_ plus the first 8 bytes of the SHA-256 in hex, so the same file imported twice is one sticker. Bipe logic: StickerImporter.candidates, StickerImportCandidate and StickerPackClient.importStickers (BipeKit StickerImport.swift, ZipReader.swift); StickerImport.kt (libraries/bipe stickers).",
     "Import: read the server copy of im.ponies.user_emotes (client-server API, not the SDK cache), upload each new image to the media repository (Client.uploadMedia), add it with usage sticker and info (w, h, mimetype, size), and write the pack back keeping every other field. A failed upload keeps what was added and reports the error.",
     "The media repository stores imported stickers in clear, because a pack is shared account data, not a message (bipe_stickers_import_note).",
-    "bipe_stickers_import_help_folder_android shows on Android only."
+    "bipe_stickers_import_help_folder_android shows on Android only.",
+    "A WhatsApp WebP can carry its emoji in its EXIF metadata. The import turns them into tags through stickerEmoji (sticker-picker notes) and writes stickerTagsField on the image."
   ]
 }

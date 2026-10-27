@@ -2496,7 +2496,7 @@
     }
   },
   "pricing": {
-    "$comment": "The /precos/ page (/en/pricing/). Source: bipe ADRs 0070, 0075, 0083, 0099, 0104 to 0107. Tier ids are stable. `amount` is the price in BRL and is set only after the free pilot, by a new ADR (ADR 0075); a tier with no `amount` shows `pilotPrice`. `cta` picks the card's button: `app` (download the app) or `form` (the organisation form). `tools` are feature ids in `features`.",
+    "$comment": "The /precos/ page (/en/pricing/). Source: bipe ADRs 0070, 0075, 0083, 0099, 0104 to 0107. Tier ids are stable. `amount` is the price in BRL and is set only after the pilot, by a new ADR (ADR 0075); a tier with no `amount` shows `pilotPrice`. `cta` picks the card's button: `app` (download the app) or `form` (the organisation form). `tools` are feature ids in `features`.",
     "tools": [
       "agenda",
       "catalog",
@@ -2520,14 +2520,15 @@
       },
       {
         "id": "public",
-        "cta": "form"
+        "cta": "form",
+        "pilotFree": true
       }
     ],
     "pt": {
       "nav": "Preços",
       "link": "Como o Bipe cobra das empresas",
       "title": "Como o Bipe cobra das empresas",
-      "lede": "O Bipe se paga com as empresas e as instituições que atendem seus clientes no Bipe. O piloto é gratuito, e os valores de cada plano saem quando ele terminar. Esta página explica como a cobrança vai funcionar e por quê.",
+      "lede": "O Bipe se paga com as empresas e as instituições que atendem seus clientes no Bipe. No piloto, a empresa paga metade do preço do plano, e esse valor vira crédito no primeiro ano. Para órgãos públicos, o piloto é gratuito. Os valores de cada plano saem quando o piloto terminar. Esta página explica como a cobrança vai funcionar e por quê.",
       "principles": {
         "heading": "As regras que valem em todo plano",
         "points": [
@@ -2548,7 +2549,7 @@
       },
       "tiersHeading": "Quatro planos",
       "freePrice": "R$ 0",
-      "pilotPrice": "Piloto gratuito",
+      "pilotPrice": "Metade no piloto",
       "tiers": {
         "small": {
           "name": "Pequeno negócio",
@@ -2599,9 +2600,10 @@
         "body": "Qualquer conta de empresa usa estas ferramentas de graça, em qualquer plano."
       },
       "pilot": {
-        "heading": "O piloto é gratuito",
+        "heading": "Como funciona o piloto",
         "points": [
-          "As empresas do piloto não pagam.",
+          "As empresas do piloto pagam metade do preço do plano. Se a empresa continuar depois, esse valor vira crédito no primeiro ano.",
+          "Para prefeituras e órgãos públicos, o piloto é gratuito.",
           "No fim do piloto, cada empresa recebe uma proposta de preço.",
           "A caixa de entrada, a API e o selo de CNPJ ainda não estão no ar."
         ]
@@ -2657,7 +2659,7 @@
           "bipeSame": "O mesmo valor com qualquer número de mensagens.",
           "smallMoved": "Com mais de 2 atendentes, a conta passa para o plano Empresa."
         },
-        "proposal": "Proposta: os valores do Bipe podem mudar depois do piloto. O piloto é gratuito.",
+        "proposal": "Proposta: os valores do Bipe podem mudar depois do piloto. No piloto, a empresa paga metade, e esse valor vira crédito no primeiro ano. Para órgãos públicos, o piloto é gratuito.",
         "notes": [
           "Tabela da Meta para o Brasil, em reais, em vigor desde %1$s e conferida em %2$s.",
           "As faixas de volume valem para utilidade e códigos de verificação. Cada faixa só vale para as mensagens dentro dela.",
@@ -2686,13 +2688,14 @@
           "city": "Prefeitura",
           "bank": "Banco médio"
         }
-      }
+      },
+      "pilotFreePrice": "Piloto gratuito"
     },
     "en": {
       "nav": "Pricing",
       "link": "How Bipe charges companies",
       "title": "How Bipe charges companies",
-      "lede": "Bipe pays for itself through the companies and institutions that serve their customers on Bipe. The pilot is free, and the price of each plan comes when it ends. This page explains how charging will work and why.",
+      "lede": "Bipe pays for itself through the companies and institutions that serve their customers on Bipe. In the pilot, a company pays half the plan price, and that amount becomes credit in the first year. For public bodies, the pilot is free. The price of each plan comes when the pilot ends. This page explains how charging will work and why.",
       "principles": {
         "heading": "Rules for every plan",
         "points": [
@@ -2713,7 +2716,7 @@
       },
       "tiersHeading": "Four plans",
       "freePrice": "R$ 0",
-      "pilotPrice": "Free pilot",
+      "pilotPrice": "Half price in the pilot",
       "tiers": {
         "small": {
           "name": "Small business",
@@ -2764,9 +2767,10 @@
         "body": "Any company account uses these tools for free, on any plan."
       },
       "pilot": {
-        "heading": "The pilot is free",
+        "heading": "How the pilot works",
         "points": [
-          "Companies in the pilot pay nothing.",
+          "Companies in the pilot pay half the plan price. If a company stays on, that amount becomes credit in the first year.",
+          "For city halls and public bodies, the pilot is free.",
           "When the pilot ends, each company gets a price offer.",
           "The inbox, the API and the CNPJ seal are not live yet."
         ]
@@ -2822,7 +2826,7 @@
           "bipeSame": "The same amount at any number of messages.",
           "smallMoved": "With more than 2 agents, the account moves to the Company plan."
         },
-        "proposal": "Proposal: Bipe's amounts may change after the pilot. The pilot is free.",
+        "proposal": "Proposal: Bipe's amounts may change after the pilot. In the pilot, a company pays half, and that amount becomes credit in the first year. For public bodies, the pilot is free.",
         "notes": [
           "Meta's rate card for Brazil, in reais, in force since %1$s and checked on %2$s.",
           "Volume tiers apply to utility messages and verification codes. Each tier's rate applies only to the messages inside it.",
@@ -2851,7 +2855,8 @@
           "city": "City hall",
           "bank": "Mid-size bank"
         }
-      }
+      },
+      "pilotFreePrice": "Free pilot"
     },
     "whatsapp": {
       "$comment": "Meta's list rates for Brazil in BRL, per delivered message. Read from whatsappbusiness.com/products/platform-pricing (Brazil, BRL) on `checked`. Utility and authentication tiers are marginal: each rate applies only to the messages inside its band, by monthly volume per category over the whole business portfolio. Service: free up to `serviceFreePerNumber` per business number per month, then `service`, no tiers. Recheck before each quarter (Meta changes rates on the first day of a quarter).",
@@ -3093,7 +3098,7 @@
           "exploring": "Só estamos conhecendo"
         },
         "doneByIntent": {
-          "pilot": "Recebemos. A gente responde por e-mail para conversar sobre o piloto. O piloto é gratuito.",
+          "pilot": "Recebemos. A gente responde por e-mail para conversar sobre o piloto.",
           "question": "Recebemos. A gente responde a sua dúvida por e-mail.",
           "partnership": "Recebemos. A gente responde por e-mail para conversar sobre a parceria."
         }
@@ -3201,7 +3206,7 @@
           "exploring": "We are only looking"
         },
         "doneByIntent": {
-          "pilot": "Got it. We will answer by email to talk about the pilot. The pilot is free.",
+          "pilot": "Got it. We will answer by email to talk about the pilot.",
           "question": "Got it. We will answer your question by email.",
           "partnership": "Got it. We will answer by email to talk about the partnership."
         }
@@ -3349,7 +3354,7 @@
         "name": "Instituições e associações",
         "title": "Bipe para instituições e associações",
         "headline": "Avisos para todos, com o nome da instituição à vista.",
-        "lede": "Os dados e os servidores do Bipe ficam no Brasil, sob a lei brasileira. Escolas, igrejas, cooperativas e ONGs falam com membros e famílias com o nome verificado pelo CNPJ. Quem copia o nome e a foto da instituição não ganha o selo. O Bipe para organizações ainda está em estudo, e o piloto é gratuito.",
+        "lede": "Os dados e os servidores do Bipe ficam no Brasil, sob a lei brasileira. Escolas, igrejas, cooperativas e ONGs falam com membros e famílias com o nome verificado pelo CNPJ. Quem copia o nome e a foto da instituição não ganha o selo. O Bipe para organizações ainda está em estudo. No piloto, a instituição paga metade do preço do plano, e esse valor vira crédito no primeiro ano.",
         "note": "Cada recurso mostra em que ponto está. Abra o recurso para ver o status no iPhone e no Android.",
         "sections": [
           {
@@ -3375,7 +3380,7 @@
         "name": "Institutions and associations",
         "title": "Bipe for institutions and associations",
         "headline": "Notices for everyone, with the institution's name in plain sight.",
-        "lede": "Bipe's data and servers stay in Brazil, under Brazilian law. Schools, churches, cooperatives and NGOs talk to members and families under a name verified by CNPJ. Someone who copies the institution's name and photo doesn't get the badge. Bipe for organisations is still a proposal, and the pilot is free.",
+        "lede": "Bipe's data and servers stay in Brazil, under Brazilian law. Schools, churches, cooperatives and NGOs talk to members and families under a name verified by CNPJ. Someone who copies the institution's name and photo doesn't get the badge. Bipe for organisations is still a proposal. In the pilot, the institution pays half the plan price, and that amount becomes credit in the first year.",
         "note": "Each feature shows where it stands. Open a feature to see its status on iPhone and Android.",
         "sections": [
           {
@@ -3440,7 +3445,7 @@
         "name": "Bancos e fintechs",
         "title": "Bipe para bancos e fintechs",
         "headline": "O falso atendente não consegue usar o nome do seu banco.",
-        "lede": "Os dados e os servidores do Bipe ficam no Brasil, sob a lei brasileira. No Bipe, o nome do banco fica reservado para a conta com o CNPJ verificado, e o cliente vê o selo em toda conversa. O Bipe para organizações ainda está em estudo, e o piloto é gratuito.",
+        "lede": "Os dados e os servidores do Bipe ficam no Brasil, sob a lei brasileira. No Bipe, o nome do banco fica reservado para a conta com o CNPJ verificado, e o cliente vê o selo em toda conversa. O Bipe para organizações ainda está em estudo. No piloto, o banco paga metade do preço do plano, e esse valor vira crédito no primeiro ano.",
         "note": "Cada recurso mostra em que ponto está. Abra o recurso para ver o status no iPhone e no Android.",
         "sections": [
           {
@@ -3466,7 +3471,7 @@
         "name": "Banks and fintechs",
         "title": "Bipe for banks and fintechs",
         "headline": "A fake support agent can't use your bank's name.",
-        "lede": "Bipe's data and servers stay in Brazil, under Brazilian law. On Bipe, the bank's name is reserved for the account with the verified CNPJ, and customers see the badge in every chat. Bipe for organisations is still a proposal, and the pilot is free.",
+        "lede": "Bipe's data and servers stay in Brazil, under Brazilian law. On Bipe, the bank's name is reserved for the account with the verified CNPJ, and customers see the badge in every chat. Bipe for organisations is still a proposal. In the pilot, the bank pays half the plan price, and that amount becomes credit in the first year.",
         "note": "Each feature shows where it stands. Open a feature to see its status on iPhone and Android.",
         "sections": [
           {

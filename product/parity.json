@@ -2580,12 +2580,16 @@
       "id": "timeline-notice-emote",
       "name": "Notice and emote messages in the timeline (bipe#659)",
       "ios": {
-        "status": "planned",
-        "issue": 659
+        "status": "built",
+        "evidence": [
+          "bipe-app/ios/Bipe/Timeline/TimelineRows.swift"
+        ]
       },
       "android": {
-        "status": "planned",
-        "issue": 659
+        "status": "built",
+        "evidence": [
+          "bipe-app/android/app/src/main/kotlin/chat/bipe/app/timeline/TimelineRows.kt"
+        ]
       },
       "web": {
         "status": "n/a",

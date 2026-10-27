@@ -13,6 +13,7 @@
       },
       "body": { "type": "string", "optional": true, "description": "Plain text of a text message." },
       "senderName": { "type": "string", "description": "Display name of the sender." },
+      "isEmote": { "type": "bool", "optional": true, "description": "true for m.emote. Prefix the displayed body with * and the sender name; keep body unchanged for copying and editing. Defaults to false." },
       "isOwn": { "type": "bool", "description": "true when this account sent it." },
       "sentAt": { "type": "date", "description": "Origin server time of the event." },
       "sendState": {

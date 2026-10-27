@@ -1226,7 +1226,7 @@ paths:
         whose holder allows discovery. The submitted list is never stored. Limits: 500 numbers
         per request, a daily budget per account (lower for accounts younger than 7 days),
         30 requests per hour.
-      security: [{ matrix: [] }]
+      security: [{ matrix: [] }, { matrixOpenId: [], matrixServerName: [] }]
       requestBody:
         required: true
         content:
@@ -1374,7 +1374,7 @@ paths:
   /v1/handles/{handle}:
     get:
       summary: Exact handle lookup (no search, no directory)
-      security: [{ matrix: [] }]
+      security: [{ matrix: [] }, { matrixOpenId: [], matrixServerName: [] }]
       parameters:
         - { name: handle, in: path, required: true, schema: { type: string } }
       responses:
@@ -1389,7 +1389,7 @@ paths:
   /v1/handles/resolve:
     post:
       summary: Handles for Matrix IDs, for display (max 100 per call)
-      security: [{ matrix: [] }]
+      security: [{ matrix: [] }, { matrixOpenId: [], matrixServerName: [] }]
       requestBody:
         required: true
         content:
@@ -1573,7 +1573,7 @@ paths:
   /v1/me/handle:
     get:
       summary: The caller's handle
-      security: [{ matrix: [] }]
+      security: [{ matrix: [] }, { matrixOpenId: [], matrixServerName: [] }]
       responses:
         "200":
           description: Current handle and when it can next change
@@ -1628,7 +1628,7 @@ paths:
         bipe_handle_changed (name, new, old); only new is bipe_handle_set (name, new); only old is
         bipe_handle_removed (name, old). The name is the person's display name in that room.
         A handle chosen at sign-up is not a change. Holds and cooldowns are never in the history.
-      security: [{ matrix: [] }]
+      security: [{ matrix: [] }, { matrixOpenId: [], matrixServerName: [] }]
       requestBody:
         required: true
         content:
@@ -1663,7 +1663,7 @@ paths:
         Matrix profile changes the API saw in Synapse, and public profile edits (ADR 0041). Dates only:
         the API keeps no name, no photo and no image hash. The apps make the lines with
         profileFactLines (test-vectors/profile-facts.json). IDs the API knows nothing about are absent.
-      security: [{ matrix: [] }]
+      security: [{ matrix: [] }, { matrixOpenId: [], matrixServerName: [] }]
       requestBody:
         required: true
         content:
@@ -1799,7 +1799,7 @@ paths:
         the same envelope as a badge, payload typ "theft". The app verifies it with the badge keys,
         shows the red banner in chats with that account and marks its messages from the hour before
         stolen_at. Accounts without a mark are absent: no statement, no banner.
-      security: [{ matrix: [] }]
+      security: [{ matrix: [] }, { matrixOpenId: [], matrixServerName: [] }]
       requestBody:
         required: true
         content:
@@ -5248,6 +5248,20 @@ components:
       type: http
       scheme: bearer
       description: Matrix access token from MAS. The API checks it with Synapse whoami.
+    matrixOpenId:
+      type: http
+      scheme: bearer
+      description: >-
+        Core routes (ADR 0168, bipe-chat/bipe#646). A Matrix OpenID token from
+        POST /_matrix/client/v3/user/{userId}/openid/request_token on the user's homeserver, sent with
+        matrixServerName. The server must be in registries/bipe-servers.json, else unauthorized. The API asks that
+        server's federation GET /_matrix/federation/v1/openid/userinfo and accepts only a user ID on that server.
+        Request a new token before expires_in. A Matrix access token of bipe.net.br (matrix) keeps working.
+    matrixServerName:
+      type: apiKey
+      in: header
+      name: X-Matrix-Server-Name
+      description: The matrix_server_name from the OpenID token answer. Its presence selects matrixOpenId.
   schemas:
     BugReportSummary:
       type: object

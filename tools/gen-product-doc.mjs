@@ -120,6 +120,42 @@ for (const a of product.audiences) {
     audienceSlugs.add(`${l}/${slug}`);
   }
 }
+// Organisation audience pages (/organizacoes/<slug>/, bipe#790): built from feature pages, each with a phone scene and a form kind.
+const ORG_KINDS = new Set(["company", "institution", "association", "public_body", "partner", "other"]);
+for (const l of ["pt", "en"]) if (!product.organisations?.[l]?.audiencesHeading) fail(`organisations.${l}.audiencesHeading`);
+const orgAudienceSlugs = new Set();
+for (const a of product.organisationAudiences) {
+  if (!ORG_KINDS.has(a.kind)) fail(`organisation audience ${a.id}: kind ${a.kind}`);
+  if (!a.sections.length) fail(`organisation audience ${a.id}: no sections`);
+  if (!a.sections.some((s) => s.scene)) fail(`organisation audience ${a.id}: no scene`);
+  for (const s of a.sections) for (const id of s.features) if (!featureIds.has(id)) fail(`organisation audience ${a.id}: unknown feature ${id}`);
+  for (const s of a.sections) if (s.scene !== undefined && !FIGURES.has(s.scene)) fail(`organisation audience ${a.id}: unknown scene ${s.scene}`);
+  for (const l of ["pt", "en"]) {
+    for (const k of ["name", "title", "headline", "lede", "note", "cta"]) if (!a[l]?.[k]) fail(`organisation audience ${a.id}: ${l}.${k}`);
+    if (a[l].sections.length !== a.sections.length || a[l].sections.some((s) => !s.heading || !s.body)) fail(`organisation audience ${a.id}: ${l}.sections`);
+    const slug = a.slug?.[l];
+    if (!/^[a-z0-9-]+$/.test(slug ?? "") || orgAudienceSlugs.has(`${l}/${slug}`)) fail(`organisation audience ${a.id}: slug.${l}`);
+    orgAudienceSlugs.add(`${l}/${slug}`);
+  }
+}
+// The price rules (ADR 0206) and the calculator on /precos/ (bipe#812).
+{
+  const pr = product.pricing.proposal;
+  const t = pr?.institution?.tiers;
+  if (!Array.isArray(t) || !t.length || t[0][0] !== 0 || t.some(([from, rate], i) => !(rate > 0) || (i > 0 && !(from > t[i - 1][0] && rate < t[i - 1][1])))) fail("pricing.proposal.institution.tiers: from 0, ascending bands, falling positive rates");
+  if (!(pr.institution.capYearly > pr.minMonthly * 12) || !(pr.minMonthly > 0) || !Number.isInteger(pr.free?.agents) || !Number.isInteger(pr.free?.people)) fail("pricing.proposal: free, minMonthly, capYearly");
+  if (!(pr.company?.monthly > 0) || !(pr.company.extraSeat > 0) || !(pr.company.annualMonths > 0) || !Number.isInteger(pr.company.maxSeats) || !(pr.halfFactor > 0 && pr.halfFactor < 1)) fail("pricing.proposal: company, halfFactor");
+  if (!pr.table?.length || pr.table.some((n, i) => !(n > 0) || (i > 0 && !(n > pr.table[i - 1])))) fail("pricing.proposal.table: ascending people counts");
+  // Presets: illustrative examples, labelled so on the page. spend is what the example pays today to talk to customers, in BRL per month.
+  for (const x of product.pricing.calculatorPresets ?? []) {
+    if (!["company", "half"].includes(x.org) || !(x.seats >= 1) || !(x.people >= 1) || !(x.spend >= 0) || !x.icon) fail(`pricing.calculatorPresets ${x.id}`);
+    for (const l of ["pt", "en"]) if (!product.pricing[l].calculator?.presets?.[x.id] || !product.pricing[l].calculator?.presetNotes?.[x.id]) fail(`pricing.${l}.calculator.presets/presetNotes.${x.id}`);
+  }
+  for (const l of ["pt", "en"]) {
+    const c = product.pricing[l].calculator;
+    if (!c?.heading || !c.proposal || !c.plans?.free || !c.curveHeading) fail(`pricing.${l}.calculator`);
+  }
+}
 const tentpoleIds = new Set(product.tentpoles.map((t) => t.id));
 const sided = new Set();
 for (const s of product.sides) {
@@ -132,6 +168,10 @@ for (const t of product.tentpoles) {
   for (const id of t.features) if (!featureIds.has(id)) fail(`tentpole ${t.id}: unknown feature ${id}`);
   for (const id of t.demos) if (!FIGURES.has(id)) fail(`tentpole ${t.id}: unknown demo ${id}`);
 }
+// Home page lists (ADR 0129): proof holds policies; features holds only features in the iPhone test app (bipe-web selfTest checks the same).
+for (const id of product.home.proof) if (status(id)?.ios !== "policy") fail(`home.proof: ${id} is not a policy`);
+for (const id of product.home.features) if (status(id)?.ios !== "testing") fail(`home.features: ${id} is not in the iPhone test app`);
+for (const a of dist.social.accounts) if (!/^[a-z]+$/.test(a.id) || !a.name || !/^(@|r\/)/.test(a.handle ?? "") || !a.url?.startsWith("https://")) fail(`social ${a.id}`);
 if (!dist.source?.org?.startsWith("https://github.com/bipe-chat")) fail("source.org");
 for (const r of dist.source.repos) {
   if (!r.url?.startsWith(dist.source.org + "/")) fail(`source ${r.id}: url must be in ${dist.source.org}`);
@@ -438,6 +478,14 @@ const lines = [
   "| Audience | ICP | Page (pt) | Features |",
   "|---|---|---|---|",
   ...product.audiences.map((a) => `| ${a.en.name} | ${a.icp} | /para/${a.slug.pt}/ | ${a.sections.flatMap((s) => s.features).join(", ")} |`),
+  "",
+  "### Organisation audiences",
+  "",
+  "Pages at `/organizacoes/<slug>/` and `/en/organisations/<slug>/` (bipe#790). Each preselects its kind in the organisation form.",
+  "",
+  "| Audience | Form kind | Page (pt) | Features |",
+  "|---|---|---|---|",
+  ...product.organisationAudiences.map((a) => `| ${a.en.name} | ${a.kind} | /organizacoes/${a.slug.pt}/ | ${a.sections.flatMap((s) => s.features).join(", ") || "none"} |`),
   "",
   "### Features by audience",
   "",

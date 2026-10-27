@@ -3,26 +3,19 @@
   "version": 1,
   "promise": {
     "pt": {
-      "title": "Saiba com quem está falando.",
-      "lede": "Um app de mensagens brasileiro, gratuito e sem anúncio. Converse pelo seu @, com avisos para conferir possíveis golpes."
+      "title": "Converse com tranquilidade.",
+      "lede": "Um app de mensagens gratuito e sem anúncio, com seus dados no Brasil. Seu número fica com você, e o Bipe te avisa quando algo parecer estranho."
     },
     "en": {
-      "title": "Know who you are talking to.",
-      "lede": "A free Brazilian messenger with no ads. Chat using your @, with warnings to help you check possible scams."
+      "title": "Chat with peace of mind.",
+      "lede": "A free messaging app with no ads and your data in Brazil. Your number stays with you, and Bipe warns you when something looks off."
     }
   },
   "headlineTest": {
-    "$comment": "Issue #77 (ADR 0032, ADR 0047). The home page (pt-BR only) shows one arm per browser, chosen at random and kept. h0 is the control: promise.pt.title. The lede and everything else stay the same. active false shows promise.title to everyone. An arm id is never reused: retired ids stay in retired, so old counts never mix with a new headline. Copy review 2026-10-15 (bipe#230): h2/h4 retired; h0/h3 headline text and experiment ID unchanged. Surrounding safety copy changed on this date; compare daily counts with that boundary in mind. 2026-10-18: home shortened to four sections and lede updated (ADR 0129); preserve headline IDs and counts, and treat this as a new layout boundary.",
+    "$comment": "Issue #77 (ADR 0032, ADR 0047). The home page (pt-BR only) shows one arm per browser, chosen at random and kept. h0 is the control: promise.pt.title. The lede and everything else stay the same. active false shows promise.title to everyone. An arm id is never reused: retired ids stay in retired, so old counts never mix with a new headline. Copy review 2026-10-15 (bipe#230): h2/h4 retired; h0/h3 headline text and experiment ID unchanged. Surrounding safety copy changed on this date; compare daily counts with that boundary in mind. 2026-10-18: home shortened to four sections and lede updated (ADR 0129); preserve headline IDs and counts, and treat this as a new layout boundary. 2026-10-26: MZ chose a new home headline, \"Converse com tranquilidade.\" (promise.pt.title), because the old title and the h3 arm did not say what Bipe is and \"golpe\" reads as negative in a headline. The test is off and h3 is retired. h0 now has a different text, so a new test needs a new experiment id.",
     "experiment": "headline-77",
-    "active": true,
-    "arms": [
-      {
-        "id": "h3",
-        "angle": "no-ads",
-        "pt": "Sem anúncio. Seus dados não estão à venda.",
-        "en": "No ads. Your data is not for sale."
-      }
-    ],
+    "active": false,
+    "arms": [],
     "retired": [
       {
         "id": "h1",
@@ -46,6 +39,14 @@
         "en": "Here, a scam comes with a warning.",
         "date": "2026-10-15",
         "why": "ADR 0074 / bipe#230: absolute impersonation or detection guarantee; preserve the original text and counts."
+      },
+      {
+        "id": "h3",
+        "angle": "no-ads",
+        "pt": "Sem anúncio. Seus dados não estão à venda.",
+        "en": "No ads. Your data is not for sale.",
+        "date": "2026-10-26",
+        "why": "MZ: new headline \"Converse com tranquilidade.\"; test stopped."
       }
     ]
   },
@@ -687,7 +688,8 @@
         "points": [
           "A lista tem bancos, órgãos públicos e o próprio Bipe.",
           "A checagem compara a forma simplificada do nome, sem acento e sem letra disfarçada.",
-          "Só a conta com o CNPJ certo e o selo usa o nome."
+          "Só a conta com o CNPJ certo e o selo usa o nome.",
+          "Nomes de políticos, candidatos e partidos vão entrar na lista quando existir o selo político, conferido nos dados públicos do TSE."
         ]
       },
       "en": {
@@ -696,7 +698,8 @@
         "points": [
           "The list holds banks, public bodies and Bipe itself.",
           "The check compares the simplified form of the name, with no accents and no disguised letters.",
-          "Only the account with the right CNPJ and the seal can use the name."
+          "Only the account with the right CNPJ and the seal can use the name.",
+          "Names of office holders, candidates and parties will join the list once the political seal exists, checked against public TSE data."
         ]
       },
       "code": [
@@ -739,6 +742,39 @@
         "names-ios",
         "names-android"
       ]
+    },
+    {
+      "id": "bot-mark",
+      "area": "identity",
+      "icon": "bot",
+      "milestone": "Later",
+      "slug": {
+        "pt": "bot-marcado",
+        "en": "marked-bots"
+      },
+      "figures": [
+        "bot-marcado"
+      ],
+      "pt": {
+        "name": "Bot sempre marcado",
+        "body": "Toda conta automática é um bot. O bot aparece sempre marcado, com o nome de quem responde por ele.",
+        "points": [
+          "A marca aparece na lista de conversas, ao lado do nome, em cada mensagem e na notificação. O bot não consegue esconder a marca.",
+          "O perfil mostra de quem é o bot: de uma pessoa verificada ou de uma empresa com selo de CNPJ.",
+          "Numa conversa com um bot, uma linha fixa no topo avisa que ele lê as mensagens dali.",
+          "O bot nunca manda a primeira mensagem. Ele só escreve para quem começou a conversa, ou num grupo onde quem cuida adicionou o bot."
+        ]
+      },
+      "en": {
+        "name": "Bots always marked",
+        "body": "Every automated account is a bot. A bot always shows its mark and the name of its owner.",
+        "points": [
+          "The mark shows in the chat list, next to the name, on every message and in the notification. The bot can't hide it.",
+          "The profile shows who owns the bot: a verified person or a company with the business seal.",
+          "In a chat with a bot, a fixed line at the top says that it reads the messages there.",
+          "A bot never sends the first message. It only writes to someone who started the chat, or in a group where the organisers added it."
+        ]
+      }
     },
     {
       "id": "family-check",
@@ -972,19 +1008,19 @@
       ],
       "pt": {
         "name": "Ponta a ponta",
-        "body": "Toda conversa nova é protegida de ponta a ponta.",
+        "body": "Toda conversa nova, a dois ou em grupo, é protegida de ponta a ponta.",
         "points": [
           "Só quem está na conversa lê as mensagens. O Bipe não lê.",
-          "Vale para conversa a dois e para grupo.",
+          "Quando o Bipe tiver canais públicos, eles vão aparecer com a marca Público. Um canal público é aberto para qualquer pessoa, por isso não tem proteção de ponta a ponta.",
           "Usa a criptografia do Matrix, um padrão aberto que qualquer pessoa pode conferir."
         ]
       },
       "en": {
         "name": "End to end",
-        "body": "Every new chat is encrypted end to end.",
+        "body": "Every new chat, one to one or in a group, is encrypted end to end.",
         "points": [
           "Only the people in the chat can read the messages. Bipe can't.",
-          "It applies to one-to-one chats and to groups.",
+          "When Bipe has public channels, they will carry the label Público (Public). A public channel is open to anyone, so it isn't encrypted end to end.",
           "It uses Matrix encryption, an open standard anyone can check."
         ]
       }
@@ -2189,8 +2225,8 @@
           "body": "Quem usa para conversar nunca paga. A proposta é que organizações ajudem a sustentar o serviço e empresas paguem pelo atendimento a clientes. O modelo está em estudo."
         },
         {
-          "heading": "Um experimento aberto",
-          "body": "O código é público. A ideia é que várias organizações cuidem do Bipe juntas. Por enquanto, a Envisioning cuida do desenvolvimento e dos servidores."
+          "heading": "De quem é o Bipe",
+          "body": "Hoje a Envisioning desenvolve o app e mantém os servidores, em São Paulo, numa empresa brasileira de nuvem. O código do app, da API e do site é público. O próximo passo é registrar uma associação sem fins lucrativos e passar para ela o nome, os domínios e as regras do serviço. Quem tiver conta verificada vai poder ser sócio de graça, com um voto, junto com as organizações que entrarem. Uma universidade ou uma cooperativa vai poder manter um servidor do Bipe para o pessoal dela, com as mesmas regras."
         }
       ]
     },
@@ -2203,8 +2239,8 @@
           "body": "People never pay to chat. The proposal is for organisations to help fund the service and for businesses to pay for customer service. The model is still being studied."
         },
         {
-          "heading": "An open experiment",
-          "body": "The code is public. The idea is for several organisations to look after Bipe together. For now, Envisioning looks after development and the servers."
+          "heading": "Who owns Bipe",
+          "body": "Today Envisioning builds the app and runs the servers, in São Paulo, with a Brazilian cloud company. The code for the app, the API and the site is public. The next step is to register a nonprofit association and hand it the name, the domains and the rules of the service. Anyone with a verified account will be able to join as a member for free, with one vote, together with the organisations that join. A university or a co-op will be able to run a Bipe server for its own people, under the same rules."
         }
       ]
     }
@@ -2223,8 +2259,8 @@
     "/comparar/telegram/": "/compare/telegram/",
     "/para/igrejas/": "/para/grupos-e-comunidades/",
     "/en/for/churches/": "/en/for/groups-and-communities/",
-    "/parceiros/": "/organizacoes/",
-    "/en/partners/": "/en/organisations/"
+    "/parceiros/": "/organizacoes/parceiros/",
+    "/en/partners/": "/en/organisations/partners/"
   },
   "origin": {
     "pt": {
@@ -2290,6 +2326,34 @@
           ]
         },
         {
+          "heading": "Preço fixo em reais",
+          "points": [
+            "O preço segue o tamanho da organização: atendentes ou clientes que falam com vocês no Bipe.",
+            "Mil mensagens ou um milhão, o valor é o mesmo. Nenhum plano cobra por mensagem.",
+            "Até 2 atendentes e 1.000 clientes ativos no Bipe, é de graça.",
+            "Planos pagos a partir de R$ 199 por mês, em reais, por mês ou por ano.",
+            "No piloto, a empresa paga metade, e esse valor vira crédito no primeiro ano."
+          ]
+        },
+        {
+          "heading": "Menos dependência de uma plataforma só",
+          "points": [
+            "Os dados e os servidores ficam no Brasil, sob a lei brasileira.",
+            "O código do app e do servidor é aberto, então qualquer pessoa pode conferir o que ele faz.",
+            "O Bipe usa o Matrix, um protocolo aberto para conversas.",
+            "As regras de preço são públicas: nenhum plano cobra por mensagem, e o selo não está à venda.",
+            "Hoje a Envisioning roda os servidores no Brasil. Outros jeitos de hospedar, como um servidor da própria organização, ainda estão em estudo."
+          ]
+        },
+        {
+          "heading": "Como o cliente chega ao Bipe",
+          "points": [
+            "O cliente precisa ter o Bipe instalado. Quem só usa o WhatsApp não recebe a sua mensagem no Bipe.",
+            "Por isso o cliente escreve primeiro, pelo link ou pelo QR code da empresa: no site, na nota ou no balcão.",
+            "No começo, o Bipe fica ao lado do canal que vocês já usam. Ele não precisa substituir esse canal no primeiro dia."
+          ]
+        },
+        {
           "heading": "Como o Bipe se pagaria",
           "points": [
             "Quem usa o Bipe para conversar nunca paga.",
@@ -2316,7 +2380,7 @@
           ]
         }
       ],
-      "cta": "Quer saber mais? Fale com a gente.",
+      "cta": "Quer testar no piloto? Conte como vocês falam com os clientes hoje.",
       "ctaSubject": "Bipe para empresas",
       "figureCaption": "Ilustração com dados de exemplo. A proposta ainda está em estudo."
     },
@@ -2372,6 +2436,34 @@
           ]
         },
         {
+          "heading": "A fixed price in reais",
+          "points": [
+            "The price follows the size of the organisation: agents or customers who talk with you on Bipe.",
+            "A thousand messages or a million, the amount is the same. No plan charges per message.",
+            "Up to 2 agents and 1,000 active customers on Bipe, it is free.",
+            "Paid plans from R$ 199 a month, in reais, per month or per year.",
+            "In the pilot, a company pays half, and that amount becomes credit in the first year."
+          ]
+        },
+        {
+          "heading": "Less dependence on a single platform",
+          "points": [
+            "Data and servers stay in Brazil, under Brazilian law.",
+            "The code of the app and the server is open, so anyone can check what it does.",
+            "Bipe uses Matrix, an open protocol for chat.",
+            "The pricing rules are public: no plan charges per message, and the badge isn't for sale.",
+            "Today Envisioning runs the servers in Brazil. Other ways to host, such as a server run by the organisation itself, are still a proposal."
+          ]
+        },
+        {
+          "heading": "How customers get to Bipe",
+          "points": [
+            "The customer needs Bipe installed. Someone who only uses WhatsApp doesn't get your message on Bipe.",
+            "So the customer writes first, through the company's link or QR code: on the website, on the receipt or at the counter.",
+            "At first, Bipe sits next to the channel you already use. It doesn't need to replace that channel on day one."
+          ]
+        },
+        {
           "heading": "How Bipe would pay for itself",
           "points": [
             "People who use Bipe to chat never pay.",
@@ -2398,13 +2490,13 @@
           ]
         }
       ],
-      "cta": "Want to talk about it? Write to us.",
+      "cta": "Want to test it in the pilot? Tell us how you talk to customers today.",
       "ctaSubject": "Bipe for business",
       "figureCaption": "Illustration with sample data. The proposal is still under study."
     }
   },
   "pricing": {
-    "$comment": "The /precos/ page (/en/pricing/). Source: bipe ADRs 0070, 0075, 0083, 0099, 0104 to 0107. Tier ids are stable. `amount` is the price in BRL and is set only after the free pilot, by a new ADR (ADR 0075); a tier with no `amount` shows `pilotPrice`. `cta` picks the card's button: `app` (download the app) or `form` (the organisation form). `tools` are feature ids in `features`.",
+    "$comment": "The /precos/ page (/en/pricing/). Source: bipe ADRs 0070, 0075, 0083, 0099, 0104 to 0107. Tier ids are stable. `amount` is the price in BRL and is set only after the pilot, by a new ADR (ADR 0075); a tier with no `amount` shows `pilotPrice`. `cta` picks the card's button: `app` (download the app) or `form` (the organisation form). `tools` are feature ids in `features`.",
     "tools": [
       "agenda",
       "catalog",
@@ -2435,12 +2527,12 @@
       "nav": "Preços",
       "link": "Como o Bipe cobra das empresas",
       "title": "Como o Bipe cobra das empresas",
-      "lede": "O Bipe se paga com as empresas e as instituições que atendem seus clientes no Bipe. O piloto é gratuito, e os valores de cada plano saem quando ele terminar. Esta página explica como a cobrança vai funcionar e por quê.",
+      "lede": "O Bipe se paga com as empresas e as instituições que atendem seus clientes no Bipe. No piloto, a empresa paga metade do preço do plano, e esse valor vira crédito no primeiro ano. Para órgãos públicos, o piloto é gratuito. Os valores de cada plano saem quando o piloto terminar. Esta página explica como a cobrança vai funcionar e por quê.",
       "principles": {
         "heading": "As regras que valem em todo plano",
         "points": [
           "Os dados e os servidores ficam no Brasil, sob a lei brasileira.",
-          "Nenhum plano cobra por mensagem.",
+          "Preço fixo em reais, por mês ou por ano. Nenhum plano cobra por mensagem.",
           "O selo não está à venda. Dinheiro não compra selo, nível de verificação, análise mais rápida nem o nome de outra organização. O plano paga serviço: atendentes, suporte, monitoramento e condições de contrato.",
           "Quem usa o Bipe para conversar nunca paga."
         ]
@@ -2456,25 +2548,25 @@
       },
       "tiersHeading": "Quatro planos",
       "freePrice": "R$ 0",
-      "pilotPrice": "Piloto gratuito",
+      "pilotPrice": "Metade no piloto",
       "tiers": {
         "small": {
-          "name": "Pequeno negócio",
-          "who": "MEI ativo ou microempresa (ME), pelos dados da Receita, ou quem trabalha por conta própria sem CNPJ.",
+          "name": "Grátis",
+          "who": "Qualquer organização com até 2 atendentes e até 1.000 clientes ativos no Bipe.",
           "billing": "Sem mensalidade.",
           "points": [
-            "Selo de CNPJ verificado e nome reservado.",
+            "Selo de CNPJ verificado e nome reservado, com a verificação automática.",
             "Caixa de entrada com 2 atendentes.",
             "Perguntas com opções e API.",
             "Suporte pelas páginas de ajuda.",
             "O selo segue as mesmas regras dos outros planos: o CPF verificado do dono precisa aparecer entre os sócios do CNPJ na Receita.",
-            "Sem CNPJ, a conta da empresa tem as mesmas ferramentas, mas fica sem selo e sem cobrança por Pix."
+            "Sem CNPJ, a conta tem as mesmas ferramentas, mas fica sem selo e sem cobrança por Pix."
           ]
         },
         "company": {
           "name": "Empresa",
-          "who": "Qualquer outra empresa com CNPJ verificado, ou o pequeno negócio que precisa de um 3º atendente.",
-          "billing": "Um valor fixo por mês por CNPJ, com um atendente incluído, e um valor por atendente a mais. Pagamento mensal ou anual.",
+          "who": "Equipes de até 10 atendentes.",
+          "billing": "R$ 199 por mês com 1 atendente e R$ 69 por atendente a mais. No pagamento anual, o ano custa 10 meses.",
           "points": [
             "Selo de CNPJ verificado e nome reservado.",
             "Caixa de entrada com quantos atendentes a equipe precisar.",
@@ -2483,8 +2575,8 @@
         },
         "institution": {
           "name": "Instituição",
-          "who": "Bancos, fintechs, seguradoras, concessionárias, redes de saúde e grandes varejistas.",
-          "billing": "Contrato anual. O valor segue o número de pessoas que a instituição atende, por faixa.",
+          "who": "Organizações com mais de 10 atendentes, ou que pagam menos pelos clientes ativos.",
+          "billing": "Por ano, pelos clientes que falam com vocês no Bipe: R$ 1,00 por cliente até 100 mil, e menos por cliente acima disso. Mínimo de R$ 199 por mês, máximo de R$ 540 mil por ano.",
           "points": [
             "Atendentes sem limite.",
             "Todos os nomes reservados da marca, com monitoramento de nomes parecidos.",
@@ -2493,40 +2585,97 @@
           ]
         },
         "public": {
-          "name": "Órgão público",
-          "who": "Órgãos do governo, com a verificação de órgão público.",
-          "billing": "Contrato anual. O valor segue o número de pessoas que o órgão atende, por faixa.",
+          "name": "Órgão público, ONG ou associação",
+          "who": "Órgãos do governo, ONGs, igrejas e associações.",
+          "billing": "Metade do preço do plano que se aplica.",
           "points": [
-            "O mesmo serviço do plano Instituição, com 50% de desconto."
-          ]
+            "O mesmo serviço dos outros planos, com 50% de desconto."
+          ],
+          "price": "Metade do preço"
         }
       },
-      "nonprofit": "ONGs, igrejas e associações pagam metade do valor do plano Empresa.",
+      "nonprofit": "Cada organização paga o menor preço entre os planos que pode usar.",
       "tools": {
         "heading": "Ferramentas de graça em todo plano",
         "body": "Qualquer conta de empresa usa estas ferramentas de graça, em qualquer plano."
       },
       "pilot": {
-        "heading": "O piloto é gratuito",
+        "heading": "Como funciona o piloto",
         "points": [
-          "As empresas do piloto não pagam.",
+          "As empresas do piloto pagam metade do preço do plano. Se a empresa continuar depois, esse valor vira crédito no primeiro ano.",
+          "Para prefeituras e órgãos públicos, o piloto é gratuito.",
           "No fim do piloto, cada empresa recebe uma proposta de preço.",
           "A caixa de entrada, a API e o selo de CNPJ ainda não estão no ar."
         ]
       },
       "ctaApp": "Baixar o app",
-      "ctaForm": "Quero usar o Bipe"
+      "ctaForm": "Quero usar o Bipe",
+      "calculator": {
+        "heading": "Quanto o Bipe custa para vocês",
+        "lede": "Preço fixo em reais, pelo tamanho da organização: atendentes ou clientes ativos no Bipe. Mil mensagens ou um milhão, o valor é o mesmo.",
+        "presetsLabel": "Exemplos",
+        "presets": {
+          "church": "Igreja",
+          "shop": "Loja online",
+          "clinics": "Rede de clínicas",
+          "city": "Prefeitura",
+          "bank": "Banco médio"
+        },
+        "presetNotes": {
+          "church": "Neste exemplo, a igreja tem 2 atendentes e 300 membros que falam com ela no Bipe. Fica no plano grátis, com o mesmo selo dos planos pagos.",
+          "shop": "Neste exemplo, a loja tem 5 atendentes e 3 mil clientes ativos no Bipe. O preço pelos clientes ativos sai mais barato que o plano Empresa.",
+          "clinics": "Neste exemplo, a rede tem 10 atendentes e 10 mil pacientes ativos no Bipe. O plano Empresa sai mais barato que o preço pelos clientes ativos.",
+          "city": "Neste exemplo, 20 mil pessoas falam com a prefeitura no Bipe, com 15 atendentes. Órgão público paga metade.",
+          "bank": "Neste exemplo, 500 mil clientes falam com o banco no Bipe, com 200 atendentes. O preço sobe junto com os clientes que chegam."
+        },
+        "org": "Tipo de organização",
+        "orgs": {
+          "company": "Empresa ou instituição",
+          "half": "Órgão público, ONG ou associação"
+        },
+        "seats": "Atendentes",
+        "people": "Clientes ativos no Bipe",
+        "spend": "Quanto vocês gastam hoje por mês para falar com os clientes",
+        "spendNone": "Não informado",
+        "month": "por mês",
+        "year": "%1$s por ano",
+        "annual": "Pagando o ano de uma vez: %1$s",
+        "save": "Vocês economizariam %1$s por mês",
+        "compare": "Hoje: %1$s por mês. No Bipe: %2$s por mês.",
+        "plans": {
+          "free": "Plano grátis: até %1$s atendentes e até %2$s clientes ativos.",
+          "company": "Plano Empresa: %1$s por mês com 1 atendente e %2$s por atendente a mais.",
+          "institution": "Plano Instituição: pelos clientes ativos no Bipe, com atendentes sem limite.",
+          "half": "Metade do preço para órgãos públicos, ONGs, igrejas e associações.",
+          "lower": "Vocês pagam o menor preço entre os planos que podem usar."
+        },
+        "proposal": "Proposta: os valores podem mudar depois do piloto. No piloto, a empresa paga metade, e esse valor vira crédito no primeiro ano. Para órgãos públicos, o piloto é gratuito.",
+        "detail": "Ver como o preço é calculado",
+        "curveHeading": "Plano Instituição: preço por cliente ativo",
+        "curveLede": "Cliente ativo é quem falou com vocês no Bipe nos últimos 12 meses. Cada valor vale só para os clientes dentro da faixa, então o preço sobe aos poucos, junto com o uso. Mínimo de %1$s por mês e máximo de %2$s por ano.",
+        "curveFrom": "Até %1$s clientes",
+        "curveAbove": "Acima de %1$s clientes",
+        "curveRate": "%1$s por cliente por ano",
+        "tableHeading": "Valores por ano",
+        "tablePeople": "Clientes ativos no Bipe",
+        "tableInstitution": "Instituição",
+        "tableHalf": "Órgão público, ONG ou associação",
+        "link": "Calcule quanto o Bipe custa para vocês",
+        "curveBetween": "De %1$s a %2$s clientes",
+        "peopleHint": "Quem falou com vocês no Bipe nos últimos 12 meses."
+      },
+      "pilotFreePrice": "Piloto gratuito"
     },
     "en": {
       "nav": "Pricing",
       "link": "How Bipe charges companies",
       "title": "How Bipe charges companies",
-      "lede": "Bipe pays for itself through the companies and institutions that serve their customers on Bipe. The pilot is free, and the price of each plan comes when it ends. This page explains how charging will work and why.",
+      "lede": "Bipe pays for itself through the companies and institutions that serve their customers on Bipe. In the pilot, a company pays half the plan price, and that amount becomes credit in the first year. For public bodies, the pilot is free. The price of each plan comes when the pilot ends. This page explains how charging will work and why.",
       "principles": {
         "heading": "Rules for every plan",
         "points": [
           "Data and servers stay in Brazil, under Brazilian law.",
-          "No plan charges per message.",
+          "A fixed price in reais, per month or per year. No plan charges per message.",
           "The seal is not for sale. Money does not buy a seal, a verification level, a faster review or another organisation's name. A plan pays for service: agents, support, monitoring and contract terms.",
           "People who use Bipe to chat never pay."
         ]
@@ -2542,67 +2691,217 @@
       },
       "tiersHeading": "Four plans",
       "freePrice": "R$ 0",
-      "pilotPrice": "Free pilot",
+      "pilotPrice": "Half price in the pilot",
       "tiers": {
         "small": {
-          "name": "Small business",
-          "who": "An active MEI or a micro company (ME), from Receita's data, or someone who works on their own with no CNPJ.",
+          "name": "Free",
+          "who": "Any organisation with up to 2 agents and up to 1,000 active customers on Bipe.",
           "billing": "No monthly fee.",
           "points": [
-            "Verified CNPJ seal and reserved name.",
+            "Verified CNPJ badge and reserved name, with the automatic check.",
             "Inbox with 2 agents.",
-            "Questions with options and the API.",
+            "Questions with options and API.",
             "Support through the help pages.",
-            "The seal follows the same rules as every other plan: the owner's verified CPF must be one of the partners in the CNPJ record at Receita.",
-            "With no CNPJ, the company account has the same tools, but no seal and no Pix charges."
+            "The badge follows the same rules as the other plans: the owner's verified CPF must be among the CNPJ's partners at the Receita.",
+            "Without a CNPJ, the account has the same tools, but no badge and no Pix charges."
           ]
         },
         "company": {
           "name": "Company",
-          "who": "Any other company with a verified CNPJ, or a small business that needs a 3rd agent.",
-          "billing": "A flat monthly fee per CNPJ, with one agent included, and a fee for each extra agent. Pay monthly or yearly.",
+          "who": "Teams of up to 10 agents.",
+          "billing": "R$ 199 a month with 1 agent and R$ 69 per extra agent. Paid yearly, the year costs 10 months.",
           "points": [
-            "Verified CNPJ seal and reserved name.",
+            "Verified CNPJ badge and reserved name.",
             "Inbox with as many agents as the team needs.",
-            "Questions with options and the API."
+            "Questions with options and API."
           ]
         },
         "institution": {
           "name": "Institution",
-          "who": "Banks, fintechs, insurers, utilities, health networks and large retailers.",
-          "billing": "A yearly contract. The price follows the number of people the institution serves, in bands.",
+          "who": "Organisations with more than 10 agents, or that pay less by active customers.",
+          "billing": "Per year, by the customers who talk with you on Bipe: R$ 1.00 per customer up to 100,000, and less per customer above that. At least R$ 199 a month, at most R$ 540,000 a year.",
           "points": [
             "Unlimited agents.",
-            "Every reserved name of the brand, with monitoring for lookalike names.",
-            "The verification levels its sector needs.",
-            "Support with response times in the contract."
+            "Every reserved name of the brand, with monitoring of lookalike names.",
+            "The verification levels the sector needs.",
+            "Support with a response time in the contract."
           ]
         },
         "public": {
-          "name": "Public body",
-          "who": "Government bodies, with public body verification.",
-          "billing": "A yearly contract. The price follows the number of people the body serves, in bands.",
+          "name": "Public body, NGO or association",
+          "who": "Government bodies, NGOs, churches and associations.",
+          "billing": "Half the price of the plan that applies.",
           "points": [
-            "The same service as the Institution plan, at 50% off."
-          ]
+            "The same service as the other plans, at 50% off."
+          ],
+          "price": "Half price"
         }
       },
-      "nonprofit": "Nonprofits, churches and associations pay half the Company plan price.",
+      "nonprofit": "Each organisation pays the lower price of the plans it can use.",
       "tools": {
         "heading": "Free tools on every plan",
         "body": "Any company account uses these tools for free, on any plan."
       },
       "pilot": {
-        "heading": "The pilot is free",
+        "heading": "How the pilot works",
         "points": [
-          "Companies in the pilot pay nothing.",
+          "Companies in the pilot pay half the plan price. If a company stays on, that amount becomes credit in the first year.",
+          "For city halls and public bodies, the pilot is free.",
           "When the pilot ends, each company gets a price offer.",
           "The inbox, the API and the CNPJ seal are not live yet."
         ]
       },
       "ctaApp": "Get the app",
-      "ctaForm": "I want to use Bipe"
-    }
+      "ctaForm": "I want to use Bipe",
+      "calculator": {
+        "heading": "What Bipe costs you",
+        "lede": "A fixed price in reais, by the size of the organisation: agents or active customers on Bipe. A thousand messages or a million, the amount is the same.",
+        "presetsLabel": "Examples",
+        "presets": {
+          "church": "Church",
+          "shop": "Online shop",
+          "clinics": "Clinic network",
+          "city": "City hall",
+          "bank": "Mid-size bank"
+        },
+        "presetNotes": {
+          "church": "In this example, the church has 2 agents and 300 members who talk with it on Bipe. It stays on the free plan, with the same badge as the paid plans.",
+          "shop": "In this example, the shop has 5 agents and 3,000 active customers on Bipe. The price by active customers costs less than the Company plan.",
+          "clinics": "In this example, the network has 10 agents and 10,000 active patients on Bipe. The Company plan costs less than the price by active customers.",
+          "city": "In this example, 20,000 people talk with the city hall on Bipe, with 15 agents. Public bodies pay half.",
+          "bank": "In this example, 500,000 customers talk with the bank on Bipe, with 200 agents. The price rises with the customers who arrive."
+        },
+        "org": "Kind of organisation",
+        "orgs": {
+          "company": "Company or institution",
+          "half": "Public body, NGO or association"
+        },
+        "seats": "Agents",
+        "people": "Active customers on Bipe",
+        "spend": "What you spend today each month to talk to customers",
+        "spendNone": "Not given",
+        "month": "per month",
+        "year": "%1$s per year",
+        "annual": "Paying the year at once: %1$s",
+        "save": "You would save %1$s per month",
+        "compare": "Today: %1$s per month. On Bipe: %2$s per month.",
+        "plans": {
+          "free": "Free plan: up to %1$s agents and up to %2$s active customers.",
+          "company": "Company plan: %1$s a month with 1 agent and %2$s per extra agent.",
+          "institution": "Institution plan: by active customers on Bipe, with unlimited agents.",
+          "half": "Half price for public bodies, NGOs, churches and associations.",
+          "lower": "You pay the lower price of the plans you can use."
+        },
+        "proposal": "Proposal: the amounts may change after the pilot. In the pilot, a company pays half, and that amount becomes credit in the first year. For public bodies, the pilot is free.",
+        "detail": "See how the price works",
+        "curveHeading": "Institution plan: price per active customer",
+        "curveLede": "An active customer is someone who talked with you on Bipe in the last 12 months. Each rate applies only to the customers inside its band, so the price rises gradually, with use. At least %1$s a month and at most %2$s a year.",
+        "curveFrom": "Up to %1$s customers",
+        "curveAbove": "Above %1$s customers",
+        "curveRate": "%1$s per customer per year",
+        "tableHeading": "Amounts per year",
+        "tablePeople": "Active customers on Bipe",
+        "tableInstitution": "Institution",
+        "tableHalf": "Public body, NGO or association",
+        "link": "Work out what Bipe costs you",
+        "curveBetween": "From %1$s to %2$s customers",
+        "peopleHint": "People who talked with you on Bipe in the last 12 months."
+      },
+      "pilotFreePrice": "Free pilot"
+    },
+    "proposal": {
+      "$comment": "ADR 0206 (Proposed; amounts are the proposal until the pilot ends, ADR 0075). Free: up to free.agents agents and free.people active people. Above it, the lower of Empresa (up to company.maxSeats agents) and Instituição (active people, who talked with the organisation on Bipe in the last 12 months, on marginal tiers [first person of the band, BRL per person per year], at least minMonthly × 12 and at most capYearly per year). halfFactor: public bodies, NGOs, churches and associations.",
+      "adr": "0206",
+      "free": {
+        "agents": 2,
+        "people": 1000
+      },
+      "minMonthly": 199,
+      "company": {
+        "monthly": 199,
+        "extraSeat": 69,
+        "annualMonths": 10,
+        "maxSeats": 10
+      },
+      "institution": {
+        "tiers": [
+          [
+            0,
+            1
+          ],
+          [
+            100000,
+            0.23
+          ],
+          [
+            1000000,
+            0.05
+          ],
+          [
+            10000000,
+            0.03
+          ]
+        ],
+        "capYearly": 540000
+      },
+      "halfFactor": 0.5,
+      "table": [
+        1000,
+        5000,
+        10000,
+        25000,
+        50000,
+        100000,
+        250000,
+        500000,
+        1000000,
+        2500000,
+        5000000,
+        10000000
+      ]
+    },
+    "calculatorPresets": [
+      {
+        "id": "church",
+        "icon": "group",
+        "org": "half",
+        "seats": 2,
+        "people": 300,
+        "spend": 0
+      },
+      {
+        "id": "shop",
+        "icon": "bag",
+        "org": "company",
+        "seats": 5,
+        "people": 3000,
+        "spend": 6732
+      },
+      {
+        "id": "clinics",
+        "icon": "heart",
+        "org": "company",
+        "seats": 10,
+        "people": 10000,
+        "spend": 2765
+      },
+      {
+        "id": "city",
+        "icon": "bank",
+        "org": "half",
+        "seats": 15,
+        "people": 20000,
+        "spend": 3465
+      },
+      {
+        "id": "bank",
+        "icon": "card",
+        "org": "company",
+        "seats": 200,
+        "people": 500000,
+        "spend": 336490
+      }
+    ]
   },
   "organisations": {
     "$comment": "The /organizacoes/ page (/en/organisations/): organisations that want to talk to their customers on Bipe, and partners who want to help carry it. ADR 0126; the stewardship paragraph follows ADR 0067. The form posts to POST /v1/organisations (bipe#410). No Pix analogy here (ADR 0071). Name no prospective partner, funder or institution until there is a signed agreement.",
@@ -2685,13 +2984,34 @@
         "submit": "Enviar",
         "done": "Recebemos. A gente responde por e-mail.",
         "error": "Não deu para enviar. Tente de novo daqui a pouco.",
-        "note": "Usamos esses dados só para responder e para entender quanto as organizações pagam hoje. A gente guarda tudo no Starlings, o sistema de trabalho da Envisioning, em servidores na União Europeia, e apaga depois de um ano."
+        "note": "Usamos esses dados só para responder e para entender quanto as organizações pagam hoje. A gente guarda tudo no Starlings, o sistema de trabalho da Envisioning, em servidores na União Europeia, e apaga depois de um ano.",
+        "intent": "O que vocês querem?",
+        "intents": {
+          "pilot": "Testar o Bipe no piloto",
+          "question": "Tirar uma dúvida",
+          "partnership": "Fazer uma parceria"
+        },
+        "useCase": "Para que vocês usariam o Bipe? (opcional)",
+        "pain": "Qual é o maior problema ao falar com os clientes hoje? (opcional)",
+        "timeframe": "Quando vocês querem começar? (opcional)",
+        "timeframes": {
+          "now": "Este mês",
+          "quarter": "Nos próximos 3 meses",
+          "year": "Este ano",
+          "exploring": "Só estamos conhecendo"
+        },
+        "doneByIntent": {
+          "pilot": "Recebemos. A gente responde por e-mail para conversar sobre o piloto.",
+          "question": "Recebemos. A gente responde a sua dúvida por e-mail.",
+          "partnership": "Recebemos. A gente responde por e-mail para conversar sobre a parceria."
+        }
       },
       "small": {
-        "heading": "MEI, microempresa ou autônomo?",
-        "body": "Você não precisa do formulário. Baixe o app e crie a conta da empresa em Você > Sua conta > Criar conta da empresa. Dá para criar sem CNPJ. O plano Pequeno negócio não tem mensalidade.",
+        "heading": "Até 2 atendentes e 1.000 clientes no Bipe?",
+        "body": "Você não precisa do formulário. Baixe o app e crie a conta em Você > Sua conta > Criar conta da empresa. Até 2 atendentes e 1.000 clientes ativos no Bipe, é de graça, com o mesmo selo dos planos pagos. Dá para criar sem CNPJ.",
         "button": "Baixar o app"
-      }
+      },
+      "audiencesHeading": "Para cada tipo de organização"
     },
     "en": {
       "nav": "For organisations",
@@ -2772,15 +3092,383 @@
         "submit": "Send",
         "done": "Got it. We will answer by email.",
         "error": "Could not send. Try again in a moment.",
-        "note": "We use this only to answer you and to learn what organisations pay today. We keep it in Starlings, Envisioning's work system, on servers in the European Union, and delete it after one year."
+        "note": "We use this only to answer you and to learn what organisations pay today. We keep it in Starlings, Envisioning's work system, on servers in the European Union, and delete it after one year.",
+        "intent": "What do you want?",
+        "intents": {
+          "pilot": "Test Bipe in the pilot",
+          "question": "Ask a question",
+          "partnership": "Partner with Bipe"
+        },
+        "useCase": "What would you use Bipe for? (optional)",
+        "pain": "What is the biggest problem when you talk to customers today? (optional)",
+        "timeframe": "When do you want to start? (optional)",
+        "timeframes": {
+          "now": "This month",
+          "quarter": "In the next 3 months",
+          "year": "This year",
+          "exploring": "We are only looking"
+        },
+        "doneByIntent": {
+          "pilot": "Got it. We will answer by email to talk about the pilot.",
+          "question": "Got it. We will answer your question by email.",
+          "partnership": "Got it. We will answer by email to talk about the partnership."
+        }
       },
       "small": {
-        "heading": "MEI, micro company or self-employed?",
-        "body": "You don't need the form. Get the app and create the company account in You > Your account > Create a company account. You can create it with no CNPJ. The Small business plan has no monthly fee.",
+        "heading": "Up to 2 agents and 1,000 customers on Bipe?",
+        "body": "You don't need the form. Get the app and create the account in You > Your account > Create a company account. Up to 2 agents and 1,000 active customers on Bipe, it is free, with the same badge as the paid plans. You can create it with no CNPJ.",
         "button": "Get the app"
-      }
+      },
+      "audiencesHeading": "For each kind of organisation"
     }
   },
+  "organisationAudiences": [
+    {
+      "id": "government",
+      "kind": "public_body",
+      "slug": {
+        "pt": "governo",
+        "en": "government"
+      },
+      "sections": [
+        {
+          "id": "name",
+          "features": [
+            "reserved-names",
+            "lookalikes",
+            "cnpj-badge"
+          ],
+          "scene": "nome-reservado"
+        },
+        {
+          "id": "notices",
+          "features": [
+            "scam-alerts",
+            "requests",
+            "bot-mark"
+          ]
+        },
+        {
+          "id": "data",
+          "features": [
+            "brazil-servers",
+            "open-source",
+            "e2ee"
+          ]
+        },
+        {
+          "id": "price",
+          "features": []
+        }
+      ],
+      "pt": {
+        "name": "Órgãos públicos",
+        "title": "Bipe para órgãos públicos",
+        "headline": "O cidadão sabe que a mensagem é mesmo do órgão.",
+        "lede": "Os dados e os servidores do Bipe ficam no Brasil, sob a lei brasileira. Prefeituras, secretarias e autarquias falam com o cidadão com o nome verificado pelo CNPJ, e o nome do órgão fica reservado para a conta dele. O Bipe para organizações ainda está em estudo, e o piloto é gratuito.",
+        "note": "Cada recurso mostra em que ponto está. Abra o recurso para ver o status no iPhone e no Android.",
+        "sections": [
+          {
+            "heading": "O nome do órgão fica com o órgão",
+            "body": "Nomes como INSS e Correios ficam reservados para a conta com o CNPJ verificado do órgão. Quem tenta o mesmo nome com uma letra trocada, como c0rreios, também é barrado. Assim o falso servidor não consegue usar o nome do órgão para pedir dados ou dinheiro."
+          },
+          {
+            "heading": "Aviso oficial com cara de aviso oficial",
+            "body": "Um aviso de uma conta com selo de instituição aparece diferente de uma conversa comum e só abre links do site do próprio órgão. Esse aviso está em desenvolvimento. A verificação de órgão público, que confere se o CNPJ é da administração pública, ainda é um plano."
+          },
+          {
+            "heading": "Dados no Brasil, código que dá para conferir",
+            "body": "Os servidores ficam no Brasil, em empresas brasileiras de hospedagem. O código é aberto, então a equipe técnica do órgão pode conferir o que o app e o servidor fazem. As conversas são protegidas de ponta a ponta, e o Bipe não lê."
+          },
+          {
+            "heading": "Preço fixo por ano, sem preço por mensagem",
+            "body": "Órgão público paga metade do preço, num contrato anual pelo número de pessoas que falam com o órgão no Bipe. Até 1.000 pessoas ativas no Bipe e 2 atendentes, é de graça. Nenhum plano cobra por mensagem, então o custo não cresce a cada aviso. Os valores saem quando o piloto terminar."
+          }
+        ],
+        "cta": "Quer testar o Bipe num serviço do seu órgão? Conte como vocês falam com o cidadão hoje."
+      },
+      "en": {
+        "name": "Public bodies",
+        "title": "Bipe for public bodies",
+        "headline": "Citizens know the message really comes from the public body.",
+        "lede": "Bipe's data and servers stay in Brazil, under Brazilian law. City halls, departments and agencies talk to citizens under a name verified by CNPJ, and the body's name is reserved for its own account. Bipe for organisations is still a proposal, and the pilot is free.",
+        "note": "Each feature shows where it stands. Open a feature to see its status on iPhone and Android.",
+        "sections": [
+          {
+            "heading": "The body's name stays with the body",
+            "body": "Names like INSS and Correios are reserved for the account with the body's verified CNPJ. Someone who tries the same name with one letter swapped, like c0rreios, is blocked too. So a fake official can't use the body's name to ask for data or money."
+          },
+          {
+            "heading": "An official notice that looks official",
+            "body": "A notice from an account with an institution badge looks different from a normal chat and only opens links to the body's own site. This notice is in development. The public body check, which confirms that a CNPJ belongs to the public administration, is still a plan."
+          },
+          {
+            "heading": "Data in Brazil, code you can check",
+            "body": "The servers are in Brazil, at Brazilian hosting companies. The code is open, so the body's technical team can check what the app and the server do. Chats are end-to-end encrypted, and Bipe can't read them."
+          },
+          {
+            "heading": "A fixed yearly price, no price per message",
+            "body": "A public body pays half the price, on a yearly contract by the number of people who talk with it on Bipe. Up to 1,000 active people on Bipe and 2 agents, it is free. No plan charges per message, so the cost doesn't grow with each notice. Amounts come out when the pilot ends."
+          }
+        ],
+        "cta": "Want to test Bipe in one of your services? Tell us how you talk to citizens today."
+      }
+    },
+    {
+      "id": "institutions",
+      "kind": "association",
+      "slug": {
+        "pt": "instituicoes",
+        "en": "institutions"
+      },
+      "sections": [
+        {
+          "id": "name",
+          "features": [
+            "cnpj-badge",
+            "reserved-names",
+            "pix-charges"
+          ],
+          "scene": "doacao-real"
+        },
+        {
+          "id": "groups",
+          "features": [
+            "group-types",
+            "polls",
+            "communities",
+            "verified-groups"
+          ]
+        },
+        {
+          "id": "scams",
+          "features": [
+            "scam-alerts",
+            "requests",
+            "money-pause"
+          ]
+        },
+        {
+          "id": "price",
+          "features": []
+        }
+      ],
+      "pt": {
+        "name": "Instituições e associações",
+        "title": "Bipe para instituições e associações",
+        "headline": "Avisos para todos, com o nome da instituição à vista.",
+        "lede": "Os dados e os servidores do Bipe ficam no Brasil, sob a lei brasileira. Escolas, igrejas, cooperativas e ONGs falam com membros e famílias com o nome verificado pelo CNPJ. Quem copia o nome e a foto da instituição não ganha o selo. O Bipe para organizações ainda está em estudo. No piloto, a instituição paga metade do preço do plano, e esse valor vira crédito no primeiro ano.",
+        "note": "Cada recurso mostra em que ponto está. Abra o recurso para ver o status no iPhone e no Android.",
+        "sections": [
+          {
+            "heading": "A doação vai para o CNPJ, não para uma chave qualquer",
+            "body": "Na conversa com a instituição, o membro vê o selo e o CNPJ. Uma cobrança por Pix mostra o nome e o CNPJ verificados de quem vai receber, e o membro paga no app do banco. A cobrança por Pix ainda é um plano."
+          },
+          {
+            "heading": "Grupos que não viram barulho",
+            "body": "Num grupo novo, o celular só toca quando alguém marca a pessoa, responde a ela ou abre uma enquete. As comunidades vão juntar vários grupos e uma sala de avisos onde só a equipe escreve. Comunidades e grupos só com verificados ainda são planos."
+          },
+          {
+            "heading": "Menos golpe em nome da instituição",
+            "body": "Quem não está nos contatos chega como pedido de conversa. A checagem procura sinais de golpe e pode mostrar um aviso. Num pedido de dinheiro suspeito, o app trava o botão de pagar por 5 segundos."
+          },
+          {
+            "heading": "Metade do preço",
+            "body": "ONGs, igrejas e associações pagam metade do preço do plano que se aplica. Até 2 atendentes e 1.000 pessoas ativas no Bipe, é de graça. Nenhum plano cobra por mensagem. Os valores saem quando o piloto terminar."
+          }
+        ],
+        "cta": "Quer testar o Bipe com a sua instituição? Conte como vocês falam com os membros hoje."
+      },
+      "en": {
+        "name": "Institutions and associations",
+        "title": "Bipe for institutions and associations",
+        "headline": "Notices for everyone, with the institution's name in plain sight.",
+        "lede": "Bipe's data and servers stay in Brazil, under Brazilian law. Schools, churches, cooperatives and NGOs talk to members and families under a name verified by CNPJ. Someone who copies the institution's name and photo doesn't get the badge. Bipe for organisations is still a proposal. In the pilot, the institution pays half the plan price, and that amount becomes credit in the first year.",
+        "note": "Each feature shows where it stands. Open a feature to see its status on iPhone and Android.",
+        "sections": [
+          {
+            "heading": "Donations go to the CNPJ, not to any Pix key",
+            "body": "In the chat with the institution, members see the badge and the CNPJ. A Pix charge shows the verified name and CNPJ of who gets the money, and the member pays in their bank app. Pix charges are still a plan."
+          },
+          {
+            "heading": "Groups that don't turn into noise",
+            "body": "In a new group, the phone only rings when someone mentions the person, replies to them or opens a poll. Communities will bring several groups together with a notices room where only the team posts. Communities and verified-only groups are still plans."
+          },
+          {
+            "heading": "Fewer scams in the institution's name",
+            "body": "People who aren't in your contacts arrive as chat requests. The check looks for signs of a scam and can show a warning. On a suspicious request for money, the app locks the pay button for 5 seconds."
+          },
+          {
+            "heading": "Half the price",
+            "body": "NGOs, churches and associations pay half the price of the plan that applies. Up to 2 agents and 1,000 active people on Bipe, it is free. No plan charges per message. Amounts come out when the pilot ends."
+          }
+        ],
+        "cta": "Want to test Bipe with your institution? Tell us how you talk to members today."
+      }
+    },
+    {
+      "id": "finance",
+      "kind": "company",
+      "slug": {
+        "pt": "financeiro",
+        "en": "finance"
+      },
+      "sections": [
+        {
+          "id": "name",
+          "features": [
+            "reserved-names",
+            "lookalikes",
+            "cnpj-badge"
+          ],
+          "scene": "banco-real"
+        },
+        {
+          "id": "pix",
+          "features": [
+            "pix-charges",
+            "pix-check",
+            "money-pause"
+          ]
+        },
+        {
+          "id": "alerts",
+          "features": [
+            "scam-alerts",
+            "requests",
+            "no-sms"
+          ]
+        },
+        {
+          "id": "price",
+          "features": []
+        }
+      ],
+      "pt": {
+        "name": "Bancos e fintechs",
+        "title": "Bipe para bancos e fintechs",
+        "headline": "O falso atendente não consegue usar o nome do seu banco.",
+        "lede": "Os dados e os servidores do Bipe ficam no Brasil, sob a lei brasileira. No Bipe, o nome do banco fica reservado para a conta com o CNPJ verificado, e o cliente vê o selo em toda conversa. O Bipe para organizações ainda está em estudo. No piloto, o banco paga metade do preço do plano, e esse valor vira crédito no primeiro ano.",
+        "note": "Cada recurso mostra em que ponto está. Abra o recurso para ver o status no iPhone e no Android.",
+        "sections": [
+          {
+            "heading": "Só o banco usa o nome do banco",
+            "body": "O golpe do falso atendente começa com um perfil que copia o nome e a foto do banco. No Bipe, esse nome fica reservado para a conta com o CNPJ verificado, e nomes com uma letra trocada, como 1tau, também são barrados. O cliente vê o selo e o CNPJ na conversa com o banco de verdade."
+          },
+          {
+            "heading": "Pix com o nome de quem recebe",
+            "body": "Uma cobrança por Pix na conversa mostra o nome e o CNPJ verificados de quem vai receber, e o cliente paga no app do banco. Com o Conferir no Bipe, o cliente confere um código Pix antes de pagar. A cobrança por Pix ainda é um plano."
+          },
+          {
+            "heading": "Avisos para o cliente antes do golpe",
+            "body": "A checagem procura sinais de golpe nas mensagens e pode mostrar um aviso. Quem não está nos contatos chega como pedido de conversa. A conta do Bipe não usa código por SMS, então quem clona o chip do cliente não leva a conta dele."
+          },
+          {
+            "heading": "Contrato anual, sem preço por mensagem",
+            "body": "Bancos e fintechs ficam no plano Instituição: um valor por ano pelos clientes que usam o Bipe com o banco, que cresce junto com o uso e para em R$ 540 mil. Atendentes sem limite, todos os nomes da marca reservados e monitoramento de nomes parecidos. O selo não está à venda, e o plano paga só o serviço. Os valores saem quando o piloto terminar."
+          }
+        ],
+        "cta": "Quer testar o Bipe com os clientes do seu banco? Conte como vocês falam com eles hoje."
+      },
+      "en": {
+        "name": "Banks and fintechs",
+        "title": "Bipe for banks and fintechs",
+        "headline": "A fake support agent can't use your bank's name.",
+        "lede": "Bipe's data and servers stay in Brazil, under Brazilian law. On Bipe, the bank's name is reserved for the account with the verified CNPJ, and customers see the badge in every chat. Bipe for organisations is still a proposal. In the pilot, the bank pays half the plan price, and that amount becomes credit in the first year.",
+        "note": "Each feature shows where it stands. Open a feature to see its status on iPhone and Android.",
+        "sections": [
+          {
+            "heading": "Only the bank uses the bank's name",
+            "body": "The fake support scam starts with a profile that copies the bank's name and photo. On Bipe, that name is reserved for the account with the verified CNPJ, and names with one letter swapped, like 1tau, are blocked too. Customers see the badge and the CNPJ in the chat with the real bank."
+          },
+          {
+            "heading": "Pix with the name of who gets paid",
+            "body": "A Pix charge in the chat shows the verified name and CNPJ of who gets the money, and the customer pays in their bank app. With Check it in Bipe, the customer checks a Pix code before paying. Pix charges are still a plan."
+          },
+          {
+            "heading": "Warnings for customers before the scam",
+            "body": "The check looks for signs of a scam in messages and can show a warning. People who aren't in your contacts arrive as chat requests. A Bipe account doesn't use SMS codes, so someone who clones the customer's SIM doesn't get their account."
+          },
+          {
+            "heading": "A yearly contract, no price per message",
+            "body": "Banks and fintechs are on the Institution plan: a yearly amount by the customers who use Bipe with the bank, which grows with use and stops at R$ 540,000. Unlimited agents, every name of the brand reserved and monitoring of lookalike names. The badge isn't for sale, and the plan pays only for the service. Amounts come out when the pilot ends."
+          }
+        ],
+        "cta": "Want to test Bipe with your bank's customers? Tell us how you talk to them today."
+      }
+    },
+    {
+      "id": "partners",
+      "kind": "partner",
+      "slug": {
+        "pt": "parceiros",
+        "en": "partners"
+      },
+      "sections": [
+        {
+          "id": "open",
+          "features": [
+            "open-source",
+            "e2ee",
+            "brazil-servers"
+          ]
+        },
+        {
+          "id": "api",
+          "features": [],
+          "scene": "empresa-pergunta"
+        },
+        {
+          "id": "network",
+          "features": []
+        }
+      ],
+      "pt": {
+        "name": "Parceiros de tecnologia",
+        "title": "Bipe para parceiros de tecnologia",
+        "headline": "Um padrão aberto e uma API para ligar o Bipe aos seus sistemas.",
+        "lede": "Os dados e os servidores do Bipe ficam no Brasil, sob a lei brasileira. O Bipe usa o Matrix, um protocolo aberto, e o código é aberto. Plataformas de atendimento, integradores e quem revende tecnologia podem levar o Bipe aos clientes deles. A API do Bipe para empresas ainda está em estudo.",
+        "note": "Cada recurso mostra em que ponto está. Abra o recurso para ver o status no iPhone e no Android.",
+        "sections": [
+          {
+            "heading": "Um padrão aberto",
+            "body": "O Bipe usa o Matrix, um protocolo aberto para conversas. O código do app e do servidor é aberto, então qualquer equipe pode conferir o que ele faz antes de integrar. As conversas são protegidas de ponta a ponta."
+          },
+          {
+            "heading": "Uma API para os seus sistemas",
+            "body": "A API do Bipe para empresas vai mandar mensagens, modelos e perguntas com opções, e avisar de volta quando o cliente responde. Uma plataforma de atendimento pode trazer o Bipe como mais um canal pela mesma API, e um parceiro pode instalar e rodar tudo para empresas menores. A API ainda não está no ar."
+          },
+          {
+            "heading": "Ajude a sustentar a rede",
+            "body": "A ideia é que nenhuma empresa seja dona do Bipe e que outras organizações rodem servidores do Bipe na mesma rede. Por enquanto, a Envisioning faz o app e roda os servidores no Brasil. Se sua organização quer ajudar a sustentar o Bipe, use o mesmo formulário."
+          }
+        ],
+        "cta": "Quer integrar o Bipe ou ajudar a sustentar o Bipe? Conte o que vocês fazem."
+      },
+      "en": {
+        "name": "Technology partners",
+        "title": "Bipe for technology partners",
+        "headline": "An open standard and an API to connect Bipe to your systems.",
+        "lede": "Bipe's data and servers stay in Brazil, under Brazilian law. Bipe uses Matrix, an open protocol, and the code is open. Customer service platforms, integrators and technology resellers can bring Bipe to their customers. Bipe's business API is still a proposal.",
+        "note": "Each feature shows where it stands. Open a feature to see its status on iPhone and Android.",
+        "sections": [
+          {
+            "heading": "An open standard",
+            "body": "Bipe uses Matrix, an open protocol for chat. The code of the app and the server is open, so any team can check what it does before it integrates. Chats are end-to-end encrypted."
+          },
+          {
+            "heading": "An API for your systems",
+            "body": "Bipe's business API will send messages, templates and questions with options, and call you back when the customer replies. A customer service platform can bring Bipe in as one more channel through the same API, and a partner can set up and run everything for smaller companies. The API isn't live yet."
+          },
+          {
+            "heading": "Help carry the network",
+            "body": "The idea is that no company owns Bipe and that other organisations run Bipe servers on the same network. For now, Envisioning makes the app and runs the servers in Brazil. If your organisation wants to help carry Bipe, use the same form."
+          }
+        ],
+        "cta": "Want to integrate Bipe or help carry it? Tell us what you do."
+      }
+    }
+  ],
   "technical": {
     "pt": {
       "nav": "Tecnologia",
@@ -3050,10 +3738,20 @@
     ]
   },
   "home": {
+    "$comment": "The home page (bipe-web HomePage). proof: the always-true promises in a row under the hero. features: features in the iPhone test app (ADR 0129: planned and built-only features stay on their pages; bipe-web selfTest checks it).",
+    "proof": [
+      "free",
+      "no-ads",
+      "brazil-servers",
+      "open-source"
+    ],
     "features": [
-      "handles",
+      "scam-alerts",
       "requests",
-      "e2ee"
+      "no-sms",
+      "handles",
+      "e2ee",
+      "polls"
     ]
   }
 }

@@ -20,7 +20,7 @@
   },
   "actions": {
     "openHelp": {
-      "effect": "historyNotOnThisPhone: opens the encryption-status sheet. Other causes have no action."
+      "effect": "historyNotOnThisPhone: opens the encryption-status sheet. On a phone with encryption-status verificationState unverified, waiting and notSharedWithThisPhone open it too: under security rule 13 an unsigned phone gets no room key, so the key does not arrive by waiting (bipe-chat/bipe#853). Other causes have no action."
     }
   },
   "strings": [
@@ -42,6 +42,7 @@
     "The row looks like a quiet system line in the sender's bubble position, never like a warning. No lock icon with a red colour.",
     "unapprovedSenderDevice is calm: it says the message came from a device the sender has not approved. Scam warnings (trust UI) are separate and never use this row.",
     "bipe_app_utd_unapproved_device takes senderName.",
-    "No analytics (plan section 2): the app does not count or report undecryptable messages."
+    "No analytics (plan section 2): the app does not count or report undecryptable messages.",
+    "A row with cause waiting, historyNotOnThisPhone or notSharedWithThisPhone calls encryption-status noteUndecryptable when it shows, so the chat list banner can show (bipe-chat/bipe#853). This stays on the phone; it is not analytics."
   ]
 }

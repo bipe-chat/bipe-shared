@@ -21,7 +21,7 @@
       "lastMessage": {
         "type": "string",
         "optional": true,
-        "description": "Plain-text preview of the latest event, as the SDK formats it."
+        "description": "Plain-text preview of the row's latest event: the SDK latest event, or a newer message of the local timeline (see the row text note)."
       },
       "lastActivity": {
         "type": "date",
@@ -39,6 +39,14 @@
       "isOfficial": {
         "type": "bool",
         "description": "A DM whose other person's full user ID is in registries/official-accounts.json: the row shows the Bipe badge after the name (bipe_badge_official, label bipe_badge_official_a11y). Never from a name or a handle."
+      },
+      "isLowPriority": {
+        "type": "bool",
+        "description": "The SDK RoomInfo.isLowPriority tag state for archive synchronization (chat-archive)."
+      },
+      "isFavourite": {
+        "type": "bool",
+        "description": "The SDK RoomInfo.isFavourite tag state (m.favourite). A favourite shows in the favourites row, not in the list below it."
       }
     }
   },
@@ -67,6 +75,14 @@
         "grupos"
       ],
       "description": "conversas: rooms with two members, plus the Pedidos row at the top. grupos: rooms with more than two members."
+    },
+    "favourites": {
+      "type": "list",
+      "of": {
+        "type": "ChatSummary",
+        "description": "One favourite."
+      },
+      "description": "The favourites of the current scope that are not archived, in room list order. Empty hides the row."
     }
   },
   "actions": {
@@ -81,6 +97,19 @@
     },
     "loadMore": {
       "effect": "Asks the room list service for the next page when the list scrolls near its end."
+    },
+    "setFavourite": {
+      "params": {
+        "roomId": {
+          "type": "string",
+          "description": "The chat."
+        },
+        "favourite": {
+          "type": "bool",
+          "description": "true adds the m.favourite tag, false removes it."
+        }
+      },
+      "effect": "Room.setIsFavourite on that room in this account. The chat moves to the favourites row or back to the list when the room list updates."
     }
   },
   "strings": [
@@ -92,7 +121,8 @@
     "bipe_groups_empty_body",
     "bipe_dm_no_name",
     "bipe_badge_official",
-    "bipe_badge_official_a11y"
+    "bipe_badge_official_a11y",
+    "bipe_chat_favourites"
   ],
   "sdk": [
     "Client.syncService",
@@ -104,18 +134,23 @@
     "RoomListService.subscribeToRooms",
     "Room.latestEvent",
     "Room.timeline",
-    "Timeline.addListener"
+    "Timeline.addListener",
+    "Room.setIsFavourite",
+    "RoomListEntriesDynamicFilterKind"
   ],
   "parity": [
     "e2ee-only-rooms",
     "dm-one-row",
     "dm-name-photo",
-    "official-badge"
+    "official-badge",
+    "chat-favourites-filters"
   ],
   "notes": [
     "MZ decision 25 Oct 2026 (bipe#577): no current-account avatar in the top bar. Você shows the current account (spec voce). This replaces the top-bar avatar of ADR 0135 point 5 for Bipe Next.",
     "Row date (MZ decision 25 Oct 2026, bipe#592): every row with a known event shows its date. The SDK latest event (Room.latestEvent) skips encrypted events that this phone cannot decrypt (matrix-sdk latest_events: m.room.encrypted is never a candidate), so a room whose recent events are all undecryptable has no latest event. The time of an event is not encrypted: such a row takes origin_server_ts of the newest message-like event of the room's local timeline (Room.timeline, the first Timeline.addListener update, no pagination, no network), undecryptable events included; else the newest local event of any kind. Bipe logic: BipeRowActivity (BipeKit, libraries/bipe). Read it again when the room changes in the room list. Rows with no local event stay without a date until the SDK has one.",
-    "Keep a known latest-activity timestamp visible while the SDK briefly has no latest-event preview (bipe#590), scoped to this account session. The date label must have room beside a long chat title. Do not invent today's date for an unknown event or wait for network to draw the list. Truly unknown times remain unknown until local SDK data arrives.",
+    "Row text (MZ, 26 Oct 2026, bipe#592 follow-up): the SDK picks its latest event once, when the event arrives. A message that arrives before its room key is m.room.encrypted at that moment and is never a candidate, and nothing recomputes the latest event after the timeline decrypts it, so the row kept an older event (for example the own join, \"You accepted the invite\"). Every row also reads its local timeline (the same read as the row date). When the newest message-like local event is newer than the SDK latest event, or there is no SDK latest event, the row takes that event's time and its preview (text, media kind label, sticker, call kind or missed call, or bipe_app_timeline_undecryptable while it still does not decrypt). Otherwise the SDK latest event stays. A call (m.rtc.notification, m.call.invite) is message-like: the SDK takes it as a latest event too. Only an event with a preview gives the row its text (MZ, 27 Oct 2026, build 205: rows whose last event was a call showed a date and no text). A deleted message, a call membership change or an SDK latest event without a preview never blanks the text: the row keeps the newest preview it has. The row order stays the SDK's. Bipe logic: BipeRowActivity.",
+    "Row text, own and membership (MZ, 27 Oct 2026): an own message, sticker, media or call shows as bipe_chat_list_own_preview (\"You: <preview>\"). A missed call and a membership line never take the prefix. A join, an accepted invite, a leave or the room creation shows as a line when it is the newest local event: bipe_dm_joined_by_you, bipe_dm_joined, bipe_dm_left_by_you, bipe_dm_left, bipe_dm_created_by_you, bipe_dm_created in a DM; bipe_group_state_event_room_join_by_you, _join, _leave_by_you, _leave, _created_by_you, _created in a group. Other membership changes (invite, kick, ban, knock, profile) give the row no text. The SDK never takes a join as its latest event, so the local timeline read gives these lines.",
+    "Keep a known latest-activity timestamp and its preview visible while the SDK briefly has no latest-event preview or a changed room is read again (bipe#590), scoped to this account session. The date label must have room beside a long chat title. Do not invent today's date for an unknown event or wait for network to draw the list. Truly unknown times remain unknown until local SDK data arrives.",
     "bipe_app_chat_list_unread is the accessibility label of the badge. The count comes in already formatted.",
     "A chat with an unread mention (RoomInfo.numUnreadMentions > 0) shows an @ mark before the count, so a mention differs by shape, not only by colour (bipe#497). The badge's accessibility label adds bipe_a11y_mention.",
     "Message requests, filters, search, invites and Bipe trust badges are later issues. The slice lists joined rooms only.",
@@ -126,6 +161,8 @@
     "A group uses RoomInfo.displayName, including explicit room names, before hero/profile/localpart fallbacks. An absent hero never overrides an available SDK name with Unnamed chat. Do not read another client database or infer a missing date from current time.",
     "A DM (RoomInfo.isDm, ADR 0141) always shows the other person: the name is the hero display name, then RoomInfo.displayName only when it is not the room's own m.room.name (RoomInfo.rawName), then the localpart of the hero user id, then bipe_dm_no_name. The photo is the hero avatar only, never RoomInfo.avatarUrl (m.room.avatar): without one the row shows initials. The same rule holds in search, the share picker, the timeline header, person-profile and notifications.",
     "MZ supplied screenshots of build32 and the previous app on 23 October 2026: list dates/previews are missing on several rows, room ordering differs and a named chat appears unnamed. These are conversation-list parity reports (bipe#590), distinct from individual message clock footers. Use synthetic fixtures in committed regression tests; never publish personal screenshot contents.",
-    "Brand marks (ADR 0162, spec brand-mark): a DM row with a reseller shows the first verified mark's line under the name, short and on one line, with bipe_brand_mark_more for the others."
+    "Brand marks (ADR 0162, spec brand-mark): a DM row with a reseller shows the first verified mark's line under the name, short and on one line, with bipe_brand_mark_more for the others.",
+    "News room (MZ decision 27 Oct 2026, bipe#809): Novidades do Bipe is a named room, not a DM. bipe-api makes it without is_direct, so RoomInfo.isDm is false and the room takes the non-DM path everywhere: the row, the chat header, search and the notification title show RoomInfo.displayName (its m.room.name, bipe_news_room_name) and the room avatar, and the row is in the Grupos scope with no Bipe badge. The DM rule (ADR 0141) does not change. Rooms made before the fix are in the account's m.direct. Once per account on each phone, after the first sync, the app reads room_id from GET /v1/me/news and, when the room is joined, removes that room ID from the server copy of m.direct (Client.setAccountData; a user whose list becomes empty goes) and remembers that it ran. It waits while the room is only an invite, because joining an invite that says is_direct adds the room to m.direct again. A failure, or news_unavailable, tries again at the next start or return to the foreground. subscribed false counts as done. The support room stays a DM: it shows the support account's name, which bipe-api sets to bipe_support_room_name.",
+    "Favourites row (MZ, 27 Oct 2026, bipe#673): favourite chats (m.favourite, RoomInfo.isFavourite) show at the top of their scope as a grid of large avatars, three per line, with the name under each avatar on one line. A favourite does not show again in the list below. An unread favourite shows the accent dot on its avatar, and its accessibility label adds bipe_chat_unread_state. Tap opens the chat; long press opens the same chat-row-actions menu. The row is the first item of the list, above the history banner, the first-list cards, the Archived button, the requests row and group invites (MZ, 27 Oct 2026, build 233: under the invites it looked wrong). It scrolls with the chats. The group's accessibility label is bipe_chat_favourites. Order is the room list order. No limit: more than three wrap to the next line. The archived list never shows the row. The tag syncs, so a favourite set on one phone shows on every phone of the account. Default chosen: per scope (Conversas shows favourite DMs, Grupos favourite groups, a company account's single list shows both), because a scope shows only its own chats everywhere else. MZ can overrule. A favourite outside the loaded pages still shows: a second room list stream with the Favourite filter (All of Joined, NonSpace, Favourite, DeduplicateVersions) finds it, the same way chat-archive finds archives."
   ]
 }

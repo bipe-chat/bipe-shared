@@ -8,7 +8,7 @@ import { buildBrCode, crc16, pixCheck, pixMarkLines, pixTxid } from "./lib/pix.m
 import { cvmLines } from "./lib/cvm.mjs";
 import { noticeLinkClickable } from "./lib/notice.mjs";
 import { loadSchedulingVectors, writeSchedulingApiFixture } from "./lib/scheduling-vectors.mjs";
-import { photoDistance, photoHash, photoMatches, profileFactLines, relationshipNameWarning, newestDmRooms, clearedChatHidden, clearedChatKeepsEvent, clearedChatMarker, clearedChatsWithClear, compareAppVersions, extractInviteCode, handleProblem, handleSuggestions, pinReminderNext, pinProblem, remoteBannerState, normalizeCnpj, normalizePhone, handleSkeleton, loadRegistries, normalize, scamMatchIDs, scamWarningKind, trustFacts } from "./lib/registries.mjs";
+import { photoDistance, photoHash, photoMatches, profileFactLines, relationshipNameWarning, stickerEmojiKey, stickerMatches, stickerQueryTags, stickerSearchFold, newestDmRooms, clearedChatHidden, clearedChatKeepsEvent, clearedChatMarker, clearedChatsWithClear, compareAppVersions, extractInviteCode, handleProblem, isBipeUserID, handleSuggestions, pinReminderNext, pinProblem, remoteBannerState, normalizeCnpj, normalizePhone, displayPhone, handleSkeleton, loadRegistries, normalize, scamMatchIDs, scamWarningKind, trustFacts } from "./lib/registries.mjs";
 
 const root = join(dirname(fileURLToPath(import.meta.url)), "..");
 const reg = loadRegistries(root);
@@ -602,10 +602,23 @@ for (const { input, cnpj } of cnpjCases) {
 // --- Phone numbers -----------------------------------------------------------
 // Hand-written cases (test-vectors/phone-numbers.json). Check them against the reference; fail closed.
 
-const phoneCases = JSON.parse(readFileSync(join(root, "test-vectors", "phone-numbers.json"), "utf8")).vectors;
-for (const { input, e164 } of phoneCases) {
+const phoneFile = JSON.parse(readFileSync(join(root, "test-vectors", "phone-numbers.json"), "utf8"));
+for (const { input, e164 } of phoneFile.vectors) {
   const got = normalizePhone(input, reg);
   if (got !== e164) throw new Error(`phone-numbers.json: ${JSON.stringify(input)} gives ${got}, expected ${e164}`);
+}
+if (!(Array.isArray(phoneFile.display) && phoneFile.display.length > 0)) throw new Error("phone-numbers.json: display cases missing");
+for (const { e164, display } of phoneFile.display) {
+  const got = displayPhone(e164, reg);
+  if (got !== display) throw new Error(`phone-numbers.json display: ${JSON.stringify(e164)} gives ${got}, expected ${display}`);
+}
+
+// --- Bipe servers (ADR 0168, bipe-chat/bipe#680) -----------------------------
+// Hand-written cases (test-vectors/bipe-servers.json). Check them against the reference; fail closed.
+
+const serverCases = JSON.parse(readFileSync(join(root, "test-vectors", "bipe-servers.json"), "utf8")).vectors;
+for (const { userId, bipe } of serverCases) {
+  if (isBipeUserID(userId, reg) !== bipe) throw new Error(`bipe-servers.json: ${JSON.stringify(userId)} gives ${!bipe}, expected ${bipe}`);
 }
 
 // --- Pix check ("Conferir no Bipe", bipe ADR 0091) -------------------------
@@ -704,6 +717,16 @@ for (const vector of relationshipVectors.vectors) {
   if (relationshipNameWarning(vector.savedName, vector.verifiedName, vector.nicknameConfirmed, reg) !== vector.expected) throw new Error(`relationship-names: fixture differs for ${vector.name}`);
 }
 write("relationship-names.json", relationshipVectors);
+
+// --- Sticker search (ADR 0205) ---------------------------------------------
+const stickerFixture = JSON.parse(readFileSync(join(root, "fixtures/sticker-search.json"), "utf8"));
+write("sticker-search.json", {
+  $comment: stickerFixture.$comment,
+  fold: stickerFixture.fold.map((input) => ({ input, expected: stickerSearchFold(input) })),
+  emoji_key: stickerFixture.emojiKey.map((input) => ({ input, expected: stickerEmojiKey(input) })),
+  tags: stickerFixture.tags.map((query) => ({ query, expected: stickerQueryTags(query, reg) })),
+  matches: stickerFixture.matches.map((c) => ({ ...c, expected: stickerMatches(c.query, c.sticker, reg) })),
+});
 
 const archiveVectors = JSON.parse(readFileSync(join(root, "fixtures/chat-archive.json"), "utf8"));
 write("chat-archive.json", archiveVectors);

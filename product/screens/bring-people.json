@@ -1,0 +1,83 @@
+{
+  "id": "bring-people",
+  "title": "Bring your people",
+  "flow": "invites",
+  "summary": "A sheet that asks a new member for up to 4 people from their family, one slot at a time (bipe-chat/bipe#752). Each filled slot is a personal invite with that person's name; the system share sheet sends its link. Slots show the state of each invite: sent, joined or expired.",
+  "types": {
+    "BringSlot": {
+      "inviteId": { "type": "string", "optional": true, "description": "The personal invite of this slot. Absent for an empty slot." },
+      "name": { "type": "string", "optional": true, "description": "Who the slot is for (Invite.name). Required before the invite is made." },
+      "status": {
+        "type": "enum",
+        "values": ["empty", "editing", "sent", "joined", "expired"],
+        "description": "empty: bipe_bring_people_slot_empty. editing: the name field and bipe_first_card_invite_action. sent: pending invite, bipe_bring_people_sent. joined: bipe_bring_people_joined, the row opens the DM. expired: bipe_bring_people_expired, the row offers bipe_bring_people_expired_action."
+      }
+    }
+  },
+  "state": {
+    "slots": { "type": "list", "of": { "type": "BringSlot", "description": "One slot." }, "description": "Exactly registries/onboarding.json bringPeople.slots slots (4), filled slots first in the order they were filled." },
+    "available": { "type": "int", "optional": true, "description": "MyInvites.available. Empty slots beyond it stay hidden; at 0 the sheet shows bipe_invites_none_left and bipe_invites_next. Absent while loading." },
+    "nextAvailableAt": { "type": "date", "optional": true, "description": "MyInvites.next_available_at, when available is 0." },
+    "phase": {
+      "type": "enum",
+      "values": ["loading", "ready", "creating", "failed"],
+      "description": "creating: one slot's invite is being made (bipe_app_invite_creating on that slot). failed: bipe_error_network with bipe_app_retry, or bipe_error_invite_quota."
+    }
+  },
+  "actions": {
+    "appear": { "effect": "GET /v1/me/invites. Fills the slots from the invite ids this phone keeps for this flow, and updates each slot status from the invite status." },
+    "editSlot": {
+      "params": { "index": { "type": "int", "description": "An empty slot." } },
+      "effect": "Opens the name field on that slot, with bipe_bring_people_name_placeholder. One slot edits at a time."
+    },
+    "invite": {
+      "params": { "index": { "type": "int", "description": "The slot being edited." }, "name": { "type": "string", "description": "Not empty." } },
+      "effect": "POST /v1/me/invites, then PUT /v1/me/invites/{inviteId} with the name. Keeps the link and the invite id on this phone for this flow. Opens the system share sheet with bipe_invites_share_message and the link. The slot becomes sent whether or not the share sheet sent it. A retry never repeats POST."
+    },
+    "openJoined": {
+      "params": { "index": { "type": "int", "description": "A joined slot." } },
+      "effect": "Opens the DM with the person who joined (Client.getDmRoom)."
+    },
+    "resend": {
+      "params": { "index": { "type": "int", "description": "A sent slot." } },
+      "effect": "Opens the system share sheet again with the same link. An invite made on another phone has no link here: opens invite-qr."
+    },
+    "replaceExpired": {
+      "params": { "index": { "type": "int", "description": "An expired slot." } },
+      "effect": "Makes a new invite with the same name, as invite, in the same slot."
+    },
+    "done": { "effect": "Closes the sheet. Counts as an answer, not a decline." },
+    "notNow": { "effect": "Closes the sheet and adds one decline (bringPeople.stopAfterDeclines). Shown only while no slot is filled." }
+  },
+  "strings": [
+    "bipe_bring_people_title",
+    "bipe_bring_people_body",
+    "bipe_bring_people_slot_empty",
+    "bipe_bring_people_name_placeholder",
+    "bipe_first_card_invite_action",
+    "bipe_bring_people_sent",
+    "bipe_bring_people_joined",
+    "bipe_bring_people_expired",
+    "bipe_bring_people_resend",
+    "bipe_bring_people_expired_action",
+    "bipe_bring_people_done",
+    "bipe_fallback_skip",
+    "bipe_invites_share_message",
+    "bipe_invites_none_left",
+    "bipe_invites_next",
+    "bipe_app_invite_creating",
+    "bipe_error_invite_quota",
+    "bipe_error_network",
+    "bipe_app_retry"
+  ],
+  "sdk": ["Client.getDmRoom"],
+  "parity": ["bring-people", "invites"],
+  "notes": [
+    "Decisions (MZ, 26 October 2026, bipe-chat/bipe#752): up to 4 named people, family first (ADR 0047), at most one follow-up ask per week, stop after two declines, success is the days from sign-up to the fifth contact.",
+    "When it opens: the first time Conversas shows after signup-done, that is after the person leaves the inviter's chat. Never before the first message (the 60-second target in docs/onboarding.md), and never over another sheet: after the notifications prompt when both are due. The first-list invite card (chat-list-cards shareInvite) opens this sheet too.",
+    "Registry to add in the build (generate, never copy, ADR 0031): registries/onboarding.json bringPeople { slots: 4, firstCircle: \"family\", followUpEveryDays: 7, pendingAfterDays: 3, stopAfterDeclines: 2 }, the prompt key bringPeople with trigger firstChatListAfterSignup and target bringPeopleSheet, and the prompt key bringPeopleReminder with trigger bringPeopleDue (spec bring-people-reminder). gen-onboarding.mjs gets the new triggers and targets; the schedule rule goes in tools/lib/registries.mjs with test vectors, like pinReminderNext.",
+    "Each slot is one personal invite from the normal quota (INVITES_PER_USER, 10 today). The flow makes no bulk send, reads no address book and sends no message to a person who did not start a chat (security rule 11).",
+    "The name stays on the server as Invite.name, seen only by the user, as in invite-note. The invite ids of this flow are kept on this phone per account; the slots of another phone start empty.",
+    "Out of scope: a reward per invite (it makes spam), group asks (waits for joining a group by link), and any text that names a party or a politician (strategy principle 1)."
+  ]
+}

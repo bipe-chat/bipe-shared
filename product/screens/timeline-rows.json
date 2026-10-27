@@ -5,45 +5,127 @@
   "summary": "The kinds of row the chat timeline shows between and around messages: date separators, the new-messages marker, deleted messages, handle-change lines and the notice for a chat without end-to-end encryption. It replaces the messages list of chat-timeline with a list of rows.",
   "types": {
     "TimelineRow": {
-      "id": { "type": "string", "description": "The SDK unique timeline item id, or the local line id for a handle change. Stable key for the row." },
+      "id": {
+        "type": "string",
+        "description": "The SDK unique timeline item id, or the local line id for a handle change. Stable key for the row."
+      },
       "kind": {
         "type": "enum",
-        "values": ["message", "undecryptable", "deleted", "dateSeparator", "readMarker", "handleChange", "notEncrypted", "chatStart", "unsupported"],
+        "values": [
+          "message",
+          "undecryptable",
+          "deleted",
+          "dateSeparator",
+          "readMarker",
+          "handleChange",
+          "notEncrypted",
+          "chatStart",
+          "unsupported"
+        ],
         "description": "message: a text message with its details. undecryptable: the message-undecryptable row. deleted: a redacted message. dateSeparator: the first row of a day. readMarker: where the unread messages start. handleChange: a local handle-change-line. notEncrypted: the notice of an unencrypted chat. chatStart: the start of the chat. unsupported: any other event the client does not show yet."
       },
-      "message": { "type": "TimelineMessage", "optional": true, "description": "kind message and deleted: sender, time and send state. body is empty for deleted." },
-      "details": { "type": "MessageDetails", "optional": true, "description": "kind message only." },
-      "undecryptable": { "type": "UndecryptableMessage", "optional": true, "description": "kind undecryptable only." },
-      "day": { "type": "date", "optional": true, "description": "kind dateSeparator only: a time on that day, in local time." },
-      "handleChange": { "type": "HandleChangeLine", "optional": true, "description": "kind handleChange only." }
+      "message": {
+        "type": "TimelineMessage",
+        "optional": true,
+        "description": "kind message and deleted: sender, time and send state. body is empty for deleted."
+      },
+      "details": {
+        "type": "MessageDetails",
+        "optional": true,
+        "description": "kind message only."
+      },
+      "undecryptable": {
+        "type": "UndecryptableMessage",
+        "optional": true,
+        "description": "kind undecryptable only."
+      },
+      "day": {
+        "type": "date",
+        "optional": true,
+        "description": "kind dateSeparator only: a time on that day, in local time."
+      },
+      "handleChange": {
+        "type": "HandleChangeLine",
+        "optional": true,
+        "description": "kind handleChange only."
+      }
     },
     "MessageDetails": {
-      "eventId": { "type": "string", "optional": true, "description": "The Matrix event ID. Missing while a local echo is not sent yet." },
-      "reply": { "type": "MessageReply", "optional": true, "description": "The message this one replies to (message-reply)." },
-      "reactions": { "type": "list", "of": { "type": "MessageReaction", "description": "One reaction key." }, "description": "Reactions in the order the SDK gives (message-reactions). Empty hides the row." },
-      "isEdited": { "type": "bool", "description": "true when the message has an edit (message-edit)." },
-      "receipt": { "type": "MessageReceipt", "optional": true, "description": "Own messages only (read-receipts)." },
-      "scamWarning": { "type": "ScamWarning", "optional": true, "description": "Messages from other people only (scam-warning)." },
-      "canReply": { "type": "bool", "description": "The SDK says the message can get a reply." },
-      "canEdit": { "type": "bool", "description": "The SDK says this account can edit the message." },
-      "canDelete": { "type": "bool", "description": "This account can delete the message (message-actions)." }
+      "eventId": {
+        "type": "string",
+        "optional": true,
+        "description": "The Matrix event ID. Missing while a local echo is not sent yet."
+      },
+      "reply": {
+        "type": "MessageReply",
+        "optional": true,
+        "description": "The message this one replies to (message-reply)."
+      },
+      "reactions": {
+        "type": "list",
+        "of": {
+          "type": "MessageReaction",
+          "description": "One reaction key."
+        },
+        "description": "Reactions in the order the SDK gives (message-reactions). Empty hides the row."
+      },
+      "isEdited": {
+        "type": "bool",
+        "description": "true when the message has an edit (message-edit)."
+      },
+      "receipt": {
+        "type": "MessageReceipt",
+        "optional": true,
+        "description": "Own messages only (read-receipts)."
+      },
+      "scamWarning": {
+        "type": "ScamWarning",
+        "optional": true,
+        "description": "Messages from other people only (scam-warning)."
+      },
+      "canReply": {
+        "type": "bool",
+        "description": "The SDK says the message can get a reply."
+      },
+      "canEdit": {
+        "type": "bool",
+        "description": "The SDK says this account can edit the message."
+      },
+      "canDelete": {
+        "type": "bool",
+        "description": "This account can delete the message (message-actions)."
+      }
     }
   },
   "state": {
     "rows": {
       "type": "list",
-      "of": { "type": "TimelineRow", "description": "One row." },
+      "of": {
+        "type": "TimelineRow",
+        "description": "One row."
+      },
       "description": "Oldest first. Replaces chat-timeline messages."
     },
-    "isDm": { "type": "bool", "description": "The SDK DM test (RoomInfo.isDm, ADR 0141)." },
-    "isEncrypted": { "type": "bool", "description": "false when the room has no end-to-end encryption." }
+    "isDm": {
+      "type": "bool",
+      "description": "The SDK DM test (RoomInfo.isDm, ADR 0141)."
+    },
+    "isEncrypted": {
+      "type": "bool",
+      "description": "false when the room has no end-to-end encryption."
+    }
   },
   "actions": {
     "markAsRead": {
       "effect": "Sends a public read receipt (m.read, ADR 0050) for the newest event when the newest rows are on screen and the app is in the foreground."
     },
     "openHandleChangeProfile": {
-      "params": { "userId": { "type": "string", "description": "The person of the line." } },
+      "params": {
+        "userId": {
+          "type": "string",
+          "description": "The person of the line."
+        }
+      },
       "effect": "Opens the person's profile."
     }
   },
@@ -74,8 +156,15 @@
     "RoomInfo",
     "Room.latestEncryptionState"
   ],
-  "parity": ["e2ee-only-rooms", "handle-change-notice"],
+  "parity": [
+    "e2ee-only-rooms",
+    "handle-change-notice",
+    "timeline-notice-emote",
+    "timeline-links-formatting"
+  ],
   "notes": [
+    "Text, notice and emote messages render Matrix org.matrix.custom.html as native text runs (bipe#660). Render bold, italic, strike, code, pre, ordered and unordered lists, blockquotes and safe links. Use registries/message-formatting.json for schemes, detection and parser limits, and test-vectors/message-formatting.json on both apps. Strip unsupported attributes and never load images, scripts, styles or other remote resources. Remove mx-reply fallback. On parse or size/depth failure, use the plain body. Detect URLs, email and phone numbers outside code. A Matrix user mention is a styled native link to the person profile; Bipe profile and invite links stay in the app. Other supported links use the system. Link activation respects the money pause. Scam checks include the original body, visible text and link destinations; copying and editing keep the original body. Institution notice cards keep their verified-domain link rule (ADR 0036).",
+    "m.notice uses the normal text bubble. m.emote shows '* <sender name> <body>'. Any other message type without a supported media or location renderer shows its body as plain text, rather than disappearing (bipe#659). Keep the original body for copying, editing, replies and scam checks; the emote prefix is display text only. These messages participate in read receipts like other visible messages. Chat-list and notification previews keep their existing plain-body behaviour.",
     "Every event message has its original local-time timestamp, including text, media, voice, stickers, polls, undecryptable and deleted messages (bipe#590). Show a short clock time on each message and expose its full date and time to VoiceOver/TalkBack. Daily separators are additional labels, never a substitute for a message timestamp. Edits and deletion do not replace the original event time. Do not add message actions or receipts to a deleted row.",
     "Date separators: TimelineConfiguration.dateDividerMode Daily. VirtualTimelineItem.DateDivider gives the day. Today and yesterday use the two strings; other days use the system date formatter in the app language, with the year only when it is not the current year.",
     "VirtualTimelineItem.ReadMarker becomes readMarker. The marker stays until the chat closes, so the person sees where they stopped.",

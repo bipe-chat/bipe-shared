@@ -1,0 +1,278 @@
+{
+  "version": 1,
+  "cases": [
+    {
+      "name": "bold and list",
+      "body": "Hello bold\none\ntwo",
+      "html": "<p>Hello <strong>bold</strong></p><ul><li>one</li><li>two</li></ul>",
+      "text": "Hello bold\n• one\n• two",
+      "bold": "bold",
+      "italic": "",
+      "strike": "",
+      "code": "",
+      "links": []
+    },
+    {
+      "name": "nested emphasis",
+      "body": "both plain",
+      "html": "<b><i>both</i></b> plain",
+      "text": "both plain",
+      "bold": "both",
+      "italic": "both",
+      "strike": "",
+      "code": "",
+      "links": []
+    },
+    {
+      "name": "entities and quoted greater-than",
+      "body": "A & B > C",
+      "html": "<span title=\"x > y\">A &amp; B &gt; C</span>",
+      "text": "A & B > C",
+      "bold": "",
+      "italic": "",
+      "strike": "",
+      "code": "",
+      "links": []
+    },
+    {
+      "name": "ordered list start",
+      "body": "first second",
+      "html": "<ol start=\"3\"><li>first</li><li>second</li></ol>",
+      "text": "3. first\n4. second",
+      "bold": "",
+      "italic": "",
+      "strike": "",
+      "code": "",
+      "links": []
+    },
+    {
+      "name": "code preserves whitespace and has no automatic links",
+      "body": "code",
+      "html": "<pre>  a\nhttps://example.org</pre>",
+      "text": "  a\nhttps://example.org",
+      "code": "  a\nhttps://example.org",
+      "bold": "",
+      "italic": "",
+      "strike": "",
+      "links": []
+    },
+    {
+      "name": "strike and quote",
+      "body": "old quoted",
+      "html": "<s>old</s><blockquote>quoted</blockquote>",
+      "text": "old\n│ quoted",
+      "strike": "old",
+      "bold": "",
+      "italic": "",
+      "code": "",
+      "links": []
+    },
+    {
+      "name": "unknown tags lose attributes",
+      "body": "plain",
+      "html": "<span style=\"font-weight:bold\" onclick=\"alert(1)\">plain</span>",
+      "text": "plain",
+      "bold": "",
+      "italic": "",
+      "strike": "",
+      "code": "",
+      "links": []
+    },
+    {
+      "name": "scripts images and styling never become content",
+      "body": "safe",
+      "html": "safe<script>alert(1)</script><style>body{display:none}</style><img src=\"https://attacker.invalid/a\"><iframe src=\"https://attacker.invalid/\">hidden</iframe>",
+      "text": "safe",
+      "bold": "",
+      "italic": "",
+      "strike": "",
+      "code": "",
+      "links": []
+    },
+    {
+      "name": "javascript entity escaped is not a link",
+      "body": "tap",
+      "html": "<a href=\"java&#115;cript:alert(1)\">tap</a>",
+      "text": "tap",
+      "bold": "",
+      "italic": "",
+      "strike": "",
+      "code": "",
+      "links": []
+    },
+    {
+      "name": "relative and protocol-relative links are inert",
+      "body": "a b",
+      "html": "<a href=\"/account\">a</a> <a href=\"//evil.invalid\">b</a>",
+      "text": "a b",
+      "bold": "",
+      "italic": "",
+      "strike": "",
+      "code": "",
+      "links": []
+    },
+    {
+      "name": "mention is a native link",
+      "body": "Hello Ana",
+      "html": "Hello <a href=\"https://matrix.to/#/@ana:bipe.net.br\">Ana</a>",
+      "text": "Hello Ana",
+      "links": [
+        "https://matrix.to/#/@ana:bipe.net.br"
+      ],
+      "bold": "",
+      "italic": "",
+      "strike": "",
+      "code": ""
+    },
+    {
+      "name": "hidden link destination remains checked",
+      "body": "bank",
+      "html": "<a href=\"https://other.invalid/pay\">bank</a>",
+      "text": "bank",
+      "links": [
+        "https://other.invalid/pay"
+      ],
+      "bold": "",
+      "italic": "",
+      "strike": "",
+      "code": ""
+    },
+    {
+      "name": "reply fallback is removed",
+      "body": "new",
+      "html": "<mx-reply><blockquote>old reply</blockquote></mx-reply>new",
+      "text": "new",
+      "bold": "",
+      "italic": "",
+      "strike": "",
+      "code": "",
+      "links": []
+    },
+    {
+      "name": "malformed HTML stays readable",
+      "body": "hello bold",
+      "html": "hello <b>bold",
+      "text": "hello bold",
+      "bold": "bold",
+      "italic": "",
+      "strike": "",
+      "code": "",
+      "links": []
+    },
+    {
+      "name": "emoji preserves URL ranges and punctuation",
+      "body": "👋 Veja https://example.org/a.",
+      "text": "👋 Veja https://example.org/a.",
+      "links": [
+        "https://example.org/a"
+      ],
+      "bold": "",
+      "italic": "",
+      "strike": "",
+      "code": ""
+    },
+    {
+      "name": "email and BR phone",
+      "body": "ana@example.org +55 (11) 98888-1234",
+      "text": "ana@example.org +55 (11) 98888-1234",
+      "links": [
+        "mailto:ana@example.org",
+        "tel:+5511988881234"
+      ],
+      "bold": "",
+      "italic": "",
+      "strike": "",
+      "code": ""
+    },
+    {
+      "name": "preformatted code is not clickable",
+      "body": "https://example.org",
+      "html": "<code>https://example.org</code>",
+      "text": "https://example.org",
+      "code": "https://example.org",
+      "bold": "",
+      "italic": "",
+      "strike": "",
+      "links": []
+    },
+    {
+      "name": "only dangerous content falls back to body",
+      "body": "fallback",
+      "html": "<script>hidden</script>",
+      "text": "fallback",
+      "bold": "",
+      "italic": "",
+      "strike": "",
+      "code": "",
+      "links": []
+    },
+    {
+      "name": "paragraph-wrapped list items",
+      "body": "one two",
+      "html": "<ul><li><p>one</p></li><li><p>two</p></li></ul>",
+      "text": "• one\n• two",
+      "bold": "",
+      "italic": "",
+      "strike": "",
+      "code": "",
+      "links": []
+    },
+    {
+      "name": "paragraph-wrapped quote",
+      "body": "quoted",
+      "html": "<blockquote>\n<p>quoted</p>\n</blockquote>",
+      "text": "│ quoted",
+      "bold": "",
+      "italic": "",
+      "strike": "",
+      "code": "",
+      "links": []
+    }
+  ],
+  "safeLinks": [
+    {
+      "url": "https://example.org/a",
+      "allowed": true
+    },
+    {
+      "url": "http://example.org",
+      "allowed": true
+    },
+    {
+      "url": "mailto:ana@example.org",
+      "allowed": true
+    },
+    {
+      "url": "tel:+5511988881234",
+      "allowed": true
+    },
+    {
+      "url": "matrix:u/ana:bipe.net.br",
+      "allowed": true
+    },
+    {
+      "url": "javascript:alert(1)",
+      "allowed": false
+    },
+    {
+      "url": "data:text/html,x",
+      "allowed": false
+    },
+    {
+      "url": "file:///etc/passwd",
+      "allowed": false
+    },
+    {
+      "url": "//evil.invalid",
+      "allowed": false
+    },
+    {
+      "url": "https://good.invalid@evil.invalid",
+      "allowed": false
+    },
+    {
+      "url": "https://example.org\n",
+      "allowed": false
+    }
+  ]
+}

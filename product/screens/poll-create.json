@@ -58,6 +58,6 @@
     "One vote per person in the MVP (maxSelections 1). Multiple choice and editing a sent poll are out of scope.",
     "A poll is a plain Matrix poll event (m.poll.start, unstable prefix through the SDK), end-to-end encrypted like every message. No Bipe server code (parity polls).",
     "In a quiet group a new poll notifies every member through the push rule chat.bipe.poll_start (chat-notifications, ADR 0026). Open polls the member has not answered show in the O que você perdeu block (bipe_group_missed_poll, groups.md).",
-    "DMs keep polls: ADR 0141 does not list polls among the features a DM does not have. If MZ decides otherwise, the composer hides the entry when RoomInfo.isDm is true."
+    "A DM has no polls (ADR 0192): attachment-picker hides the poll row when RoomInfo.isDm is true. A poll already in a DM still shows and takes votes."
   ]
 }

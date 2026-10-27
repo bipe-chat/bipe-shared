@@ -48,6 +48,9 @@
     },
     "retry": {
       "effect": "Retries the failed read/unread intent in its original account; never substitutes the currently selected account."
+    },
+    "favourite": {
+      "effect": "Runs chat-list setFavourite: Favourite when the chat is not a favourite, Remove from favourites when it is. Not shown for an archived chat. An SDK error shows bipe_error_generic."
     }
   },
   "strings": [
@@ -61,13 +64,17 @@
     "bipe_settings_notifications",
     "bipe_dm_delete_action",
     "bipe_chat_read_error",
-    "bipe_app_retry"
+    "bipe_app_retry",
+    "bipe_chat_favourite_action",
+    "bipe_chat_unfavourite_action",
+    "bipe_error_generic"
   ],
   "sdk": [
     "Client.getRoom",
     "Room.roomInfo",
     "Room.markAsRead",
-    "Room.setUnreadFlag"
+    "Room.setUnreadFlag",
+    "Room.setIsFavourite"
   ],
   "parity": [],
   "notes": [
@@ -78,6 +85,7 @@
     "The unread flag contributes to conversation and account attention. Groups keep their existing mention/reply badge policy. Archive leaves unread and notification policy unchanged.",
     "Mark read sends the receipt before clearing the manual flag. A partial failure remains retryable and does not claim complete success. A failed read write does not block local Archive or navigation. No new startup network gate.",
     "DM details need a known partner; disable that route while the SDK has no partner. Group details use the selected room ID and never a previously open timeline room. Native settings/detail models belong to the account session.",
-    "Leave #587 open until actual iPhone and Android context/gesture/accessibility, offline retry, account switching and confirmed-deletion behavior is recorded."
+    "Leave #587 open until actual iPhone and Android context/gesture/accessibility, offline retry, account switching and confirmed-deletion behavior is recorded.",
+    "Favourite (bipe#673): the menu item comes after Archive. iOS uses the SF Symbols star and star.slash. The SDK removes m.lowpriority when it sets m.favourite, so an archived chat has no Favourite item: unarchive first. Archiving a favourite removes m.favourite (chat-archive)."
   ]
 }

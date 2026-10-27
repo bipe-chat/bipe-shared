@@ -21,6 +21,7 @@ export function loadRegistries(root) {
     profiles: read("registries/profiles.json"),
     inviteCodes: read("registries/invite-codes.json"),
     phones: read("registries/phone-numbers.json"),
+    bipeServers: read("registries/bipe-servers.json"),
     accounts: read("registries/accounts.json"),
     legal: read("registries/legal.json"),
     agendaTemplates: read("registries/agenda-templates.json"),
@@ -36,11 +37,14 @@ export function loadRegistries(root) {
     dataUse: read("registries/data-use.json"),
     brandMarks: read("registries/brand-marks.json"),
     voiceMedia: read("registries/voice-media.json"),
+    stickers: read("registries/stickers.json"),
+    maps: read("registries/maps.json"),
     voiceTranscript: read("registries/voice-transcript.json"),
     chatArchive: read("registries/chat-archive.json"),
     dmSelection: read("registries/dm-selection.json"),
     dmPowerLevels: read("registries/dm-power-levels.json"),
     relationshipNames: read("registries/relationship-names.json"),
+    messageFormatting: read("registries/message-formatting.json"),
     photoMatch: read("registries/photo-match.json"),
     profileFacts: read("registries/profile-facts.json"),
     theft: read("registries/theft-protection.json"),
@@ -54,6 +58,33 @@ export function loadRegistries(root) {
 
 function fail(msg) {
   throw new Error(`registry validation failed: ${msg}`);
+}
+
+// ADR 0205 (bipe-chat/bipe#837): sticker limits, account data names and the on-device search words.
+export function validateStickers(st) {
+  const positive = (n) => Number.isInteger(n) && n > 0;
+  if (st.version !== 1) fail("stickers: version must be 1");
+  if (![st.importMaxBytes, st.importMaxPixels, st.madePixels, st.madeAnimatedMaxMilliseconds, st.recentsMax, st.favouritesMax, st.prefixMinLength].every(positive)) fail("stickers: limits must be positive integers");
+  if (st.madePixels > st.importMaxPixels) fail("stickers: madePixels must fit importMaxPixels");
+  if (JSON.stringify(st.importTypes) !== '["image/webp","image/png"]') fail("stickers: importTypes must be image/webp and image/png");
+  for (const key of ["recentsEventType", "favouritesEventType", "tagsField", "packField"]) {
+    if (!/^chat\.bipe\.[a-z_]+$/.test(st[key] ?? "")) fail(`stickers: ${key} must be chat.bipe.<name>`);
+  }
+  if (!/^https:\/\/[a-z0-9.-]+\/[a-z]+\/$/.test(st.packLinkBase ?? "")) fail("stickers: packLinkBase must be an https URL ending in /");
+  const tags = new Set(st.tags);
+  if (!Array.isArray(st.tags) || !st.tags.length || tags.size !== st.tags.length || st.tags.some((t) => !/^[a-z]+(-[a-z]+)*$/.test(t))) fail("stickers: tags must be unique kebab-case ids");
+  const tagList = (where, list) => {
+    if (!Array.isArray(list) || !list.length || new Set(list).size !== list.length || list.some((t) => !tags.has(t))) fail(`stickers: ${where} must list known tags once each`);
+  };
+  for (const [word, list] of Object.entries(st.words ?? {})) {
+    if (!word || stickerSearchFold(word) !== word) fail(`stickers: word "${word}" must be folded`);
+    if (tags.has(word.replace(/ /g, "-"))) fail(`stickers: word "${word}" is a tag id already`);
+    tagList(`word "${word}"`, list);
+  }
+  for (const [emoji, list] of Object.entries(st.emoji ?? {})) {
+    if (!emoji || stickerEmojiKey(emoji) !== emoji || stickerSearchFold(emoji) !== "") fail(`stickers: emoji "${emoji}" must have no variation selector, skin tone, letter or digit`);
+    tagList(`emoji "${emoji}"`, list);
+  }
 }
 
 // ADR 0141: in a new DM nobody reaches a locked level, and the everyday events stay open to both people.
@@ -148,14 +179,24 @@ export function validateBadgeKeys(b) {
   if (!(Number.isInteger(b.renewDaysBeforeExpiry) && b.renewDaysBeforeExpiry > 0 && b.renewDaysBeforeExpiry < b.lifeDays)) fail("badge-keys: renewDaysBeforeExpiry must be below lifeDays");
 }
 
+export function validateMessageFormatting(formatting) {
+  for (const key of ["safeSchemes", "dropContentTags", "boldTags", "italicTags", "strikeTags", "codeTags", "blockTags"]) {
+    if (!Array.isArray(formatting[key]) || !formatting[key].length || formatting[key].some(v => !/^[a-z-]+$/.test(v))) fail(`message-formatting: ${key}`);
+  }
+  for (const key of ["linkPattern", "phonePattern"]) new RegExp(formatting[key], "i");
+  if (formatting.maxHtmlLength !== 131072 || formatting.maxDepth !== 64) fail("message-formatting: parser limits");
+  if (formatting.safeSchemes.some(scheme => !["https", "http", "mailto", "tel", "matrix"].includes(scheme))) fail("message-formatting: unsafe scheme");
+}
+
 function validate(reg) {
+  validateMessageFormatting(reg.messageFormatting);
   validateTrustRegistry(reg.trust);
   validateAgendaTemplates(reg);
   validateSettings(reg);
   validateOnboarding(reg);
   validateHaptics(reg.haptics);
   const archive = reg.chatArchive;
-  if (archive.storage !== "device-per-account" || archive.restore !== "newer-incoming-message" || archive.timestamp !== "latest-known-event-ms" || archive.missingActivity !== 0 || archive.history !== "preserve" || archive.membership !== "preserve" || archive.badges !== "unchanged") fail("chat-archive: unsupported archive policy");
+  if (archive.storage !== "matrix-lowpriority-per-account" || archive.tag !== "m.lowpriority" || archive.echoGraceMs !== 20000 || archive.restore !== "newer-incoming-message" || archive.timestamp !== "latest-known-event-ms" || archive.missingActivity !== 0 || archive.history !== "preserve" || archive.membership !== "preserve" || archive.badges !== "unchanged") fail("chat-archive: unsupported archive policy");
   const rn = reg.relationshipNames;
   if (rn.comparison !== "normalised-exact" || rn.fullNameMinimumWords !== 2 || rn.familyTerms !== "whole-words" || rn.confirmation !== "saved-label-and-verified-name") fail("relationship-names: unsupported ADR 0018 policy");
   if (reg.clearedChats.eventType !== "chat.bipe.cleared_chats") fail("cleared-chats: eventType must be chat.bipe.cleared_chats");
@@ -171,8 +212,27 @@ function validate(reg) {
   if (typeof vt.pauseSeconds !== "number" || vt.pauseSeconds <= 0 || vt.pauseSeconds > 10) fail("voice-transcript: pauseSeconds must be a number from 0 to 10");
   if (!Number.isInteger(vt.minCharacters) || !Number.isInteger(vt.maxCharacters) || vt.minCharacters < 1 || vt.maxCharacters <= vt.minCharacters) fail("voice-transcript: minCharacters and maxCharacters must be positive integers, max above min");
   if (typeof vt.separator !== "string" || !/^\n+$/.test(vt.separator)) fail("voice-transcript: separator must be one or more line breaks");
+  const mp = reg.maps;
+  // ADR 0131: maps come only from our server in Brazil. Fail closed on any other host.
+  if (mp.baseUrl !== "https://maps.bipe.net.br") fail("maps: baseUrl must be https://maps.bipe.net.br (ADR 0131)");
+  if (JSON.stringify(mp.styles) !== '{"light":"light","dark":"dark"}') fail("maps: styles must be light and dark");
+  for (const t of ["{style}", "{lon}", "{lat}", "{zoom}", "{width}", "{height}"]) if (!mp.staticPath.startsWith("/styles/") || !mp.staticPath.includes(t)) fail(`maps: staticPath must start with /styles/ and contain ${t}`);
+  if (mp.attribution !== "© OpenStreetMap") fail("maps: attribution must be © OpenStreetMap (ODbL)");
+  if (![mp.minZoom, mp.defaultZoom, mp.maxZoom].every(Number.isInteger) || !(0 <= mp.minZoom && mp.minZoom <= mp.defaultZoom && mp.defaultZoom <= mp.maxZoom && mp.maxZoom <= 22)) fail("maps: zoom levels must be integers, 0 <= minZoom <= defaultZoom <= maxZoom <= 22");
+  if (!Number.isInteger(mp.maxStaticSize) || mp.maxStaticSize < 256 || mp.maxStaticSize > 1024) fail("maps: maxStaticSize must be an integer from 256 to 1024");
+  if (!Number.isInteger(mp.coordinateDecimals) || mp.coordinateDecimals < 4 || mp.coordinateDecimals > 8) fail("maps: coordinateDecimals must be an integer from 4 to 8");
+  const db = mp.detailBounds;
+  if (![db?.west, db?.south, db?.east, db?.north].every(Number.isFinite) || !(-180 <= db.west && db.west < db.east && db.east <= 180 && -90 <= db.south && db.south < db.north && db.north <= 90)) fail("maps: detailBounds must be west < east and south < north, in degrees");
+  if (!Number.isInteger(mp.outsideMaxZoom) || !(mp.minZoom <= mp.outsideMaxZoom && mp.outsideMaxZoom <= mp.maxZoom)) fail("maps: outsideMaxZoom must be an integer from minZoom to maxZoom");
+  const lv = mp.live ?? {};
+  const ints = (a) => Array.isArray(a) && a.length > 0 && a.every((n) => Number.isInteger(n) && n > 0) && a.every((n, i) => i === 0 || n > a[i - 1]);
+  if (!ints(lv.durationsMinutes) || lv.durationsMinutes.at(-1) > 24 * 60) fail("maps: live.durationsMinutes must be rising positive integers, at most 1440");
+  if (!lv.durationsMinutes.every((m) => m < 60 || m % 60 === 0)) fail("maps: live.durationsMinutes under 60 are minutes, the others whole hours");
+  if (!ints(lv.distancesMetres) || !lv.distancesMetres.includes(lv.defaultDistanceMetres)) fail("maps: live.distancesMetres must be rising positive integers and contain defaultDistanceMetres");
+  if (!Number.isInteger(lv.minIntervalSeconds) || !Number.isInteger(lv.maxIntervalSeconds) || !(5 <= lv.minIntervalSeconds && lv.minIntervalSeconds < lv.maxIntervalSeconds && lv.maxIntervalSeconds <= 600)) fail("maps: live intervals must be integers, 5 <= minIntervalSeconds < maxIntervalSeconds <= 600");
   const vm = reg.voiceMedia;
   if (![vm.transcriptDays, vm.noTranscriptDays, vm.maxKeptPerAccount].every((n) => Number.isInteger(n) && n >= 1) || vm.noTranscriptDays < vm.transcriptDays) fail("voice-media: transcriptDays, noTranscriptDays and maxKeptPerAccount must be positive integers, noTranscriptDays at least transcriptDays");
+  validateStickers(reg.stickers);
   const pxm = reg.pixMarks;
   if (pxm.eventType !== "chat.bipe.pix_mark" || pxm.relType !== "m.reference" || JSON.stringify(pxm.marks) !== '["sent","received","not_received"]' || pxm.txidMaxLength !== 25) fail("pix-marks: unsupported ADR 0046 schema");
   try { new RegExp(pxm.e2eIdPattern); } catch { fail("pix-marks: e2eIdPattern"); }
@@ -186,6 +246,9 @@ function validate(reg) {
     if (r.version !== 1) fail(`${name}: version must be 1`);
   }
   validateOfficialAccounts(reg);
+  const bs = reg.bipeServers.servers;
+  if (!(Array.isArray(bs) && bs.length > 0 && bs.every((s) => typeof s === "string" && /^[a-z0-9]([a-z0-9-]*[a-z0-9])?(\.[a-z0-9]([a-z0-9-]*[a-z0-9])?)+$/.test(s)))) fail("bipe servers: servers must be lower-case host names");
+  if (new Set(bs).size !== bs.length) fail("bipe servers: duplicate server");
   for (const [cat, names] of Object.entries(reg.reserved.categories)) {
     if (!/^[a-z]+$/.test(cat)) fail(`reserved category id "${cat}"`);
     // Entries must already be in normalised form so lookups are exact.
@@ -266,6 +329,14 @@ function validate(reg) {
   if (!(Number.isInteger(ph.maxInputLength) && ph.maxInputLength > 0)) fail("phones: maxInputLength");
   if (!(Number.isInteger(ph.internationalMinDigits) && ph.internationalMinDigits > 0 && ph.internationalMaxDigits >= ph.internationalMinDigits)) fail("phones: international digit range");
   if (!(Number.isInteger(ph.linkConfirmMonths) && ph.linkConfirmMonths >= 1 && ph.linkConfirmMonths <= 24)) fail("phones: linkConfirmMonths");
+  if (!(Array.isArray(ph.display) && ph.display.length > 0)) fail("phones: display");
+  for (const d of ph.display) {
+    if (!/^[1-9][0-9]{0,2}$/.test(d.countryCode)) fail(`phones: display countryCode ${d.countryCode}`);
+    if (!/^[0-9]*$/.test(d.prefix)) fail(`phones: display prefix ${d.countryCode}`);
+    if (!/^#[# -]*#$/.test(d.pattern)) fail(`phones: display pattern ${d.countryCode}`);
+    const n = d.countryCode.length + [...d.pattern].filter((c) => c === "#").length;
+    if (n < ph.internationalMinDigits || n > ph.internationalMaxDigits) fail(`phones: display pattern length ${d.countryCode}`);
+  }
   if (!(Number.isInteger(ph.linkConfirmWarnDays) && ph.linkConfirmWarnDays >= 1 && ph.linkConfirmWarnDays < ph.linkConfirmMonths * 28)) fail("phones: linkConfirmWarnDays");
   validateBadgeKeys(reg.badgeKeys);
   const ac = reg.accounts;
@@ -427,6 +498,15 @@ export function extractInviteCode(text, reg) {
   return m ? `${m[1]}-${m[2]}-${m[3]}` : null;
 }
 
+// ADR 0168, bipe-chat/bipe#680: a Bipe user is a user ID whose server name (everything after the first ':') is in
+// registries/bipe-servers.json, exactly. The localpart must not be empty.
+export function isBipeUserID(userId, reg) {
+  if (typeof userId !== "string" || !userId.startsWith("@")) return false;
+  const colon = userId.indexOf(":");
+  if (colon < 2) return false;
+  return reg.bipeServers.servers.includes(userId.slice(colon + 1));
+}
+
 // A phone number in E.164 from an address-book entry, or null: Brazilian mobiles in any local format,
 // other countries only when written with "+" or "00".
 // Rule in registries/phone-numbers.json.
@@ -459,6 +539,24 @@ export function normalizePhone(text, reg) {
   const subscriber = digits.slice(2);
   if (!ph.areaCodes.includes(area) || !subscriber.startsWith(ph.mobilePrefix)) return null;
   return `+${ph.countryCode}${area}${subscriber}`;
+}
+
+// An E.164 number formatted for reading (ADR 0191): "+5511987654321" -> "+55 11 98765-4321". The first display
+// entry that fits (countryCode, prefix, one # per digit) wins; else the E.164 number as it is. Other text unchanged.
+// Rule in registries/phone-numbers.json.
+export function displayPhone(e164, reg) {
+  if (!/^\+[0-9]+$/.test(e164)) return e164;
+  const digits = e164.slice(1);
+  for (const d of reg.phones.display) {
+    if (!digits.startsWith(d.countryCode)) continue;
+    const rest = digits.slice(d.countryCode.length);
+    if (!rest.startsWith(d.prefix)) continue;
+    if ([...d.pattern].filter((c) => c === "#").length !== rest.length) continue;
+    let i = 0;
+    const body = [...d.pattern].map((c) => (c === "#" ? rest[i++] : c)).join("");
+    return `+${d.countryCode} ${body}`;
+  }
+  return e164;
 }
 
 // NFKD, strip combining marks, lowercase, fold homoglyphs, collapse whitespace.
@@ -757,6 +855,18 @@ export function chatArchived(marker, incoming) {
   return Number.isSafeInteger(marker) && marker >= 0 && !(Number.isSafeInteger(incoming) && incoming > marker);
 }
 
+/** Reconcile Matrix archive tags with a local incoming-message baseline and one-time migration. */
+export function chatArchiveSync(marker, synced, serverArchived, activity, incoming) {
+  const valid = value => Number.isSafeInteger(value) && value >= 0;
+  if (valid(marker)) {
+    if (synced && !serverArchived) return {marker: null, synced: false, tagWrite: null};
+    if (!chatArchived(marker, incoming)) return {marker: null, synced: false, tagWrite: serverArchived ? false : null};
+    return {marker, synced: serverArchived, tagWrite: serverArchived ? null : true};
+  }
+  return serverArchived ? {marker: Math.max(valid(activity) ? activity : 0, valid(incoming) ? incoming : 0), synced: true, tagWrite: null}
+    : {marker: null, synced: false, tagWrite: null};
+}
+
 // Onboarding schedules (bipe-chat/bipe#202).
 
 // The PIN reminder after a check. result: "right", "wrong" or "later". Returns the next step and the days until
@@ -795,3 +905,42 @@ export function profileFactLines(facts, nowMs, reg) {
   return { lines, notice };
 }
 
+
+// Sticker search (ADR 0205; registries/stickers.json; test-vectors/sticker-search.json). On the phone only.
+// Fold: NFKD, no marks, lower case, every character that is not a letter or a digit is a space, every run of one
+// repeated letter is one letter (kkkk is k), spaces collapsed and trimmed.
+export function stickerSearchFold(text) {
+  return String(text ?? "").normalize("NFKD").replace(/\p{M}/gu, "").toLowerCase()
+    .replace(/[^\p{L}\p{N}]+/gu, " ").replace(/(\p{L})\1+/gu, "$1").replace(/ +/g, " ").trim();
+}
+
+// An emoji query without variation selectors (U+FE0F) and skin tones (U+1F3FB to U+1F3FF), trimmed.
+export function stickerEmojiKey(text) {
+  return String(text ?? "").replace(/[\uFE0F\u{1F3FB}-\u{1F3FF}]/gu, "").trim();
+}
+
+// The tag ids a query asks for, in the order of the registry's tags. An emoji query maps through `emoji`. A word query
+// maps through `words` and the tag ids (a tag id matches as its words: bom-dia is "bom dia"): equal, or a prefix when
+// the folded query has at least prefixMinLength characters.
+export function stickerQueryTags(query, reg) {
+  const st = reg.stickers;
+  const emoji = st.emoji[stickerEmojiKey(query)];
+  const found = new Set(emoji ?? []);
+  const q = stickerSearchFold(query);
+  if (!emoji && q) {
+    const hits = (word) => word === q || (q.length >= st.prefixMinLength && word.startsWith(q));
+    for (const [word, list] of Object.entries(st.words)) if (hits(word)) list.forEach((t) => found.add(t));
+    for (const tag of st.tags) if (hits(stickerSearchFold(tag))) found.add(tag);
+  }
+  return st.tags.filter((t) => found.has(t));
+}
+
+// Does a sticker match the query? sticker: { body, tags, pack } (pack: the pack's display name). A match is a shared
+// tag, or the folded query at the start of a word of the folded body or pack name.
+export function stickerMatches(query, sticker, reg) {
+  const wanted = stickerQueryTags(query, reg);
+  if ((sticker.tags ?? []).some((t) => wanted.includes(t))) return true;
+  const q = stickerSearchFold(query);
+  if (!q) return false;
+  return [sticker.body, sticker.pack].some((text) => ` ${stickerSearchFold(text)}`.includes(` ${q}`));
+}

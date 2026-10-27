@@ -45,6 +45,6 @@
     "A device that another device signed out (linked-devices signOut) must not sign in again by itself: that is how a person locks out a lost phone. Hence removed, never a quiet sign-in.",
     "bipe_soft_logout_body and bipe_soft_logout_removed take the account's display name.",
     "With several accounts on the phone (ADR 0086), only the account whose token failed is affected; the others keep working.",
-    "The recovery-start row beta (bipe_recovery_beta, e-mail and password of the old beta) shows only in developer builds (gate flag:developer in registries/onboarding.json): iOS DEBUG, Android BuildConfig.DEBUG."
+    "The recovery-start row beta (bipe_recovery_beta, e-mail and password) shows in every build, release included (MZ, 26 Oct 2026): App Review signs in with the demo account through it (App Review guideline 2.1). After that sign-in the app moves the account to device-first, which sets a new password; the API refuses the move while the account has no PIN (pin_not_set), so the demo account must stay without a PIN."
   ]
 }

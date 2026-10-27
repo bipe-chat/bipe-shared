@@ -1226,7 +1226,7 @@ paths:
         whose holder allows discovery. The submitted list is never stored. Limits: 500 numbers
         per request, a daily budget per account (lower for accounts younger than 7 days),
         30 requests per hour.
-      security: [{ matrix: [] }]
+      security: [{ matrix: [] }, { matrixOpenId: [], matrixServerName: [] }]
       requestBody:
         required: true
         content:
@@ -1257,7 +1257,10 @@ paths:
         "429": { $ref: "#/components/responses/Error" }
   /v1/me/phone:
     get:
-      summary: The caller's linked phone number status (never the number)
+      summary: The caller's own linked phone number and its status
+      description: >
+        Only the caller's own link (ADR 0191, bipe#787). No other route returns a linked number. The server
+        keeps the number encrypted (AES-256-GCM, key from HKDF-SHA256 of PHONE_HMAC_SECRET) next to its HMAC.
       security: [{ matrix: [] }]
       responses:
         "200":
@@ -1272,6 +1275,7 @@ paths:
                   method: { type: string, enum: [admin, pix, sms] }
                   linked_at: { type: string, format: date-time }
                   confirm_by: { type: string, format: date-time, description: "After this date the number stops being discoverable until confirmed again." }
+                  number: { type: [string, "null"], description: "The caller's own linked number in E.164. null when not linked, or for a link made before the server stored numbers (ADR 0191)." }
                   discoverable_by_phone: { type: boolean }
         "401": { $ref: "#/components/responses/Error" }
     delete:
@@ -1374,7 +1378,7 @@ paths:
   /v1/handles/{handle}:
     get:
       summary: Exact handle lookup (no search, no directory)
-      security: [{ matrix: [] }]
+      security: [{ matrix: [] }, { matrixOpenId: [], matrixServerName: [] }]
       parameters:
         - { name: handle, in: path, required: true, schema: { type: string } }
       responses:
@@ -1389,7 +1393,7 @@ paths:
   /v1/handles/resolve:
     post:
       summary: Handles for Matrix IDs, for display (max 100 per call)
-      security: [{ matrix: [] }]
+      security: [{ matrix: [] }, { matrixOpenId: [], matrixServerName: [] }]
       requestBody:
         required: true
         content:
@@ -1573,7 +1577,7 @@ paths:
   /v1/me/handle:
     get:
       summary: The caller's handle
-      security: [{ matrix: [] }]
+      security: [{ matrix: [] }, { matrixOpenId: [], matrixServerName: [] }]
       responses:
         "200":
           description: Current handle and when it can next change
@@ -1628,7 +1632,7 @@ paths:
         bipe_handle_changed (name, new, old); only new is bipe_handle_set (name, new); only old is
         bipe_handle_removed (name, old). The name is the person's display name in that room.
         A handle chosen at sign-up is not a change. Holds and cooldowns are never in the history.
-      security: [{ matrix: [] }]
+      security: [{ matrix: [] }, { matrixOpenId: [], matrixServerName: [] }]
       requestBody:
         required: true
         content:
@@ -1663,7 +1667,7 @@ paths:
         Matrix profile changes the API saw in Synapse, and public profile edits (ADR 0041). Dates only:
         the API keeps no name, no photo and no image hash. The apps make the lines with
         profileFactLines (test-vectors/profile-facts.json). IDs the API knows nothing about are absent.
-      security: [{ matrix: [] }]
+      security: [{ matrix: [] }, { matrixOpenId: [], matrixServerName: [] }]
       requestBody:
         required: true
         content:
@@ -1799,7 +1803,7 @@ paths:
         the same envelope as a badge, payload typ "theft". The app verifies it with the badge keys,
         shows the red banner in chats with that account and marks its messages from the hour before
         stolen_at. Accounts without a mark are absent: no statement, no banner.
-      security: [{ matrix: [] }]
+      security: [{ matrix: [] }, { matrixOpenId: [], matrixServerName: [] }]
       requestBody:
         required: true
         content:
@@ -2083,6 +2087,9 @@ paths:
         staff backfill. subscribed is true while the caller has a room and did not leave it or turn news off; room_id is
         then that room. The app shows the switch on only when subscribed is true and the caller is joined to or invited
         in room_id. 500 internal with reason news_unavailable when the news account is not set up (every method).
+        The room is a named room, not a DM: createRoom sends no is_direct (bipe-chat/bipe#809). Rooms made before
+        that are in the caller's m.direct; the app removes room_id from m.direct once per account (spec chat-list
+        notes).
       security: [{ matrix: [] }]
       responses:
         "200":
@@ -5248,6 +5255,20 @@ components:
       type: http
       scheme: bearer
       description: Matrix access token from MAS. The API checks it with Synapse whoami.
+    matrixOpenId:
+      type: http
+      scheme: bearer
+      description: >-
+        Core routes (ADR 0168, bipe-chat/bipe#646). A Matrix OpenID token from
+        POST /_matrix/client/v3/user/{userId}/openid/request_token on the user's homeserver, sent with
+        matrixServerName. The server must be in registries/bipe-servers.json, else unauthorized. The API asks that
+        server's federation GET /_matrix/federation/v1/openid/userinfo and accepts only a user ID on that server.
+        Request a new token before expires_in. A Matrix access token of bipe.net.br (matrix) keeps working.
+    matrixServerName:
+      type: apiKey
+      in: header
+      name: X-Matrix-Server-Name
+      description: The matrix_server_name from the OpenID token answer. Its presence selects matrixOpenId.
   schemas:
     BugReportSummary:
       type: object
@@ -5346,6 +5367,11 @@ components:
         channels: { type: array, maxItems: 7, uniqueItems: true, items: { type: string, enum: [whatsapp_app, whatsapp_api, sms, email, phone, own_app, other] }, description: "Where the organisation talks to its customers today. Optional." }
         spend_band: { type: string, enum: [zero, lt_500, 500_2k, 2k_10k, 10k_50k, gt_50k, unknown], description: "What the organisation pays per month today, in R$, to talk to customers on those channels. Optional." }
         spend_note: { type: string, maxLength: 500, description: "Which platform and what it charges for. Optional." }
+        intent: { type: string, enum: [pilot, question, partnership], description: "What the organisation wants (bipe#792). Optional." }
+        use_case: { type: string, maxLength: 500, description: "What the organisation would use Bipe for. Optional." }
+        pain: { type: string, maxLength: 500, description: "Its main problem when it talks to customers today. Optional." }
+        timeframe: { type: string, enum: [now, quarter, year, exploring], description: "When it wants to start. Optional." }
+        landing_path: { type: string, maxLength: 200, pattern: "^/[a-z0-9/_-]*$", description: "The site page that sent the visitor (bipe#792). A value that does not match is dropped, not refused. Optional." }
         message: { type: string, maxLength: 2000, description: "Optional." }
         lang: { type: string, enum: [pt, en], default: pt }
         website: { type: string, maxLength: 200, description: "Honeypot. People leave it empty; a non-empty value is accepted and dropped." }

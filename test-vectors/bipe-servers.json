@@ -1,0 +1,22 @@
+{
+  "$comment": "Cases for isBipeUserID (rule: registries/bipe-servers.json). Hand-written; tools/gen-test-vectors.mjs checks them against the reference implementation and fails closed.",
+  "vectors": [
+    { "userId": "@k7q2m9x4tp:bipe.net.br", "bipe": true },
+    { "userId": "@suporte:bipe.net.br", "bipe": true },
+    { "userId": "@ana.souza_1=/+-:bipe.net.br", "bipe": true },
+    { "userId": "@ana:matrix.org", "bipe": false },
+    { "userId": "@ana:evilbipe.net.br", "bipe": false },
+    { "userId": "@ana:bipe.net.br.evil.com", "bipe": false },
+    { "userId": "@ana:sub.bipe.net.br", "bipe": false },
+    { "userId": "@ana:bipe.net.br:8448", "bipe": false },
+    { "userId": "@ana:BIPE.NET.BR", "bipe": false },
+    { "userId": "@ana:bipe.net.br ", "bipe": false },
+    { "userId": "@ana:evil.com:bipe.net.br", "bipe": false },
+    { "userId": "ana:bipe.net.br", "bipe": false },
+    { "userId": "@:bipe.net.br", "bipe": false },
+    { "userId": "@ana", "bipe": false },
+    { "userId": "!room:bipe.net.br", "bipe": false },
+    { "userId": "#grupo:bipe.net.br", "bipe": false },
+    { "userId": "", "bipe": false }
+  ]
+}

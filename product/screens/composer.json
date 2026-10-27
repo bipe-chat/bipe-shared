@@ -27,7 +27,8 @@
       "description": "text: the field. recording: voice-recording replaces the field."
     },
     "canSend": { "type": "bool", "description": "text is not blank after trimming. When false, the send button turns into the record button." },
-    "canPost": { "type": "bool", "description": "RoomPowerLevels.canOwnUserSendMessage for m.room.message and the person is not blocked (block-person). false: the composer is off, with the reason bar instead." }
+    "canPost": { "type": "bool", "description": "RoomPowerLevels.canOwnUserSendMessage for m.room.message and the person is not blocked (block-person). false: the composer is off, with the reason bar instead." },
+    "stickerSuggestions": { "type": "list", "of": { "type": "StickerItem", "description": "One sticker." }, "description": "The sticker strip above the field (ADR 0205). When text is one emoji or one word (see notes) and the setting chats.stickerSuggestions is on: the stickers that stickerMatches text, favourites first, then recents, then pack order, at most 12. Empty hides the strip." }
   },
   "actions": {
     "appear": { "effect": "Room.loadComposerDraft. A saved draft of type newMessage fills text; reply and edit drafts go back to message-reply and message-edit." },
@@ -45,7 +46,9 @@
     "leave": { "effect": "When the chat closes or the app goes to the background: Room.saveComposerDraft with text (plain) when not blank, else Room.clearComposerDraft." },
     "openAttachments": { "effect": "Opens attachment-picker." },
     "openStickers": { "effect": "Opens sticker-picker." },
-    "startRecording": { "effect": "mode recording: voice-recording starts." }
+    "startRecording": { "effect": "mode recording: voice-recording starts." },
+    "sendSuggestion": { "params": { "packId": { "type": "string", "description": "The pack." }, "shortcode": { "type": "string", "description": "The sticker." } }, "effect": "sticker-picker send for that sticker, then clears text and mentions and runs Room.clearComposerDraft." },
+    "dismissSuggestions": { "effect": "Hides the strip until text changes." }
   },
   "strings": [
     "bipe_app_timeline_composer_placeholder",
@@ -55,7 +58,9 @@
     "bipe_app_composer_record",
     "bipe_app_composer_mention_everyone",
     "bipe_app_chat_list_draft",
-    "bipe_dm_no_permission_to_post"
+    "bipe_dm_no_permission_to_post",
+    "bipe_a11y_sticker_send",
+    "bipe_sticker_suggestions_dismiss"
   ],
   "sdk": [
     "messageEventContentFromMarkdown",
@@ -81,6 +86,7 @@
     "Drafts: one per chat, kept by the SDK on this device (ComposerDraft). The chat list row shows bipe_app_chat_list_draft with the draft text in place of the last message while a draft exists. Drafts do not sync across devices.",
     "The send button and the record button share one place: canSend false shows record, true shows send.",
     "canPost false: bipe_dm_no_permission_to_post, or the block bar of block-person (bipe-chat/bipe#567) for a blocked person in a DM.",
-    "Replies and edits use this field with their bars (message-reply, message-edit, bipe-chat/bipe#559). The scam check runs only on received messages, never on the user's own text."
+    "Replies and edits use this field with their bars (message-reply, message-edit, bipe-chat/bipe#559). The scam check runs only on received messages, never on the user's own text.",
+    "Sticker strip (ADR 0205): text after trimming is one emoji (stickerEmojiKey gives a key of stickerEmoji) or one word with no space that stickerQueryTags maps to a tag. Same search as sticker-picker, on the phone only. Not while replying or editing, and not with mentions in text."
   ]
 }

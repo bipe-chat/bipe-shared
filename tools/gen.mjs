@@ -3,7 +3,7 @@
 //   Default app output: ../bipe-app (ios/BipeKit and android/libraries/bipe), when that folder exists
 //   Default API output: ../bipe-api/src/generated, when ../bipe-api exists
 // The Element X forks (bipe-ios, bipe-android) are archived and get no output (ADR 0155).
-import { copyFileSync, existsSync, mkdirSync, readdirSync, writeFileSync } from "node:fs";
+import { copyFileSync, existsSync, mkdirSync, readdirSync, rmSync, writeFileSync } from "node:fs";
 import { dirname, join, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
 import { hostHomoglyphs, loadRegistries } from "./lib/registries.mjs";
@@ -15,10 +15,12 @@ import { generateSettings } from "./lib/gen-settings.mjs";
 import { generateOnboarding } from "./lib/gen-onboarding.mjs";
 import { generateHaptics } from "./lib/gen-haptics.mjs";
 import { loadScreens } from "./lib/screens.mjs";
+import { generateAppIcons } from "./lib/gen-app-icons.mjs";
 import { generateColors } from "./lib/gen-tokens.mjs";
 import { generateChatArchive } from "./lib/gen-chat-archive.mjs";
 import { generateDmSelection } from "./lib/gen-dm-selection.mjs";
 import { generateDmPowerLevels } from "./lib/gen-dm-power-levels.mjs";
+import { generateMessageFormatting } from "./lib/gen-message-formatting.mjs";
 import { generateRelationshipNames } from "./lib/gen-relationship-names.mjs";
 
 const root = join(dirname(fileURLToPath(import.meta.url)), "..");
@@ -164,6 +166,9 @@ public enum BipeRegistries {
     public static let handleSuggestionCandidates = ${reg.handles.suggestions.candidates}
     public static let ownedHandles: Set<String> = ${Object.keys(reg.owners.handles).length ? swiftArray(Object.keys(reg.owners.handles).map(swiftString)) : "[]"}
 
+    /// Bipe homeservers (registries/bipe-servers.json, ADR 0168). Use \`\`BipeServers/isBipeUserID(_:)\`\`, never a suffix check.
+    public static let bipeServers: Set<String> = ${swiftArray(reg.bipeServers.servers.map(swiftString))}
+
     /// Full Matrix user IDs of official Bipe accounts. Match exactly; names and handles are not proof.
     public static let officialAccountIDs: Set<String> = ${swiftArray(Object.values(reg.officialAccounts.accounts).map((a) => swiftString(a.userId)))}
 
@@ -192,6 +197,10 @@ public enum BipeRegistries {
     /// and the apps warn this many days before confirm_by.
     public static let phoneLinkConfirmMonths = ${reg.phones.linkConfirmMonths}
     public static let phoneLinkConfirmWarnDays = ${reg.phones.linkConfirmWarnDays}
+    /// Number formats for reading (ADR 0191): the first entry whose country code, prefix and digit count fit.
+    public static let phoneDisplayFormats: [(countryCode: String, prefix: String, pattern: String)] = [
+${reg.phones.display.map((d) => `        (countryCode: ${swiftString(d.countryCode)}, prefix: ${swiftString(d.prefix)}, pattern: ${swiftString(d.pattern)}),`).join("\n")}
+    ]
 
     /// Work side opening hours (registries/work-hours.json, bipe-chat/bipe#511).
     public static let workHoursDefaultTimeZone = ${swiftString(reg.workHours.defaultTimeZone)}
@@ -276,6 +285,51 @@ ${reg.workHours.defaultDays.map((d) => `        (day: ${d.day}, ranges: [${d.ran
     public static let voiceMediaNoTranscriptDays = ${reg.voiceMedia.noTranscriptDays}
     public static let voiceMediaMaxKeptPerAccount = ${reg.voiceMedia.maxKeptPerAccount}
 
+    /// Stickers (bipe ADR 0205, bipe-chat/bipe#837; registries/stickers.json). Search rules: test-vectors/sticker-search.json.
+    public static let stickerImportMaxBytes = ${reg.stickers.importMaxBytes}
+    public static let stickerImportMaxPixels = ${reg.stickers.importMaxPixels}
+    public static let stickerImportTypes: [String] = [${reg.stickers.importTypes.map(swiftString).join(", ")}]
+    public static let stickerMadePixels = ${reg.stickers.madePixels}
+    public static let stickerMadeAnimatedMaxMilliseconds = ${reg.stickers.madeAnimatedMaxMilliseconds}
+    public static let stickerRecentsMax = ${reg.stickers.recentsMax}
+    public static let stickerFavouritesMax = ${reg.stickers.favouritesMax}
+    public static let stickerRecentsEventType = ${swiftString(reg.stickers.recentsEventType)}
+    public static let stickerFavouritesEventType = ${swiftString(reg.stickers.favouritesEventType)}
+    public static let stickerTagsField = ${swiftString(reg.stickers.tagsField)}
+    public static let stickerPackField = ${swiftString(reg.stickers.packField)}
+    public static let stickerPackLinkBase = ${swiftString(reg.stickers.packLinkBase)}
+    public static let stickerPrefixMinLength = ${reg.stickers.prefixMinLength}
+    /// Tag ids in display order.
+    public static let stickerTags: [String] = [${reg.stickers.tags.map(swiftString).join(", ")}]
+    /// Folded word to tag ids.
+    public static let stickerWords: [String: [String]] = ${swiftArray(Object.entries(reg.stickers.words).map(([k, v]) => `${swiftString(k)}: [${v.map(swiftString).join(", ")}]`))}
+    /// Emoji (no variation selector, no skin tone) to tag ids.
+    public static let stickerEmoji: [String: [String]] = ${swiftArray(Object.entries(reg.stickers.emoji).map(([k, v]) => `${swiftString(k)}: [${v.map(swiftString).join(", ")}]`))}
+
+    /// Maps for location sharing (ADR 0131, bipe-chat/bipe#768; registries/maps.json). No other map host.
+    public static let mapsBaseUrl = ${swiftString(reg.maps.baseUrl)}
+    public static let mapsStyleLight = ${swiftString(reg.maps.styles.light)}
+    public static let mapsStyleDark = ${swiftString(reg.maps.styles.dark)}
+    public static let mapsStaticPath = ${swiftString(reg.maps.staticPath)}
+    public static let mapsAttribution = ${swiftString(reg.maps.attribution)}
+    public static let mapsDefaultZoom = ${reg.maps.defaultZoom}
+    public static let mapsMinZoom = ${reg.maps.minZoom}
+    public static let mapsMaxZoom = ${reg.maps.maxZoom}
+    public static let mapsMaxStaticSize = ${reg.maps.maxStaticSize}
+    public static let mapsCoordinateDecimals = ${reg.maps.coordinateDecimals}
+    /// The area with full detail (west, south, east, north); outside it a map goes no deeper than mapsOutsideMaxZoom.
+    public static let mapsDetailWest = ${reg.maps.detailBounds.west}
+    public static let mapsDetailSouth = ${reg.maps.detailBounds.south}
+    public static let mapsDetailEast = ${reg.maps.detailBounds.east}
+    public static let mapsDetailNorth = ${reg.maps.detailBounds.north}
+    public static let mapsOutsideMaxZoom = ${reg.maps.outsideMaxZoom}
+    /// Live location (MSC3489, bipe-chat/bipe#768; registries/maps.json live).
+    public static let mapsLiveDurationsMinutes: [Int] = ${swiftArray(reg.maps.live.durationsMinutes.map(String))}
+    public static let mapsLiveDistancesMetres: [Int] = ${swiftArray(reg.maps.live.distancesMetres.map(String))}
+    public static let mapsLiveDefaultDistanceMetres = ${reg.maps.live.defaultDistanceMetres}
+    public static let mapsLiveMinIntervalSeconds = ${reg.maps.live.minIntervalSeconds}
+    public static let mapsLiveMaxIntervalSeconds = ${reg.maps.live.maxIntervalSeconds}
+
     /// Voice transcript paragraphs (registries/voice-transcript.json). Rule: product/screens/voice-recording.json notes.
     public static let voiceTranscriptPauseSeconds: Double = ${reg.voiceTranscript.pauseSeconds}
     public static let voiceTranscriptMinCharacters = ${reg.voiceTranscript.minCharacters}
@@ -320,8 +374,9 @@ function writeSwift(out, { post = (text) => text } = {}) {
   mkdirSync(out, { recursive: true });
   write("BipeRegistries.swift", swiftRegistries());
   write("BipeTrustFacts.swift", generateTrust(reg.trust, "swift", HEADER));
-  write("BipeChatArchive.swift", generateChatArchive("swift", HEADER));
+  write("BipeChatArchive.swift", generateChatArchive("swift", HEADER, reg.chatArchive));
   write("BipeDmSelection.swift", generateDmSelection(reg.dmSelection, "swift", HEADER));
+  write("BipeMessageFormatting.swift", generateMessageFormatting(reg.messageFormatting, "swift", HEADER, swiftString));
   write("BipeRelationshipNames.swift", generateRelationshipNames(reg.relationshipNames, "swift", HEADER));
   write("BipeAgendaTemplates.swift", generateAgendaTemplates(reg, "swift", HEADER));
   write("BipeStrings.swift", swiftStrings());
@@ -479,6 +534,9 @@ object BipeRegistries {
     const val HANDLE_OWNER_MIN_LENGTH = ${reg.handles.ownerMinLength}
     val ownedHandles: Set<String> = ${kotlinList("setOf", Object.keys(reg.owners.handles).map(kotlinString))}
 
+    /** Bipe homeservers (registries/bipe-servers.json, ADR 0168). Use [chat.bipe.shared.BipeServers.isBipeUserId], never a suffix check. */
+    val bipeServers: Set<String> = ${kotlinList("setOf", reg.bipeServers.servers.map(kotlinString))}
+
     /** Full Matrix user IDs of official Bipe accounts. Match exactly; names and handles are not proof. */
     val officialAccountIds: Set<String> = ${kotlinList("setOf", Object.values(reg.officialAccounts.accounts).map((a) => kotlinString(a.userId)))}
 
@@ -506,6 +564,10 @@ object BipeRegistries {
     /** Yearly confirmation of a linked number (bipe-chat/bipe#470): months findable, and the warning days before confirm_by. */
     const val PHONE_LINK_CONFIRM_MONTHS = ${reg.phones.linkConfirmMonths}
     const val PHONE_LINK_CONFIRM_WARN_DAYS = ${reg.phones.linkConfirmWarnDays}
+    /** Number formats for reading (ADR 0191): country code, prefix, pattern; the first entry that fits wins. */
+    val phoneDisplayFormats: List<Triple<String, String, String>> = listOf(
+${reg.phones.display.map((d) => `        Triple(${kotlinString(d.countryCode)}, ${kotlinString(d.prefix)}, ${kotlinString(d.pattern)}),`).join("\n")}
+    )
 
     /** Work side opening hours (registries/work-hours.json, bipe-chat/bipe#511). */
     const val WORK_HOURS_DEFAULT_TIME_ZONE = ${kotlinString(reg.workHours.defaultTimeZone)}
@@ -598,6 +660,51 @@ ${reg.workHours.defaultDays.map((d) => `        ${d.day} to listOf(${d.ranges.ma
     const val VOICE_MEDIA_NO_TRANSCRIPT_DAYS = ${reg.voiceMedia.noTranscriptDays}
     const val VOICE_MEDIA_MAX_KEPT_PER_ACCOUNT = ${reg.voiceMedia.maxKeptPerAccount}
 
+    /** Stickers (bipe ADR 0205, bipe-chat/bipe#837; registries/stickers.json). Search rules: test-vectors/sticker-search.json. */
+    const val STICKER_IMPORT_MAX_BYTES = ${reg.stickers.importMaxBytes}
+    const val STICKER_IMPORT_MAX_PIXELS = ${reg.stickers.importMaxPixels}
+    val STICKER_IMPORT_TYPES: List<String> = listOf(${reg.stickers.importTypes.map(kotlinString).join(", ")})
+    const val STICKER_MADE_PIXELS = ${reg.stickers.madePixels}
+    const val STICKER_MADE_ANIMATED_MAX_MILLISECONDS = ${reg.stickers.madeAnimatedMaxMilliseconds}
+    const val STICKER_RECENTS_MAX = ${reg.stickers.recentsMax}
+    const val STICKER_FAVOURITES_MAX = ${reg.stickers.favouritesMax}
+    const val STICKER_RECENTS_EVENT_TYPE = ${kotlinString(reg.stickers.recentsEventType)}
+    const val STICKER_FAVOURITES_EVENT_TYPE = ${kotlinString(reg.stickers.favouritesEventType)}
+    const val STICKER_TAGS_FIELD = ${kotlinString(reg.stickers.tagsField)}
+    const val STICKER_PACK_FIELD = ${kotlinString(reg.stickers.packField)}
+    const val STICKER_PACK_LINK_BASE = ${kotlinString(reg.stickers.packLinkBase)}
+    const val STICKER_PREFIX_MIN_LENGTH = ${reg.stickers.prefixMinLength}
+    /** Tag ids in display order. */
+    val STICKER_TAGS: List<String> = listOf(${reg.stickers.tags.map(kotlinString).join(", ")})
+    /** Folded word to tag ids. */
+    val STICKER_WORDS: Map<String, List<String>> = ${kotlinList("mapOf", Object.entries(reg.stickers.words).map(([k, v]) => `${kotlinString(k)} to listOf(${v.map(kotlinString).join(", ")})`))}
+    /** Emoji (no variation selector, no skin tone) to tag ids. */
+    val STICKER_EMOJI: Map<String, List<String>> = ${kotlinList("mapOf", Object.entries(reg.stickers.emoji).map(([k, v]) => `${kotlinString(k)} to listOf(${v.map(kotlinString).join(", ")})`))}
+
+    /** Maps for location sharing (ADR 0131, bipe-chat/bipe#768; registries/maps.json). No other map host. */
+    const val MAPS_BASE_URL = ${kotlinString(reg.maps.baseUrl)}
+    const val MAPS_STYLE_LIGHT = ${kotlinString(reg.maps.styles.light)}
+    const val MAPS_STYLE_DARK = ${kotlinString(reg.maps.styles.dark)}
+    const val MAPS_STATIC_PATH = ${kotlinString(reg.maps.staticPath)}
+    const val MAPS_ATTRIBUTION = ${kotlinString(reg.maps.attribution)}
+    const val MAPS_DEFAULT_ZOOM = ${reg.maps.defaultZoom}
+    const val MAPS_MIN_ZOOM = ${reg.maps.minZoom}
+    const val MAPS_MAX_ZOOM = ${reg.maps.maxZoom}
+    const val MAPS_MAX_STATIC_SIZE = ${reg.maps.maxStaticSize}
+    const val MAPS_COORDINATE_DECIMALS = ${reg.maps.coordinateDecimals}
+    /** The area with full detail (west, south, east, north); outside it a map goes no deeper than MAPS_OUTSIDE_MAX_ZOOM. */
+    const val MAPS_DETAIL_WEST = ${reg.maps.detailBounds.west}
+    const val MAPS_DETAIL_SOUTH = ${reg.maps.detailBounds.south}
+    const val MAPS_DETAIL_EAST = ${reg.maps.detailBounds.east}
+    const val MAPS_DETAIL_NORTH = ${reg.maps.detailBounds.north}
+    const val MAPS_OUTSIDE_MAX_ZOOM = ${reg.maps.outsideMaxZoom}
+    /** Live location (MSC3489, bipe-chat/bipe#768; registries/maps.json live). */
+    val MAPS_LIVE_DURATIONS_MINUTES: List<Int> = listOf(${reg.maps.live.durationsMinutes.join(", ")})
+    val MAPS_LIVE_DISTANCES_METRES: List<Int> = listOf(${reg.maps.live.distancesMetres.join(", ")})
+    const val MAPS_LIVE_DEFAULT_DISTANCE_METRES = ${reg.maps.live.defaultDistanceMetres}
+    const val MAPS_LIVE_MIN_INTERVAL_SECONDS = ${reg.maps.live.minIntervalSeconds}
+    const val MAPS_LIVE_MAX_INTERVAL_SECONDS = ${reg.maps.live.maxIntervalSeconds}
+
     /** Voice transcript paragraphs (registries/voice-transcript.json). Rule: product/screens/voice-recording.json notes. */
     const val VOICE_TRANSCRIPT_PAUSE_SECONDS: Double = ${reg.voiceTranscript.pauseSeconds}
     const val VOICE_TRANSCRIPT_MIN_CHARACTERS = ${reg.voiceTranscript.minCharacters}
@@ -637,8 +744,9 @@ function writeKotlin(out, { packageName = KOTLIN_PACKAGE, post = (text) => text 
   mkdirSync(kotlinDir, { recursive: true });
   write("BipeRegistries.kt", kotlinRegistries());
   write("BipeTrustFacts.kt", generateTrust(reg.trust, "kotlin", KOTLIN_HEADER));
-  write("BipeChatArchive.kt", generateChatArchive("kotlin", KOTLIN_HEADER));
+  write("BipeChatArchive.kt", generateChatArchive("kotlin", KOTLIN_HEADER, reg.chatArchive));
   write("BipeDmSelection.kt", generateDmSelection(reg.dmSelection, "kotlin", KOTLIN_HEADER));
+  write("BipeMessageFormatting.kt", generateMessageFormatting(reg.messageFormatting, "kotlin", KOTLIN_HEADER, kotlinString));
   write("BipeRelationshipNames.kt", generateRelationshipNames(reg.relationshipNames, "kotlin", KOTLIN_HEADER, packageName));
   write("BipeAgendaTemplates.kt", generateAgendaTemplates(reg, "kotlin", KOTLIN_HEADER));
   write("BipeSettings.kt", generateSettings(reg.settings, "kotlin", KOTLIN_HEADER, kotlinString));
@@ -710,6 +818,17 @@ if (appIndex >= 0 || existsSync(appOut)) {
   writeFileSync(join(swiftDir, "BipeColors.swift"), appPost(`${TOKENS_HEADER}\n${generateColors("swift")}`, "swift"));
   writeFileSync(join(kotlinMain, "kotlin", ...KOTLIN_PACKAGE.split("."), "BipeColors.kt"),
     appPost(`${KOTLIN_LICENSE}${TOKENS_HEADER}\n@file:Suppress("all", "ktlint")\n\npackage ${KOTLIN_PACKAGE}\n\n${generateColors("kotlin")}`, "kotlin"));
+  // App icons of the app theme (bipe-chat/bipe#811): an asset catalog that the Bipe app target compiles, and
+  // the Android icon colours and mark.
+  const xmlHeader = `<!--\n${APP_LICENSE.replace(/^(?=.)/gm, "  ")}\n  Generated by bipe-shared tools/gen.mjs from bipe-shared/design/tokens.json (appThemes). Do not edit.\n-->`;
+  const icons = generateAppIcons(undefined, { xmlHeader });
+  rmSync(join(swiftDir, "AppIcons.xcassets"), { recursive: true, force: true });
+  for (const [base, files] of [[swiftDir, icons.ios], [kotlinMain, icons.android]]) {
+    for (const [file, content] of Object.entries(files)) {
+      mkdirSync(dirname(join(base, file)), { recursive: true });
+      writeFileSync(join(base, file), content);
+    }
+  }
 }
 
 // bipe-api: the reference library and the registries it reads, copied verbatim.

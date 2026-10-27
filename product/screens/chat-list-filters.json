@@ -81,7 +81,7 @@
     "Requests (DM invites) never show in either tab; the requests row of chat-requests sits at the top of Conversas.",
     "Group invite rows use bipe_group_notification_room_invite_body_with_sender with the inviter name, and Accept and Decline buttons.",
     "Empty states: noChats is bipe_chats_empty_title, bipe_chats_empty_body and the bipe_action_start_chat button. noGroups is bipe_app_groups_empty.",
-    "No filter chips (MZ decision 25 Oct 2026, bipe#592): the Unread (Não lidas) chip is gone, so the list stays simple. No favourites, low priority or people and rooms chips either (plan section 4, ADR 0141). Unread chats show by their badge.",
+    "No filter chips (MZ decision 25 Oct 2026, bipe#592): the Unread (Não lidas) chip is gone, so the list stays simple. No favourites, low priority or people and rooms chips either (plan section 4, ADR 0141). Unread chats show by their badge. Favourites are a row of avatars at the top of the list, not a chip (chat-list, bipe#673).",
     "Groups badge counts what notifies in a quiet group (ADR 0026, ADR 0053): RoomInfo numUnreadMentions plus replies to the person.",
     "Own-client swipes archive, not delete (bipe#588, chat-archive spec). Archive filtering follows newest-DM selection and is independent of cleared history. Archived access remains visible with an empty active list."
   ]

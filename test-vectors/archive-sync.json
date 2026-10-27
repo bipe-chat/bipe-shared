@@ -1,0 +1,239 @@
+{
+  "version": 1,
+  "cases": [
+    {
+      "name": "no archive",
+      "marker": null,
+      "synced": false,
+      "serverArchived": false,
+      "activity": 100,
+      "incoming": 90,
+      "expected": {
+        "marker": null,
+        "synced": false,
+        "tagWrite": null
+      }
+    },
+    {
+      "name": "import a remote archive",
+      "marker": null,
+      "synced": false,
+      "serverArchived": true,
+      "activity": 100,
+      "incoming": 90,
+      "expected": {
+        "marker": 100,
+        "synced": true,
+        "tagWrite": null
+      }
+    },
+    {
+      "name": "import an empty remote archive",
+      "marker": null,
+      "synced": false,
+      "serverArchived": true,
+      "activity": null,
+      "incoming": null,
+      "expected": {
+        "marker": 0,
+        "synced": true,
+        "tagWrite": null
+      }
+    },
+    {
+      "name": "migration writes the tag",
+      "marker": 100,
+      "synced": false,
+      "serverArchived": false,
+      "activity": 100,
+      "incoming": 99,
+      "expected": {
+        "marker": 100,
+        "synced": false,
+        "tagWrite": true
+      }
+    },
+    {
+      "name": "migration already on server",
+      "marker": 100,
+      "synced": false,
+      "serverArchived": true,
+      "activity": 100,
+      "incoming": 99,
+      "expected": {
+        "marker": 100,
+        "synced": true,
+        "tagWrite": null
+      }
+    },
+    {
+      "name": "migrated marker is not written again",
+      "marker": 100,
+      "synced": true,
+      "serverArchived": true,
+      "activity": 100,
+      "incoming": 99,
+      "expected": {
+        "marker": 100,
+        "synced": true,
+        "tagWrite": null
+      }
+    },
+    {
+      "name": "remote unarchive wins",
+      "marker": 100,
+      "synced": true,
+      "serverArchived": false,
+      "activity": 100,
+      "incoming": null,
+      "expected": {
+        "marker": null,
+        "synced": false,
+        "tagWrite": null
+      }
+    },
+    {
+      "name": "new incoming clears server tag",
+      "marker": 100,
+      "synced": true,
+      "serverArchived": true,
+      "activity": 101,
+      "incoming": 101,
+      "expected": {
+        "marker": null,
+        "synced": false,
+        "tagWrite": false
+      }
+    },
+    {
+      "name": "new incoming does not rearchive legacy marker",
+      "marker": 100,
+      "synced": false,
+      "serverArchived": false,
+      "activity": 101,
+      "incoming": 101,
+      "expected": {
+        "marker": null,
+        "synced": false,
+        "tagWrite": null
+      }
+    },
+    {
+      "name": "new incoming clears already tagged legacy archive",
+      "marker": 100,
+      "synced": false,
+      "serverArchived": true,
+      "activity": 101,
+      "incoming": 101,
+      "expected": {
+        "marker": null,
+        "synced": false,
+        "tagWrite": false
+      }
+    },
+    {
+      "name": "equal timestamp stays archived",
+      "marker": 100,
+      "synced": true,
+      "serverArchived": true,
+      "activity": 100,
+      "incoming": 100,
+      "expected": {
+        "marker": 100,
+        "synced": true,
+        "tagWrite": null
+      }
+    },
+    {
+      "name": "backfill stays archived",
+      "marker": 100,
+      "synced": true,
+      "serverArchived": true,
+      "activity": 100,
+      "incoming": 99,
+      "expected": {
+        "marker": 100,
+        "synced": true,
+        "tagWrite": null
+      }
+    },
+    {
+      "name": "own send does not restore",
+      "marker": 100,
+      "synced": true,
+      "serverArchived": true,
+      "activity": 200,
+      "incoming": null,
+      "expected": {
+        "marker": 100,
+        "synced": true,
+        "tagWrite": null
+      }
+    },
+    {
+      "name": "state change does not restore",
+      "marker": 100,
+      "synced": true,
+      "serverArchived": true,
+      "activity": 200,
+      "incoming": 99,
+      "expected": {
+        "marker": 100,
+        "synced": true,
+        "tagWrite": null
+      }
+    },
+    {
+      "name": "incoming baseline beats absent activity",
+      "marker": null,
+      "synced": false,
+      "serverArchived": true,
+      "activity": null,
+      "incoming": 200,
+      "expected": {
+        "marker": 200,
+        "synced": true,
+        "tagWrite": null
+      }
+    },
+    {
+      "name": "invalid legacy marker imports remote state",
+      "marker": -1,
+      "synced": false,
+      "serverArchived": true,
+      "activity": 100,
+      "incoming": 90,
+      "expected": {
+        "marker": 100,
+        "synced": true,
+        "tagWrite": null
+      }
+    },
+    {
+      "name": "invalid activity cannot hide incoming baseline",
+      "marker": null,
+      "synced": false,
+      "serverArchived": true,
+      "activity": 9007199254740992,
+      "incoming": 200,
+      "expected": {
+        "marker": 200,
+        "synced": true,
+        "tagWrite": null
+      }
+    },
+    {
+      "name": "first incoming restores empty archive",
+      "marker": 0,
+      "synced": true,
+      "serverArchived": true,
+      "activity": 1,
+      "incoming": 1,
+      "expected": {
+        "marker": null,
+        "synced": false,
+        "tagWrite": false
+      }
+    }
+  ]
+}

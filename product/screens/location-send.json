@@ -1,0 +1,79 @@
+{
+  "id": "location-send",
+  "title": "Send location",
+  "flow": "chat",
+  "summary": "From the attachment picker: a map from maps.bipe.net.br centred on the phone's position with a fixed pin in the middle. The person sends the current location, drags the map and sends the place under the pin, or starts a live location share (MSC3489) for 15 min, 1 h or 8 h.",
+  "types": {
+    "MapCentre": {
+      "latitude": { "type": "string", "description": "Decimal degrees, WGS 84." },
+      "longitude": { "type": "string", "description": "Decimal degrees, WGS 84." },
+      "zoom": { "type": "int", "description": "Map zoom, from registries/maps.json minZoom to maxZoom; outside detailBounds at most outsideMaxZoom, so a map abroad shows the low-zoom world map, not an empty area." }
+    }
+  },
+  "state": {
+    "roomId": { "type": "string", "description": "The chat." },
+    "centre": { "type": "MapCentre", "description": "The place under the pin. Starts at the phone's position, else at the centre of Brazil at minZoom until the position comes." },
+    "ownPosition": { "type": "MapCentre", "optional": true, "description": "The last position from the system, while location access is given." },
+    "isAtOwnPosition": { "type": "bool", "description": "true while centre is ownPosition (the person did not drag the map)." },
+    "locating": { "type": "bool", "description": "true while the first position is on its way (bipe_app_location_finding)." },
+    "problem": {
+      "type": "enum",
+      "values": ["none", "permission", "unavailable", "sendFailed", "liveFailed"],
+      "description": "permission: bipe_app_location_permission with a button to the system settings. unavailable: bipe_app_location_unavailable. sendFailed: bipe_app_location_send_failed. liveFailed: bipe_app_location_live_start_failed."
+    },
+    "isSending": { "type": "bool", "description": "true while Timeline.sendLocation runs." },
+    "isChoosingDuration": { "type": "bool", "description": "true while the duration choice of startLive shows (bipe_app_location_live_duration_title)." }
+  },
+  "actions": {
+    "appear": { "effect": "Asks for location access 'when in use' if the system has not asked yet, then reads one position. Background access is asked only by startLive." },
+    "drag": {
+      "params": { "dx": { "type": "int", "description": "Points." }, "dy": { "type": "int", "description": "Points." } },
+      "effect": "Moves the map. At the end of the drag, centre becomes the place under the pin and a new static map loads. isAtOwnPosition becomes false."
+    },
+    "zoomIn": { "effect": "centre.zoom + 1, up to maxZoom (outsideMaxZoom when the centre is outside detailBounds)." },
+    "zoomOut": { "effect": "centre.zoom - 1, down to minZoom." },
+    "myLocation": { "effect": "Sets centre to ownPosition at defaultZoom. Reads a position first when there is none." },
+    "send": { "effect": "Sends m.location with Timeline.sendLocation: asset sender when isAtOwnPosition, else pin. Closes the screen on success." },
+    "cancel": { "effect": "Closes the screen. Nothing is sent." },
+    "startLive": { "effect": "Shows the durations of registries/maps.json live.durationsMinutes (bipe_app_location_live_minutes under 60, else bipe_app_location_live_hours). A choice starts the share with Room.startLiveLocationShare(durationMillis) and closes the screen; live-location-banner then shows." }
+  },
+  "strings": [
+    "bipe_app_location_send_title",
+    "bipe_app_location_send_current",
+    "bipe_app_location_send_pin",
+    "bipe_app_location_drag_hint",
+    "bipe_app_location_finding",
+    "bipe_app_location_permission",
+    "bipe_app_location_unavailable",
+    "bipe_app_location_send_failed",
+    "bipe_app_location_my_location",
+    "bipe_app_location_zoom_in",
+    "bipe_app_location_zoom_out",
+    "bipe_app_location_body",
+    "bipe_contacts_open_settings",
+    "bipe_contacts_open_settings_android",
+    "bipe_app_cancel",
+    "bipe_app_location_live_start",
+    "bipe_app_location_live_duration_title",
+    "bipe_app_location_live_minutes",
+    "bipe_app_location_live_hours",
+    "bipe_app_location_live_footer",
+    "bipe_app_location_live_start_failed"
+  ],
+  "sdk": ["Timeline.sendLocation", "AssetType", "Room.startLiveLocationShare"],
+  "parity": ["location-sharing", "live-location"],
+  "notes": [
+    "Maps come only from registries/maps.json baseUrl (ADR 0131). The map is a static image: staticPath with the style (dark when the app shows dark colours), centre and the view size in points, at most maxStaticSize per side. No tile SDK, no system map view (Apple and Google maps send the position outside Brazil).",
+    "The pin stays in the middle of the view. A drag moves the image; the place under the pin comes from the Web Mercator projection with 512-point tiles (the MapLibre convention of tileserver-gl): the world is 512 * 2^z points wide at zoom z.",
+    "The attribution © OpenStreetMap is drawn by the server into every image. Do not crop the image.",
+    "Send: body bipe_app_location_body with the geo URI; geoUri 'geo:<lat>,<lon>' with coordinateDecimals digits and ';u=<accuracy in metres>' when the position has one and the asset is sender; zoomLevel centre.zoom; assetType sender or pin; description none. The SDK also writes the MSC3488 org.matrix.msc3488.location and asset fields.",
+    "The send button says bipe_app_location_send_current while isAtOwnPosition, else bipe_app_location_send_pin.",
+    "iOS: CLLocationManager requestWhenInUseAuthorization, then requestLocation. Android: ACCESS_FINE_LOCATION and ACCESS_COARSE_LOCATION through the runtime permission dialog, then one current location from LocationManager (no Google Play services). A denied or approximate-only answer still lets the person drag the map and send a pin.",
+    "Live start (bipe-chat/bipe#768): the button bipe_app_location_live_start sits under the send button, with bipe_app_location_live_footer under it. It needs location access; without it the button asks again like appear. One share per chat: a chat where this account shares already shows live-location-banner instead.",
+    "Background, iOS: UIBackgroundModes location. startLive asks for 'Always' (requestAlwaysAuthorization) only here, never at the first use. With Always the share goes on with the screen locked (allowsBackgroundLocationUpdates, showsBackgroundLocationIndicator). With 'when in use' only, positions go out while the app is open, and live-location-banner shows bipe_app_location_live_open_only.",
+    "Background, Android: a foreground service of type location with an ongoing notification (bipe_app_location_live_title, bipe_app_location_live_sharing, action bipe_app_location_live_stop). The share starts from the open app, so the service needs ACCESS_FINE_LOCATION or ACCESS_COARSE_LOCATION and FOREGROUND_SERVICE_LOCATION, not ACCESS_BACKGROUND_LOCATION. Positions come from LocationManager; no Google Play services.",
+    "Updates: the app sends Room.sendLiveLocation(geoUri) with the first position, then when the phone moved at least the chats.liveLocation distance (live.distancesMetres, default live.defaultDistanceMetres) and at least live.minIntervalSeconds after the last update. While the phone moves less than that, one update goes out every live.maxIntervalSeconds. geoUri as for send, with ';u=' when the position has an accuracy.",
+    "End: Room.stopLiveLocationShare at the end of the duration, on stop, on sign-out of the account and on a switch to another account. A share left by an app that closed is stopped at the next start of the app.",
+    "Privacy: positions go only into the room (encrypted when the room is). The app keeps no position history; it keeps only the room, the account and the end time of each running share."
+  ]
+}

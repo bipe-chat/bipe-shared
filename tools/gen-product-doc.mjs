@@ -138,31 +138,22 @@ for (const a of product.organisationAudiences) {
     orgAudienceSlugs.add(`${l}/${slug}`);
   }
 }
-// The calculator on /precos/ (bipe#812): Meta's rate card and Bipe's proposed amounts.
+// The price rules (ADR 0206) and the calculator on /precos/ (bipe#812).
 {
-  const w = product.pricing.whatsapp;
-  const tiers = (name) => {
-    const t = w?.[name];
-    if (!Array.isArray(t) || !t.length || t[0][0] !== 0 || t.some(([from, rate], i) => !(rate > 0) || (i > 0 && !(from > t[i - 1][0]) ))) fail(`pricing.whatsapp.${name}: tiers from 0, ascending, positive rates`);
-  };
-  if (!/^\d{4}-\d{2}-\d{2}$/.test(w?.checked ?? "") || !/^\d{4}-\d{2}-\d{2}$/.test(w?.effective ?? "") || !w.source?.startsWith("https://")) fail("pricing.whatsapp: checked, effective, source");
-  if (!(w.marketing > 0) || !(w.service > 0) || !Number.isInteger(w.serviceFreePerNumber)) fail("pricing.whatsapp: marketing, service, serviceFreePerNumber");
-  tiers("utility");
-  tiers("authentication");
   const pr = product.pricing.proposal;
-  if (!(pr?.company?.monthly > 0) || !(pr.company.extraSeat > 0) || !(pr.company.annualMonths > 0) || !(pr.nonprofitFactor > 0) || !(pr.publicBodyFactor > 0) || !Number.isInteger(pr.smallSeats)) fail("pricing.proposal: amounts");
-  if (!pr.institutionBands?.length || pr.institutionBands.at(-1).upTo !== null || pr.institutionBands.some((b) => !(b.yearly > 0))) fail("pricing.proposal.institutionBands");
-  // Presets: illustrative examples (labelled so on the page). messages is a stop of the slider; mix sums to 1.
+  const t = pr?.institution?.tiers;
+  if (!Array.isArray(t) || !t.length || t[0][0] !== 0 || t.some(([from, rate], i) => !(rate > 0) || (i > 0 && !(from > t[i - 1][0] && rate < t[i - 1][1])))) fail("pricing.proposal.institution.tiers: from 0, ascending bands, falling positive rates");
+  if (!(pr.institution.capYearly > pr.minMonthly * 12) || !(pr.minMonthly > 0) || !Number.isInteger(pr.free?.agents) || !Number.isInteger(pr.free?.people)) fail("pricing.proposal: free, minMonthly, capYearly");
+  if (!(pr.company?.monthly > 0) || !(pr.company.extraSeat > 0) || !(pr.company.annualMonths > 0) || !Number.isInteger(pr.company.maxSeats) || !(pr.halfFactor > 0 && pr.halfFactor < 1)) fail("pricing.proposal: company, halfFactor");
+  if (!pr.table?.length || pr.table.some((n, i) => !(n > 0) || (i > 0 && !(n > pr.table[i - 1])))) fail("pricing.proposal.table: ascending people counts");
+  // Presets: illustrative examples, labelled so on the page. spend is what the example pays today to talk to customers, in BRL per month.
   for (const x of product.pricing.calculatorPresets ?? []) {
-    const sum = ["marketing", "utility", "authentication", "service"].reduce((t, k) => t + (x.mix?.[k] ?? NaN), 0);
-    if (Math.abs(sum - 1) > 1e-9 || !(x.messages > 0) || !["small", "company", "nonprofit", "institution", "public"].includes(x.org)) fail(`pricing.calculatorPresets ${x.id}`);
-    if (["institution", "public"].includes(x.org) ? !(x.band >= 0 && x.band < pr.institutionBands.length) : !(x.seats >= 1)) fail(`pricing.calculatorPresets ${x.id}: seats or band`);
+    if (!["company", "half"].includes(x.org) || !(x.seats >= 1) || !(x.people >= 1) || !(x.spend >= 0) || !x.icon) fail(`pricing.calculatorPresets ${x.id}`);
     for (const l of ["pt", "en"]) if (!product.pricing[l].calculator?.presets?.[x.id] || !product.pricing[l].calculator?.presetNotes?.[x.id]) fail(`pricing.${l}.calculator.presets/presetNotes.${x.id}`);
-    if (!x.icon) fail(`pricing.calculatorPresets ${x.id}: icon`);
   }
   for (const l of ["pt", "en"]) {
     const c = product.pricing[l].calculator;
-    if (!c?.heading || !c.proposal || c.peopleBands?.length !== pr.institutionBands.length || !c.notes?.length) fail(`pricing.${l}.calculator`);
+    if (!c?.heading || !c.proposal || !c.plans?.free || !c.curveHeading) fail(`pricing.${l}.calculator`);
   }
 }
 const tentpoleIds = new Set(product.tentpoles.map((t) => t.id));

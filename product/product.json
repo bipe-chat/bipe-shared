@@ -2326,13 +2326,13 @@
           ]
         },
         {
-          "heading": "Quanto custa falar com o cliente hoje",
+          "heading": "Preço fixo em reais",
           "points": [
-            "Na API do WhatsApp Business, a Meta cobra por mensagem entregue. No Brasil, a tabela em vigor desde 1º de outubro de 2026 cobra R$ 0,3217 por mensagem de marketing e R$ 0,0350 por mensagem de utilidade, como um lembrete ou um aviso de entrega.",
-            "Desde a mesma data, a resposta ao cliente também tem preço: R$ 0,0350 por mensagem a partir da 1.001ª de cada número no mês.",
-            "Um exemplo: uma clínica que manda 10.000 lembretes e 2.000 ofertas por mês paga cerca de R$ 993 só para a Meta. A conta não inclui a taxa da empresa que revende a API nem os descontos por volume.",
-            "No Bipe, a empresa paga um valor fixo por mês, e o número de mensagens não muda o preço. Esse valor só sai depois do piloto, então esta página ainda não compara totais.",
-            "Tabela da Meta conferida em 27 de outubro de 2026, em whatsappbusiness.com. A Meta muda a tabela, e a sua conta pode ter outro valor."
+            "O preço segue o tamanho da organização: atendentes ou pessoas atendidas.",
+            "Mil mensagens ou um milhão, o valor é o mesmo. Nenhum plano cobra por mensagem.",
+            "Até 2 atendentes e 1.000 pessoas atendidas, o Bipe é de graça.",
+            "Planos pagos a partir de R$ 199 por mês, em reais, por mês ou por ano.",
+            "No piloto, a empresa paga metade, e esse valor vira crédito no primeiro ano."
           ]
         },
         {
@@ -2436,13 +2436,13 @@
           ]
         },
         {
-          "heading": "What talking to customers costs today",
+          "heading": "A fixed price in reais",
           "points": [
-            "On the WhatsApp Business API, Meta charges per delivered message. In Brazil, the rate card in force since 1 October 2026 charges R$ 0.3217 per marketing message and R$ 0.0350 per utility message, such as a reminder or a delivery notice.",
-            "Since the same date, replies to customers have a price too: R$ 0.0350 per message from the 1,001st of each number in a month.",
-            "An example: a clinic that sends 10,000 reminders and 2,000 offers a month pays about R$ 993 to Meta alone. That doesn't include the fee of the company that resells the API, or volume discounts.",
-            "On Bipe, the company pays a fixed monthly amount, and the number of messages doesn't change the price. That amount comes out after the pilot, so this page doesn't compare totals yet.",
-            "Meta rate card checked on 27 October 2026, on whatsappbusiness.com. Meta changes its rates, and your account may pay a different amount."
+            "The price follows the size of the organisation: agents or people served.",
+            "A thousand messages or a million, the amount is the same. No plan charges per message.",
+            "Up to 2 agents and 1,000 people served, Bipe is free.",
+            "Paid plans from R$ 199 a month, in reais, per month or per year.",
+            "In the pilot, a company pays half, and that amount becomes credit in the first year."
           ]
         },
         {
@@ -2520,8 +2520,7 @@
       },
       {
         "id": "public",
-        "cta": "form",
-        "pilotFree": true
+        "cta": "form"
       }
     ],
     "pt": {
@@ -2533,7 +2532,7 @@
         "heading": "As regras que valem em todo plano",
         "points": [
           "Os dados e os servidores ficam no Brasil, sob a lei brasileira.",
-          "Nenhum plano cobra por mensagem.",
+          "Preço fixo em reais, por mês ou por ano. Nenhum plano cobra por mensagem.",
           "O selo não está à venda. Dinheiro não compra selo, nível de verificação, análise mais rápida nem o nome de outra organização. O plano paga serviço: atendentes, suporte, monitoramento e condições de contrato.",
           "Quem usa o Bipe para conversar nunca paga."
         ]
@@ -2552,22 +2551,22 @@
       "pilotPrice": "Metade no piloto",
       "tiers": {
         "small": {
-          "name": "Pequeno negócio",
-          "who": "MEI ativo ou microempresa (ME), pelos dados da Receita, ou quem trabalha por conta própria sem CNPJ.",
+          "name": "Grátis",
+          "who": "Qualquer organização com até 2 atendentes e até 1.000 pessoas atendidas.",
           "billing": "Sem mensalidade.",
           "points": [
-            "Selo de CNPJ verificado e nome reservado.",
+            "Selo de CNPJ verificado e nome reservado, com a verificação automática.",
             "Caixa de entrada com 2 atendentes.",
             "Perguntas com opções e API.",
             "Suporte pelas páginas de ajuda.",
             "O selo segue as mesmas regras dos outros planos: o CPF verificado do dono precisa aparecer entre os sócios do CNPJ na Receita.",
-            "Sem CNPJ, a conta da empresa tem as mesmas ferramentas, mas fica sem selo e sem cobrança por Pix."
+            "Sem CNPJ, a conta tem as mesmas ferramentas, mas fica sem selo e sem cobrança por Pix."
           ]
         },
         "company": {
           "name": "Empresa",
-          "who": "Qualquer outra empresa com CNPJ verificado, ou o pequeno negócio que precisa de um 3º atendente.",
-          "billing": "Um valor fixo por mês por CNPJ, com um atendente incluído, e um valor por atendente a mais. Pagamento mensal ou anual.",
+          "who": "Equipes de até 10 atendentes.",
+          "billing": "R$ 199 por mês com 1 atendente e R$ 69 por atendente a mais. No pagamento anual, o ano custa 10 meses.",
           "points": [
             "Selo de CNPJ verificado e nome reservado.",
             "Caixa de entrada com quantos atendentes a equipe precisar.",
@@ -2576,8 +2575,8 @@
         },
         "institution": {
           "name": "Instituição",
-          "who": "Bancos, fintechs, seguradoras, concessionárias, redes de saúde e grandes varejistas.",
-          "billing": "Contrato anual. O valor segue o número de pessoas que a instituição atende, por faixa.",
+          "who": "Organizações com mais de 10 atendentes, ou que pagam menos pelas pessoas que atendem.",
+          "billing": "Por ano, pelas pessoas atendidas: R$ 0,30 por pessoa até 100 mil, e menos por pessoa acima disso. Mínimo de R$ 199 por mês, máximo de R$ 540 mil por ano.",
           "points": [
             "Atendentes sem limite.",
             "Todos os nomes reservados da marca, com monitoramento de nomes parecidos.",
@@ -2586,15 +2585,16 @@
           ]
         },
         "public": {
-          "name": "Órgão público",
-          "who": "Órgãos do governo, com a verificação de órgão público.",
-          "billing": "Contrato anual. O valor segue o número de pessoas que o órgão atende, por faixa.",
+          "name": "Órgão público, ONG ou associação",
+          "who": "Órgãos do governo, ONGs, igrejas e associações.",
+          "billing": "Metade do preço do plano que se aplica.",
           "points": [
-            "O mesmo serviço do plano Instituição, com 50% de desconto."
-          ]
+            "O mesmo serviço dos outros planos, com 50% de desconto."
+          ],
+          "price": "Metade do preço"
         }
       },
-      "nonprofit": "ONGs, igrejas e associações pagam metade do valor do plano Empresa.",
+      "nonprofit": "Cada organização paga o menor preço entre os planos que pode usar.",
       "tools": {
         "heading": "Ferramentas de graça em todo plano",
         "body": "Qualquer conta de empresa usa estas ferramentas de graça, em qualquer plano."
@@ -2611,97 +2611,57 @@
       "ctaApp": "Baixar o app",
       "ctaForm": "Quero usar o Bipe",
       "calculator": {
-        "heading": "Quanto vocês pagam no WhatsApp, e quanto pagariam no Bipe",
-        "lede": "Coloque os números de um mês típico. A conta do WhatsApp usa a tabela da Meta para o Brasil, com as faixas de volume. O valor do Bipe é a proposta atual.",
-        "whatsapp": "No WhatsApp Business hoje",
-        "fields": {
-          "marketing": "Mensagens de marketing por mês",
-          "marketingHint": "Ofertas, promoções e novidades.",
-          "utility": "Mensagens de utilidade por mês",
-          "utilityHint": "Lembretes, confirmações, avisos de entrega e de cobrança.",
-          "authentication": "Códigos de verificação por mês",
-          "service": "Respostas da equipe por mês",
-          "serviceHint": "Mensagens livres dentro da janela de 24 horas depois que o cliente escreve.",
-          "numbers": "Números de WhatsApp da empresa",
-          "bspPercent": "Taxa da plataforma de atendimento sobre a conta da Meta (%)",
-          "bspMonthly": "Mensalidade da plataforma de atendimento (R$)"
-        },
-        "bipe": "No Bipe",
-        "org": "Tipo de organização",
-        "orgs": {
-          "small": "MEI ou microempresa",
-          "company": "Empresa",
-          "nonprofit": "ONG, igreja ou associação",
-          "institution": "Instituição: banco, rede de saúde, varejo grande",
-          "public": "Órgão público"
-        },
-        "seats": "Atendentes",
-        "people": "Pessoas atendidas",
-        "peopleBands": [
-          "Até 100 mil",
-          "Até 1 milhão",
-          "Até 10 milhões",
-          "Mais de 10 milhões"
-        ],
-        "lines": {
-          "marketing": "Marketing",
-          "utility": "Utilidade",
-          "authentication": "Códigos de verificação",
-          "service": "Respostas da equipe",
-          "serviceFree": "%1$s respostas grátis por número",
-          "meta": "Total para a Meta",
-          "bsp": "Plataforma de atendimento",
-          "total": "Por mês",
-          "year": "Por ano",
-          "bipeMonth": "Por mês",
-          "bipeYear": "Por ano",
-          "bipeAnnual": "Pagando o ano de uma vez: %1$s",
-          "bipeSame": "O mesmo valor com qualquer número de mensagens.",
-          "smallMoved": "Com mais de 2 atendentes, a conta passa para o plano Empresa."
-        },
-        "proposal": "Proposta: os valores do Bipe podem mudar depois do piloto. No piloto, a empresa paga metade, e esse valor vira crédito no primeiro ano. Para órgãos públicos, o piloto é gratuito.",
-        "notes": [
-          "Tabela da Meta para o Brasil, em reais, em vigor desde %1$s e conferida em %2$s.",
-          "As faixas de volume valem para utilidade e códigos de verificação. Cada faixa só vale para as mensagens dentro dela.",
-          "Mensagens dentro de uma janela de entrada grátis, quando o cliente chega por um anúncio de clique para o WhatsApp, não têm preço. A conta acima cobra todas.",
-          "A conta não inclui impostos.",
-          "No Bipe, o cliente precisa ter o app."
-        ],
-        "sourceLink": "Tabela da Meta",
-        "link": "Calcule a conta do WhatsApp e a do Bipe",
-        "simple": {
-          "messages": "Mensagens que vocês mandam por mês",
-          "seats": "Atendentes",
-          "save": "Vocês economizariam",
-          "perMonth": "por mês",
-          "perYear": "%1$s por ano",
-          "cheaper": "Com esse volume, o WhatsApp sai mais barato que o Bipe.",
-          "compare": "WhatsApp: %1$s por mês. Bipe: %2$s por mês.",
-          "assumption": "Cada tipo de mensagem tem o seu preço na Meta: marketing custa cerca de 9 vezes mais que utilidade. Ajuste os tipos na conta completa.",
-          "detail": "Ver a conta completa",
-          "mix": "Tipos de mensagem",
-          "people": "Pessoas atendidas"
-        },
+        "heading": "Quanto o Bipe custa para vocês",
+        "lede": "Preço fixo em reais, pelo tamanho da organização: atendentes ou pessoas atendidas. Mil mensagens ou um milhão, o valor é o mesmo.",
         "presetsLabel": "Exemplos",
         "presets": {
+          "church": "Igreja",
           "shop": "Loja online",
           "clinics": "Rede de clínicas",
           "city": "Prefeitura",
           "bank": "Banco médio"
         },
         "presetNotes": {
-          "shop": "Neste exemplo, 35% das mensagens são de marketing. Na Meta, marketing custa cerca de 9 vezes mais que utilidade. No Bipe, o tipo de mensagem não muda o preço.",
-          "clinics": "Neste exemplo, cada consulta gera um lembrete e uma confirmação, e cada mensagem recebe uma resposta. Desde 1º de outubro de 2026, a Meta cobra também as respostas.",
-          "city": "Neste exemplo, cada aviso de saúde recebe uma resposta, e a Meta cobra as duas.",
-          "bank": "Neste exemplo, metade das mensagens são avisos e metade são respostas. Acima de 250 mil avisos por mês, a Meta dá desconto por volume, e a conta já usa esse desconto."
+          "church": "Neste exemplo, a igreja tem 2 atendentes e 800 membros. Fica no plano grátis, com o mesmo selo dos planos pagos.",
+          "shop": "Neste exemplo, a loja tem 5 atendentes e 20 mil clientes. O plano Empresa sai mais barato que o preço por pessoas.",
+          "clinics": "Neste exemplo, a rede tem 10 atendentes e 50 mil pacientes. O plano Empresa sai mais barato que o preço por pessoas.",
+          "city": "Neste exemplo, a prefeitura atende 100 mil pessoas com 15 atendentes. Órgão público paga metade.",
+          "bank": "Neste exemplo, o banco tem 5 milhões de clientes e 200 atendentes. Acima de 10 atendentes, o preço segue as pessoas atendidas."
         },
+        "org": "Tipo de organização",
+        "orgs": {
+          "company": "Empresa ou instituição",
+          "half": "Órgão público, ONG ou associação"
+        },
+        "seats": "Atendentes",
+        "people": "Pessoas atendidas",
+        "spend": "Quanto vocês gastam hoje por mês para falar com os clientes",
+        "spendNone": "Não informado",
+        "month": "por mês",
+        "year": "%1$s por ano",
+        "annual": "Pagando o ano de uma vez: %1$s",
+        "save": "Vocês economizariam %1$s por mês",
+        "compare": "Hoje: %1$s por mês. No Bipe: %2$s por mês.",
         "plans": {
-          "small": "Plano Pequeno negócio: R$ 0 com até %1$s atendentes.",
+          "free": "Plano grátis: até %1$s atendentes e até %2$s pessoas atendidas.",
           "company": "Plano Empresa: %1$s por mês com 1 atendente e %2$s por atendente a mais.",
-          "nonprofit": "ONG, igreja ou associação: metade do plano Empresa.",
-          "institution": "Plano Instituição: o preço segue as pessoas atendidas. Atendentes sem limite.",
-          "public": "Plano Órgão público: metade do plano Instituição, pelas pessoas atendidas. Atendentes sem limite."
-        }
+          "institution": "Plano Instituição: pelas pessoas atendidas, com atendentes sem limite.",
+          "half": "Metade do preço para órgãos públicos, ONGs, igrejas e associações.",
+          "lower": "Vocês pagam o menor preço entre os planos que podem usar."
+        },
+        "proposal": "Proposta: os valores podem mudar depois do piloto. No piloto, a empresa paga metade, e esse valor vira crédito no primeiro ano. Para órgãos públicos, o piloto é gratuito.",
+        "detail": "Ver como o preço é calculado",
+        "curveHeading": "Plano Instituição: preço por pessoa atendida",
+        "curveLede": "Cada valor vale só para as pessoas dentro da faixa. Assim o preço sobe aos poucos, sem salto entre uma faixa e outra. Mínimo de %1$s por mês e máximo de %2$s por ano.",
+        "curveFrom": "Até %1$s pessoas",
+        "curveAbove": "Acima de %1$s pessoas",
+        "curveRate": "%1$s por pessoa por ano",
+        "tableHeading": "Valores por ano",
+        "tablePeople": "Pessoas atendidas",
+        "tableInstitution": "Instituição",
+        "tableHalf": "Órgão público, ONG ou associação",
+        "link": "Calcule quanto o Bipe custa para vocês",
+        "curveBetween": "De %1$s a %2$s pessoas"
       },
       "pilotFreePrice": "Piloto gratuito"
     },
@@ -2714,7 +2674,7 @@
         "heading": "Rules for every plan",
         "points": [
           "Data and servers stay in Brazil, under Brazilian law.",
-          "No plan charges per message.",
+          "A fixed price in reais, per month or per year. No plan charges per message.",
           "The seal is not for sale. Money does not buy a seal, a verification level, a faster review or another organisation's name. A plan pays for service: agents, support, monitoring and contract terms.",
           "People who use Bipe to chat never pay."
         ]
@@ -2733,49 +2693,50 @@
       "pilotPrice": "Half price in the pilot",
       "tiers": {
         "small": {
-          "name": "Small business",
-          "who": "An active MEI or a micro company (ME), from Receita's data, or someone who works on their own with no CNPJ.",
+          "name": "Free",
+          "who": "Any organisation with up to 2 agents and up to 1,000 people served.",
           "billing": "No monthly fee.",
           "points": [
-            "Verified CNPJ seal and reserved name.",
+            "Verified CNPJ badge and reserved name, with the automatic check.",
             "Inbox with 2 agents.",
-            "Questions with options and the API.",
+            "Questions with options and API.",
             "Support through the help pages.",
-            "The seal follows the same rules as every other plan: the owner's verified CPF must be one of the partners in the CNPJ record at Receita.",
-            "With no CNPJ, the company account has the same tools, but no seal and no Pix charges."
+            "The badge follows the same rules as the other plans: the owner's verified CPF must be among the CNPJ's partners at the Receita.",
+            "Without a CNPJ, the account has the same tools, but no badge and no Pix charges."
           ]
         },
         "company": {
           "name": "Company",
-          "who": "Any other company with a verified CNPJ, or a small business that needs a 3rd agent.",
-          "billing": "A flat monthly fee per CNPJ, with one agent included, and a fee for each extra agent. Pay monthly or yearly.",
+          "who": "Teams of up to 10 agents.",
+          "billing": "R$ 199 a month with 1 agent and R$ 69 per extra agent. Paid yearly, the year costs 10 months.",
           "points": [
-            "Verified CNPJ seal and reserved name.",
+            "Verified CNPJ badge and reserved name.",
             "Inbox with as many agents as the team needs.",
-            "Questions with options and the API."
+            "Questions with options and API."
           ]
         },
         "institution": {
           "name": "Institution",
-          "who": "Banks, fintechs, insurers, utilities, health networks and large retailers.",
-          "billing": "A yearly contract. The price follows the number of people the institution serves, in bands.",
+          "who": "Organisations with more than 10 agents, or that pay less by the people they serve.",
+          "billing": "Per year, by people served: R$ 0.30 per person up to 100,000, and less per person above that. At least R$ 199 a month, at most R$ 540,000 a year.",
           "points": [
             "Unlimited agents.",
-            "Every reserved name of the brand, with monitoring for lookalike names.",
-            "The verification levels its sector needs.",
-            "Support with response times in the contract."
+            "Every reserved name of the brand, with monitoring of lookalike names.",
+            "The verification levels the sector needs.",
+            "Support with a response time in the contract."
           ]
         },
         "public": {
-          "name": "Public body",
-          "who": "Government bodies, with public body verification.",
-          "billing": "A yearly contract. The price follows the number of people the body serves, in bands.",
+          "name": "Public body, NGO or association",
+          "who": "Government bodies, NGOs, churches and associations.",
+          "billing": "Half the price of the plan that applies.",
           "points": [
-            "The same service as the Institution plan, at 50% off."
-          ]
+            "The same service as the other plans, at 50% off."
+          ],
+          "price": "Half price"
         }
       },
-      "nonprofit": "Nonprofits, churches and associations pay half the Company plan price.",
+      "nonprofit": "Each organisation pays the lower price of the plans it can use.",
       "tools": {
         "heading": "Free tools on every plan",
         "body": "Any company account uses these tools for free, on any plan."
@@ -2792,243 +2753,152 @@
       "ctaApp": "Get the app",
       "ctaForm": "I want to use Bipe",
       "calculator": {
-        "heading": "What you pay on WhatsApp, and what you would pay on Bipe",
-        "lede": "Enter the numbers of a typical month. The WhatsApp bill uses Meta's rate card for Brazil, with its volume tiers. The Bipe amount is the current proposal.",
-        "whatsapp": "On WhatsApp Business today",
-        "fields": {
-          "marketing": "Marketing messages per month",
-          "marketingHint": "Offers, promotions and news.",
-          "utility": "Utility messages per month",
-          "utilityHint": "Reminders, confirmations, delivery and billing notices.",
-          "authentication": "Verification codes per month",
-          "service": "Team replies per month",
-          "serviceHint": "Free-form messages inside the 24-hour window after the customer writes.",
-          "numbers": "The company's WhatsApp numbers",
-          "bspPercent": "Customer service platform fee on the Meta bill (%)",
-          "bspMonthly": "Customer service platform subscription (R$)"
-        },
-        "bipe": "On Bipe",
-        "org": "Kind of organisation",
-        "orgs": {
-          "small": "MEI or micro company",
-          "company": "Company",
-          "nonprofit": "NGO, church or association",
-          "institution": "Institution: bank, health network, large retailer",
-          "public": "Public body"
-        },
-        "seats": "Agents",
-        "people": "People served",
-        "peopleBands": [
-          "Up to 100,000",
-          "Up to 1 million",
-          "Up to 10 million",
-          "More than 10 million"
-        ],
-        "lines": {
-          "marketing": "Marketing",
-          "utility": "Utility",
-          "authentication": "Verification codes",
-          "service": "Team replies",
-          "serviceFree": "%1$s free replies per number",
-          "meta": "Total to Meta",
-          "bsp": "Customer service platform",
-          "total": "Per month",
-          "year": "Per year",
-          "bipeMonth": "Per month",
-          "bipeYear": "Per year",
-          "bipeAnnual": "Paying the year at once: %1$s",
-          "bipeSame": "The same amount at any number of messages.",
-          "smallMoved": "With more than 2 agents, the account moves to the Company plan."
-        },
-        "proposal": "Proposal: Bipe's amounts may change after the pilot. In the pilot, a company pays half, and that amount becomes credit in the first year. For public bodies, the pilot is free.",
-        "notes": [
-          "Meta's rate card for Brazil, in reais, in force since %1$s and checked on %2$s.",
-          "Volume tiers apply to utility messages and verification codes. Each tier's rate applies only to the messages inside it.",
-          "Messages inside a free entry point window, when the customer comes from a click-to-WhatsApp ad, cost nothing. The bill above charges all of them.",
-          "The bill doesn't include taxes.",
-          "On Bipe, the customer needs the app."
-        ],
-        "sourceLink": "Meta's rate card",
-        "link": "Work out your WhatsApp bill and the Bipe price",
-        "simple": {
-          "messages": "Messages you send per month",
-          "seats": "Agents",
-          "save": "You would save",
-          "perMonth": "per month",
-          "perYear": "%1$s per year",
-          "cheaper": "At this volume, WhatsApp costs less than Bipe.",
-          "compare": "WhatsApp: %1$s per month. Bipe: %2$s per month.",
-          "assumption": "Each message type has its own Meta price: marketing costs about 9 times more than utility. Adjust the types in the full calculation.",
-          "detail": "See the full calculation",
-          "mix": "Message types",
-          "people": "People served"
-        },
+        "heading": "What Bipe costs you",
+        "lede": "A fixed price in reais, by the size of the organisation: agents or people served. A thousand messages or a million, the amount is the same.",
         "presetsLabel": "Examples",
         "presets": {
+          "church": "Church",
           "shop": "Online shop",
           "clinics": "Clinic network",
           "city": "City hall",
           "bank": "Mid-size bank"
         },
         "presetNotes": {
-          "shop": "In this example, 35% of the messages are marketing. At Meta, marketing costs about 9 times more than utility. On Bipe, the message type doesn't change the price.",
-          "clinics": "In this example, each appointment gets a reminder and a confirmation, and each message gets a reply. Since 1 October 2026, Meta charges for the replies too.",
-          "city": "In this example, each health notice gets a reply, and Meta charges for both.",
-          "bank": "In this example, half the messages are notices and half are replies. Above 250,000 notices a month, Meta gives a volume discount, and the bill already uses it."
+          "church": "In this example, the church has 2 agents and 800 members. It stays on the free plan, with the same badge as the paid plans.",
+          "shop": "In this example, the shop has 5 agents and 20,000 customers. The Company plan costs less than the price by people served.",
+          "clinics": "In this example, the network has 10 agents and 50,000 patients. The Company plan costs less than the price by people served.",
+          "city": "In this example, the city hall serves 100,000 people with 15 agents. Public bodies pay half.",
+          "bank": "In this example, the bank has 5 million customers and 200 agents. Above 10 agents, the price follows the people served."
         },
+        "org": "Kind of organisation",
+        "orgs": {
+          "company": "Company or institution",
+          "half": "Public body, NGO or association"
+        },
+        "seats": "Agents",
+        "people": "People served",
+        "spend": "What you spend today each month to talk to customers",
+        "spendNone": "Not given",
+        "month": "per month",
+        "year": "%1$s per year",
+        "annual": "Paying the year at once: %1$s",
+        "save": "You would save %1$s per month",
+        "compare": "Today: %1$s per month. On Bipe: %2$s per month.",
         "plans": {
-          "small": "Small business plan: R$ 0 with up to %1$s agents.",
+          "free": "Free plan: up to %1$s agents and up to %2$s people served.",
           "company": "Company plan: %1$s a month with 1 agent and %2$s per extra agent.",
-          "nonprofit": "NGO, church or association: half the Company plan.",
-          "institution": "Institution plan: the price follows the people served. Unlimited agents.",
-          "public": "Public body plan: half the Institution plan, by people served. Unlimited agents."
-        }
+          "institution": "Institution plan: by people served, with unlimited agents.",
+          "half": "Half price for public bodies, NGOs, churches and associations.",
+          "lower": "You pay the lower price of the plans you can use."
+        },
+        "proposal": "Proposal: the amounts may change after the pilot. In the pilot, a company pays half, and that amount becomes credit in the first year. For public bodies, the pilot is free.",
+        "detail": "See how the price works",
+        "curveHeading": "Institution plan: price per person served",
+        "curveLede": "Each rate applies only to the people inside its band. So the price rises gradually, with no jump from one band to the next. At least %1$s a month and at most %2$s a year.",
+        "curveFrom": "Up to %1$s people",
+        "curveAbove": "Above %1$s people",
+        "curveRate": "%1$s per person per year",
+        "tableHeading": "Amounts per year",
+        "tablePeople": "People served",
+        "tableInstitution": "Institution",
+        "tableHalf": "Public body, NGO or association",
+        "link": "Work out what Bipe costs you",
+        "curveBetween": "From %1$s to %2$s people"
       },
       "pilotFreePrice": "Free pilot"
     },
-    "whatsapp": {
-      "$comment": "Meta's list rates for Brazil in BRL, per delivered message. Read from whatsappbusiness.com/products/platform-pricing (Brazil, BRL) on `checked`. Utility and authentication tiers are marginal: each rate applies only to the messages inside its band, by monthly volume per category over the whole business portfolio. Service: free up to `serviceFreePerNumber` per business number per month, then `service`, no tiers. Recheck before each quarter (Meta changes rates on the first day of a quarter).",
-      "checked": "2026-10-27",
-      "effective": "2026-10-01",
-      "source": "https://whatsappbusiness.com/products/platform-pricing/?country=Brazil&currency=Brazilian%20Real%20(BRL)",
-      "marketing": 0.3217,
-      "utility": [
-        [
-          0,
-          0.035
-        ],
-        [
-          250000,
-          0.0333
-        ],
-        [
-          2000000,
-          0.0315
-        ],
-        [
-          17000000,
-          0.0298
-        ],
-        [
-          35000000,
-          0.028
-        ],
-        [
-          70000000,
-          0.0263
-        ]
-      ],
-      "authentication": [
-        [
-          0,
-          0.035
-        ],
-        [
-          500000,
-          0.0333
-        ],
-        [
-          3000000,
-          0.0315
-        ],
-        [
-          5250000,
-          0.0298
-        ],
-        [
-          10000000,
-          0.028
-        ],
-        [
-          20000000,
-          0.0263
-        ]
-      ],
-      "service": 0.035,
-      "serviceFreePerNumber": 1000
-    },
     "proposal": {
-      "$comment": "Proposed amounts, not approved prices (ADR 0083 is Proposed; ADR 0075: amounts after the pilot). Órgão público pays publicBodyFactor of the Instituição band (ADR 0125). Nonprofits pay nonprofitFactor of Empresa (ADR 0083). Pequeno negócio is free up to smallSeats agents; a 3rd agent moves to Empresa. Instituição bands: up to `upTo` people served (null: above), amount per year.",
-      "adr": "0083",
-      "smallSeats": 2,
+      "$comment": "ADR 0206 (Proposed; amounts are the proposal until the pilot ends, ADR 0075). Free: up to free.agents agents and free.people people served. Above it, the lower of Empresa (up to company.maxSeats agents) and Instituição (people served on marginal tiers [first person of the band, BRL per person per year], at least minMonthly × 12 and at most capYearly per year). halfFactor: public bodies, NGOs, churches and associations.",
+      "adr": "0206",
+      "free": {
+        "agents": 2,
+        "people": 1000
+      },
+      "minMonthly": 199,
       "company": {
         "monthly": 199,
         "extraSeat": 69,
-        "annualMonths": 10
+        "annualMonths": 10,
+        "maxSeats": 10
       },
-      "nonprofitFactor": 0.5,
-      "publicBodyFactor": 0.5,
-      "institutionBands": [
-        {
-          "upTo": 100000,
-          "yearly": 30000
-        },
-        {
-          "upTo": 1000000,
-          "yearly": 96000
-        },
-        {
-          "upTo": 10000000,
-          "yearly": 240000
-        },
-        {
-          "upTo": null,
-          "yearly": 540000
-        }
+      "institution": {
+        "tiers": [
+          [
+            0,
+            0.3
+          ],
+          [
+            100000,
+            0.07
+          ],
+          [
+            1000000,
+            0.016
+          ],
+          [
+            10000000,
+            0.01
+          ]
+        ],
+        "capYearly": 540000
+      },
+      "halfFactor": 0.5,
+      "table": [
+        5000,
+        10000,
+        25000,
+        50000,
+        100000,
+        250000,
+        500000,
+        1000000,
+        2500000,
+        5000000,
+        10000000,
+        25000000,
+        50000000
       ]
     },
     "calculatorPresets": [
       {
+        "id": "church",
+        "icon": "group",
+        "org": "half",
+        "seats": 2,
+        "people": 800,
+        "spend": 0
+      },
+      {
         "id": "shop",
-        "messages": 50000,
-        "mix": {
-          "marketing": 0.35,
-          "utility": 0.45,
-          "authentication": 0,
-          "service": 0.2
-        },
+        "icon": "bag",
         "org": "company",
         "seats": 5,
-        "icon": "bag"
+        "people": 20000,
+        "spend": 6732
       },
       {
         "id": "clinics",
-        "messages": 80000,
-        "mix": {
-          "marketing": 0,
-          "utility": 0.5,
-          "authentication": 0,
-          "service": 0.5
-        },
-        "org": "institution",
-        "band": 0,
-        "icon": "heart"
+        "icon": "heart",
+        "org": "company",
+        "seats": 10,
+        "people": 50000,
+        "spend": 2765
       },
       {
         "id": "city",
-        "messages": 100000,
-        "mix": {
-          "marketing": 0,
-          "utility": 0.5,
-          "authentication": 0,
-          "service": 0.5
-        },
-        "org": "public",
-        "band": 0,
-        "icon": "bank"
+        "icon": "bank",
+        "org": "half",
+        "seats": 15,
+        "people": 100000,
+        "spend": 3465
       },
       {
         "id": "bank",
-        "messages": 10000000,
-        "mix": {
-          "marketing": 0,
-          "utility": 0.5,
-          "authentication": 0,
-          "service": 0.5
-        },
-        "org": "institution",
-        "band": 2,
-        "icon": "card"
+        "icon": "card",
+        "org": "company",
+        "seats": 200,
+        "people": 5000000,
+        "spend": 336490
       }
     ]
   },
@@ -3136,8 +3006,8 @@
         }
       },
       "small": {
-        "heading": "MEI, microempresa ou autônomo?",
-        "body": "Você não precisa do formulário. Baixe o app e crie a conta da empresa em Você > Sua conta > Criar conta da empresa. Dá para criar sem CNPJ. O plano Pequeno negócio não tem mensalidade.",
+        "heading": "Até 2 atendentes e 1.000 pessoas atendidas?",
+        "body": "Você não precisa do formulário. Baixe o app e crie a conta em Você > Sua conta > Criar conta da empresa. Até 2 atendentes e 1.000 pessoas atendidas, o Bipe é de graça, com o mesmo selo dos planos pagos. Dá para criar sem CNPJ.",
         "button": "Baixar o app"
       },
       "audiencesHeading": "Para cada tipo de organização"
@@ -3244,8 +3114,8 @@
         }
       },
       "small": {
-        "heading": "MEI, micro company or self-employed?",
-        "body": "You don't need the form. Get the app and create the company account in You > Your account > Create a company account. You can create it with no CNPJ. The Small business plan has no monthly fee.",
+        "heading": "Up to 2 agents and 1,000 people served?",
+        "body": "You don't need the form. Get the app and create the account in You > Your account > Create a company account. Up to 2 agents and 1,000 people served, Bipe is free, with the same badge as the paid plans. You can create it with no CNPJ.",
         "button": "Get the app"
       },
       "audiencesHeading": "For each kind of organisation"
@@ -3311,7 +3181,7 @@
           },
           {
             "heading": "Preço fixo por ano, sem preço por mensagem",
-            "body": "Órgão público paga metade do plano Instituição, num contrato anual pelo número de pessoas que atende. Nenhum plano cobra por mensagem, então o custo não cresce a cada aviso. Os valores saem quando o piloto terminar."
+            "body": "Órgão público paga metade do preço, num contrato anual pelo número de pessoas que atende. Até 1.000 pessoas atendidas e 2 atendentes, é de graça. Nenhum plano cobra por mensagem, então o custo não cresce a cada aviso. Os valores saem quando o piloto terminar."
           }
         ],
         "cta": "Quer testar o Bipe num serviço do seu órgão? Conte como vocês falam com o cidadão hoje."
@@ -3337,7 +3207,7 @@
           },
           {
             "heading": "A fixed yearly price, no price per message",
-            "body": "A public body pays half the Institution plan, on a yearly contract priced by the number of people it serves. No plan charges per message, so the cost doesn't grow with each notice. Amounts come out when the pilot ends."
+            "body": "A public body pays half the price, on a yearly contract by the number of people it serves. Up to 1,000 people served and 2 agents, it is free. No plan charges per message, so the cost doesn't grow with each notice. Amounts come out when the pilot ends."
           }
         ],
         "cta": "Want to test Bipe in one of your services? Tell us how you talk to citizens today."
@@ -3403,7 +3273,7 @@
           },
           {
             "heading": "Metade do preço",
-            "body": "ONGs, igrejas e associações pagam metade do plano Empresa. Nenhum plano cobra por mensagem. Os valores saem quando o piloto terminar."
+            "body": "ONGs, igrejas e associações pagam metade do preço do plano que se aplica. Até 2 atendentes e 1.000 pessoas atendidas, é de graça. Nenhum plano cobra por mensagem. Os valores saem quando o piloto terminar."
           }
         ],
         "cta": "Quer testar o Bipe com a sua instituição? Conte como vocês falam com os membros hoje."
@@ -3429,7 +3299,7 @@
           },
           {
             "heading": "Half the price",
-            "body": "NGOs, churches and associations pay half the Company plan. No plan charges per message. Amounts come out when the pilot ends."
+            "body": "NGOs, churches and associations pay half the price of the plan that applies. Up to 2 agents and 1,000 people served, it is free. No plan charges per message. Amounts come out when the pilot ends."
           }
         ],
         "cta": "Want to test Bipe with your institution? Tell us how you talk to members today."
@@ -3494,7 +3364,7 @@
           },
           {
             "heading": "Contrato anual, sem preço por mensagem",
-            "body": "Bancos e fintechs ficam no plano Instituição: contrato anual pelo número de clientes, atendentes sem limite, todos os nomes da marca reservados e monitoramento de nomes parecidos. O selo não está à venda, e o plano paga só o serviço. Os valores saem quando o piloto terminar."
+            "body": "Bancos e fintechs ficam no plano Instituição: um valor por ano pelo número de clientes, que cresce aos poucos e para em R$ 540 mil. Atendentes sem limite, todos os nomes da marca reservados e monitoramento de nomes parecidos. O selo não está à venda, e o plano paga só o serviço. Os valores saem quando o piloto terminar."
           }
         ],
         "cta": "Quer testar o Bipe com os clientes do seu banco? Conte como vocês falam com eles hoje."
@@ -3520,7 +3390,7 @@
           },
           {
             "heading": "A yearly contract, no price per message",
-            "body": "Banks and fintechs are on the Institution plan: a yearly contract priced by the number of customers, unlimited agents, every name of the brand reserved and monitoring of lookalike names. The badge isn't for sale, and the plan pays only for the service. Amounts come out when the pilot ends."
+            "body": "Banks and fintechs are on the Institution plan: a yearly amount by the number of customers, which grows gradually and stops at R$ 540,000. Unlimited agents, every name of the brand reserved and monitoring of lookalike names. The badge isn't for sale, and the plan pays only for the service. Amounts come out when the pilot ends."
           }
         ],
         "cta": "Want to test Bipe with your bank's customers? Tell us how you talk to them today."

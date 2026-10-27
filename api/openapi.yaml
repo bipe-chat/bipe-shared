@@ -2083,6 +2083,9 @@ paths:
         staff backfill. subscribed is true while the caller has a room and did not leave it or turn news off; room_id is
         then that room. The app shows the switch on only when subscribed is true and the caller is joined to or invited
         in room_id. 500 internal with reason news_unavailable when the news account is not set up (every method).
+        The room is a named room, not a DM: createRoom sends no is_direct (bipe-chat/bipe#809). Rooms made before
+        that are in the caller's m.direct; the app removes room_id from m.direct once per account (spec chat-list
+        notes).
       security: [{ matrix: [] }]
       responses:
         "200":

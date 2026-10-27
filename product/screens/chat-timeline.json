@@ -4,6 +4,17 @@
   "flow": "chat",
   "summary": "Shows the messages of one chat, loads older ones on scroll, and sends text.",
   "types": {
+    "MessageTextRun": {
+      "text": { "type": "string", "description": "Visible text of this run." },
+      "bold": { "type": "bool", "description": "Strong emphasis." },
+      "italic": { "type": "bool", "description": "Emphasis." },
+      "strike": { "type": "bool", "description": "Struck-out text." },
+      "code": { "type": "bool", "description": "Monospaced code, without automatic links." },
+      "link": { "type": "url", "optional": true, "description": "A destination allowed by message-formatting.json." }
+    },
+    "MessageText": {
+      "runs": { "type": "list", "of": { "type": "MessageTextRun", "description": "One run." }, "description": "Native text and formatting in reading order." }
+    },
     "TimelineMessage": {
       "id": { "type": "string", "description": "The SDK's unique timeline item id. Stable key for the row." },
       "kind": {
@@ -13,6 +24,7 @@
       },
       "body": { "type": "string", "optional": true, "description": "Plain text of a text message." },
       "senderName": { "type": "string", "description": "Display name of the sender." },
+      "richText": { "type": "MessageText", "optional": true, "description": "Native text runs parsed from the supported Matrix HTML body; unknown formats use body. Separate from the original text for copying and editing." },
       "isEmote": { "type": "bool", "optional": true, "description": "true for m.emote. Prefix the displayed body with * and the sender name; keep body unchanged for copying and editing. Defaults to false." },
       "isOwn": { "type": "bool", "description": "true when this account sent it." },
       "sentAt": { "type": "date", "description": "Origin server time of the event." },

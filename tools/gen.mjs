@@ -19,6 +19,7 @@ import { generateColors } from "./lib/gen-tokens.mjs";
 import { generateChatArchive } from "./lib/gen-chat-archive.mjs";
 import { generateDmSelection } from "./lib/gen-dm-selection.mjs";
 import { generateDmPowerLevels } from "./lib/gen-dm-power-levels.mjs";
+import { generateMessageFormatting } from "./lib/gen-message-formatting.mjs";
 import { generateRelationshipNames } from "./lib/gen-relationship-names.mjs";
 
 const root = join(dirname(fileURLToPath(import.meta.url)), "..");
@@ -343,6 +344,7 @@ function writeSwift(out, { post = (text) => text } = {}) {
   write("BipeTrustFacts.swift", generateTrust(reg.trust, "swift", HEADER));
   write("BipeChatArchive.swift", generateChatArchive("swift", HEADER));
   write("BipeDmSelection.swift", generateDmSelection(reg.dmSelection, "swift", HEADER));
+  write("BipeMessageFormatting.swift", generateMessageFormatting(reg.messageFormatting, "swift", HEADER, swiftString));
   write("BipeRelationshipNames.swift", generateRelationshipNames(reg.relationshipNames, "swift", HEADER));
   write("BipeAgendaTemplates.swift", generateAgendaTemplates(reg, "swift", HEADER));
   write("BipeStrings.swift", swiftStrings());
@@ -681,6 +683,7 @@ function writeKotlin(out, { packageName = KOTLIN_PACKAGE, post = (text) => text 
   write("BipeTrustFacts.kt", generateTrust(reg.trust, "kotlin", KOTLIN_HEADER));
   write("BipeChatArchive.kt", generateChatArchive("kotlin", KOTLIN_HEADER));
   write("BipeDmSelection.kt", generateDmSelection(reg.dmSelection, "kotlin", KOTLIN_HEADER));
+  write("BipeMessageFormatting.kt", generateMessageFormatting(reg.messageFormatting, "kotlin", KOTLIN_HEADER, kotlinString));
   write("BipeRelationshipNames.kt", generateRelationshipNames(reg.relationshipNames, "kotlin", KOTLIN_HEADER, packageName));
   write("BipeAgendaTemplates.kt", generateAgendaTemplates(reg, "kotlin", KOTLIN_HEADER));
   write("BipeSettings.kt", generateSettings(reg.settings, "kotlin", KOTLIN_HEADER, kotlinString));

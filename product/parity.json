@@ -2606,12 +2606,18 @@
       "id": "timeline-links-formatting",
       "name": "Tappable links, mention pills and received formatting in messages (bipe#660)",
       "ios": {
-        "status": "planned",
-        "issue": 660
+        "status": "built",
+        "evidence": [
+          "bipe-app/ios/Bipe/Timeline/MessageRichText.swift",
+          "bipe-app/ios/BipeKit/Sources/BipeKit/BipeMessageText.swift"
+        ]
       },
       "android": {
-        "status": "planned",
-        "issue": 660
+        "status": "built",
+        "evidence": [
+          "bipe-app/android/app/src/main/kotlin/chat/bipe/app/timeline/MessageRichText.kt",
+          "bipe-app/android/libraries/bipe/src/main/kotlin/chat/bipe/shared/BipeMessageText.kt"
+        ]
       },
       "web": {
         "status": "n/a",

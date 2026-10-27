@@ -205,6 +205,28 @@
       "strike": "",
       "code": "",
       "links": []
+    },
+    {
+      "name": "paragraph-wrapped list items",
+      "body": "one two",
+      "html": "<ul><li><p>one</p></li><li><p>two</p></li></ul>",
+      "text": "• one\n• two",
+      "bold": "",
+      "italic": "",
+      "strike": "",
+      "code": "",
+      "links": []
+    },
+    {
+      "name": "paragraph-wrapped quote",
+      "body": "quoted",
+      "html": "<blockquote>\n<p>quoted</p>\n</blockquote>",
+      "text": "│ quoted",
+      "bold": "",
+      "italic": "",
+      "strike": "",
+      "code": "",
+      "links": []
     }
   ],
   "safeLinks": [

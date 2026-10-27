@@ -155,7 +155,7 @@
       },
       {
         "q": "E se a Justiça pedir minhas conversas?",
-        "a": "O Bipe só entrega o que tem: os registros de conexão, quem está em cada conversa e quando, e o nome e a foto dos grupos. O que vocês escreveram, o Bipe não consegue abrir, então não tem como entregar."
+        "a": "O Bipe só entrega o que tem: os registros de conexão, quem está em cada conversa e quando, o nome e a foto dos grupos, e quais conversas você arquivou. O que vocês escreveram, o Bipe não consegue abrir, então não tem como entregar."
       },
       {
         "q": "E se eu trocar de celular?",
@@ -217,7 +217,7 @@
       },
       {
         "q": "What if a court asks for my chats?",
-        "a": "Bipe can only hand over what it has: connection logs, who is in each chat and when, and group names and photos. Bipe cannot open what you wrote, so it cannot hand it over."
+        "a": "Bipe can only hand over what it has: connection logs, who is in each chat and when, group names and photos, and which chats you archived. Bipe cannot open what you wrote, so it cannot hand it over."
       },
       {
         "q": "What if I get a new phone?",

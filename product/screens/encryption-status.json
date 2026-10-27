@@ -40,6 +40,10 @@
       "type": "bool",
       "description": "Encryption.hasDevicesToVerifyAgainst. Shows the approve row."
     },
+    "seesUndecryptable": {
+      "type": "bool",
+      "description": "This phone met an undecryptable message in this app run: a message-undecryptable row, or a chat-list read of local events. Not stored. Shows the banner on an unverified phone that has no known way out (bipe-chat/bipe#853)."
+    },
     "bannerDismissed": {
       "type": "bool",
       "description": "The person tapped Agora não. Stays on this phone; the banner comes back after 7 days while unverified."
@@ -52,6 +56,9 @@
   "actions": {
     "observe": {
       "effect": "After sign-in: listens with verificationStateListener, recoveryStateListener and backupStateListener and updates the state."
+    },
+    "noteUndecryptable": {
+      "effect": "Sets seesUndecryptable. Called by a message-undecryptable row (causes waiting, historyNotOnThisPhone, notSharedWithThisPhone) and by the chat list when its local read finds an undecryptable event."
     },
     "openSheet": {
       "effect": "Opens the sheet: bipe_recovery_history_note and the rows that apply."
@@ -101,8 +108,8 @@
     "new-phone"
   ],
   "notes": [
-    "MZ decision 25 Oct 2026 (bipe#611): the banner is the first row of the Conversas list, so it scrolls with the chats. It is never a fixed bar above the list or the timeline. The archived list does not show it.",
-    "A new account on its first phone has nothing to verify and sees nothing (onboarding.md: no crypto words for new users). The banner shows only when verificationState is unverified and the account has history elsewhere (hasOtherDevices, or recoveryState enabled or incomplete).",
+    "MZ decision 25 Oct 2026 (bipe#611): the banner is the first row of the chat list, so it scrolls with the chats. It is never a fixed bar above the list or the timeline. The archived list does not show it. MZ, 27 Oct 2026 (bipe#853): every chat list shows it (Conversas, Grupos, Todas), not only the list with the DMs.",
+    "A new account on its first phone has nothing to verify and sees nothing (onboarding.md: no crypto words for new users). The banner shows only when verificationState is unverified and the account has history elsewhere: hasOtherDevices, recoveryState enabled or incomplete, or seesUndecryptable (bipe#853: the SDK can report neither way while messages already fail on this phone).",
     "Entry points to the sheet: the banner, How to see it under an undecryptable message (message-undecryptable openHelp), and the settings row account.oldMessages in Sua conta › Aparelhos (settings-group, bipe-chat/bipe#793). The row shows while the banner condition holds, without the Skip pause. All three open the same sheet of the one model of the account.",
     "With neither way, the sheet says bipe_app_history_none: this phone still needs approval. Never promise that new encrypted messages arrive on an unsigned device. ADR 0073 predates the enforcement of security rule 13; its fallback promise needs a separate MZ decision (bipe#774).",
     "Build the client with autoEnableCrossSigning and autoEnableBackups on, so a new account gets cross-signing and key backup with no screen.",

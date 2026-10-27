@@ -3297,6 +3297,27 @@
       },
       "issue": 765,
       "fork": true
+    },
+    {
+      "id": "app-colors",
+      "name": "App colours: the user picks a palette for the accent, the own bubble and the app icon (bipe#811)",
+      "ios": {
+        "status": "planned",
+        "issue": 811
+      },
+      "android": {
+        "status": "planned",
+        "issue": 811
+      },
+      "web": {
+        "status": "n/a",
+        "reason": "Web chat is stock Element Web (config only); the site keeps açaí"
+      },
+      "server": {
+        "status": "n/a",
+        "reason": "Kept on the phone; no server state"
+      },
+      "issue": 811
     }
   ],
   "differences": [

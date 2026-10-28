@@ -811,6 +811,41 @@ paths:
         "400": { $ref: "#/components/responses/Error" }
         "429": { $ref: "#/components/responses/Error" }
         "503": { $ref: "#/components/responses/Error" }
+  /v1/beta/login:
+    post:
+      summary: Find the Matrix ID of an old beta account by its login email and password (bipe#627)
+      description: >
+        No auth. For the beta sign-in (recovery-start chooseBeta): the MAS compat login finds
+        users by localpart only, so an email never signs in there. The server finds the MAS user
+        that holds the email as a login email, checks the password with one MAS compat login
+        and ends that session at once, then returns the Matrix ID. The app then signs in with
+        m.login.password as before. Unknown email and wrong password give the same 401
+        unauthorized, after the same minimum time, so the route never tells whether an address
+        is known. Rate-limited per IP and per address, on top of the MAS per-account limit. The
+        server never logs the email or the password.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [email, password]
+              properties:
+                email: { type: string, format: email, maxLength: 254 }
+                password: { type: string, minLength: 1, maxLength: 512 }
+      responses:
+        "200":
+          description: The password matches.
+          content:
+            application/json:
+              schema:
+                type: object
+                required: [user_id]
+                properties:
+                  user_id: { type: string, description: "Full Matrix ID, for m.login.password." }
+        "400": { $ref: "#/components/responses/Error" }
+        "401": { $ref: "#/components/responses/Error" }
+        "429": { $ref: "#/components/responses/Error" }
   /v1/recovery/email/confirm:
     post:
       summary: Start the delay with the email link and the PIN, or a new PIN

@@ -1496,13 +1496,15 @@
       "ios": {
         "status": "built",
         "evidence": [
-          "bipe-app/ios/Bipe/Settings/AppLockViews.swift"
+          "bipe-app/ios/Bipe/Settings/AppLockViews.swift",
+          "bipe-app/ios/BipeKit/Sources/BipeKit/BipeAppLock.swift"
         ]
       },
       "android": {
         "status": "built",
         "evidence": [
-          "bipe-app/android/app/src/main/kotlin/chat/bipe/app/settings/AppLock.kt"
+          "bipe-app/android/app/src/main/kotlin/chat/bipe/app/settings/AppLock.kt",
+          "bipe-app/android/libraries/bipe/src/main/kotlin/chat/bipe/shared/account/BipeAppLockTries.kt"
         ]
       },
       "web": {

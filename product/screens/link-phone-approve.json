@@ -30,7 +30,7 @@
       "effect": "Only when secondsLeft is 0. Sets confirmIdentity."
     },
     "confirmIdentity": {
-      "effect": "Asks for the biometric check (or the device PIN) with bipe_app_link_phone_biometric. On a pass, reads the hidden password and opens the MAS page as link-computer-approve open. On a fail or cancel, back to warning."
+      "effect": "Asks for the approval owner check (bipe#785, security.md rules 5 and 14): biometrics only, with no passcode fallback (Android: BIOMETRIC_STRONG, class 3); a phone with no biometrics set up asks for the Bipe PIN (bipe_pin_enter_title), checked by POST /v1/me/pin/check, where wrong tries count against the account (bipe_pin_wrong with tries left, bipe_pin_blocked_body); a phone with no screen lock is refused and the flow goes back. bipe_app_link_phone_biometric is the biometric reason. On a pass, reads the hidden password and opens the MAS page as link-computer-approve open. On a fail or cancel, back to warning."
     },
     "pageLoaded": {
       "params": {
@@ -81,7 +81,10 @@
     "bipe_app_link_phone_new_code",
     "bipe_app_close",
     "bipe_app_cancel",
-    "bipe_error_generic"
+    "bipe_error_generic",
+    "bipe_pin_enter_title",
+    "bipe_pin_wrong",
+    "bipe_pin_blocked_body"
   ],
   "sdk": [
     "GrantGeneratedQrLoginProgressListener.onUpdate",

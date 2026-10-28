@@ -35,7 +35,7 @@
     },
     "codeRead": {
       "params": { "bytes": { "type": "string", "description": "The raw bytes that the camera's QR decoder read." } },
-      "effect": "QrCodeData.fromBytes. When decoding fails, or QrCodeData.intent is not QrCodeIntent.login (a new device that shows the code to sign in), sets failed with bipe_app_link_computer_not_bipe_code and keeps the camera on. Else Client.newGrantLoginWithQrCodeHandler, then GrantLoginWithQrCodeHandler.scan with a GrantQrLoginProgressListener; sets connecting."
+      "effect": "QrCodeData.fromBytes. When decoding fails, or QrCodeData.intent is not QrCodeIntent.login (a new device that shows the code to sign in), sets failed with bipe_app_link_computer_not_bipe_code and keeps the camera on. A code whose rendezvous is not on the account's own homeserver over https also sets failed with bipe_app_link_computer_not_bipe_code (bipe#785): the MSC4108 rendezvous URL read from the code bytes, else QrCodeData.baseUrl of an MSC4388 code, must have the exact host of Client.homeserver() (BipeWebLink.isOwnRendezvous). Else Client.newGrantLoginWithQrCodeHandler, then GrantLoginWithQrCodeHandler.scan with a GrantQrLoginProgressListener; sets connecting."
     },
     "progress": {
       "params": { "update": { "type": "string", "description": "The GrantQrLoginProgress case that onUpdate got." } },

@@ -19,7 +19,7 @@
   },
   "actions": {
     "confirmIdentity": {
-      "effect": "Asks for the device owner check with bipe_pin_change_biometric_reason. A pass sets create; a fail or cancel closes the screen."
+      "effect": "Asks for the approval owner check (bipe#785, security.md rules 5 and 14): biometrics only, with no passcode fallback (Android: BIOMETRIC_STRONG, class 3); a phone with no biometrics set up asks for the Bipe PIN (bipe_pin_enter_title), checked by POST /v1/me/pin/check, where wrong tries count against the account (bipe_pin_wrong with tries left, bipe_pin_blocked_body); a phone with no screen lock is refused and the screen closes. bipe_pin_change_biometric_reason is the biometric reason. A pass sets create; a fail or cancel closes the screen."
     },
     "typeDigit": {
       "params": { "digit": { "type": "string", "description": "One digit, 0 to 9." } },
@@ -46,12 +46,15 @@
     "bipe_error_rate_limited",
     "bipe_error_generic",
     "bipe_app_retry",
-    "bipe_app_cancel"
+    "bipe_app_cancel",
+    "bipe_pin_enter_title",
+    "bipe_pin_wrong",
+    "bipe_pin_blocked_body"
   ],
   "sdk": [],
   "parity": ["app-lock"],
   "notes": [
-    "No old PIN: the biometric check on the signed-in phone stands in for it (ADR 0057). A phone with no biometrics uses the phone's passcode.",
+    "No old PIN: the biometric check on the signed-in phone stands in for it (ADR 0057). A phone with no biometrics uses the Bipe PIN, never the phone's passcode or the app lock PIN (bipe#785).",
     "The server sends a notice to the verified recovery email after a change (api/openapi.yaml /v1/me/pin). The app shows nothing about it.",
     "There is no remove-PIN action. Every account has a PIN (ADR 0057, ADR 0112).",
     "With two accounts on the phone (ADR 0086), this changes the PIN of the active account only. The app lock PIN does not change.",

@@ -2694,12 +2694,18 @@
       "id": "group-state-lines",
       "name": "State lines in group timelines: joined, left, removed, renamed, photo and description changed (bipe#661)",
       "ios": {
-        "status": "planned",
-        "issue": 661
+        "status": "built",
+        "evidence": [
+          "bipe-app/ios/Bipe/Timeline/TimelineRows.swift",
+          "bipe-app/ios/Bipe/Timeline/StateLines.swift"
+        ]
       },
       "android": {
-        "status": "planned",
-        "issue": 661
+        "status": "built",
+        "evidence": [
+          "bipe-app/android/app/src/main/kotlin/chat/bipe/app/timeline/TimelineRows.kt",
+          "bipe-app/android/app/src/main/kotlin/chat/bipe/app/timeline/StateLines.kt"
+        ]
       },
       "web": {
         "status": "n/a",

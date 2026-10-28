@@ -34,18 +34,11 @@
     "org": "https://github.com/bipe-chat",
     "repos": [
       {
-        "id": "ios",
-        "url": "https://github.com/bipe-chat/bipe-ios",
+        "id": "app",
+        "url": "https://github.com/bipe-chat/bipe-app",
         "public": true,
-        "pt": "App para iPhone",
-        "en": "iPhone app"
-      },
-      {
-        "id": "android",
-        "url": "https://github.com/bipe-chat/bipe-android",
-        "public": true,
-        "pt": "App para Android",
-        "en": "Android app"
+        "pt": "App para iPhone e Android",
+        "en": "iPhone and Android app"
       },
       {
         "id": "shared",
@@ -58,8 +51,8 @@
         "id": "api",
         "url": "https://github.com/bipe-chat/bipe-api",
         "public": true,
-        "pt": "Convites e diretório de @",
-        "en": "Invites and @ directory"
+        "pt": "A API do Bipe",
+        "en": "The Bipe API"
       },
       {
         "id": "web",
@@ -100,15 +93,15 @@
       },
       {
         "id": "scam-ios",
-        "repo": "ios",
-        "path": "Components/BipeKit/Sources/BipeKit/ScamDetector.swift",
+        "repo": "app",
+        "path": "ios/BipeKit/Sources/BipeKit/ScamDetector.swift",
         "pt": "Detector de golpe no iPhone",
         "en": "Scam detector on iPhone"
       },
       {
         "id": "scam-android",
-        "repo": "android",
-        "path": "libraries/bipe/src/main/kotlin/io/element/android/libraries/bipe/ScamDetector.kt",
+        "repo": "app",
+        "path": "android/libraries/bipe/src/main/kotlin/chat/bipe/shared/ScamDetector.kt",
         "pt": "Detector de golpe no Android",
         "en": "Scam detector on Android"
       },
@@ -128,15 +121,15 @@
       },
       {
         "id": "handles-ios",
-        "repo": "ios",
-        "path": "Components/BipeKit/Sources/BipeKit/BipeHandle.swift",
+        "repo": "app",
+        "path": "ios/BipeKit/Sources/BipeKit/BipeHandle.swift",
         "pt": "@ no iPhone",
         "en": "Usernames on iPhone"
       },
       {
         "id": "handles-android",
-        "repo": "android",
-        "path": "libraries/bipe/src/main/kotlin/io/element/android/libraries/bipe/BipeHandle.kt",
+        "repo": "app",
+        "path": "android/libraries/bipe/src/main/kotlin/chat/bipe/shared/BipeHandle.kt",
         "pt": "@ no Android",
         "en": "Usernames on Android"
       },
@@ -163,15 +156,15 @@
       },
       {
         "id": "names-ios",
-        "repo": "ios",
-        "path": "Components/BipeKit/Sources/BipeKit/NameNormalizer.swift",
+        "repo": "app",
+        "path": "ios/BipeKit/Sources/BipeKit/NameNormalizer.swift",
         "pt": "Comparação de nomes no iPhone",
         "en": "Name matching on iPhone"
       },
       {
         "id": "names-android",
-        "repo": "android",
-        "path": "libraries/bipe/src/main/kotlin/io/element/android/libraries/bipe/NameNormalizer.kt",
+        "repo": "app",
+        "path": "android/libraries/bipe/src/main/kotlin/chat/bipe/shared/NameNormalizer.kt",
         "pt": "Comparação de nomes no Android",
         "en": "Name matching on Android"
       },
@@ -184,31 +177,24 @@
       },
       {
         "id": "links-ios",
-        "repo": "ios",
-        "path": "Components/BipeKit/Sources/BipeKit/BipeProfileLink.swift",
+        "repo": "app",
+        "path": "ios/BipeKit/Sources/BipeKit/BipeProfileLink.swift",
         "pt": "Links de perfil no iPhone",
         "en": "Profile links on iPhone"
       },
       {
         "id": "links-android",
-        "repo": "android",
-        "path": "libraries/bipe/src/main/kotlin/io/element/android/libraries/bipe/BipeLinks.kt",
+        "repo": "app",
+        "path": "android/libraries/bipe/src/main/kotlin/chat/bipe/shared/BipeLinks.kt",
         "pt": "Links de perfil no Android",
         "en": "Profile links on Android"
       },
       {
         "id": "public-profile-ios",
-        "repo": "ios",
-        "path": "Components/BipeKit/Sources/BipeKit/BipePublicProfile.swift",
+        "repo": "app",
+        "path": "ios/BipeKit/Sources/BipeKit/BipePublicProfile.swift",
         "pt": "Perfil público no iPhone",
         "en": "Public profile on iPhone"
-      },
-      {
-        "id": "public-profile-android",
-        "repo": "android",
-        "path": "libraries/bipe/src/main/kotlin/io/element/android/libraries/bipe/BipePublicProfile.kt",
-        "pt": "Perfil público no Android",
-        "en": "Public profile on Android"
       },
       {
         "id": "invite-rules",
@@ -219,15 +205,15 @@
       },
       {
         "id": "invites-ios",
-        "repo": "ios",
-        "path": "Components/BipeKit/Sources/BipeKit/BipeInviteLink.swift",
+        "repo": "app",
+        "path": "ios/BipeKit/Sources/BipeKit/BipeInviteLink.swift",
         "pt": "Convites no iPhone",
         "en": "Invites on iPhone"
       },
       {
         "id": "invites-android",
-        "repo": "android",
-        "path": "libraries/bipe/src/main/kotlin/io/element/android/libraries/bipe/invites/",
+        "repo": "app",
+        "path": "android/libraries/bipe/src/main/kotlin/chat/bipe/shared/invites/",
         "pt": "Convites no Android",
         "en": "Invites on Android"
       },
@@ -240,15 +226,15 @@
       },
       {
         "id": "badge-ios",
-        "repo": "ios",
-        "path": "Components/BipeKit/Sources/BipeKit/BadgeVerifier.swift",
+        "repo": "app",
+        "path": "ios/BipeKit/Sources/BipeKit/BadgeVerifier.swift",
         "pt": "Conferência do selo no iPhone",
         "en": "Seal check on iPhone"
       },
       {
         "id": "badge-android",
-        "repo": "android",
-        "path": "libraries/bipe/src/main/kotlin/io/element/android/libraries/bipe/BadgeVerifier.kt",
+        "repo": "app",
+        "path": "android/libraries/bipe/src/main/kotlin/chat/bipe/shared/BadgeVerifier.kt",
         "pt": "Conferência do selo no Android",
         "en": "Seal check on Android"
       },
@@ -261,22 +247,22 @@
       },
       {
         "id": "stickers-ios",
-        "repo": "ios",
-        "path": "Components/BipeKit/Sources/BipeKit/StickerMaker.swift",
+        "repo": "app",
+        "path": "ios/BipeKit/Sources/BipeKit/Stickers/StickerMaker.swift",
         "pt": "Figurinhas no iPhone",
         "en": "Stickers on iPhone"
       },
       {
         "id": "stickers-android",
-        "repo": "android",
-        "path": "libraries/bipe/src/main/kotlin/io/element/android/libraries/bipe/stickers/",
+        "repo": "app",
+        "path": "android/libraries/bipe/src/main/kotlin/chat/bipe/stickers/",
         "pt": "Figurinhas no Android",
         "en": "Stickers on Android"
       },
       {
         "id": "quiet-groups-android",
-        "repo": "android",
-        "path": "libraries/bipe/src/main/kotlin/io/element/android/libraries/bipe/groups/BipeQuietGroups.kt",
+        "repo": "app",
+        "path": "android/app/src/main/kotlin/chat/bipe/app/groups/QuietGroups.kt",
         "pt": "Grupos quietos no Android",
         "en": "Quiet groups on Android"
       },

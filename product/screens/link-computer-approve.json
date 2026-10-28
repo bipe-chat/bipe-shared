@@ -22,7 +22,7 @@
   },
   "actions": {
     "confirmIdentity": {
-      "effect": "Asks for the biometric check (or the device PIN) with bipe_link_computer_biometric. On a pass, reads the hidden password from the credential store and sets loading. On a fail or cancel, goes back to link-computer-warning."
+      "effect": "Asks for the approval owner check (bipe#785, security.md rules 5 and 14): biometrics only, with no passcode fallback (Android: BIOMETRIC_STRONG, class 3); a phone with no biometrics set up asks for the Bipe PIN (bipe_pin_enter_title), checked by POST /v1/me/pin/check, where wrong tries count against the account (bipe_pin_wrong with tries left, bipe_pin_blocked_body); a phone with no screen lock is refused and the flow goes back. bipe_link_computer_biometric is the biometric reason. On a pass, reads the hidden password from the credential store and sets loading. On a fail or cancel, goes back to link-computer-warning."
     },
     "open": {
       "effect": "Reads the MAS issuer from GET /_matrix/client/v1/auth_metadata (then the unstable MSC2965 path). Opens verificationUri of GrantQrLoginProgress.waitingForAuth in a private web view that loads only https pages on the MAS host. Notes the start time for finish. A URL on another host sets failed with bipe_link_computer_error_sign_in."
@@ -66,7 +66,10 @@
     "bipe_app_link_computer_expired",
     "bipe_app_link_computer_scan_again",
     "bipe_app_close",
-    "bipe_error_generic"
+    "bipe_error_generic",
+    "bipe_pin_enter_title",
+    "bipe_pin_wrong",
+    "bipe_pin_blocked_body"
   ],
   "sdk": [
     "GrantQrLoginProgressListener.onUpdate",

@@ -23,9 +23,11 @@
     "phase": {
       "type": "enum",
       "values": ["requesting", "waitingForOther", "incoming", "confirmIdentity", "compare", "waitingForMatch", "done", "cancelled", "failed"],
-      "description": "requesting and waitingForOther: newPhone sent the request. incoming: approver got it. confirmIdentity: approver passes the biometric check. compare: both show symbols. waitingForMatch: this side confirmed, the other not yet."
+      "description": "requesting and waitingForOther: newPhone sent the request. incoming: approver got it. confirmIdentity: approver passes the approval owner check. compare: both show symbols. waitingForMatch: this side confirmed, the other not yet."
     },
     "otherDevice": { "type": "RequestingDevice", "optional": true, "description": "approver: the device that asks." },
+    "secondsLeft": { "type": "int", "description": "approver, incoming: seconds until the approve button works, from webLinkCooldownSeconds." },
+    "place": { "type": "string", "optional": true, "description": "approver: the approximate place of otherDevice from its last_seen_ip, or none." },
     "symbols": {
       "type": "list",
       "of": { "type": "VerificationSymbol", "description": "One of 7 symbols." },
@@ -43,7 +45,7 @@
       "effect": "approver: SessionVerificationControllerDelegate.didReceiveVerificationRequest with SessionVerificationRequestDetails. Acknowledges it and shows phase incoming over the app."
     },
     "accept": {
-      "effect": "approver: asks for a biometric check (or the device PIN), then acceptVerificationRequest. The new phone starts SAS (startSasVerification) when the accept arrives."
+      "effect": "approver: the approve button waits webLinkCooldownSeconds (registries/accounts.json) and shows bipe_pause_countdown with secondsLeft. Then asks for the approval owner check (bipe#785, security.md rules 5 and 14): biometrics only, with no passcode fallback (Android: BIOMETRIC_STRONG, class 3); a phone with no biometrics set up asks for the Bipe PIN (bipe_pin_enter_title), checked by POST /v1/me/pin/check, where wrong tries count against the account (bipe_pin_wrong with tries left, bipe_pin_blocked_body); a phone with no screen lock is refused and the approval fails with bipe_error_generic. On a pass, acceptVerificationRequest. The new phone starts SAS (startSasVerification) when the accept arrives."
     },
     "decline": {
       "effect": "approver: declineVerification. The new phone shows cancelled."
@@ -76,7 +78,14 @@
     "bipe_app_verify_cancelled",
     "bipe_device_approval_never_for_others",
     "bipe_app_cancel",
-    "bipe_error_generic"
+    "bipe_error_generic",
+    "bipe_pause_countdown",
+    "bipe_link_computer_place",
+    "bipe_link_computer_place_unknown",
+    "bipe_link_computer_place_source",
+    "bipe_pin_enter_title",
+    "bipe_pin_wrong",
+    "bipe_pin_blocked_body"
   ],
   "sdk": [
     "Client.getSessionVerificationController",
@@ -102,7 +111,7 @@
   "parity": ["e2ee", "new-phone", "onboarding-no-element-crypto"],
   "notes": [
     "Only for devices of the same account (requestDeviceVerification). Verifying other people is not part of phase 1.",
-    "The approver sees the other device's name and time before anything else, and a biometric check comes before the accept (ADR 0059 QR approval rule, applied here too). bipe_device_approval_never_for_others shows on the incoming screen.",
+    "The approver sees the other device's name and time before anything else, its approximate place (place: last_seen_ip of the device from GET /_matrix/client/v3/devices, then GET /v1/web-link/place, shown as on link-computer-approve), and the approval owner check comes before the accept (ADR 0059 QR approval rule, applied here too). bipe_device_approval_never_for_others shows on the incoming screen.",
     "Symbols and their labels come from the SDK (Matrix spec SAS, m.sas.v1). The labels are in English; show the symbol large and the label small.",
     "The new phone that comes back through QR from the old phone (bipe-chat/bipe#203, #573) needs no verification: the QR login already shares the secrets.",
     "When Encryption.hasDevicesToVerifyAgainst is false, the new phone does not offer this screen; encryption-status offers only the recovery key.",

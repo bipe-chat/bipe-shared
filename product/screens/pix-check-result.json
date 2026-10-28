@@ -134,6 +134,9 @@
     "sendToChat": {
       "effect": "Only after an explicit tap, offers an editable preview and a chat chooser for the current signed-in account; the user must select the chat and tap Send before any content leaves the device."
     },
+    "shareResult": {
+      "effect": "Only after an explicit tap on a report that found Pix, opens the system share sheet with the result text and a card image of the same text. The person picks the app and the chat; nothing is sent before that. Never a payment action (ADR 0012)."
+    },
     "retryHandoff": {
       "effect": "Retries saving the same pending preview once per tap, without creating a duplicate send or requiring the check to run again."
     }
@@ -166,6 +169,11 @@
     "bipe_pix_check_private",
     "bipe_pix_check_send_to_chat",
     "bipe_pix_check_close",
+    "bipe_pix_check_share_result",
+    "bipe_pix_check_share_code",
+    "bipe_pix_check_share_code_open_amount",
+    "bipe_pix_check_share_key",
+    "bipe_pix_check_share_altered",
     "bipe_scam_warning_title",
     "bipe_scam_warning_pix_key",
     "bipe_scam_warning_delivery_fee",
@@ -193,6 +201,7 @@
     "Keys use bipe_pix_check_keys_title and the existing key-type strings. When types has several entries, join their localized labels with bipe_pix_check_key_types_or in reference order. A text with no code/keys shows bipe_pix_check_nothing_found. A rule warning still renders even if no Pix was found.",
     "warningKind comes only from PixCheck.warning and the existing ScamWarningKind string mapping / registries/scam-patterns.json. Use bipe_scam_warning_title and its mapped body; do not repeat pixCode/pixKey generic warnings because the screen explains those already. Test-vectors/scam-warnings.json and scam-detection.json define priority.",
     "The original shared input, not a reformatted or verified-sounding summary, is the editable send preview. On iOS the extension may save this preview locally for the containing app as defined by pix-check-receive; finishing the extension does not imply delivery. A later app-open shows the pending preview outside account-start, then offers chat selection only after sign-in/unlock. If already signed in, explicitly confirm the account before sending. Android uses the same preview/chooser behavior in the app. Cancellation, expired handoff or account change never sends to a remembered room.",
-    "Acceptance on both platforms: every pix-check vector; static/dynamic BR Code, bad CRC, malformed code, ambiguous key, no Pix, a warning without Pix; QR image with zero/one/multiple payloads; shared image file versus image object; unsupported/revoked/oversized input; retry and cancellation during decode; two shares back to back; airplane mode and no account; Close causes no network/send; explicit Send requires account, chat choice and final confirmation. No actual bank/account data is needed: use synthetic fixtures."
+    "Acceptance on both platforms: every pix-check vector; static/dynamic BR Code, bad CRC, malformed code, ambiguous key, no Pix, a warning without Pix; QR image with zero/one/multiple payloads; shared image file versus image object; unsupported/revoked/oversized input; retry and cancellation during decode; two shares back to back; airplane mode and no account; Close causes no network/send; explicit Send requires account, chat choice and final confirmation. No actual bank/account data is needed: use synthetic fixtures.",
+    "Send result (bipe#746, phase 1): the text states only what the code says, never that it is safe. A valid code with a name uses bipe_pix_check_share_code (name in the code, amount formatted in BRL) or bipe_pix_check_share_code_open_amount when the code has no amount. badCrc and malformed use bipe_pix_check_share_altered. Any other report with at least one key (no code, or a valid code without a name) uses bipe_pix_check_share_key with the first key. A report without such a text, or without Pix, shows no Send result. The card image shows the same text as plain text, no link or QR, on the light theme. Phase 1 text never has the words seguro, verificado, safe or verified; the verified-key texts come with phase 2 (bipe#295). Send result works signed out and offline; it does not need accountAvailable."
   ]
 }

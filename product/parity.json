@@ -1293,7 +1293,8 @@
         "evidence": [
           "bipe-app/ios/Bipe/PixCheck/PixCheckModel.swift",
           "bipe-app/ios/Bipe/PixCheck/PixCheckViews.swift",
-          "bipe-app/ios/Bipe/PixCheck/PixHandoff.swift"
+          "bipe-app/ios/Bipe/PixCheck/PixHandoff.swift",
+          "bipe-app/ios/Bipe/PixCheck/PixShareResult.swift"
         ]
       },
       "android": {
@@ -1301,7 +1302,8 @@
         "evidence": [
           "bipe-app/android/app/src/main/kotlin/chat/bipe/app/pixcheck/PixCheckActivity.kt",
           "bipe-app/android/app/src/main/kotlin/chat/bipe/app/pixcheck/PixCheckModel.kt",
-          "bipe-app/android/app/src/main/kotlin/chat/bipe/app/pixcheck/PixSendScreen.kt"
+          "bipe-app/android/app/src/main/kotlin/chat/bipe/app/pixcheck/PixSendScreen.kt",
+          "bipe-app/android/app/src/main/kotlin/chat/bipe/app/pixcheck/PixShareResult.kt"
         ]
       },
       "web": {

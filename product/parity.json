@@ -2750,12 +2750,16 @@
       "id": "matrix-links",
       "name": "matrix.to and matrix: links open the app; join a group from a room link (bipe#663)",
       "ios": {
-        "status": "planned",
-        "issue": 663
+        "status": "built",
+        "evidence": [
+          "bipe-app/ios/Bipe/Groups/RoomLinkOpenView.swift"
+        ]
       },
       "android": {
-        "status": "planned",
-        "issue": 663
+        "status": "built",
+        "evidence": [
+          "bipe-app/android/app/src/main/kotlin/chat/bipe/app/groups/RoomLinkOpenScreen.kt"
+        ]
       },
       "web": {
         "status": "n/a",

@@ -1,0 +1,62 @@
+{
+  "id": "room-link-open",
+  "title": "Open a group link",
+  "flow": "groups",
+  "summary": "Handles a matrix.to or matrix: link to a room, a room alias or an event (bipe#663): shows the group with its name, photo and member count, and joins it or asks to join. A group the person is in opens at once.",
+  "state": {
+    "phase": {
+      "type": "enum",
+      "values": ["loading", "preview", "knockSent", "inviteOnly", "notFound", "failed"],
+      "description": "loading: bipe_app_room_link_opening. preview: the group with join or knock. knockSent: bipe_app_room_link_knock_sent. inviteOnly: bipe_app_room_link_invite_only. notFound: bipe_app_room_link_not_found. failed: bipe_error_network with bipe_app_retry."
+    },
+    "name": { "type": "string", "description": "RoomPreviewInfo.name, else bipe_group_common_no_room_name." },
+    "avatarUrl": { "type": "url", "optional": true, "description": "RoomPreviewInfo.avatarUrl." },
+    "topic": { "type": "string", "optional": true, "description": "RoomPreviewInfo.topic." },
+    "memberCount": { "type": "int", "description": "RoomPreviewInfo.numJoinedMembers, shown with bipe_app_room_link_members." },
+    "canKnock": { "type": "bool", "description": "true when the join rule is knock or knockRestricted: the button is bipe_app_room_link_knock, else bipe_app_room_link_join." },
+    "busy": { "type": "bool", "description": "true while join or knock runs; the button is disabled." }
+  },
+  "actions": {
+    "open": {
+      "params": { "url": { "type": "url", "description": "The link." } },
+      "effect": "parseMatrixEntityFrom reads the link. A user goes to profile-link-open (person-profile). A room, alias or event: when the person is already a joined member (Client.getRoom, membership joined), opens chat-timeline and closes. Else Client.getRoomPreviewFromRoomId (with the via servers) or Client.getRoomPreviewFromRoomAlias, then phase preview. A preview that fails with not found, or a space, is notFound. Join rule invite or private is inviteOnly."
+    },
+    "join": { "effect": "Client.joinRoomByIdOrAlias with the via servers. Success opens chat-timeline for the room and closes. A refusal (403) is inviteOnly; any other error is failed." },
+    "knock": { "effect": "Client.knock with no reason and the via servers. Success is knockSent." },
+    "retry": { "effect": "Runs open again." },
+    "close": { "effect": "Closes and goes back to where the user was." }
+  },
+  "strings": [
+    "bipe_app_room_link_opening",
+    "bipe_app_room_link_members",
+    "bipe_app_room_link_join",
+    "bipe_app_room_link_knock",
+    "bipe_app_room_link_knock_sent",
+    "bipe_app_room_link_invite_only",
+    "bipe_app_room_link_not_found",
+    "bipe_group_common_no_room_name",
+    "bipe_error_network",
+    "bipe_app_retry",
+    "bipe_app_close"
+  ],
+  "sdk": [
+    "parseMatrixEntityFrom",
+    "MatrixEntity",
+    "MatrixId",
+    "Client.getRoom",
+    "Client.getRoomPreviewFromRoomId",
+    "Client.getRoomPreviewFromRoomAlias",
+    "RoomPreview.info",
+    "RoomPreviewInfo",
+    "JoinRule",
+    "Client.joinRoomByIdOrAlias",
+    "Client.knock"
+  ],
+  "parity": ["matrix-links"],
+  "notes": [
+    "Accepted links: https://matrix.to/#/... and matrix: URIs, as parseMatrixEntityFrom reads them. Links on the old domain are not handled.",
+    "Where a link comes from: a tapped link in a message (the message link handler tries profile and group links before the system), the matrix scheme from another app (iOS URL type matrix, Android intent filter with scheme matrix), and on Android an https://matrix.to intent filter without autoVerify: Bipe cannot verify matrix.to, so it opens only after the person picks Bipe. iOS does not take https://matrix.to from other apps: only verified universal links open an app, and the matrix.to page offers the matrix: link.",
+    "An event link opens the chat of its room when the person is a member. Default chosen (bipe#663): the chat opens at its newest messages, not at the event, because the timeline has no focused mode yet. mz can overrule.",
+    "A link that arrives before sign-in waits until account-start ends, then opens, like profile-link-open."
+  ]
+}

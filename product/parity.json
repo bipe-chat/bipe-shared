@@ -3436,8 +3436,8 @@
     {
       "area": "Push",
       "ios": "APNs through Sygnal",
-      "android": "FCM through Sygnal; UnifiedPush optional",
-      "reason": "OS push channel (#89, #90, #91)",
+      "android": "FCM through Sygnal",
+      "reason": "OS push channel (#89, #90); no UnifiedPush (ADR 0208)",
       "kind": "idiom"
     },
     {

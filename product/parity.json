@@ -1293,7 +1293,8 @@
         "evidence": [
           "bipe-app/ios/Bipe/PixCheck/PixCheckModel.swift",
           "bipe-app/ios/Bipe/PixCheck/PixCheckViews.swift",
-          "bipe-app/ios/Bipe/PixCheck/PixHandoff.swift"
+          "bipe-app/ios/Bipe/PixCheck/PixHandoff.swift",
+          "bipe-app/ios/Bipe/PixCheck/PixShareResult.swift"
         ]
       },
       "android": {
@@ -1301,7 +1302,8 @@
         "evidence": [
           "bipe-app/android/app/src/main/kotlin/chat/bipe/app/pixcheck/PixCheckActivity.kt",
           "bipe-app/android/app/src/main/kotlin/chat/bipe/app/pixcheck/PixCheckModel.kt",
-          "bipe-app/android/app/src/main/kotlin/chat/bipe/app/pixcheck/PixSendScreen.kt"
+          "bipe-app/android/app/src/main/kotlin/chat/bipe/app/pixcheck/PixSendScreen.kt",
+          "bipe-app/android/app/src/main/kotlin/chat/bipe/app/pixcheck/PixShareResult.kt"
         ]
       },
       "web": {
@@ -2960,12 +2962,18 @@
       "id": "chat-favourites-filters",
       "name": "Favourite a chat; unread and favourites filters in the chat list (bipe#673)",
       "ios": {
-        "status": "planned",
-        "issue": 673
+        "status": "testing",
+        "evidence": [
+          "bipe-app/ios/Bipe/ChatList/ChatListModel.swift",
+          "bipe-app/ios/Bipe/ChatList/ChatListView.swift"
+        ]
       },
       "android": {
-        "status": "planned",
-        "issue": 673
+        "status": "testing",
+        "evidence": [
+          "bipe-app/android/app/src/main/kotlin/chat/bipe/app/chatlist/ChatListModel.kt",
+          "bipe-app/android/app/src/main/kotlin/chat/bipe/app/chatlist/FavouritesGrid.kt"
+        ]
       },
       "web": {
         "status": "n/a",

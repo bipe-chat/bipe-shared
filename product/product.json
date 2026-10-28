@@ -2328,10 +2328,10 @@
         {
           "heading": "Preço fixo em reais",
           "points": [
-            "O preço segue o tamanho da organização: atendentes ou clientes que falam com vocês no Bipe.",
+            "O preço soma os clientes que falam com vocês no Bipe e os atendentes a mais.",
             "Mil mensagens ou um milhão, o valor é o mesmo. Nenhum plano cobra por mensagem.",
-            "Até 2 atendentes e 1.000 clientes ativos no Bipe, é de graça.",
-            "Planos pagos a partir de R$ 199 por mês, em reais, por mês ou por ano.",
+            "Até 3 atendentes e 1.000 clientes ativos no Bipe, é de graça.",
+            "Depois, R$ 1,00 por cliente ativo por ano e R$ 69 por atendente a mais por mês, em reais.",
             "No piloto, a empresa paga metade, e esse valor vira crédito no primeiro ano."
           ]
         },
@@ -2438,10 +2438,10 @@
         {
           "heading": "A fixed price in reais",
           "points": [
-            "The price follows the size of the organisation: agents or customers who talk with you on Bipe.",
+            "The price adds the customers who talk with you on Bipe and the extra agents.",
             "A thousand messages or a million, the amount is the same. No plan charges per message.",
-            "Up to 2 agents and 1,000 active customers on Bipe, it is free.",
-            "Paid plans from R$ 199 a month, in reais, per month or per year.",
+            "Up to 3 agents and 1,000 active customers on Bipe, it is free.",
+            "Then R$ 1.00 per active customer per year and R$ 69 per extra agent per month, in reais.",
             "In the pilot, a company pays half, and that amount becomes credit in the first year."
           ]
         },
@@ -2546,55 +2546,56 @@
           "Instituições e órgãos públicos compram com orçamento anual e precisam de um preço fixo."
         ]
       },
-      "tiersHeading": "Quatro planos",
+      "tiersHeading": "Como o preço funciona",
       "freePrice": "R$ 0",
       "pilotPrice": "Metade no piloto",
       "tiers": {
         "small": {
           "name": "Grátis",
-          "who": "Qualquer organização com até 2 atendentes e até 1.000 clientes ativos no Bipe.",
+          "who": "Até 3 atendentes e até 1.000 clientes ativos no Bipe.",
           "billing": "Sem mensalidade.",
           "points": [
             "Selo de CNPJ verificado e nome reservado, com a verificação automática.",
-            "Caixa de entrada com 2 atendentes.",
+            "Caixa de entrada com 3 atendentes.",
             "Perguntas com opções e API.",
             "Suporte pelas páginas de ajuda.",
-            "O selo segue as mesmas regras dos outros planos: o CPF verificado do dono precisa aparecer entre os sócios do CNPJ na Receita.",
+            "O selo segue as mesmas regras de quem paga: o CPF verificado do dono precisa aparecer entre os sócios do CNPJ na Receita.",
             "Sem CNPJ, a conta tem as mesmas ferramentas, mas fica sem selo e sem cobrança por Pix."
           ]
         },
         "company": {
-          "name": "Empresa",
-          "who": "Equipes de até 10 atendentes.",
-          "billing": "R$ 199 por mês com 1 atendente e R$ 69 por atendente a mais. No pagamento anual, o ano custa 10 meses.",
+          "name": "Clientes ativos",
+          "price": "R$ 1 por cliente",
+          "who": "Quem falou com vocês no Bipe nos últimos 12 meses.",
+          "billing": "Os primeiros 1.000 são grátis. Depois, R$ 1,00 por cliente por ano até 100 mil, e menos por cliente acima disso. Teto de R$ 540 mil por ano.",
           "points": [
-            "Selo de CNPJ verificado e nome reservado.",
-            "Caixa de entrada com quantos atendentes a equipe precisar.",
-            "Perguntas com opções e API."
+            "O preço sobe junto com os clientes que chegam.",
+            "Todos os nomes reservados da marca, com monitoramento de nomes parecidos.",
+            "Os níveis de verificação que o setor pede."
           ]
         },
         "institution": {
-          "name": "Instituição",
-          "who": "Organizações com mais de 10 atendentes, ou que pagam menos pelos clientes ativos.",
-          "billing": "Por ano, pelos clientes que falam com vocês no Bipe: R$ 1,00 por cliente até 100 mil, e menos por cliente acima disso. Mínimo de R$ 199 por mês, máximo de R$ 540 mil por ano.",
+          "name": "Atendentes",
+          "price": "R$ 69 por atendente",
+          "who": "Quem atende os clientes na caixa de entrada.",
+          "billing": "Os primeiros 3 são grátis. Do 4º ao 20º, R$ 69 por mês cada. Acima de 20, sem custo a mais.",
           "points": [
-            "Atendentes sem limite.",
-            "Todos os nomes reservados da marca, com monitoramento de nomes parecidos.",
-            "Os níveis de verificação que o setor pede.",
+            "A equipe toda atende na mesma fila.",
+            "Atribua, transfira e assuma conversas.",
             "Suporte com prazo de resposta em contrato."
           ]
         },
         "public": {
           "name": "Órgão público, ONG ou associação",
+          "price": "Metade do preço",
           "who": "Órgãos do governo, ONGs, igrejas e associações.",
-          "billing": "Metade do preço do plano que se aplica.",
+          "billing": "Metade do total.",
           "points": [
-            "O mesmo serviço dos outros planos, com 50% de desconto."
-          ],
-          "price": "Metade do preço"
+            "O mesmo serviço, com 50% de desconto."
+          ]
         }
       },
-      "nonprofit": "Cada organização paga o menor preço entre os planos que pode usar.",
+      "nonprofit": "O preço é a soma dos dois: clientes ativos, por ano, e atendentes a mais, por mês. Pagando o ano de uma vez, o ano custa 10 meses.",
       "tools": {
         "heading": "Ferramentas de graça em todo plano",
         "body": "Qualquer conta de empresa usa estas ferramentas de graça, em qualquer plano."
@@ -2612,57 +2613,69 @@
       "ctaForm": "Quero usar o Bipe",
       "calculator": {
         "heading": "Quanto o Bipe custa para vocês",
-        "lede": "Preço fixo em reais, pelo tamanho da organização: atendentes ou clientes ativos no Bipe. Mil mensagens ou um milhão, o valor é o mesmo.",
+        "lede": "Preço fixo em reais. Você paga pelos clientes que usam o Bipe com você e pelos atendentes a mais. Mil mensagens ou um milhão, o valor é o mesmo.",
         "presetsLabel": "Exemplos",
         "presets": {
-          "church": "Igreja",
           "shop": "Loja online",
-          "clinics": "Rede de clínicas",
           "city": "Prefeitura",
+          "clinics": "Rede de clínicas",
+          "coop": "Cooperativa de crédito",
+          "health": "Plano de saúde regional",
           "bank": "Banco médio"
         },
         "presetNotes": {
-          "church": "Neste exemplo, a igreja tem 2 atendentes e 300 membros que falam com ela no Bipe. Fica no plano grátis, com o mesmo selo dos planos pagos.",
-          "shop": "Neste exemplo, a loja tem 5 atendentes e 3 mil clientes ativos no Bipe. O preço pelos clientes ativos sai mais barato que o plano Empresa.",
-          "clinics": "Neste exemplo, a rede tem 10 atendentes e 10 mil pacientes ativos no Bipe. O plano Empresa sai mais barato que o preço pelos clientes ativos.",
-          "city": "Neste exemplo, 20 mil pessoas falam com a prefeitura no Bipe, com 15 atendentes. Órgão público paga metade.",
-          "bank": "Neste exemplo, 500 mil clientes falam com o banco no Bipe, com 200 atendentes. O preço sobe junto com os clientes que chegam."
+          "shop": "Loja com 5 atendentes e 3 mil clientes ativos no Bipe. Gasto de hoje: 30 mil mensagens por mês, metade avisos de pedido e metade respostas.",
+          "city": "Prefeitura com 15 atendentes e 20 mil pessoas ativas no Bipe. Gasto de hoje: 100 mil mensagens por mês, metade avisos e metade respostas. Órgão público paga metade.",
+          "clinics": "Rede com 10 atendentes e 10 mil pacientes ativos no Bipe. Gasto de hoje: 80 mil mensagens por mês, metade lembretes de consulta e metade respostas.",
+          "coop": "Cooperativa com 20 atendentes e 30 mil cooperados ativos no Bipe. Gasto de hoje: 300 mil mensagens por mês, metade avisos e metade respostas.",
+          "health": "Plano com 50 atendentes e 100 mil beneficiários ativos no Bipe. Gasto de hoje: 1 milhão de mensagens por mês, metade avisos e metade respostas.",
+          "bank": "Banco com 200 atendentes e 500 mil clientes ativos no Bipe. Gasto de hoje: 10 milhões de mensagens por mês, metade avisos e metade respostas."
         },
-        "org": "Tipo de organização",
         "orgs": {
           "company": "Empresa ou instituição",
-          "half": "Órgão público, ONG ou associação"
+          "half": "Órgão público, ONG, igreja ou associação: metade do preço"
         },
         "seats": "Atendentes",
         "people": "Clientes ativos no Bipe",
-        "spend": "Quanto vocês gastam hoje por mês para falar com os clientes",
+        "spend": "Gasto por mês com mensagens aos clientes",
         "spendNone": "Não informado",
         "month": "por mês",
-        "year": "%1$s por ano",
-        "annual": "Pagando o ano de uma vez: %1$s",
-        "save": "Vocês economizariam %1$s por mês",
-        "compare": "Hoje: %1$s por mês. No Bipe: %2$s por mês.",
-        "plans": {
-          "free": "Plano grátis: até %1$s atendentes e até %2$s clientes ativos.",
-          "company": "Plano Empresa: %1$s por mês com 1 atendente e %2$s por atendente a mais.",
-          "institution": "Plano Instituição: pelos clientes ativos no Bipe, com atendentes sem limite.",
-          "half": "Metade do preço para órgãos públicos, ONGs, igrejas e associações.",
-          "lower": "Vocês pagam o menor preço entre os planos que podem usar."
-        },
-        "proposal": "Proposta: os valores podem mudar depois do piloto. No piloto, a empresa paga metade, e esse valor vira crédito no primeiro ano. Para órgãos públicos, o piloto é gratuito.",
+        "save": "Economia de %1$s por mês",
+        "proposal": "Valores propostos. Podem mudar depois do piloto. No piloto, a empresa paga metade e esse valor vira crédito no primeiro ano. Para órgãos públicos, o piloto é gratuito.",
         "detail": "Ver como o preço é calculado",
-        "curveHeading": "Plano Instituição: preço por cliente ativo",
-        "curveLede": "Cliente ativo é quem falou com vocês no Bipe nos últimos 12 meses. Cada valor vale só para os clientes dentro da faixa, então o preço sobe aos poucos, junto com o uso. Mínimo de %1$s por mês e máximo de %2$s por ano.",
-        "curveFrom": "Até %1$s clientes",
-        "curveAbove": "Acima de %1$s clientes",
-        "curveRate": "%1$s por cliente por ano",
+        "curveHeading": "Clientes ativos: preço por cliente",
+        "curveLede": "Cliente ativo é quem falou com vocês no Bipe nos últimos 12 meses. Os primeiros 1.000 são grátis. Cada valor vale só para os clientes dentro da faixa, então o preço sobe aos poucos, junto com o uso. Teto de %1$s por ano.",
+        "curveFrom": "Até %1$s",
+        "curveAbove": "Acima de %1$s",
         "tableHeading": "Valores por ano",
         "tablePeople": "Clientes ativos no Bipe",
-        "tableInstitution": "Instituição",
+        "tableInstitution": "Clientes ativos, por ano",
         "tableHalf": "Órgão público, ONG ou associação",
         "link": "Calcule quanto o Bipe custa para vocês",
-        "curveBetween": "De %1$s a %2$s clientes",
-        "peopleHint": "Quem falou com vocês no Bipe nos últimos 12 meses."
+        "curveBetween": "%1$s a %2$s",
+        "peopleHint": "Quem falou com vocês no Bipe nos últimos 12 meses. Os %1$s primeiros são grátis.",
+        "agentsHeading": "Atendentes",
+        "agentsLine": "Os primeiros 3 são grátis. Do 4º ao 20º, %1$s por mês cada. Acima de 20, sem custo a mais.",
+        "groupOrg": "Sua organização",
+        "groupToday": "Hoje",
+        "seatsHint": "Os %1$s primeiros são grátis.",
+        "spendHint": "Opcional, para comparar com o preço do Bipe.",
+        "resultLabel": "No Bipe",
+        "yearLine": "%1$s por ano",
+        "rows": {
+          "customers": "Clientes ativos",
+          "agents": "Atendentes",
+          "above": "%1$s acima dos %2$s grátis",
+          "half": "Metade do preço",
+          "free": "Grátis até %1$s atendentes e %2$s clientes ativos",
+          "total": "Total por mês"
+        },
+        "compareHeading": "Comparado com hoje",
+        "today": "Hoje",
+        "saveYear": "%1$s por ano",
+        "more": "No Bipe, %1$s a mais por mês.",
+        "curveColBand": "Clientes ativos",
+        "curveColRate": "Por cliente, por ano"
       },
       "pilotFreePrice": "Piloto gratuito"
     },
@@ -2689,55 +2702,56 @@
           "Institutions and public bodies buy with a yearly budget and need a fixed price."
         ]
       },
-      "tiersHeading": "Four plans",
+      "tiersHeading": "How the price works",
       "freePrice": "R$ 0",
       "pilotPrice": "Half price in the pilot",
       "tiers": {
         "small": {
           "name": "Free",
-          "who": "Any organisation with up to 2 agents and up to 1,000 active customers on Bipe.",
+          "who": "Up to 3 agents and up to 1,000 active customers on Bipe.",
           "billing": "No monthly fee.",
           "points": [
             "Verified CNPJ badge and reserved name, with the automatic check.",
-            "Inbox with 2 agents.",
+            "Inbox with 3 agents.",
             "Questions with options and API.",
             "Support through the help pages.",
-            "The badge follows the same rules as the other plans: the owner's verified CPF must be among the CNPJ's partners at the Receita.",
+            "The badge follows the same rules as for paying organisations: the owner's verified CPF must be among the CNPJ's partners at the Receita.",
             "Without a CNPJ, the account has the same tools, but no badge and no Pix charges."
           ]
         },
         "company": {
-          "name": "Company",
-          "who": "Teams of up to 10 agents.",
-          "billing": "R$ 199 a month with 1 agent and R$ 69 per extra agent. Paid yearly, the year costs 10 months.",
+          "name": "Active customers",
+          "price": "R$ 1 per customer",
+          "who": "People who talked with you on Bipe in the last 12 months.",
+          "billing": "The first 1,000 are free. Then R$ 1.00 per customer per year up to 100,000, and less per customer above that. Capped at R$ 540,000 a year.",
           "points": [
-            "Verified CNPJ badge and reserved name.",
-            "Inbox with as many agents as the team needs.",
-            "Questions with options and API."
+            "The price rises with the customers who arrive.",
+            "Every reserved name of the brand, with monitoring of lookalike names.",
+            "The verification levels the sector needs."
           ]
         },
         "institution": {
-          "name": "Institution",
-          "who": "Organisations with more than 10 agents, or that pay less by active customers.",
-          "billing": "Per year, by the customers who talk with you on Bipe: R$ 1.00 per customer up to 100,000, and less per customer above that. At least R$ 199 a month, at most R$ 540,000 a year.",
+          "name": "Agents",
+          "price": "R$ 69 per agent",
+          "who": "The people who answer customers in the inbox.",
+          "billing": "The first 3 are free. From the 4th to the 20th, R$ 69 a month each. Above 20, nothing more.",
           "points": [
-            "Unlimited agents.",
-            "Every reserved name of the brand, with monitoring of lookalike names.",
-            "The verification levels the sector needs.",
+            "The whole team answers from the same queue.",
+            "Assign, transfer and take over chats.",
             "Support with a response time in the contract."
           ]
         },
         "public": {
           "name": "Public body, NGO or association",
+          "price": "Half price",
           "who": "Government bodies, NGOs, churches and associations.",
-          "billing": "Half the price of the plan that applies.",
+          "billing": "Half of the total.",
           "points": [
-            "The same service as the other plans, at 50% off."
-          ],
-          "price": "Half price"
+            "The same service, at 50% off."
+          ]
         }
       },
-      "nonprofit": "Each organisation pays the lower price of the plans it can use.",
+      "nonprofit": "The price is the sum of the two: active customers, per year, and extra agents, per month. Paid yearly, the year costs 10 months.",
       "tools": {
         "heading": "Free tools on every plan",
         "body": "Any company account uses these tools for free, on any plan."
@@ -2755,78 +2769,80 @@
       "ctaForm": "I want to use Bipe",
       "calculator": {
         "heading": "What Bipe costs you",
-        "lede": "A fixed price in reais, by the size of the organisation: agents or active customers on Bipe. A thousand messages or a million, the amount is the same.",
+        "lede": "A fixed price in reais. You pay for the customers who use Bipe with you and for extra agents. A thousand messages or a million, the amount is the same.",
         "presetsLabel": "Examples",
         "presets": {
-          "church": "Church",
           "shop": "Online shop",
-          "clinics": "Clinic network",
           "city": "City hall",
+          "clinics": "Clinic network",
+          "coop": "Credit cooperative",
+          "health": "Regional health plan",
           "bank": "Mid-size bank"
         },
         "presetNotes": {
-          "church": "In this example, the church has 2 agents and 300 members who talk with it on Bipe. It stays on the free plan, with the same badge as the paid plans.",
-          "shop": "In this example, the shop has 5 agents and 3,000 active customers on Bipe. The price by active customers costs less than the Company plan.",
-          "clinics": "In this example, the network has 10 agents and 10,000 active patients on Bipe. The Company plan costs less than the price by active customers.",
-          "city": "In this example, 20,000 people talk with the city hall on Bipe, with 15 agents. Public bodies pay half.",
-          "bank": "In this example, 500,000 customers talk with the bank on Bipe, with 200 agents. The price rises with the customers who arrive."
+          "shop": "A shop with 5 agents and 3,000 active customers on Bipe. Spend today: 30,000 messages a month, half order notices and half replies.",
+          "city": "A city hall with 15 agents and 20,000 active people on Bipe. Spend today: 100,000 messages a month, half notices and half replies. Public bodies pay half.",
+          "clinics": "A network with 10 agents and 10,000 active patients on Bipe. Spend today: 80,000 messages a month, half appointment reminders and half replies.",
+          "coop": "A cooperative with 20 agents and 30,000 active members on Bipe. Spend today: 300,000 messages a month, half notices and half replies.",
+          "health": "A health plan with 50 agents and 100,000 active members on Bipe. Spend today: 1 million messages a month, half notices and half replies.",
+          "bank": "A bank with 200 agents and 500,000 active customers on Bipe. Spend today: 10 million messages a month, half notices and half replies."
         },
-        "org": "Kind of organisation",
         "orgs": {
           "company": "Company or institution",
-          "half": "Public body, NGO or association"
+          "half": "Public body, NGO, church or association: half price"
         },
         "seats": "Agents",
         "people": "Active customers on Bipe",
-        "spend": "What you spend today each month to talk to customers",
+        "spend": "Monthly spend on messages to customers",
         "spendNone": "Not given",
         "month": "per month",
-        "year": "%1$s per year",
-        "annual": "Paying the year at once: %1$s",
-        "save": "You would save %1$s per month",
-        "compare": "Today: %1$s per month. On Bipe: %2$s per month.",
-        "plans": {
-          "free": "Free plan: up to %1$s agents and up to %2$s active customers.",
-          "company": "Company plan: %1$s a month with 1 agent and %2$s per extra agent.",
-          "institution": "Institution plan: by active customers on Bipe, with unlimited agents.",
-          "half": "Half price for public bodies, NGOs, churches and associations.",
-          "lower": "You pay the lower price of the plans you can use."
-        },
-        "proposal": "Proposal: the amounts may change after the pilot. In the pilot, a company pays half, and that amount becomes credit in the first year. For public bodies, the pilot is free.",
+        "save": "You save %1$s a month",
+        "proposal": "Proposed amounts. They may change after the pilot. In the pilot, companies pay half and that amount becomes credit in the first year. For public bodies, the pilot is free.",
         "detail": "See how the price works",
-        "curveHeading": "Institution plan: price per active customer",
-        "curveLede": "An active customer is someone who talked with you on Bipe in the last 12 months. Each rate applies only to the customers inside its band, so the price rises gradually, with use. At least %1$s a month and at most %2$s a year.",
-        "curveFrom": "Up to %1$s customers",
-        "curveAbove": "Above %1$s customers",
-        "curveRate": "%1$s per customer per year",
+        "curveHeading": "Active customers: price per customer",
+        "curveLede": "An active customer is someone who talked with you on Bipe in the last 12 months. The first 1,000 are free. Each rate applies only to the customers inside its band, so the price rises gradually, with use. Capped at %1$s a year.",
+        "curveFrom": "Up to %1$s",
+        "curveAbove": "Above %1$s",
         "tableHeading": "Amounts per year",
         "tablePeople": "Active customers on Bipe",
-        "tableInstitution": "Institution",
+        "tableInstitution": "Active customers, per year",
         "tableHalf": "Public body, NGO or association",
         "link": "Work out what Bipe costs you",
-        "curveBetween": "From %1$s to %2$s customers",
-        "peopleHint": "People who talked with you on Bipe in the last 12 months."
+        "curveBetween": "%1$s to %2$s",
+        "peopleHint": "People who talked with you on Bipe in the last 12 months. The first %1$s are free.",
+        "agentsHeading": "Agents",
+        "agentsLine": "The first 3 are free. From the 4th to the 20th, %1$s a month each. Above 20, nothing more.",
+        "groupOrg": "Your organisation",
+        "groupToday": "Today",
+        "seatsHint": "The first %1$s are free.",
+        "spendHint": "Optional, to compare with Bipe's price.",
+        "resultLabel": "On Bipe",
+        "yearLine": "%1$s a year",
+        "rows": {
+          "customers": "Active customers",
+          "agents": "Agents",
+          "above": "%1$s above the %2$s free",
+          "half": "Half price",
+          "free": "Free up to %1$s agents and %2$s active customers",
+          "total": "Total a month"
+        },
+        "compareHeading": "Compared with today",
+        "today": "Today",
+        "saveYear": "%1$s a year",
+        "more": "On Bipe, %1$s more a month.",
+        "curveColBand": "Active customers",
+        "curveColRate": "Per customer, per year"
       },
       "pilotFreePrice": "Free pilot"
     },
     "proposal": {
-      "$comment": "ADR 0206 (Proposed; amounts are the proposal until the pilot ends, ADR 0075). Free: up to free.agents agents and free.people active people. Above it, the lower of Empresa (up to company.maxSeats agents) and Instituição (active people, who talked with the organisation on Bipe in the last 12 months, on marginal tiers [first person of the band, BRL per person per year], at least minMonthly × 12 and at most capYearly per year). halfFactor: public bodies, NGOs, churches and associations.",
+      "$comment": "ADR 0206 (Proposed, amended 28 Oct 2026; amounts are the proposal until the pilot ends, ADR 0075). One price, two meters that add up. customers: active customers (talked with the organisation on Bipe in the last 12 months), marginal tiers [first customer of the band, BRL per customer per year], the first band free, capped at capYearly. agents: free agents, then monthly BRL per agent up to chargedUpTo; above it no extra charge. halfFactor: public bodies, NGOs, churches and associations. annualMonths: what a year costs when paid at once. table: active-customer counts shown on /precos/.",
       "adr": "0206",
-      "free": {
-        "agents": 2,
-        "people": 1000
-      },
-      "minMonthly": 199,
-      "company": {
-        "monthly": 199,
-        "extraSeat": 69,
-        "annualMonths": 10,
-        "maxSeats": 10
-      },
-      "institution": {
+      "customers": {
+        "free": 1000,
         "tiers": [
           [
-            0,
+            1000,
             1
           ],
           [
@@ -2844,7 +2860,13 @@
         ],
         "capYearly": 540000
       },
+      "agents": {
+        "free": 3,
+        "monthly": 69,
+        "chargedUpTo": 20
+      },
       "halfFactor": 0.5,
+      "annualMonths": 10,
       "table": [
         1000,
         5000,
@@ -2862,20 +2884,20 @@
     },
     "calculatorPresets": [
       {
-        "id": "church",
-        "icon": "group",
-        "org": "half",
-        "seats": 2,
-        "people": 300,
-        "spend": 0
-      },
-      {
         "id": "shop",
         "icon": "bag",
         "org": "company",
         "seats": 5,
         "people": 3000,
-        "spend": 6732
+        "spend": 1015
+      },
+      {
+        "id": "city",
+        "icon": "bank",
+        "org": "half",
+        "seats": 15,
+        "people": 20000,
+        "spend": 3465
       },
       {
         "id": "clinics",
@@ -2886,12 +2908,20 @@
         "spend": 2765
       },
       {
-        "id": "city",
-        "icon": "bank",
-        "org": "half",
-        "seats": 15,
-        "people": 20000,
-        "spend": 3465
+        "id": "coop",
+        "icon": "group",
+        "org": "company",
+        "seats": 20,
+        "people": 30000,
+        "spend": 10465
+      },
+      {
+        "id": "health",
+        "icon": "shield",
+        "org": "company",
+        "seats": 50,
+        "people": 100000,
+        "spend": 34540
       },
       {
         "id": "bank",
@@ -3007,8 +3037,8 @@
         }
       },
       "small": {
-        "heading": "Até 2 atendentes e 1.000 clientes no Bipe?",
-        "body": "Você não precisa do formulário. Baixe o app e crie a conta em Você > Sua conta > Criar conta da empresa. Até 2 atendentes e 1.000 clientes ativos no Bipe, é de graça, com o mesmo selo dos planos pagos. Dá para criar sem CNPJ.",
+        "heading": "Até 3 atendentes e 1.000 clientes no Bipe?",
+        "body": "Você não precisa do formulário. Baixe o app e crie a conta em Você > Sua conta > Criar conta da empresa. Até 3 atendentes e 1.000 clientes ativos no Bipe, é de graça, com o mesmo selo de quem paga. Dá para criar sem CNPJ.",
         "button": "Baixar o app"
       },
       "audiencesHeading": "Para cada tipo de organização"
@@ -3115,8 +3145,8 @@
         }
       },
       "small": {
-        "heading": "Up to 2 agents and 1,000 customers on Bipe?",
-        "body": "You don't need the form. Get the app and create the account in You > Your account > Create a company account. Up to 2 agents and 1,000 active customers on Bipe, it is free, with the same badge as the paid plans. You can create it with no CNPJ.",
+        "heading": "Up to 3 agents and 1,000 customers on Bipe?",
+        "body": "You don't need the form. Get the app and create the account in You > Your account > Create a company account. Up to 3 agents and 1,000 active customers on Bipe, it is free, with the same badge as paying organisations. You can create it with no CNPJ.",
         "button": "Get the app"
       },
       "audiencesHeading": "For each kind of organisation"
@@ -3182,7 +3212,7 @@
           },
           {
             "heading": "Preço fixo por ano, sem preço por mensagem",
-            "body": "Órgão público paga metade do preço, num contrato anual pelo número de pessoas que falam com o órgão no Bipe. Até 1.000 pessoas ativas no Bipe e 2 atendentes, é de graça. Nenhum plano cobra por mensagem, então o custo não cresce a cada aviso. Os valores saem quando o piloto terminar."
+            "body": "Órgão público paga metade do preço, num contrato anual pelo número de pessoas que falam com o órgão no Bipe. Até 1.000 pessoas ativas no Bipe e 3 atendentes, é de graça. Nenhum plano cobra por mensagem, então o custo não cresce a cada aviso. Os valores saem quando o piloto terminar."
           }
         ],
         "cta": "Quer testar o Bipe num serviço do seu órgão? Conte como vocês falam com o cidadão hoje."
@@ -3208,7 +3238,7 @@
           },
           {
             "heading": "A fixed yearly price, no price per message",
-            "body": "A public body pays half the price, on a yearly contract by the number of people who talk with it on Bipe. Up to 1,000 active people on Bipe and 2 agents, it is free. No plan charges per message, so the cost doesn't grow with each notice. Amounts come out when the pilot ends."
+            "body": "A public body pays half the price, on a yearly contract by the number of people who talk with it on Bipe. Up to 1,000 active people on Bipe and 3 agents, it is free. No plan charges per message, so the cost doesn't grow with each notice. Amounts come out when the pilot ends."
           }
         ],
         "cta": "Want to test Bipe in one of your services? Tell us how you talk to citizens today."
@@ -3274,7 +3304,7 @@
           },
           {
             "heading": "Metade do preço",
-            "body": "ONGs, igrejas e associações pagam metade do preço do plano que se aplica. Até 2 atendentes e 1.000 pessoas ativas no Bipe, é de graça. Nenhum plano cobra por mensagem. Os valores saem quando o piloto terminar."
+            "body": "ONGs, igrejas e associações pagam metade do preço. Até 3 atendentes e 1.000 pessoas ativas no Bipe, é de graça. Nenhum plano cobra por mensagem. Os valores saem quando o piloto terminar."
           }
         ],
         "cta": "Quer testar o Bipe com a sua instituição? Conte como vocês falam com os membros hoje."
@@ -3300,7 +3330,7 @@
           },
           {
             "heading": "Half the price",
-            "body": "NGOs, churches and associations pay half the price of the plan that applies. Up to 2 agents and 1,000 active people on Bipe, it is free. No plan charges per message. Amounts come out when the pilot ends."
+            "body": "NGOs, churches and associations pay half the price. Up to 3 agents and 1,000 active people on Bipe, it is free. No plan charges per message. Amounts come out when the pilot ends."
           }
         ],
         "cta": "Want to test Bipe with your institution? Tell us how you talk to members today."
@@ -3365,7 +3395,7 @@
           },
           {
             "heading": "Contrato anual, sem preço por mensagem",
-            "body": "Bancos e fintechs ficam no plano Instituição: um valor por ano pelos clientes que usam o Bipe com o banco, que cresce junto com o uso e para em R$ 540 mil. Atendentes sem limite, todos os nomes da marca reservados e monitoramento de nomes parecidos. O selo não está à venda, e o plano paga só o serviço. Os valores saem quando o piloto terminar."
+            "body": "Bancos e fintechs pagam por ano pelos clientes que usam o Bipe com o banco, um valor que cresce junto com o uso e para em R$ 540 mil, mais os atendentes a mais, no máximo R$ 14 mil por ano. Todos os nomes da marca ficam reservados, com monitoramento de nomes parecidos. O selo não está à venda, e o preço paga só o serviço. Os valores saem quando o piloto terminar."
           }
         ],
         "cta": "Quer testar o Bipe com os clientes do seu banco? Conte como vocês falam com eles hoje."
@@ -3391,7 +3421,7 @@
           },
           {
             "heading": "A yearly contract, no price per message",
-            "body": "Banks and fintechs are on the Institution plan: a yearly amount by the customers who use Bipe with the bank, which grows with use and stops at R$ 540,000. Unlimited agents, every name of the brand reserved and monitoring of lookalike names. The badge isn't for sale, and the plan pays only for the service. Amounts come out when the pilot ends."
+            "body": "Banks and fintechs pay a yearly amount by the customers who use Bipe with the bank, which grows with use and stops at R$ 540,000, plus extra agents, at most R$ 14,000 a year. Every name of the brand is reserved, with monitoring of lookalike names. The badge isn't for sale, and the price pays only for the service. Amounts come out when the pilot ends."
           }
         ],
         "cta": "Want to test Bipe with your bank's customers? Tell us how you talk to them today."

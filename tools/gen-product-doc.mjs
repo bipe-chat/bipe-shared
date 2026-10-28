@@ -138,14 +138,15 @@ for (const a of product.organisationAudiences) {
     orgAudienceSlugs.add(`${l}/${slug}`);
   }
 }
-// The price rules (ADR 0206) and the calculator on /precos/ (bipe#812).
+// The price rules (ADR 0206, two meters) and the calculator on /precos/ (bipe#812).
 {
   const pr = product.pricing.proposal;
-  const t = pr?.institution?.tiers;
-  if (!Array.isArray(t) || !t.length || t[0][0] !== 0 || t.some(([from, rate], i) => !(rate > 0) || (i > 0 && !(from > t[i - 1][0] && rate < t[i - 1][1])))) fail("pricing.proposal.institution.tiers: from 0, ascending bands, falling positive rates");
-  if (!(pr.institution.capYearly > pr.minMonthly * 12) || !(pr.minMonthly > 0) || !Number.isInteger(pr.free?.agents) || !Number.isInteger(pr.free?.people)) fail("pricing.proposal: free, minMonthly, capYearly");
-  if (!(pr.company?.monthly > 0) || !(pr.company.extraSeat > 0) || !(pr.company.annualMonths > 0) || !Number.isInteger(pr.company.maxSeats) || !(pr.halfFactor > 0 && pr.halfFactor < 1)) fail("pricing.proposal: company, halfFactor");
-  if (!pr.table?.length || pr.table.some((n, i) => !(n > 0) || (i > 0 && !(n > pr.table[i - 1])))) fail("pricing.proposal.table: ascending people counts");
+  const t = pr?.customers?.tiers;
+  if (!Array.isArray(t) || !t.length || t[0][0] !== pr.customers.free || t.some(([from, rate], i) => !(rate > 0) || (i > 0 && !(from > t[i - 1][0] && rate < t[i - 1][1])))) fail("pricing.proposal.customers.tiers: from the free count, ascending bands, falling positive rates");
+  if (!(pr.customers.capYearly > 0) || !Number.isInteger(pr.customers.free)) fail("pricing.proposal.customers: free, capYearly");
+  if (!Number.isInteger(pr.agents?.free) || !(pr.agents.monthly > 0) || !(pr.agents.chargedUpTo > pr.agents.free)) fail("pricing.proposal.agents");
+  if (!(pr.halfFactor > 0 && pr.halfFactor < 1) || !(pr.annualMonths > 0 && pr.annualMonths <= 12)) fail("pricing.proposal: halfFactor, annualMonths");
+  if (!pr.table?.length || pr.table.some((n, i) => !(n > 0) || (i > 0 && !(n > pr.table[i - 1])))) fail("pricing.proposal.table: ascending customer counts");
   // Presets: illustrative examples, labelled so on the page. spend is what the example pays today to talk to customers, in BRL per month.
   for (const x of product.pricing.calculatorPresets ?? []) {
     if (!["company", "half"].includes(x.org) || !(x.seats >= 1) || !(x.people >= 1) || !(x.spend >= 0) || !x.icon) fail(`pricing.calculatorPresets ${x.id}`);
@@ -153,7 +154,7 @@ for (const a of product.organisationAudiences) {
   }
   for (const l of ["pt", "en"]) {
     const c = product.pricing[l].calculator;
-    if (!c?.heading || !c.proposal || !c.plans?.free || !c.curveHeading) fail(`pricing.${l}.calculator`);
+    if (!c?.heading || !c.proposal || !c.rows?.free || !c.rows?.customers || !c.rows?.agents || !c.save || !c.yearLine || !c.curveHeading || !c.agentsLine) fail(`pricing.${l}.calculator`);
   }
 }
 const tentpoleIds = new Set(product.tentpoles.map((t) => t.id));

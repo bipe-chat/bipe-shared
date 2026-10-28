@@ -922,8 +922,7 @@
         ]
       },
       "code": [
-        "public-profile-ios",
-        "public-profile-android"
+        "public-profile-ios"
       ]
     },
     {
@@ -3524,38 +3523,26 @@
         "parts": [
           {
             "id": "ios",
-            "repo": "ios",
-            "upstream": [
-              {
-                "name": "Element X iOS",
-                "url": "https://github.com/element-hq/element-x-ios"
-              }
-            ],
+            "repo": "app",
             "pt": {
               "name": "iPhone",
-              "body": "SwiftUI, a partir do Element X iOS."
+              "body": "SwiftUI, sobre o matrix-rust-sdk."
             },
             "en": {
               "name": "iPhone",
-              "body": "SwiftUI, built on Element X iOS."
+              "body": "SwiftUI, on matrix-rust-sdk."
             }
           },
           {
             "id": "android",
-            "repo": "android",
-            "upstream": [
-              {
-                "name": "Element X Android",
-                "url": "https://github.com/element-hq/element-x-android"
-              }
-            ],
+            "repo": "app",
             "pt": {
               "name": "Android",
-              "body": "Kotlin e Jetpack Compose, a partir do Element X Android."
+              "body": "Kotlin e Jetpack Compose, sobre o matrix-rust-sdk."
             },
             "en": {
               "name": "Android",
-              "body": "Kotlin and Jetpack Compose, built on Element X Android."
+              "body": "Kotlin and Jetpack Compose, on matrix-rust-sdk."
             }
           },
           {

@@ -2662,7 +2662,7 @@
         "seatsHint": "Os %1$s primeiros são grátis.",
         "spendHint": "Opcional, para comparar com o preço do Bipe.",
         "resultLabel": "No Bipe",
-        "yearLine": "%1$s por ano, ou %2$s pagando o ano de uma vez",
+        "yearLine": "%1$s por ano",
         "rows": {
           "customers": "Clientes ativos",
           "agents": "Atendentes",
@@ -2817,7 +2817,7 @@
         "seatsHint": "The first %1$s are free.",
         "spendHint": "Optional, to compare with Bipe's price.",
         "resultLabel": "On Bipe",
-        "yearLine": "%1$s a year, or %2$s paying the year at once",
+        "yearLine": "%1$s a year",
         "rows": {
           "customers": "Active customers",
           "agents": "Agents",

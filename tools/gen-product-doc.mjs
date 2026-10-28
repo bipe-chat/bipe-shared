@@ -154,7 +154,7 @@ for (const a of product.organisationAudiences) {
   }
   for (const l of ["pt", "en"]) {
     const c = product.pricing[l].calculator;
-    if (!c?.heading || !c.proposal || !c.plans?.free || !c.plans?.customers || !c.plans?.agents || !c.curveHeading || !c.agentsLine) fail(`pricing.${l}.calculator`);
+    if (!c?.heading || !c.proposal || !c.rows?.free || !c.rows?.customers || !c.rows?.agents || !c.save || !c.yearLine || !c.curveHeading || !c.agentsLine) fail(`pricing.${l}.calculator`);
   }
 }
 const tentpoleIds = new Set(product.tentpoles.map((t) => t.id));

@@ -2798,12 +2798,16 @@
       "id": "message-pins",
       "name": "Pin and unpin messages in groups, pinned banner and pinned list (bipe#665)",
       "ios": {
-        "status": "planned",
-        "issue": 665
+        "status": "built",
+        "evidence": [
+          "bipe-app/ios/Bipe/Timeline/PinnedMessages.swift"
+        ]
       },
       "android": {
-        "status": "planned",
-        "issue": 665
+        "status": "built",
+        "evidence": [
+          "bipe-app/android/app/src/main/kotlin/chat/bipe/app/timeline/PinnedMessages.kt"
+        ]
       },
       "web": {
         "status": "n/a",

@@ -20,9 +20,10 @@
           "handleChange",
           "notEncrypted",
           "chatStart",
+          "stateLine",
           "unsupported"
         ],
-        "description": "message: a text message with its details. undecryptable: the message-undecryptable row. deleted: a redacted message. dateSeparator: the first row of a day. readMarker: where the unread messages start. handleChange: a local handle-change-line. notEncrypted: the notice of an unencrypted chat. chatStart: the start of the chat. unsupported: any other event the client does not show yet."
+        "description": "message: a text message with its details. undecryptable: the message-undecryptable row. deleted: a redacted message. dateSeparator: the first row of a day. readMarker: where the unread messages start. handleChange: a local handle-change-line. notEncrypted: the notice of an unencrypted chat. chatStart: the start of the chat. stateLine: a group membership or group profile change (StateLine). unsupported: any other event the client does not show yet."
       },
       "message": {
         "type": "TimelineMessage",
@@ -48,6 +49,51 @@
         "type": "HandleChangeLine",
         "optional": true,
         "description": "kind handleChange only."
+      },
+      "stateLine": {
+        "type": "StateLine",
+        "optional": true,
+        "description": "kind stateLine only."
+      }
+    },
+    "StateLine": {
+      "change": {
+        "type": "enum",
+        "values": [
+          "joined",
+          "left",
+          "invited",
+          "removed",
+          "banned",
+          "renamed",
+          "nameRemoved",
+          "photoChanged",
+          "photoRemoved",
+          "descriptionChanged",
+          "descriptionRemoved"
+        ],
+        "description": "What changed. joined: MembershipChange joined or invitationAccepted. left: left. invited: invited or knockAccepted. removed: kicked. banned: banned or kickedAndBanned. renamed and nameRemoved: OtherState roomName with or without a name. photoChanged and photoRemoved: roomAvatar with or without a URL. descriptionChanged and descriptionRemoved: roomTopic with or without a non-blank topic."
+      },
+      "actor": {
+        "type": "string",
+        "description": "Display name of the sender in this room (bipe_app_you for the own account). Not shown for joined and left."
+      },
+      "targets": {
+        "type": "list",
+        "of": {
+          "type": "string",
+          "description": "Display name of a member."
+        },
+        "description": "Membership changes only: the first two people of the folded line, oldest first. Empty for the profile changes."
+      },
+      "more": {
+        "type": "int",
+        "description": "Membership changes only: how many more people the folded line holds after targets. 0 when there are two or fewer."
+      },
+      "newName": {
+        "type": "string",
+        "optional": true,
+        "description": "renamed only: the new group name."
       }
     },
     "MessageDetails": {
@@ -136,7 +182,22 @@
     "bipe_app_timeline_not_encrypted",
     "bipe_app_message_deleted",
     "bipe_app_message_deleted_own",
-    "bipe_app_timeline_start"
+    "bipe_app_timeline_start",
+    "bipe_app_state_names_two",
+    "bipe_app_state_names_more",
+    "bipe_app_state_joined_one",
+    "bipe_app_state_joined_many",
+    "bipe_app_state_left_one",
+    "bipe_app_state_left_many",
+    "bipe_app_state_invited",
+    "bipe_app_state_removed",
+    "bipe_app_state_banned",
+    "bipe_app_state_renamed",
+    "bipe_app_state_name_removed",
+    "bipe_app_state_photo_changed",
+    "bipe_app_state_photo_removed",
+    "bipe_app_state_description_changed",
+    "bipe_app_state_description_removed"
   ],
   "sdk": [
     "Room.timelineWithConfiguration",
@@ -150,6 +211,8 @@
     "TimelineItemContent",
     "MsgLikeContent",
     "MsgLikeKind",
+    "MembershipChange",
+    "OtherState",
     "Timeline.markAsRead",
     "ReceiptType",
     "Room.roomInfo",
@@ -160,7 +223,8 @@
     "e2ee-only-rooms",
     "handle-change-notice",
     "timeline-notice-emote",
-    "timeline-links-formatting"
+    "timeline-links-formatting",
+    "group-state-lines"
   ],
   "notes": [
     "Text, notice and emote messages render Matrix org.matrix.custom.html as native text runs (bipe#660). Render bold, italic, strike, code, pre, ordered and unordered lists, blockquotes and safe links. Use registries/message-formatting.json for schemes, detection and parser limits, and test-vectors/message-formatting.json on both apps. Strip unsupported attributes and never load images, scripts, styles or other remote resources. Remove mx-reply fallback. On parse or size/depth failure, use the plain body. Detect URLs, email and phone numbers outside code. A Matrix user mention is a styled native link to the person profile; Bipe profile and invite links stay in the app. Other supported links use the system. Link activation respects the money pause. Scam checks include the original body, visible text and link destinations; copying and editing keep the original body. Institution notice cards keep their verified-domain link rule (ADR 0036).",
@@ -171,7 +235,9 @@
     "VirtualTimelineItem.TimelineStart becomes chatStart (bipe_app_timeline_start).",
     "MsgLikeKind.Redacted becomes deleted: bipe_app_message_deleted_own for own messages, else bipe_app_message_deleted. A deleted message has no reactions, reply quote, receipt or actions.",
     "notEncrypted: one row at the top of the loaded timeline when the room has no encryption (Room.latestEncryptionState is not Encrypted). Bipe never creates such a room (e2ee-only-rooms); another Matrix client can. The row is a quiet line, not a warning card.",
-    "Membership, profile and state events that ADR 0141 hides in a DM (room name, room avatar, kick, ban, knock, pin) are not rows in a DM. In a group they are unsupported until the groups issue specifies them.",
+    "Membership, profile and state events that ADR 0141 hides in a DM (room name, room avatar, kick, ban, knock, pin) are not rows in a DM (isDm). In a group, TimelineItemContent.RoomMembership and TimelineItemContent.State with OtherState roomName, roomAvatar and roomTopic become stateLine rows (bipe#661). Every other membership change (unbanned, invitation rejected or revoked, knocks), ProfileChange (a member's own name or photo; the handle-change line covers identity) and every other state event stay unsupported.",
+    "stateLine folding: consecutive stateLine rows of the same membership change, with no other row between them, become one row; for invited, removed and banned they must also have the same sender. targets holds the first two people, more the rest. A person in the folded line counts once. Profile changes never fold.",
+    "stateLine text: the people are bipe_app_state_names_two for two, bipe_app_state_names_more for three or more (more as a number), else the one name. joined and left use the _one string for one person and the _many string for two or more. invited, removed and banned take the actor, then the people. The other changes take the actor (renamed also newName). The row is the quiet centred line of the call lines and the start of the chat; a tap does nothing.",
     "Handle-change rows are local lines from bipe-api, not Matrix events (handle-change-line, ADR 0066).",
     "Read receipts are always public (ADR 0050): the client never sends ReceiptType.ReadPrivate."
   ]

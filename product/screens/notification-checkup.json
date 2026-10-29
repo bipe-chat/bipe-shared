@@ -1,0 +1,99 @@
+{
+  "id": "notification-checkup",
+  "title": "Notification checkup",
+  "flow": "settings",
+  "summary": "Android only (bipe#823): checks that this phone gets pushes on time and offers a fix for each problem. Phone makers common in Brazil (Xiaomi, Samsung, Motorola) stop background apps, so pushes arrive late. Opens from the row bipe_app_notification_checkup_title in notification-settings. A banner above chat-list points here when a check fails.",
+  "types": {
+    "Check": {
+      "id": {
+        "type": "enum",
+        "values": [
+          "permission",
+          "channel",
+          "battery",
+          "pusher"
+        ],
+        "description": "permission: bipe_app_notification_checkup_permission, the system notification permission. channel: bipe_app_notification_checkup_channel, the messages channel of the open account is not blocked. battery: bipe_app_notification_checkup_battery, PowerManager.isIgnoringBatteryOptimizations is true. pusher: bipe_app_notification_checkup_pusher, push-registration has a registration for the open account."
+      },
+      "passed": {
+        "type": "bool",
+        "description": "true shows bipe_app_notification_checkup_ok; false shows the button bipe_app_notification_checkup_fix."
+      }
+    }
+  },
+  "state": {
+    "checks": {
+      "type": "list",
+      "of": {
+        "type": "Check"
+      },
+      "description": "In the order of Check.id. Read again each time the screen shows (back from the system settings too)."
+    },
+    "lastPush": {
+      "type": "date",
+      "optional": true,
+      "description": "The time of the last push this phone received, any account, shown with bipe_app_notification_checkup_last_push. None: bipe_app_notification_checkup_last_push_none."
+    },
+    "maker": {
+      "type": "enum",
+      "values": [
+        "xiaomi",
+        "samsung",
+        "motorola",
+        "other"
+      ],
+      "description": "From Build.MANUFACTURER (Xiaomi, Redmi and POCO are xiaomi). Not other: the help text bipe_app_notification_checkup_help_<maker> and the button bipe_app_notification_checkup_open_app_settings show under the checks."
+    }
+  },
+  "actions": {
+    "fix": {
+      "params": {
+        "check": {
+          "type": "enum",
+          "values": [
+            "permission",
+            "channel",
+            "battery",
+            "pusher"
+          ],
+          "description": "The Check.id to fix."
+        }
+      },
+      "effect": "permission: asks for POST_NOTIFICATIONS when not asked yet, else opens the app's notification settings. channel: opens the settings of the messages channel. battery: opens ACTION_REQUEST_IGNORE_BATTERY_OPTIMIZATIONS for the app (permission REQUEST_IGNORE_BATTERY_OPTIMIZATIONS, allowed for messaging apps by Play policy); if the phone has no such screen, ACTION_IGNORE_BATTERY_OPTIMIZATION_SETTINGS. pusher: runs push-registration appBecameActive."
+    },
+    "openAppSettings": {
+      "effect": "Opens ACTION_APPLICATION_DETAILS_SETTINGS for the app, where the maker's autostart and battery switches are."
+    },
+    "close": {
+      "effect": "Back to notification-settings."
+    }
+  },
+  "strings": [
+    "bipe_app_notification_checkup_title",
+    "bipe_app_notification_checkup_intro",
+    "bipe_app_notification_checkup_permission",
+    "bipe_app_notification_checkup_channel",
+    "bipe_app_notification_checkup_battery",
+    "bipe_app_notification_checkup_pusher",
+    "bipe_app_notification_checkup_ok",
+    "bipe_app_notification_checkup_fix",
+    "bipe_app_notification_checkup_last_push",
+    "bipe_app_notification_checkup_last_push_none",
+    "bipe_app_notification_checkup_banner",
+    "bipe_app_notification_checkup_help_xiaomi",
+    "bipe_app_notification_checkup_help_samsung",
+    "bipe_app_notification_checkup_help_motorola",
+    "bipe_app_notification_checkup_open_app_settings",
+    "bipe_app_close"
+  ],
+  "sdk": [],
+  "parity": [
+    "notification-checkup"
+  ],
+  "notes": [
+    "iOS has no screen: iOS has no battery optimisation that stops push.",
+    "Banner: in chat-list, above the list, when the permission check or the battery check fails and the person did not close the banner in the last 7 days. It shows bipe_app_notification_checkup_banner with the button bipe_app_notification_checkup_fix (opens this screen) and a close button labelled bipe_app_close.",
+    "Default chosen (bipe#823): no test push row. The screen shows the last push time instead, because a test push needs a send route (Sygnal or bipe-api) that does not exist. mz can overrule.",
+    "Default chosen (bipe#823): the banner uses the permission and battery checks only, because the app cannot tell reliably that pushes were missed. mz can overrule."
+  ]
+}

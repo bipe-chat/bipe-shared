@@ -11,6 +11,7 @@
     },
     "pin": { "type": "string", "description": "Digits typed, at most pinLength. Never logged, never kept after the check." },
     "wrong": { "type": "bool", "description": "locked: the last PIN did not match." },
+    "waitUntil": { "type": "string", "description": "locked and turnOff: the time until which the pad ignores digits after too many wrong app lock PINs. Empty when there is no wait." },
     "biometricKind": {
       "type": "enum",
       "values": ["none", "faceId", "touchId", "android"],
@@ -23,7 +24,7 @@
     },
     "typeDigit": {
       "params": { "digit": { "type": "string", "description": "One digit, 0 to 9." } },
-      "effect": "Adds the digit. locked, at pinLength digits: checks the PIN on the device against the stored app lock PIN; a match unlocks (success haptic, use app_unlock), a miss sets wrong (error haptic, use pin_wrong) and clears pin. turnOn: the signup-pin steps (create, confirm, pinProblem())."
+      "effect": "Adds the digit. locked, at pinLength digits: checks the PIN on the device against the stored app lock PIN; a match unlocks (success haptic, use app_unlock) and clears the wrong count, a miss sets wrong (error haptic, use pin_wrong), clears pin and counts one wrong try. Try limit: the first 5 wrong PINs in a row are free; each further wrong PIN sets waitUntil to now plus 30 s, 1 min, 5 min, 15 min, then 1 h for each one after. During a wait the pad ignores digits and shows bipe_error_rate_limited; biometrics still unlock. The count is written to the lock record before the answer shows, so a killed app does not undo a try. A match, a biometric unlock or a new app lock PIN clears it. A clock set back before the last wrong try restarts the wait from now. turnOn: the signup-pin steps (create, confirm, pinProblem())."
     },
     "useBiometrics": {
       "effect": "locked: asks for biometrics with bipe_app_lock_biometric; a pass unlocks. A fail or cancel leaves the PIN pad."
@@ -38,13 +39,14 @@
       "effect": "biometricOffer: leaves biometric unlock off. The biometricUnlock row in settings-group can turn it on later."
     },
     "turnOff": {
-      "effect": "From the appLock switch. Asks for the device owner check (biometrics or the phone's passcode) with bipe_account_app_lock_off_reason. A phone with no passcode asks for the app lock PIN instead. On a pass, removes the app lock PIN and biometric unlock."
+      "effect": "From the appLock switch. Asks for the device owner check (biometrics or the phone's passcode) with bipe_account_app_lock_off_reason. A phone with no passcode asks for the app lock PIN instead, under the same try limit as typeDigit. On a pass, removes the app lock PIN and biometric unlock."
     }
   },
   "strings": [
     "bipe_app_lock_title",
     "bipe_pin_enter_title",
     "bipe_app_lock_wrong",
+    "bipe_error_rate_limited",
     "bipe_app_lock_biometric",
     "bipe_account_biometric_word_android",
     "bipe_pin_create_title",
@@ -69,7 +71,8 @@
     "One account on the phone: while the lock is on, a new account PIN (pin-change, recovery) also becomes the app lock PIN (ADR 0086). Two accounts or more: the app lock PIN is a device PIN, apart from the account PINs. The PIN set from the switch can differ from the account PIN until the next account PIN change (ADR 0137).",
     "The app lock PIN and the biometric flag live in the device credential store (iOS Keychain, this device only; Android Keystore-backed storage). Never synced, never sent.",
     "bipe_app_lock_biometric and bipe_app_lock_biometric_offer_title and _use take Face ID or Touch ID on iOS and bipe_account_biometric_word_android on Android.",
-    "Open question for MZ, not specified here: what the lock screen offers after many wrong PINs or a forgotten app lock PIN. The forks use Element's lock screen rules; the new client must not copy them. Until a decision, the lock screen has no forgot action and no try limit.",
-    "Bipe logic: BipeAppLock (setPin, isPinSet, verifyPin, removePin) and BipeBiometricUnlock in libraries/bipe account; BipePIN.swift and BipeCredentialStore.swift in BipeKit. pinProblem() comes from registries/accounts.json through the generated code (test-vectors/pins.json)."
+    "Try limit (bipe#777): local only, online and offline. The app lock PIN can differ from the account PIN (two accounts, or a PIN set from the switch), so a server check would spend account tries with a PIN that is not the account PIN. Ten wrong PINs in a row take more than 1 h 40 min. Data export on a phone with no passcode checks the app lock PIN under the same limit. The lock screen has no forgot action: a forgotten app lock PIN is cleared by clearing the app data and signing in again.",
+    "Fail closed (bipe#777): only a lock record that is not there means off. A credential store error (iOS: any keychain status other than errSecItemNotFound, for example errSecInteractionNotAllowed before the first unlock; Android: a Keystore, decrypt or decode error) or a record that does not decode keeps the lock on and shows locked. The PIN never matches an unreadable record. Each check reads the record again, so a short store error recovers by itself.",
+    "Bipe logic: BipeAppLock (setPin, isPinSet, verifyPin, removePin), BipeAppLockTries (the wait schedule) and BipeBiometricUnlock in libraries/bipe account; BipePIN.swift and BipeCredentialStore.swift in BipeKit. pinProblem() comes from registries/accounts.json through the generated code (test-vectors/pins.json)."
   ]
 }

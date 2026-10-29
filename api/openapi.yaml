@@ -14,6 +14,8 @@ paths:
   /v1/accounts/{userId}/type:
     get:
       summary: Account type of a Bipe account
+      x-summary-pt: "Tipo de uma conta do Bipe: pessoa ou empresa"
+      security: []
       description: >
         Public, no auth, rate-limited per IP. The apps draw a company account's avatar as a rounded
         square and a person's as a circle (ADR 0132). The type comes from sign-up and never from the
@@ -43,6 +45,8 @@ paths:
   /v1/badges/{userId}:
     get:
       summary: Current badge envelope for a user
+      x-summary-pt: "Selo atual de uma conta, assinado pelo servidor"
+      security: []
       description: >
         Public, no auth. The server signs on read (ADR 0123) and caches the envelope until
         renewDaysBeforeExpiry before exp (registries/badge-keys.json). A verified company gets a
@@ -74,6 +78,8 @@ paths:
   /v1/brand-marks/{userId}:
     get:
       summary: The signed brand marks of an account (ADR 0162)
+      x-summary-pt: "Marcas assinadas de uma conta"
+      security: []
       description: >
         Public, no auth, like GET /v1/badges/{userId}. One badge envelope of lvl brand-mark per active mark
         (docs/badge-attestation.md), at most maxPerAccount (registries/brand-marks.json), oldest grant first. The server
@@ -305,6 +311,8 @@ paths:
   /v1/attest/challenge:
     post:
       summary: One-time attestation challenge for sign-up (valid 5 minutes, single use)
+      x-summary-pt: "Desafio de uso único para atestar o aparelho no cadastro"
+      security: []
       description: >
         No auth. iOS: the app hashes the UTF-8 bytes of the challenge (SHA-256) and passes
         that as clientDataHash to DCAppAttestService.attestKey. Android: the app passes the
@@ -324,6 +332,8 @@ paths:
   /v1/signup:
     post:
       summary: Create an account (docs/usernames.md option A)
+      x-summary-pt: "Cria uma conta"
+      security: []
       description: >
         No auth. The server creates a random Matrix localpart through the MAS admin API,
         consumes one invite use when a code is given and, if given, reserves the handle.
@@ -366,6 +376,8 @@ paths:
   /v1/signup/config:
     get:
       summary: The sign-up mode (ADR 0072, bipe#232)
+      x-summary-pt: "Modo de cadastro atual"
+      security: []
       description: >
         No auth. The apps read it before the invite field and follow it with no new build. An app that
         cannot read it treats invite_required as true. Cache-Control max-age 300.
@@ -378,6 +390,8 @@ paths:
   /v1/banner:
     get:
       summary: The remote critical banner (ADR 0117, bipe#386)
+      x-summary-pt: "Aviso crítico que aparece acima da lista de conversas"
+      security: []
       description: >
         No auth. One banner above the chat list for critical notices only: an outage, a forced update, a change of
         terms. null when there is none or it is past expires_at. The apps fetch it on launch and on foreground and
@@ -399,6 +413,8 @@ paths:
   /v1/signup/resume:
     post:
       summary: Get the answer of a device-first sign-up again (ADR 0094)
+      x-summary-pt: "Devolve de novo a resposta de um cadastro feito pelo aparelho"
+      security: []
       description: >
         No auth. For an app that sent POST /v1/signup with signup_key and lost the answer (no
         network, app closed). Returns the same body as that sign-up. 404 not_found when no account
@@ -674,6 +690,8 @@ paths:
   /v1/email/verify:
     post:
       summary: Confirm a recovery email with the token from the link
+      x-summary-pt: "Confirma um e-mail de recuperação com o token do link"
+      security: []
       description: >
         No auth: the token proves the inbox. The link is PUBLIC_SITE_URL/confirmar-email/#<token>,
         so the token stays out of server logs; the app or the web page reads it from the fragment.
@@ -760,6 +778,8 @@ paths:
   /v1/recovery/token:
     post:
       summary: Get back in with the synced recovery token and the PIN (ADR 0059)
+      x-summary-pt: "Volta para a conta com o token de recuperação e o PIN"
+      security: []
       description: >
         No auth. Rate-limited per IP. The server finds the account by the token first, and only
         then checks the PIN, so nobody can use up the tries without the token. Wrong PIN: 403
@@ -791,6 +811,8 @@ paths:
   /v1/recovery/email:
     post:
       summary: Ask for a recovery link by email (ADR 0057)
+      x-summary-pt: "Pede um link de recuperação por e-mail"
+      security: []
       description: >
         No auth. Always 202 for a well-formed request, so the route never tells whether an
         address is known. When a verified recovery email matches, the server sends a link
@@ -811,9 +833,48 @@ paths:
         "400": { $ref: "#/components/responses/Error" }
         "429": { $ref: "#/components/responses/Error" }
         "503": { $ref: "#/components/responses/Error" }
+  /v1/beta/login:
+    post:
+      summary: Find the Matrix ID of an old beta account by its login email and password (bipe#627)
+      x-summary-pt: "Acha o ID Matrix de uma conta antiga do beta pelo e-mail e senha"
+      security: []
+      description: >
+        No auth. For the beta sign-in (recovery-start chooseBeta): the MAS compat login finds
+        users by localpart only, so an email never signs in there. The server finds the MAS user
+        that holds the email as a login email, checks the password with one MAS compat login
+        and ends that session at once, then returns the Matrix ID. The app then signs in with
+        m.login.password as before. Unknown email and wrong password give the same 401
+        unauthorized, after the same minimum time, so the route never tells whether an address
+        is known. Rate-limited per IP and per address, on top of the MAS per-account limit. The
+        server never logs the email or the password.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [email, password]
+              properties:
+                email: { type: string, format: email, maxLength: 254 }
+                password: { type: string, minLength: 1, maxLength: 512 }
+      responses:
+        "200":
+          description: The password matches.
+          content:
+            application/json:
+              schema:
+                type: object
+                required: [user_id]
+                properties:
+                  user_id: { type: string, description: "Full Matrix ID, for m.login.password." }
+        "400": { $ref: "#/components/responses/Error" }
+        "401": { $ref: "#/components/responses/Error" }
+        "429": { $ref: "#/components/responses/Error" }
   /v1/recovery/email/confirm:
     post:
       summary: Start the delay with the email link and the PIN, or a new PIN
+      x-summary-pt: "Começa o prazo de recuperação com o link do e-mail e o PIN"
+      security: []
       description: >
         No auth. Exactly one of pin and new_pin. With pin (access): the server checks the link
         first and then the PIN (403 pin_wrong with tries_left, 403 pin_blocked). With new_pin
@@ -846,6 +907,8 @@ paths:
   /v1/recovery/{recoveryId}/claim:
     post:
       summary: Poll a recovery, and collect the result when the delay has ended
+      x-summary-pt: "Consulta uma recuperação e recebe o resultado quando o prazo acaba"
+      security: []
       description: >
         No auth; the claim secret from RecoveryStarted proves the device. Before ready_at:
         state waiting. After ready_at: for purpose access the server sets a new random password
@@ -877,6 +940,8 @@ paths:
   /v1/links/providers:
     get:
       summary: Which linked-account providers this server offers (ADR 0096)
+      x-summary-pt: "Contas vinculadas que este servidor aceita"
+      security: []
       description: >
         No auth. A provider is in the list only when the server has its configuration. native: the
         server accepts an ID token from the platform's own sign-in (Apple on iOS). web: the server runs
@@ -976,6 +1041,8 @@ paths:
   /v1/recovery/link/nonce:
     post:
       summary: A nonce for the platform's own sign-in, to get back in with a linked account
+      x-summary-pt: "Nonce para o login da plataforma, na recuperação com conta vinculada"
+      security: []
       description: >
         No auth. Single use, valid linkedRecovery.flowMinutes. Rate-limited per IP.
       responses:
@@ -988,6 +1055,8 @@ paths:
   /v1/recovery/link/{provider}/web:
     post:
       summary: Start the web flow to get back in with a linked account
+      x-summary-pt: "Começa no navegador a recuperação com conta vinculada"
+      security: []
       description: >
         No auth. Same flow and redirect as POST /v1/me/links/{provider}/web; the app sends flow_id and
         handoff to POST /v1/recovery/link. Rate-limited per IP. 503 link_unavailable when the server
@@ -1011,6 +1080,8 @@ paths:
   /v1/recovery/link:
     post:
       summary: Start a recovery with a linked Apple or Google account and the PIN (ADR 0096)
+      x-summary-pt: "Começa a recuperação com a conta Apple ou Google vinculada e o PIN"
+      security: []
       description: >
         No auth. The server checks the provider proof first (as PUT /v1/me/links/{provider}) and finds
         the account by it, then the PIN (ADR 0059: the PIN comes last; 403 pin_wrong with tries_left,
@@ -1082,6 +1153,8 @@ paths:
   /v1/invites/{code}:
     get:
       summary: Preview an invite before sign-up
+      x-summary-pt: "Se um código de convite ainda vale, e o @ de quem convidou"
+      security: []
       description: >
         No auth. Rate-limited per IP. Tells the invite page and the app whether a code
         can still be used, and the inviter's handle when they have one. The code is a
@@ -1099,6 +1172,8 @@ paths:
   /v1/web/convite/{code}:
     get:
       summary: Link preview head for an invite link (bipe#459)
+      x-summary-pt: "Prévia de link de convite para os robôs de prévia"
+      security: []
       description: >
         No auth. Rate-limited per IP. The site edge sends only link-preview crawlers
         (WhatsApp, Meta, Telegram, Slack and others, matched by user agent) for
@@ -1121,6 +1196,8 @@ paths:
   /v1/events:
     post:
       summary: Count one experiment event (headline test, issue #77)
+      x-summary-pt: "Conta um evento do teste de títulos do site"
+      security: []
       description: >
         No auth. Sent by the public site with navigator.sendBeacon, so the body arrives as
         text/plain JSON and the browser reads no response. The server adds 1 to a daily
@@ -1140,6 +1217,8 @@ paths:
   /v1/waitlist:
     post:
       summary: Join the waitlist for a platform that has no build yet
+      x-summary-pt: "Entra na lista de espera de uma plataforma que ainda não tem app"
+      security: []
       description: >
         No auth. Called from the public site (CORS allows https://bipe.chat) and from the
         "Não tem convite?" sheet in the apps (source "app", bipe#415).
@@ -1159,6 +1238,8 @@ paths:
   /v1/organisations:
     post:
       summary: An organisation asks to use Bipe or to partner (organisation form)
+      x-summary-pt: "Uma organização pede para usar o Bipe ou para ser parceira"
+      security: []
       description: >
         No auth. Called from the organisation form on the public site (CORS allows https://bipe.chat).
         Rate-limited per IP and globally. Always answers 202 for a well-formed request, the
@@ -1365,6 +1446,8 @@ paths:
   /v1/handles/{handle}/availability:
     get:
       summary: Check a handle before sign-up or change
+      x-summary-pt: "Se um @ está livre. Nunca diz quem tem o @"
+      security: []
       description: No auth. Rate-limited per IP. Never reveals who holds a handle.
       parameters:
         - { name: handle, in: path, required: true, schema: { type: string } }
@@ -1829,6 +1912,8 @@ paths:
   /v1/profiles/{handle}:
     get:
       summary: Public profile by exact handle (ADR 0041)
+      x-summary-pt: "Perfil público publicado: nome, bio, endereço da foto"
+      security: []
       description: >
         No auth. CORS for the public site. Rate-limited per IP. The same 404 for "no such handle"
         and "profile off". No search and no directory. Never returns the Matrix ID: apps that
@@ -1846,6 +1931,8 @@ paths:
   /v1/profiles/{handle}/photo:
     get:
       summary: Profile photo (JPEG, metadata removed by the server)
+      x-summary-pt: "Foto do perfil (JPEG, sem metadados)"
+      security: []
       description: No auth. Same visibility as the profile. The URL changes when the photo changes.
       parameters:
         - { name: handle, in: path, required: true, schema: { type: string } }
@@ -2685,6 +2772,7 @@ paths:
   /v1/businesses/{handle}/catalog:
     get:
       summary: "Read the public catalogue"
+      x-summary-pt: "Catálogo público de uma empresa"
       operationId: "getV1BusinessesHandleCatalog"
       tags:
         - "Catálogo"
@@ -2710,6 +2798,7 @@ paths:
   /v1/businesses/{handle}/catalog/items/{itemId}/photo:
     get:
       summary: "Read the public photo of a catalogue item"
+      x-summary-pt: "Foto de um item do catálogo"
       operationId: "getV1BusinessesHandleCatalogItemsItemIdPhoto"
       tags:
         - "Catálogo"
@@ -3722,6 +3811,7 @@ paths:
   /v1/businesses/{handle}/agenda/services:
     get:
       summary: "Read published catalogue services"
+      x-summary-pt: "Serviços publicados na agenda de uma empresa"
       operationId: "getV1BusinessesHandleAgendaServices"
       tags:
         - "Agenda"
@@ -3755,6 +3845,7 @@ paths:
   /v1/businesses/{handle}/agenda/agendas:
     get:
       summary: "Read published people or stations"
+      x-summary-pt: "Pessoas ou postos publicados na agenda de uma empresa"
       operationId: "getV1BusinessesHandleAgendaAgendas"
       tags:
         - "Agenda"
@@ -3796,6 +3887,7 @@ paths:
   /v1/businesses/{handle}/agenda/slots:
     get:
       summary: "Read free slots grouped by local date"
+      x-summary-pt: "Horários livres, por dia"
       operationId: "getV1BusinessesHandleAgendaSlots"
       tags:
         - "Agenda"
@@ -4020,6 +4112,7 @@ paths:
   /v1/agenda/feeds/{token}.ics:
     get:
       summary: "Read a secret agenda ICS subscription"
+      x-summary-pt: "Assinatura ICS secreta de uma agenda"
       operationId: "getV1AgendaFeedsToken.ics"
       tags:
         - "Agenda"
@@ -4285,6 +4378,7 @@ paths:
   /v1/businesses/{handle}/queue:
     get:
       summary: "Read whether the public queue is open"
+      x-summary-pt: "Se a fila pública está aberta"
       operationId: "getV1BusinessesHandleQueue"
       tags:
         - "Agenda"

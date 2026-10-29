@@ -1496,13 +1496,15 @@
       "ios": {
         "status": "built",
         "evidence": [
-          "bipe-app/ios/Bipe/Settings/AppLockViews.swift"
+          "bipe-app/ios/Bipe/Settings/AppLockViews.swift",
+          "bipe-app/ios/BipeKit/Sources/BipeKit/BipeAppLock.swift"
         ]
       },
       "android": {
         "status": "built",
         "evidence": [
-          "bipe-app/android/app/src/main/kotlin/chat/bipe/app/settings/AppLock.kt"
+          "bipe-app/android/app/src/main/kotlin/chat/bipe/app/settings/AppLock.kt",
+          "bipe-app/android/libraries/bipe/src/main/kotlin/chat/bipe/shared/account/BipeAppLockTries.kt"
         ]
       },
       "web": {
@@ -2692,12 +2694,18 @@
       "id": "group-state-lines",
       "name": "State lines in group timelines: joined, left, removed, renamed, photo and description changed (bipe#661)",
       "ios": {
-        "status": "planned",
-        "issue": 661
+        "status": "built",
+        "evidence": [
+          "bipe-app/ios/Bipe/Timeline/TimelineRows.swift",
+          "bipe-app/ios/Bipe/Timeline/StateLines.swift"
+        ]
       },
       "android": {
-        "status": "planned",
-        "issue": 661
+        "status": "built",
+        "evidence": [
+          "bipe-app/android/app/src/main/kotlin/chat/bipe/app/timeline/TimelineRows.kt",
+          "bipe-app/android/app/src/main/kotlin/chat/bipe/app/timeline/StateLines.kt"
+        ]
       },
       "web": {
         "status": "n/a",
@@ -2742,12 +2750,16 @@
       "id": "matrix-links",
       "name": "matrix.to and matrix: links open the app; join a group from a room link (bipe#663)",
       "ios": {
-        "status": "planned",
-        "issue": 663
+        "status": "built",
+        "evidence": [
+          "bipe-app/ios/Bipe/Groups/RoomLinkOpenView.swift"
+        ]
       },
       "android": {
-        "status": "planned",
-        "issue": 663
+        "status": "built",
+        "evidence": [
+          "bipe-app/android/app/src/main/kotlin/chat/bipe/app/groups/RoomLinkOpenScreen.kt"
+        ]
       },
       "web": {
         "status": "n/a",
@@ -2764,12 +2776,16 @@
       "id": "message-forward",
       "name": "Forward a message or media to another chat (bipe#664)",
       "ios": {
-        "status": "planned",
-        "issue": 664
+        "status": "built",
+        "evidence": [
+          "bipe-app/ios/Bipe/Timeline/MessageForward.swift"
+        ]
       },
       "android": {
-        "status": "planned",
-        "issue": 664
+        "status": "built",
+        "evidence": [
+          "bipe-app/android/app/src/main/kotlin/chat/bipe/app/timeline/MessageForward.kt"
+        ]
       },
       "web": {
         "status": "n/a",
@@ -2896,12 +2912,18 @@
       "id": "sticker-save-received",
       "name": "Save a received sticker to my sticker pack (bipe#670)",
       "ios": {
-        "status": "planned",
-        "issue": 670
+        "status": "built",
+        "evidence": [
+          "bipe-app/ios/BipeKit/Sources/BipeKit/Stickers/StickerPackClient.swift",
+          "bipe-app/ios/Bipe/Timeline/ChatTimelineModel.swift"
+        ]
       },
       "android": {
-        "status": "planned",
-        "issue": 670
+        "status": "built",
+        "evidence": [
+          "bipe-app/android/libraries/bipe/src/main/kotlin/chat/bipe/stickers/StickerPackClient.kt",
+          "bipe-app/android/app/src/main/kotlin/chat/bipe/app/timeline/ChatTimelineModel.kt"
+        ]
       },
       "web": {
         "status": "n/a",
@@ -2913,6 +2935,35 @@
       },
       "issue": 670,
       "fork": true
+    },
+    {
+      "id": "sticker-pack-share",
+      "name": "Share a sticker pack by link, add a pack from a link or a received sticker (bipe#842)",
+      "ios": {
+        "status": "built",
+        "evidence": [
+          "bipe-app/ios/BipeKit/Sources/BipeKit/Stickers/StickerPackShare.swift",
+          "bipe-app/ios/Bipe/Media/Stickers/StickerPackView.swift"
+        ]
+      },
+      "android": {
+        "status": "built",
+        "evidence": [
+          "bipe-app/android/libraries/bipe/src/main/kotlin/chat/bipe/stickers/StickerPackShare.kt",
+          "bipe-app/android/app/src/main/kotlin/chat/bipe/app/media/stickers/StickerPackScreen.kt"
+        ]
+      },
+      "web": {
+        "status": "built",
+        "evidence": [
+          "bipe-web/src/sim/LinkPages.tsx"
+        ]
+      },
+      "server": {
+        "status": "n/a",
+        "reason": "Plain Matrix rooms and account data; no Bipe server code"
+      },
+      "issue": 842
     },
     {
       "id": "message-search",
@@ -2940,12 +2991,16 @@
       "id": "chat-media-gallery",
       "name": "Media and files gallery for a chat, from chat details (bipe#672)",
       "ios": {
-        "status": "planned",
-        "issue": 672
+        "status": "built",
+        "evidence": [
+          "bipe-app/ios/Bipe/Media/ChatMediaGallery.swift"
+        ]
       },
       "android": {
-        "status": "planned",
-        "issue": 672
+        "status": "built",
+        "evidence": [
+          "bipe-app/android/app/src/main/kotlin/chat/bipe/app/media/ChatMediaGallery.kt"
+        ]
       },
       "web": {
         "status": "n/a",
@@ -2990,12 +3045,18 @@
       "id": "group-report",
       "name": "Report a group to the Bipe team from group details (bipe#674)",
       "ios": {
-        "status": "planned",
-        "issue": 674
+        "status": "built",
+        "evidence": [
+          "bipe-app/ios/Bipe/Groups/GroupDetailsView.swift",
+          "bipe-app/ios/Bipe/People/ReportChatView.swift"
+        ]
       },
       "android": {
-        "status": "planned",
-        "issue": 674
+        "status": "built",
+        "evidence": [
+          "bipe-app/android/app/src/main/kotlin/chat/bipe/app/groups/GroupDetailsScreen.kt",
+          "bipe-app/android/app/src/main/kotlin/chat/bipe/app/people/SafetyScreens.kt"
+        ]
       },
       "web": {
         "status": "n/a",
@@ -3192,12 +3253,16 @@
       "id": "identity-change-warning",
       "name": "Warning when a contact's crypto identity changes (bipe#770)",
       "ios": {
-        "status": "planned",
-        "issue": 770
+        "status": "built",
+        "evidence": [
+          "bipe-app/ios/Bipe/Timeline/IdentityChange.swift"
+        ]
       },
       "android": {
-        "status": "planned",
-        "issue": 770
+        "status": "built",
+        "evidence": [
+          "bipe-app/android/app/src/main/kotlin/chat/bipe/app/timeline/IdentityChange.kt"
+        ]
       },
       "web": {
         "status": "n/a",
@@ -3285,8 +3350,10 @@
         "fork": false
       },
       "android": {
-        "status": "planned",
-        "issue": 823
+        "status": "built",
+        "evidence": [
+          "bipe-app/android/app/src/main/kotlin/chat/bipe/app/notifications/NotificationCheckup.kt"
+        ]
       },
       "web": {
         "status": "n/a",
@@ -3303,12 +3370,18 @@
       "id": "voice-playback-speed",
       "name": "Voice message playback speed, 1.5x and 2x (bipe#824)",
       "ios": {
-        "status": "planned",
-        "issue": 824
+        "status": "built",
+        "evidence": [
+          "bipe-app/ios/Bipe/Media/VoicePlayer.swift",
+          "bipe-app/ios/Bipe/Media/VoiceMessageRow.swift"
+        ]
       },
       "android": {
-        "status": "planned",
-        "issue": 824
+        "status": "built",
+        "evidence": [
+          "bipe-app/android/app/src/main/kotlin/chat/bipe/app/media/VoicePlayer.kt",
+          "bipe-app/android/app/src/main/kotlin/chat/bipe/app/media/VoiceMessageRow.kt"
+        ]
       },
       "web": {
         "status": "n/a",
@@ -3424,8 +3497,8 @@
     {
       "area": "Push",
       "ios": "APNs through Sygnal",
-      "android": "FCM through Sygnal; UnifiedPush optional",
-      "reason": "OS push channel (#89, #90, #91)",
+      "android": "FCM through Sygnal",
+      "reason": "OS push channel (#89, #90); no UnifiedPush (ADR 0208)",
       "kind": "idiom"
     },
     {

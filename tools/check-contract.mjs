@@ -128,22 +128,12 @@ const GAPS = {
   // Android sends Key Attestation (key_attestation_chain), iOS sends Apple App Attest (key_id, attestation_object).
   "android:Attestation": "bipe-chat/bipe#92 (Android models its own attestation form, BipeAttestation)",
   "ios:Attestation.key_attestation_chain": "bipe-chat/bipe#92 (Android-only field)",
-  // bipe-app Android reads only the parts the app uses now.
-  "android:SignupRequest.password": "bipe-chat/bipe#684",
-  "android:SignupRequest.handle": "bipe-chat/bipe#684",
-  "android:PublicProfile.badge": "bipe-chat/bipe#684",
-  "android:AccountStatus.pin_set": "bipe-chat/bipe#684",
-  "android:AccountStatus.pin_blocked": "bipe-chat/bipe#684",
-  "android:AccountStatus.pin_tries_left": "bipe-chat/bipe#684",
-  "android:AccountStatus.device_first": "bipe-chat/bipe#684",
-  "android:AccountStatus.recovery_token_set": "bipe-chat/bipe#684",
-  "android:AccountStatus.email": "bipe-chat/bipe#684",
-  "android:AccountStatus.email_pending": "bipe-chat/bipe#684",
-  "android:Recovery.ended_at": "bipe-chat/bipe#684",
-  "android:InviteStatus": "bipe-chat/bipe#684 (Android keeps status as a String)",
-  "android:AccountStatus.independent_recovery": "bipe-chat/bipe#684",
-  "android:Error.error.password_weak": "bipe-chat/bipe#684",
-  "android:Error.error.support_unavailable": "bipe-chat/bipe#684",
+  // Deliberate (bipe-chat/bipe#684). Device-first sign-up (ADR 0057) sends no password and no handle: the server makes
+  // the password, and the handle is set after sign-up. Android keeps InviteStatus as a String, so a status that a newer
+  // server adds does not break the decode.
+  "android:SignupRequest.password": "deliberate: device-first sign-up sends no password (ADR 0057)",
+  "android:SignupRequest.handle": "deliberate: the handle is set after sign-up (ADR 0057)",
+  "android:InviteStatus": "deliberate: Android keeps status as a String, so a new status does not break the decode",
 };
 
 // Device-first accounts (ADR 0057, ADR 0059): contract first, apps in bipe-chat/bipe#153 (iOS) and #154 (Android).

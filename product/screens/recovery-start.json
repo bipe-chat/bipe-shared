@@ -59,7 +59,7 @@
       "effect": "Opens recovery-email."
     },
     "chooseBeta": {
-      "effect": "Opens the sign-in for old beta accounts with e-mail and password: Client.login with the e-mail as user and the password. After sign-in the app moves the account to device-first (POST /v1/me/device-first)."
+      "effect": "Opens the sign-in for old beta accounts with e-mail and password. Input with @ that is not a Matrix ID (@localpart:server) is an e-mail: POST /v1/beta/login with the e-mail and the password gives the Matrix ID (bipe#627), then Client.login with that Matrix ID and the password. A localpart or a full Matrix ID goes to Client.login as it is. A 401 from /v1/beta/login shows the same text as a failed Client.login, so an unknown e-mail and a wrong password look the same. After sign-in the app moves the account to device-first (POST /v1/me/device-first)."
     },
     "chooseLinked": {
       "params": {

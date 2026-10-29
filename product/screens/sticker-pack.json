@@ -40,7 +40,8 @@
     "MediaSource"
   ],
   "parity": [
-    "stickers"
+    "stickers",
+    "sticker-pack-share"
   ],
   "notes": [
     "Opens from a pack link (registries/stickers.json stickerPackLinkBase plus the room ID; the app handles it as a universal link and app link, and bipe-web serves the same path with the store links), and from message-actions viewStickerPack on a sticker that carries stickerPackField.",

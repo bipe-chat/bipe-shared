@@ -2940,12 +2940,16 @@
       "id": "message-search",
       "name": "Message search across chats and in one chat (bipe#671)",
       "ios": {
-        "status": "planned",
-        "issue": 671
+        "status": "built",
+        "evidence": [
+          "bipe-app/ios/Bipe/ChatList/MessageSearch.swift"
+        ]
       },
       "android": {
-        "status": "planned",
-        "issue": 671
+        "status": "built",
+        "evidence": [
+          "bipe-app/android/app/src/main/kotlin/chat/bipe/app/chatlist/MessageSearch.kt"
+        ]
       },
       "web": {
         "status": "n/a",

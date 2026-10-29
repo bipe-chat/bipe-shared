@@ -1,0 +1,55 @@
+{
+  "id": "chat-media-gallery",
+  "title": "Media and files of a chat",
+  "flow": "chat",
+  "summary": "The photos, videos and files of one chat, newest first (bipe-chat/bipe#672). Opens from the row bipe_gallery_title in group-details and in person-profile of a DM.",
+  "types": {
+    "GalleryItem": {
+      "rowId": { "type": "string", "description": "The timeline item ID." },
+      "media": { "type": "MediaMessage", "description": "As in timeline-media: kind image, video or file." }
+    }
+  },
+  "state": {
+    "tab": {
+      "type": "enum",
+      "values": ["media", "files"],
+      "description": "media: bipe_gallery_media, a grid of images and videos, three per line, square crops; a video shows its duration. files: bipe_gallery_files, a list with the file name and size."
+    },
+    "items": {
+      "type": "list",
+      "of": { "type": "GalleryItem" },
+      "description": "From Room.timelineWithConfiguration with focus live and filter onlyMessage image, video and file. Newest first."
+    },
+    "phase": {
+      "type": "enum",
+      "values": ["loading", "loaded", "empty"],
+      "description": "loading: a spinner while the first pages load. empty: bipe_gallery_empty_media or bipe_gallery_empty_files for the tab."
+    },
+    "reachedStart": { "type": "bool", "description": "true when back-pagination hit the start of the chat." }
+  },
+  "actions": {
+    "appear": { "effect": "Builds the timeline and back-paginates until 30 items of the tab are loaded or reachedStart." },
+    "loadMore": { "effect": "At the end of the grid or list: one more back-pagination while not reachedStart." },
+    "open": {
+      "params": { "rowId": { "type": "string", "description": "The item." } },
+      "effect": "An image or a video: a full screen pager over the media items of the gallery, as media-viewer shows a page. A file: downloads it to the cache and opens the system preview, as timeline-media does."
+    },
+    "close": { "effect": "Back to where the gallery opened." }
+  },
+  "strings": [
+    "bipe_gallery_title",
+    "bipe_gallery_media",
+    "bipe_gallery_files",
+    "bipe_gallery_empty_media",
+    "bipe_gallery_empty_files",
+    "bipe_app_close",
+    "bipe_app_media_failed"
+  ],
+  "sdk": ["Room.timelineWithConfiguration", "TimelineConfiguration", "TimelineFilter", "RoomMessageEventMessageType", "Timeline.addListener", "Timeline.paginateBackwards", "MsgLikeKind"],
+  "parity": ["chat-media-gallery"],
+  "notes": [
+    "Stickers, voice messages and audio files are not in the gallery.",
+    "Media the server deleted after its time shows as failed, like in timeline-media.",
+    "The gallery timeline is its own timeline: it does not change the read receipts or the chat timeline."
+  ]
+}

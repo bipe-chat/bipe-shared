@@ -2776,12 +2776,16 @@
       "id": "message-forward",
       "name": "Forward a message or media to another chat (bipe#664)",
       "ios": {
-        "status": "planned",
-        "issue": 664
+        "status": "built",
+        "evidence": [
+          "bipe-app/ios/Bipe/Timeline/MessageForward.swift"
+        ]
       },
       "android": {
-        "status": "planned",
-        "issue": 664
+        "status": "built",
+        "evidence": [
+          "bipe-app/android/app/src/main/kotlin/chat/bipe/app/timeline/MessageForward.kt"
+        ]
       },
       "web": {
         "status": "n/a",
@@ -2908,12 +2912,18 @@
       "id": "sticker-save-received",
       "name": "Save a received sticker to my sticker pack (bipe#670)",
       "ios": {
-        "status": "planned",
-        "issue": 670
+        "status": "built",
+        "evidence": [
+          "bipe-app/ios/BipeKit/Sources/BipeKit/Stickers/StickerPackClient.swift",
+          "bipe-app/ios/Bipe/Timeline/ChatTimelineModel.swift"
+        ]
       },
       "android": {
-        "status": "planned",
-        "issue": 670
+        "status": "built",
+        "evidence": [
+          "bipe-app/android/libraries/bipe/src/main/kotlin/chat/bipe/stickers/StickerPackClient.kt",
+          "bipe-app/android/app/src/main/kotlin/chat/bipe/app/timeline/ChatTimelineModel.kt"
+        ]
       },
       "web": {
         "status": "n/a",
@@ -2956,12 +2966,16 @@
       "id": "chat-media-gallery",
       "name": "Media and files gallery for a chat, from chat details (bipe#672)",
       "ios": {
-        "status": "planned",
-        "issue": 672
+        "status": "built",
+        "evidence": [
+          "bipe-app/ios/Bipe/Media/ChatMediaGallery.swift"
+        ]
       },
       "android": {
-        "status": "planned",
-        "issue": 672
+        "status": "built",
+        "evidence": [
+          "bipe-app/android/app/src/main/kotlin/chat/bipe/app/media/ChatMediaGallery.kt"
+        ]
       },
       "web": {
         "status": "n/a",
@@ -3006,12 +3020,18 @@
       "id": "group-report",
       "name": "Report a group to the Bipe team from group details (bipe#674)",
       "ios": {
-        "status": "planned",
-        "issue": 674
+        "status": "built",
+        "evidence": [
+          "bipe-app/ios/Bipe/Groups/GroupDetailsView.swift",
+          "bipe-app/ios/Bipe/People/ReportChatView.swift"
+        ]
       },
       "android": {
-        "status": "planned",
-        "issue": 674
+        "status": "built",
+        "evidence": [
+          "bipe-app/android/app/src/main/kotlin/chat/bipe/app/groups/GroupDetailsScreen.kt",
+          "bipe-app/android/app/src/main/kotlin/chat/bipe/app/people/SafetyScreens.kt"
+        ]
       },
       "web": {
         "status": "n/a",
@@ -3208,12 +3228,16 @@
       "id": "identity-change-warning",
       "name": "Warning when a contact's crypto identity changes (bipe#770)",
       "ios": {
-        "status": "planned",
-        "issue": 770
+        "status": "built",
+        "evidence": [
+          "bipe-app/ios/Bipe/Timeline/IdentityChange.swift"
+        ]
       },
       "android": {
-        "status": "planned",
-        "issue": 770
+        "status": "built",
+        "evidence": [
+          "bipe-app/android/app/src/main/kotlin/chat/bipe/app/timeline/IdentityChange.kt"
+        ]
       },
       "web": {
         "status": "n/a",
@@ -3321,12 +3345,18 @@
       "id": "voice-playback-speed",
       "name": "Voice message playback speed, 1.5x and 2x (bipe#824)",
       "ios": {
-        "status": "planned",
-        "issue": 824
+        "status": "built",
+        "evidence": [
+          "bipe-app/ios/Bipe/Media/VoicePlayer.swift",
+          "bipe-app/ios/Bipe/Media/VoiceMessageRow.swift"
+        ]
       },
       "android": {
-        "status": "planned",
-        "issue": 824
+        "status": "built",
+        "evidence": [
+          "bipe-app/android/app/src/main/kotlin/chat/bipe/app/media/VoicePlayer.kt",
+          "bipe-app/android/app/src/main/kotlin/chat/bipe/app/media/VoiceMessageRow.kt"
+        ]
       },
       "web": {
         "status": "n/a",

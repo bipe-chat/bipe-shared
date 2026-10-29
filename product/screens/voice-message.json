@@ -31,6 +31,11 @@
       "values": ["available", "expired"],
       "description": "expired: a voice message whose audio download answered 404 (M_NOT_FOUND), because the server deleted it after its time (ADR 0164, registries/voice-media.json). The row shows bipe_voice_expired with no player and no waveform; the transcript stays. The app keeps expired per event for the session."
     },
+    "speed": {
+      "type": "enum",
+      "values": ["normal", "oneAndHalf", "double"],
+      "description": "The playback speed of every voice message and audio file on this phone (bipe#824): normal 1×, oneAndHalf 1.5×, double 2×. The button bipe_voice_speed next to the duration shows it, with the accessibility label bipe_voice_speed_label. The number uses the phone's decimal sign (1,5 in pt-BR). Default normal. Kept on the phone, not synced."
+    },
     "kept": {
       "type": "enum",
       "values": ["no", "kept", "scam"],
@@ -38,6 +43,9 @@
     }
   },
   "actions": {
+    "cycleSpeed": {
+      "effect": "Tap on the speed button: normal, then oneAndHalf, then double, then normal again. A playing row changes speed at once. Pitch stays the same (iOS AVAudioPlayer.enableRate and rate; Android PlaybackParams.setSpeed). The next row starts at the speed chosen last. The transcript does not change."
+    },
     "togglePlay": {
       "effect": "Downloads the audio to the cache when needed, then plays or pauses. Starting one row stops any other."
     },
@@ -65,6 +73,8 @@
     }
   },
   "strings": [
+    "bipe_voice_speed",
+    "bipe_voice_speed_label",
     "bipe_voice_transcript_title",
     "bipe_action_show_more",
     "bipe_action_show_less",
@@ -104,6 +114,7 @@
     "Audio expiry (ADR 0164, bipe-chat/bipe#622): the server deletes the audio of a registered voice message transcriptDays after the upload with a transcript, noTranscriptDays without one, unless an account keeps it. Only Bipe apps register media, so audio from other Matrix clients never expires. Expiry deletes the server copy only; a copy in the phone's cache still plays.",
     "Audio files (no voice marker) show the same player with the file name and no transcript.",
     "bipe_app_voice_play and bipe_app_voice_pause are the button accessibility labels. bipe_app_media_voice is the preview text for replies, the chat list and notifications.",
-    "Recording and the sender-side transcript (voice-transcript-send, BipeKit VoiceTranscriber.swift, libraries/bipe voice/BipeVoiceTranscriber.kt) are the composer issue, not this spec."
+    "Recording and the sender-side transcript (voice-transcript-send, BipeKit VoiceTranscriber.swift, libraries/bipe voice/BipeVoiceTranscriber.kt) are the composer issue, not this spec.",
+    "Default chosen (bipe#824): one speed for every voice message on the phone, not one per chat, because WhatsApp works this way. mz can overrule."
   ]
 }

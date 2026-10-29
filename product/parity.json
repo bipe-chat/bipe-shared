@@ -2962,12 +2962,16 @@
       "id": "chat-media-gallery",
       "name": "Media and files gallery for a chat, from chat details (bipe#672)",
       "ios": {
-        "status": "planned",
-        "issue": 672
+        "status": "built",
+        "evidence": [
+          "bipe-app/ios/Bipe/Media/ChatMediaGallery.swift"
+        ]
       },
       "android": {
-        "status": "planned",
-        "issue": 672
+        "status": "built",
+        "evidence": [
+          "bipe-app/android/app/src/main/kotlin/chat/bipe/app/media/ChatMediaGallery.kt"
+        ]
       },
       "web": {
         "status": "n/a",

@@ -46,6 +46,13 @@ const TARGETS = [
     repoBase: "android/libraries/bipe/src/main",
     generatedOnly: ["kotlin/chat/bipe/shared/generated"],
   },
+  // Store captures (bipe-chat/bipe#457): the sample data of the Android capture source.
+  {
+    repo: "bipe-app",
+    tmpBase: join(tmp, "app/android/app/src/screenshotTest/kotlin/chat/bipe/app/store"),
+    repoBase: "android/app/src/screenshotTest/kotlin/chat/bipe/app/store",
+    generatedOnly: ["generated"],
+  },
 ];
 
 function walk(dir) {

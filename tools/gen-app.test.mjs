@@ -26,7 +26,9 @@ test("gen.mjs --app writes clean bipe-app output", () => {
       const text = readFileSync(file, "utf8");
       assert.doesNotMatch(text, /io\.element|element-hq/i, file);
       assert.match(text, /SPDX-License-Identifier: AGPL-3\.0-only\n.*Additional permission: APP-STORE-PERMISSION\.md \(AGPL section 7\)/, file);
-      if (file.endsWith(".kt")) assert.match(text, /^package chat\.bipe\.shared\.generated$/m, file);
+      // The store captures (bipe-chat/bipe#457) live in the app's screenshotTest source set, with their own package.
+      if (file.endsWith("/store/generated/StoreCaptures.kt")) assert.match(text, /^package chat\.bipe\.app\.store\.generated$/m, file);
+      else if (file.endsWith(".kt")) assert.match(text, /^package chat\.bipe\.shared\.generated$/m, file);
     }
     assert.match(readFileSync(join(out("app"), "ios/BipeKit/Sources/BipeKit/Generated/BipeScreen.swift"), "utf8"), /case accountStart = "account-start"/);
   } finally {

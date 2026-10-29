@@ -3024,12 +3024,18 @@
       "id": "group-unban",
       "name": "Banned members list and unban in groups (bipe#675)",
       "ios": {
-        "status": "planned",
-        "issue": 675
+        "status": "built",
+        "evidence": [
+          "bipe-app/ios/Bipe/Groups/GroupMembersModel.swift",
+          "bipe-app/ios/Bipe/Groups/GroupMembersView.swift"
+        ]
       },
       "android": {
-        "status": "planned",
-        "issue": 675
+        "status": "built",
+        "evidence": [
+          "bipe-app/android/app/src/main/kotlin/chat/bipe/app/groups/GroupMembersModel.kt",
+          "bipe-app/android/app/src/main/kotlin/chat/bipe/app/groups/GroupMembersScreen.kt"
+        ]
       },
       "web": {
         "status": "n/a",

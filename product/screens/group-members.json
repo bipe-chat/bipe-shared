@@ -8,8 +8,8 @@
       "person": { "type": "Person", "description": "The person. displayName falls back to RoomMember.displayName, then the @." },
       "membership": {
         "type": "enum",
-        "values": ["joined", "invited"],
-        "description": "MembershipState join or invite. Other states are not listed."
+        "values": ["joined", "invited", "banned"],
+        "description": "MembershipState join, invite or ban. Other states are not listed."
       },
       "isAdmin": { "type": "bool", "description": "RoomMember.suggestedRoleForPowerLevel is creator or administrator: bipe_app_group_admin on the row." },
       "isYou": { "type": "bool", "description": "The own user: bipe_app_you on the row, no action sheet." }
@@ -20,6 +20,7 @@
     "query": { "type": "string", "description": "Filters both lists by name or @." },
     "joined": { "type": "list", "of": { "type": "GroupMember", "description": "A member." }, "description": "Under bipe_app_group_members_joined. Admins first, then by name." },
     "invited": { "type": "list", "of": { "type": "GroupMember", "description": "An invited person." }, "description": "Under bipe_app_group_members_invited. Hidden when empty." },
+    "banned": { "type": "list", "of": { "type": "GroupMember", "description": "A banned person." }, "description": "Under bipe_app_group_members_banned, by name (bipe-chat/bipe#675). Shown only when canBan and not empty." },
     "canInvite": { "type": "bool", "description": "RoomPowerLevels.canOwnUserInvite: shows bipe_app_group_add_people." },
     "canKick": { "type": "bool", "description": "RoomPowerLevels.canOwnUserKick." },
     "canBan": { "type": "bool", "description": "RoomPowerLevels.canOwnUserBan." },
@@ -58,6 +59,10 @@
       "params": { "userId": { "type": "string", "description": "The person." } },
       "effect": "Confirms with bipe_app_group_member_ban_body, then Room.banUser with no reason."
     },
+    "unban": {
+      "params": { "userId": { "type": "string", "description": "A banned person." } },
+      "effect": "The only row of a banned person's sheet, bipe_app_group_member_unban, when canBan. Confirms with bipe_app_group_member_unban as title and bipe_app_group_member_unban_body, then Room.unbanUser with no reason. The person can come back with a new invite (bipe-chat/bipe#675)."
+    },
     "cancelInvite": {
       "params": { "userId": { "type": "string", "description": "An invited person." } },
       "effect": "Room.kickUser, which withdraws a pending invite in Matrix."
@@ -65,6 +70,9 @@
     "addPeople": { "effect": "Opens group-invite-members in invite mode." }
   },
   "strings": [
+    "bipe_app_group_members_banned",
+    "bipe_app_group_member_unban",
+    "bipe_app_group_member_unban_body",
     "bipe_app_group_members_title",
     "bipe_app_people_search",
     "bipe_app_group_members_joined",
@@ -107,7 +115,7 @@
     "Action sheet rows, top to bottom, each only when allowed: bipe_app_group_member_profile (always); for a joined person, bipe_app_group_member_make_admin or bipe_app_group_member_remove_admin (canChangeRoles, and the person's level is below the user's), bipe_app_group_member_remove (canKick), bipe_app_group_member_ban (canBan); for an invited person, bipe_app_group_member_cancel_invite (canKick).",
     "Two roles in the UI: admin and member. Moderator levels from other clients show as member, with no action to set them. A creator (room version 12) shows as admin and has no role actions.",
     "Remove and ban are destructive: the confirm button uses the destructive style. A failed call shows bipe_app_group_member_error and changes nothing on the screen.",
-    "Banned people and unban are out of scope for this issue (groups.md, moderation #74). Slow mode and reports to group admins need server work (#74).",
+    "Slow mode and reports to group admins need server work (#74).",
     "Only for a group (RoomInfo.isDm false, ADR 0141). A DM has no member list."
   ]
 }

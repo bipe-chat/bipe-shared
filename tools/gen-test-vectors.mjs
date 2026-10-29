@@ -8,7 +8,7 @@ import { buildBrCode, crc16, pixCheck, pixMarkLines, pixTxid } from "./lib/pix.m
 import { cvmLines } from "./lib/cvm.mjs";
 import { noticeLinkClickable } from "./lib/notice.mjs";
 import { loadSchedulingVectors, writeSchedulingApiFixture } from "./lib/scheduling-vectors.mjs";
-import { photoDistance, photoHash, photoMatches, profileFactLines, relationshipNameWarning, stickerEmojiKey, stickerMatches, stickerQueryTags, stickerSearchFold, newestDmRooms, clearedChatHidden, clearedChatKeepsEvent, clearedChatMarker, clearedChatsWithClear, compareAppVersions, extractInviteCode, handleProblem, isBipeUserID, handleSuggestions, pinReminderNext, pinProblem, remoteBannerState, normalizeCnpj, normalizePhone, displayPhone, handleSkeleton, loadRegistries, normalize, scamMatchIDs, scamWarningKind, trustFacts } from "./lib/registries.mjs";
+import { photoDistance, photoHash, photoMatches, profileFactLines, relationshipNameWarning, stickerEmojiKey, stickerMatches, stickerQueryTags, stickerSearchFold, newestDmRooms, clearedChatHidden, bringPeopleReminder, clearedChatKeepsEvent, clearedChatMarker, clearedChatsWithClear, compareAppVersions, extractInviteCode, handleProblem, isBipeUserID, handleSuggestions, pinReminderNext, pinProblem, remoteBannerState, normalizeCnpj, normalizePhone, displayPhone, handleSkeleton, loadRegistries, normalize, scamMatchIDs, scamWarningKind, trustFacts } from "./lib/registries.mjs";
 
 const root = join(dirname(fileURLToPath(import.meta.url)), "..");
 const reg = loadRegistries(root);
@@ -574,11 +574,29 @@ write("handle-suggestions.json", {
 
 // --- Onboarding schedules (bipe-chat/bipe#202) --------------------------------
 
+const BP_DAY = 86_400_000;
+const BP_NOW = Date.UTC(2026, 10, 2, 15);
+const bpSlot = (status, daysAgo) => ({ status, sentAt: BP_NOW - daysAgo * BP_DAY });
+const bringCases = [
+  { name: "never asked", nowMs: BP_NOW, state: { declines: 0, lastAskAt: null, slots: [bpSlot("pending", 10)] } },
+  { name: "asked 6 days ago", nowMs: BP_NOW, state: { declines: 0, lastAskAt: BP_NOW - 6 * BP_DAY, slots: [bpSlot("pending", 10)] } },
+  { name: "asked exactly 7 days ago", nowMs: BP_NOW, state: { declines: 0, lastAskAt: BP_NOW - 7 * BP_DAY, slots: [bpSlot("pending", 7)] } },
+  { name: "pending 2 days only", nowMs: BP_NOW, state: { declines: 0, lastAskAt: BP_NOW - 8 * BP_DAY, slots: [bpSlot("pending", 2)] } },
+  { name: "pending exactly 3 days", nowMs: BP_NOW, state: { declines: 0, lastAskAt: BP_NOW - 8 * BP_DAY, slots: [bpSlot("pending", 3)] } },
+  { name: "expired one", nowMs: BP_NOW, state: { declines: 0, lastAskAt: BP_NOW - 8 * BP_DAY, slots: [bpSlot("used", 9), bpSlot("expired", 1)] } },
+  { name: "oldest wins", nowMs: BP_NOW, state: { declines: 1, lastAskAt: BP_NOW - 30 * BP_DAY, slots: [bpSlot("pending", 4), bpSlot("expired", 20), bpSlot("pending", 12)] } },
+  { name: "tie keeps slot order", nowMs: BP_NOW, state: { declines: 0, lastAskAt: BP_NOW - 8 * BP_DAY, slots: [bpSlot("pending", 5), bpSlot("expired", 5)] } },
+  { name: "two declines stop it", nowMs: BP_NOW, state: { declines: 2, lastAskAt: BP_NOW - 30 * BP_DAY, slots: [bpSlot("expired", 20)] } },
+  { name: "every slot joined", nowMs: BP_NOW, state: { declines: 0, lastAskAt: BP_NOW - 30 * BP_DAY, slots: [bpSlot("used", 20), bpSlot("used", 19), bpSlot("used", 18), bpSlot("used", 17)] } },
+  { name: "revoked leaves the pool", nowMs: BP_NOW, state: { declines: 0, lastAskAt: BP_NOW - 30 * BP_DAY, slots: [bpSlot("revoked", 20)] } },
+  { name: "no slots", nowMs: BP_NOW, state: { declines: 0, lastAskAt: BP_NOW - 30 * BP_DAY, slots: [] } },
+];
 const pinCases = [];
 for (const step of [0, 1, 2, 3, 4, 5, 9]) for (const result of ["right", "wrong", "later"]) pinCases.push({ step, result });
 write("onboarding-schedule.json", {
-  description: "Onboarding schedules (registries/onboarding.json pinReminder, bipe-chat/bipe#202). After a check at step with result (right, wrong, later): the next step and the days until the next reminder.",
+  description: "Onboarding schedules (registries/onboarding.json pinReminder, bipe-chat/bipe#202). After a check at step with result (right, wrong, later): the next step and the days until the next reminder. bringPeopleReminder (registries/onboarding.json bringPeople, bipe-chat/bipe#752): for state and nowMs, the slot the weekly reminder names ({ slot, kind }) or null. Times are Unix ms; status is the invite status.",
   pinReminder: pinCases.map((c) => ({ ...c, ...(({ step, gapDays }) => ({ nextStep: step, gapDays }))(pinReminderNext(c.step, c.result, reg)) })),
+  bringPeopleReminder: bringCases.map((c) => ({ ...c, expected: bringPeopleReminder(c.state, c.nowMs, reg) })),
 });
 
 // --- Invite codes ------------------------------------------------------------

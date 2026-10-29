@@ -2824,12 +2824,18 @@
       "id": "message-link-copy",
       "name": "Copy a link to a message in a group (bipe#666)",
       "ios": {
-        "status": "planned",
-        "issue": 666
+        "status": "built",
+        "evidence": [
+          "bipe-app/ios/Bipe/Timeline/ChatTimelineModel.swift",
+          "bipe-app/ios/Bipe/Groups/RoomLinkOpenView.swift"
+        ]
       },
       "android": {
-        "status": "planned",
-        "issue": 666
+        "status": "built",
+        "evidence": [
+          "bipe-app/android/app/src/main/kotlin/chat/bipe/app/timeline/ChatTimelineModel.kt",
+          "bipe-app/android/app/src/main/kotlin/chat/bipe/app/groups/RoomLinkOpenScreen.kt"
+        ]
       },
       "web": {
         "status": "n/a",

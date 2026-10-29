@@ -330,6 +330,11 @@ ${reg.workHours.defaultDays.map((d) => `        (day: ${d.day}, ranges: [${d.ran
     public static let mapsLiveMinIntervalSeconds = ${reg.maps.live.minIntervalSeconds}
     public static let mapsLiveMaxIntervalSeconds = ${reg.maps.live.maxIntervalSeconds}
 
+    /// Verificar com gov.br (bipe-chat/bipe#544; registries/govbr.json). Rules: BipeGovbrFlow, test-vectors/govbr-verify.json.
+    public static let govbrFileName = ${swiftString(reg.govbr.fileName)}
+    public static let govbrMaxDocumentBytes = ${reg.govbr.maxDocumentBytes}
+    public static let govbrIosStoreUrl = ${swiftString(reg.govbr.iosStoreUrl)}
+
     /// Voice transcript paragraphs (registries/voice-transcript.json). Rule: product/screens/voice-recording.json notes.
     public static let voiceTranscriptPauseSeconds: Double = ${reg.voiceTranscript.pauseSeconds}
     public static let voiceTranscriptMinCharacters = ${reg.voiceTranscript.minCharacters}
@@ -704,6 +709,12 @@ ${reg.workHours.defaultDays.map((d) => `        ${d.day} to listOf(${d.ranges.ma
     const val MAPS_LIVE_DEFAULT_DISTANCE_METRES = ${reg.maps.live.defaultDistanceMetres}
     const val MAPS_LIVE_MIN_INTERVAL_SECONDS = ${reg.maps.live.minIntervalSeconds}
     const val MAPS_LIVE_MAX_INTERVAL_SECONDS = ${reg.maps.live.maxIntervalSeconds}
+
+    /** Verificar com gov.br (bipe-chat/bipe#544; registries/govbr.json). Rules: BipeGovbrFlow, test-vectors/govbr-verify.json. */
+    const val GOVBR_FILE_NAME = ${kotlinString(reg.govbr.fileName)}
+    const val GOVBR_MAX_DOCUMENT_BYTES = ${reg.govbr.maxDocumentBytes}
+    const val GOVBR_ANDROID_PACKAGE = ${kotlinString(reg.govbr.androidPackage)}
+    const val GOVBR_ANDROID_STORE_URL = ${kotlinString(reg.govbr.androidStoreUrl)}
 
     /** Voice transcript paragraphs (registries/voice-transcript.json). Rule: product/screens/voice-recording.json notes. */
     const val VOICE_TRANSCRIPT_PAUSE_SECONDS: Double = ${reg.voiceTranscript.pauseSeconds}

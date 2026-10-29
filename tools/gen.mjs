@@ -284,6 +284,9 @@ ${reg.workHours.defaultDays.map((d) => `        (day: ${d.day}, ranges: [${d.ran
     public static let voiceMediaTranscriptDays = ${reg.voiceMedia.transcriptDays}
     public static let voiceMediaNoTranscriptDays = ${reg.voiceMedia.noTranscriptDays}
     public static let voiceMediaMaxKeptPerAccount = ${reg.voiceMedia.maxKeptPerAccount}
+    /// Forward marks (bipe-chat/bipe#83; registries/voice-media.json): the content field and the many-times threshold. Rules: BipeForwardMark, test-vectors/forward-marks.json.
+    public static let forwardKey = ${swiftString(reg.voiceMedia.forwardKey)}
+    public static let forwardedManyTimes = ${reg.voiceMedia.forwardedManyTimes}
 
     /// Stickers (bipe ADR 0205, bipe-chat/bipe#837; registries/stickers.json). Search rules: test-vectors/sticker-search.json.
     public static let stickerImportMaxBytes = ${reg.stickers.importMaxBytes}
@@ -659,6 +662,9 @@ ${reg.workHours.defaultDays.map((d) => `        ${d.day} to listOf(${d.ranges.ma
     const val VOICE_MEDIA_TRANSCRIPT_DAYS = ${reg.voiceMedia.transcriptDays}
     const val VOICE_MEDIA_NO_TRANSCRIPT_DAYS = ${reg.voiceMedia.noTranscriptDays}
     const val VOICE_MEDIA_MAX_KEPT_PER_ACCOUNT = ${reg.voiceMedia.maxKeptPerAccount}
+    /** Forward marks (bipe-chat/bipe#83; registries/voice-media.json): the content field and the many-times threshold. Rules: BipeForwardMark, test-vectors/forward-marks.json. */
+    const val FORWARD_KEY = ${kotlinString(reg.voiceMedia.forwardKey)}
+    const val FORWARDED_MANY_TIMES = ${reg.voiceMedia.forwardedManyTimes}
 
     /** Stickers (bipe ADR 0205, bipe-chat/bipe#837; registries/stickers.json). Search rules: test-vectors/sticker-search.json. */
     const val STICKER_IMPORT_MAX_BYTES = ${reg.stickers.importMaxBytes}

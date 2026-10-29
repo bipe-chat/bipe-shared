@@ -3315,12 +3315,18 @@
       "id": "voice-playback-speed",
       "name": "Voice message playback speed, 1.5x and 2x (bipe#824)",
       "ios": {
-        "status": "planned",
-        "issue": 824
+        "status": "built",
+        "evidence": [
+          "bipe-app/ios/Bipe/Media/VoicePlayer.swift",
+          "bipe-app/ios/Bipe/Media/VoiceMessageRow.swift"
+        ]
       },
       "android": {
-        "status": "planned",
-        "issue": 824
+        "status": "built",
+        "evidence": [
+          "bipe-app/android/app/src/main/kotlin/chat/bipe/app/media/VoicePlayer.kt",
+          "bipe-app/android/app/src/main/kotlin/chat/bipe/app/media/VoiceMessageRow.kt"
+        ]
       },
       "web": {
         "status": "n/a",

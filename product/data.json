@@ -478,13 +478,13 @@
       "pt": {
         "name": "Notificações no iPhone",
         "what": "O endereço de notificação do seu aparelho e os códigos da conversa e da mensagem nova. No Bipe Next, vai também um código aleatório para o celular escolher a conta certa, sem enviar o ID da conta à Apple. O texto da mensagem não vai junto: o app busca o conteúdo direto no servidor do Bipe.",
-        "why": "Te avisar que chegou mensagem.",
+        "why": "Te avisar que chegou mensagem ou que alguém está levando sua conta para outro aparelho.",
         "retention": "Enquanto as notificações estiverem ligadas naquele aparelho."
       },
       "en": {
         "name": "iPhone notifications",
         "what": "Your device's notification address and the IDs of the conversation and the new message. Bipe Next also sends a random code so the phone selects the right account, without sending the account ID to Apple. The message text does not go with it: the app fetches the content directly from the Bipe server.",
-        "why": "To tell you a message arrived.",
+        "why": "To tell you a message arrived, or that someone is moving your account to another device.",
         "retention": "As long as notifications are on for that device."
       }
     },

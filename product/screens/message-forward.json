@@ -1,0 +1,55 @@
+{
+  "id": "message-forward",
+  "title": "Forward a message",
+  "flow": "chat",
+  "summary": "Sends a copy of a sent message to one or more chats of the same account (bipe-chat/bipe#664): text, photo, video, file, voice message and location. Media keeps its source on the server and is not downloaded or uploaded again.",
+  "types": {
+    "ForwardChat": {
+      "roomId": { "type": "string", "description": "The chat." },
+      "name": { "type": "string", "description": "Room.displayName, else bipe_dm_no_name." },
+      "avatarUrl": { "type": "url", "optional": true, "description": "Room.avatarUrl." }
+    }
+  },
+  "state": {
+    "chats": {
+      "type": "list",
+      "of": { "type": "ForwardChat" },
+      "description": "The joined chats of the account (Client.rooms with membership joined, spaces left out), by name, the chat of the message included. Default chosen (bipe-chat/bipe#664): by name, because the timeline screen has no chat list order and the search finds a chat fast. mz can overrule."
+    },
+    "query": { "type": "string", "description": "Filters chats by name, ignoring case and accents." },
+    "picked": { "type": "list", "of": { "type": "string", "description": "A room ID." }, "description": "At most 5. A sixth pick shows bipe_forward_limit with the limit and is not added." },
+    "isSending": { "type": "bool", "description": "true while the copies go out; the picker takes no input." }
+  },
+  "actions": {
+    "open": {
+      "params": { "rowId": { "type": "string", "description": "The message." } },
+      "effect": "Opens the picker as a sheet over chat-timeline, titled bipe_forward_title."
+    },
+    "toggle": {
+      "params": { "roomId": { "type": "string", "description": "The chat." } },
+      "effect": "Adds or removes the chat from picked. A picked chat shows a check mark, not only a colour."
+    },
+    "send": {
+      "effect": "The button bipe_forward_action, off while picked is empty. For each picked chat: Room.timeline, then Timeline.send with messageEventContentNew of the original MessageContent.msgType (no reply, no thread, no mentions). Then closes and shows bipe_forward_done. A chat whose send failed shows bipe_forward_failed with its name; the others stay sent."
+    },
+    "cancel": { "effect": "Closes without sending." }
+  },
+  "strings": [
+    "bipe_forward_action",
+    "bipe_forward_title",
+    "bipe_forward_limit",
+    "bipe_forward_done",
+    "bipe_forward_failed",
+    "bipe_dm_no_name",
+    "bipe_app_search_placeholder",
+    "bipe_app_cancel"
+  ],
+  "sdk": ["Client.rooms", "Room.membership", "Room.displayName", "Room.avatarUrl", "Room.timeline", "MsgLikeKind", "MessageContent", "messageEventContentNew", "Timeline.send"],
+  "parity": ["message-forward"],
+  "notes": [
+    "Which messages: a sent message (it has an event ID) of kind message (MsgLikeKind.message). Stickers, polls, undecryptable and deleted messages have no forward. Default chosen (bipe-chat/bipe#664): polls are not forwarded, because a copied poll would collect votes in another chat. mz can overrule.",
+    "Default chosen (bipe-chat/bipe#664): at most 5 chats per forward, because more is a broadcast. mz can overrule.",
+    "The copy carries no label that says it was forwarded. The voice-note source labels are bipe-chat/bipe#83.",
+    "Selection mode (forward or delete several messages at once) is a second step of bipe-chat/bipe#664."
+  ]
+}

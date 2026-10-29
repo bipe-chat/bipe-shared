@@ -38,6 +38,9 @@
   },
   "strings": [
     "bipe_app_report_group",
+    "bipe_gallery_title",
+    "bipe_poll_history",
+    "bipe_group_privacy_title",
     "bipe_app_group_details_title",
     "bipe_app_group_details_people",
     "bipe_app_group_name",
@@ -72,6 +75,9 @@
     "A group is the Matrix word room. The screen never says sala (linguagem.md section 4).",
     "canEdit: Bipe groups keep the default power levels of the privateChat preset, where name, avatar and topic need the same level. If a group from another client sets them apart, ask canOwnUserSendState for each event type and show only the fields the user can change.",
     "No room address, no join rule, no history visibility, no encryption switch and no roles editor beyond admin in group-members (client-rewrite-plan.md section 4).",
-    "Pinned messages, media and files of the group and search in the group are later issues. Report (bipe-chat/bipe#674): a row bipe_app_report_group above the leave row opens report-chat with isDm false. The O que você perdeu block (ADR 0026, bipe_group_missed_*) belongs to chat-timeline, not to this screen."
+    "Pinned messages and search in the group are later issues. Report (bipe-chat/bipe#674): a row bipe_app_report_group above the leave row opens report-chat with isDm false. The O que você perdeu block (ADR 0026, bipe_group_missed_*) belongs to chat-timeline, not to this screen.",
+    "Media and files (bipe-chat/bipe#672): a row bipe_gallery_title in the members section opens chat-media-gallery for the group.",
+    "Polls (bipe-chat/bipe#669): a row bipe_poll_history opens poll-history for the group.",
+    "Privacy (bipe-chat/bipe#772): a row bipe_group_privacy_title opens group-privacy, for members who can change the join rule. It shows the number of requests to join when there are some."
   ]
 }

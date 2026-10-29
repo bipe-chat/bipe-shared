@@ -56,6 +56,7 @@
     "openSeal": { "effect": "isCompany with a company mark: opens company-seal." }
   },
   "strings": [
+    "bipe_gallery_title",
     "bipe_dm_details_title",
     "bipe_app_person_message",
     "bipe_profile_share",
@@ -131,6 +132,7 @@
     "A person's number shows only from the viewer's own address book (ADR 0191, bipe-chat/bipe#788). The server never sends another person's number. With contacts permission, the app takes the address-book entry that POST /v1/contacts/lookup matched to userId (the match from the contacts screen or group-invite-members in this session; without one, one lookup of the address book per session, as contacts check) and reads that entry again to get its numbers. A row bipe_person_number lists savedNumbers, with bipe_person_number_footer. The app keeps the match in memory as user ID to address-book entry ID, never the numbers, and drops it when the permission goes. No permission or no match: no row. The number is for discovery only, never identity or sign-in (ADR 0015).",
     "Calls are out of scope for this issue (client-rewrite-plan.md section 4, phase 3).",
     "Brand marks (ADR 0162, spec brand-mark): a reseller's verified marks show as one line under the name (first mark, then bipe_brand_mark_more); a tap opens the brand-mark sheet. bipe_brand_mark_ended shows once there after a mark the phone saw is gone.",
-    "Profile change facts (ADR 0049, bipe-chat/bipe#598): below the header, apart from the trust facts; appear reads POST /v1/profile-facts for the person. Each line of profileFactLines (registries/profile-facts.json, test-vectors/profile-facts.json) on POST /v1/profile-facts: created is bipe_profile_fact_created (%1$s the age since at, formatted by the system: \"3 dias\"); photo and name with count 1 are bipe_profile_fact_photo_once and bipe_profile_fact_name_once (%1$s the age since at), with a count of 2 or more bipe_profile_fact_photo_times and bipe_profile_fact_name_times (%1$s the count, %2$s windowDays). No lines: nothing shows, no empty row."
+    "Profile change facts (ADR 0049, bipe-chat/bipe#598): below the header, apart from the trust facts; appear reads POST /v1/profile-facts for the person. Each line of profileFactLines (registries/profile-facts.json, test-vectors/profile-facts.json) on POST /v1/profile-facts: created is bipe_profile_fact_created (%1$s the age since at, formatted by the system: \"3 dias\"); photo and name with count 1 are bipe_profile_fact_photo_once and bipe_profile_fact_name_once (%1$s the age since at), with a count of 2 or more bipe_profile_fact_photo_times and bipe_profile_fact_name_times (%1$s the count, %2$s windowDays). No lines: nothing shows, no empty row.",
+    "Media and files (bipe-chat/bipe#672): a DM opened from its chat has a row bipe_gallery_title that opens chat-media-gallery for the DM."
   ]
 }

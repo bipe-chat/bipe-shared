@@ -2,8 +2,17 @@
   "id": "chat-search",
   "title": "Search chats",
   "flow": "home",
-  "summary": "Finds a chat or group by name among the person's own chats, as they type. It never searches people outside the account's chats: Bipe has no directory (usernames.md).",
-  "types": {},
+  "summary": "Finds a chat or group by name among the person's own chats, and messages in them, as they type (bipe-chat/bipe#671). It never searches people outside the account's chats: Bipe has no directory (usernames.md).",
+  "types": {
+    "MessageHit": {
+      "roomId": { "type": "string", "description": "SearchServiceResult message roomId." },
+      "eventId": { "type": "string", "description": "MessageSearchResult.eventId." },
+      "chatName": { "type": "string", "description": "Room.displayName, else bipe_dm_no_name." },
+      "senderName": { "type": "string", "description": "senderProfile display name, else the sender ID; bipe_app_you for the own user." },
+      "body": { "type": "string", "description": "The message text or the media caption, one line." },
+      "sentAt": { "type": "date", "description": "MessageSearchResult.timestamp, shown like a chat-list date." }
+    }
+  },
   "state": {
     "query": { "type": "string", "description": "The search text." },
     "results": {
@@ -11,7 +20,17 @@
       "of": { "type": "ChatSummary", "description": "One chat or group." },
       "description": "Chats and groups whose name matches, in chat-list order. Empty while query is blank."
     },
-    "isSearching": { "type": "bool", "description": "true between a change of query and the first filtered result." }
+    "isSearching": { "type": "bool", "description": "true between a change of query and the first filtered result." },
+    "messages": {
+      "type": "list",
+      "of": { "type": "MessageHit" },
+      "description": "Under the chats, with the header bipe_search_messages: from Client.searchService, setQuery with the query (same 150 ms limit), newest first as the service gives them. The last row loads the next page (SearchService.paginate)."
+    },
+    "recent": {
+      "type": "list",
+      "of": { "type": "string", "description": "An earlier query." },
+      "description": "While query is blank: the last 10 queries that opened a result, newest first, under bipe_search_recent with bipe_search_recent_clear. Kept on the phone only, per account."
+    }
   },
   "actions": {
     "editQuery": {
@@ -25,11 +44,25 @@
     "findByHandle": {
       "effect": "When query starts with @ and has no result: opens the start-chat lookup with that handle (people issue)."
     },
+    "openMessage": {
+      "params": { "roomId": { "type": "string", "description": "The chat." }, "eventId": { "type": "string", "description": "The message." } },
+      "effect": "Adds query to recent, opens chat-timeline for that room and runs its openOriginal with the event ID: the chat scrolls to the message and highlights it."
+    },
+    "pickRecent": {
+      "params": { "query": { "type": "string", "description": "A recent query." } },
+      "effect": "Sets query to it."
+    },
+    "clearRecent": { "effect": "Empties recent." },
     "close": {
       "effect": "Clears query and goes back to the list."
     }
   },
   "strings": [
+    "bipe_search_messages",
+    "bipe_search_recent",
+    "bipe_search_recent_clear",
+    "bipe_dm_no_name",
+    "bipe_app_you",
     "bipe_app_search_placeholder",
     "bipe_app_search_no_results",
     "bipe_app_search_find_handle",
@@ -45,7 +78,9 @@
   "parity": [],
   "notes": [
     "Filter: All of Joined, NonSpace, DeduplicateVersions and NormalizedMatchRoomName with the query. Both tabs together; each result shows whether it is a chat or a group.",
-    "No message search in this spec. Message text is end-to-end encrypted, so a message search needs a local index (later issue).",
+    "Message search (bipe-chat/bipe#671): message text is end-to-end encrypted, so the server cannot search it. The app turns on the SDK's local search index (ClientBuilder.withSearchIndexStore, a folder SearchIndex in the account's data folder, main app only, not the notification service). The SDK indexes the messages this phone receives or loads after the index exists; older history is not indexed. Default chosen: no password on the index, because the other SDK stores of the account have none and rely on the OS file protection. mz can overrule.",
+    "A result whose message is older than the pages openOriginal loads opens the chat at its newest messages.",
+    "Search inside one chat is a later issue.",
     "Requests and the self-chat are not in the results.",
     "No results: bipe_app_search_no_results with the query. With a query that starts with @: bipe_app_search_find_handle opens findByHandle, with bipe_start_chat_search_by_handle as the footer.",
     "Where search sits (ADR 0053): the search tab on iOS, the top bar on Android."

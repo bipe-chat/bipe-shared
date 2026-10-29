@@ -1,0 +1,45 @@
+{
+  "id": "poll-history",
+  "title": "Polls of a group",
+  "flow": "groups",
+  "summary": "The polls of a group, open and ended, newest first (bipe-chat/bipe#669). Opens from group-details.",
+  "types": {
+    "PollSummary": {
+      "eventId": { "type": "string", "description": "The poll start event." },
+      "question": { "type": "string", "description": "The question." },
+      "isEnded": { "type": "bool", "description": "bipe_poll_state_ended, else bipe_poll_state_open." },
+      "totalVotes": { "type": "int", "optional": true, "description": "bipe_app_poll_votes. Absent while results are hidden (undisclosed and open)." },
+      "leader": { "type": "string", "optional": true, "description": "The answer with the most votes, with bipe_app_poll_most_votes, when results are visible and a vote exists." }
+    }
+  },
+  "state": {
+    "polls": {
+      "type": "list",
+      "of": { "type": "PollSummary" },
+      "description": "From Room.timelineWithConfiguration with focus live and a TimelineEventFilter that includes the poll start event type. Newest first. The list loads more at its end."
+    },
+    "phase": {
+      "type": "enum",
+      "values": ["loading", "loaded", "empty"],
+      "description": "empty: bipe_poll_history_empty."
+    }
+  },
+  "actions": {
+    "appear": { "effect": "Builds the timeline and back-paginates until 20 polls or the start of the group." },
+    "loadMore": { "effect": "At the end of the list: one more back-pagination." },
+    "close": { "effect": "Back to group-details." }
+  },
+  "strings": [
+    "bipe_poll_history",
+    "bipe_poll_history_empty",
+    "bipe_poll_state_open",
+    "bipe_poll_state_ended",
+    "bipe_app_poll_votes",
+    "bipe_app_poll_most_votes"
+  ],
+  "sdk": ["Room.timelineWithConfiguration", "TimelineFilter", "TimelineEventFilter", "FilterTimelineEventType", "MsgLikeKind"],
+  "parity": ["polls-edit-history"],
+  "notes": [
+    "Default chosen (bipe-chat/bipe#669): a row shows the poll and its result and has no tap, because voting and ending happen in the chat (poll-detail), which group-details does not hold. mz can overrule."
+  ]
+}

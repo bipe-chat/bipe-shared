@@ -2908,12 +2908,18 @@
       "id": "sticker-save-received",
       "name": "Save a received sticker to my sticker pack (bipe#670)",
       "ios": {
-        "status": "planned",
-        "issue": 670
+        "status": "built",
+        "evidence": [
+          "bipe-app/ios/BipeKit/Sources/BipeKit/Stickers/StickerPackClient.swift",
+          "bipe-app/ios/Bipe/Timeline/ChatTimelineModel.swift"
+        ]
       },
       "android": {
-        "status": "planned",
-        "issue": 670
+        "status": "built",
+        "evidence": [
+          "bipe-app/android/libraries/bipe/src/main/kotlin/chat/bipe/stickers/StickerPackClient.kt",
+          "bipe-app/android/app/src/main/kotlin/chat/bipe/app/timeline/ChatTimelineModel.kt"
+        ]
       },
       "web": {
         "status": "n/a",

@@ -35,6 +35,9 @@
     "photoPrompt": {
       "effect": "Prompt photo of registries/onboarding.json (trigger voceWithoutPhoto, bipe-chat/bipe#200): a card under the header while the account has no avatar, the prompt slot allows it and it was not dismissed. Escolher foto opens the profile editor; Agora não hides it for good."
     },
+    "osTheftPrompt": {
+      "effect": "Prompt osTheftProtection of registries/onboarding.json (trigger voceAfterDays, bipe-chat/bipe#125, ADR 0045 tier 0): a card under the header once this phone first saw the account BipeOnboarding.osTheftProtectionAfterDays ago, the prompt slot allows it, the photo card is not on screen and it was not dismissed on this phone. The card shows the body, then the path text of spec theft-protection osPath. Conferir proteção runs theft-protection openOsSettings and hides the card for good on this phone; Agora não hides it for good on this phone."
+    },
     "openProfile": {
       "effect": "Opens the current account's profile (a later spec, Seu perfil)."
     },
@@ -61,6 +64,13 @@
     "bipe_photo_prompt_title",
     "bipe_photo_prompt_body",
     "bipe_photo_prompt_action",
+    "bipe_os_theft_prompt_title",
+    "bipe_os_theft_prompt_body",
+    "bipe_os_theft_action",
+    "bipe_os_theft_path_ios_face_id",
+    "bipe_os_theft_path_ios_touch_id",
+    "bipe_os_theft_path_android",
+    "bipe_os_theft_path_samsung",
     "bipe_fallback_skip",
     "bipe_tab_you",
     "bipe_profile_share",

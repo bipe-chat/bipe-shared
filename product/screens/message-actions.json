@@ -9,6 +9,7 @@
         "type": "enum",
         "values": [
           "reply",
+          "replyInThread",
           "edit",
           "removeCaption",
           "copy",
@@ -82,6 +83,7 @@
     }
   },
   "strings": [
+    "bipe_thread_reply_action",
     "bipe_message_actions",
     "bipe_forward_action",
     "bipe_app_message_action_reply",

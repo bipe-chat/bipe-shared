@@ -2864,12 +2864,16 @@
       "id": "media-captions-edit",
       "name": "Add, edit, remove and copy the caption of a sent media message (bipe#668)",
       "ios": {
-        "status": "planned",
-        "issue": 668
+        "status": "built",
+        "evidence": [
+          "bipe-app/ios/Bipe/Timeline/ChatTimelineModel.swift"
+        ]
       },
       "android": {
-        "status": "planned",
-        "issue": 668
+        "status": "built",
+        "evidence": [
+          "bipe-app/android/app/src/main/kotlin/chat/bipe/app/timeline/ChatTimelineModel.kt"
+        ]
       },
       "web": {
         "status": "n/a",

@@ -10,6 +10,7 @@
         "values": [
           "reply",
           "edit",
+          "removeCaption",
           "copy",
           "saveSticker",
           "viewStickerPack",
@@ -71,7 +72,7 @@
           "description": "The row."
         }
       },
-      "effect": "Closes the sheet and runs: reply, message-reply startReply; edit, message-edit startEdit; copy, puts the text on the clipboard and shows bipe_app_copied; saveSticker, adds the sticker to the user's pack (sticker-picker notes, bipe-chat/bipe#670) and shows bipe_sticker_saved or bipe_sticker_save_failed; viewStickerPack, opens sticker-pack with the event's stickerPackField; keepAudio, voice-message keep; unkeepAudio, voice-message unkeep; retry, chat-timeline retrySend; delete, message-delete askDelete; report, message-report open."
+      "effect": "Closes the sheet and runs: reply, message-reply startReply; edit, message-edit startEdit; removeCaption, message-edit removeCaption (bipe-chat/bipe#668); copy, puts the text on the clipboard and shows bipe_app_copied; saveSticker, adds the sticker to the user's pack (sticker-picker notes, bipe-chat/bipe#670) and shows bipe_sticker_saved or bipe_sticker_save_failed; viewStickerPack, opens sticker-pack with the event's stickerPackField; keepAudio, voice-message keep; unkeepAudio, voice-message unkeep; retry, chat-timeline retrySend; delete, message-delete askDelete; report, message-report open."
     },
     "close": {
       "effect": "Closes the sheet."

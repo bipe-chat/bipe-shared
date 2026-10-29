@@ -1,0 +1,30 @@
+{
+  "id": "threads",
+  "title": "Threads in groups",
+  "flow": "chat",
+  "summary": "Replies in a thread under a group message (bipe-chat/bipe#667): the main timeline hides them and shows a count under the root; the thread view shows the root and its replies with its own composer. Groups only (ADR 0141: DMs have no threads).",
+  "types": {},
+  "state": {
+    "threadReplies": { "type": "int", "optional": true, "description": "Under a root message in the main timeline: bipe_thread_replies with ThreadSummary.numReplies. A tap opens the thread view." },
+    "rootEventId": { "type": "string", "description": "Thread view: the root event." }
+  },
+  "actions": {
+    "replyInThread": {
+      "params": { "rowId": { "type": "string", "description": "A sent group message that is not itself in a thread." } },
+      "effect": "message-actions row bipe_thread_reply_action: opens the thread view of that message."
+    },
+    "openThread": {
+      "params": { "rootEventId": { "type": "string", "description": "The root." } },
+      "effect": "A sheet titled bipe_thread_title with chat-timeline in thread mode: Room.timelineWithConfiguration with focus thread(rootEventId). Its composer sends into the thread (the SDK adds the thread relation), and its draft is kept per thread (saveComposerDraft with threadRoot)."
+    },
+    "close": { "effect": "Back to the main timeline." }
+  },
+  "strings": ["bipe_thread_reply_action", "bipe_thread_title", "bipe_thread_replies", "bipe_app_close"],
+  "sdk": ["TimelineFocus", "Room.timelineWithConfiguration", "MsgLikeContent.threadRoot", "MsgLikeContent.threadSummary", "ThreadSummary.numReplies", "Room.saveComposerDraft", "Room.loadComposerDraft"],
+  "parity": ["threads"],
+  "notes": [
+    "The main timeline of a group uses focus live with hideThreadedEvents true, so thread replies no longer show flat. A DM keeps hideThreadedEvents false: threads from other clients still show, as plain messages.",
+    "In the thread view the message menu has no bipe_thread_reply_action, and the bars of chat-timeline (call, pins, identity, theft) do not show.",
+    "The list of a group's threads in group-details is a second step of bipe-chat/bipe#667."
+  ]
+}

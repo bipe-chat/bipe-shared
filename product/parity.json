@@ -2846,12 +2846,18 @@
       "id": "threads",
       "name": "Threads in groups: reply in thread, thread view, thread list (bipe#667)",
       "ios": {
-        "status": "planned",
-        "issue": 667
+        "status": "built",
+        "evidence": [
+          "bipe-app/ios/Bipe/Timeline/ChatTimelineModel.swift",
+          "bipe-app/ios/Bipe/Timeline/ChatTimelineView.swift"
+        ]
       },
       "android": {
-        "status": "planned",
-        "issue": 667
+        "status": "built",
+        "evidence": [
+          "bipe-app/android/app/src/main/kotlin/chat/bipe/app/timeline/ChatTimelineModel.kt",
+          "bipe-app/android/app/src/main/kotlin/chat/bipe/app/timeline/ChatTimelineScreen.kt"
+        ]
       },
       "web": {
         "status": "n/a",

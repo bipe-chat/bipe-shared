@@ -27,6 +27,9 @@
     }
   },
   "strings": [
+    "bipe_caption_add",
+    "bipe_caption_edit",
+    "bipe_caption_remove",
     "bipe_app_message_editing",
     "bipe_app_message_save_edit",
     "bipe_app_message_edit_failed",
@@ -47,6 +50,8 @@
     "MessageContent.isEdited sets isEdited: the message shows bipe_app_message_edited after the time. Other people see the same label. There is no edit history view.",
     "editSendState of the item shows the edit as sending and failed, with the chat-timeline strings, until the server has it.",
     "An unsent own message (local echo) is edited in place by the SDK.",
-    "The scam warning runs again on the new text (scam-warning)."
+    "The scam warning runs again on the new text (scam-warning).",
+    "Captions (bipe-chat/bipe#668): an own photo, video or file can be edited too. The message-actions row is bipe_caption_add when the media has no caption and bipe_caption_edit when it has one. startEdit puts the caption (or nothing) in the composer; saveEdit sends Timeline.edit with EditedContent.mediaCaption. Stickers and voice messages have no caption edit.",
+    "removeCaption (message-actions, own media with a caption, bipe_caption_remove): Timeline.edit with EditedContent.mediaCaption and no caption, with no question. A failure shows bipe_app_message_edit_failed."
   ]
 }

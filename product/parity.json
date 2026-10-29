@@ -2898,12 +2898,18 @@
       "id": "polls-edit-history",
       "name": "Edit a poll before the first vote, poll history in group details (bipe#669)",
       "ios": {
-        "status": "planned",
-        "issue": 669
+        "status": "built",
+        "evidence": [
+          "bipe-app/ios/Bipe/Polls/PollHistory.swift",
+          "bipe-app/ios/Bipe/Polls/PollViews.swift"
+        ]
       },
       "android": {
-        "status": "planned",
-        "issue": 669
+        "status": "built",
+        "evidence": [
+          "bipe-app/android/app/src/main/kotlin/chat/bipe/app/polls/PollHistory.kt",
+          "bipe-app/android/app/src/main/kotlin/chat/bipe/app/polls/PollScreens.kt"
+        ]
       },
       "web": {
         "status": "n/a",

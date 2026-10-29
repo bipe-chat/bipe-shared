@@ -2776,12 +2776,16 @@
       "id": "message-forward",
       "name": "Forward a message or media to another chat (bipe#664)",
       "ios": {
-        "status": "planned",
-        "issue": 664
+        "status": "built",
+        "evidence": [
+          "bipe-app/ios/Bipe/Timeline/MessageForward.swift"
+        ]
       },
       "android": {
-        "status": "planned",
-        "issue": 664
+        "status": "built",
+        "evidence": [
+          "bipe-app/android/app/src/main/kotlin/chat/bipe/app/timeline/MessageForward.kt"
+        ]
       },
       "web": {
         "status": "n/a",

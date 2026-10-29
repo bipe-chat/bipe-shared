@@ -77,6 +77,7 @@ export function parseAppstore(text) {
   const platforms = {};
   const screenshots = {};
   const other = {};
+  let accessibility = [];
   for (const top of sections(text, 2).items) {
     const platform = top.title.match(/^Platform: (\S+) \((.+)\)$/);
     if (platform) {
@@ -94,11 +95,13 @@ export function parseAppstore(text) {
       platforms[key] = block;
     } else if (top.title === "Screenshots") {
       for (const sub of sections(top.body, 3).items) screenshots[sub.title] = table(sub.body);
+    } else if (top.title === "Accessibility") {
+      accessibility = table(top.body);
     } else {
       other[top.title] = Object.fromEntries(sections(top.body, 3).items.map((f) => [f.title, f.body]));
     }
   }
-  return { platforms, screenshots, other };
+  return { platforms, screenshots, accessibility, other };
 }
 
 export function loadAppstore(root) {
@@ -114,6 +117,118 @@ export function playFullDescription(listing, locale) {
 export function playListing(listing, locale) {
   const fields = listing.platforms.android?.locales[locale] ?? {};
   return { language: locale, title: fields.title ?? "", shortDescription: fields.short_description ?? "", fullDescription: playFullDescription(listing, locale) };
+}
+
+// --- Accessibility (bipe-chat/bipe#503) ---------------------------------------------------------------
+// product/accessibility.json answers Apple's accessibility labels (`appStore.labels`): a label is yes on a
+// platform only when every register item it names is yes there. appstore.md holds the result as the
+// `## Accessibility` table, and the Play full description holds one paragraph made from the same rows.
+// `node tools/check-appstore.mjs --write` writes both; the check fails when they differ from the register.
+
+/** Column title of each App Store device family in the `## Accessibility` table. */
+export const DEVICE_FAMILY_COLUMNS = { IPHONE: "iPhone", IPAD: "iPad" };
+const PLAY_LOCALE = { "pt-BR": "pt", "en-US": "en" };
+
+/** The answer of each Apple label on `platform` (ios or android), from the register. */
+export function accessibilityAnswers(a11y, platform) {
+  const items = new Map(a11y.items.map((it) => [it.id, it]));
+  return a11y.appStore.labels.map((label) => ({
+    ...label,
+    supported: label.items.length > 0 && label.items.every((id) => items.get(id)?.status?.[platform] === "yes"),
+  }));
+}
+
+/** Problems of the appStore block of the register. */
+export function checkAccessibilityLabels(a11y) {
+  const problems = [];
+  const ids = new Set(a11y.items.map((it) => it.id));
+  for (const label of a11y.appStore?.labels ?? []) {
+    for (const id of label.items) if (!ids.has(id)) problems.push(`accessibility.json appStore ${label.id}: unknown item ${id}`);
+    if (!/^supports[A-Z]\w+$/.test(label.attribute ?? "")) problems.push(`accessibility.json appStore ${label.id}: attribute`);
+  }
+  for (const f of a11y.appStore?.deviceFamilies ?? []) if (!DEVICE_FAMILY_COLUMNS[f]) problems.push(`accessibility.json appStore: unknown device family ${f}`);
+  return problems;
+}
+
+/** The `## Accessibility` section of appstore.md, made from the register. */
+export function accessibilitySection(a11y) {
+  const families = a11y.appStore.deviceFamilies;
+  const answers = accessibilityAnswers(a11y, "ios");
+  const head = `| Label | Attribute | ${families.map((f) => DEVICE_FAMILY_COLUMNS[f]).join(" | ")} | Register items |`;
+  const rule = `|---|---|${families.map(() => "---|").join("")}---|`;
+  const rows = answers.map((a) => `| ${a.name} | ${a.attribute} | ${families.map(() => (a.supported ? "yes" : "no")).join(" | ")} | ${a.items.join(", ") || "-"} |`);
+  return [
+    "## Accessibility",
+    "",
+    `Apple's accessibility labels per device family (bipe-chat/bipe#503), from \`product/accessibility.json\` (register of ${a11y.date}). A label is yes only when every register item it names is yes on iOS. Written by \`node tools/check-appstore.mjs --write\`; do not edit the table. bipe-app \`node tools/asc.mjs accessibility\` sends it. Apple asks that a label is declared only when the common tasks pass with that feature on: the declaration goes out after MZ's hand test.`,
+    "",
+    head,
+    rule,
+    ...rows,
+  ].join("\n");
+}
+
+/** The accessibility paragraph of the Play full description of a locale, made from the Android answers. */
+export function playAccessibilityBlock(a11y, locale) {
+  const l = PLAY_LOCALE[locale];
+  const lines = accessibilityAnswers(a11y, "android").filter((a) => a.supported && a.play).map((a) => `• ${a.play[l]}`);
+  const frame = a11y.appStore.play[l];
+  return [frame.title, "", ...lines, "", frame.end].join("\n");
+}
+
+/** The declaration of each device family from the appstore.md table, as the App Store Connect API takes it. */
+export function ascAccessibility(listing) {
+  const rows = listing.accessibility ?? [];
+  return Object.entries(DEVICE_FAMILY_COLUMNS)
+    .filter(([, column]) => rows.length && column in rows[0])
+    .map(([deviceFamily, column]) => ({
+      deviceFamily,
+      labels: rows.map((r) => ({ name: r.Label, attribute: r.Attribute, supported: r[column] === "yes" })),
+      attributes: Object.fromEntries(rows.map((r) => [r.Attribute, r[column] === "yes"])),
+    }));
+}
+
+/** Writes the register's answers into appstore.md text: the section and the Play paragraphs. */
+export function writeAccessibility(text, a11y) {
+  const section = accessibilitySection(a11y);
+  let out = /^## Accessibility$/m.test(text)
+    ? text.replace(/^## Accessibility\n[\s\S]*?(?=^## )/m, `${section}\n\n`)
+    : text.replace(/^## App Privacy$/m, `${section}\n\n## App Privacy`);
+  for (const locale of LOCALES) {
+    const block = playAccessibilityBlock(a11y, locale);
+    const frame = a11y.appStore.play[PLAY_LOCALE[locale]];
+    const escape = (s) => s.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+    const existing = new RegExp(`^${escape(frame.title)}\\n[\\s\\S]*?^${escape(frame.end)}$`, "m");
+    const android = out.indexOf("## Platform: Android");
+    const head = out.slice(0, android);
+    let tail = out.slice(android);
+    const start = tail.indexOf(`### ${locale}`);
+    const end = tail.indexOf("\n### ", start + 1);
+    let part = tail.slice(start, end < 0 ? undefined : end);
+    if (existing.test(part)) part = part.replace(existing, block);
+    else {
+      const marker = locale === "pt-BR" ? "Por enquanto, o Bipe abre por convite." : "For now, Bipe opens by invite.";
+      if (!part.includes(marker)) throw new Error(`appstore.md: no place for the accessibility paragraph in android.${locale}.full_description`);
+      part = part.replace(marker, `${block}\n\n${marker}`);
+    }
+    tail = tail.slice(0, start) + part + (end < 0 ? "" : tail.slice(end));
+    out = head + tail;
+  }
+  return out;
+}
+
+/** Problems when appstore.md differs from the register's answers. */
+export function checkAccessibility(listing, a11y) {
+  const problems = checkAccessibilityLabels(a11y);
+  if (problems.length) return problems;
+  const expected = ascAccessibility(parseAppstore(`${accessibilitySection(a11y)}\n`));
+  const actual = ascAccessibility(listing);
+  if (JSON.stringify(expected) !== JSON.stringify(actual)) problems.push("accessibility: the table differs from product/accessibility.json (run node tools/check-appstore.mjs --write)");
+  for (const locale of LOCALES) {
+    if (!playFullDescription(listing, locale).includes(playAccessibilityBlock(a11y, locale)))
+      problems.push(`android.${locale}.full_description: the accessibility paragraph differs from product/accessibility.json (run node tools/check-appstore.mjs --write)`);
+  }
+  return problems;
 }
 
 // Store fields that people see, as [where, text] pairs. Used for the dash, voice and placeholder rules.

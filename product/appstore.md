@@ -213,6 +213,17 @@ E MAIS
 • Stickers, inclusive feitos de uma foto.
 • Servidores no Brasil, de empresas brasileiras. Vale a lei brasileira, com a LGPD.
 
+ACESSIBILIDADE
+
+• TalkBack: cada botão tem nome, e cada gesto tem uma ação no menu do leitor de tela.
+• Texto grande: o texto segue o tamanho de fonte do Android em todas as telas.
+• Tema escuro: o Bipe segue o tema escuro do Android.
+• Sem depender só da cor: avisos e selos têm ícone e palavras.
+• Contraste: todo texto tem contraste AA, e o alto contraste do Android deixa as cores mais fortes.
+• Remover animações: com o ajuste ligado, nada desliza nem pulsa.
+
+O que funciona hoje, e o que ainda falta, está em bipe.chat/acessibilidade/.
+
 Por enquanto, o Bipe abre por convite. Peça um código de convite a alguém que já usa o Bipe.
 
 O Bipe é um experimento da Envisioning. O código é aberto e está no GitHub, para qualquer pessoa conferir.
@@ -262,6 +273,17 @@ AND MORE
 • Stickers, including ones made from a photo.
 • Servers in Brazil, run by Brazilian companies. Brazilian law applies, including the LGPD.
 
+ACCESSIBILITY
+
+• TalkBack: every button has a name, and every gesture has an action in the screen reader menu.
+• Large text: text follows the Android font size on every screen.
+• Dark theme: Bipe follows the Android dark theme.
+• Not by colour alone: warnings and seals have an icon and words.
+• Contrast: all text has AA contrast, and Android's high contrast makes the colours stronger.
+• Remove animations: with the setting on, nothing slides or pulses.
+
+What works today, and what is still missing, is at bipe.chat/en/accessibility/.
+
 For now, Bipe opens by invite. Ask someone who uses it for an invite.
 
 Bipe is an experiment by Envisioning. The code is open source and on GitHub, so anyone can check it.
@@ -291,6 +313,22 @@ Bipe is an experiment by Envisioning. The code is open source and on GitHub, so 
 | selo-cnpj | cnpj-badge | CNPJ seal | Businesses show the name on the federal register. |
 | grupos | group-types | Quiet groups | A group only rings when it's about you. |
 | stickers | stickers | Stickers | Make a sticker from any photo, with no ads on any screen. |
+
+## Accessibility
+
+Apple's accessibility labels per device family (bipe-chat/bipe#503), from `product/accessibility.json` (register of 2026-10-29). A label is yes only when every register item it names is yes on iOS. Written by `node tools/check-appstore.mjs --write`; do not edit the table. bipe-app `node tools/asc.mjs accessibility` sends it. Apple asks that a label is declared only when the common tasks pass with that feature on: the declaration goes out after MZ's hand test.
+
+| Label | Attribute | iPhone | Register items |
+|---|---|---|---|
+| VoiceOver | supportsVoiceover | yes | screen-reader, gestures |
+| Voice Control | supportsVoiceControl | no | - |
+| Larger Text | supportsLargerText | yes | text-size |
+| Dark Interface | supportsDarkInterface | yes | dark-mode |
+| Differentiate Without Color Alone | supportsDifferentiateWithoutColorAlone | yes | not-colour-alone |
+| Sufficient Contrast | supportsSufficientContrast | yes | contrast, increase-contrast |
+| Reduced Motion | supportsReducedMotion | yes | reduce-motion |
+| Captions | supportsCaptions | no | - |
+| Audio Descriptions | supportsAudioDescriptions | no | - |
 
 ## App Privacy
 

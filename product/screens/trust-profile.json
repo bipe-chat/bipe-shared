@@ -50,6 +50,9 @@
     },
     "openClaim": {
       "effect": "Company account: a tap on the cnpj, proof or domain step opens business-claim (bipe-chat/bipe#249). Those steps are todo until done."
+    },
+    "openGovbr": {
+      "effect": "Personal account: a tap on the govbr step while it is todo opens govbr-verify (bipe-chat/bipe#544). The only entry to that flow: never from a chat, a link or a notification (bipe-chat/bipe#277)."
     }
   },
   "strings": [

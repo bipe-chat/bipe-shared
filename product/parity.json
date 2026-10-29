@@ -3452,6 +3452,33 @@
         "reason": "The client distributes room keys; the server cannot choose recipient trust"
       },
       "issue": 774
+    },
+    {
+      "id": "govbr-verify",
+      "name": "Verify with gov.br, trust step 5, two taps (bipe#544)",
+      "ios": {
+        "status": "built",
+        "evidence": [
+          "bipe-app/ios/Bipe/Voce/GovbrVerifyView.swift"
+        ]
+      },
+      "android": {
+        "status": "built",
+        "evidence": [
+          "bipe-app/android/app/src/main/kotlin/chat/bipe/app/voce/GovbrVerify.kt"
+        ]
+      },
+      "web": {
+        "status": "n/a",
+        "reason": "Web has no trust ladder step (bipe#544)"
+      },
+      "server": {
+        "status": "built",
+        "evidence": [
+          "bipe-api/src/govbr.ts"
+        ]
+      },
+      "issue": 544
     }
   ],
   "differences": [

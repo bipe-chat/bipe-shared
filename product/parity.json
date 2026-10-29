@@ -3297,8 +3297,10 @@
         "fork": false
       },
       "android": {
-        "status": "planned",
-        "issue": 823
+        "status": "built",
+        "evidence": [
+          "bipe-app/android/app/src/main/kotlin/chat/bipe/app/notifications/NotificationCheckup.kt"
+        ]
       },
       "web": {
         "status": "n/a",

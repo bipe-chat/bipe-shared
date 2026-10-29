@@ -184,7 +184,8 @@
     "bipe_notifications_preview_footer",
     "bipe_work_hours_title",
     "bipe_work_hours_open_now",
-    "bipe_work_hours_closed_now"
+    "bipe_work_hours_closed_now",
+    "bipe_app_notification_checkup_title"
   ],
   "sdk": [
     "Client.getNotificationSettings",
@@ -221,6 +222,7 @@
     "Groups are quiet by default (ADR 0026, ADR 0053): a new account starts with groupsMode mentions and chatsMode all. The app sets these defaults once, at the first sign-in of an account that has no default rules of its own yet.",
     "Per-chat modes are chat-notifications.",
     "News (ADR 0117): the news account (@bipe, registries/official-accounts.json) keeps one read-only room per user. Leaving that room, from the chat or with this switch, stops news; the switch turns it on again with a new room. The switch is the last row of the group, below the sound. Novidades items of importance normal are m.notice (no push by the default rule .m.rule.suppress_notices); important items are m.text. The news room is a named room, not a DM (bipe#809, spec chat-list notes).",
-    "Per account (bipe-chat/bipe#511): the modes are push rules of the account and live on the server; sound and preview are kept per account on this phone, under the account's Matrix ID. With two accounts on the phone, the footer bipe_notifications_account_footer names the account. Mute of a whole account is chatsMode and groupsMode off."
+    "Per account (bipe-chat/bipe#511): the modes are push rules of the account and live on the server; sound and preview are kept per account on this phone, under the account's Matrix ID. With two accounts on the phone, the footer bipe_notifications_account_footer names the account. Mute of a whole account is chatsMode and groupsMode off.",
+    "Android only (bipe#823): a row bipe_app_notification_checkup_title under the phoneEnabled card, above the first section, opens notification-checkup. iOS has no such row."
   ]
 }

@@ -3090,12 +3090,18 @@
       "id": "settings-rows-wired",
       "name": "Every settings row works: appearance, media quality, live location (bipe#676)",
       "ios": {
-        "status": "planned",
-        "issue": 676
+        "status": "built",
+        "evidence": [
+          "bipe-app/ios/Bipe/Settings/SettingsGroupView.swift",
+          "bipe-app/ios/Bipe/BipeApp.swift"
+        ]
       },
       "android": {
-        "status": "planned",
-        "issue": 676
+        "status": "built",
+        "evidence": [
+          "bipe-app/android/app/src/main/kotlin/chat/bipe/app/settings/SettingsScreens.kt",
+          "bipe-app/android/app/src/main/kotlin/chat/bipe/app/BipeTheme.kt"
+        ]
       },
       "web": {
         "status": "n/a",

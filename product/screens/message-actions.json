@@ -10,7 +10,11 @@
         "values": [
           "reply",
           "edit",
+          "removeCaption",
           "copy",
+          "pin",
+          "unpin",
+          "forward",
           "saveSticker",
           "viewStickerPack",
           "keepAudio",
@@ -71,7 +75,7 @@
           "description": "The row."
         }
       },
-      "effect": "Closes the sheet and runs: reply, message-reply startReply; edit, message-edit startEdit; copy, puts the text on the clipboard and shows bipe_app_copied; saveSticker, adds the sticker to the user's pack (sticker-picker notes, bipe-chat/bipe#670) and shows bipe_sticker_saved or bipe_sticker_save_failed; viewStickerPack, opens sticker-pack with the event's stickerPackField; keepAudio, voice-message keep; unkeepAudio, voice-message unkeep; retry, chat-timeline retrySend; delete, message-delete askDelete; report, message-report open."
+      "effect": "Closes the sheet and runs: reply, message-reply startReply; edit, message-edit startEdit; removeCaption, message-edit removeCaption (bipe-chat/bipe#668); copy, puts the text on the clipboard and shows bipe_app_copied; pin and unpin, message-pins (bipe-chat/bipe#665); forward, message-forward open (bipe-chat/bipe#664); saveSticker, adds the sticker to the user's pack (sticker-picker notes, bipe-chat/bipe#670) and shows bipe_sticker_saved or bipe_sticker_save_failed; viewStickerPack, opens sticker-pack with the event's stickerPackField; keepAudio, voice-message keep; unkeepAudio, voice-message unkeep; retry, chat-timeline retrySend; delete, message-delete askDelete; report, message-report open."
     },
     "close": {
       "effect": "Closes the sheet."
@@ -79,6 +83,7 @@
   },
   "strings": [
     "bipe_message_actions",
+    "bipe_forward_action",
     "bipe_app_message_action_reply",
     "bipe_app_message_action_edit",
     "bipe_app_copy",
@@ -115,6 +120,6 @@
     "MZ explicitly requested long press only on 23 October 2026: native iOS contextMenu and Android DropdownMenu open from a normal long press, with no visible overflow button (bipe#589). Labelled accessibility actions keep the same commands available to VoiceOver and TalkBack. Do not attach a second long-press recognizer that competes with the native menu. Keep scrolling, swipe-to-reply and media/reply taps.",
     "Every command resolves the current row and checks current permissions again at dispatch. A removed, deleted, non-message or no-longer-authorised target cannot dispatch an old command. Menus belong to the timeline model of one immutable account session. New incoming rows do not change the target.",
     "copy on a message with a running money pause (scam-warning pauseSecondsLeft above 0) is shown disabled with bipe_pause_countdown as its label, and comes back as Copiar at 0 (bipe#594).",
-    "saveSticker: a sent m.sticker event whose image is not in the user's pack yet (same mxc URL). viewStickerPack: a sent m.sticker event with stickerPackField (registries/stickers.json) naming a room and a state key (ADR 0205)."
+    "saveSticker: a sent m.sticker event. It writes the event's mxc URL into the user's pack (m.image_pack account data) with no upload; an image already there (same mxc URL) is not added again and still shows bipe_sticker_saved. Default chosen (bipe-chat/bipe#670): the row shows on every sent sticker, because the menu does not load the pack. mz can overrule. viewStickerPack: a sent m.sticker event with stickerPackField (registries/stickers.json) naming a room and a state key (ADR 0205)."
   ]
 }

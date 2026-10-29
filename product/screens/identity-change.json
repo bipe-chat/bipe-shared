@@ -1,0 +1,66 @@
+{
+  "id": "identity-change",
+  "title": "Identity change warning",
+  "flow": "chat",
+  "summary": "A bar above the composer of a DM or a group when a member's crypto identity changed (bipe#770): the person reset their identity (new recovery, new phone without the old one), or a verified person is no longer verified. This is the signal for an account takeover or a man in the middle. The Bipe profile facts (trust-facts, ADR 0074) are a different thing: they come from bipe-api, not from the crypto identity.",
+  "types": {
+    "IdentityWarning": {
+      "userId": { "type": "string", "description": "IdentityStatusChange.userId. Never the own user." },
+      "name": { "type": "string", "description": "Room.memberDisplayName, else the user ID." },
+      "kind": {
+        "type": "enum",
+        "values": ["changed", "verificationLost"],
+        "description": "changed: IdentityState pinViolation, text bipe_identity_change_body. verificationLost: IdentityState verificationViolation, text bipe_identity_change_verified_body."
+      }
+    }
+  },
+  "state": {
+    "warnings": {
+      "type": "list",
+      "of": { "type": "IdentityWarning" },
+      "description": "From Room.subscribeToIdentityStatusChanges. A change to verified or pinned removes the person. The bar shows the first warning; with more, bipe_identity_change_more with the count of the others."
+    },
+    "blocksSending": { "type": "bool", "description": "true while a warning has kind verificationLost: the composer is disabled until the person taps bipe_identity_change_ok." }
+  },
+  "actions": {
+    "acknowledge": {
+      "effect": "bipe_identity_change_ok on the bar: for the first warning, Encryption.userIdentity(userId, fallbackToServer: true), then UserIdentity.pin() for changed, UserIdentity.withdrawVerification() for verificationLost. The SDK then reports pinned and the warning goes. A failure shows bipe_error_generic and keeps the bar."
+    },
+    "learnMore": { "effect": "bipe_identity_change_learn_more: a dialog with bipe_identity_change_help and bipe_action_continue." },
+    "sendAnyway": {
+      "effect": "On an own message whose send failed with QueueWedgeError identityViolations or insecureDevices, the menu action retry is titled bipe_identity_change_send_anyway. identityViolations: Room.withdrawVerificationAndResend(users, sendHandle). insecureDevices: Room.ignoreDeviceTrustAndResend(userDeviceMap, sendHandle). Any other failure keeps retry with SendHandle.tryResend."
+    }
+  },
+  "strings": [
+    "bipe_identity_change_body",
+    "bipe_identity_change_verified_body",
+    "bipe_identity_change_more",
+    "bipe_identity_change_ok",
+    "bipe_identity_change_learn_more",
+    "bipe_identity_change_help",
+    "bipe_identity_change_send_anyway",
+    "bipe_action_continue",
+    "bipe_error_generic"
+  ],
+  "sdk": [
+    "Room.subscribeToIdentityStatusChanges",
+    "IdentityStatusChangeListener",
+    "IdentityStatusChange",
+    "IdentityState",
+    "Room.memberDisplayName",
+    "Encryption.userIdentity",
+    "UserIdentity.pin",
+    "UserIdentity.withdrawVerification",
+    "QueueWedgeError",
+    "Room.withdrawVerificationAndResend",
+    "Room.ignoreDeviceTrustAndResend",
+    "SendHandle.tryResend"
+  ],
+  "parity": ["identity-change-warning"],
+  "notes": [
+    "The bar is above the composer, under the other bars of chat-timeline (profileNotice, theft mark), in DMs and in groups.",
+    "Plain words: the first line says the account security changed. It never says keys or cryptography.",
+    "Default chosen (bipe#770): no line in the timeline at the change, because the SDK reports the state, not an event at a place in the history. mz can overrule.",
+    "Default chosen (bipe#770): the link to the theft mark and guardian signals (ADR 0044) and a money pause for 24 h after a change are follow-ups, because they need bipe-api signals. mz can overrule."
+  ]
+}

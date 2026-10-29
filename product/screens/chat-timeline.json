@@ -75,6 +75,9 @@
       "params": { "id": { "type": "string", "description": "The failed message." } },
       "effect": "Sends a failed own message again."
     },
+    "searchInChat": {
+      "effect": "From the chat menu, in a DM and in a group: opens chat-search with roomId set to this chat (bipe-chat/bipe#861). A message hit closes the search and runs openOriginal here."
+    },
     "inviteAgain": {
       "effect": "peerAway left only. When RoomPowerLevels.canOwnUserInvite: Room.inviteUserById for the other person; peerAway turns none once the person is invited, so the bar goes away. Else (a DM created with the DM power levels, where nobody can invite): a new DM with the person, as person-profile message does, and chat-timeline opens it. The new room is the newest, so dm-selection shows it and hides this one; nothing is deleted. A failure shows bipe_dm_invite_again_failed."
     }
@@ -101,7 +104,10 @@
     "bipe_profile_notice_name_photo",
     "bipe_theft_banner_title",
     "bipe_theft_banner_body",
-    "bipe_theft_message_marker"
+    "bipe_theft_message_marker",
+    "bipe_search_in_chat",
+    "bipe_app_group_details_title",
+    "bipe_dm_details_title"
   ],
   "sdk": [
     "Client.getRoom",
@@ -118,6 +124,7 @@
   ],
   "parity": ["e2ee", "dm-left-bar", "dm-block-bar", "official-badge", "cvm-line", "official-notice", "profile-change-facts", "theft-protection"],
   "notes": [
+    "The chat menu is the info button in the top bar. In a DM it is a menu with the business tools, bipe_search_in_chat and dm-delete. In a group it is a menu with bipe_app_group_details_title (group-details) and bipe_search_in_chat. Default chosen (bipe-chat/bipe#861): the group info button opens a menu, not group-details at once, because a group had no chat menu for the search. mz can overrule.",
     "CVM stop order (ADR 0077, bipe-chat/bipe#238): in a DM whose other person has a verified company seal with a cvm stop order (test-vectors/cvm-lines.json danger true), a red caution card with bipe_cvm_stop_order_card and the date sits at the top of the timeline. It stays while the badge says so. It comes from the signed badge only.",
     "Official accounts (ADR 0117, bipe-chat/bipe#384): isOfficial follows the chat-list rule (exact user ID in BipeRegistries.officialAccountIDs, a DM only). A group never shows the badge, even with an official account in it.",
     "Send is off while draft is blank after trimming.",

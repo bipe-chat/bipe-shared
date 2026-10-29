@@ -1,0 +1,52 @@
+{
+  "id": "message-pins",
+  "title": "Pinned messages",
+  "flow": "chat",
+  "summary": "Pinned messages of a group (bipe-chat/bipe#665): a banner above the timeline with the newest pin, a list of all pins, and Fixar and Desafixar in the message menu. Groups only (ADR 0141: DMs have no pins).",
+  "types": {
+    "Pin": {
+      "eventId": { "type": "string", "description": "The pinned event." },
+      "senderName": { "type": "string", "description": "The sender's display name, bipe_app_you for the own user." },
+      "text": { "type": "string", "description": "The message body, the media caption or the media kind label, one line." }
+    }
+  },
+  "state": {
+    "pins": {
+      "type": "list",
+      "of": { "type": "Pin" },
+      "description": "From Room.timelineWithConfiguration with focus pinnedEvents, newest pin first. Events the phone cannot show are left out."
+    },
+    "shownIndex": { "type": "int", "description": "The pin the banner shows, 0 is the newest." },
+    "canPin": { "type": "bool", "description": "RoomPowerLevels.canOwnUserPinUnpin." },
+    "showsList": { "type": "bool", "description": "true while the list sheet shows." }
+  },
+  "actions": {
+    "tapBanner": { "effect": "Scrolls the chat to the shown pin (chat-timeline openOriginal), then shownIndex moves to the next older pin, and from the oldest back to the newest." },
+    "openList": { "effect": "bipe_pinned_view_all on the banner: a sheet titled bipe_pinned_list_title with every pin. A tap closes it and scrolls to the message." },
+    "pin": {
+      "params": { "eventId": { "type": "string", "description": "A sent message." } },
+      "effect": "message-actions row bipe_pin_action on a sent message of a group when canPin and the event is not pinned: Timeline.pinEvent. A failure shows bipe_error_generic."
+    },
+    "unpin": {
+      "params": { "eventId": { "type": "string", "description": "A pinned message." } },
+      "effect": "message-actions row bipe_unpin_action when canPin and the event is pinned (RoomInfo.pinnedEventIds), from the menu or the list: Timeline.unpinEvent."
+    }
+  },
+  "strings": [
+    "bipe_pin_action",
+    "bipe_unpin_action",
+    "bipe_pinned_banner_title",
+    "bipe_pinned_banner_count",
+    "bipe_pinned_list_title",
+    "bipe_pinned_view_all",
+    "bipe_app_you",
+    "bipe_error_generic",
+    "bipe_app_close"
+  ],
+  "sdk": ["TimelineFocus", "Room.timelineWithConfiguration", "Timeline.pinEvent", "Timeline.unpinEvent", "RoomInfo.pinnedEventIds", "RoomPowerLevels.canOwnUserPinUnpin"],
+  "parity": ["message-pins"],
+  "notes": [
+    "The banner shows bipe_pinned_banner_title, or bipe_pinned_banner_count (%1$s the place of the shown pin from the newest, %2$s the number of pins) with two or more, the sender and the text. No pins: no banner.",
+    "Default chosen (bipe-chat/bipe#665): the pin list opens from the banner only, not from group-details, because a tap in the list scrolls the chat, and group-details sits over the chat. mz can overrule."
+  ]
+}

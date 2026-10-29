@@ -13,7 +13,8 @@ Format:
 
 - `## Platform: <iOS|Android> (<bundle id>)`. The production IDs wait for bipe-chat/bipe#419 and bipe-chat/bipe#157. Until then both blocks say `chat.bipe.app`.
 - `### <field>` before the first locale is a field for every locale. `### pt-BR` and `### en-US` start a locale. `#### <field>` is a field of that locale.
-- Android `full_description` is the iOS `description` of the same locale, unless the Android locale sets its own.
+- Android `full_description` is the iOS `description` of the same locale, unless the Android locale sets its own. The Play text adds the locale's paragraph of `## Accessibility`.
+- `## Accessibility`: the App Store Accessibility Nutrition Labels and the Play accessibility paragraph, generated from `product/accessibility.json` by `node tools/check-appstore.mjs --write` (bipe-chat/bipe#503). Do not edit it by hand.
 - `## Screenshots`: one table per locale, panels in store order. `feature` is a feature id in `product.json`, or `-` for a panel with no capture: the image builder draws the Brazil network there. `title` is the feature name, short enough for 2 lines at store size. `sub` is one sentence of at most 2 lines. No highlight markup (bipe-chat/bipe#463).
 
 Limits: name and subtitle 30, promotional text 170, description 4000, keywords 100 (comma separated, no space after a comma), Play title 30, Play short description 80, Play full description 4000.
@@ -187,6 +188,30 @@ Bipe Chat
 #### short_description
 
 Know who you're talking to. Scam warnings, and your @ without your number.
+
+## Accessibility
+
+Generated from `product/accessibility.json` (`appStore`) by `node tools/check-appstore.mjs --write`. Do not edit by hand. The iPhone answers go to App Store Connect (bipe-app `node tools/asc.mjs accessibility`) only after the hand test with people who use these features (bipe-chat/bipe#505), because Apple asks to declare a label only when the common tasks work with it on.
+
+| Label | iPhone |
+|---|---|
+| VoiceOver | yes |
+| Voice Control | yes |
+| Larger Text | yes |
+| Dark Interface | yes |
+| Differentiate Without Color Alone | yes |
+| Sufficient Contrast | yes |
+| Reduced Motion | yes |
+| Captions | no |
+| Audio Descriptions | no |
+
+### pt-BR
+
+Acessibilidade: o Bipe funciona com TalkBack, Voice Access, letra grande, tema escuro, avisos que não dependem só da cor, alto contraste e remover animações.
+
+### en-US
+
+Accessibility: Bipe works with TalkBack, Voice Access, large text, dark theme, warnings that never rely on colour alone, high contrast and remove animations.
 
 ## Screenshots
 

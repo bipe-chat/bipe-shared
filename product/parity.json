@@ -3302,12 +3302,16 @@
       "id": "group-privacy-settings",
       "name": "Group privacy settings: who can join, history for new members, address (bipe#772)",
       "ios": {
-        "status": "planned",
-        "issue": 772
+        "status": "built",
+        "evidence": [
+          "bipe-app/ios/Bipe/Groups/GroupPrivacy.swift"
+        ]
       },
       "android": {
-        "status": "planned",
-        "issue": 772
+        "status": "built",
+        "evidence": [
+          "bipe-app/android/app/src/main/kotlin/chat/bipe/app/groups/GroupPrivacy.kt"
+        ]
       },
       "web": {
         "status": "n/a",

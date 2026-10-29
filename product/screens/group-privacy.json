@@ -1,0 +1,61 @@
+{
+  "id": "group-privacy",
+  "title": "Group privacy",
+  "flow": "groups",
+  "summary": "Who can join a group, what older messages a new member sees, and the requests to join (bipe-chat/bipe#772). Opens from the row bipe_group_privacy_title in group-details, for members who can change the join rule.",
+  "types": {
+    "JoinRequest": {
+      "userId": { "type": "string", "description": "KnockRequest.userId." },
+      "name": { "type": "string", "description": "KnockRequest.displayName, else the user ID." },
+      "avatarUrl": { "type": "url", "optional": true, "description": "KnockRequest.avatarUrl." },
+      "reason": { "type": "string", "optional": true, "description": "KnockRequest.reason, shown under the name." }
+    }
+  },
+  "state": {
+    "join": {
+      "type": "enum",
+      "values": ["invite", "knock"],
+      "description": "Under bipe_group_privacy_join. invite: bipe_group_privacy_join_invite, JoinRule invite (the default of group-create). knock: bipe_group_privacy_join_knock, JoinRule knock. Another rule set by another client shows no choice selected."
+    },
+    "history": {
+      "type": "enum",
+      "values": ["joined", "shared"],
+      "description": "Under bipe_group_privacy_history, with bipe_group_privacy_history_footer. joined: bipe_group_privacy_history_joined, RoomHistoryVisibility joined (default). shared: bipe_group_privacy_history_shared, RoomHistoryVisibility shared."
+    },
+    "requests": {
+      "type": "list",
+      "of": { "type": "JoinRequest" },
+      "description": "Under bipe_group_requests, from Room.subscribeToKnockRequests. Hidden when empty. Each row has bipe_group_request_accept and bipe_group_request_decline when the member can invite."
+    },
+    "canChangeJoin": { "type": "bool", "description": "RoomPowerLevels.canOwnUserSendState for m.room.join_rules." },
+    "canChangeHistory": { "type": "bool", "description": "RoomPowerLevels.canOwnUserSendState for m.room.history_visibility." }
+  },
+  "actions": {
+    "setJoin": { "params": { "rule": { "type": "enum", "values": ["invite", "knock"], "description": "The new rule." } }, "effect": "Room.updateJoinRules. A failure shows bipe_error_generic and keeps the old choice." },
+    "setHistory": { "params": { "visibility": { "type": "enum", "values": ["joined", "shared"], "description": "The new value." } }, "effect": "Room.updateHistoryVisibility. A failure shows bipe_error_generic." },
+    "accept": { "params": { "userId": { "type": "string", "description": "A request." } }, "effect": "KnockRequestActions.accept: the person is invited and can join." },
+    "decline": { "params": { "userId": { "type": "string", "description": "A request." } }, "effect": "KnockRequestActions.decline with no reason." }
+  },
+  "strings": [
+    "bipe_group_privacy_title",
+    "bipe_group_privacy_join",
+    "bipe_group_privacy_join_invite",
+    "bipe_group_privacy_join_knock",
+    "bipe_group_privacy_history",
+    "bipe_group_privacy_history_joined",
+    "bipe_group_privacy_history_shared",
+    "bipe_group_privacy_history_footer",
+    "bipe_group_requests",
+    "bipe_group_request_accept",
+    "bipe_group_request_decline",
+    "bipe_error_generic"
+  ],
+  "sdk": ["Room.updateJoinRules", "Room.updateHistoryVisibility", "Room.subscribeToKnockRequests", "KnockRequest", "KnockRequestActions", "RoomInfo.joinRule", "RoomInfo.historyVisibility", "RoomPowerLevels.canOwnUserSendState"],
+  "parity": ["group-privacy-settings"],
+  "notes": [
+    "Encryption stays on and is not a choice (security rule 13).",
+    "Never world_readable.",
+    "Default chosen (bipe-chat/bipe#772): no \"anyone with the link\" choice and no room address, because under ADR 0179 join rule public makes a room plain text, and public rooms are the curated open groups of ADR 0182 (bipe-chat/bipe#749). mz can overrule.",
+    "A person with the group link (room-link-open) sees bipe_app_room_link_knock when the rule is knock."
+  ]
+}

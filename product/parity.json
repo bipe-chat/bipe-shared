@@ -3002,12 +3002,18 @@
       "id": "group-report",
       "name": "Report a group to the Bipe team from group details (bipe#674)",
       "ios": {
-        "status": "planned",
-        "issue": 674
+        "status": "built",
+        "evidence": [
+          "bipe-app/ios/Bipe/Groups/GroupDetailsView.swift",
+          "bipe-app/ios/Bipe/People/ReportChatView.swift"
+        ]
       },
       "android": {
-        "status": "planned",
-        "issue": 674
+        "status": "built",
+        "evidence": [
+          "bipe-app/android/app/src/main/kotlin/chat/bipe/app/groups/GroupDetailsScreen.kt",
+          "bipe-app/android/app/src/main/kotlin/chat/bipe/app/people/SafetyScreens.kt"
+        ]
       },
       "web": {
         "status": "n/a",

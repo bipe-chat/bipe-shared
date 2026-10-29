@@ -2802,12 +2802,16 @@
       "id": "message-pins",
       "name": "Pin and unpin messages in groups, pinned banner and pinned list (bipe#665)",
       "ios": {
-        "status": "planned",
-        "issue": 665
+        "status": "built",
+        "evidence": [
+          "bipe-app/ios/Bipe/Timeline/PinnedMessages.swift"
+        ]
       },
       "android": {
-        "status": "planned",
-        "issue": 665
+        "status": "built",
+        "evidence": [
+          "bipe-app/android/app/src/main/kotlin/chat/bipe/app/timeline/PinnedMessages.kt"
+        ]
       },
       "web": {
         "status": "n/a",
@@ -2846,12 +2850,18 @@
       "id": "threads",
       "name": "Threads in groups: reply in thread, thread view, thread list (bipe#667)",
       "ios": {
-        "status": "planned",
-        "issue": 667
+        "status": "built",
+        "evidence": [
+          "bipe-app/ios/Bipe/Timeline/ChatTimelineModel.swift",
+          "bipe-app/ios/Bipe/Timeline/ChatTimelineView.swift"
+        ]
       },
       "android": {
-        "status": "planned",
-        "issue": 667
+        "status": "built",
+        "evidence": [
+          "bipe-app/android/app/src/main/kotlin/chat/bipe/app/timeline/ChatTimelineModel.kt",
+          "bipe-app/android/app/src/main/kotlin/chat/bipe/app/timeline/ChatTimelineScreen.kt"
+        ]
       },
       "web": {
         "status": "n/a",
@@ -2868,12 +2878,16 @@
       "id": "media-captions-edit",
       "name": "Add, edit, remove and copy the caption of a sent media message (bipe#668)",
       "ios": {
-        "status": "planned",
-        "issue": 668
+        "status": "built",
+        "evidence": [
+          "bipe-app/ios/Bipe/Timeline/ChatTimelineModel.swift"
+        ]
       },
       "android": {
-        "status": "planned",
-        "issue": 668
+        "status": "built",
+        "evidence": [
+          "bipe-app/android/app/src/main/kotlin/chat/bipe/app/timeline/ChatTimelineModel.kt"
+        ]
       },
       "web": {
         "status": "n/a",
@@ -2890,12 +2904,18 @@
       "id": "polls-edit-history",
       "name": "Edit a poll before the first vote, poll history in group details (bipe#669)",
       "ios": {
-        "status": "planned",
-        "issue": 669
+        "status": "built",
+        "evidence": [
+          "bipe-app/ios/Bipe/Polls/PollHistory.swift",
+          "bipe-app/ios/Bipe/Polls/PollViews.swift"
+        ]
       },
       "android": {
-        "status": "planned",
-        "issue": 669
+        "status": "built",
+        "evidence": [
+          "bipe-app/android/app/src/main/kotlin/chat/bipe/app/polls/PollHistory.kt",
+          "bipe-app/android/app/src/main/kotlin/chat/bipe/app/polls/PollScreens.kt"
+        ]
       },
       "web": {
         "status": "n/a",
@@ -2969,12 +2989,16 @@
       "id": "message-search",
       "name": "Message search across chats and in one chat (bipe#671)",
       "ios": {
-        "status": "planned",
-        "issue": 671
+        "status": "built",
+        "evidence": [
+          "bipe-app/ios/Bipe/ChatList/MessageSearch.swift"
+        ]
       },
       "android": {
-        "status": "planned",
-        "issue": 671
+        "status": "built",
+        "evidence": [
+          "bipe-app/android/app/src/main/kotlin/chat/bipe/app/chatlist/MessageSearch.kt"
+        ]
       },
       "web": {
         "status": "n/a",
@@ -3073,12 +3097,18 @@
       "id": "group-unban",
       "name": "Banned members list and unban in groups (bipe#675)",
       "ios": {
-        "status": "planned",
-        "issue": 675
+        "status": "built",
+        "evidence": [
+          "bipe-app/ios/Bipe/Groups/GroupMembersModel.swift",
+          "bipe-app/ios/Bipe/Groups/GroupMembersView.swift"
+        ]
       },
       "android": {
-        "status": "planned",
-        "issue": 675
+        "status": "built",
+        "evidence": [
+          "bipe-app/android/app/src/main/kotlin/chat/bipe/app/groups/GroupMembersModel.kt",
+          "bipe-app/android/app/src/main/kotlin/chat/bipe/app/groups/GroupMembersScreen.kt"
+        ]
       },
       "web": {
         "status": "n/a",
@@ -3095,12 +3125,18 @@
       "id": "settings-rows-wired",
       "name": "Every settings row works: appearance, media quality, live location (bipe#676)",
       "ios": {
-        "status": "planned",
-        "issue": 676
+        "status": "built",
+        "evidence": [
+          "bipe-app/ios/Bipe/Settings/SettingsGroupView.swift",
+          "bipe-app/ios/Bipe/BipeApp.swift"
+        ]
       },
       "android": {
-        "status": "planned",
-        "issue": 676
+        "status": "built",
+        "evidence": [
+          "bipe-app/android/app/src/main/kotlin/chat/bipe/app/settings/SettingsScreens.kt",
+          "bipe-app/android/app/src/main/kotlin/chat/bipe/app/BipeTheme.kt"
+        ]
       },
       "web": {
         "status": "n/a",
@@ -3279,12 +3315,17 @@
       "id": "notification-sender-photo",
       "name": "Sender photo in iOS notifications, conversations on Android (bipe#771)",
       "ios": {
-        "status": "planned",
-        "issue": 771
+        "status": "built",
+        "evidence": [
+          "bipe-app/ios/NotificationService/CommunicationNotification.swift"
+        ]
       },
       "android": {
-        "status": "planned",
-        "issue": 771
+        "status": "built",
+        "evidence": [
+          "bipe-app/android/app/src/main/kotlin/chat/bipe/app/notifications/PhoneNotifications.kt",
+          "bipe-app/android/app/src/main/kotlin/chat/bipe/app/share/ShareShortcuts.kt"
+        ]
       },
       "web": {
         "status": "n/a",
@@ -3301,12 +3342,16 @@
       "id": "group-privacy-settings",
       "name": "Group privacy settings: who can join, history for new members, address (bipe#772)",
       "ios": {
-        "status": "planned",
-        "issue": 772
+        "status": "built",
+        "evidence": [
+          "bipe-app/ios/Bipe/Groups/GroupPrivacy.swift"
+        ]
       },
       "android": {
-        "status": "planned",
-        "issue": 772
+        "status": "built",
+        "evidence": [
+          "bipe-app/android/app/src/main/kotlin/chat/bipe/app/groups/GroupPrivacy.kt"
+        ]
       },
       "web": {
         "status": "n/a",
@@ -3323,12 +3368,16 @@
       "id": "archived-groups",
       "name": "Archived groups: an upgraded group points to its new group (bipe#773)",
       "ios": {
-        "status": "planned",
-        "issue": 773
+        "status": "built",
+        "evidence": [
+          "bipe-app/ios/Bipe/Timeline/RoomUpgrade.swift"
+        ]
       },
       "android": {
-        "status": "planned",
-        "issue": 773
+        "status": "built",
+        "evidence": [
+          "bipe-app/android/app/src/main/kotlin/chat/bipe/app/timeline/RoomUpgrade.kt"
+        ]
       },
       "web": {
         "status": "n/a",

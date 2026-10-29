@@ -3270,12 +3270,16 @@
       "id": "archived-groups",
       "name": "Archived groups: an upgraded group points to its new group (bipe#773)",
       "ios": {
-        "status": "planned",
-        "issue": 773
+        "status": "built",
+        "evidence": [
+          "bipe-app/ios/Bipe/Timeline/RoomUpgrade.swift"
+        ]
       },
       "android": {
-        "status": "planned",
-        "issue": 773
+        "status": "built",
+        "evidence": [
+          "bipe-app/android/app/src/main/kotlin/chat/bipe/app/timeline/RoomUpgrade.kt"
+        ]
       },
       "web": {
         "status": "n/a",

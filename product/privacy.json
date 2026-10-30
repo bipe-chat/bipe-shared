@@ -1,7 +1,7 @@
 {
   "$comment": "Thing names start in lower case: pages put them after a level word. Who can read what (ADR 0109). Feeds /quem-pode-ler/ on bipe-web, its summary on the e2ee feature page and the privacy tentpole. Facts only from what runs today; each thing names the data.json items it explains. Source of the facts: bipe/docs/security.md rule 13 and 'Privacy: honest limits'. Validated by tools/gen-product-doc.mjs.",
   "version": 1,
-  "date": "2026-10-27",
+  "date": "2026-10-30",
   "feature": "e2ee",
   "tentpole": "no-ads",
   "slug": { "pt": "quem-pode-ler", "en": "who-can-read" },
@@ -10,8 +10,8 @@
     {
       "id": "content",
       "register": ["messages", "media"],
-      "pt": "o que você escreve, fotos, áudios e arquivos",
-      "en": "what you write, photos, voice messages and files"
+      "pt": "o que você escreve, fotos, áudios, arquivos, localizações compartilhadas e chamadas",
+      "en": "what you write, photos, voice messages, files, shared locations and calls"
     },
     {
       "id": "room",
@@ -92,11 +92,23 @@
       "access": { "content": "no", "room": "no", "who-when": "partial", "connection": "no", "archive": "no" },
       "pt": {
         "name": "A Apple, que entrega as notificações do iPhone",
-        "note": "Recebe só um aviso de que chegou mensagem, com o código da conversa. No Bipe Next, recebe também um código aleatório para o celular escolher a conta, sem o ID dela. O texto não passa pela Apple: o app busca a mensagem no servidor do Bipe e abre no celular."
+        "note": "Recebe só um aviso de que chegou mensagem, com o código da conversa. No app do Bipe, recebe também um código aleatório para o celular escolher a conta, sem o ID dela. O texto não passa pela Apple: o app busca a mensagem no servidor do Bipe e abre no celular."
       },
       "en": {
         "name": "Apple, which delivers iPhone notifications",
-        "note": "Gets only a signal that a message arrived, with the chat's ID. In Bipe Next it also gets a random code so the phone selects the account, without the account ID. The text does not pass through Apple: the app fetches the message from the Bipe server and opens it on the phone."
+        "note": "Gets only a signal that a message arrived, with the chat's ID. In the Bipe app it also gets a random code so the phone selects the account, without the account ID. The text does not pass through Apple: the app fetches the message from the Bipe server and opens it on the phone."
+      }
+    },
+    {
+      "id": "google",
+      "access": { "content": "no", "room": "no", "who-when": "partial", "connection": "no", "archive": "no" },
+      "pt": {
+        "name": "O Google, que entrega as notificações do Android",
+        "note": "Recebe pelo Firebase só um aviso de que chegou mensagem, com o código da conversa e um código aleatório para o celular escolher a conta, sem o ID dela. O texto não passa pelo Google: o app busca a mensagem no servidor do Bipe e abre no celular."
+      },
+      "en": {
+        "name": "Google, which delivers Android notifications",
+        "note": "Gets through Firebase only a signal that a message arrived, with the chat's ID and a random code so the phone selects the account, without the account ID. The text does not pass through Google: the app fetches the message from the Bipe server and opens it on the phone."
       }
     },
     {
@@ -163,7 +175,7 @@
       },
       {
         "q": "Algum dado sai do Brasil?",
-        "a": "O servidor fica em São Paulo. A notificação do iPhone passa pela Apple, só com um código e sem o texto da mensagem. A lista completa está na página da LGPD."
+        "a": "O servidor fica em São Paulo. A notificação passa pela Apple no iPhone e pelo Google no Android, só com um código e sem o texto da mensagem. A lista completa está na página da LGPD."
       },
       {
         "q": "Que tranca é essa?",
@@ -225,7 +237,7 @@
       },
       {
         "q": "Does any data leave Brazil?",
-        "a": "The server is in São Paulo. iPhone notifications pass through Apple, with only an ID and without the message text. The full list is on the LGPD page."
+        "a": "The server is in São Paulo. Notifications pass through Apple on iPhone and Google on Android, with only an ID and without the message text. The full list is on the LGPD page."
       },
       {
         "q": "What kind of lock is it?",

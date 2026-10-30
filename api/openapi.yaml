@@ -410,6 +410,52 @@ paths:
                       - { $ref: "#/components/schemas/RemoteBanner" }
                       - { type: "null" }
         "429": { $ref: "#/components/responses/Error" }
+  /v1/mcp:
+    post:
+      summary: Public MCP server, read-only public data (ADR 0130, ADR 0210, bipe#438)
+      x-summary-pt: "Servidor MCP público: um assistente confere @ e selo de empresa"
+      security: []
+      description: >
+        No auth. A stateless MCP server over Streamable HTTP (MCP 2025-06-18) for AI assistants. The edge serves it
+        as https://mcp.bipe.chat/mcp. One JSON-RPC 2.0 message per POST, answered as application/json; no session,
+        no server-sent events. Methods: initialize, ping, tools/list, tools/call. A notification or a response
+        gets 202 with no body. Tools: the surface public tools of registries/mcp-tools.json (resolve_handle,
+        get_public_profile, check_cnpj_seal). Each answer holds only what the public /@handle page shows (bipe-shared
+        docs/mcp.md). A JSON-RPC error answers 200 with an error object; a body that is not JSON answers 400 with a
+        JSON-RPC parse error. 60 per IP per minute.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [jsonrpc, method]
+              properties:
+                jsonrpc: { type: string, enum: ["2.0"] }
+                id: { oneOf: [{ type: string }, { type: integer }] }
+                method: { type: string }
+                params: { type: object }
+      responses:
+        "200":
+          description: A JSON-RPC 2.0 response with result or error
+          content:
+            application/json:
+              schema:
+                type: object
+                required: [jsonrpc]
+                properties:
+                  jsonrpc: { type: string, enum: ["2.0"] }
+                  id: { oneOf: [{ type: string }, { type: integer }, { type: "null" }] }
+                  result: { type: object }
+                  error:
+                    type: object
+                    required: [code, message]
+                    properties:
+                      code: { type: integer }
+                      message: { type: string }
+        "202": { description: A notification or a response was accepted; no body }
+        "400": { description: The body is not JSON; JSON-RPC parse error }
+        "429": { $ref: "#/components/responses/Error" }
   /v1/assistants/{userId}:
     get:
       summary: Whether an account is a registered AI assistant (ADR 0210, bipe#867)

@@ -1,0 +1,80 @@
+{
+  "id": "drafts",
+  "title": "Assistant drafts",
+  "flow": "chat",
+  "summary": "Drafts that the user's own assistant wrote through bipe-mcp (draft_message). A banner above the composer in the target chat, and a list of all drafts. The user edits, sends or discards each one. Nothing is sent until the user taps Send (ADR 0210).",
+  "types": {
+    "AssistantDraft": {
+      "eventId": { "type": "string", "description": "The draft message in the drafts room." },
+      "roomId": { "type": "string", "description": "The target chat, from the chat.bipe.draft field." },
+      "roomName": { "type": "string", "description": "RoomInfo.displayName of the target chat." },
+      "body": { "type": "string", "description": "The draft text (body of the m.text message)." },
+      "replyTo": { "type": "string", "optional": true, "description": "Event the sent message replies to." },
+      "threadRoot": { "type": "string", "optional": true, "description": "Thread the sent message goes into." },
+      "client": { "type": "string", "description": "Name of the MCP client that wrote the draft, for example Claude Desktop." },
+      "createdAt": { "type": "date", "description": "EventTimelineItem.timestamp." }
+    }
+  },
+  "state": {
+    "draftsRoomId": { "type": "string", "optional": true, "description": "room_id of the global account data chat.bipe.drafts_room. Absent: no drafts room yet, so no drafts." },
+    "drafts": { "type": "list", "of": { "type": "AssistantDraft", "description": "One draft." }, "description": "Every message of the drafts room that draftFromEvent shows (test-vectors/drafts.json), newest first." },
+    "currentRoomDrafts": { "type": "list", "of": { "type": "AssistantDraft", "description": "One draft." }, "description": "The drafts whose roomId is the open chat. The banner shows the newest; a count shows when there are more." },
+    "sending": { "type": "bool", "description": "A send is in progress. Send and Discard are off." },
+    "failed": { "type": "bool", "description": "The last send failed: bipe_app_drafts_send_failed. The draft stays." }
+  },
+  "actions": {
+    "appear": { "effect": "Client.accountData for chat.bipe.drafts_room. With a room ID: Client.getRoom, then the room timeline. Each item's raw event (LazyTimelineItemProvider.debugInfo originalJson) goes through draftFromEvent with the user's own ID and the joined rooms; the shown ones fill drafts. The list updates live from the timeline." },
+    "openDraft": {
+      "params": { "eventId": { "type": "string", "description": "The draft." } },
+      "effect": "From the list: opens the target chat with that draft in the banner."
+    },
+    "edit": {
+      "params": { "eventId": { "type": "string", "description": "The draft." } },
+      "effect": "Puts body in the composer of the target chat (with message-reply for replyTo), then redacts the draft. The text is now the user's own composer draft."
+    },
+    "send": {
+      "params": { "eventId": { "type": "string", "description": "The draft." } },
+      "effect": "Sends body in the target chat as the user's own message, as a reply to replyTo and in threadRoot when present, with no AI marker (ADR 0210). After the send succeeds, Timeline.redactEvent on the draft in the drafts room. On failure: failed, and the draft stays."
+    },
+    "discard": {
+      "params": { "eventId": { "type": "string", "description": "The draft." } },
+      "effect": "Timeline.redactEvent on the draft. It disappears on every device of the user."
+    },
+    "openList": { "effect": "Opens the list of all drafts (from the chat list menu, shown only when drafts is not empty)." }
+  },
+  "strings": [
+    "bipe_app_drafts_banner",
+    "bipe_app_drafts_title",
+    "bipe_app_drafts_send",
+    "bipe_app_drafts_edit",
+    "bipe_app_drafts_discard",
+    "bipe_app_drafts_empty",
+    "bipe_app_drafts_send_failed",
+    "bipe_app_drafts_nothing_sent"
+  ],
+  "sdk": [
+    "Client.accountData",
+    "Client.setAccountData",
+    "Client.createRoom",
+    "Client.getRoom",
+    "Client.rooms",
+    "Room.timeline",
+    "Timeline.addListener",
+    "EventTimelineItem.sender",
+    "EventTimelineItem.timestamp",
+    "LazyTimelineItemProvider.debugInfo",
+    "Timeline.send",
+    "Timeline.sendReply",
+    "Timeline.redactEvent",
+    "RoomInfo.displayName"
+  ],
+  "parity": ["assistant-drafts"],
+  "notes": [
+    "Protocol: bipe-shared docs/drafts-room.md. Names: registries/drafts.json. Rules: test-vectors/drafts.json (draftFromEvent).",
+    "The drafts room never shows in the chat list, search, share targets, forward targets or the unread count. Hide it by the room ID in chat.bipe.drafts_room.",
+    "The apps never create the drafts room just to read. The writer (bipe-mcp) creates it on the first draft_message: Client.createRoom, encrypted, private, no invites, name bipe_app_drafts_title, then Client.setAccountData chat.bipe.drafts_room. When the account data already has a room, every device uses it and never makes a second one.",
+    "A draft from another account, for a room the user is not in, or longer than bodyMaxLength is never shown (draftFromEvent).",
+    "bipe_app_drafts_nothing_sent shows under the banner the first time a draft appears on a device.",
+    "Out of scope now: syncing the user's own composer drafts between devices through this room (ADR 0210 consequences)."
+  ]
+}

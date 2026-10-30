@@ -7,6 +7,7 @@ import { fileURLToPath } from "node:url";
 import { buildBrCode, crc16, pixCheck, pixMarkLines, pixTxid } from "./lib/pix.mjs";
 import { cvmLines } from "./lib/cvm.mjs";
 import { noticeLinkClickable } from "./lib/notice.mjs";
+import { canonicalJson, checkMoved, matrixKey, movedEnvelope, moveError, sentAfterMove, signAs, signedBytes } from "./lib/moves.mjs";
 import { loadSchedulingVectors, writeSchedulingApiFixture } from "./lib/scheduling-vectors.mjs";
 import { photoDistance, photoHash, photoMatches, profileFactLines, relationshipNameWarning, stickerEmojiKey, stickerMatches, stickerQueryTags, stickerSearchFold, newestDmRooms, clearedChatHidden, clearedChatKeepsEvent, clearedChatMarker, clearedChatsWithClear, compareAppVersions, extractInviteCode, handleProblem, isBipeUserID, handleSuggestions, pinReminderNext, pinProblem, remoteBannerState, normalizeCnpj, normalizePhone, displayPhone, handleSkeleton, loadRegistries, normalize, scamMatchIDs, scamWarningKind, trustFacts } from "./lib/registries.mjs";
 
@@ -759,3 +760,65 @@ write("photo-match.json", {
     return { name, gridA, gridB, hashA, hashB, distance: photoDistance(hashA, hashB), matches: photoMatches(hashA, hashB, reg) };
   }),
 });
+
+// --- Account move (docs/move-statements.md, bipe-chat/bipe#693) ----------------------------------------------
+// TEST-ONLY Ed25519 master keys (seeds 51..51 old account, 52..52 new account, 53..53 another key). The moved
+// statement uses the badge test key (seed 01..01, kid test-only-2026-10).
+{
+  const oldMaster = keyFromSeed("51".repeat(32));
+  const newMaster = keyFromSeed("52".repeat(32));
+  const strayKey = keyFromSeed("53".repeat(32));
+  const pinned = { old: matrixKey(oldMaster), new: matrixKey(newMaster) };
+  const base = { type: "chat.bipe.move", v: 1, old_user_id: "@k7m2q9x4:antigo.exemplo.br", new_user_id: "@p3n8w1z6:bipe.net.br", new_master_key: pinned.new, ts: NOW };
+  const both = (statement, oldKey = oldMaster, newKey = newMaster) => signAs(signAs(statement, statement.old_user_id, oldKey), statement.new_user_id, newKey);
+  const valid = both(base);
+  const moveCases = [
+    { name: "valid", statement: valid, expect: "valid" },
+    { name: "valid with unsigned data", statement: { ...valid, unsigned: { note: "not signed" } }, expect: "valid" },
+    { name: "old signature by a key that is not pinned", statement: both(base, strayKey), expect: "invalid_old_signature" },
+    { name: "old signature missing", statement: signAs(base, base.new_user_id, newMaster), expect: "invalid_old_signature" },
+    { name: "new signature by another key", statement: both(base, oldMaster, strayKey), expect: "invalid_new_signature" },
+    { name: "new_master_key is not the pinned key", statement: both({ ...base, new_master_key: matrixKey(strayKey) }, oldMaster, strayKey), expect: "new_key_not_pinned" },
+    { name: "ts changed after signing", statement: { ...valid, ts: NOW + 60 }, expect: "invalid_old_signature" },
+    { name: "new_user_id changed after signing", statement: { ...valid, new_user_id: "@outro:bipe.net.br", signatures: { ...valid.signatures, "@outro:bipe.net.br": valid.signatures[base.new_user_id] } }, expect: "invalid_old_signature" },
+    { name: "same account", statement: both({ ...base, new_user_id: base.old_user_id }), expect: "same_account" },
+    { name: "version 2", statement: both({ ...base, v: 2 }), expect: "unsupported_version" },
+    { name: "unknown field", statement: both({ ...base, handle: "ana" }), expect: "malformed" },
+    { name: "wrong type", statement: both({ ...base, type: "m.move" }), expect: "malformed" },
+  ];
+  for (const c of moveCases) {
+    const result = moveError(c.statement, pinned) ?? "valid";
+    if (result !== c.expect) throw new Error(`moves: ${c.name}: expected ${c.expect}, got ${result}`);
+  }
+  const moved = NOW + 72 * 3600;
+  const movedPayload = { typ: "moved", sub: base.old_user_id, new: base.new_user_id, moved, iat: moved };
+  const goodMoved = movedEnvelope(movedPayload, KID, testKey);
+  const movedCases = [
+    { name: "valid", envelope: goodMoved, subject: base.old_user_id, expect: "valid", payload: movedPayload },
+    { name: "signed by another key", envelope: movedEnvelope(movedPayload, KID, otherKey), subject: base.old_user_id, expect: "invalid_signature" },
+    { name: "unknown kid", envelope: { ...goodMoved, kid: "test-only-unknown" }, subject: base.old_user_id, expect: "unknown_kid" },
+    { name: "payload changed after signing", envelope: { ...goodMoved, payload: Buffer.from(JSON.stringify({ ...movedPayload, new: "@outro:bipe.net.br" })).toString("base64url") }, subject: base.old_user_id, expect: "invalid_signature" },
+    { name: "for another account", envelope: goodMoved, subject: "@outro:antigo.exemplo.br", expect: "wrong_subject" },
+    { name: "badge, not a moved statement", envelope: movedEnvelope({ ...movedPayload, typ: undefined, lvl: "pix" }, KID, testKey), subject: base.old_user_id, expect: "malformed" },
+  ];
+  for (const c of movedCases) {
+    const got = checkMoved(c.envelope, c.subject, publicKeys);
+    if ((got.error ?? "valid") !== c.expect) throw new Error(`moves: moved ${c.name}: expected ${c.expect}, got ${got.error ?? "valid"}`);
+  }
+  const afterCases = [
+    { name: "one second before the move", originServerTs: moved * 1000 - 1000, expect: false },
+    { name: "at the move", originServerTs: moved * 1000, expect: true },
+    { name: "after the move", originServerTs: moved * 1000 + 5000, expect: true },
+  ];
+  for (const c of afterCases) if (sentAfterMove(c.originServerTs, moved) !== c.expect) throw new Error(`moves: ${c.name}`);
+  write("moves.json", {
+    $comment: "Generated by tools/gen-test-vectors.mjs. Account move, docs/move-statements.md (bipe-chat/bipe#693). TEST-ONLY keys, never in a release build. move: check each statement against pinned (the master keys the core pinned, Matrix unpadded base64); expect valid or the error id. signedBytes of the valid statement is its canonical JSON without signatures and unsigned. moved: check each envelope for subject with badgeKeys; expect valid (then the payload equals the given one) or the error id. afterMove: whether a message from the old Matrix ID gets the warning.",
+    pinned,
+    signedBytes: signedBytes(valid).toString("utf8"),
+    move: moveCases,
+    badgeKeys: publicKeys,
+    moved: movedCases,
+    afterMove: { moved, cases: afterCases },
+  });
+  if (canonicalJson({ b: 1, a: [true, null, "é"] }) !== '{"a":[true,null,"é"],"b":1}') throw new Error("moves: canonical JSON");
+}

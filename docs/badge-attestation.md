@@ -17,6 +17,7 @@ A verified badge is a statement signed by an attestation issuer: the Bipe verifi
 - `kid` selects the public key. Unknown `kid` means invalid.
 - `iss`, optional: the issuer ID (see "Issuer"). Absent means `bipe`. Together with `kid` it selects the key, before the signature check. The payload repeats it under the signature.
 - Algorithm: Ed25519 (Swift CryptoKit `Curve25519.Signing`, Android Ed25519 via the platform provider or Tink).
+- The same envelope and badge key carry the **moved statement** of the account move (`typ: "moved"`). Its format and the move statement are in `docs/move-statements.md`.
 
 ## Payload
 

@@ -40,7 +40,7 @@
     },
     "resend": {
       "params": { "index": { "type": "int", "description": "A sent slot." } },
-      "effect": "Opens the system share sheet again with the same link. An invite made on another phone has no link here: opens invite-qr."
+      "effect": "Opens the system share sheet again with the same link. An invite made on another phone has no link here: opens invites, where its row opens invite-qr."
     },
     "replaceExpired": {
       "params": { "index": { "type": "int", "description": "An expired slot." } },

@@ -297,6 +297,9 @@ ${reg.workHours.defaultDays.map((d) => `        (day: ${d.day}, ranges: [${d.ran
     public static let assistantSendAccountDataType = ${swiftString(reg.mcpTools.personalSend.accountDataType)}
     public static let assistantMarkerField = ${swiftString(reg.mcpTools.personalSend.markerField)}
     public static let assistantClientMaxLength = ${reg.mcpTools.personalSend.clientMaxLength}
+    /// Assistant readers (ADR 0130, bipe-chat/bipe#439): the room state event bipe-mcp sets, and its field. Rule: test-vectors/assistant-send.json readers.
+    public static let assistantReaderEventType = ${swiftString(reg.mcpTools.readerMarker.eventType)}
+    public static let assistantReaderField = ${swiftString(reg.mcpTools.readerMarker.field)}
 
     /// Stickers (bipe ADR 0205, bipe-chat/bipe#837; registries/stickers.json). Search rules: test-vectors/sticker-search.json.
     public static let stickerImportMaxBytes = ${reg.stickers.importMaxBytes}
@@ -684,6 +687,9 @@ ${reg.workHours.defaultDays.map((d) => `        ${d.day} to listOf(${d.ranges.ma
     const val ASSISTANT_SEND_ACCOUNT_DATA_TYPE = ${kotlinString(reg.mcpTools.personalSend.accountDataType)}
     const val ASSISTANT_MARKER_FIELD = ${kotlinString(reg.mcpTools.personalSend.markerField)}
     const val ASSISTANT_CLIENT_MAX_LENGTH = ${reg.mcpTools.personalSend.clientMaxLength}
+    /** Assistant readers (ADR 0130, bipe-chat/bipe#439): the room state event bipe-mcp sets, and its field. Rule: test-vectors/assistant-send.json readers. */
+    const val ASSISTANT_READER_EVENT_TYPE = ${kotlinString(reg.mcpTools.readerMarker.eventType)}
+    const val ASSISTANT_READER_FIELD = ${kotlinString(reg.mcpTools.readerMarker.field)}
 
     /** Stickers (bipe ADR 0205, bipe-chat/bipe#837; registries/stickers.json). Search rules: test-vectors/sticker-search.json. */
     const val STICKER_IMPORT_MAX_BYTES = ${reg.stickers.importMaxBytes}

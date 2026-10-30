@@ -296,7 +296,7 @@ Bipe is an experiment by Envisioning. The code is open source and on GitHub, so 
 
 ## App Privacy
 
-Source: `product/data.json` and the bipe-app code (30 October 2026). The answers must come from bipe-app, Bipe's app since ADR 0143. Open (unverified, 30 October 2026): bipe-app `ios/` has no `PrivacyInfo.xcprivacy` yet, so the privacy manifest cannot be checked against this table. The archived fork's manifest is no longer a source. Bipe does not track (`NSPrivacyTracking` is false), so no data type is used for tracking. The app has no telemetry (bipe-chat/bipe#55): no Sentry, no PostHog, so no crash or performance data leaves the phone.
+Source: bipe-app `ios/Bipe/PrivacyInfo.xcprivacy` (with the manifests of the two extensions), checked against `product/data.json` and the bipe-app code (30 October 2026). The manifest and this table must say the same. Bipe does not track (`NSPrivacyTracking` is false), so no data type is used for tracking. The app has no telemetry (bipe-chat/bipe#55): no Sentry, no PostHog, so no crash or performance data leaves the phone.
 
 | Data type | Collected | Linked to the person | Purpose | data.json item |
 |---|---|---|---|---|
@@ -315,6 +315,7 @@ Decisions (21 October 2026, mz can overrule):
 
 - Product Interaction is linked: `app-growth` keys each account by an HMAC with a secret the server holds, so the server can link it back to the account.
 - Crash Data and Performance Data are not collected: nothing in the app produces them since bipe-chat/bipe#55. Problem-report logs are Other Diagnostic Data.
+- Phone Number is declared (30 October 2026): the number a person links to the account stays on the server, encrypted (`phone-number` in `data.json`).
 - Location, Contacts, Photos or Videos and Audio Data stay declared. Since `e2ee-only-rooms` (parity.json, bipe-chat/bipe#78) the apps and the server make only end-to-end encrypted rooms, so the server cannot read them in chats. Only sticker packs stay readable by the server (ADR 0033: pack images are account data or room state, not encrypted).
 - Contacts includes the address-book lookup. `data.json` has no item for the lookup yet, so its retention is open (unverified, 30 October 2026).
 

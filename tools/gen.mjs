@@ -22,6 +22,7 @@ import { generateDmSelection } from "./lib/gen-dm-selection.mjs";
 import { generateDmPowerLevels } from "./lib/gen-dm-power-levels.mjs";
 import { generateMessageFormatting } from "./lib/gen-message-formatting.mjs";
 import { generateRelationshipNames } from "./lib/gen-relationship-names.mjs";
+import { generateStoreCaptures, loadStoreCaptures, STORE_CAPTURES_PATH } from "./lib/store-captures.mjs";
 
 const root = join(dirname(fileURLToPath(import.meta.url)), "..");
 const args = process.argv.slice(2);
@@ -813,6 +814,10 @@ if (appIndex >= 0 || existsSync(appOut)) {
   writeFileSync(join(kotlinMain, "kotlin", ...KOTLIN_PACKAGE.split("."), "BipeScreen.kt"), appPost(appScreens("kotlin"), "kotlin"));
   writeFileSync(join(kotlinMain, "kotlin", ...KOTLIN_PACKAGE.split("."), "BipeDmPowerLevels.kt"),
     appPost(generateDmPowerLevels(reg.dmPowerLevels, "kotlin", KOTLIN_HEADER, kotlinString), "kotlin"));
+  // Store captures (bipe-chat/bipe#457): the sample data of the Android capture source, a test source set only.
+  const storeHeader = HEADER.replace("bipe-shared/registries and bipe-shared/strings", "bipe-shared/product/store-captures.json and product/cast.json");
+  mkdirSync(dirname(join(appOut, STORE_CAPTURES_PATH)), { recursive: true });
+  writeFileSync(join(appOut, STORE_CAPTURES_PATH), appPost(generateStoreCaptures(loadStoreCaptures(root), reg, kotlinString, `${KOTLIN_LICENSE}${storeHeader}`), "kotlin"));
   // Colour tokens (bipe-chat/bipe#551).
   const TOKENS_HEADER = HEADER.replace("bipe-shared/registries and bipe-shared/strings", "bipe-shared/design/tokens.json");
   writeFileSync(join(swiftDir, "BipeColors.swift"), appPost(`${TOKENS_HEADER}\n${generateColors("swift")}`, "swift"));

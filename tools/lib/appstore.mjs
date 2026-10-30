@@ -34,7 +34,7 @@ export const FIELDS = {
     locale: {
       title: { limit: 30 },
       short_description: { limit: 80 },
-      full_description: { limit: 4000, optional: true },
+      full_description: { limit: 4000 },
     },
   },
 };
@@ -109,12 +109,18 @@ export function loadAppstore(root) {
   return parseAppstore(readFileSync(join(root, "product/appstore.md"), "utf8"));
 }
 
-// Android full description: its own field, else the iOS description of the same locale, then the
-// accessibility paragraph of ## Accessibility for that locale (bipe-chat/bipe#503).
+// Android full description of a locale (bipe-chat/bipe#457). Required: Play shows it in place of the iOS description.
+// The accessibility paragraph of ## Accessibility for that locale follows it (bipe-chat/bipe#503).
 export function playFullDescription(listing, locale) {
-  const text = listing.platforms.android?.locales[locale]?.full_description || listing.platforms.ios?.locales[locale]?.description || "";
+  const text = listing.platforms.android?.locales[locale]?.full_description ?? "";
   const a11y = listing.accessibility?.play?.[locale];
   return a11y && text ? `${text}\n\n${a11y}` : text;
+}
+
+// The Play listing of one locale, as edits.listings takes it (Google Play Developer API v3).
+export function playListing(listing, locale) {
+  const fields = listing.platforms.android?.locales[locale] ?? {};
+  return { language: locale, title: fields.title ?? "", shortDescription: fields.short_description ?? "", fullDescription: playFullDescription(listing, locale) };
 }
 
 // Accessibility Nutrition Labels (bipe-chat/bipe#503), from product/accessibility.json appStore. A label is yes when
@@ -207,7 +213,7 @@ export function checkAppstore(listing, ledger) {
       for (const field of Object.keys(fields))
         if (!spec.locale[field]) problems.push(`${key}.${locale}.${field}: unknown field`);
       for (const [field, rule] of Object.entries(spec.locale)) {
-        const value = key === "android" && field === "full_description" ? playFullDescription(listing, locale) : fields[field];
+        const value = fields[field];
         if (!value) {
           if (!rule.optional) problems.push(`${key}.${locale}.${field}: missing`);
           continue;

@@ -13,7 +13,7 @@ Format:
 
 - `## Platform: <iOS|Android> (<bundle id>)`. The production IDs wait for bipe-chat/bipe#419 and bipe-chat/bipe#157. Until then both blocks say `chat.bipe.app`.
 - `### <field>` before the first locale is a field for every locale. `### pt-BR` and `### en-US` start a locale. `#### <field>` is a field of that locale.
-- Android `full_description` is the iOS `description` of the same locale, unless the Android locale sets its own. The Play text adds the locale's paragraph of `## Accessibility`.
+- Android `full_description` is required in each locale. It starts from the iOS `description` and keeps only what the Android app does (bipe-chat/bipe#457). The Play text adds the locale's paragraph of `## Accessibility`.
 - `## Accessibility`: the App Store Accessibility Nutrition Labels and the Play accessibility paragraph, generated from `product/accessibility.json` by `node tools/check-appstore.mjs --write` (bipe-chat/bipe#503). Do not edit it by hand.
 - `## Screenshots`: one table per locale, panels in store order. `feature` is a feature id in `product.json`, or `-` for a panel with no capture: the image builder draws the Brazil network there. `title` is the feature name, short enough for 2 lines at store size. `sub` is one sentence of at most 2 lines. No highlight markup (bipe-chat/bipe#463).
 
@@ -179,6 +179,45 @@ Bipe Chat
 
 Saiba com quem está falando. Aviso de golpe e seu @ sem mostrar o número.
 
+#### full_description
+
+O Bipe é um app de mensagens gratuito, feito para você saber com quem está falando.
+
+AVISO DE GOLPE
+
+Se uma mensagem tem sinais de golpe, como Pix com pressa, troca de número, boleto ou print de comprovante, aparece um aviso embaixo dela. O aviso diz o que fazer: ligar para a pessoa no número que você já tem, ou conferir no app do banco se o dinheiro caiu.
+
+A checagem roda no seu celular. A mensagem não sai dali para ser conferida. A checagem pode deixar golpes passar ou avisar numa conversa legítima, então sem aviso não quer dizer que é seguro.
+
+QUEM VOCÊ NÃO CONHECE CHEGA COMO PEDIDO
+
+Quem não está nos seus contatos chega como pedido de conversa, separado das suas conversas. Você vê o pedido e decide se aceita. A regra vale no servidor do Bipe, não só no app.
+
+CONFIRA UM PIX ANTES DE PAGAR
+
+Recebeu uma chave Pix, um código copia e cola ou um print de QR code em outro app? Compartilhe com o Bipe e veja o nome, o valor e a chave que estão no código. O Bipe avisa se o código foi alterado. Não precisa de conta.
+
+SEM ANÚNCIO
+
+Nenhum anúncio em nenhuma tela. O Bipe não monta perfil seu para vender anúncio. Você nunca paga para usar o Bipe.
+
+SEU @, NÃO SEU NÚMERO
+
+Escolha um nome de usuário e passe só o @. O link bipe.chat/@você e o QR code abrem a conversa direto, sem mostrar seu número. Não tem lista nem busca: só te acha quem sabe o seu @.
+
+E MAIS
+
+• Conversas protegidas de ponta a ponta. Só quem está na conversa lê as mensagens. O Bipe não lê.
+• Sem código por SMS. Quem pega seu chip não pega sua conta.
+• Selo de CNPJ: empresa, escola ou associação prova o CNPJ e mostra o nome que está na Receita.
+• Grupos que só tocam quando é com você, e enquetes para decidir junto.
+• Stickers, inclusive feitos de uma foto.
+• Servidores no Brasil, de empresas brasileiras. Vale a lei brasileira, com a LGPD.
+
+Por enquanto, o Bipe abre por convite. Peça um código de convite a alguém que já usa o Bipe.
+
+O Bipe é um experimento da Envisioning. O código é aberto e está no GitHub, para qualquer pessoa conferir.
+
 ### en-US
 
 #### title
@@ -189,6 +228,44 @@ Bipe Chat
 
 Know who you're talking to. Scam warnings, and your @ without your number.
 
+#### full_description
+
+Bipe is a free messaging app, made so you know who you are talking to.
+
+SCAM WARNINGS
+
+If a message has scam signals, such as a rushed Pix, a new number, a boleto or a receipt screenshot, a warning appears under it. The warning says what to do: call the person on the number you already have, or check in your bank app that the money arrived.
+
+The check runs on your phone. The message never leaves it to be checked. Checks can miss scams or warn about a legitimate chat, so no warning does not mean it is safe.
+
+PEOPLE YOU DON'T KNOW ARRIVE AS A REQUEST
+
+People who aren't in your contacts arrive as a message request, apart from your chats. You see the request and decide whether to accept it. The rule holds on the Bipe server, not only in the app.
+
+CHECK A PIX BEFORE YOU PAY
+
+Got a Pix key, a copy-and-paste code or a QR code screenshot in another app? Share it to Bipe and see the name, the amount and the key in the code. Bipe warns you if the code was changed. You don't need an account.
+
+NO ADS
+
+No ads on any screen. Bipe builds no profile of you to sell ads. You never pay to use Bipe.
+
+YOUR @, NOT YOUR NUMBER
+
+Pick a username and share only your @. The link bipe.chat/@you and your QR code open a chat directly, without showing your number. There is no list and no search: only people who know your @ can find you.
+
+AND MORE
+
+• Chats encrypted end to end. Only the people in the chat can read the messages. Bipe can't.
+• No SMS codes. Whoever takes your SIM does not get your account.
+• Business seal: a company, school or association proves its CNPJ and shows the name on the federal register.
+• Groups that only ring when it's about you, and polls to decide together.
+• Stickers, including ones made from a photo.
+• Servers in Brazil, run by Brazilian companies. Brazilian law applies, including the LGPD.
+
+For now, Bipe opens by invite. Ask someone who uses it for an invite.
+
+Bipe is an experiment by Envisioning. The code is open source and on GitHub, so anyone can check it.
 ## Accessibility
 
 Generated from `product/accessibility.json` (`appStore`) by `node tools/check-appstore.mjs --write`. Do not edit by hand. The iPhone answers go to App Store Connect (bipe-app `node tools/asc.mjs accessibility`) only after the hand test with people who use these features (bipe-chat/bipe#505), because Apple asks to declare a label only when the common tasks work with it on.

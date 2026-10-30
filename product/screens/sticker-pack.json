@@ -40,11 +40,13 @@
     "MediaSource"
   ],
   "parity": [
-    "stickers"
+    "stickers",
+    "sticker-pack-share"
   ],
   "notes": [
     "Opens from a pack link (registries/stickers.json stickerPackLinkBase plus the room ID; the app handles it as a universal link and app link, and bipe-web serves the same path with the store links), and from message-actions viewStickerPack on a sticker that carries stickerPackField.",
     "Adding a pack sends no message: it changes only the user's account data and joins a public room with no messages.",
-    "A room with no im.ponies.room_emotes at stateKey, or a room that is not world_readable and that the user is not in: phase failed."
+    "A room with no im.ponies.room_emotes at stateKey, or a room that is not world_readable and that the user is not in: phase failed.",
+    "The author is the sender of the m.room.create event of the room (room state over the client-server API). After add, the room is a pack room that the chat list hides (sticker-picker notes)."
   ]
 }

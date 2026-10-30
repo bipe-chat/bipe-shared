@@ -512,13 +512,13 @@
       "places": ["server"],
       "pt": {
         "name": "Marcos de uso do app",
-        "what": "Por dia, quais marcos uma conta atingiu: conta criada, primeira entrada no app, primeira mensagem, contato verificado, convite enviado, convite usado, grupo criado, chamada iniciada, dia de uso e onde a pessoa usou o Bipe: iOS, Android ou web. A conta aparece só como um código derivado dela, nunca pelo nome de usuário. Sem conteúdo, sem IP, sem modelo do aparelho, sem sala e sem saber com quem a pessoa fala. O app não manda nada: o servidor tira isso do que ele já vê.",
+        "what": "Por dia, quais marcos uma conta atingiu: conta criada, primeira entrada no app, primeira mensagem, contato verificado, convite enviado, convite usado, grupo criado, chamada iniciada, quinto contato, dia de uso e onde a pessoa usou o Bipe: iOS, Android ou web. A conta aparece só como um código derivado dela, nunca pelo nome de usuário. Sem conteúdo, sem IP, sem modelo do aparelho, sem sala e sem saber com quem a pessoa fala. O app não manda nada: o servidor tira isso do que ele já vê.",
         "why": "Saber se o Bipe é útil para quem entra e em que passo as pessoas desistem.",
         "retention": "13 meses."
       },
       "en": {
         "name": "App milestones",
-        "what": "Per day, which milestones an account reached: account created, first sign-in, first message, contact verified, invite sent, invite used, group created, call started, day of use, and where the person used Bipe: iOS, Android or web. The account shows only as a code derived from it, never by username. No content, no IP address, no device model, no room and nothing about who the person talks to. The app sends nothing: the server takes this from what it already sees.",
+        "what": "Per day, which milestones an account reached: account created, first sign-in, first message, contact verified, invite sent, invite used, group created, call started, fifth contact, day of use, and where the person used Bipe: iOS, Android or web. The account shows only as a code derived from it, never by username. No content, no IP address, no device model, no room and nothing about who the person talks to. The app sends nothing: the server takes this from what it already sees.",
         "why": "To know whether Bipe is useful to people who join and at which step people give up.",
         "retention": "13 months."
       }

@@ -7,9 +7,10 @@ import { fileURLToPath } from "node:url";
 import { buildBrCode, crc16, pixCheck, pixMarkLines, pixTxid } from "./lib/pix.mjs";
 import { cvmLines } from "./lib/cvm.mjs";
 import { noticeLinkClickable } from "./lib/notice.mjs";
+import { b64url as reportB64, deriveKeyPair as hpkeKeyPair, encryptMedia, envelopeError, open as hpkeOpen, openReport, sealReport, verifyMedia, REPORT_INFO } from "./lib/reports.mjs";
 import { canonicalJson, checkMoved, matrixKey, movedEnvelope, moveError, sentAfterMove, signAs, signedBytes } from "./lib/moves.mjs";
 import { loadSchedulingVectors, writeSchedulingApiFixture } from "./lib/scheduling-vectors.mjs";
-import { assistantSendAllowed, assistantSender, draftFromEvent, photoDistance, photoHash, photoMatches, profileFactLines, relationshipNameWarning, stickerEmojiKey, stickerMatches, stickerQueryTags, stickerSearchFold, newestDmRooms, clearedChatHidden, clearedChatKeepsEvent, clearedChatMarker, clearedChatsWithClear, compareAppVersions, extractInviteCode, handleProblem, isBipeUserID, handleSuggestions, pinReminderNext, pinProblem, remoteBannerState, normalizeCnpj, normalizePhone, displayPhone, handleSkeleton, loadRegistries, normalize, scamMatchIDs, scamWarningKind, trustFacts } from "./lib/registries.mjs";
+import { assistantSendAllowed, assistantSender, draftFromEvent, photoDistance, photoHash, photoMatches, profileFactLines, relationshipNameWarning, stickerEmojiKey, stickerMatches, stickerQueryTags, stickerSearchFold, newestDmRooms, clearedChatHidden, bringPeopleReminder, clearedChatKeepsEvent, clearedChatMarker, clearedChatsWithClear, compareAppVersions, extractInviteCode, handleProblem, isBipeUserID, handleSuggestions, pinReminderNext, pinProblem, remoteBannerState, normalizeCnpj, normalizePhone, displayPhone, handleSkeleton, loadRegistries, normalize, scamMatchIDs, scamWarningKind, trustFacts } from "./lib/registries.mjs";
 
 const root = join(dirname(fileURLToPath(import.meta.url)), "..");
 const reg = loadRegistries(root);
@@ -232,6 +233,7 @@ const operatorsPayload = {
   version: 3,
   issued: LIST_ISSUED,
   expires: LIST_EXPIRES,
+  appeal_keys: { "test-only-appeal": reportB64(hpkeKeyPair(Buffer.alloc(32, 0x32)).pk) },
   operators: [
     {
       server_name: "bipe.net.br",
@@ -242,6 +244,7 @@ const operatorsPayload = {
       account_api: "https://api.bipe.net.br",
       push_egress: ["203.0.113.10/32", "2001:db8:10::/64"],
       signup: "open",
+      report_keys: { "test-only-report-bipe": reportB64(hpkeKeyPair(Buffer.alloc(32, 0x31)).pk) },
     },
     {
       server_name: "coop.exemplo.br",
@@ -252,6 +255,7 @@ const operatorsPayload = {
       account_api: "https://contas.coop.exemplo.br",
       push_egress: ["198.51.100.20/32"],
       signup: "invite",
+      report_keys: { "test-only-report-coop": reportB64(hpkeKeyPair(Buffer.alloc(32, 0x34)).pk) },
     },
     { server_name: "antigo.exemplo.br", name: "Cooperativa Antiga", status: "removed", joined: "2026-11-02", removed: "2027-01-15" },
   ],
@@ -406,7 +410,7 @@ write("notice-links.json", {
 const reservedSet = new Map();
 for (const [cat, names] of Object.entries(reg.reserved.categories)) for (const n of names) reservedSet.set(n, cat);
 
-const nameCases = ["Itaú", "ІТАÚ", "Nubаnk", "Banco  do   Brasil", "B4nco do Br4sil", "Receita Federal", "Bipe Oficial", "Maria Souza", "Ana", "gov.br", "Caixa Tem", "Novidades do Bipe", "Novidades Bipe", "Nоvidades do Bіpe"];
+const nameCases = ["Itaú", "ІТАÚ", "Nubаnk", "Banco  do   Brasil", "B4nco do Br4sil", "Receita Federal", "Bipe Oficial", "Maria Souza", "Ana", "gov.br", "Caixa Tem", "Novidades do Bipe", "Novidades Bipe", "Nоvidades do Bіpe", "Pé-de-Meía", "Ре de Meia", "Pé de Meia Oficial", "Bolsa Família", "CadÚnico", "Auxílio Gás", "Maria Bolsa"];
 write("normalization.json", {
   $comment: "normalize(): NFKD, strip combining marks, lowercase, fold homoglyphs (registries/homoglyphs.json), collapse whitespace. reserved: category if the normalised name is in registries/reserved-names.json.",
   vectors: nameCases.map((input) => {
@@ -575,11 +579,29 @@ write("handle-suggestions.json", {
 
 // --- Onboarding schedules (bipe-chat/bipe#202) --------------------------------
 
+const BP_DAY = 86_400_000;
+const BP_NOW = Date.UTC(2026, 10, 2, 15);
+const bpSlot = (status, daysAgo) => ({ status, sentAt: BP_NOW - daysAgo * BP_DAY });
+const bringCases = [
+  { name: "never asked", nowMs: BP_NOW, state: { declines: 0, lastAskAt: null, slots: [bpSlot("pending", 10)] } },
+  { name: "asked 6 days ago", nowMs: BP_NOW, state: { declines: 0, lastAskAt: BP_NOW - 6 * BP_DAY, slots: [bpSlot("pending", 10)] } },
+  { name: "asked exactly 7 days ago", nowMs: BP_NOW, state: { declines: 0, lastAskAt: BP_NOW - 7 * BP_DAY, slots: [bpSlot("pending", 7)] } },
+  { name: "pending 2 days only", nowMs: BP_NOW, state: { declines: 0, lastAskAt: BP_NOW - 8 * BP_DAY, slots: [bpSlot("pending", 2)] } },
+  { name: "pending exactly 3 days", nowMs: BP_NOW, state: { declines: 0, lastAskAt: BP_NOW - 8 * BP_DAY, slots: [bpSlot("pending", 3)] } },
+  { name: "expired one", nowMs: BP_NOW, state: { declines: 0, lastAskAt: BP_NOW - 8 * BP_DAY, slots: [bpSlot("used", 9), bpSlot("expired", 1)] } },
+  { name: "oldest wins", nowMs: BP_NOW, state: { declines: 1, lastAskAt: BP_NOW - 30 * BP_DAY, slots: [bpSlot("pending", 4), bpSlot("expired", 20), bpSlot("pending", 12)] } },
+  { name: "tie keeps slot order", nowMs: BP_NOW, state: { declines: 0, lastAskAt: BP_NOW - 8 * BP_DAY, slots: [bpSlot("pending", 5), bpSlot("expired", 5)] } },
+  { name: "two declines stop it", nowMs: BP_NOW, state: { declines: 2, lastAskAt: BP_NOW - 30 * BP_DAY, slots: [bpSlot("expired", 20)] } },
+  { name: "every slot joined", nowMs: BP_NOW, state: { declines: 0, lastAskAt: BP_NOW - 30 * BP_DAY, slots: [bpSlot("used", 20), bpSlot("used", 19), bpSlot("used", 18), bpSlot("used", 17)] } },
+  { name: "revoked leaves the pool", nowMs: BP_NOW, state: { declines: 0, lastAskAt: BP_NOW - 30 * BP_DAY, slots: [bpSlot("revoked", 20)] } },
+  { name: "no slots", nowMs: BP_NOW, state: { declines: 0, lastAskAt: BP_NOW - 30 * BP_DAY, slots: [] } },
+];
 const pinCases = [];
 for (const step of [0, 1, 2, 3, 4, 5, 9]) for (const result of ["right", "wrong", "later"]) pinCases.push({ step, result });
 write("onboarding-schedule.json", {
-  description: "Onboarding schedules (registries/onboarding.json pinReminder, bipe-chat/bipe#202). After a check at step with result (right, wrong, later): the next step and the days until the next reminder.",
+  description: "Onboarding schedules (registries/onboarding.json pinReminder, bipe-chat/bipe#202). After a check at step with result (right, wrong, later): the next step and the days until the next reminder. bringPeopleReminder (registries/onboarding.json bringPeople, bipe-chat/bipe#752): for state and nowMs, the slot the weekly reminder names ({ slot, kind }) or null. Times are Unix ms; status is the invite status.",
   pinReminder: pinCases.map((c) => ({ ...c, ...(({ step, gapDays }) => ({ nextStep: step, gapDays }))(pinReminderNext(c.step, c.result, reg)) })),
+  bringPeopleReminder: bringCases.map((c) => ({ ...c, expected: bringPeopleReminder(c.state, c.nowMs, reg) })),
 });
 
 // --- Invite codes ------------------------------------------------------------
@@ -814,6 +836,117 @@ write("assistant-send.json", {
     ["a client name over the limit", { msgtype: "m.text", body: "oi", [marker]: { client: "c".repeat(reg.mcpTools.personalSend.clientMaxLength + 1) } }],
   ].map(([name, content]) => ({ name, content, expected: assistantSender(content, reg) })),
 });
+// --- Sealed reports (docs/report-envelope.md, bipe-chat/bipe#697) -------------------------------------------
+// TEST-ONLY X25519 keys from fixed HPKE DeriveKeyPair input (ikm 31..31 operator bipe.net.br, 32..32 appeal,
+// 33..33 sender ephemeral, 34..34 operator coop.exemplo.br). The operator list vectors carry the same public keys.
+{
+  const keyOf = (byte) => hpkeKeyPair(Buffer.alloc(32, byte));
+  const operatorKey = keyOf(0x31);
+  const appealKey = keyOf(0x32);
+  const ephemeral = keyOf(0x33);
+  const hex = (b) => Buffer.from(b).toString("hex");
+  const keys = {
+    "test-only-report-bipe": { ikm: "31".repeat(32), sk: hex(operatorKey.sk), pk: reportB64(operatorKey.pk) },
+    "test-only-appeal": { ikm: "32".repeat(32), sk: hex(appealKey.sk), pk: reportB64(appealKey.pk) },
+    ephemeral: { ikm: "33".repeat(32), sk: hex(ephemeral.sk), pk: reportB64(ephemeral.pk) },
+  };
+  const mediaPlain = Buffer.from("TEST-ONLY reported photo bytes", "utf8");
+  const { ciphertext: mediaCipher, media } = encryptMedia(mediaPlain, { key: Buffer.alloc(32, 0x41), iv: Buffer.concat([Buffer.alloc(8, 0x42), Buffer.alloc(8)]), url: "mxc://bipe.net.br/TestOnlyMedia01" });
+  const reported = {
+    event: {
+      event_id: "$test-only-event-1", room_id: "!sala:bipe.net.br", sender: "@golpista:bipe.net.br", type: "m.room.encrypted", origin_server_ts: (NOW - 600) * 1000,
+      content: { algorithm: "m.megolm.v1.aes-sha2", ciphertext: "VEVTVC1PTkxZ", device_id: "TESTDEVICE", sender_key: "dGVzdA", session_id: "c2Vzc2lvbg" },
+      signatures: { "bipe.net.br": { "ed25519:a_test": "dGVzdC1vbmx5LXNpZ25hdHVyZQ" } },
+    },
+    decrypted: { type: "m.room.message", content: { msgtype: "m.text", body: "Oi, mãe! Troquei de número. Me manda um Pix de R$ 900 hoje?" } },
+  };
+  const photo = {
+    event: { event_id: "$test-only-event-2", room_id: "!sala:bipe.net.br", sender: "@golpista:bipe.net.br", type: "m.room.encrypted", origin_server_ts: (NOW - 590) * 1000, content: { algorithm: "m.megolm.v1.aes-sha2", ciphertext: "VEVTVC1PTkxZLTI" } },
+    decrypted: { type: "m.room.message", content: { msgtype: "m.image", body: "comprovante.jpg", file: { url: media.url, key: { kty: "oct", alg: "A256CTR", ext: true, key_ops: ["encrypt", "decrypt"], k: media.key }, iv: media.iv, hashes: { sha256: media.sha256 }, v: "v2" } } },
+    media: [media],
+  };
+  const body = {
+    events: [reported, photo],
+    context: [{ event: { event_id: "$test-only-event-0", room_id: "!sala:bipe.net.br", sender: "@reporter:coop.exemplo.br", type: "m.room.encrypted", origin_server_ts: (NOW - 700) * 1000, content: {} }, decrypted: { type: "m.room.message", content: { msgtype: "m.text", body: "Quem é?" } } }],
+    reason: "Diz que é minha filha e pede Pix.",
+    scores: { scam: 0.92 },
+  };
+  const envelope = {
+    v: 1, report_id: "3f2b8c1e-7a4d-4e9b-8c21-5d6f7a8b9c0d", to: "operator", kid: "test-only-report-bipe", category: "scam",
+    target_operator: "bipe.net.br", target_user: "@golpista:bipe.net.br", target_room: "!sala:bipe.net.br", reporter: "user", created: NOW,
+  };
+  const appealEnvelope = { ...envelope, report_id: "9a8b7c6d-5e4f-4a3b-9c2d-1e0f9a8b7c6d", to: "associacao", kid: "test-only-appeal", category: "impersonation", reporter: "flagger", flagger_id: "ong-exemplo" };
+  const cats = reg.reportCategories;
+  const sealedValid = sealReport(envelope, body, operatorKey.pk, { ephemeral });
+  const sealedAppeal = sealReport(appealEnvelope, { events: [reported] }, appealKey.pk, { ephemeral });
+  const sealCases = [
+    { name: "user report to the operator", sealed: sealedValid, recipient: "test-only-report-bipe", expect: "valid", envelope, body },
+    { name: "flagger report to the associação", sealed: sealedAppeal, recipient: "test-only-appeal", expect: "valid", envelope: appealEnvelope, body: { events: [reported] } },
+    { name: "wrong recipient key", sealed: sealedValid, recipient: "test-only-appeal", expect: "cannot_open" },
+    { name: "envelope changed after sealing", sealed: { ...sealedValid, envelope: reportB64(Buffer.from(JSON.stringify({ ...envelope, category: "spam" }))) }, recipient: "test-only-report-bipe", expect: "cannot_open" },
+    { name: "ciphertext changed", sealed: { ...sealedValid, ct: reportB64(Buffer.from(sealedValid.ct, "base64url").map((b, i) => (i === 0 ? b ^ 1 : b))) }, recipient: "test-only-report-bipe", expect: "cannot_open" },
+    { name: "sealed version 2", sealed: { ...sealedValid, v: 2 }, recipient: "test-only-report-bipe", expect: "unsupported_version" },
+    { name: "body without events", sealed: sealReport(envelope, { events: [] }, operatorKey.pk, { ephemeral }), recipient: "test-only-report-bipe", expect: "malformed_body" },
+  ];
+  const skOf = { "test-only-report-bipe": operatorKey.sk, "test-only-appeal": appealKey.sk };
+  for (const c of sealCases) {
+    const got = openReport(c.sealed, skOf[c.recipient], cats);
+    const result = got.error ?? "valid";
+    if (result !== c.expect) throw new Error(`reports: ${c.name}: expected ${c.expect}, got ${result}`);
+    if (c.expect === "valid" && (JSON.stringify(got.envelope) !== JSON.stringify(c.envelope) || JSON.stringify(got.body) !== JSON.stringify(c.body))) throw new Error(`reports: ${c.name}: opened content differs`);
+  }
+  const without = (key) => Object.fromEntries(Object.entries(envelope).filter(([k]) => k !== key));
+  const envelopeCases = [
+    { name: "valid user report", envelope, expect: "valid" },
+    { name: "valid room report without a user", envelope: { ...without("target_user") }, expect: "valid" },
+    { name: "version 2", envelope: { ...envelope, v: 2 }, expect: "unsupported_version" },
+    { name: "unknown category", envelope: { ...envelope, category: "politics" }, expect: "unknown_category" },
+    { name: "no target", envelope: (({ target_user, target_room, ...rest }) => rest)(envelope), expect: "no_target" },
+    { name: "user on another operator", envelope: { ...envelope, target_user: "@golpista:coop.exemplo.br" }, expect: "wrong_operator" },
+    { name: "flagger on spam", envelope: { ...envelope, reporter: "flagger", flagger_id: "ong-exemplo", category: "spam" }, expect: "not_flagger_category" },
+    { name: "flagger without flagger_id", envelope: { ...envelope, reporter: "flagger" }, expect: "malformed" },
+    { name: "user with flagger_id", envelope: { ...envelope, flagger_id: "ong-exemplo" }, expect: "malformed" },
+    { name: "unknown field", envelope: { ...envelope, reporter_ip: "203.0.113.5" }, expect: "malformed" },
+    { name: "report_id not a UUID v4", envelope: { ...envelope, report_id: "report-1" }, expect: "malformed" },
+    { name: "unknown recipient", envelope: { ...envelope, to: "core" }, expect: "malformed" },
+    { name: "created not an integer", envelope: { ...envelope, created: NOW + 0.5 }, expect: "malformed" },
+  ];
+  for (const c of envelopeCases) {
+    const result = envelopeError(c.envelope, cats) ?? "valid";
+    if (result !== c.expect) throw new Error(`reports: envelope ${c.name}: expected ${c.expect}, got ${result}`);
+  }
+  const tampered = Buffer.from(mediaCipher);
+  tampered[0] ^= 1;
+  const mediaCases = [
+    { name: "matches", media, ciphertext: mediaCipher.toString("base64"), expect: "valid", plaintext: mediaPlain.toString("base64") },
+    { name: "ciphertext changed", media, ciphertext: tampered.toString("base64"), expect: "hash_mismatch" },
+  ];
+  for (const c of mediaCases) {
+    const got = verifyMedia(c.media, Buffer.from(c.ciphertext, "base64"));
+    if ((got.error ?? "valid") !== c.expect || (c.plaintext && got.plaintext.toString("base64") !== c.plaintext)) throw new Error(`reports: media ${c.name}`);
+  }
+  // RFC 9180 test vector (DHKEM(X25519, HKDF-SHA256), HKDF-SHA256, ChaCha20Poly1305, base mode, first encryption):
+  // a platform checks its HPKE library against it before the Bipe vectors.
+  const rfc = {
+    info: "4f6465206f6e2061204772656369616e2055726e", ikmE: "909a9b35d3dc4713a5e72a4da274b55d3d3821a37e5d099e74a647db583a904b",
+    ikmR: "1ac01f181fdf9f352797655161c58b75c656a6cc2716dcb66372da835542e1df", pkR: "4310ee97d88cc1f088a5576c77ab0cf5c3ac797f3d95139c6c84b5429c59662a",
+    enc: "1afa08d3dec047a643885163f1180476fa7ddb54c6a8029ea33f95796bf2ac4a", aad: "436f756e742d30",
+    pt: "4265617574792069732074727574682c20747275746820626561757479",
+    ct: "1c5250d8034ec2b784ba2cfd69dbdb8af406cfe3ff938e131f0def8c8b60b4db21993c62ce81883d2dd1b51a28",
+  };
+  const H = (h) => Buffer.from(h, "hex");
+  if (hpkeOpen(hpkeKeyPair(H(rfc.ikmR)).sk, H(rfc.enc), H(rfc.info), H(rfc.aad), H(rfc.ct)).toString("hex") !== rfc.pt) throw new Error("reports: RFC 9180 vector");
+  write("reports.json", {
+    $comment: "Generated by tools/gen-test-vectors.mjs. Sealed reports, docs/report-envelope.md (bipe-chat/bipe#697). TEST-ONLY X25519 keys (HPKE DeriveKeyPair of the ikm bytes): never in a release build. keys: sk is hex, pk base64url. HPKE: RFC 9180 base mode, DHKEM(X25519, HKDF-SHA256), HKDF-SHA256, ChaCha20-Poly1305; info per recipient in infos. sealed: open each with the private key of recipient; expect valid (then the envelope and body equal the given ones) or the error id. envelopes: check each plain envelope. media: check the ciphertext against the media item and decrypt it (AES-256-CTR). rfc9180: the RFC test vector (hex) for the HPKE library.",
+    infos: REPORT_INFO,
+    keys,
+    sealed: sealCases.map(({ name, sealed, recipient, expect, envelope: e, body: b }) => ({ name, sealed, recipient, expect, ...(e ? { envelope: e, body: b } : {}) })),
+    envelopes: envelopeCases,
+    media: mediaCases,
+    rfc9180: rfc,
+  });
+}
+
 // --- Account move (docs/move-statements.md, bipe-chat/bipe#693) ----------------------------------------------
 // TEST-ONLY Ed25519 master keys (seeds 51..51 old account, 52..52 new account, 53..53 another key). The moved
 // statement uses the badge test key (seed 01..01, kid test-only-2026-10).

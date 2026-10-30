@@ -2,7 +2,7 @@
   "id": "room-link-open",
   "title": "Open a group link",
   "flow": "groups",
-  "summary": "Handles a matrix.to or matrix: link to a room, a room alias or an event (bipe#663): shows the group with its name, photo and member count, and joins it or asks to join. A group the person is in opens at once.",
+  "summary": "Handles a matrix.to or matrix: link to a room, a room alias or an event (bipe#663): shows the group with its name, photo and member count, and joins it or asks to join. A group the person is in opens at once. An event link opens the chat at that message (bipe#666).",
   "state": {
     "phase": {
       "type": "enum",
@@ -19,9 +19,9 @@
   "actions": {
     "open": {
       "params": { "url": { "type": "url", "description": "The link." } },
-      "effect": "parseMatrixEntityFrom reads the link. A user goes to profile-link-open (person-profile). A room, alias or event: when the person is already a joined member (Client.getRoom, membership joined), opens chat-timeline and closes. Else Client.getRoomPreviewFromRoomId (with the via servers) or Client.getRoomPreviewFromRoomAlias, then phase preview. A preview that fails with not found, or a space, is notFound. Join rule invite or private is inviteOnly."
+      "effect": "parseMatrixEntityFrom reads the link. A user goes to profile-link-open (person-profile). A room, alias or event: when the person is already a joined member (Client.getRoom, membership joined), opens chat-timeline and closes. For an event link (MatrixId.eventOnRoomId or eventOnRoomAlias), chat-timeline opens with focusEventId set to the event: it scrolls to the message with openOriginal and highlights it. Else Client.getRoomPreviewFromRoomId (with the via servers) or Client.getRoomPreviewFromRoomAlias, then phase preview. A preview that fails with not found, or a space, is notFound. Join rule invite or private is inviteOnly."
     },
-    "join": { "effect": "Client.joinRoomByIdOrAlias with the via servers. Success opens chat-timeline for the room and closes. A refusal (403) is inviteOnly; any other error is failed." },
+    "join": { "effect": "Client.joinRoomByIdOrAlias with the via servers. Success opens chat-timeline for the room, at the event for an event link, and closes. A refusal (403) is inviteOnly; any other error is failed." },
     "knock": { "effect": "Client.knock with no reason and the via servers. Success is knockSent." },
     "retry": { "effect": "Runs open again." },
     "close": { "effect": "Closes and goes back to where the user was." }
@@ -52,11 +52,12 @@
     "Client.joinRoomByIdOrAlias",
     "Client.knock"
   ],
-  "parity": ["matrix-links"],
+  "parity": ["matrix-links", "message-link-copy"],
   "notes": [
     "Accepted links: https://matrix.to/#/... and matrix: URIs, as parseMatrixEntityFrom reads them. Links on the old domain are not handled.",
     "Where a link comes from: a tapped link in a message (the message link handler tries profile and group links before the system), the matrix scheme from another app (iOS URL type matrix, Android intent filter with scheme matrix), and on Android an https://matrix.to intent filter without autoVerify: Bipe cannot verify matrix.to, so it opens only after the person picks Bipe. iOS does not take https://matrix.to from other apps: only verified universal links open an app, and the matrix.to page offers the matrix: link.",
-    "An event link opens the chat of its room when the person is a member. Default chosen (bipe#663): the chat opens at its newest messages, not at the event, because the timeline has no focused mode yet. mz can overrule.",
+    "An event link opens the chat of its room at the event (bipe#666), with the same focusEventId as chat-search openMessage. openOriginal back-paginates at most 5 pages; an older event, or one the person cannot see, leaves the chat at its newest messages. Default chosen (bipe#666): after a join from the preview the chat also opens at the event, because the link names it. mz can overrule.",
+    "message-actions copyLink makes these links (Room.matrixToEventPermalink), in groups only (ADR 0141).",
     "A link that arrives before sign-in waits until account-start ends, then opens, like profile-link-open."
   ]
 }

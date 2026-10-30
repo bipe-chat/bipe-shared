@@ -2957,6 +2957,35 @@
       "fork": true
     },
     {
+      "id": "sticker-pack-share",
+      "name": "Share a sticker pack by link, add a pack from a link or a received sticker (bipe#842)",
+      "ios": {
+        "status": "built",
+        "evidence": [
+          "bipe-app/ios/BipeKit/Sources/BipeKit/Stickers/StickerPackShare.swift",
+          "bipe-app/ios/Bipe/Media/Stickers/StickerPackView.swift"
+        ]
+      },
+      "android": {
+        "status": "built",
+        "evidence": [
+          "bipe-app/android/libraries/bipe/src/main/kotlin/chat/bipe/stickers/StickerPackShare.kt",
+          "bipe-app/android/app/src/main/kotlin/chat/bipe/app/media/stickers/StickerPackScreen.kt"
+        ]
+      },
+      "web": {
+        "status": "built",
+        "evidence": [
+          "bipe-web/src/sim/LinkPages.tsx"
+        ]
+      },
+      "server": {
+        "status": "n/a",
+        "reason": "Plain Matrix rooms and account data; no Bipe server code"
+      },
+      "issue": 842
+    },
+    {
       "id": "message-search",
       "name": "Message search across chats and in one chat (bipe#671)",
       "ios": {

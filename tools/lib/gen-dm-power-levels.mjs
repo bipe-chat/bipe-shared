@@ -35,6 +35,10 @@ public enum BipeDmPowerLevels {
     /// Both people after the DM is created.
     public static let usersDefault: Int64 = ${pl.usersDefault}
 
+    /// The events map of a new group (ADR 0210, bipe-chat/bipe#879): the power_level_content_override of
+    /// Client.createRoom. It repeats the Synapse defaults and lets every member set their own assistant marker.
+    public static let groupEvents: [String: Int32] = [${Object.entries(pl.groupEvents ?? {}).sort(([a], [b]) => (a < b ? -1 : a > b ? 1 : 0)).map(([k, v]) => `${quote(k)}: ${v}`).join(", ")}]
+
     /// The m.room.power_levels content, sent with Room.sendStateEventRaw right after Client.createRoom.
     public static func content(userIds: [String]) -> String {
         let users = Set(userIds).sorted().map { "\\(jsonString($0)):\\(usersDefault)" }.joined(separator: ",")
@@ -70,6 +74,12 @@ object BipeDmPowerLevels {
     const val CREATE_LEVEL: Long = ${pl.createLevel}L
     /** Both people after the DM is created. */
     const val USERS_DEFAULT: Long = ${pl.usersDefault}L
+
+    /**
+     * The events map of a new group (ADR 0210, bipe-chat/bipe#879): the power_level_content_override of
+     * Client.createRoom. It repeats the Synapse defaults and lets every member set their own assistant marker.
+     */
+    val GROUP_EVENTS: Map<String, Int> = mapOf(${Object.entries(pl.groupEvents ?? {}).sort(([a], [b]) => (a < b ? -1 : a > b ? 1 : 0)).map(([k, v]) => `${quote(k)} to ${v}`).join(", ")})
 
     /** The m.room.power_levels content, sent with Room.sendStateEventRaw right after Client.createRoom. */
     fun content(userIds: List<String>): String {

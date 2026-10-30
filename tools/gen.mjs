@@ -22,6 +22,7 @@ import { generateDmSelection } from "./lib/gen-dm-selection.mjs";
 import { generateDmPowerLevels } from "./lib/gen-dm-power-levels.mjs";
 import { generateMessageFormatting } from "./lib/gen-message-formatting.mjs";
 import { generateRelationshipNames } from "./lib/gen-relationship-names.mjs";
+import { generateStoreCaptures, loadStoreCaptures, STORE_CAPTURES_PATH } from "./lib/store-captures.mjs";
 import { generateReports } from "./lib/gen-reports.mjs";
 
 const root = join(dirname(fileURLToPath(import.meta.url)), "..");
@@ -285,6 +286,18 @@ ${reg.workHours.defaultDays.map((d) => `        (day: ${d.day}, ranges: [${d.ran
     public static let voiceMediaTranscriptDays = ${reg.voiceMedia.transcriptDays}
     public static let voiceMediaNoTranscriptDays = ${reg.voiceMedia.noTranscriptDays}
     public static let voiceMediaMaxKeptPerAccount = ${reg.voiceMedia.maxKeptPerAccount}
+
+    /// Assistant drafts (bipe ADR 0210, bipe-chat/bipe#866; registries/drafts.json, docs/drafts-room.md). Rules: test-vectors/drafts.json.
+    public static let draftsRoomType = ${swiftString(reg.drafts.roomType)}
+    public static let draftsAccountDataType = ${swiftString(reg.drafts.accountDataType)}
+    public static let draftField = ${swiftString(reg.drafts.field)}
+    public static let draftBodyMaxLength = ${reg.drafts.bodyMaxLength}
+    public static let draftClientMaxLength = ${reg.drafts.clientMaxLength}
+
+    /// Assistant sends (bipe ADR 0210, bipe-chat/bipe#439; registries/mcp-tools.json personalSend). Rules: test-vectors/assistant-send.json.
+    public static let assistantSendAccountDataType = ${swiftString(reg.mcpTools.personalSend.accountDataType)}
+    public static let assistantMarkerField = ${swiftString(reg.mcpTools.personalSend.markerField)}
+    public static let assistantClientMaxLength = ${reg.mcpTools.personalSend.clientMaxLength}
 
     /// Stickers (bipe ADR 0205, bipe-chat/bipe#837; registries/stickers.json). Search rules: test-vectors/sticker-search.json.
     public static let stickerImportMaxBytes = ${reg.stickers.importMaxBytes}
@@ -662,6 +675,18 @@ ${reg.workHours.defaultDays.map((d) => `        ${d.day} to listOf(${d.ranges.ma
     const val VOICE_MEDIA_NO_TRANSCRIPT_DAYS = ${reg.voiceMedia.noTranscriptDays}
     const val VOICE_MEDIA_MAX_KEPT_PER_ACCOUNT = ${reg.voiceMedia.maxKeptPerAccount}
 
+    /** Assistant drafts (bipe ADR 0210, bipe-chat/bipe#866; registries/drafts.json, docs/drafts-room.md). Rules: test-vectors/drafts.json. */
+    const val DRAFTS_ROOM_TYPE = ${kotlinString(reg.drafts.roomType)}
+    const val DRAFTS_ACCOUNT_DATA_TYPE = ${kotlinString(reg.drafts.accountDataType)}
+    const val DRAFT_FIELD = ${kotlinString(reg.drafts.field)}
+    const val DRAFT_BODY_MAX_LENGTH = ${reg.drafts.bodyMaxLength}
+    const val DRAFT_CLIENT_MAX_LENGTH = ${reg.drafts.clientMaxLength}
+
+    /** Assistant sends (bipe ADR 0210, bipe-chat/bipe#439; registries/mcp-tools.json personalSend). Rules: test-vectors/assistant-send.json. */
+    const val ASSISTANT_SEND_ACCOUNT_DATA_TYPE = ${kotlinString(reg.mcpTools.personalSend.accountDataType)}
+    const val ASSISTANT_MARKER_FIELD = ${kotlinString(reg.mcpTools.personalSend.markerField)}
+    const val ASSISTANT_CLIENT_MAX_LENGTH = ${reg.mcpTools.personalSend.clientMaxLength}
+
     /** Stickers (bipe ADR 0205, bipe-chat/bipe#837; registries/stickers.json). Search rules: test-vectors/sticker-search.json. */
     const val STICKER_IMPORT_MAX_BYTES = ${reg.stickers.importMaxBytes}
     const val STICKER_IMPORT_MAX_PIXELS = ${reg.stickers.importMaxPixels}
@@ -816,6 +841,10 @@ if (appIndex >= 0 || existsSync(appOut)) {
   writeFileSync(join(kotlinMain, "kotlin", ...KOTLIN_PACKAGE.split("."), "BipeScreen.kt"), appPost(appScreens("kotlin"), "kotlin"));
   writeFileSync(join(kotlinMain, "kotlin", ...KOTLIN_PACKAGE.split("."), "BipeDmPowerLevels.kt"),
     appPost(generateDmPowerLevels(reg.dmPowerLevels, "kotlin", KOTLIN_HEADER, kotlinString), "kotlin"));
+  // Store captures (bipe-chat/bipe#457): the sample data of the Android capture source, a test source set only.
+  const storeHeader = HEADER.replace("bipe-shared/registries and bipe-shared/strings", "bipe-shared/product/store-captures.json and product/cast.json");
+  mkdirSync(dirname(join(appOut, STORE_CAPTURES_PATH)), { recursive: true });
+  writeFileSync(join(appOut, STORE_CAPTURES_PATH), appPost(generateStoreCaptures(loadStoreCaptures(root), reg, kotlinString, `${KOTLIN_LICENSE}${storeHeader}`), "kotlin"));
   // Colour tokens (bipe-chat/bipe#551).
   const TOKENS_HEADER = HEADER.replace("bipe-shared/registries and bipe-shared/strings", "bipe-shared/design/tokens.json");
   writeFileSync(join(swiftDir, "BipeColors.swift"), appPost(`${TOKENS_HEADER}\n${generateColors("swift")}`, "swift"));

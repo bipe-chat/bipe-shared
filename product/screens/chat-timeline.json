@@ -80,6 +80,7 @@
     }
   },
   "strings": [
+    "bipe_app_assistant_sent_label",
     "bipe_room_upgrade_replaced",
     "bipe_room_upgrade_go",
     "bipe_room_upgrade_continues",
@@ -121,6 +122,7 @@
   ],
   "parity": ["e2ee", "dm-left-bar", "dm-block-bar", "official-badge", "cvm-line", "official-notice", "profile-change-facts", "theft-protection"],
   "notes": [
+    "Assistant sends (ADR 0210, bipe-chat/bipe#439): a message whose content has chat.bipe.assistant with a client name (assistantSender, test-vectors/assistant-send.json) shows bipe_app_assistant_sent_label with the sender's display name, in small text under the bubble, on every member's app. The sender's own app shows it too.",
     "CVM stop order (ADR 0077, bipe-chat/bipe#238): in a DM whose other person has a verified company seal with a cvm stop order (test-vectors/cvm-lines.json danger true), a red caution card with bipe_cvm_stop_order_card and the date sits at the top of the timeline. It stays while the badge says so. It comes from the signed badge only.",
     "Official accounts (ADR 0117, bipe-chat/bipe#384): isOfficial follows the chat-list rule (exact user ID in BipeRegistries.officialAccountIDs, a DM only). A group never shows the badge, even with an official account in it.",
     "Send is off while draft is blank after trimming.",

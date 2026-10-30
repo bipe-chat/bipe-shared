@@ -3526,6 +3526,27 @@
         "reason": "The client distributes room keys; the server cannot choose recipient trust"
       },
       "issue": 774
+    },
+    {
+      "id": "assistant-drafts",
+      "name": "Assistant drafts: the user's assistant drafts, the user sends (ADR 0210, bipe#866)",
+      "ios": {
+        "status": "planned",
+        "issue": 866
+      },
+      "android": {
+        "status": "planned",
+        "issue": 866
+      },
+      "web": {
+        "status": "n/a",
+        "reason": "No web chat (ADR 0004); the site shows a demo at most"
+      },
+      "server": {
+        "status": "n/a",
+        "reason": "Plain Matrix events in a private room; no Bipe server code"
+      },
+      "issue": 866
     }
   ],
   "differences": [

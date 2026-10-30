@@ -589,6 +589,74 @@
       }
     },
     {
+      "id": "voice-transcript-display",
+      "area": "safety",
+      "icon": "mic",
+      "milestone": "M3 Store launch",
+      "slug": {
+        "pt": "audio-com-texto",
+        "en": "voice-messages-with-text"
+      },
+      "figures": [
+        "audio-golpe",
+        "audio-texto"
+      ],
+      "pt": {
+        "name": "Áudio com texto",
+        "body": "O áudio chega com o texto embaixo. Dá para ler sem ouvir, e a checagem de golpe lê o texto também.",
+        "points": [
+          "Quem grava vê o texto e pode corrigir antes de mandar. A transcrição é feita no celular de quem grava, sem servidor.",
+          "Se um áudio chega sem texto, você pode transcrever no seu celular. O áudio não sai dele.",
+          "A checagem de golpe lê o texto dos áudios que você recebe, como lê as mensagens escritas.",
+          "Quando aparece um aviso de golpe, o Bipe guarda o áudio, caso você precise dele num boletim de ocorrência."
+        ]
+      },
+      "en": {
+        "name": "Voice messages with text",
+        "body": "A voice message arrives with its text below. You can read it without listening, and the scam check reads the text too.",
+        "points": [
+          "The person who records sees the text and can correct it before sending. The phone of the person who records makes the transcript, with no server.",
+          "If a voice message arrives without text, you can transcribe it on your phone. The audio never leaves it.",
+          "The scam check reads the text of the voice messages you receive, as it reads written messages.",
+          "When a scam warning shows, Bipe keeps the audio, in case you need it for a police report."
+        ]
+      }
+    },
+    {
+      "id": "theft-protection",
+      "area": "safety",
+      "icon": "phone",
+      "milestone": "M3 Store launch",
+      "slug": {
+        "pt": "celular-roubado",
+        "en": "stolen-phone"
+      },
+      "figures": [
+        "roubo",
+        "guardioes"
+      ],
+      "pt": {
+        "name": "Celular roubado",
+        "body": "Escolha até 3 guardiões. Se roubarem seu celular, qualquer um deles marca sua conta como roubada.",
+        "points": [
+          "Só pode ser guardião quem você verificou pessoalmente pelo QR code.",
+          "Com a marca, a conta sai de todos os aparelhos na hora e fica bloqueada. Quem está com o celular não consegue mandar mensagem.",
+          "Seus contatos veem um aviso na conversa: não mandar dinheiro nem códigos. As mensagens enviadas perto da hora do roubo ficam marcadas.",
+          "Um guardião desmarca a conta quando você está seguro de novo. Aí você entra num aparelho novo."
+        ]
+      },
+      "en": {
+        "name": "Stolen phone",
+        "body": "Choose up to 3 guardians. If your phone is stolen, any one of them marks your account as stolen.",
+        "points": [
+          "Only people you verified in person by QR code can be guardians.",
+          "With the mark, the account leaves every device at once and is locked. The person who has the phone cannot send messages.",
+          "Your contacts see a warning in the chat: do not send money or codes. Messages sent near the time of the theft are marked.",
+          "A guardian clears the mark when you are safe again. Then you sign in on a new device."
+        ]
+      }
+    },
+    {
       "id": "verified-badge",
       "area": "identity",
       "icon": "badge",
@@ -815,6 +883,39 @@
       "code": [
         "family-terms"
       ]
+    },
+    {
+      "id": "photo-match",
+      "area": "identity",
+      "icon": "image",
+      "milestone": "M3 Store launch",
+      "slug": {
+        "pt": "foto-copiada",
+        "en": "copied-photo"
+      },
+      "figures": [
+        "foto-copiada"
+      ],
+      "pt": {
+        "name": "Foto copiada",
+        "body": "Se uma conta nova usa a foto de alguém das suas conversas, o Bipe avisa antes de você responder.",
+        "points": [
+          "O golpe do número novo copia a foto e o nome de um parente. O aviso diz de quem é a foto.",
+          "A comparação roda no seu celular. As fotos não saem dele para isso.",
+          "O aviso aparece no pedido de conversa, junto com a idade da conta.",
+          "Foto diferente não quer dizer conta segura. Antes de pagar, confira por outro meio."
+        ]
+      },
+      "en": {
+        "name": "Copied photo",
+        "body": "If a new account uses the photo of someone in your chats, Bipe warns you before you reply.",
+        "points": [
+          "The new number scam copies the photo and the name of a relative. The warning says whose photo it is.",
+          "The comparison runs on your phone. The photos never leave it for this.",
+          "The warning shows on the message request, with the age of the account.",
+          "A different photo does not mean the account is safe. Before paying, check through another channel."
+        ]
+      }
     },
     {
       "id": "handles",
@@ -1149,6 +1250,74 @@
       }
     },
     {
+      "id": "app-lock",
+      "area": "privacy",
+      "icon": "keypad",
+      "milestone": "M3 Store launch",
+      "slug": {
+        "pt": "bloquear-o-app",
+        "en": "app-lock"
+      },
+      "figures": [
+        "trava",
+        "sua-conta"
+      ],
+      "pt": {
+        "name": "Bloquear o app",
+        "body": "Se você empresta o celular, ligue o bloqueio. O Bipe pede a senha de 8 números ou o rosto para abrir.",
+        "points": [
+          "O bloqueio vem desligado. Você liga em Sua conta.",
+          "O Bipe usa a mesma senha de 8 números da sua conta. O Face ID ou a digital também abre.",
+          "Para desligar, o celular confere que é você.",
+          "Com duas contas no celular, a senha do bloqueio é uma só."
+        ]
+      },
+      "en": {
+        "name": "App lock",
+        "body": "If you lend your phone, turn on the lock. Bipe asks for your 8-digit password or your face to open.",
+        "points": [
+          "The lock is off by default. You turn it on in Your account.",
+          "Bipe uses the same 8-digit password as your account. Face ID or a fingerprint also opens it.",
+          "To turn it off, the phone checks that it is you.",
+          "With two accounts on the phone, the lock has one password."
+        ]
+      }
+    },
+    {
+      "id": "data-export",
+      "area": "privacy",
+      "icon": "download",
+      "milestone": "M3 Store launch",
+      "slug": {
+        "pt": "seus-dados",
+        "en": "your-data"
+      },
+      "figures": [
+        "seus-dados",
+        "sua-conta"
+      ],
+      "pt": {
+        "name": "Seus dados",
+        "body": "Baixe os dados da sua conta ou apague a conta, direto no app, como a LGPD garante.",
+        "points": [
+          "O arquivo traz os dados da sua conta no Bipe. O conteúdo das conversas não vai no arquivo, porque o Bipe não consegue ler.",
+          "Para baixar, o celular confere que é você.",
+          "Apagar a conta tem uma espera de 72 horas. Nesse tempo a conta funciona, e seus outros aparelhos mostram um aviso para cancelar.",
+          "A página do que o Bipe guarda diz cada dado, para que serve e por quanto tempo fica."
+        ]
+      },
+      "en": {
+        "name": "Your data",
+        "body": "Download your account data or delete your account, right in the app, as the LGPD guarantees.",
+        "points": [
+          "The file has your Bipe account data. Chat content is not in the file, because Bipe cannot read it.",
+          "To download, the phone checks that it is you.",
+          "Deleting the account has a 72-hour wait. During that time the account works, and your other devices show a warning with a cancel button.",
+          "The page on what Bipe keeps lists each item, what it is for and how long it stays."
+        ]
+      }
+    },
+    {
       "id": "pix-cards",
       "area": "payments",
       "icon": "pix",
@@ -1476,6 +1645,105 @@
         "stickers-ios",
         "stickers-android"
       ]
+    },
+    {
+      "id": "calls",
+      "area": "chat",
+      "icon": "call",
+      "milestone": "M3 Store launch",
+      "slug": {
+        "pt": "chamadas",
+        "en": "calls"
+      },
+      "figures": [
+        "chamada"
+      ],
+      "pt": {
+        "name": "Chamadas de voz e vídeo",
+        "body": "Ligue por voz ou vídeo numa conversa a dois ou num grupo. A chamada é protegida de ponta a ponta.",
+        "points": [
+          "Só quem está na chamada ouve e vê. Cada aparelho manda a chave só para as pessoas da chamada.",
+          "A chamada passa pelos servidores do Bipe no Brasil, que repassam a mídia sem conseguir abrir.",
+          "O celular toca mesmo bloqueado. Se você não atende, a conversa mostra a chamada perdida.",
+          "Num grupo, a chamada avisa os membros. Quem chega depois entra pela conversa."
+        ]
+      },
+      "en": {
+        "name": "Voice and video calls",
+        "body": "Call by voice or video in a one-to-one chat or in a group. The call is end-to-end encrypted.",
+        "points": [
+          "Only the people in the call hear and see it. Each device sends its key only to the people in the call.",
+          "The call goes through Bipe's servers in Brazil, which forward the media without being able to open it.",
+          "Your phone rings even when it is locked. If you do not answer, the chat shows the missed call.",
+          "In a group, the call notifies the members. People who arrive later join from the chat."
+        ]
+      }
+    },
+    {
+      "id": "location-sharing",
+      "area": "chat",
+      "icon": "pin",
+      "milestone": "M3 Store launch",
+      "slug": {
+        "pt": "localizacao",
+        "en": "location"
+      },
+      "figures": [
+        "localizacao"
+      ],
+      "pt": {
+        "name": "Localização",
+        "body": "Mande onde você está ou um ponto no mapa. Para um encontro, compartilhe sua localização em tempo real.",
+        "points": [
+          "A localização em tempo real dura 15 minutos, 1 hora ou 8 horas. Você para quando quiser.",
+          "Os mapas vêm do servidor de mapas do Bipe, no Brasil. O app não chama outro serviço de mapas.",
+          "Os mapas usam dados do OpenStreetMap.",
+          "A localização vai protegida de ponta a ponta, como as mensagens."
+        ]
+      },
+      "en": {
+        "name": "Location",
+        "body": "Send where you are or a point on the map. To meet someone, share your live location.",
+        "points": [
+          "Live location lasts 15 minutes, 1 hour or 8 hours. You can stop it at any time.",
+          "Maps come from Bipe's map server, in Brazil. The app calls no other map service.",
+          "The maps use OpenStreetMap data.",
+          "The location is end-to-end encrypted, like messages."
+        ]
+      }
+    },
+    {
+      "id": "multi-account",
+      "area": "chat",
+      "icon": "swap",
+      "milestone": "M3 Store launch",
+      "slug": {
+        "pt": "duas-contas",
+        "en": "two-accounts"
+      },
+      "figures": [
+        "duas-contas"
+      ],
+      "pt": {
+        "name": "Duas contas no celular",
+        "body": "Tenha duas contas pessoais no mesmo celular e troque entre elas na aba Você.",
+        "points": [
+          "Cada conta tem seu @, suas conversas e seus jeitos de voltar.",
+          "Para trocar, toque duas vezes na aba Você.",
+          "A conta de uma empresa não conta no limite de duas.",
+          "Ter duas contas é gratuito."
+        ]
+      },
+      "en": {
+        "name": "Two accounts on one phone",
+        "body": "Keep two personal accounts on the same phone and switch between them on the Você tab.",
+        "points": [
+          "Each account has its own @, its own chats and its own ways back.",
+          "To switch, double-tap the Você tab.",
+          "A company account does not count toward the limit of two.",
+          "Two accounts are free."
+        ]
+      }
     },
     {
       "id": "group-types",

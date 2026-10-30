@@ -22,6 +22,7 @@ import { generateDmSelection } from "./lib/gen-dm-selection.mjs";
 import { generateDmPowerLevels } from "./lib/gen-dm-power-levels.mjs";
 import { generateMessageFormatting } from "./lib/gen-message-formatting.mjs";
 import { generateRelationshipNames } from "./lib/gen-relationship-names.mjs";
+import { generateReports } from "./lib/gen-reports.mjs";
 
 const root = join(dirname(fileURLToPath(import.meta.url)), "..");
 const args = process.argv.slice(2);
@@ -383,6 +384,7 @@ function writeSwift(out, { post = (text) => text } = {}) {
   write("BipeSettings.swift", generateSettings(reg.settings, "swift", HEADER, swiftString));
   write("BipeOnboarding.swift", generateOnboarding(reg.onboarding, "swift", HEADER, swiftString));
   write("BipeHaptics.swift", generateHaptics(reg.haptics, "swift", HEADER, swiftString));
+  write("BipeReports.swift", generateReports(reg.reportCategories, "swift", HEADER));
   const resources = resolve(out, "../../../Sources/BipeKit/Resources");
   for (const [locale, strings] of [["pt-BR", reg.strings.strings], ["en", reg.stringsEn.strings]]) {
     mkdirSync(join(resources, `${locale}.lproj`), { recursive: true });
@@ -752,6 +754,7 @@ function writeKotlin(out, { packageName = KOTLIN_PACKAGE, post = (text) => text 
   write("BipeSettings.kt", generateSettings(reg.settings, "kotlin", KOTLIN_HEADER, kotlinString));
   write("BipeOnboarding.kt", generateOnboarding(reg.onboarding, "kotlin", KOTLIN_HEADER, kotlinString));
   write("BipeHaptics.kt", generateHaptics(reg.haptics, "kotlin", KOTLIN_HEADER, kotlinString));
+  write("BipeReports.kt", generateReports(reg.reportCategories, "kotlin", KOTLIN_HEADER));
   // pt-BR is the default language, so it fills values/. en is the alternative.
   for (const [dir, strings, comment, locale] of [
     ["values", reg.strings.strings, "pt-BR (default). DRAFT copy: not yet through the humanizer pass.", "pt"],
@@ -845,6 +848,9 @@ if (existsSync(resolve(apiOut, "../.."))) {
   copyFileSync(join(root, "tools/lib/gen-settings.mjs"), join(apiOut, "lib/gen-settings.mjs"));
   copyFileSync(join(root, "tools/lib/gen-onboarding.mjs"), join(apiOut, "lib/gen-onboarding.mjs"));
   copyFileSync(join(root, "tools/lib/gen-haptics.mjs"), join(apiOut, "lib/gen-haptics.mjs"));
+  // Sealed reports (bipe-chat/bipe#697): the reference open and checks, and the wire types.
+  copyFileSync(join(root, "tools/lib/reports.mjs"), join(apiOut, "lib/reports.mjs"));
+  writeFileSync(join(apiOut, "reports.ts"), generateApiTypes(loadBusinessSchemas(root, "api/report-schemas.json"), "api/report-schemas.json"));
   writeFileSync(join(apiOut, "business-api.ts"), generateApiTypes(loadBusinessSchemas(root)));
   copyFileSync(join(root, "api/internal-research.d.ts"), join(apiOut, "internal-research.d.ts"));
   console.log(`wrote API registries to ${apiOut}`);

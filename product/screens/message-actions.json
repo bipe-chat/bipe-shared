@@ -9,9 +9,14 @@
         "type": "enum",
         "values": [
           "reply",
+          "replyInThread",
           "edit",
+          "removeCaption",
           "copy",
+          "pin",
+          "unpin",
           "forward",
+          "select",
           "saveSticker",
           "viewStickerPack",
           "keepAudio",
@@ -72,15 +77,17 @@
           "description": "The row."
         }
       },
-      "effect": "Closes the sheet and runs: reply, message-reply startReply; edit, message-edit startEdit; copy, puts the text on the clipboard and shows bipe_app_copied; forward, message-forward open (bipe-chat/bipe#664); saveSticker, adds the sticker to the user's pack (sticker-picker notes, bipe-chat/bipe#670) and shows bipe_sticker_saved or bipe_sticker_save_failed; viewStickerPack, opens sticker-pack with the event's stickerPackField; keepAudio, voice-message keep; unkeepAudio, voice-message unkeep; retry, chat-timeline retrySend; delete, message-delete askDelete; report, message-report open."
+      "effect": "Closes the sheet and runs: reply, message-reply startReply; edit, message-edit startEdit; removeCaption, message-edit removeCaption (bipe-chat/bipe#668); copy, puts the text on the clipboard and shows bipe_app_copied; pin and unpin, message-pins (bipe-chat/bipe#665); forward, message-forward open (bipe-chat/bipe#664); saveSticker, adds the sticker to the user's pack (sticker-picker notes, bipe-chat/bipe#670) and shows bipe_sticker_saved or bipe_sticker_save_failed; viewStickerPack, opens sticker-pack with the event's stickerPackField; keepAudio, voice-message keep; unkeepAudio, voice-message unkeep; retry, chat-timeline retrySend; delete, message-delete askDelete; report, message-report open."
     },
     "close": {
       "effect": "Closes the sheet."
     }
   },
   "strings": [
+    "bipe_thread_reply_action",
     "bipe_message_actions",
     "bipe_forward_action",
+    "bipe_select_action",
     "bipe_app_message_action_reply",
     "bipe_app_message_action_edit",
     "bipe_app_copy",
@@ -110,7 +117,7 @@
   ],
   "notes": [
     "MZ explicitly requested SF Symbols in iOS context-menu options on 23 October 2026. Native SwiftUI Label(systemImage:) supplies message-option and reaction-picker icons; Android keeps its current icon system. Action availability and permissions do not change.",
-    "reply: canReply and the message is sent. edit: canEdit. copy: text messages only. keepAudio: a sent voice message (isVoice) with media available that the caller does not keep (voice-message kept no); its title is bipe_voice_keep. unkeepAudio: a voice message the caller keeps; its title is bipe_voice_unkeep. retry: own message with send state failed. delete: canDelete, or an own message not sent yet. report: messages of other people that are sent.",
+    "reply: canReply and the message is sent. edit: canEdit. copy: text messages only. keepAudio: a sent voice message (isVoice) with media available that the caller does not keep (voice-message kept no); its title is bipe_voice_keep. unkeepAudio: a voice message the caller keeps; its title is bipe_voice_unkeep. select: a sent message that can be forwarded (message-forward notes) or an own message with canDelete (bipe-chat/bipe#860). retry: own message with send state failed. delete: canDelete, or an own message not sent yet. report: messages of other people that are sent.",
     "Undecryptable rows: report only, and the message-undecryptable help when its cause has one. Deleted rows have no sheet.",
     "Not in this sheet (ADR 0141 and plan section 4): threads, pin, copy link to the message, forward, view source. Forward and media save come with #561.",
     "The sheet shows the message on top, so the person sees what they act on. The haptic follows ADR 0134 (registries haptics, selection).",

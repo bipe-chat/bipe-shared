@@ -1,6 +1,6 @@
 # Bipe store listing
 
-The source of truth for the App Store and Google Play text, the screenshot panels, the App Privacy answers and the age rating (bipe-chat/bipe#453). App Review details (contact, demo account, review notes) live in bipe-ios `Tools/Bipe/review-details.mjs`, with the secrets in the Keychain. Tools read this file: `tools/lib/appstore.mjs` parses it, `node tools/check-appstore.mjs` checks it, and the upload tools (bipe-chat/bipe#456, bipe-chat/bipe#457) send it. Do not copy this text into another file.
+The source of truth for the App Store and Google Play text, the screenshot panels, the App Privacy answers and the age rating (bipe-chat/bipe#453). App Review details (contact, demo account, review notes) for TestFlight external testing are filled by bipe-app `node tools/asc.mjs external`, which copies them from another App Store Connect record in `BETA_SOURCES` (read only there). Tools read this file: `tools/lib/appstore.mjs` parses it, `node tools/check-appstore.mjs` checks it, and the upload tools (bipe-chat/bipe#456, bipe-chat/bipe#457) send it. Do not copy this text into another file.
 
 Rules for the text:
 
@@ -11,9 +11,9 @@ Rules for the text:
 
 Format:
 
-- `## Platform: <iOS|Android> (<bundle id>)`. The production IDs wait for bipe-chat/bipe#419 and bipe-chat/bipe#157. Until then both blocks say `chat.bipe.app`.
+- `## Platform: <iOS|Android> (<bundle id>)`. The production ID is `chat.bipe.app` on both platforms (ADR 0178). "Bipe Next" (`chat.bipe.app.next`) is only the ID set for local and Android tester builds.
 - `### <field>` before the first locale is a field for every locale. `### pt-BR` and `### en-US` start a locale. `#### <field>` is a field of that locale.
-- Android `full_description` is the iOS `description` of the same locale, unless the Android locale sets its own.
+- Android `full_description` is required in each locale. It starts from the iOS `description` and keeps only what the Android app does (bipe-chat/bipe#457).
 - `## Screenshots`: one table per locale, panels in store order. `feature` is a feature id in `product.json`, or `-` for a panel with no capture: the image builder draws the Brazil network there. `title` is the feature name, short enough for 2 lines at store size. `sub` is one sentence of at most 2 lines. No highlight markup (bipe-chat/bipe#463).
 
 Limits: name and subtitle 30, promotional text 170, description 4000, keywords 100 (comma separated, no space after a comma), Play title 30, Play short description 80, Play full description 4000.
@@ -91,6 +91,7 @@ E MAIS
 • Selo de CNPJ: empresa, escola ou associação prova o CNPJ e mostra o nome que está na Receita.
 • Grupos que só tocam quando é com você, e enquetes para decidir junto.
 • Stickers, inclusive feitos de uma foto.
+• Chamadas de voz e vídeo protegidas de ponta a ponta, por servidores no Brasil.
 • Servidores no Brasil, de empresas brasileiras. Vale a lei brasileira, com a LGPD.
 
 Por enquanto, o Bipe abre por convite. Peça um código de convite a alguém que já usa o Bipe.
@@ -152,6 +153,7 @@ AND MORE
 • Business seal: a company, school or association proves its CNPJ and shows the name on the federal register.
 • Groups that only ring when it's about you, and polls to decide together.
 • Stickers, including ones made from a photo.
+• Voice and video calls, end-to-end encrypted, through servers in Brazil.
 • Servers in Brazil, run by Brazilian companies. Brazilian law applies, including the LGPD.
 
 For now, Bipe opens by invite. Ask someone who uses it for an invite.
@@ -178,6 +180,45 @@ Bipe Chat
 
 Saiba com quem está falando. Aviso de golpe e seu @ sem mostrar o número.
 
+#### full_description
+
+O Bipe é um app de mensagens gratuito, feito para você saber com quem está falando.
+
+AVISO DE GOLPE
+
+Se uma mensagem tem sinais de golpe, como Pix com pressa, troca de número, boleto ou print de comprovante, aparece um aviso embaixo dela. O aviso diz o que fazer: ligar para a pessoa no número que você já tem, ou conferir no app do banco se o dinheiro caiu.
+
+A checagem roda no seu celular. A mensagem não sai dali para ser conferida. A checagem pode deixar golpes passar ou avisar numa conversa legítima, então sem aviso não quer dizer que é seguro.
+
+QUEM VOCÊ NÃO CONHECE CHEGA COMO PEDIDO
+
+Quem não está nos seus contatos chega como pedido de conversa, separado das suas conversas. Você vê o pedido e decide se aceita. A regra vale no servidor do Bipe, não só no app.
+
+CONFIRA UM PIX ANTES DE PAGAR
+
+Recebeu uma chave Pix, um código copia e cola ou um print de QR code em outro app? Compartilhe com o Bipe e veja o nome, o valor e a chave que estão no código. O Bipe avisa se o código foi alterado. Não precisa de conta.
+
+SEM ANÚNCIO
+
+Nenhum anúncio em nenhuma tela. O Bipe não monta perfil seu para vender anúncio. Você nunca paga para usar o Bipe.
+
+SEU @, NÃO SEU NÚMERO
+
+Escolha um nome de usuário e passe só o @. O link bipe.chat/@você e o QR code abrem a conversa direto, sem mostrar seu número. Não tem lista nem busca: só te acha quem sabe o seu @.
+
+E MAIS
+
+• Conversas protegidas de ponta a ponta. Só quem está na conversa lê as mensagens. O Bipe não lê.
+• Sem código por SMS. Quem pega seu chip não pega sua conta.
+• Selo de CNPJ: empresa, escola ou associação prova o CNPJ e mostra o nome que está na Receita.
+• Grupos que só tocam quando é com você, e enquetes para decidir junto.
+• Stickers, inclusive feitos de uma foto.
+• Servidores no Brasil, de empresas brasileiras. Vale a lei brasileira, com a LGPD.
+
+Por enquanto, o Bipe abre por convite. Peça um código de convite a alguém que já usa o Bipe.
+
+O Bipe é um experimento da Envisioning. O código é aberto e está no GitHub, para qualquer pessoa conferir.
+
 ### en-US
 
 #### title
@@ -187,6 +228,45 @@ Bipe Chat
 #### short_description
 
 Know who you're talking to. Scam warnings, and your @ without your number.
+
+#### full_description
+
+Bipe is a free messaging app, made so you know who you are talking to.
+
+SCAM WARNINGS
+
+If a message has scam signals, such as a rushed Pix, a new number, a boleto or a receipt screenshot, a warning appears under it. The warning says what to do: call the person on the number you already have, or check in your bank app that the money arrived.
+
+The check runs on your phone. The message never leaves it to be checked. Checks can miss scams or warn about a legitimate chat, so no warning does not mean it is safe.
+
+PEOPLE YOU DON'T KNOW ARRIVE AS A REQUEST
+
+People who aren't in your contacts arrive as a message request, apart from your chats. You see the request and decide whether to accept it. The rule holds on the Bipe server, not only in the app.
+
+CHECK A PIX BEFORE YOU PAY
+
+Got a Pix key, a copy-and-paste code or a QR code screenshot in another app? Share it to Bipe and see the name, the amount and the key in the code. Bipe warns you if the code was changed. You don't need an account.
+
+NO ADS
+
+No ads on any screen. Bipe builds no profile of you to sell ads. You never pay to use Bipe.
+
+YOUR @, NOT YOUR NUMBER
+
+Pick a username and share only your @. The link bipe.chat/@you and your QR code open a chat directly, without showing your number. There is no list and no search: only people who know your @ can find you.
+
+AND MORE
+
+• Chats encrypted end to end. Only the people in the chat can read the messages. Bipe can't.
+• No SMS codes. Whoever takes your SIM does not get your account.
+• Business seal: a company, school or association proves its CNPJ and shows the name on the federal register.
+• Groups that only ring when it's about you, and polls to decide together.
+• Stickers, including ones made from a photo.
+• Servers in Brazil, run by Brazilian companies. Brazilian law applies, including the LGPD.
+
+For now, Bipe opens by invite. Ask someone who uses it for an invite.
+
+Bipe is an experiment by Envisioning. The code is open source and on GitHub, so anyone can check it.
 
 ## Screenshots
 
@@ -216,13 +296,14 @@ Know who you're talking to. Scam warnings, and your @ without your number.
 
 ## App Privacy
 
-Source: `bipe-ios/ElementX/SupportingFiles/PrivacyInfo.xcprivacy`, checked against `product/data.json` and the app code (21 October 2026). Bipe does not track (`NSPrivacyTracking` is false), so no data type is used for tracking. The app has no telemetry (bipe-chat/bipe#55): no Sentry, no PostHog, so no crash or performance data leaves the phone.
+Source: `product/data.json` and the bipe-app code (30 October 2026). The answers must come from bipe-app, Bipe's app since ADR 0143. Open (unverified, 30 October 2026): bipe-app `ios/` has no `PrivacyInfo.xcprivacy` yet, so the privacy manifest cannot be checked against this table. The archived fork's manifest is no longer a source. Bipe does not track (`NSPrivacyTracking` is false), so no data type is used for tracking. The app has no telemetry (bipe-chat/bipe#55): no Sentry, no PostHog, so no crash or performance data leaves the phone.
 
 | Data type | Collected | Linked to the person | Purpose | data.json item |
 |---|---|---|---|---|
 | Email Address | Yes, optional | Yes | App Functionality | recovery-email |
 | Precise Location | Yes, only when the person shares a location | Yes | App Functionality | messages |
-| Contacts | Yes, only when the person shares a contact | No | App Functionality | messages |
+| Phone Number | Yes, optional: the number the person links to the account | Yes | App Functionality | phone-number |
+| Contacts | Yes, when the person shares a contact, and the address-book numbers the app sends to `POST /v1/contacts/lookup` to find people on Bipe | No | App Functionality | messages |
 | Photos or Videos | Yes | No | App Functionality | media |
 | Audio Data | Yes, voice messages | No | App Functionality | media |
 | User ID | Yes | Yes | App Functionality, Analytics | account, app-growth |
@@ -234,7 +315,8 @@ Decisions (21 October 2026, mz can overrule):
 
 - Product Interaction is linked: `app-growth` keys each account by an HMAC with a secret the server holds, so the server can link it back to the account.
 - Crash Data and Performance Data are not collected: nothing in the app produces them since bipe-chat/bipe#55. Problem-report logs are Other Diagnostic Data.
-- Location, Contacts, Photos or Videos and Audio Data stay declared. In encrypted chats the server cannot read them, but unencrypted rooms (bipe-chat/bipe#78) still exist.
+- Location, Contacts, Photos or Videos and Audio Data stay declared. Since `e2ee-only-rooms` (parity.json, bipe-chat/bipe#78) the apps and the server make only end-to-end encrypted rooms, so the server cannot read them in chats. Only sticker packs stay readable by the server (ADR 0033: pack images are account data or room state, not encrypted).
+- Contacts includes the address-book lookup. `data.json` has no item for the lookup yet, so its retention is open (unverified, 30 October 2026).
 
 ## Age rating
 

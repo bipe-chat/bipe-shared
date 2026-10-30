@@ -13,7 +13,7 @@
     "inviteId": { "type": "string", "description": "The invite of the named slot." }
   },
   "actions": {
-    "act": { "effect": "pending: opens the system share sheet with the same link (invite-qr when the link is on another phone). expired: makes a new invite with the same name, as bring-people replaceExpired." },
+    "act": { "effect": "pending: opens the system share sheet with the same link (invites, where the row opens invite-qr, when the link is on another phone). expired: makes a new invite with the same name, as bring-people replaceExpired." },
     "notNow": { "effect": "Hides the prompt and adds one decline. After bringPeople.stopAfterDeclines declines (2), across the first sheet and the reminders, no bring-people ask shows again on this account." }
   },
   "strings": [

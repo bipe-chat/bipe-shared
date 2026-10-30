@@ -239,6 +239,7 @@
     "stateLine folding: consecutive stateLine rows of the same membership change, with no other row between them, become one row; for invited, removed and banned they must also have the same sender. targets holds the first two people, more the rest. A person in the folded line counts once. Profile changes never fold.",
     "stateLine text: the people are bipe_app_state_names_two for two, bipe_app_state_names_more for three or more (more as a number), else the one name. joined and left use the _one string for one person and the _many string for two or more. invited, removed and banned take the actor, then the people. The other changes take the actor (renamed also newName). The row is the quiet centred line of the call lines and the start of the chat; a tap does nothing.",
     "Handle-change rows are local lines from bipe-api, not Matrix events (handle-change-line, ADR 0066).",
-    "Read receipts are always public (ADR 0050): the client never sends ReceiptType.ReadPrivate."
+    "Read receipts are always public (ADR 0050): the client never sends ReceiptType.ReadPrivate.",
+    "Same names in groups (bipe#825): a sender line shows the @ after the name when another member of the room shows the same name. Same means EventTimelineItem.senderProfile displayNameAmbiguous, or the same name after NameNormalizer (registries homoglyphs, security rule 8) among the known members, so a look-alike \"Mãe\" counts. A Bipe user shows \"Maria @maria1\" once the handle resolves and the name alone before; a user of another server shows the name and the Matrix ID. DMs and own messages never show it. No new string: the name and the @ are joined with a space."
   ]
 }

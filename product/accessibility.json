@@ -194,5 +194,21 @@
     "reportTitle": "Found a barrier?",
     "report": "Tell us which phone you use, which system feature was on and which screen got in your way. We read every message.",
     "reportLink": "Talk to us"
+  },
+  "appStore": {
+    "$comment": "Accessibility Nutrition Labels of the App Store (bipe-chat/bipe#503), for the iPhone device family. A label is yes when every item it names is yes on ios; a label with no items is no. play names the Android feature of a label for the Play description, which lists the labels whose items are yes on android. tools/lib/appstore.mjs appleAccessibility() computes the answers; product/appstore.md ## Accessibility must match them (node tools/check-appstore.mjs, --write rewrites it). Apple asks to declare a label only when people can complete the app's common tasks with that feature on: the answers are sent to App Store Connect only after the hand test (bipe-chat/bipe#505).",
+    "deviceFamily": "IPHONE",
+    "labels": [
+      { "id": "voiceover", "name": "VoiceOver", "field": "supportsVoiceover", "items": ["screen-reader", "gestures", "image-descriptions"], "play": { "pt": "TalkBack", "en": "TalkBack" } },
+      { "id": "voice-control", "name": "Voice Control", "field": "supportsVoiceControl", "items": ["screen-reader", "gestures", "tap-targets"], "play": { "pt": "Voice Access", "en": "Voice Access" } },
+      { "id": "larger-text", "name": "Larger Text", "field": "supportsLargerText", "items": ["text-size"], "play": { "pt": "letra grande", "en": "large text" } },
+      { "id": "dark-interface", "name": "Dark Interface", "field": "supportsDarkInterface", "items": ["dark-mode"], "play": { "pt": "tema escuro", "en": "dark theme" } },
+      { "id": "differentiate-without-color", "name": "Differentiate Without Color Alone", "field": "supportsDifferentiateWithoutColorAlone", "items": ["not-colour-alone"], "play": { "pt": "avisos que não dependem só da cor", "en": "warnings that never rely on colour alone" } },
+      { "id": "sufficient-contrast", "name": "Sufficient Contrast", "field": "supportsSufficientContrast", "items": ["contrast", "increase-contrast"], "play": { "pt": "alto contraste", "en": "high contrast" } },
+      { "id": "reduced-motion", "name": "Reduced Motion", "field": "supportsReducedMotion", "items": ["reduce-motion"], "play": { "pt": "animações desligadas", "en": "animations turned off" } },
+      { "id": "captions", "name": "Captions", "field": "supportsCaptions", "items": [], "reason": "Videos people send have no captions; Bipe makes no video of its own." },
+      { "id": "audio-descriptions", "name": "Audio Descriptions", "field": "supportsAudioDescriptions", "items": [], "reason": "Bipe has no video content of its own to describe." }
+    ],
+    "play": { "pt": "Acessibilidade: o Bipe funciona com", "en": "Accessibility: Bipe works with" }
   }
 }

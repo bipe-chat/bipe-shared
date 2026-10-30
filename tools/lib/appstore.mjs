@@ -77,6 +77,7 @@ export function parseAppstore(text) {
   const platforms = {};
   const screenshots = {};
   const other = {};
+  let accessibility = null;
   for (const top of sections(text, 2).items) {
     const platform = top.title.match(/^Platform: (\S+) \((.+)\)$/);
     if (platform) {
@@ -92,13 +93,16 @@ export function parseAppstore(text) {
         }
       }
       platforms[key] = block;
+    } else if (top.title === "Accessibility") {
+      const subs = sections(top.body, 3);
+      accessibility = { body: top.body, labels: table(subs.lead), play: Object.fromEntries(subs.items.map((s) => [s.title, s.body])) };
     } else if (top.title === "Screenshots") {
       for (const sub of sections(top.body, 3).items) screenshots[sub.title] = table(sub.body);
     } else {
       other[top.title] = Object.fromEntries(sections(top.body, 3).items.map((f) => [f.title, f.body]));
     }
   }
-  return { platforms, screenshots, other };
+  return { platforms, screenshots, other, accessibility };
 }
 
 export function loadAppstore(root) {
@@ -106,14 +110,63 @@ export function loadAppstore(root) {
 }
 
 // Android full description of a locale (bipe-chat/bipe#457). Required: Play shows it in place of the iOS description.
+// The accessibility paragraph of ## Accessibility for that locale follows it (bipe-chat/bipe#503).
 export function playFullDescription(listing, locale) {
-  return listing.platforms.android?.locales[locale]?.full_description ?? "";
+  const text = listing.platforms.android?.locales[locale]?.full_description ?? "";
+  const a11y = listing.accessibility?.play?.[locale];
+  return a11y && text ? `${text}\n\n${a11y}` : text;
 }
 
 // The Play listing of one locale, as edits.listings takes it (Google Play Developer API v3).
 export function playListing(listing, locale) {
   const fields = listing.platforms.android?.locales[locale] ?? {};
   return { language: locale, title: fields.title ?? "", shortDescription: fields.short_description ?? "", fullDescription: playFullDescription(listing, locale) };
+}
+
+// Accessibility Nutrition Labels (bipe-chat/bipe#503), from product/accessibility.json appStore. A label is yes when
+// every item it names is yes on the platform; a label with no items is no.
+export function accessibilityAnswers(a11y, platform = "ios") {
+  const status = new Map(a11y.items.map((i) => [i.id, i.status[platform]]));
+  return a11y.appStore.labels.map((l) => ({
+    ...l,
+    answer: l.items.length > 0 && l.items.every((id) => status.get(id) === "yes") ? "yes" : "no",
+  }));
+}
+
+function listJoin(words, and) {
+  return words.length < 2 ? words.join("") : `${words.slice(0, -1).join(", ")} ${and} ${words.at(-1)}`;
+}
+
+// The Play paragraph of a locale: the Android features of the labels that are yes on android.
+export function playAccessibility(a11y, locale) {
+  const l = locale === "pt-BR" ? "pt" : "en";
+  const names = accessibilityAnswers(a11y, "android").filter((a) => a.answer === "yes" && a.play).map((a) => a.play[l]);
+  return `${a11y.appStore.play[l]} ${listJoin(names, l === "pt" ? "e" : "and")}.`;
+}
+
+// The body of ## Accessibility in product/appstore.md, generated (node tools/check-appstore.mjs --write).
+export function accessibilityBody(a11y) {
+  const rows = accessibilityAnswers(a11y).map((a) => `| ${a.name} | ${a.answer} |`);
+  return [
+    "Generated from `product/accessibility.json` (`appStore`) by `node tools/check-appstore.mjs --write`. Do not edit by hand. The iPhone answers go to App Store Connect (bipe-app `node tools/asc.mjs accessibility`) only after the hand test with people who use these features (bipe-chat/bipe#505), because Apple asks to declare a label only when the common tasks work with it on.",
+    "",
+    "| Label | iPhone |",
+    "|---|---|",
+    ...rows,
+    "",
+    ...LOCALES.flatMap((locale) => [`### ${locale}`, "", playAccessibility(a11y, locale), ""]),
+  ].join("\n").trim();
+}
+
+// Problems when ## Accessibility differs from what product/accessibility.json gives.
+export function checkAccessibility(listing, a11y) {
+  const ids = new Set(a11y.items.map((i) => i.id));
+  const unknown = a11y.appStore.labels.flatMap((l) => l.items.filter((id) => !ids.has(id)).map((id) => `accessibility label ${l.id}: unknown item ${id}`));
+  if (unknown.length) return unknown;
+  if (!listing.accessibility) return ["missing \"## Accessibility\" (node tools/check-appstore.mjs --write)"];
+  return listing.accessibility.body.trim() === accessibilityBody(a11y)
+    ? []
+    : ["## Accessibility differs from product/accessibility.json (node tools/check-appstore.mjs --write)"];
 }
 
 // Store fields that people see, as [where, text] pairs. Used for the dash, voice and placeholder rules.

@@ -13,7 +13,8 @@ Format:
 
 - `## Platform: <iOS|Android> (<bundle id>)`. The production ID is `chat.bipe.app` on both platforms (ADR 0178). "Bipe Next" (`chat.bipe.app.next`) is only the ID set for local and Android tester builds.
 - `### <field>` before the first locale is a field for every locale. `### pt-BR` and `### en-US` start a locale. `#### <field>` is a field of that locale.
-- Android `full_description` is required in each locale. It starts from the iOS `description` and keeps only what the Android app does (bipe-chat/bipe#457).
+- Android `full_description` is required in each locale. It starts from the iOS `description` and keeps only what the Android app does (bipe-chat/bipe#457). The Play text adds the locale's paragraph of `## Accessibility`.
+- `## Accessibility`: the App Store Accessibility Nutrition Labels and the Play accessibility paragraph, generated from `product/accessibility.json` by `node tools/check-appstore.mjs --write` (bipe-chat/bipe#503). Do not edit it by hand.
 - `## Screenshots`: one table per locale, panels in store order. `feature` is a feature id in `product.json`, or `-` for a panel with no capture: the image builder draws the Brazil network there. `title` is the feature name, short enough for 2 lines at store size. `sub` is one sentence of at most 2 lines. No highlight markup (bipe-chat/bipe#463).
 
 Limits: name and subtitle 30, promotional text 170, description 4000, keywords 100 (comma separated, no space after a comma), Play title 30, Play short description 80, Play full description 4000.
@@ -267,6 +268,29 @@ AND MORE
 For now, Bipe opens by invite. Ask someone who uses it for an invite.
 
 Bipe is an experiment by Envisioning. The code is open source and on GitHub, so anyone can check it.
+## Accessibility
+
+Generated from `product/accessibility.json` (`appStore`) by `node tools/check-appstore.mjs --write`. Do not edit by hand. The iPhone answers go to App Store Connect (bipe-app `node tools/asc.mjs accessibility`) only after the hand test with people who use these features (bipe-chat/bipe#505), because Apple asks to declare a label only when the common tasks work with it on.
+
+| Label | iPhone |
+|---|---|
+| VoiceOver | yes |
+| Voice Control | yes |
+| Larger Text | yes |
+| Dark Interface | yes |
+| Differentiate Without Color Alone | yes |
+| Sufficient Contrast | yes |
+| Reduced Motion | yes |
+| Captions | no |
+| Audio Descriptions | no |
+
+### pt-BR
+
+Acessibilidade: o Bipe funciona com TalkBack, Voice Access, letra grande, tema escuro, avisos que não dependem só da cor, alto contraste e animações desligadas.
+
+### en-US
+
+Accessibility: Bipe works with TalkBack, Voice Access, large text, dark theme, warnings that never rely on colour alone, high contrast and animations turned off.
 
 ## Screenshots
 

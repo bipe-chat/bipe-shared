@@ -405,7 +405,7 @@ write("notice-links.json", {
 const reservedSet = new Map();
 for (const [cat, names] of Object.entries(reg.reserved.categories)) for (const n of names) reservedSet.set(n, cat);
 
-const nameCases = ["Itaú", "ІТАÚ", "Nubаnk", "Banco  do   Brasil", "B4nco do Br4sil", "Receita Federal", "Bipe Oficial", "Maria Souza", "Ana", "gov.br", "Caixa Tem", "Novidades do Bipe", "Novidades Bipe", "Nоvidades do Bіpe"];
+const nameCases = ["Itaú", "ІТАÚ", "Nubаnk", "Banco  do   Brasil", "B4nco do Br4sil", "Receita Federal", "Bipe Oficial", "Maria Souza", "Ana", "gov.br", "Caixa Tem", "Novidades do Bipe", "Novidades Bipe", "Nоvidades do Bіpe", "Pé-de-Meía", "Ре de Meia", "Pé de Meia Oficial", "Bolsa Família", "CadÚnico", "Auxílio Gás", "Maria Bolsa"];
 write("normalization.json", {
   $comment: "normalize(): NFKD, strip combining marks, lowercase, fold homoglyphs (registries/homoglyphs.json), collapse whitespace. reserved: category if the normalised name is in registries/reserved-names.json.",
   vectors: nameCases.map((input) => {

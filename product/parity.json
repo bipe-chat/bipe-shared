@@ -3256,6 +3256,35 @@
       "fork": true
     },
     {
+      "id": "ambiguous-names",
+      "name": "Group members with the same name show their @ after the name, look-alike names included (bipe#825)",
+      "ios": {
+        "status": "built",
+        "evidence": [
+          "bipe-app/ios/Bipe/Common/MessageText.swift",
+          "bipe-app/ios/Bipe/Timeline/TimelineRowView.swift",
+          "bipe-app/ios/Bipe/Groups/GroupMembersView.swift"
+        ]
+      },
+      "android": {
+        "status": "built",
+        "evidence": [
+          "bipe-app/android/app/src/main/kotlin/chat/bipe/app/common/MessageText.kt",
+          "bipe-app/android/app/src/main/kotlin/chat/bipe/app/timeline/TimelineRowItem.kt",
+          "bipe-app/android/app/src/main/kotlin/chat/bipe/app/groups/GroupMembersScreen.kt"
+        ]
+      },
+      "web": {
+        "status": "n/a",
+        "reason": "No web chat (ADR 0004); chat.bipe.net.br is stock Element Web"
+      },
+      "server": {
+        "status": "n/a",
+        "reason": "Display names and handles come from Matrix and the existing handle lookup; no server change"
+      },
+      "fork": true
+    },
+    {
       "id": "share-to-chat",
       "name": "Share to a chat from other apps: photos, videos, files, links (bipe#769)",
       "ios": {
@@ -3531,12 +3560,18 @@
       "id": "assistant-drafts",
       "name": "Assistant drafts: the user's assistant drafts, the user sends (ADR 0210, bipe#866)",
       "ios": {
-        "status": "planned",
-        "issue": 866
+        "status": "built",
+        "evidence": [
+          "bipe-app/ios/BipeKit/Sources/BipeKit/BipeAssistantDrafts.swift",
+          "bipe-app/ios/Bipe/Timeline/AssistantDrafts.swift"
+        ]
       },
       "android": {
-        "status": "planned",
-        "issue": 866
+        "status": "built",
+        "evidence": [
+          "bipe-app/android/libraries/bipe/src/main/kotlin/chat/bipe/shared/drafts/BipeAssistantDrafts.kt",
+          "bipe-app/android/app/src/main/kotlin/chat/bipe/app/timeline/AssistantDrafts.kt"
+        ]
       },
       "web": {
         "status": "n/a",
@@ -3547,6 +3582,29 @@
         "reason": "Plain Matrix events in a private room; no Bipe server code"
       },
       "issue": 866
+    },
+    {
+      "id": "assistant-members",
+      "name": "Assistants as chat members: label, operator, model location; admin-only adds (ADR 0210, bipe#867)",
+      "ios": {
+        "status": "planned",
+        "issue": 867
+      },
+      "android": {
+        "status": "planned",
+        "issue": 867
+      },
+      "web": {
+        "status": "planned",
+        "issue": 867
+      },
+      "server": {
+        "status": "built",
+        "evidence": [
+          "bipe-api/src/assistants.ts"
+        ]
+      },
+      "issue": 867
     }
   ],
   "differences": [

@@ -1,7 +1,7 @@
 {
-  "$comment": "Accessibility register (bipe-chat/bipe#491). Feeds /acessibilidade/ and /en/accessibility/ on bipe-web and the Accessibility section of bipe/docs/product.md. items: what works today, per platform. roadmap: the ordered next steps; issues are internal (bipe-chat/bipe is private) and never render on the site. An item that is partial or no names the roadmap steps that fix it. Facts only from what runs today; the audit of the date below read the code, nothing was tested with assistive technology. Tracking: bipe-chat/bipe#504. Validated by tools/gen-product-doc.mjs.",
+  "$comment": "Accessibility register (bipe-chat/bipe#491). Feeds /acessibilidade/ and /en/accessibility/ on bipe-web and the Accessibility section of bipe/docs/product.md. items: what works today, per platform. roadmap: the ordered next steps; issues are internal (bipe-chat/bipe is private) and never render on the site. An item that is partial or no names the roadmap steps that fix it. Facts only from what runs today; the review of the date below read the code and the bipe-app parity items, nothing was tested with assistive technology. Tracking: bipe-chat/bipe#504. Validated by tools/gen-product-doc.mjs.",
   "version": 1,
-  "date": "2026-10-29",
+  "date": "2026-10-30",
   "slug": { "pt": "acessibilidade", "en": "accessibility" },
   "platforms": ["ios", "android", "web"],
   "levels": ["yes", "partial", "no", "na"],
@@ -9,42 +9,42 @@
     {
       "id": "screen-reader",
       "status": { "ios": "yes", "android": "yes", "web": "partial" },
-      "next": ["screen-readers"],
-      "pt": { "name": "Leitor de tela (VoiceOver e TalkBack)", "body": "Nos apps, cada botão diz o que faz, inclusive os que só têm ícone, e uma checagem automática impede um botão novo sem nome. No site, o leitor de tela lê só a legenda das demonstrações do app." },
-      "en": { "name": "Screen reader (VoiceOver and TalkBack)", "body": "In the apps, every button says what it does, also the icon-only ones, and an automated check stops a new button without a name. On the site, a screen reader reads only the caption of the app demos." }
+      "next": ["site-demos"],
+      "pt": { "name": "Leitor de tela (VoiceOver e TalkBack)", "body": "Cada botão e cada tela dos apps dizem ao leitor de tela o que fazem. Uma checagem automática confere isso a cada mudança. No site, o leitor de tela lê só a legenda das demonstrações do app." },
+      "en": { "name": "Screen reader (VoiceOver and TalkBack)", "body": "Every button and screen in the apps tells the screen reader what it does. An automated check confirms this on every change. On the site, a screen reader reads only the caption of the app demos." }
     },
     {
       "id": "gestures",
       "status": { "ios": "yes", "android": "yes", "web": "na" },
       "next": [],
-      "pt": { "name": "Ações sem gesto", "body": "Tudo que se faz arrastando ou segurando o dedo também está no menu de ações da mensagem ou da conversa, e o leitor de tela oferece a mesma ação." },
-      "en": { "name": "Actions without gestures", "body": "Everything you can do with a swipe or a long press is also in the actions menu of the message or the chat, and a screen reader offers the same action." }
+      "pt": { "name": "Ações sem gesto", "body": "Cada gesto tem uma ação no menu, para quem não arrasta nem segura o dedo na tela. Responder, reagir, arquivar e copiar funcionam sem gesto." },
+      "en": { "name": "Actions without gestures", "body": "Every gesture has an action in the menu, for people who cannot swipe or long press. Reply, react, archive and copy work without a gesture." }
     },
     {
       "id": "text-size",
       "status": { "ios": "yes", "android": "yes", "web": "partial" },
       "next": ["site"],
-      "pt": { "name": "Tamanho do texto", "body": "Os apps seguem o tamanho de texto do sistema em todas as telas, sem tamanho fixo. No site, o zoom do navegador funciona. O tamanho de letra que você escolhe no navegador ainda não muda o texto." },
-      "en": { "name": "Text size", "body": "The apps follow the system text size on every screen, with no fixed sizes. On the site, browser zoom works. The font size you set in the browser does not change the text yet." }
+      "pt": { "name": "Tamanho do texto", "body": "Os apps seguem o tamanho de texto do sistema em todas as telas. No site, o zoom do navegador funciona. O tamanho de letra que você escolhe no navegador ainda não muda o texto." },
+      "en": { "name": "Text size", "body": "The apps follow the system text size on every screen. On the site, browser zoom works. The font size you set in the browser does not change the text yet." }
     },
     {
       "id": "tap-targets",
       "status": { "ios": "yes", "android": "yes", "web": "na" },
       "next": [],
-      "pt": { "name": "Área de toque", "body": "Cada botão tem pelo menos 44 pontos no iPhone e 48 dp no Android, e uma checagem automática impede um botão menor." },
-      "en": { "name": "Tap targets", "body": "Every button is at least 44 points on iPhone and 48 dp on Android, and an automated check stops a smaller one." }
+      "pt": { "name": "Área de toque", "body": "Cada botão tem pelo menos 44 pontos no iPhone e 48 dp no Android. Uma checagem automática barra um botão menor." },
+      "en": { "name": "Tap targets", "body": "Every button is at least 44 points on iPhone and 48 dp on Android. An automated check stops a smaller button." }
     },
     {
       "id": "reduce-motion",
       "status": { "ios": "yes", "android": "yes", "web": "partial" },
       "next": ["site"],
-      "pt": { "name": "Reduzir movimento", "body": "Com o ajuste do sistema ligado, nada pulsa nem desliza nos apps, e os stickers animados mostram só o primeiro quadro. No site, as demonstrações não tocam sozinhas, mas algumas animações ainda rodam." },
-      "en": { "name": "Reduce motion", "body": "With the system setting on, nothing pulses or slides in the apps, and animated stickers show only their first frame. On the site, the demos do not play by themselves, but some animations still run." }
+      "pt": { "name": "Reduzir movimento", "body": "Com o ajuste do sistema ligado, as animações dos apps param. No site, as demonstrações não tocam sozinhas, mas algumas animações ainda rodam." },
+      "en": { "name": "Reduce motion", "body": "With the system setting on, the app animations stop. On the site, the demos do not play by themselves, but some animations still run." }
     },
     {
       "id": "contrast",
       "status": { "ios": "yes", "android": "yes", "web": "yes" },
-      "next": ["contrast"],
+      "next": [],
       "pt": { "name": "Contraste das cores", "body": "As cores vêm de um só conjunto para iPhone, Android e site. Todo texto tem contraste AA. Avisos de golpe e selos de confiança têm contraste AAA." },
       "en": { "name": "Colour contrast", "body": "The colours come from one set for iPhone, Android and the site. All text has AA contrast. Scam warnings and trust seals have AAA contrast." }
     },
@@ -52,15 +52,15 @@
       "id": "increase-contrast",
       "status": { "ios": "yes", "android": "yes", "web": "yes" },
       "next": [],
-      "pt": { "name": "Aumentar contraste", "body": "Com o ajuste do sistema ligado, os apps e o site trocam para as cores de alto contraste." },
-      "en": { "name": "Increase contrast", "body": "With the system setting on, the apps and the site switch to the high-contrast colours." }
+      "pt": { "name": "Aumentar contraste", "body": "Os apps passam para as cores de alto contraste quando você liga o ajuste. O site também usa essas cores quando o sistema pede." },
+      "en": { "name": "Increase contrast", "body": "The apps switch to high-contrast colours when you turn on the setting. The site also uses those colours when the system asks for them." }
     },
     {
       "id": "not-colour-alone",
       "status": { "ios": "yes", "android": "yes", "web": "yes" },
       "next": [],
-      "pt": { "name": "Sem depender só da cor", "body": "Avisos de golpe, selos de confiança e menções têm ícone, sinal ou palavras, não só cor." },
-      "en": { "name": "Not by colour alone", "body": "Scam warnings, trust seals and mentions have an icon, a sign or words, not only a colour." }
+      "pt": { "name": "Sem depender só da cor", "body": "Avisos de golpe, selos de confiança e menções têm ícone, marca ou palavras, não só cor." },
+      "en": { "name": "Not by colour alone", "body": "Scam warnings, trust seals and mentions have an icon, a mark or words, not only a colour." }
     },
     {
       "id": "dark-mode",
@@ -73,15 +73,15 @@
       "id": "voice-text",
       "status": { "ios": "yes", "android": "yes", "web": "na" },
       "next": [],
-      "pt": { "name": "Áudio em texto", "body": "Quem grava pode mandar o texto do áudio junto. Quem recebe um áudio sem texto pode transcrever no próprio celular, sem mandar o áudio para nenhum servidor." },
-      "en": { "name": "Voice messages as text", "body": "The sender can send the text with a voice message. The receiver of a voice message without text can transcribe it on their own phone, without sending the audio to any server." }
+      "pt": { "name": "Áudio em texto", "body": "Quem grava pode transcrever o áudio no próprio celular e mandar o texto junto. Quem recebe também pode transcrever no próprio celular um áudio que chegou sem texto." },
+      "en": { "name": "Voice messages as text", "body": "The sender can transcribe a voice message on their own phone and send the text with it. The receiver can also transcribe, on their own phone, a voice message that arrived without text." }
     },
     {
       "id": "image-descriptions",
       "status": { "ios": "yes", "android": "yes", "web": "yes" },
       "next": [],
-      "pt": { "name": "Descrição de imagens", "body": "Quem manda uma foto pode escrever uma descrição dela, e o leitor de tela lê essa descrição antes da legenda. No site, as imagens têm texto alternativo ou ficam escondidas do leitor de tela quando são só enfeite." },
-      "en": { "name": "Image descriptions", "body": "When you send a photo you can write a description of it, and a screen reader reads that description before the caption. On the site, images have alternative text, or a screen reader skips them when they are only decoration." }
+      "pt": { "name": "Descrição de imagens", "body": "Nos apps, você pode escrever uma descrição para cada foto que manda, e o leitor de tela lê essa descrição. No site, as imagens têm texto alternativo ou ficam escondidas do leitor de tela quando são só enfeite." },
+      "en": { "name": "Image descriptions", "body": "In the apps, you can write a description for each photo you send, and a screen reader reads it. On the site, images have alternative text, or a screen reader skips them when they are only decoration." }
     },
     {
       "id": "haptics",
@@ -107,25 +107,25 @@
   ],
   "roadmap": [
     {
-      "id": "screen-readers",
+      "id": "site-demos",
       "stage": "next",
       "issues": [493],
-      "pt": { "name": "Leitor de tela no site", "body": "As demonstrações do app no site ganham a conversa em texto, para o leitor de tela ler." },
-      "en": { "name": "Screen reader on the site", "body": "The app demos on the site get the conversation as text, for a screen reader to read." }
+      "pt": { "name": "Demonstrações do site em texto", "body": "As demonstrações do app no site ganham a conversa em texto para o leitor de tela." },
+      "en": { "name": "Site demos as text", "body": "The app demos on the site get the conversation as text for a screen reader." }
     },
     {
       "id": "site",
       "stage": "next",
       "issues": [492, 494],
-      "pt": { "name": "Site pelo teclado e pelo leitor de tela", "body": "Contorno de foco visível, link para pular ao conteúdo, texto que segue o tamanho de letra do navegador, menos movimento e formulários que levam o foco até o erro." },
-      "en": { "name": "The site by keyboard and screen reader", "body": "A visible focus outline, a skip link, text that follows the browser font size, less motion, and forms that move focus to the error." }
+      "pt": { "name": "Site pelo teclado e pelo leitor de tela", "body": "Contorno de foco visível, link para pular ao conteúdo, texto que segue o tamanho de letra do navegador, animações que param com reduzir movimento e formulários que levam o foco até o erro." },
+      "en": { "name": "The site by keyboard and screen reader", "body": "A visible focus outline, a skip link, text that follows the browser font size, animations that stop with reduce motion, and forms that move focus to the error." }
     },
     {
-      "id": "contrast",
+      "id": "stores",
       "stage": "next",
-      "issues": [502],
-      "pt": { "name": "Checagem de contraste", "body": "Uma checagem automática impede que uma cor nova fique abaixo do contraste mínimo." },
-      "en": { "name": "Contrast check", "body": "An automated check stops a new colour from going below the minimum contrast." }
+      "issues": [503],
+      "pt": { "name": "Acessibilidade nas lojas", "body": "A página do Bipe na App Store e no Google Play vai dizer o que funciona, igual a esta página." },
+      "en": { "name": "Accessibility in the stores", "body": "Bipe's page on the App Store and Google Play will say what works, the same as this page." }
     },
     {
       "id": "people",
@@ -133,13 +133,6 @@
       "issues": [505],
       "pt": { "name": "Testes com quem usa", "body": "Pessoas que usam leitor de tela e letra grande no dia a dia vão testar os apps no celular delas. O que travar vira correção." },
       "en": { "name": "Tests with people who use it", "body": "People who use a screen reader and large text every day will test the apps on their own phones. Each barrier they find gets fixed." }
-    },
-    {
-      "id": "stores",
-      "stage": "next",
-      "issues": [503],
-      "pt": { "name": "Acessibilidade nas lojas", "body": "A página do Bipe na App Store e no Google Play vai dizer o que funciona, igual a esta página, depois do teste com quem usa." },
-      "en": { "name": "Accessibility in the stores", "body": "Bipe's page on the App Store and Google Play will say what works, the same as this page, after the test with people who use it." }
     }
   ],
   "pt": {
@@ -156,7 +149,7 @@
       "Cada botão tem pelo menos 44 pontos no iPhone e 48 dp no Android."
     ],
     "tableTitle": "O que funciona hoje",
-    "tableLede": "Revisão de 29 de outubro de 2026, feita lendo o código dos apps e do site.",
+    "tableLede": "Revisão de 30 de outubro de 2026, feita lendo o código dos apps e do site.",
     "featureLabel": "Recurso",
     "platformLabels": { "ios": "iPhone", "android": "Android", "web": "Site" },
     "levelLabels": { "yes": "Funciona", "partial": "Em parte", "no": "Ainda não", "na": "Não se aplica" },
@@ -186,7 +179,7 @@
       "Every button is at least 44 points on iPhone and 48 dp on Android."
     ],
     "tableTitle": "What works today",
-    "tableLede": "Review of 29 October 2026, done by reading the code of the apps and the site.",
+    "tableLede": "Review of 30 October 2026, done by reading the code of the apps and the site.",
     "featureLabel": "Feature",
     "platformLabels": { "ios": "iPhone", "android": "Android", "web": "Site" },
     "levelLabels": { "yes": "Works", "partial": "In part", "no": "Not yet", "na": "Does not apply" },

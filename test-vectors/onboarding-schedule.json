@@ -1,5 +1,5 @@
 {
-  "description": "Onboarding schedules (registries/onboarding.json pinReminder, bipe-chat/bipe#202). After a check at step with result (right, wrong, later): the next step and the days until the next reminder.",
+  "description": "Onboarding schedules (registries/onboarding.json pinReminder, bipe-chat/bipe#202). After a check at step with result (right, wrong, later): the next step and the days until the next reminder. bringPeopleReminder (registries/onboarding.json bringPeople, bipe-chat/bipe#752): for state and nowMs, the slot the weekly reminder names ({ slot, kind }) or null. Times are Unix ms; status is the invite status.",
   "pinReminder": [
     {
       "step": 0,
@@ -126,6 +126,226 @@
       "result": "later",
       "nextStep": 9,
       "gapDays": 1
+    }
+  ],
+  "bringPeopleReminder": [
+    {
+      "name": "never asked",
+      "nowMs": 1793631600000,
+      "state": {
+        "declines": 0,
+        "lastAskAt": null,
+        "slots": [
+          {
+            "status": "pending",
+            "sentAt": 1792767600000
+          }
+        ]
+      },
+      "expected": null
+    },
+    {
+      "name": "asked 6 days ago",
+      "nowMs": 1793631600000,
+      "state": {
+        "declines": 0,
+        "lastAskAt": 1793113200000,
+        "slots": [
+          {
+            "status": "pending",
+            "sentAt": 1792767600000
+          }
+        ]
+      },
+      "expected": null
+    },
+    {
+      "name": "asked exactly 7 days ago",
+      "nowMs": 1793631600000,
+      "state": {
+        "declines": 0,
+        "lastAskAt": 1793026800000,
+        "slots": [
+          {
+            "status": "pending",
+            "sentAt": 1793026800000
+          }
+        ]
+      },
+      "expected": {
+        "slot": 0,
+        "kind": "pending"
+      }
+    },
+    {
+      "name": "pending 2 days only",
+      "nowMs": 1793631600000,
+      "state": {
+        "declines": 0,
+        "lastAskAt": 1792940400000,
+        "slots": [
+          {
+            "status": "pending",
+            "sentAt": 1793458800000
+          }
+        ]
+      },
+      "expected": null
+    },
+    {
+      "name": "pending exactly 3 days",
+      "nowMs": 1793631600000,
+      "state": {
+        "declines": 0,
+        "lastAskAt": 1792940400000,
+        "slots": [
+          {
+            "status": "pending",
+            "sentAt": 1793372400000
+          }
+        ]
+      },
+      "expected": {
+        "slot": 0,
+        "kind": "pending"
+      }
+    },
+    {
+      "name": "expired one",
+      "nowMs": 1793631600000,
+      "state": {
+        "declines": 0,
+        "lastAskAt": 1792940400000,
+        "slots": [
+          {
+            "status": "used",
+            "sentAt": 1792854000000
+          },
+          {
+            "status": "expired",
+            "sentAt": 1793545200000
+          }
+        ]
+      },
+      "expected": {
+        "slot": 1,
+        "kind": "expired"
+      }
+    },
+    {
+      "name": "oldest wins",
+      "nowMs": 1793631600000,
+      "state": {
+        "declines": 1,
+        "lastAskAt": 1791039600000,
+        "slots": [
+          {
+            "status": "pending",
+            "sentAt": 1793286000000
+          },
+          {
+            "status": "expired",
+            "sentAt": 1791903600000
+          },
+          {
+            "status": "pending",
+            "sentAt": 1792594800000
+          }
+        ]
+      },
+      "expected": {
+        "slot": 1,
+        "kind": "expired"
+      }
+    },
+    {
+      "name": "tie keeps slot order",
+      "nowMs": 1793631600000,
+      "state": {
+        "declines": 0,
+        "lastAskAt": 1792940400000,
+        "slots": [
+          {
+            "status": "pending",
+            "sentAt": 1793199600000
+          },
+          {
+            "status": "expired",
+            "sentAt": 1793199600000
+          }
+        ]
+      },
+      "expected": {
+        "slot": 0,
+        "kind": "pending"
+      }
+    },
+    {
+      "name": "two declines stop it",
+      "nowMs": 1793631600000,
+      "state": {
+        "declines": 2,
+        "lastAskAt": 1791039600000,
+        "slots": [
+          {
+            "status": "expired",
+            "sentAt": 1791903600000
+          }
+        ]
+      },
+      "expected": null
+    },
+    {
+      "name": "every slot joined",
+      "nowMs": 1793631600000,
+      "state": {
+        "declines": 0,
+        "lastAskAt": 1791039600000,
+        "slots": [
+          {
+            "status": "used",
+            "sentAt": 1791903600000
+          },
+          {
+            "status": "used",
+            "sentAt": 1791990000000
+          },
+          {
+            "status": "used",
+            "sentAt": 1792076400000
+          },
+          {
+            "status": "used",
+            "sentAt": 1792162800000
+          }
+        ]
+      },
+      "expected": null
+    },
+    {
+      "name": "revoked leaves the pool",
+      "nowMs": 1793631600000,
+      "state": {
+        "declines": 0,
+        "lastAskAt": 1791039600000,
+        "slots": [
+          {
+            "status": "revoked",
+            "sentAt": 1791903600000
+          }
+        ]
+      },
+      "expected": null
+    },
+    {
+      "name": "no slots",
+      "nowMs": 1793631600000,
+      "state": {
+        "declines": 0,
+        "lastAskAt": 1791039600000,
+        "slots": []
+      },
+      "expected": null
     }
   ]
 }

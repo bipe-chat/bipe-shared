@@ -2475,7 +2475,7 @@ paths:
         - { name: since, in: query, required: false, description: "First sign-up day. Default: 90 days ago.", schema: { type: string, format: date } }
       responses:
         "200":
-          description: Funnel, retention and event totals
+          description: Funnel, retention, event totals and days to the fifth contact
           content:
             application/json:
               schema: { $ref: "#/components/schemas/GrowthReport" }
@@ -5855,6 +5855,23 @@ components:
               event: { type: string }
               users: { type: [integer, "null"] }
               count: { type: [integer, "null"] }
+        contacts:
+          type: array
+          description: >
+            Days from sign-up to the fifth contact (growth event contact_fifth, bipe-chat/bipe#752) per sign-up week.
+            A contact is another person who shares a DM. A person who has no fifth contact yet counts as not reached:
+            median_days and p75_days are null while fewer than half (or three quarters) of the week reached it.
+            A week below min_cell shows only its week.
+          items:
+            type: object
+            required: [week, signups, reached, median_days, p75_days, invites_accepted_per_member]
+            properties:
+              week: { type: string, format: date, description: "Monday of the sign-up week." }
+              signups: { type: [integer, "null"] }
+              reached: { type: [integer, "null"], description: "Sign-ups with a fifth contact." }
+              median_days: { type: [integer, "null"] }
+              p75_days: { type: [integer, "null"] }
+              invites_accepted_per_member: { type: [number, "null"], description: "invite_redeemed count of the week's sign-ups, divided by its sign-ups. Two decimals." }
     StaffWindow:
       type: object
       required: [now, before, change]

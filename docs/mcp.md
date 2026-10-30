@@ -24,22 +24,32 @@ Every tool says what it changes:
 
 - `none`: reads only.
 - `draft`: puts a draft in the user's apps ([drafts-room.md](drafts-room.md)). Personal surface only.
-- `send`: sends a message. Bridge surface only: a company may answer with a program, and the customer sees that a program answers. A personal tool never sends (ADR 0210).
+- `send`: sends a message. On the bridge, a company may answer with a program, and the customer sees that a program answers. On the personal surface, see "Personal sends" below.
 - `state`: changes status, tags, assignment or room state.
 
 ## Rules the registry enforces
 
 `validateMcpTools()` in `tools/lib/registries.mjs` fails closed when:
 
-- a name is not snake_case or is used twice;
+- a name is not snake_case or is used twice on one surface (each surface is its own server, so `send_message` is on the bridge and on the personal surface);
 - a surface, class or writes value is unknown;
 - a `metadata` or `content` tool has no scope;
 - a `public` tool has another class, writes something or has a scope;
-- a personal tool has writes `send`;
+- a personal tool has writes `send` without scope `content-send`, or another surface uses `content-send`;
+- `personalSend` is not the ADR 0210 switch or is on by default;
 - a tool that is not personal has writes `draft`;
 - the `en` or `pt` description is missing, longer than 200 characters or has an em dash.
 
 `tools/mcp-tools.test.mjs` tests each rule.
+
+## Personal sends
+
+An assistant drafts by default (`draft_message`, [drafts-room.md](drafts-room.md)). It can also send as the user (`send_message`), behind two locks (ADR 0210, corrected by MZ on 30 October 2026):
+
+1. The token scope `content-send`, which the user grants to the MCP client in `bipe-mcp`.
+2. The switch "Assistente pode enviar" in Settings > Privacidade on the phone: global account data `chat.bipe.assistant_send` `{"enabled": true}`. It is off by default. `bipe-mcp` reads it before every send, so turning it off on the phone stops sends at once. `assistantSendAllowed()` is the rule: anything other than `enabled: true` is off.
+
+Every message `bipe-mcp` sends carries `"chat.bipe.assistant": {"client": "<MCP client name>"}`. Every member's app shows "Enviada pelo assistente de <nome>" under it (`assistantSender()`, `test-vectors/assistant-send.json`). Like the room marker of ADR 0130, the label keeps honest clients honest: a modified client can leave it out.
 
 ## The public surface
 

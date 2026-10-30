@@ -3497,6 +3497,29 @@
         "reason": "The client distributes room keys; the server cannot choose recipient trust"
       },
       "issue": 774
+    },
+    {
+      "id": "assistant-members",
+      "name": "Assistants as chat members: label, operator, model location; admin-only adds (ADR 0210, bipe#867)",
+      "ios": {
+        "status": "planned",
+        "issue": 867
+      },
+      "android": {
+        "status": "planned",
+        "issue": 867
+      },
+      "web": {
+        "status": "planned",
+        "issue": 867
+      },
+      "server": {
+        "status": "built",
+        "evidence": [
+          "bipe-api/src/assistants.ts"
+        ]
+      },
+      "issue": 867
     }
   ],
   "differences": [

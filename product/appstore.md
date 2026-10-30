@@ -1,6 +1,6 @@
 # Bipe store listing
 
-The source of truth for the App Store and Google Play text, the screenshot panels, the App Privacy answers and the age rating (bipe-chat/bipe#453). App Review details (contact, demo account, review notes) are not in a file: they live in App Store Connect, and bipe-app `node tools/asc.mjs external` copies a missing field from another Bipe record (`BETA_SOURCES`) without printing it. Tools read this file: `tools/lib/appstore.mjs` parses it, `node tools/check-appstore.mjs` checks it, and the upload tools (bipe-chat/bipe#456, bipe-chat/bipe#457) send it. Do not copy this text into another file.
+The source of truth for the App Store and Google Play text, the screenshot panels, the App Privacy answers and the age rating (bipe-chat/bipe#453). App Review details (contact, demo account, review notes) for TestFlight external testing are filled by bipe-app `node tools/asc.mjs external`, which copies them from another App Store Connect record in `BETA_SOURCES` (read only there). Tools read this file: `tools/lib/appstore.mjs` parses it, `node tools/check-appstore.mjs` checks it, and the upload tools (bipe-chat/bipe#456, bipe-chat/bipe#457) send it. Do not copy this text into another file.
 
 Rules for the text:
 
@@ -11,7 +11,7 @@ Rules for the text:
 
 Format:
 
-- `## Platform: <iOS|Android> (<bundle id>)`. The production IDs wait for bipe-chat/bipe#419 and bipe-chat/bipe#157. Until then both blocks say `chat.bipe.app`.
+- `## Platform: <iOS|Android> (<bundle id>)`. The production ID is `chat.bipe.app` on both platforms (ADR 0178). "Bipe Next" (`chat.bipe.app.next`) is only the ID set for local and Android tester builds.
 - `### <field>` before the first locale is a field for every locale. `### pt-BR` and `### en-US` start a locale. `#### <field>` is a field of that locale.
 - Android `full_description` is required in each locale. It starts from the iOS `description` and keeps only what the Android app does (bipe-chat/bipe#457).
 - `## Screenshots`: one table per locale, panels in store order. `feature` is a feature id in `product.json`, or `-` for a panel with no capture: the image builder draws the Brazil network there. `title` is the feature name, short enough for 2 lines at store size. `sub` is one sentence of at most 2 lines. No highlight markup (bipe-chat/bipe#463).
@@ -91,6 +91,7 @@ E MAIS
 • Selo de CNPJ: empresa, escola ou associação prova o CNPJ e mostra o nome que está na Receita.
 • Grupos que só tocam quando é com você, e enquetes para decidir junto.
 • Stickers, inclusive feitos de uma foto.
+• Chamadas de voz e vídeo protegidas de ponta a ponta, por servidores no Brasil.
 • Servidores no Brasil, de empresas brasileiras. Vale a lei brasileira, com a LGPD.
 
 Por enquanto, o Bipe abre por convite. Peça um código de convite a alguém que já usa o Bipe.
@@ -152,6 +153,7 @@ AND MORE
 • Business seal: a company, school or association proves its CNPJ and shows the name on the federal register.
 • Groups that only ring when it's about you, and polls to decide together.
 • Stickers, including ones made from a photo.
+• Voice and video calls, end-to-end encrypted, through servers in Brazil.
 • Servers in Brazil, run by Brazilian companies. Brazilian law applies, including the LGPD.
 
 For now, Bipe opens by invite. Ask someone who uses it for an invite.
@@ -299,9 +301,9 @@ Source: bipe-app `ios/Bipe/PrivacyInfo.xcprivacy` (with the manifests of the two
 | Data type | Collected | Linked to the person | Purpose | data.json item |
 |---|---|---|---|---|
 | Email Address | Yes, optional | Yes | App Functionality | recovery-email |
-| Phone Number | Yes, optional | Yes | App Functionality | phone-number |
 | Precise Location | Yes, only when the person shares a location | Yes | App Functionality | messages |
-| Contacts | Yes, only when the person shares a contact | No | App Functionality | messages |
+| Phone Number | Yes, optional: the number the person links to the account | Yes | App Functionality | phone-number |
+| Contacts | Yes, when the person shares a contact, and the address-book numbers the app sends to `POST /v1/contacts/lookup` to find people on Bipe | No | App Functionality | messages |
 | Photos or Videos | Yes | No | App Functionality | media |
 | Audio Data | Yes, voice messages | No | App Functionality | media |
 | User ID | Yes | Yes | App Functionality, Analytics | account, app-growth |
@@ -313,8 +315,9 @@ Decisions (21 October 2026, mz can overrule):
 
 - Product Interaction is linked: `app-growth` keys each account by an HMAC with a secret the server holds, so the server can link it back to the account.
 - Crash Data and Performance Data are not collected: nothing in the app produces them since bipe-chat/bipe#55. Problem-report logs are Other Diagnostic Data.
-- Phone Number is declared (30 October 2026): the number a person links to the account stays on the server, encrypted. The numbers sent for the contact lookup (`POST /v1/contacts/lookup`) are not kept, so they are not collected data.
-- Location, Contacts, Photos or Videos and Audio Data stay declared. In encrypted chats the server cannot read them, but unencrypted rooms (bipe-chat/bipe#78) still exist.
+- Phone Number is declared (30 October 2026): the number a person links to the account stays on the server, encrypted (`phone-number` in `data.json`).
+- Location, Contacts, Photos or Videos and Audio Data stay declared. Since `e2ee-only-rooms` (parity.json, bipe-chat/bipe#78) the apps and the server make only end-to-end encrypted rooms, so the server cannot read them in chats. Only sticker packs stay readable by the server (ADR 0033: pack images are account data or room state, not encrypted).
+- Contacts includes the address-book lookup. `data.json` has no item for the lookup yet, so its retention is open (unverified, 30 October 2026).
 
 ## Age rating
 

@@ -111,7 +111,7 @@ The pure engine accepts at most 366 days per calculation; callers can page longe
 - `test-vectors/badges.json` uses a TEST-ONLY key. Never trust `kid` `test-only-*` in a release build.
 - Registries are starter lists. Review before launch (reserved names, phrases, confusables table).
 
-Design tokens (colours, trust states) for bipe-app live in `design/tokens.json` (bipe-chat/bipe#551, `design/README.md`). bipe-web still reads its colours from bipe-tokens until bipe-chat/bipe#518.
+Design tokens (colours, trust states) live in `design/tokens.json` (see `design/README.md`). `tools/gen.mjs` generates `BipeColor` (Swift) and `BipeTheme.colors` (Kotlin) in bipe-app from it, and bipe-web builds its CSS colour variables from the same file. The `bipe-tokens` fork of Compound is archived.
 
 ## Licence and contributing
 

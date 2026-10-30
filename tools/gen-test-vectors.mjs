@@ -8,7 +8,7 @@ import { buildBrCode, crc16, pixCheck, pixMarkLines, pixTxid } from "./lib/pix.m
 import { cvmLines } from "./lib/cvm.mjs";
 import { noticeLinkClickable } from "./lib/notice.mjs";
 import { loadSchedulingVectors, writeSchedulingApiFixture } from "./lib/scheduling-vectors.mjs";
-import { photoDistance, photoHash, photoMatches, profileFactLines, relationshipNameWarning, stickerEmojiKey, stickerMatches, stickerQueryTags, stickerSearchFold, newestDmRooms, clearedChatHidden, clearedChatKeepsEvent, clearedChatMarker, clearedChatsWithClear, compareAppVersions, extractInviteCode, handleProblem, isBipeUserID, handleSuggestions, pinReminderNext, pinProblem, remoteBannerState, normalizeCnpj, normalizePhone, displayPhone, handleSkeleton, loadRegistries, normalize, scamMatchIDs, scamWarningKind, trustFacts } from "./lib/registries.mjs";
+import { assistantSendAllowed, assistantSender, draftFromEvent, photoDistance, photoHash, photoMatches, profileFactLines, relationshipNameWarning, stickerEmojiKey, stickerMatches, stickerQueryTags, stickerSearchFold, newestDmRooms, clearedChatHidden, bringPeopleReminder, clearedChatKeepsEvent, clearedChatMarker, clearedChatsWithClear, compareAppVersions, extractInviteCode, handleProblem, isBipeUserID, handleSuggestions, pinReminderNext, pinProblem, remoteBannerState, normalizeCnpj, normalizePhone, displayPhone, handleSkeleton, loadRegistries, normalize, scamMatchIDs, scamWarningKind, trustFacts } from "./lib/registries.mjs";
 
 const root = join(dirname(fileURLToPath(import.meta.url)), "..");
 const reg = loadRegistries(root);
@@ -574,11 +574,29 @@ write("handle-suggestions.json", {
 
 // --- Onboarding schedules (bipe-chat/bipe#202) --------------------------------
 
+const BP_DAY = 86_400_000;
+const BP_NOW = Date.UTC(2026, 10, 2, 15);
+const bpSlot = (status, daysAgo) => ({ status, sentAt: BP_NOW - daysAgo * BP_DAY });
+const bringCases = [
+  { name: "never asked", nowMs: BP_NOW, state: { declines: 0, lastAskAt: null, slots: [bpSlot("pending", 10)] } },
+  { name: "asked 6 days ago", nowMs: BP_NOW, state: { declines: 0, lastAskAt: BP_NOW - 6 * BP_DAY, slots: [bpSlot("pending", 10)] } },
+  { name: "asked exactly 7 days ago", nowMs: BP_NOW, state: { declines: 0, lastAskAt: BP_NOW - 7 * BP_DAY, slots: [bpSlot("pending", 7)] } },
+  { name: "pending 2 days only", nowMs: BP_NOW, state: { declines: 0, lastAskAt: BP_NOW - 8 * BP_DAY, slots: [bpSlot("pending", 2)] } },
+  { name: "pending exactly 3 days", nowMs: BP_NOW, state: { declines: 0, lastAskAt: BP_NOW - 8 * BP_DAY, slots: [bpSlot("pending", 3)] } },
+  { name: "expired one", nowMs: BP_NOW, state: { declines: 0, lastAskAt: BP_NOW - 8 * BP_DAY, slots: [bpSlot("used", 9), bpSlot("expired", 1)] } },
+  { name: "oldest wins", nowMs: BP_NOW, state: { declines: 1, lastAskAt: BP_NOW - 30 * BP_DAY, slots: [bpSlot("pending", 4), bpSlot("expired", 20), bpSlot("pending", 12)] } },
+  { name: "tie keeps slot order", nowMs: BP_NOW, state: { declines: 0, lastAskAt: BP_NOW - 8 * BP_DAY, slots: [bpSlot("pending", 5), bpSlot("expired", 5)] } },
+  { name: "two declines stop it", nowMs: BP_NOW, state: { declines: 2, lastAskAt: BP_NOW - 30 * BP_DAY, slots: [bpSlot("expired", 20)] } },
+  { name: "every slot joined", nowMs: BP_NOW, state: { declines: 0, lastAskAt: BP_NOW - 30 * BP_DAY, slots: [bpSlot("used", 20), bpSlot("used", 19), bpSlot("used", 18), bpSlot("used", 17)] } },
+  { name: "revoked leaves the pool", nowMs: BP_NOW, state: { declines: 0, lastAskAt: BP_NOW - 30 * BP_DAY, slots: [bpSlot("revoked", 20)] } },
+  { name: "no slots", nowMs: BP_NOW, state: { declines: 0, lastAskAt: BP_NOW - 30 * BP_DAY, slots: [] } },
+];
 const pinCases = [];
 for (const step of [0, 1, 2, 3, 4, 5, 9]) for (const result of ["right", "wrong", "later"]) pinCases.push({ step, result });
 write("onboarding-schedule.json", {
-  description: "Onboarding schedules (registries/onboarding.json pinReminder, bipe-chat/bipe#202). After a check at step with result (right, wrong, later): the next step and the days until the next reminder.",
+  description: "Onboarding schedules (registries/onboarding.json pinReminder, bipe-chat/bipe#202). After a check at step with result (right, wrong, later): the next step and the days until the next reminder. bringPeopleReminder (registries/onboarding.json bringPeople, bipe-chat/bipe#752): for state and nowMs, the slot the weekly reminder names ({ slot, kind }) or null. Times are Unix ms; status is the invite status.",
   pinReminder: pinCases.map((c) => ({ ...c, ...(({ step, gapDays }) => ({ nextStep: step, gapDays }))(pinReminderNext(c.step, c.result, reg)) })),
+  bringPeopleReminder: bringCases.map((c) => ({ ...c, expected: bringPeopleReminder(c.state, c.nowMs, reg) })),
 });
 
 // --- Invite codes ------------------------------------------------------------
@@ -758,4 +776,58 @@ write("photo-match.json", {
     const hashB = photoHash(gridB, reg);
     return { name, gridA, gridB, hashA, hashB, distance: photoDistance(hashA, hashB), matches: photoMatches(hashA, hashB, reg) };
   }),
+});
+
+// Assistant drafts (bipe ADR 0210, bipe-chat/bipe#866): which drafts room events the apps show.
+const draftCtx = { ownUserId: "@ana:bipe.net.br", joinedRoomIds: ["!chat:bipe.net.br", "!group:bipe.net.br"] };
+const draftEvent = (patch = {}, field = {}, content = {}) => ({
+  type: "m.room.message",
+  sender: draftCtx.ownUserId,
+  ...patch,
+  content: { msgtype: "m.text", body: "Posso passar aí às 15h?", ...content, [reg.drafts.field]: { room_id: "!chat:bipe.net.br", client: "Claude Desktop", ...field } },
+});
+const draftCases = [
+  ["a plain draft", draftEvent()],
+  ["a reply in a thread", draftEvent({}, { room_id: "!group:bipe.net.br", reply_to: "$reply", thread_root: "$root" })],
+  ["a message without the draft field", { ...draftEvent(), content: { msgtype: "m.text", body: "oi" } }],
+  ["a notice, not a text", draftEvent({}, {}, { msgtype: "m.notice" })],
+  ["client name with spaces around it", draftEvent({}, { client: "  Cursor  " })],
+  ["another sender", draftEvent({ sender: "@bruno:bipe.net.br" })],
+  ["a redacted draft", draftEvent({ redacted: true })],
+  ["another event type", { ...draftEvent(), type: "m.sticker" }],
+  ["a room the user is not in", draftEvent({}, { room_id: "!other:bipe.net.br" })],
+  ["a room ID without !", draftEvent({}, { room_id: "chat:bipe.net.br" })],
+  ["a blank body", draftEvent({}, {}, { body: "   " })],
+  ["a body over the limit", draftEvent({}, {}, { body: "a".repeat(reg.drafts.bodyMaxLength + 1) })],
+  ["a body at the limit", draftEvent({}, {}, { body: "a".repeat(reg.drafts.bodyMaxLength) })],
+  ["no client", draftEvent({}, { client: undefined })],
+  ["a client name over the limit", draftEvent({}, { client: "c".repeat(reg.drafts.clientMaxLength + 1) })],
+  ["a bad reply ID", draftEvent({}, { reply_to: "reply" })],
+];
+write("drafts.json", {
+  $comment: "Generated by tools/gen-test-vectors.mjs from registries/drafts.json. expected: draftFromEvent(event, context) in tools/lib/registries.mjs. The apps show a draft only when show is true; the banner text is bipe_app_drafts_banner with draft.client.",
+  context: draftCtx,
+  cases: draftCases.map(([name, event]) => ({ name, event: JSON.parse(JSON.stringify(event)), expected: draftFromEvent(JSON.parse(JSON.stringify(event)), draftCtx, reg) })),
+});
+
+// Assistant sends (bipe ADR 0210 as corrected on 30 October 2026, bipe-chat/bipe#439): the switch and the label.
+const marker = reg.mcpTools.personalSend.markerField;
+write("assistant-send.json", {
+  $comment: "Generated by tools/gen-test-vectors.mjs from registries/mcp-tools.json personalSend. switch: assistantSendAllowed(content of the global account data chat.bipe.assistant_send); bipe-mcp sends only when allowed. label: assistantSender(message content); when not null the apps show bipe_app_assistant_sent_label with the sender's name.",
+  switch: [
+    ["no account data", null],
+    ["enabled true", { enabled: true }],
+    ["enabled false", { enabled: false }],
+    ["enabled as a string", { enabled: "true" }],
+    ["enabled as a number", { enabled: 1 }],
+    ["an empty object", {}],
+  ].map(([name, content]) => ({ name, content, expected: assistantSendAllowed(content) })),
+  label: [
+    ["a plain message", { msgtype: "m.text", body: "oi" }],
+    ["sent by an assistant", { msgtype: "m.text", body: "oi", [marker]: { client: "Claude Desktop" } }],
+    ["client name with spaces around it", { msgtype: "m.text", body: "oi", [marker]: { client: "  Cursor " } }],
+    ["a blank client name", { msgtype: "m.text", body: "oi", [marker]: { client: " " } }],
+    ["a marker that is not an object", { msgtype: "m.text", body: "oi", [marker]: "Claude" }],
+    ["a client name over the limit", { msgtype: "m.text", body: "oi", [marker]: { client: "c".repeat(reg.mcpTools.personalSend.clientMaxLength + 1) } }],
+  ].map(([name, content]) => ({ name, content, expected: assistantSender(content, reg) })),
 });

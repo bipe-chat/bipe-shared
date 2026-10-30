@@ -1,11 +1,11 @@
 {
   "version": 1,
-  "date": "2026-10-27",
+  "date": "2026-10-30",
   "encarregado": null,
   "pt": {
     "nav": "LGPD",
     "title": "Seus dados no Bipe (LGPD)",
-    "meta": "Bipe, versão de testes. Atualizada em 27 de outubro de 2026.",
+    "meta": "Bipe, versão de testes. Atualizada em 30 de outubro de 2026.",
     "lede": "Cada dado que o Bipe guarda, para quê, com qual base da LGPD, por quanto tempo e onde fica. A página é gerada do mesmo registro que a equipe usa para cuidar dos dados.",
     "policy": "O texto corrido está na [política de privacidade](/privacidade/).",
     "itemsTitle": "O que a gente guarda",
@@ -34,7 +34,7 @@
   "en": {
     "nav": "LGPD",
     "title": "Your data on Bipe (LGPD)",
-    "meta": "Bipe, test version. Updated 27 October 2026.",
+    "meta": "Bipe, test version. Updated 30 October 2026.",
     "lede": "Every piece of data Bipe keeps, what it is for, its LGPD legal basis, how long we keep it and where it lives. The page is built from the same record the team uses to manage the data. The Portuguese version is the reference text.",
     "policy": "The plain-language text is in the [privacy policy](/en/privacy/).",
     "itemsTitle": "What we keep",
@@ -69,6 +69,7 @@
   "places": [
     { "id": "server", "brazil": true, "pt": "Servidor do Bipe em São Paulo", "en": "Bipe server in São Paulo" },
     { "id": "apple-push", "brazil": false, "pt": "Apple, serviço de notificações do iPhone", "en": "Apple, the iPhone notification service" },
+    { "id": "google-push", "brazil": false, "pt": "Google, serviço de notificações do Android (Firebase)", "en": "Google, the Android notification service (Firebase)" },
     { "id": "email-relay", "brazil": null, "pt": "Serviço que entrega os e-mails do Bipe", "en": "The service that delivers Bipe's emails" },
     { "id": "icloud-keychain", "brazil": null, "pt": "Chaveiro do iCloud, na sua conta Apple", "en": "iCloud Keychain, in your Apple account" },
     { "id": "google-block-store", "brazil": null, "pt": "Block Store do Google, na sua conta Google (Android)", "en": "Google Block Store, in your Google account (Android)" },
@@ -169,13 +170,13 @@
       "places": ["google-block-store"],
       "pt": {
         "name": "Código para voltar à conta (Android)",
-        "what": "No Bipe Next para Android, o app guarda o mesmo código no Block Store do Google, na sua conta Google, junto com o ID da sua conta no Bipe. O Bipe não recebe uma cópia dele.",
+        "what": "No Android, o app do Bipe guarda o mesmo código no Block Store do Google, na sua conta Google, junto com o ID da sua conta no Bipe. O Bipe não recebe uma cópia dele.",
         "why": "Num Android novo com a mesma conta Google, o código te leva de volta para a conta, com o seu PIN. Ele não abre as mensagens antigas.",
         "retention": "Enquanto ele estiver no Block Store da sua conta Google."
       },
       "en": {
         "name": "Code to get back into your account (Android)",
-        "what": "In Bipe Next for Android, the app keeps the same code in Google Block Store, in your Google account, with your Bipe account ID. Bipe gets no copy of it.",
+        "what": "On Android, the Bipe app keeps the same code in Google Block Store, in your Google account, with your Bipe account ID. Bipe gets no copy of it.",
         "why": "On a new Android phone with the same Google account, the code takes you back into your account, with your PIN. It does not open old messages.",
         "retention": "As long as it stays in the Block Store of your Google account."
       }
@@ -474,16 +475,16 @@
     {
       "id": "push",
       "basis": "contract",
-      "places": ["server", "apple-push"],
+      "places": ["server", "apple-push", "google-push"],
       "pt": {
-        "name": "Notificações no iPhone",
-        "what": "O endereço de notificação do seu aparelho e os códigos da conversa e da mensagem nova. No Bipe Next, vai também um código aleatório para o celular escolher a conta certa, sem enviar o ID da conta à Apple. O texto da mensagem não vai junto: o app busca o conteúdo direto no servidor do Bipe.",
+        "name": "Notificações",
+        "what": "O endereço de notificação do seu aparelho e os códigos da conversa e da mensagem nova. No iPhone, a Apple entrega o aviso. No Android, o Google entrega pelo Firebase. Vai também um código aleatório para o celular escolher a conta certa, sem enviar o ID da conta à Apple ou ao Google. O texto da mensagem não vai junto: o app busca o conteúdo direto no servidor do Bipe.",
         "why": "Te avisar que chegou mensagem.",
         "retention": "Enquanto as notificações estiverem ligadas naquele aparelho."
       },
       "en": {
-        "name": "iPhone notifications",
-        "what": "Your device's notification address and the IDs of the conversation and the new message. Bipe Next also sends a random code so the phone selects the right account, without sending the account ID to Apple. The message text does not go with it: the app fetches the content directly from the Bipe server.",
+        "name": "Notifications",
+        "what": "Your device's notification address and the IDs of the conversation and the new message. On iPhone, Apple delivers the signal. On Android, Google delivers it through Firebase. A random code also goes with it so the phone selects the right account, without sending the account ID to Apple or Google. The message text does not go with it: the app fetches the content directly from the Bipe server.",
         "why": "To tell you a message arrived.",
         "retention": "As long as notifications are on for that device."
       }
@@ -511,13 +512,13 @@
       "places": ["server"],
       "pt": {
         "name": "Marcos de uso do app",
-        "what": "Por dia, quais marcos uma conta atingiu: conta criada, primeira entrada no app, primeira mensagem, contato verificado, convite enviado, convite usado, grupo criado, chamada iniciada, dia de uso e onde a pessoa usou o Bipe: iOS, Android ou web. A conta aparece só como um código derivado dela, nunca pelo nome de usuário. Sem conteúdo, sem IP, sem modelo do aparelho, sem sala e sem saber com quem a pessoa fala. O app não manda nada: o servidor tira isso do que ele já vê.",
+        "what": "Por dia, quais marcos uma conta atingiu: conta criada, primeira entrada no app, primeira mensagem, contato verificado, convite enviado, convite usado, grupo criado, chamada iniciada, quinto contato, dia de uso e onde a pessoa usou o Bipe: iOS, Android ou web. A conta aparece só como um código derivado dela, nunca pelo nome de usuário. Sem conteúdo, sem IP, sem modelo do aparelho, sem sala e sem saber com quem a pessoa fala. O app não manda nada: o servidor tira isso do que ele já vê.",
         "why": "Saber se o Bipe é útil para quem entra e em que passo as pessoas desistem.",
         "retention": "13 meses."
       },
       "en": {
         "name": "App milestones",
-        "what": "Per day, which milestones an account reached: account created, first sign-in, first message, contact verified, invite sent, invite used, group created, call started, day of use, and where the person used Bipe: iOS, Android or web. The account shows only as a code derived from it, never by username. No content, no IP address, no device model, no room and nothing about who the person talks to. The app sends nothing: the server takes this from what it already sees.",
+        "what": "Per day, which milestones an account reached: account created, first sign-in, first message, contact verified, invite sent, invite used, group created, call started, fifth contact, day of use, and where the person used Bipe: iOS, Android or web. The account shows only as a code derived from it, never by username. No content, no IP address, no device model, no room and nothing about who the person talks to. The app sends nothing: the server takes this from what it already sees.",
         "why": "To know whether Bipe is useful to people who join and at which step people give up.",
         "retention": "13 months."
       }
@@ -714,7 +715,7 @@
     { "id": "scam-warnings", "pt": "Os avisos de golpe e a checagem de links. Nenhum texto, resultado ou pontuação sai do celular.", "en": "Scam warnings and link checks. No text, match or score leaves the phone." },
     { "id": "voice-transcripts", "pt": "A transcrição de mensagens de voz. O texto só sai do celular como legenda da mensagem, com a mesma proteção dela.", "en": "Voice message transcripts. The text leaves the phone only as the message caption, with the same protection as the message." },
     { "id": "access-vault", "pt": "A senha que o app cria sozinho. Ela fica guardada no cofre do aparelho.", "en": "The password the app makes by itself. It stays in the device's secure storage." },
-    { "id": "notification-accounts", "pt": "No Bipe Next, a relação entre cada conta e seu código aleatório de notificação fica no celular. O app não envia essa relação ao Bipe nem à Apple e a apaga quando você sai da conta.", "en": "In Bipe Next, the map from each account to its random notification code stays on the phone. The app does not send the map to Bipe or Apple and removes it at sign-out." },
+    { "id": "notification-accounts", "pt": "No app do Bipe, a relação entre cada conta e seu código aleatório de notificação fica no celular. O app não envia essa relação ao Bipe, à Apple nem ao Google e a apaga quando você sai da conta.", "en": "In the Bipe app, the map from each account to its random notification code stays on the phone. The app does not send the map to Bipe, Apple or Google and removes it at sign-out." },
     {"id": "archive-cache", "pt": "Uma cópia da lista de conversas arquivadas e a data da última atividade, separadas por conta. O app usa a data para trazer a conversa de volta quando chega uma mensagem nova. Essa cópia não vai para o backup na nuvem.", "en": "A copy of the archived chat list and the latest activity timestamp, separated by account. The app uses the timestamp to restore a chat when a new message arrives. This copy stays out of cloud backups."}
   ]
 }

@@ -12,7 +12,8 @@
         "description": "MembershipState join, invite or ban. Other states are not listed."
       },
       "isAdmin": { "type": "bool", "description": "RoomMember.suggestedRoleForPowerLevel is creator or administrator: bipe_app_group_admin on the row." },
-      "isYou": { "type": "bool", "description": "The own user: bipe_app_you on the row, no action sheet." }
+      "isYou": { "type": "bool", "description": "The own user: bipe_app_you on the row, no action sheet." },
+      "nameAmbiguous": { "type": "bool", "description": "RoomMember.isNameAmbiguous, or another member has the same name after NameNormalizer (bipe#825). The row shows the @ after the name, as in timeline-rows." }
     }
   },
   "state": {

@@ -1,6 +1,6 @@
 # Bipe store listing
 
-The source of truth for the App Store and Google Play text, the screenshot panels, the App Privacy answers and the age rating (bipe-chat/bipe#453). App Review details (contact, demo account, review notes) live in bipe-ios `Tools/Bipe/review-details.mjs`, with the secrets in the Keychain. Tools read this file: `tools/lib/appstore.mjs` parses it, `node tools/check-appstore.mjs` checks it, and the upload tools (bipe-chat/bipe#456, bipe-chat/bipe#457) send it. Do not copy this text into another file.
+The source of truth for the App Store and Google Play text, the screenshot panels, the App Privacy answers and the age rating (bipe-chat/bipe#453). App Review details (contact, demo account, review notes) are not in a file: they live in App Store Connect, and bipe-app `node tools/asc.mjs external` copies a missing field from another Bipe record (`BETA_SOURCES`) without printing it. Tools read this file: `tools/lib/appstore.mjs` parses it, `node tools/check-appstore.mjs` checks it, and the upload tools (bipe-chat/bipe#456, bipe-chat/bipe#457) send it. Do not copy this text into another file.
 
 Rules for the text:
 
@@ -216,11 +216,12 @@ Know who you're talking to. Scam warnings, and your @ without your number.
 
 ## App Privacy
 
-Source: `bipe-ios/ElementX/SupportingFiles/PrivacyInfo.xcprivacy`, checked against `product/data.json` and the app code (21 October 2026). Bipe does not track (`NSPrivacyTracking` is false), so no data type is used for tracking. The app has no telemetry (bipe-chat/bipe#55): no Sentry, no PostHog, so no crash or performance data leaves the phone.
+Source: bipe-app `ios/Bipe/PrivacyInfo.xcprivacy` (with the manifests of the two extensions), checked against `product/data.json` and the bipe-app code (30 October 2026). The manifest and this table must say the same. Bipe does not track (`NSPrivacyTracking` is false), so no data type is used for tracking. The app has no telemetry (bipe-chat/bipe#55): no Sentry, no PostHog, so no crash or performance data leaves the phone.
 
 | Data type | Collected | Linked to the person | Purpose | data.json item |
 |---|---|---|---|---|
 | Email Address | Yes, optional | Yes | App Functionality | recovery-email |
+| Phone Number | Yes, optional | Yes | App Functionality | phone-number |
 | Precise Location | Yes, only when the person shares a location | Yes | App Functionality | messages |
 | Contacts | Yes, only when the person shares a contact | No | App Functionality | messages |
 | Photos or Videos | Yes | No | App Functionality | media |
@@ -234,6 +235,7 @@ Decisions (21 October 2026, mz can overrule):
 
 - Product Interaction is linked: `app-growth` keys each account by an HMAC with a secret the server holds, so the server can link it back to the account.
 - Crash Data and Performance Data are not collected: nothing in the app produces them since bipe-chat/bipe#55. Problem-report logs are Other Diagnostic Data.
+- Phone Number is declared (30 October 2026): the number a person links to the account stays on the server, encrypted. The numbers sent for the contact lookup (`POST /v1/contacts/lookup`) are not kept, so they are not collected data.
 - Location, Contacts, Photos or Videos and Audio Data stay declared. In encrypted chats the server cannot read them, but unencrypted rooms (bipe-chat/bipe#78) still exist.
 
 ## Age rating

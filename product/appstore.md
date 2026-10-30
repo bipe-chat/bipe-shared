@@ -286,11 +286,11 @@ Generated from `product/accessibility.json` (`appStore`) by `node tools/check-ap
 
 ### pt-BR
 
-Acessibilidade: o Bipe funciona com TalkBack, Voice Access, letra grande, tema escuro, avisos que não dependem só da cor, alto contraste e remover animações.
+Acessibilidade: o Bipe funciona com TalkBack, Voice Access, letra grande, tema escuro, avisos que não dependem só da cor, alto contraste e animações desligadas.
 
 ### en-US
 
-Accessibility: Bipe works with TalkBack, Voice Access, large text, dark theme, warnings that never rely on colour alone, high contrast and remove animations.
+Accessibility: Bipe works with TalkBack, Voice Access, large text, dark theme, warnings that never rely on colour alone, high contrast and animations turned off.
 
 ## Screenshots
 

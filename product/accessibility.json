@@ -205,7 +205,7 @@
       { "id": "dark-interface", "name": "Dark Interface", "field": "supportsDarkInterface", "items": ["dark-mode"], "play": { "pt": "tema escuro", "en": "dark theme" } },
       { "id": "differentiate-without-color", "name": "Differentiate Without Color Alone", "field": "supportsDifferentiateWithoutColorAlone", "items": ["not-colour-alone"], "play": { "pt": "avisos que não dependem só da cor", "en": "warnings that never rely on colour alone" } },
       { "id": "sufficient-contrast", "name": "Sufficient Contrast", "field": "supportsSufficientContrast", "items": ["contrast", "increase-contrast"], "play": { "pt": "alto contraste", "en": "high contrast" } },
-      { "id": "reduced-motion", "name": "Reduced Motion", "field": "supportsReducedMotion", "items": ["reduce-motion"], "play": { "pt": "remover animações", "en": "remove animations" } },
+      { "id": "reduced-motion", "name": "Reduced Motion", "field": "supportsReducedMotion", "items": ["reduce-motion"], "play": { "pt": "animações desligadas", "en": "animations turned off" } },
       { "id": "captions", "name": "Captions", "field": "supportsCaptions", "items": [], "reason": "Videos people send have no captions; Bipe makes no video of its own." },
       { "id": "audio-descriptions", "name": "Audio Descriptions", "field": "supportsAudioDescriptions", "items": [], "reason": "Bipe has no video content of its own to describe." }
     ],

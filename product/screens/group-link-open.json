@@ -1,0 +1,43 @@
+{
+  "id": "group-link-open",
+  "title": "Open a group link",
+  "flow": "groups",
+  "summary": "What a bipe.chat/g/<code> link does on a phone with an account (ADR 0184, bipe-chat/bipe#744): shows the group and puts the person in it with one tap. A phone with no account takes the code into sign-up like an invite link.",
+  "state": {
+    "code": { "type": "string", "description": "The code from the link (extractInviteCode). Never shown and never logged." },
+    "phase": {
+      "type": "enum",
+      "values": ["loading", "preview", "joining", "invalid", "failed"],
+      "description": "loading: GET /v1/group-links/{code}. preview: the group. joining: join runs. invalid: valid false or a 404 on join, bipe_group_link_open_invalid. failed: bipe_error_network with bipe_app_retry; a 409 shows bipe_app_room_link_invite_only."
+    },
+    "name": { "type": "string", "description": "GroupLinkPreview.name, else bipe_group_common_no_room_name." },
+    "members": { "type": "int", "description": "GroupLinkPreview.members, with bipe_app_room_link_members." },
+    "inviterName": { "type": "string", "optional": true, "description": "GroupLinkPreview.inviter_name, in bipe_group_link_open_invited_by. Hidden when absent." }
+  },
+  "actions": {
+    "open": { "params": { "url": { "type": "url", "description": "The link." } }, "effect": "Reads the code and runs the preview. Phase preview or invalid." },
+    "join": { "effect": "POST /v1/group-links/{code}/join, then Client.joinRoomById with the room ID. Success opens chat-timeline for the room and closes. A room the person is already in opens at once." },
+    "retry": { "effect": "Runs open again." },
+    "close": { "effect": "Closes and goes back to where the user was." }
+  },
+  "strings": [
+    "bipe_app_room_link_opening",
+    "bipe_app_room_link_members",
+    "bipe_app_room_link_join",
+    "bipe_app_room_link_invite_only",
+    "bipe_group_link_open_invited_by",
+    "bipe_group_link_open_invalid",
+    "bipe_group_common_no_room_name",
+    "bipe_error_network",
+    "bipe_app_retry",
+    "bipe_app_close"
+  ],
+  "sdk": ["Client.joinRoomById", "Client.getRoom"],
+  "parity": ["group-link"],
+  "notes": [
+    "Where a link comes from: the universal link https://bipe.chat/g/<code> (iOS associated domains, Android app link), and a tapped link in a message, like invite links.",
+    "A phone with no account: onboarding takes the code like an invite code (signup-invite-code, extractInviteCode). POST /v1/signup with the group code answers group_room_id; after sign-in the app runs Client.joinRoomById with it and opens the group. A link that does not sign people up gives invite_invalid at sign-up, as an unusable invite.",
+    "A link that arrives before sign-in waits until account-start ends, then opens, like room-link-open.",
+    "Default chosen (bipe-chat/bipe#744): no list of contacts who are already in the group, because the preview never returns member names. It can come after the person joins, from the room members. mz can overrule."
+  ]
+}

@@ -174,6 +174,9 @@ public enum BipeRegistries {
     /// Full Matrix user IDs of official Bipe accounts. Match exactly; names and handles are not proof.
     public static let officialAccountIDs: Set<String> = ${swiftArray(Object.values(reg.officialAccounts.accounts).map((a) => swiftString(a.userId)))}
 
+    /// The groups service account (ADR 0184): the admin invites it before making a group link.
+    public static let groupsAccountID = ${swiftString(reg.officialAccounts.accounts.groups.userId)}
+
     /// Public profile rules (ADR 0041). Lengths count Unicode scalars. The server is the authority.
     public static let profileNameMaxLength = ${reg.profiles.nameMaxLength}
     public static let profileBioMaxLength = ${reg.profiles.bioMaxLength}
@@ -562,6 +565,9 @@ object BipeRegistries {
 
     /** Full Matrix user IDs of official Bipe accounts. Match exactly; names and handles are not proof. */
     val officialAccountIds: Set<String> = ${kotlinList("setOf", Object.values(reg.officialAccounts.accounts).map((a) => kotlinString(a.userId)))}
+
+    /** The groups service account (ADR 0184): the admin invites it before making a group link. */
+    val groupsAccountId = ${kotlinString(reg.officialAccounts.accounts.groups.userId)}
 
     /** Public profile rules (ADR 0041). Lengths count code points. The server is the authority. */
     const val PROFILE_NAME_MAX_LENGTH = ${reg.profiles.nameMaxLength}

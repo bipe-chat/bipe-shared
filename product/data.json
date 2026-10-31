@@ -371,6 +371,23 @@
       }
     },
     {
+      "id": "group-links",
+      "basis": "legitimate-interest",
+      "places": ["server"],
+      "pt": {
+        "name": "Links de grupo",
+        "what": "Qual conta criou cada link de grupo, para qual grupo, uma versão protegida do código, e quais contas entraram ou foram criadas pelo link.",
+        "why": "Colocar no grupo quem tem o link, contar quem entrou, parar o link quando ele vence ou quando o administrador desativa, e achar abuso.",
+        "retention": "365 dias depois que o link vence ou é desativado."
+      },
+      "en": {
+        "name": "Group links",
+        "what": "Which account made each group link, for which group, a protected form of the code, and which accounts joined or signed up through the link.",
+        "why": "To put people who have the link into the group, count who joined, stop the link when it expires or an admin turns it off, and find abuse.",
+        "retention": "365 days after the link expires or is turned off."
+      }
+    },
+    {
       "id": "archived-chats",
       "basis": "contract",
       "places": ["server"],

@@ -38,6 +38,7 @@
     "cancel": { "effect": "Closes the screen. Nothing is sent." }
   },
   "strings": [
+    "bipe_poll_edit",
     "bipe_app_poll_create_title",
     "bipe_app_poll_question",
     "bipe_app_poll_question_placeholder",
@@ -55,7 +56,8 @@
   "notes": [
     "The composer opens this screen from its attach menu (composer spec, bipe-chat/bipe#563).",
     "bipe_app_poll_option takes the option number from 1 as its placeholder label.",
-    "One vote per person in the MVP (maxSelections 1). Multiple choice and editing a sent poll are out of scope.",
+    "One vote per person in the MVP (maxSelections 1). Multiple choice is out of scope.",
+    "Edit (bipe-chat/bipe#669): poll-detail shows bipe_poll_edit on an own open poll with no votes. It opens this screen titled bipe_poll_edit, filled with the poll; the send button saves with Timeline.edit and EditedContent.pollStart. A failure shows bipe_app_poll_send_error. A poll with a vote is not editable, because the votes refer to its answers.",
     "A poll is a plain Matrix poll event (m.poll.start, unstable prefix through the SDK), end-to-end encrypted like every message. No Bipe server code (parity polls).",
     "In a quiet group a new poll notifies every member through the push rule chat.bipe.poll_start (chat-notifications, ADR 0026). Open polls the member has not answered show in the O que você perdeu block (bipe_group_missed_poll, groups.md).",
     "A DM has no polls (ADR 0192): attachment-picker hides the poll row when RoomInfo.isDm is true. A poll already in a DM still shows and takes votes."

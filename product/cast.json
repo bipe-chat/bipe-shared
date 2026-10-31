@@ -26,6 +26,11 @@
       "photo": { "style": "selfie", "look": "a 29-year-old Brazilian woman with light brown skin and long dark wavy hair, a light denim shirt, sitting at a small pavement café table in São Paulo with a cup of coffee, daylight, smiling" }
     },
     {
+      "id": "gabidesign", "kind": "institution", "name": "Gabi Moreira Design", "short": "Gabi Moreira Design", "handle": "gabimoreira.design",
+      "about": "Fictional design studio of Gabi (gabi), São Paulo. Verified company (CNPJ). Her work account on the same phone: the duas-contas scene (multi-account, ADR 0086). No photo.", "trust": "company", "cnpj": "00.000.000/0001-00",
+      "photo": null
+    },
+    {
       "id": "rafa", "kind": "person", "name": "Rafael Oliveira", "short": "Rafa", "handle": "rafaoliveira",
       "about": "38, sells second-hand bikes, Belo Horizonte. Verified, gets paid by Pix.", "trust": "pix",
       "photo": { "style": "pet", "look": "a caramel-coloured Brazilian mixed-breed street dog (vira-lata caramelo) with a red collar, sitting on a tiled porch, head tilted, looking at the camera" }

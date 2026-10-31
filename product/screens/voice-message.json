@@ -6,6 +6,7 @@
   "types": {
     "VoiceMessage": {
       "isVoice": { "type": "bool", "description": "true for a voice message (has the voice marker), false for an audio file." },
+      "forwardCount": { "type": "int", "description": "The count of the chat.bipe.forward mark in the content (registries/voice-media.json forwardKey; BipeForwardMark, test-vectors/forward-marks.json). 0 when the mark is missing or malformed." },
       "duration": { "type": "string", "description": "Length, formatted (\"0:42\")." },
       "waveform": { "type": "list", "of": { "type": "int", "description": "One bar, 0 to 1024." }, "description": "From the event; empty draws a flat line." },
       "transcript": { "type": "string", "optional": true, "description": "The caption of a voice message. Missing when the sender sent none." },
@@ -18,6 +19,7 @@
     }
   },
   "state": {
+    "sourceSheet": { "type": "bool", "description": "true while the sheet about the source line shows: title bipe_voice_source_title, text bipe_voice_source_body, button bipe_app_close." },
     "voice": { "type": "VoiceMessage", "description": "The row." },
     "transcriptExpanded": { "type": "bool", "description": "true after the person tapped show more." },
     "localTranscript": {
@@ -43,6 +45,9 @@
     }
   },
   "actions": {
+    "openSource": {
+      "effect": "Tap on the source line: sets sourceSheet. The sheet states the limit: the sender's app sets the mark, a modified app can fake it, and the verified account of the sender is what a person can trust."
+    },
     "cycleSpeed": {
       "effect": "Tap on the speed button: normal, then oneAndHalf, then double, then normal again. A playing row changes speed at once. Pitch stays the same (iOS AVAudioPlayer.enableRate and rate; Android PlaybackParams.setSpeed). The next row starts at the speed chosen last. The transcript does not change."
     },
@@ -91,7 +96,14 @@
     "bipe_voice_expired",
     "bipe_voice_kept",
     "bipe_voice_kept_scam",
-    "bipe_voice_keep_limit"
+    "bipe_voice_keep_limit",
+    "bipe_voice_source_forwarded",
+    "bipe_voice_source_forwarded_many",
+    "bipe_voice_source_recorded",
+    "bipe_voice_source_file",
+    "bipe_voice_source_title",
+    "bipe_voice_source_body",
+    "bipe_app_close"
   ],
   "sdk": [
     "MessageType",
@@ -115,6 +127,8 @@
     "Audio files (no voice marker) show the same player with the file name and no transcript.",
     "bipe_app_voice_play and bipe_app_voice_pause are the button accessibility labels. bipe_app_media_voice is the preview text for replies, the chat list and notifications.",
     "Recording and the sender-side transcript (voice-transcript-send, BipeKit VoiceTranscriber.swift, libraries/bipe voice/BipeVoiceTranscriber.kt) are the composer issue, not this spec.",
-    "Default chosen (bipe#824): one speed for every voice message on the phone, not one per chat, because WhatsApp works this way. mz can overrule."
+    "Default chosen (bipe#824): one speed for every voice message on the phone, not one per chat, because WhatsApp works this way. mz can overrule.",
+    "Source line (bipe-chat/bipe#83): a small line under the player, a button. forwardCount of forwardedManyTimes or more: bipe_voice_source_forwarded_many. 1 or more: bipe_voice_source_forwarded. Else a voice message (isVoice) shows bipe_voice_source_recorded and an audio file bipe_voice_source_file. A missing mark means no forward line, never proof that the audio was not forwarded: only Bipe apps set the mark, and a modified app can drop or fake it.",
+    "Default chosen (bipe-chat/bipe#83): the recorded line says recorded in the app, not in Bipe, because any Matrix app can set the voice marker. MZ can overrule."
   ]
 }

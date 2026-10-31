@@ -58,7 +58,7 @@ The parity ledger (ADR 0092). `product/parity.json` holds each capability's stat
 node tools/check-appstore.mjs
 ```
 
-The store listing (bipe-chat/bipe#453). `product/appstore.md` holds the App Store and Google Play text in pt-BR and en-US, the screenshot panels, the App Privacy answers and the age rating. App Review details are bipe-ios `Tools/Bipe/review-details.mjs`. `tools/lib/appstore.mjs` parses it for every tool that needs it. The check fails on a field over its store limit, a missing locale, a space after a keyword comma, an em or en dash, "pra" in Bipe voice, or a panel for a feature that is not built on both apps. `tools/appstore.test.mjs` runs it in CI.
+The store listing (bipe-chat/bipe#453). `product/appstore.md` holds the App Store and Google Play text in pt-BR and en-US, the screenshot panels, the App Privacy answers and the age rating. App Review details live in App Store Connect (bipe-app `tools/asc.mjs external`). `tools/lib/appstore.mjs` parses it for every tool that needs it. The check fails on a field over its store limit, a missing locale, a space after a keyword comma, an em or en dash, "pra" in Bipe voice, or a panel for a feature that is not built on both apps. `tools/appstore.test.mjs` runs it in CI.
 
 ### Hook and CI
 
@@ -111,7 +111,7 @@ The pure engine accepts at most 366 days per calculation; callers can page longe
 - `test-vectors/badges.json` uses a TEST-ONLY key. Never trust `kid` `test-only-*` in a release build.
 - Registries are starter lists. Review before launch (reserved names, phrases, confusables table).
 
-Design tokens (colours, trust states) are not here. They live in the `bipe-tokens` fork of Compound, which generates Swift, Kotlin and web. See `bipe/docs/design/system.md`.
+Design tokens (colours, trust states) live in `design/tokens.json` (see `design/README.md`). `tools/gen.mjs` generates `BipeColor` (Swift) and `BipeTheme.colors` (Kotlin) in bipe-app from it, and bipe-web builds its CSS colour variables from the same file. The `bipe-tokens` fork of Compound is archived.
 
 ## Licence and contributing
 

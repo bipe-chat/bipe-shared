@@ -1,0 +1,28 @@
+{
+  "$comment": "Sample data of the store captures (bipe-chat/bipe#457): one entry per slug of the `## Screenshots` table in appstore.md that has a capture source in bipe-app. People are cast ids (cast.json). Message text is people's voice, so it is the same in both locales; the app's own text comes from the strings. tools/gen.mjs writes it into bipe-app android/app/src/screenshotTest; tools/lib/store-captures.mjs checks it.",
+  "version": 1,
+  "viewer": "gabi",
+  "captures": {
+    "aviso-golpe": {
+      "chat": "golpista",
+      "messages": [
+        { "from": "golpista", "time": "09:12", "text": "Oi filha, troquei de número. Salva esse aqui" },
+        { "from": "viewer", "time": "09:14", "text": "Mãe? Que número é esse?" },
+        { "from": "golpista", "time": "09:15", "text": "Faz um pix pra mim? É urgente, te devolvo amanhã. Chave 123.456.789-09" }
+      ]
+    },
+    "pedidos": {
+      "requests": [
+        { "from": "golpista", "trust": "unverified" },
+        { "from": "clinica", "trust": "verified" },
+        { "from": "falsacaju", "trust": "unverified" }
+      ]
+    },
+    "conferir-pix": {
+      "pix": { "key": "7d9f0c2a-4b1e-4e8a-9c3d-2f6b8a1e5c40", "name": "Rafael Oliveira", "city": "BELO HORIZONTE", "amount": "350.00" }
+    },
+    "seu-arroba": {
+      "owner": "viewer"
+    }
+  }
+}

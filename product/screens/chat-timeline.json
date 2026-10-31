@@ -58,6 +58,8 @@
     },
     "invitingAgain": { "type": "bool", "description": "true while inviteAgain runs." },
     "profileNotice": {"type": "string", "optional": true, "description": "1:1 chats only: bipe_profile_notice_name_photo with the person's display name, when profileFactLines gives notice for the other person (name and photo changed at most noticePairHours apart, the later change younger than noticeDays). Amber (warning colour tokens), above the composer."},
+    "floatingDate": { "type": "date", "optional": true, "description": "While the list scrolls (bipe#828): the day of the top row on screen, in a pill at the top of the timeline, with the date separator text of timeline-rows. Missing 1 s after scrolling stops. It fades in and out; with Reduce Motion (iOS) or animator scale 0 (Android) it shows and hides with no fade. In the main timeline the pill is a button that runs jumpToDate (label bipe_jump_to_date_title); in the day view and the thread view it is text only." },
+    "dayFocus": { "type": "string", "optional": true, "description": "The day view (bipe#828): the event ID a focused timeline (TimelineFocus.event, 40 context events) opens on, over the chat. Read-only: no composer and no chat bars; the title is the day; bipe_app_close goes back to the chat. It loads older events at the top (paginateBackwards) and newer ones at the bottom (paginateForwards), and opens on the first row of the picked day." },
     "theftMark": {"type": "date", "optional": true, "description": "1:1 chats: the stolen_at of a valid theft statement (docs/theft-mark.md) for the other person. Shows bipe_theft_banner_title and bipe_theft_banner_body (red, danger colour tokens) above the composer in a 1:1 chat, and bipe_theft_message_marker under each message from that account sent from stolen_at minus markedMessageMinutes on."}
   },
   "actions": {
@@ -74,6 +76,10 @@
     "retrySend": {
       "params": { "id": { "type": "string", "description": "The failed message." } },
       "effect": "Sends a failed own message again."
+    },
+    "jumpToDate": {
+      "params": { "day": { "type": "date", "description": "The day picked in the date picker (bipe_jump_to_date_title, graphical calendar up to today, bipe_app_cancel)." } },
+      "effect": "Matrix client-server GET /_matrix/client/v1/rooms/{roomId}/timestamp_to_event with ts = the start of that day on the phone and dir f (MSC3030). No event, or an event on a later day: the notice bipe_jump_to_date_empty, nothing moves. When the loaded rows already reach back to that day: the list scrolls to the first row of the day. Else the day view opens with dayFocus = the event. A failed call shows bipe_error_generic."
     },
     "searchInChat": {
       "effect": "From the chat menu, in a DM and in a group: opens chat-search with roomId set to this chat (bipe-chat/bipe#861). A message hit closes the search and runs openOriginal here."
@@ -111,7 +117,12 @@
     "bipe_theft_message_marker",
     "bipe_search_in_chat",
     "bipe_app_group_details_title",
-    "bipe_dm_details_title"
+    "bipe_dm_details_title",
+    "bipe_jump_to_date_title",
+    "bipe_jump_to_date_empty",
+    "bipe_app_close",
+    "bipe_app_cancel",
+    "bipe_error_generic"
   ],
   "sdk": [
     "Client.getRoom",
@@ -124,10 +135,14 @@
     "Room.getPowerLevels",
     "RoomPowerLevels.canOwnUserInvite",
     "Room.inviteUserById",
-    "Client.getProfile"
+    "Client.getProfile",
+    "TimelineFocus.event",
+    "Timeline.paginateForwards",
+    "Client.session"
   ],
-  "parity": ["e2ee", "dm-left-bar", "dm-block-bar", "official-badge", "cvm-line", "official-notice", "profile-change-facts", "theft-protection"],
+  "parity": ["e2ee", "dm-left-bar", "dm-block-bar", "official-badge", "cvm-line", "official-notice", "profile-change-facts", "theft-protection", "jump-to-date"],
   "notes": [
+    "Floating date and jump to a date (bipe#828): the pill uses the date separator rows the SDK timeline gives (DateDividerMode daily), so its day matches the separator above the top row. Default chosen: a picked day opens in a read-only day view over the chat, not in place of the live timeline, because the live timeline keeps sending, the read receipt and the newest messages; closing the day view returns to them. Default chosen: picking a day in the calendar jumps at once, with no extra confirm button. mz can overrule.",
     "The chat menu is the info button in the top bar. In a DM it is a menu with the business tools, bipe_search_in_chat and dm-delete. In a group it is a menu with bipe_app_group_details_title (group-details) and bipe_search_in_chat. Default chosen (bipe-chat/bipe#861): the group info button opens a menu, not group-details at once, because a group had no chat menu for the search. mz can overrule.",
     "Assistant sends (ADR 0210, bipe-chat/bipe#439): a message whose content has chat.bipe.assistant with a client name (assistantSender, test-vectors/assistant-send.json) shows bipe_app_assistant_sent_label with the sender's display name, in small text under the bubble, on every member's app. The sender's own app shows it too.",
     "CVM stop order (ADR 0077, bipe-chat/bipe#238): in a DM whose other person has a verified company seal with a cvm stop order (test-vectors/cvm-lines.json danger true), a red caution card with bipe_cvm_stop_order_card and the date sits at the top of the timeline. It stays while the badge says so. It comes from the signed badge only.",

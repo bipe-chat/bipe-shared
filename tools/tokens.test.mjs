@@ -94,13 +94,13 @@ test("generated CSS holds the background, every ramp step and every semantic tok
 // token names one; appThemes swaps the acai steps of the themed tokens.
 test("no semantic token uses an expressive ramp", () => {
   for (const [name, token] of Object.entries(tokens.semantic)) {
-    for (const variant of VARIANTS) assert.doesNotMatch(token[variant], /^(pitanga|caju|jabuticaba|jenipapo)\./, `${name}.${variant}`);
+    for (const variant of VARIANTS) assert.doesNotMatch(token[variant], /^(pitanga|caju|jabuticaba|jenipapo|goiaba|maracuja)\./, `${name}.${variant}`);
   }
 });
 
 test("every palette passes the contrast rules and keeps the trust colours", () => {
   const themes = resolveThemes(tokens);
-  assert.deepEqual(Object.keys(themes), ["acai", "pitanga", "caju", "jabuticaba", "jenipapo"]);
+  assert.deepEqual(Object.keys(themes), ["acai", "goiaba", "pitanga", "maracuja", "jenipapo", "jabuticaba"]);
   for (const [palette, resolved] of Object.entries(themes)) {
     for (const name of Object.keys(resolved).filter((n) => n.startsWith("trust."))) {
       assert.deepEqual(resolved[name], themes.acai[name], `${palette} ${name}`);
@@ -111,7 +111,7 @@ test("every palette passes the contrast rules and keeps the trust colours", () =
 });
 
 test("app icon backgrounds are the icon step of each palette (MZ, bipe-chat/bipe#811)", () => {
-  assert.deepEqual(appIconColors(tokens).map(({ background }) => background), ["#802F7C", "#C13F26", "#A05B00", "#614381", "#005678"]);
+  assert.deepEqual(appIconColors(tokens).map(({ background }) => background), ["#802F7C", "#C52A7A", "#BC4500", "#7B6C00", "#005678", "#4E4694"]);
 });
 
 test("appThemes fails closed", () => {
@@ -122,7 +122,7 @@ test("appThemes fails closed", () => {
   notAcai.semantic["accent.wash"].light = "gray.200";
   assert.throws(() => appThemes(notAcai), /themed accent.wash.light must name an acai step/);
   const step = structuredClone(tokens);
-  step.appThemes.palettes.caju.iconStep = "950";
+  step.appThemes.palettes.maracuja.iconStep = "950";
   assert.throws(() => appThemes(step), /iconStep "950" is not a ramp step/);
   const ramp = structuredClone(tokens);
   ramp.appThemes.palettes.manga = { iconStep: "900" };

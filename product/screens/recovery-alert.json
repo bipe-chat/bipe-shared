@@ -92,7 +92,7 @@
   },
   "actions": {
     "check": {
-      "effect": "On launch and on foreground: reads GET /v1/me/account and sets notice."
+      "effect": "On launch, on foreground, and at once on a recovery push (notification-service kinds recoveryStarted and recoveryCompleted: when it arrives with the app open, and on its tap): reads GET /v1/me/account and sets notice."
     },
     "cancel": {
       "effect": "For a waiting recovery: asks for a biometric check (or the device PIN), then sends the cancel. Shows bipe_recovery_alert_cancelled."

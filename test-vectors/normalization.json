@@ -70,6 +70,41 @@
       "input": "Nоvidades do Bіpe",
       "normalized": "novidades do bipe",
       "reserved": "bipe"
+    },
+    {
+      "input": "Pé-de-Meía",
+      "normalized": "pe-de-meia",
+      "reserved": "government"
+    },
+    {
+      "input": "Ре de Meia",
+      "normalized": "pe de meia",
+      "reserved": "government"
+    },
+    {
+      "input": "Pé de Meia Oficial",
+      "normalized": "pe de meia oficial",
+      "reserved": "government"
+    },
+    {
+      "input": "Bolsa Família",
+      "normalized": "bolsa familia",
+      "reserved": "government"
+    },
+    {
+      "input": "CadÚnico",
+      "normalized": "cadunico",
+      "reserved": "government"
+    },
+    {
+      "input": "Auxílio Gás",
+      "normalized": "auxilio gas",
+      "reserved": "government"
+    },
+    {
+      "input": "Maria Bolsa",
+      "normalized": "maria bolsa",
+      "reserved": null
     }
   ]
 }

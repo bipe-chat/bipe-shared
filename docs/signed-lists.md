@@ -56,6 +56,7 @@ Dates of accreditation and removal are `YYYY-MM-DD` (Brasília calendar date). M
   "version": 3,
   "issued": 1791716400,
   "expires": 1792926000,
+  "appeal_keys": { "appeal-2026-10": "<base64url X25519 public key>" },
   "operators": [
     {
       "server_name": "bipe.net.br",
@@ -65,7 +66,8 @@ Dates of accreditation and removal are `YYYY-MM-DD` (Brasília calendar date). M
       "signing_keys": { "ed25519:a_AbCd": "<unpadded base64 Ed25519 public key>" },
       "account_api": "https://api.bipe.net.br",
       "push_egress": ["203.0.113.10/32", "2001:db8:10::/64"],
-      "signup": "open"
+      "signup": "open",
+      "report_keys": { "report-2026-10": "<base64url X25519 public key>" }
     },
     {
       "server_name": "antigo.exemplo.br",
@@ -91,6 +93,9 @@ Entry fields:
 | `account_api` | `valid` | string | `https` base URL of the operator's account service |
 | `push_egress` | `valid` | list of strings, not empty | IPv4 and IPv6 CIDR blocks that the operator's homeserver sends push from. The core edge allows `/_matrix/push/v1/notify` only from these (federated-operators.md "Push") |
 | `signup` | `valid` | `"open"` \| `"invite"` \| `"closed"` | Whether the operator takes new users |
+| `report_keys` | `valid` | object, not empty | `kid` to raw X25519 public key, base64url without padding. Reports about this operator's users are sealed to one of these keys (`docs/report-envelope.md`, bipe-chat/bipe#697) |
+
+The payload also has `appeal_keys` (object, not empty, same form): the associação's keys for appeals and abuse across operators. A `kid` of `report_keys` or `appeal_keys` is unique in the whole list.
 
 A `removed` entry keeps only `server_name`, `name`, `status`, `joined` and `removed`. Its keys, URLs and egress addresses leave the list in the same version that removes it (A-5). A removed entry stays in every later version. If the same server name joins again, the entry goes back to `valid` with a new `joined` date and new keys.
 

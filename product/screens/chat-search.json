@@ -2,7 +2,7 @@
   "id": "chat-search",
   "title": "Search chats",
   "flow": "home",
-  "summary": "Finds a chat or group by name among the person's own chats, and messages in them, as they type (bipe-chat/bipe#671). It never searches people outside the account's chats: Bipe has no directory (usernames.md).",
+  "summary": "Finds a chat or group by name among the person's own chats, and messages in them, as they type (bipe-chat/bipe#671). From the chat menu it searches the messages of one chat (bipe-chat/bipe#861). It never searches people outside the account's chats: Bipe has no directory (usernames.md).",
   "types": {
     "MessageHit": {
       "roomId": { "type": "string", "description": "SearchServiceResult message roomId." },
@@ -14,6 +14,7 @@
     }
   },
   "state": {
+    "roomId": { "type": "string", "optional": true, "description": "Set when chat-timeline searchInChat opens the search (bipe-chat/bipe#861): only messages of this room, no chats and no recent. Missing in the search tab." },
     "query": { "type": "string", "description": "The search text." },
     "results": {
       "type": "list",
@@ -46,7 +47,7 @@
     },
     "openMessage": {
       "params": { "roomId": { "type": "string", "description": "The chat." }, "eventId": { "type": "string", "description": "The message." } },
-      "effect": "Adds query to recent, opens chat-timeline for that room and runs its openOriginal with the event ID: the chat scrolls to the message and highlights it."
+      "effect": "Adds query to recent, opens chat-timeline for that room and runs its openOriginal with the event ID: the chat scrolls to the message and highlights it. With roomId: closes the search and runs openOriginal in the chat that is open; recent does not change."
     },
     "pickRecent": {
       "params": { "query": { "type": "string", "description": "A recent query." } },
@@ -61,6 +62,7 @@
     "bipe_search_messages",
     "bipe_search_recent",
     "bipe_search_recent_clear",
+    "bipe_search_in_chat",
     "bipe_dm_no_name",
     "bipe_app_you",
     "bipe_app_search_placeholder",
@@ -73,14 +75,18 @@
     "RoomList.entriesWithDynamicAdapters",
     "RoomListDynamicEntriesController.setFilter",
     "RoomListEntriesDynamicFilterKind",
-    "Room.roomInfo"
+    "Room.roomInfo",
+    "Client.searchService",
+    "SearchService.setQuery",
+    "SearchService.paginate",
+    "SearchService.subscribeToResults"
   ],
   "parity": [],
   "notes": [
     "Filter: All of Joined, NonSpace, DeduplicateVersions and NormalizedMatchRoomName with the query. Both tabs together; each result shows whether it is a chat or a group.",
     "Message search (bipe-chat/bipe#671): message text is end-to-end encrypted, so the server cannot search it. The app turns on the SDK's local search index (ClientBuilder.withSearchIndexStore, a folder SearchIndex in the account's data folder, main app only, not the notification service). The SDK indexes the messages this phone receives or loads after the index exists; older history is not indexed. Default chosen: no password on the index, because the other SDK stores of the account have none and rely on the OS file protection. mz can overrule.",
     "A result whose message is older than the pages openOriginal loads opens the chat at its newest messages.",
-    "Search inside one chat is a later issue.",
+    "Search in one chat (bipe-chat/bipe#861): the title and the field placeholder are bipe_search_in_chat. SearchService has no room filter, so the app keeps only the results whose roomId is the chat. While fewer than 20 messages match, the app loads the next page (SearchService.paginate), at most 5 pages after one setQuery. The rows leave out the chat name. A query with no match shows bipe_app_search_no_results. Default chosen (bipe-chat/bipe#861): no recent list in one chat, because recent belongs to the search tab. mz can overrule.",
     "Requests and the self-chat are not in the results.",
     "No results: bipe_app_search_no_results with the query. With a query that starts with @: bipe_app_search_find_handle opens findByHandle, with bipe_start_chat_search_by_handle as the footer.",
     "Where search sits (ADR 0053): the search tab on iOS, the top bar on Android."

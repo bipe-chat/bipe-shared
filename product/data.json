@@ -377,13 +377,13 @@
       "pt": {
         "name": "Primeiros contatos",
         "what": "Quando você chama alguém que não está em nenhuma conversa com você: a data, a conversa e um código derivado da conta de quem recebeu, nunca o nome dela. Depois, se a pessoa aceitou, recusou, não respondeu ou bloqueou você, e quantas denúncias suas mensagens receberam, contados por dia. Sem conteúdo.",
-        "why": "Saber como as pessoas respondem a uma conta que chama desconhecidos, para frear spam e golpes.",
+        "why": "Saber como as pessoas respondem a uma conta que chama desconhecidos e limitar quantas pessoas desconhecidas uma conta pode chamar por dia, para frear spam e golpes. Quem já conversa com você nunca entra nesse limite.",
         "retention": "7 dias para cada primeiro contato. Depois fica só a contagem por dia, por 90 dias."
       },
       "en": {
         "name": "First contacts",
         "what": "When you start a chat with someone who shares no conversation with you: the date, the conversation and a code derived from the other person's account, never their name. Then whether they accepted, declined, did not answer or blocked you, and how many reports your messages got, counted per day. No content.",
-        "why": "To learn how people respond to an account that contacts strangers, to slow down spam and scams.",
+        "why": "To learn how people respond to an account that contacts strangers and to limit how many strangers one account can reach per day, to slow down spam and scams. People you already talk to never count against that limit.",
         "retention": "7 days for each first contact. After that only the daily counts stay, for 90 days."
       }
     },

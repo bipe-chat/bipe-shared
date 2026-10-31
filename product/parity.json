@@ -1596,6 +1596,33 @@
       "issue": 600
     },
     {
+      "id": "os-theft-protection",
+      "name": "Ask to turn on the phone's own theft protection",
+      "ios": {
+        "status": "built",
+        "evidence": [
+          "bipe-app/ios/Bipe/Settings/OsTheftProtection.swift",
+          "bipe-app/ios/Bipe/Voce/VoceView.swift"
+        ]
+      },
+      "android": {
+        "status": "built",
+        "evidence": [
+          "bipe-app/android/app/src/main/kotlin/chat/bipe/app/settings/OsTheftProtection.kt",
+          "bipe-app/android/app/src/main/kotlin/chat/bipe/app/voce/VoceScreen.kt"
+        ]
+      },
+      "web": {
+        "status": "n/a",
+        "reason": "No web chat (ADR 0004); the setting is on the phone"
+      },
+      "server": {
+        "status": "n/a",
+        "reason": "The phone keeps the prompt state; no server change"
+      },
+      "issue": 125
+    },
+    {
       "id": "handle-change-notice",
       "name": "Handle changes in chats",
       "ios": {

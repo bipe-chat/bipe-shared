@@ -43,3 +43,19 @@ test("validation fails on a screen without a filled button", () => {
     return c;
   })), /primary button required/);
 });
+
+test("the OS theft protection prompt waits a day and uses the slot (#125)", () => {
+  const p = o.prompts.find((x) => x.key === "osTheftProtection");
+  assert.equal(p.trigger, "voceAfterDays");
+  assert.equal(p.slot, true);
+  assert.equal(p.primary.to, "osTheftSettings");
+  assert.deepEqual(p.text.map((b) => b.to), ["dismiss"]);
+  assert.equal(o.osTheftProtection.afterDays, 1);
+});
+
+test("validation fails without the OS theft protection delay", () => {
+  assert.throws(() => validateOnboarding(withOnboarding((c) => {
+    delete c.osTheftProtection;
+    return c;
+  })), /osTheftProtection.afterDays/);
+});

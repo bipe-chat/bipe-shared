@@ -78,7 +78,7 @@
       "effect": "Adds or removes the chat from picked. A picked chat shows a check mark, not only a colour."
     },
     "send": {
-      "effect": "The button bipe_forward_action, off while picked is empty. For each picked chat: Room.timeline, then Timeline.send with messageEventContentNew of each message's MessageContent.msgType, in timeline order (no reply, no thread, no mentions). Then closes and shows bipe_forward_done for one message, bipe_select_forward_done for more, and ends selection mode. A chat whose send failed shows bipe_forward_failed with its name; the others stay sent."
+      "effect": "The button bipe_forward_action, off while picked is empty. For each picked chat and each message, in timeline order: Room.sendRaw with event type m.room.message and the content from BipeForwardMark (test-vectors/forward-marks.json): the content of the original event JSON (EventTimelineItemDebugInfo.originalJson), or the m.new_content of its latest edit (latestEditJson), without m.relates_to, m.new_content and m.mentions (no reply, no thread, no mentions), with the chat.bipe.forward mark set to the count of the original plus 1 (registries/voice-media.json forwardKey). Room.sendRaw encrypts in an encrypted room. Media sources stay as they are. Then closes and shows bipe_forward_done for one message, bipe_select_forward_done for more, and ends selection mode. A chat whose send failed shows bipe_forward_failed with its name; the others stay sent."
     },
     "cancel": {
       "effect": "Closes without sending."
@@ -135,12 +135,12 @@
     "Room.displayName",
     "Room.avatarUrl",
     "Room.timeline",
+    "Room.sendRaw",
     "MsgLikeKind",
     "MessageContent",
-    "messageEventContentNew",
-    "Timeline.send",
     "Timeline.redactEvent",
-    "EventTimelineItem"
+    "EventTimelineItem",
+    "EventTimelineItemDebugInfo"
   ],
   "parity": [
     "message-forward"
@@ -148,7 +148,8 @@
   "notes": [
     "Which messages: a sent message (it has an event ID) of kind message (MsgLikeKind.message). Stickers, polls, undecryptable and deleted messages have no forward. Default chosen (bipe-chat/bipe#664): polls are not forwarded, because a copied poll would collect votes in another chat. mz can overrule.",
     "Default chosen (bipe-chat/bipe#664): at most 5 chats per forward, because more is a broadcast. mz can overrule.",
-    "The copy carries no label that says it was forwarded. The voice-note source labels are bipe-chat/bipe#83.",
+    "The copy carries the chat.bipe.forward mark (bipe-chat/bipe#83). Default chosen: every forwarded message type gets the mark, because it costs nothing and a later label on text needs it; only voice messages and audio files show it (voice-message). MZ can overrule.",
+    "Default chosen (bipe-chat/bipe#83): a message whose event JSON the app does not have (a local echo before the server copy arrives) has no forward, because a copy without the mark would show as recorded in the app. MZ can overrule.",
     "Selection mode (bipe-chat/bipe#860): selectable rows are sent messages that can be forwarded or own messages with canDelete. Default chosen (bipe-chat/bipe#860): at most 10 messages, the number in the issue. mz can overrule.",
     "Default chosen (bipe-chat/bipe#860): bipe_forward_action stays off while a picked message cannot be forwarded (an own sticker), because a forward that skips messages is a surprise. mz can overrule.",
     "Default chosen (bipe-chat/bipe#860): when one message of the selection fails for a chat, the rest is not sent there and the chat shows in bipe_forward_failed, so the copies never arrive out of order. mz can overrule.",

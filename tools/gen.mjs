@@ -286,6 +286,9 @@ ${reg.workHours.defaultDays.map((d) => `        (day: ${d.day}, ranges: [${d.ran
     public static let voiceMediaTranscriptDays = ${reg.voiceMedia.transcriptDays}
     public static let voiceMediaNoTranscriptDays = ${reg.voiceMedia.noTranscriptDays}
     public static let voiceMediaMaxKeptPerAccount = ${reg.voiceMedia.maxKeptPerAccount}
+    /// Forward marks (bipe-chat/bipe#83; registries/voice-media.json): the content field and the many-times threshold. Rules: BipeForwardMark, test-vectors/forward-marks.json.
+    public static let forwardKey = ${swiftString(reg.voiceMedia.forwardKey)}
+    public static let forwardedManyTimes = ${reg.voiceMedia.forwardedManyTimes}
 
     /// Assistant drafts (bipe ADR 0210, bipe-chat/bipe#866; registries/drafts.json, docs/drafts-room.md). Rules: test-vectors/drafts.json.
     public static let draftsRoomType = ${swiftString(reg.drafts.roomType)}
@@ -674,6 +677,9 @@ ${reg.workHours.defaultDays.map((d) => `        ${d.day} to listOf(${d.ranges.ma
     const val VOICE_MEDIA_TRANSCRIPT_DAYS = ${reg.voiceMedia.transcriptDays}
     const val VOICE_MEDIA_NO_TRANSCRIPT_DAYS = ${reg.voiceMedia.noTranscriptDays}
     const val VOICE_MEDIA_MAX_KEPT_PER_ACCOUNT = ${reg.voiceMedia.maxKeptPerAccount}
+    /** Forward marks (bipe-chat/bipe#83; registries/voice-media.json): the content field and the many-times threshold. Rules: BipeForwardMark, test-vectors/forward-marks.json. */
+    const val FORWARD_KEY = ${kotlinString(reg.voiceMedia.forwardKey)}
+    const val FORWARDED_MANY_TIMES = ${reg.voiceMedia.forwardedManyTimes}
 
     /** Assistant drafts (bipe ADR 0210, bipe-chat/bipe#866; registries/drafts.json, docs/drafts-room.md). Rules: test-vectors/drafts.json. */
     const val DRAFTS_ROOM_TYPE = ${kotlinString(reg.drafts.roomType)}

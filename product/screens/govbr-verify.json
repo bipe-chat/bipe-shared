@@ -1,0 +1,74 @@
+{
+  "id": "govbr-verify",
+  "title": "Verificar com gov.br (trust step 5)",
+  "flow": "voce",
+  "summary": "A person verifies the name with a gov.br signature in two taps in Bipe (bipe-chat/bipe#544, ADR 0019). Bipe gets a challenge PDF from the API, saves it on the phone and opens the gov.br app. The user signs there and shares the signed file back to Bipe, which uploads it and shows the result. The user types nothing.",
+  "state": {
+    "phase": {
+      "type": "enum",
+      "values": ["ready", "preparing", "waitingForSignature", "checking", "verified", "rejected", "failed"],
+      "description": "The phases of BipeGovbrFlow. ready: intro and start. preparing: POST /v1/verifications/govbr runs. waitingForSignature: the PDF is saved and the gov.br app is open; alreadySigned shows. checking: PUT .../document runs, bipe_govbr_checking. verified: bipe_govbr_verified with the name. rejected: the reason string and bipe_govbr_retry. failed: bipe_error_generic and bipe_govbr_retry."
+    },
+    "reason": {
+      "type": "enum",
+      "values": ["notSigned", "notGovbr", "wrongDocument", "expired", "cpfInUse", "changedAfterSigning"],
+      "optional": true,
+      "description": "rejected only. VerificationStatus.reason (not_signed, not_govbr, wrong_document, expired, cpf_in_use, changed_after_signing), shown as bipe_govbr_reason_<reason>. A rejection without a reason, and the state expired, is expired."
+    },
+    "verifiedName": {
+      "type": "string",
+      "optional": true,
+      "description": "verified only. The name in the new badge payload, read without the signature check: only for the owner's own screen. Absent: bipe_govbr_verified_no_name."
+    }
+  },
+  "actions": {
+    "start": {
+      "effect": "bipe_govbr_start (also bipe_govbr_retry after rejected or failed): POST /v1/verifications/govbr. The challenge PDF (GovbrChallenge.pdf, file name registries/govbr.json fileName) goes to the phone: iOS through the system save dialog, Android to Downloads with MediaStore. Then the gov.br app opens: iOS its App Store page (iosStoreUrl), Android the app by androidPackage when installed, else androidStoreUrl with bipe_govbr_get_app."
+    },
+    "receiveDocument": {
+      "effect": "A PDF reaches Bipe from the share sheet or open with (iOS CFBundleDocumentTypes and onOpenURL; Android ACTION_SEND and ACTION_VIEW of application/pdf). The rule govbrIncoming (test-vectors/govbr-verify.json) decides: upload goes to PUT /v1/verifications/govbr/{verificationId}/document at once and shows checking; noOpenVerification shows bipe_govbr_no_open_verification and uploads nothing; ignore drops it; notSigned shows the reason not_signed."
+    },
+    "alreadySigned": {
+      "effect": "bipe_govbr_already_signed: a PDF picker (iOS UIDocumentPickerViewController for .pdf, Android ActivityResultContracts.OpenDocument for application/pdf). The picked file follows receiveDocument."
+    },
+    "close": {
+      "effect": "Closes the screen. After verified, trust-card and trust-profile rebuild and step 5 shows done."
+    }
+  },
+  "strings": [
+    "bipe_govbr_title",
+    "bipe_govbr_intro",
+    "bipe_govbr_step_save",
+    "bipe_govbr_step_sign",
+    "bipe_govbr_step_share",
+    "bipe_govbr_needs_level",
+    "bipe_govbr_safety",
+    "bipe_govbr_start",
+    "bipe_govbr_already_signed",
+    "bipe_govbr_checking",
+    "bipe_govbr_verified",
+    "bipe_govbr_verified_no_name",
+    "bipe_govbr_retry",
+    "bipe_govbr_get_app",
+    "bipe_govbr_no_open_verification",
+    "bipe_govbr_reason_not_signed",
+    "bipe_govbr_reason_not_govbr",
+    "bipe_govbr_reason_wrong_document",
+    "bipe_govbr_reason_expired",
+    "bipe_govbr_reason_cpf_in_use",
+    "bipe_govbr_reason_changed_after_signing",
+    "bipe_error_generic",
+    "bipe_app_close"
+  ],
+  "sdk": [],
+  "parity": ["govbr-verify"],
+  "notes": [
+    "The only entry is the step 5 row of trust-profile, on a personal account. Bipe never offers this flow from a chat, a link or a notification (bipe-chat/bipe#277), and bipe_govbr_safety says so on the screen.",
+    "Build flag govbrEnabled (iOS AppConfig.govbrEnabled, Android BuildConfig.BIPE_GOVBR): on only in debug builds of the tester ID set, off in every Release build and in the store ID set, until bipe-chat/bipe#542 (sample file) and bipe-chat/bipe#17 (legal review) close. A build value, never a stored or remote one (bipe-app tools/release-gate.mjs). Flag off: step 5 shows bipe_trust_coming_soon, the row opens nothing and an incoming PDF is not handled.",
+    "Layout: navigation title bipe_govbr_title; bipe_govbr_intro; the three lines bipe_govbr_step_save, bipe_govbr_step_sign, bipe_govbr_step_share; bipe_govbr_needs_level; bipe_govbr_safety; then the buttons of the phase.",
+    "The API has no answer for a gov.br account below silver: bipe_govbr_needs_level is a fixed line on the screen, not a result.",
+    "The server makes the PDF and reads the name and the CPF from the signature. The app never makes a PDF, never shows a CPF and keeps no copy of the signed file after the upload.",
+    "The flow lives in memory. When the app stops between the save and the share, the next PDF shows noOpenVerification; start makes a new challenge.",
+    "Web: none. Web has no trust ladder step."
+  ]
+}

@@ -317,6 +317,35 @@
       "issue": 227
     },
     {
+      "id": "govbr-verify",
+      "name": "Verificar com gov.br: trust step 5 with a gov.br signature, two taps in Bipe (bipe#544)",
+      "ios": {
+        "status": "built",
+        "evidence": [
+          "bipe-app/ios/BipeKit/Sources/BipeKit/BipeGovbrFlow.swift",
+          "bipe-app/ios/Bipe/Voce/GovbrVerifyView.swift"
+        ]
+      },
+      "android": {
+        "status": "built",
+        "evidence": [
+          "bipe-app/android/libraries/bipe/src/main/kotlin/chat/bipe/shared/BipeGovbrFlow.kt",
+          "bipe-app/android/app/src/main/kotlin/chat/bipe/app/voce/GovbrVerify.kt"
+        ]
+      },
+      "web": {
+        "status": "n/a",
+        "reason": "Web has no trust ladder step (bipe#544)"
+      },
+      "server": {
+        "status": "built",
+        "evidence": [
+          "bipe-api/src/govbr.ts"
+        ]
+      },
+      "note": "Behind the build flag govbrEnabled (iOS AppConfig.govbrEnabled, Android BuildConfig.BIPE_GOVBR): debug builds of the tester ID set only, off in Release and store builds until bipe#542 and the legal review bipe#17 close"
+    },
+    {
       "id": "cnpj-badge",
       "name": "Business seal",
       "ios": {

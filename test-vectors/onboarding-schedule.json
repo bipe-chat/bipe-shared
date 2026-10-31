@@ -1,5 +1,5 @@
 {
-  "description": "Onboarding schedules (registries/onboarding.json pinReminder, bipe-chat/bipe#202). After a check at step with result (right, wrong, later): the next step and the days until the next reminder. bringPeopleReminder (registries/onboarding.json bringPeople, bipe-chat/bipe#752): for state and nowMs, the slot the weekly reminder names ({ slot, kind }) or null. Times are Unix ms; status is the invite status.",
+  "description": "Onboarding schedules (registries/onboarding.json pinReminder, bipe-chat/bipe#202). After a check at step with result (right, wrong, later): the next step and the days until the next reminder. bringPeopleReminder (registries/onboarding.json bringPeople, bipe-chat/bipe#752): for state and nowMs, the slot the weekly reminder names ({ slot, kind }) or null. Times are Unix ms; status is the invite status. chatListPrompt (registries/onboarding.json chatListPrompt, bipe-chat/bipe#894): for eligible keys, the prompt slot ({ holder, sinceMs } or null) and nowMs, the key of the one chat list card, or null.",
   "pinReminder": [
     {
       "step": 0,
@@ -346,6 +346,153 @@
         "slots": []
       },
       "expected": null
+    }
+  ],
+  "chatListPrompt": [
+    {
+      "name": "nothing eligible",
+      "eligible": [],
+      "slot": null,
+      "nowMs": 1793448000000,
+      "expected": null
+    },
+    {
+      "name": "new account: invite first of the first-list cards",
+      "eligible": [
+        "invite",
+        "notes"
+      ],
+      "slot": null,
+      "nowMs": 1793448000000,
+      "expected": "invite"
+    },
+    {
+      "name": "the holder keeps the card",
+      "eligible": [
+        "invite",
+        "notes"
+      ],
+      "slot": {
+        "holder": "invite",
+        "sinceMs": 1793440800000
+      },
+      "nowMs": 1793448000000,
+      "expected": "invite"
+    },
+    {
+      "name": "holder used: next card waits for the slot",
+      "eligible": [
+        "profile",
+        "notes"
+      ],
+      "slot": {
+        "holder": "invite",
+        "sinceMs": 1793440800000
+      },
+      "nowMs": 1793448000000,
+      "expected": null
+    },
+    {
+      "name": "holder used: next card the next day",
+      "eligible": [
+        "profile",
+        "notes"
+      ],
+      "slot": {
+        "holder": "invite",
+        "sinceMs": 1793358000000
+      },
+      "nowMs": 1793448000000,
+      "expected": "profile"
+    },
+    {
+      "name": "after the slot hours the queue order wins over the holder",
+      "eligible": [
+        "recovery",
+        "invite"
+      ],
+      "slot": {
+        "holder": "invite",
+        "sinceMs": 1793358000000
+      },
+      "nowMs": 1793448000000,
+      "expected": "recovery"
+    },
+    {
+      "name": "inside the slot hours the holder stays above a higher entry",
+      "eligible": [
+        "recovery",
+        "invite"
+      ],
+      "slot": {
+        "holder": "invite",
+        "sinceMs": 1793444400000
+      },
+      "nowMs": 1793448000000,
+      "expected": "invite"
+    },
+    {
+      "name": "approvePhone preempts the slot",
+      "eligible": [
+        "approvePhone",
+        "invite"
+      ],
+      "slot": {
+        "holder": "invite",
+        "sinceMs": 1793444400000
+      },
+      "nowMs": 1793448000000,
+      "expected": "approvePhone"
+    },
+    {
+      "name": "remoteBanner above approvePhone",
+      "eligible": [
+        "notes",
+        "approvePhone",
+        "remoteBanner"
+      ],
+      "slot": null,
+      "nowMs": 1793448000000,
+      "expected": "remoteBanner"
+    },
+    {
+      "name": "a Você prompt holds the slot",
+      "eligible": [
+        "handle",
+        "invite"
+      ],
+      "slot": {
+        "holder": "photo",
+        "sinceMs": 1793437200000
+      },
+      "nowMs": 1793448000000,
+      "expected": null
+    },
+    {
+      "name": "safety before identity",
+      "eligible": [
+        "handle",
+        "pinReminder",
+        "notificationCheckup"
+      ],
+      "slot": {
+        "holder": "photo",
+        "sinceMs": 1793275200000
+      },
+      "nowMs": 1793448000000,
+      "expected": "notificationCheckup"
+    },
+    {
+      "name": "exactly the slot hours",
+      "eligible": [
+        "notes"
+      ],
+      "slot": {
+        "holder": "invite",
+        "sinceMs": 1793361600000
+      },
+      "nowMs": 1793448000000,
+      "expected": "notes"
     }
   ]
 }

@@ -900,7 +900,9 @@ paths:
         CPF). Unknown token: 403 recovery_invalid. On success the server sets a new random
         password through the MAS admin API, issues a new token (the old one stops working),
         records a completed recovery that the old devices see in GET /v1/me/account, and
-        sends a notice to the verified recovery email. No delay. Message history still needs
+        sends a notice to the verified recovery email. It also pushes
+        recovery_completed to every Bipe Next pusher of the account (best effort, no content; spec
+        notification-service). No delay. Message history still needs
         approval from an old device or the recovery key.
       requestBody:
         required: true
@@ -994,6 +996,8 @@ paths:
         (forgotten or blocked PIN): no old PIN; new_pin must pass pinProblem() (400 pin_weak).
         Then the delay starts (recoveryDelayHours.email), the old devices see the recovery in
         GET /v1/me/account and can cancel, and the server sends a notice to the recovery email.
+        It also pushes recovery_started to every Bipe Next pusher of the account (best effort, no
+        content; spec notification-service).
         The response carries a claim secret, shown once; the new device keeps it and calls
         POST /v1/recovery/{recoveryId}/claim. The link works once. 403 recovery_invalid for an
         unknown, used or expired link.
@@ -1027,7 +1031,8 @@ paths:
         state waiting. After ready_at: for purpose access the server sets a new random password
         through the MAS admin API and issues a new recovery token, and returns user_id, password
         and recovery_token once; for purpose pin_reset the new PIN takes effect (unblocked, count
-        0). State completed after that. A completed access recovery can be claimed again for one
+        0). State completed after that. The claim that completes the recovery pushes recovery_completed
+        to every Bipe Next pusher of the account (best effort, no content; spec notification-service). A completed access recovery can be claimed again for one
         hour (a lost response): each claim sets a new password and token. Cancelled and expired
         recoveries return their state. After the delay the device has recoveryClaimDays to claim.
         403 recovery_invalid for an unknown recovery or a wrong secret.
@@ -1202,7 +1207,9 @@ paths:
         account linked. There is no new_pin: a linked account never resets the PIN
         (linkedRecovery.allowsPinReset false). Then the delay starts (linkedRecovery.delayHours), the
         old devices see the recovery (method apple or google) in GET /v1/me/account and can cancel,
-        and the server sends a notice to the recovery email. Claim as for email: POST
+        and the server sends a notice to the recovery email.
+        It also pushes recovery_started to every Bipe Next pusher of the account (best effort, no
+        content; spec notification-service). Claim as for email: POST
         /v1/recovery/{recoveryId}/claim. Access only: message history needs an old device or the
         recovery key. Rate-limited per IP.
       requestBody:

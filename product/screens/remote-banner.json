@@ -40,8 +40,8 @@
     "Move, do not rewrite: BipeKit BipeRemoteBanner.swift (state(appVersion:now:), compareVersions) and libraries/bipe banner/BipeRemoteBannerStore.kt. Reference: remoteBannerState() in tools/lib/registries.mjs; cases in test-vectors/remote-banner.json; contract RemoteBanner in api/openapi.yaml.",
     "The app version is the version name of product/version.json.",
     "Title and text come from the server in pt-BR only and show as they are. The button labels are app strings: bipe_remote_banner_update on an update banner, bipe_remote_banner_dismiss as the close label.",
-    "The banner sits above the account-task slot (recovery key, inviter row) and above the requests row. It shows on the Conversas and Grupos tabs (ADR 0053).",
     "News never uses this banner: news goes to the Novidades chat (ADR 0117).",
-    "The fetch has no auth and sends nothing about the person."
+    "The fetch has no auth and sends nothing about the person.",
+    "Place and look (MZ, 31 Oct 2026, bipe-chat/bipe#894): this shows as the entry remoteBanner of chat-list-prompt, one card at a time in the first list row. chat-list-prompt decides when it shows against the other entries; this spec keeps the condition and the come-back time."
   ]
 }

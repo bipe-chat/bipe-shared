@@ -1,0 +1,78 @@
+{
+  "id": "chat-list-prompt",
+  "title": "Chat list prompt",
+  "flow": "home",
+  "summary": "The one place where the chat list asks the person to do something (bipe-chat/bipe#894). It shows one card at a time, picked from one ordered queue. It replaces the remote banner, the encryption-status banner, the notification-checkup banner, the account-task slot and the first-list cards as separate surfaces.",
+  "types": {
+    "ChatListPromptEntry": {
+      "key": {
+        "type": "enum",
+        "values": ["remoteBanner", "approvePhone", "notificationCheckup", "recovery", "pinReminder", "handle", "profile", "bringPeopleReminder", "invite", "notes"],
+        "description": "One queue entry, in queue order. The source spec of each entry owns its condition and its own come-back time."
+      },
+      "tier": {
+        "type": "enum",
+        "values": ["critical", "access", "safety", "identity", "growth", "discovery"],
+        "description": "What the person loses when they skip the card. critical and access preempt the slot."
+      },
+      "dismissable": { "type": "bool", "description": "The card shows bipe_fallback_skip (Agora não)." }
+    }
+  },
+  "state": {
+    "card": {
+      "type": "ChatListPromptEntry",
+      "optional": true,
+      "description": "The one card that shows now: the first queue entry whose source condition holds and that the slot allows. Absent: no card and no empty space."
+    },
+    "slotHolder": {
+      "type": "string",
+      "optional": true,
+      "description": "The key of the entry that last held the slot on this account, kept on this phone (BipePromptSlot)."
+    },
+    "slotFreeAt": {
+      "type": "date",
+      "optional": true,
+      "description": "When a different entry may take the slot: the time the last card left the slot plus promptSlot.hours (24)."
+    }
+  },
+  "actions": {
+    "pick": {
+      "effect": "Each time the chat list shows, or a source condition changes: sets card to the first entry in queue order whose condition holds and that the slot allows."
+    },
+    "primary": {
+      "effect": "Runs the source action of the card (for example recovery addEmail, encryption-status approveWithDevice, chat-list-cards shareInvite). A card that its source ends on use leaves the slot and sets slotFreeAt."
+    },
+    "dismiss": {
+      "effect": "Runs the source dismiss (Agora não) of the card. The card leaves the slot and sets slotFreeAt. The source decides when the entry may come back."
+    }
+  },
+  "strings": [
+    "bipe_fallback_skip",
+    "bipe_app_history_title",
+    "bipe_app_history_banner",
+    "bipe_app_history_approve",
+    "bipe_app_history_use_key",
+    "bipe_app_history_none",
+    "bipe_app_notification_checkup_title",
+    "bipe_app_notification_checkup_banner",
+    "bipe_app_notification_checkup_fix",
+    "bipe_remote_banner_update",
+    "bipe_remote_banner_dismiss"
+  ],
+  "sdk": [],
+  "parity": ["first-run", "invites", "e2ee"],
+  "notes": [
+    "MZ decision 31 Oct 2026 (bipe-chat/bipe#894): a new account saw up to four things at once that each asked for an action, each with its own look and rule. From now on the chat list asks for one thing at a time, from one queue.",
+    "A prompt is a request that the person did not start. The requests row (chat-requests) is not a prompt: it is incoming mail. It stays a list row under the card, and it has the same avatar size, title font and spacing as a chat row (chat-list).",
+    "Queue order, first wins. critical: remoteBanner (remote-banner, ADR 0117: outage, forced update, terms). access: approvePhone (encryption-status). safety: notificationCheckup (notification-checkup, Android only), recovery (recovery-reminder), pinReminder (pin-reminder). identity: handle (registries/onboarding.json prompts.handle), profile (chat-list-cards profile, @ and QR). growth: bringPeopleReminder (bring-people-reminder), invite (chat-list-cards invite). discovery: notes (chat-list-cards notes).",
+    "Slot rule: a card that holds the slot keeps showing until it leaves (used, dismissed, or its condition stops). After a card leaves, a different entry takes the slot only at slotFreeAt (promptSlot.hours, 24). So a new account sees invite, then the next day profile, then notes; never all three at once. critical and access entries ignore slotFreeAt and take the slot at once.",
+    "Each source keeps its own condition and come-back time: recovery-reminder snooze days, pin-reminder later, the 7-day return of encryption-status and notification-checkup, the bring-people-reminder decline count, and the chat-list-cards rule that a used or dismissed card never comes back (still only while Conversas lists at most firstList.maxChats chats). This spec only picks which one shows and how it looks.",
+    "approvePhone (MZ, 31 Oct 2026): while a way out exists (hasOtherDevices, or recoveryState enabled or incomplete) the card has no Agora não and holds the slot until the phone is verified. Primary: bipe_app_history_approve (approveWithDevice) when hasOtherDevices, else bipe_app_history_use_key (useRecoveryKey). Title bipe_app_history_title, body bipe_app_history_banner. With no way out (seesUndecryptable only), the body is bipe_app_history_none, there is no primary, and Agora não keeps the 7-day return of encryption-status, because the person cannot clear the card.",
+    "remoteBanner: title and text come from the server as they are (remote-banner). An update banner has the primary bipe_remote_banner_update. The close label is bipe_remote_banner_dismiss, not Agora não.",
+    "notificationCheckup (Android): title bipe_app_notification_checkup_title, body bipe_app_notification_checkup_banner, primary bipe_app_notification_checkup_fix. iOS has no entry.",
+    "One card shape for every entry: title, body, one primary button, and Agora não as a text button when dismissable. The shape of today's first-list card (surfaceRaised, corner radius 14, padding 16). No card has its own colour, icon or banner style.",
+    "Place: the first row of the chat list, so it scrolls with the chats (MZ decision 25 Oct 2026, bipe#611). Nothing sits in a fixed bar above the list. The same card shows in Conversas, Grupos and Todas. The archived list shows no card.",
+    "Out of scope: the bring-people sheet after signup (prompts.bringPeople, a sheet, not a card), the notifications permission prompt (prompts.notifications, after the first message sent), and the Você prompts (photo, osTheftProtection). The Você prompts keep sharing BipePromptSlot, so a Você prompt and a chat list card never start in the same 24 hours.",
+    "Generate, never copy (ADR 0031): the queue order, tiers and dismissable flags go into registries/onboarding.json (chatListPrompt) and reach Swift and Kotlin through tools/gen.mjs, with the pick rule in tools/lib and a test vector. The apps never hard-code the order."
+  ]
+}

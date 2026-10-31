@@ -37,12 +37,13 @@
   "parity": ["transfer-safe-recovery", "new-phone"],
   "notes": [
     "Buttons and trigger: registries/onboarding.json prompts.recovery (BipeOnboardingPrompt.recovery). Timing: registries/accounts.json recoveryReminder (BipeRegistries.recoveryReminderFirstAfterDays, recoveryReminderSnoozeDays).",
-    "Same shape as the handle prompt card. One card at a time: the handle card goes first. The encryption-status banner and the remote banner are not cards and stay.",
+    "Same shape as the handle prompt card.",
     "The rule for independent_recovery lives on the server (hasIndependentRecovery() in bipe-api). Today a verified recovery e-mail. When the linked-account work lands (bipe#307, bipe#308), a linked Google account counts and this card gets its link button; a linked Apple account does not count (bipe/docs/team-transfer-recovery.md section 2).",
     "\"Came to this phone\": the time the app first saved this account's session on this phone. A new phone after recovery starts the count again.",
     "The card never stops for good while the account has no factor: the loss is the whole account. It never becomes a blocking screen (MZ decision on bipe#538, default).",
     "This card is the transfer part of the fallback prompt in bipe#202. The PIN reminders, the iCloud Keychain check and guardians stay there.",
     "Android shows the same card (ADR 0031): a person can move from Android to iPhone, and the e-mail works on both.",
-    "The sync check (bipe-chat/bipe#202) only adds a line; it does not change when the card shows. iCloud Keychain sync itself has no public API, so iOS checks the iCloud account only."
+    "The sync check (bipe-chat/bipe#202) only adds a line; it does not change when the card shows. iCloud Keychain sync itself has no public API, so iOS checks the iCloud account only.",
+    "Place and look (MZ, 31 Oct 2026, bipe-chat/bipe#894): this shows as the entry recovery of chat-list-prompt, one card at a time in the first list row. chat-list-prompt decides when it shows against the other entries; this spec keeps the condition and the come-back time."
   ]
 }

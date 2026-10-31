@@ -11,7 +11,7 @@ import { govbrIncoming, govbrResult } from "./lib/govbr.mjs";
 import { b64url as reportB64, deriveKeyPair as hpkeKeyPair, encryptMedia, envelopeError, open as hpkeOpen, openReport, sealReport, verifyMedia, REPORT_INFO } from "./lib/reports.mjs";
 import { canonicalJson, checkMoved, matrixKey, movedEnvelope, moveError, sentAfterMove, signAs, signedBytes } from "./lib/moves.mjs";
 import { loadSchedulingVectors, writeSchedulingApiFixture } from "./lib/scheduling-vectors.mjs";
-import { forwardCount, forwardedContent, voiceSource, assistantSendAllowed, assistantSender, draftFromEvent, photoDistance, photoHash, photoMatches, profileFactLines, relationshipNameWarning, stickerEmojiKey, stickerMatches, stickerQueryTags, stickerSearchFold, newestDmRooms, clearedChatHidden, bringPeopleReminder, clearedChatKeepsEvent, clearedChatMarker, clearedChatsWithClear, compareAppVersions, extractInviteCode, handleProblem, isBipeUserID, handleSuggestions, pinReminderNext, pinProblem, remoteBannerState, normalizeCnpj, normalizePhone, displayPhone, handleSkeleton, loadRegistries, normalize, scamMatchIDs, scamWarningKind, trustFacts } from "./lib/registries.mjs";
+import { forwardCount, forwardedContent, voiceSource, assistantSendAllowed, assistantSender, draftFromEvent, photoDistance, photoHash, photoMatches, profileFactLines, relationshipNameWarning, stickerEmojiKey, stickerMatches, stickerQueryTags, stickerSearchFold, newestDmRooms, clearedChatHidden, bringPeopleReminder, chatListPrompt, clearedChatKeepsEvent, clearedChatMarker, clearedChatsWithClear, compareAppVersions, extractInviteCode, handleProblem, isBipeUserID, handleSuggestions, pinReminderNext, pinProblem, remoteBannerState, normalizeCnpj, normalizePhone, displayPhone, handleSkeleton, loadRegistries, normalize, scamMatchIDs, scamWarningKind, trustFacts } from "./lib/registries.mjs";
 
 const root = join(dirname(fileURLToPath(import.meta.url)), "..");
 const reg = loadRegistries(root);
@@ -599,10 +599,27 @@ const bringCases = [
 ];
 const pinCases = [];
 for (const step of [0, 1, 2, 3, 4, 5, 9]) for (const result of ["right", "wrong", "later"]) pinCases.push({ step, result });
+const CLP_NOW = Date.UTC(2026, 9, 31, 12);
+const CLP_HOUR = 3_600_000;
+const clpCases = [
+  { name: "nothing eligible", eligible: [], slot: null },
+  { name: "new account: invite first of the first-list cards", eligible: ["invite", "notes"], slot: null },
+  { name: "the holder keeps the card", eligible: ["invite", "notes"], slot: { holder: "invite", sinceMs: CLP_NOW - 2 * CLP_HOUR } },
+  { name: "holder used: next card waits for the slot", eligible: ["profile", "notes"], slot: { holder: "invite", sinceMs: CLP_NOW - 2 * CLP_HOUR } },
+  { name: "holder used: next card the next day", eligible: ["profile", "notes"], slot: { holder: "invite", sinceMs: CLP_NOW - 25 * CLP_HOUR } },
+  { name: "after the slot hours the queue order wins over the holder", eligible: ["recovery", "invite"], slot: { holder: "invite", sinceMs: CLP_NOW - 25 * CLP_HOUR } },
+  { name: "inside the slot hours the holder stays above a higher entry", eligible: ["recovery", "invite"], slot: { holder: "invite", sinceMs: CLP_NOW - 1 * CLP_HOUR } },
+  { name: "approvePhone preempts the slot", eligible: ["approvePhone", "invite"], slot: { holder: "invite", sinceMs: CLP_NOW - 1 * CLP_HOUR } },
+  { name: "remoteBanner above approvePhone", eligible: ["notes", "approvePhone", "remoteBanner"], slot: null },
+  { name: "a Você prompt holds the slot", eligible: ["handle", "invite"], slot: { holder: "photo", sinceMs: CLP_NOW - 3 * CLP_HOUR } },
+  { name: "safety before identity", eligible: ["handle", "pinReminder", "notificationCheckup"], slot: { holder: "photo", sinceMs: CLP_NOW - 48 * CLP_HOUR } },
+  { name: "exactly the slot hours", eligible: ["notes"], slot: { holder: "invite", sinceMs: CLP_NOW - 24 * CLP_HOUR } },
+];
 write("onboarding-schedule.json", {
-  description: "Onboarding schedules (registries/onboarding.json pinReminder, bipe-chat/bipe#202). After a check at step with result (right, wrong, later): the next step and the days until the next reminder. bringPeopleReminder (registries/onboarding.json bringPeople, bipe-chat/bipe#752): for state and nowMs, the slot the weekly reminder names ({ slot, kind }) or null. Times are Unix ms; status is the invite status.",
+  description: "Onboarding schedules (registries/onboarding.json pinReminder, bipe-chat/bipe#202). After a check at step with result (right, wrong, later): the next step and the days until the next reminder. bringPeopleReminder (registries/onboarding.json bringPeople, bipe-chat/bipe#752): for state and nowMs, the slot the weekly reminder names ({ slot, kind }) or null. Times are Unix ms; status is the invite status. chatListPrompt (registries/onboarding.json chatListPrompt, bipe-chat/bipe#894): for eligible keys, the prompt slot ({ holder, sinceMs } or null) and nowMs, the key of the one chat list card, or null.",
   pinReminder: pinCases.map((c) => ({ ...c, ...(({ step, gapDays }) => ({ nextStep: step, gapDays }))(pinReminderNext(c.step, c.result, reg)) })),
   bringPeopleReminder: bringCases.map((c) => ({ ...c, expected: bringPeopleReminder(c.state, c.nowMs, reg) })),
+  chatListPrompt: clpCases.map((c) => ({ ...c, nowMs: CLP_NOW, expected: chatListPrompt(c.eligible, c.slot, CLP_NOW, reg) })),
 });
 
 // --- Invite codes ------------------------------------------------------------

@@ -1,0 +1,225 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$comment": "Sealed reports across operators (docs/report-envelope.md, bipe-chat/bipe#697). tools/gen.mjs writes the TypeScript types to bipe-api src/generated/reports.ts. The reference checks are tools/lib/reports.mjs.",
+  "$defs": {
+    "ReportCategory": {
+      "type": "string",
+      "enum": [
+        "csam",
+        "child_safety",
+        "ncii",
+        "threat",
+        "takeover",
+        "scam",
+        "impersonation",
+        "illegal_hate",
+        "spam",
+        "other"
+      ],
+      "description": "registries/report-categories.json."
+    },
+    "ReportEnvelope": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "v",
+        "report_id",
+        "to",
+        "kid",
+        "category",
+        "target_operator",
+        "reporter",
+        "created"
+      ],
+      "description": "The plain envelope. The core and the receiving operator read it without the private key. Its exact bytes are the HPKE AAD.",
+      "properties": {
+        "v": {
+          "type": "integer",
+          "const": 1
+        },
+        "report_id": {
+          "type": "string",
+          "format": "uuid",
+          "description": "UUID v4, lower case. The reporter's client makes it."
+        },
+        "to": {
+          "type": "string",
+          "enum": [
+            "operator",
+            "associacao"
+          ],
+          "description": "operator: a report to the operator of the reported user. associacao: an appeal or cross-operator abuse to the associação."
+        },
+        "kid": {
+          "type": "string",
+          "pattern": "^[a-z0-9][a-z0-9-]{1,63}$",
+          "description": "The recipient key ID in the operator list (report_keys of the operator, or appeal_keys)."
+        },
+        "category": {
+          "$ref": "#/$defs/ReportCategory"
+        },
+        "target_operator": {
+          "type": "string",
+          "description": "The server_name of the operator that receives the report."
+        },
+        "target_user": {
+          "type": "string",
+          "description": "The reported Matrix user ID. Its server part equals target_operator."
+        },
+        "target_room": {
+          "type": "string",
+          "description": "The reported room ID."
+        },
+        "reporter": {
+          "type": "string",
+          "enum": [
+            "user",
+            "flagger"
+          ]
+        },
+        "flagger_id": {
+          "type": "string",
+          "pattern": "^[a-z0-9][a-z0-9-]{1,31}$",
+          "description": "Only with reporter flagger: the accredited trusted flagger."
+        },
+        "created": {
+          "type": "integer",
+          "minimum": 1,
+          "description": "Unix seconds."
+        }
+      }
+    },
+    "SealedReport": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "v",
+        "envelope",
+        "enc",
+        "ct"
+      ],
+      "description": "A report on the wire.",
+      "properties": {
+        "v": {
+          "type": "integer",
+          "const": 1
+        },
+        "envelope": {
+          "type": "string",
+          "pattern": "^[A-Za-z0-9_-]+$",
+          "description": "The ReportEnvelope as UTF-8 JSON bytes, base64url without padding."
+        },
+        "enc": {
+          "type": "string",
+          "pattern": "^[A-Za-z0-9_-]+$",
+          "description": "The HPKE encapsulated key (32 bytes), base64url without padding."
+        },
+        "ct": {
+          "type": "string",
+          "pattern": "^[A-Za-z0-9_-]+$",
+          "description": "The HPKE ciphertext of the ReportBody JSON bytes, with the tag, base64url without padding."
+        }
+      }
+    },
+    "ReportBody": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "events"
+      ],
+      "description": "The sealed body. Only the holder of the recipient private key reads it.",
+      "properties": {
+        "events": {
+          "type": "array",
+          "minItems": 1,
+          "maxItems": 20,
+          "items": {
+            "$ref": "#/$defs/ReportEvent"
+          },
+          "description": "The reported messages."
+        },
+        "context": {
+          "type": "array",
+          "maxItems": 20,
+          "items": {
+            "$ref": "#/$defs/ReportEvent"
+          },
+          "description": "Messages around the reported ones, in time order."
+        },
+        "reason": {
+          "type": "string",
+          "maxLength": 1000,
+          "description": "What the reporter wrote."
+        },
+        "scores": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "number",
+            "minimum": 0,
+            "maximum": 1
+          },
+          "description": "On-device scores, for example scam (registries/scam-patterns.json)."
+        }
+      }
+    },
+    "ReportEvent": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "event"
+      ],
+      "properties": {
+        "event": {
+          "type": "object",
+          "additionalProperties": true,
+          "description": "The event exactly as the reporter's homeserver served it, with its signatures and unsigned fields. For an encrypted message this is the m.room.encrypted event."
+        },
+        "decrypted": {
+          "type": "object",
+          "additionalProperties": true,
+          "description": "The decrypted event (type and content) as the reporter's client shows it. An unproved claim: Matrix has no message franking."
+        },
+        "media": {
+          "type": "array",
+          "maxItems": 10,
+          "items": {
+            "$ref": "#/$defs/ReportMedia"
+          }
+        }
+      }
+    },
+    "ReportMedia": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "url",
+        "key",
+        "iv",
+        "sha256"
+      ],
+      "description": "An encrypted file of a reported message: the fields of its Matrix EncryptedFile that let the operator fetch and decrypt it.",
+      "properties": {
+        "url": {
+          "type": "string",
+          "pattern": "^mxc://[^/]+/[A-Za-z0-9_-]+$",
+          "description": "The mxc URI of the ciphertext."
+        },
+        "key": {
+          "type": "string",
+          "pattern": "^[A-Za-z0-9_-]{43}$",
+          "description": "The AES-256-CTR key: the JWK k value, base64url without padding."
+        },
+        "iv": {
+          "type": "string",
+          "pattern": "^[A-Za-z0-9+/]{22}$",
+          "description": "The IV, unpadded standard base64, as in the event."
+        },
+        "sha256": {
+          "type": "string",
+          "pattern": "^[A-Za-z0-9+/]{43}$",
+          "description": "SHA-256 of the ciphertext, unpadded standard base64, as in hashes.sha256."
+        }
+      }
+    }
+  }
+}

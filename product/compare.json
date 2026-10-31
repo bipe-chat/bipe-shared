@@ -132,7 +132,7 @@
         "line": "Recursos de segurança e configurações disponíveis.",
         "on": "No WhatsApp",
         "ahead": [
-          "Chave de acesso para entrar na conta. O Bipe ainda usa e-mail e senha; a conta no celular com senha de 8 números vem em breve.",
+          "Chave de acesso para entrar na conta.",
           "Aviso quando alguém tenta conectar sua conta num aparelho estranho.",
           "Um resumo do grupo quando um desconhecido te adiciona.",
           "Antes de atender um número desconhecido, mostra o país e os grupos em comum.",
@@ -145,7 +145,7 @@
         "line": "Safety features and available settings.",
         "on": "On WhatsApp",
         "ahead": [
-          "Passkeys to sign in. Bipe still uses email and a password; the account on your phone with an 8-digit PIN is coming soon.",
+          "Passkeys to sign in.",
           "A warning when someone tries to link your account to an unfamiliar device.",
           "A group summary when a stranger adds you to a group.",
           "Before you answer an unknown number, it shows the country and groups in common.",

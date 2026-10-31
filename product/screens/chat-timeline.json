@@ -80,6 +80,10 @@
     }
   },
   "strings": [
+    "bipe_app_assistant_sent_label",
+    "bipe_room_upgrade_replaced",
+    "bipe_room_upgrade_go",
+    "bipe_room_upgrade_continues",
     "bipe_notice_label",
     "bipe_notice_level",
     "bipe_notice_safety",
@@ -118,6 +122,7 @@
   ],
   "parity": ["e2ee", "dm-left-bar", "dm-block-bar", "official-badge", "cvm-line", "official-notice", "profile-change-facts", "theft-protection"],
   "notes": [
+    "Assistant sends (ADR 0210, bipe-chat/bipe#439): a message whose content has chat.bipe.assistant with a client name (assistantSender, test-vectors/assistant-send.json) shows bipe_app_assistant_sent_label with the sender's display name, in small text under the bubble, on every member's app. The sender's own app shows it too.",
     "CVM stop order (ADR 0077, bipe-chat/bipe#238): in a DM whose other person has a verified company seal with a cvm stop order (test-vectors/cvm-lines.json danger true), a red caution card with bipe_cvm_stop_order_card and the date sits at the top of the timeline. It stays while the badge says so. It comes from the signed badge only.",
     "Official accounts (ADR 0117, bipe-chat/bipe#384): isOfficial follows the chat-list rule (exact user ID in BipeRegistries.officialAccountIDs, a DM only). A group never shows the badge, even with an official account in it.",
     "Send is off while draft is blank after trimming.",
@@ -128,6 +133,7 @@
     "Official notice (bipe-chat/bipe#245, ADR 0036, institutions.md 4.4): a message whose notice is set shows as a card, not a bubble: the institution's square avatar and name, bipe_notice_label, bipe_notice_level, the body, then bipe_notice_safety as a fixed line the sender cannot change. Accessibility: one element read as bipe_notice_a11y with the name, then the body. A link in the body is clickable only when test-vectors/notice-links.json says so for the badge's domains (reference tools/lib/notice.mjs); every other link is plain text, with no link preview. The notice comes from the signed badge only: the app never makes a notice from a display name, a room name or room state, and a badge that fails any check (expired, master key mismatch) gives an ordinary bubble. Who may write first (institutions.md decision 10.1) is a server rule, so the app does not refuse a notice in a chat the institution opened. No issuer signs institution badges yet, so no account shows the card today. Default chosen: the safety line is a draft until MZ settles the wording of institutions.md 10.3.",
     "Brand marks (ADR 0162, spec brand-mark): in a DM with a reseller, the header shows the first verified mark's line under the title (bipe_brand_mark_more for the others), as text inside the title button that opens person-profile; the sheet opens from the line there. bipe_brand_mark_ended shows once there after a mark the phone saw is gone.",
     "Profile change notice (ADR 0049, bipe-chat/bipe#598): in a joined 1:1 chat the app reads POST /v1/profile-facts for the other person when the chat opens, at most once an hour. The notice is a fact, not a block: it never hides a message, and a failed call shows nothing. Not in groups and not for requests (chat-request shows the facts lines).",
-    "Theft mark (ADR 0044, bipe-chat/bipe#600): the app asks POST /v1/theft-marks for the other person of a 1:1 chat when the chat opens and at most every checkMinutes (registries/theft-protection.json). It verifies each statement with the badge keys (test-vectors/theft-marks.json). A failed call or an invalid statement shows nothing. Group chats do not check marks in this version."
+    "Theft mark (ADR 0044, bipe-chat/bipe#600): the app asks POST /v1/theft-marks for the other person of a 1:1 chat when the chat opens and at most every checkMinutes (registries/theft-protection.json). It verifies each statement with the badge keys (test-vectors/theft-marks.json). A failed call or an invalid statement shows nothing. Group chats do not check marks in this version.",
+    "Upgraded groups (bipe-chat/bipe#773, Matrix room upgrades: m.room.tombstone and the m.room.create predecessor): when RoomInfo.successorRoom is set, a bar bipe_room_upgrade_replaced with the button bipe_room_upgrade_go takes the place of the composer; the button joins the successor (Client.joinRoomByIdOrAlias, via the server of the old room ID when it has one) and opens it. A failure shows bipe_error_generic. When RoomInfo.predecessorRoom is set, a line bipe_room_upgrade_continues (%1$s the old group's name, else bipe_group_common_no_room_name) above the timeline opens the old group. The chat list shows only the newest version of a group the person is in (DeduplicateVersions in chat-list). Default chosen: the copy says the group was replaced, never archived, so it does not read like the chat archive (Arquivo, bipe-chat/bipe#662). mz can overrule."
   ]
 }

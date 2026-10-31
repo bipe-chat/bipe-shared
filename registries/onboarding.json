@@ -122,6 +122,23 @@
       "body": "bipe_os_theft_prompt_body",
       "primary": { "title": "bipe_os_theft_action", "to": "osTheftSettings" },
       "text": [{ "title": "bipe_fallback_skip", "to": "dismiss" }]
+    },
+    {
+      "key": "bringPeople",
+      "trigger": "firstChatListAfterSignup",
+      "title": "bipe_bring_people_title",
+      "body": "bipe_bring_people_body",
+      "primary": { "title": "bipe_first_card_invite_action", "to": "bringPeopleSheet" },
+      "text": [{ "title": "bipe_fallback_skip", "to": "dismiss" }]
+    },
+    {
+      "key": "bringPeopleReminder",
+      "trigger": "bringPeopleDue",
+      "slot": true,
+      "title": "bipe_bring_people_reminder_title",
+      "body": "bipe_bring_people_reminder_pending",
+      "primary": { "title": "bipe_bring_people_resend", "to": "bringPeopleResend" },
+      "text": [{ "title": "bipe_fallback_skip", "to": "dismiss" }]
     }
   ],
   "promptSlot": {
@@ -136,6 +153,14 @@
   "osTheftProtection": {
     "$comment": "Trigger voceAfterDays (bipe-chat/bipe#125, ADR 0045 tier 0): the Você tab shows the prompt osTheftProtection once the account is afterDays old on this phone (the first time this phone saw it). Agora não, or the button, hides it for good on this phone, for every account. The button target osTheftSettings opens the phone's settings (iOS UIApplication.openSettingsURLString; Android Settings.ACTION_SECURITY_SETTINGS on Samsung, else Settings.ACTION_SETTINGS). Neither OS lets an app read whether its theft protection is on (spec theft-protection notes), so the app never says it is on.",
     "afterDays": 1
+  },
+  "bringPeople": {
+    "$comment": "Specs bring-people and bring-people-reminder (bipe-chat/bipe#752, MZ 26 Oct 2026). Trigger firstChatListAfterSignup: the account signed up on this phone, Conversas shows with no chat open and no other sheet, and the sheet never showed on this account. It opens once with `slots` slots for the `firstCircle` circle (ADR 0047). Trigger bringPeopleDue: at least followUpEveryDays since the last ask, fewer than stopAfterDeclines declines, and a slot pending for at least pendingAfterDays or expired; the oldest such slot is named. Agora não on the sheet (no slot filled) or on the reminder adds one decline. Rule: tools/lib/registries.mjs bringPeopleReminder, test-vectors/onboarding-schedule.json.",
+    "slots": 4,
+    "firstCircle": "family",
+    "followUpEveryDays": 7,
+    "pendingAfterDays": 3,
+    "stopAfterDeclines": 2
   },
   "firstList": {
     "$comment": "Cards at the top of Conversas while it lists at most maxChats chats (bipe-chat/bipe#198, spec chat-list-cards). A card goes away for good once used or dismissed.",

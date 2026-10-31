@@ -34,13 +34,15 @@
     "openPeople": { "effect": "Opens group-members." },
     "addPeople": { "effect": "canInvite only: opens group-invite-members in invite mode." },
     "openNotifications": { "effect": "Opens chat-notifications for this group." },
-    "leave": { "effect": "Opens group-leave." }
+    "leave": { "effect": "Opens group-leave." },
+    "openGroupLink": { "effect": "Opens group-link, for members with a power level of 50 or more who can change power levels." }
   },
   "strings": [
     "bipe_app_report_group",
     "bipe_gallery_title",
     "bipe_poll_history",
     "bipe_group_privacy_title",
+    "bipe_group_link_title",
     "bipe_app_group_details_title",
     "bipe_app_group_details_people",
     "bipe_app_group_name",
@@ -78,6 +80,7 @@
     "Pinned messages and search in the group are later issues. Report (bipe-chat/bipe#674): a row bipe_app_report_group above the leave row opens report-chat with isDm false. The O que você perdeu block (ADR 0026, bipe_group_missed_*) belongs to chat-timeline, not to this screen.",
     "Media and files (bipe-chat/bipe#672): a row bipe_gallery_title in the members section opens chat-media-gallery for the group.",
     "Polls (bipe-chat/bipe#669): a row bipe_poll_history opens poll-history for the group.",
-    "Privacy (bipe-chat/bipe#772): a row bipe_group_privacy_title opens group-privacy, for members who can change the join rule. It shows the number of requests to join when there are some."
+    "Privacy (bipe-chat/bipe#772): a row bipe_group_privacy_title opens group-privacy, for members who can change the join rule. It shows the number of requests to join when there are some.",
+    "Group link (ADR 0184, bipe-chat/bipe#744): a row bipe_group_link_title under the privacy row opens group-link."
   ]
 }

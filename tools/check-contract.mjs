@@ -25,6 +25,9 @@ const MODELS = {
   Invite: { ios: "BipeInvite", android: "BipeInvite" },
   MyInvites: { ios: "BipeMyInvites", android: "BipeMyInvites" },
   CreatedInvite: { ios: "BipeCreatedInvite", android: "BipeCreatedInvite" },
+  GroupLink: { ios: "BipeGroupLink", android: "BipeGroupLink" },
+  CreatedGroupLink: { ios: "BipeCreatedGroupLink", android: "BipeCreatedGroupLink" },
+  GroupLinkPreview: { ios: "BipeGroupLinkPreview", android: "BipeGroupLinkPreview" },
   HandleAvailability: { ios: "BipeHandleAvailability", android: "BipeHandleAvailability" },
   HandleRecord: { ios: "BipeHandleRecord", android: "BipeHandleRecord" },
   MyHandle: { ios: "BipeMyHandle", android: "BipeMyHandle" },
@@ -317,7 +320,7 @@ for (const [ref, types] of Object.entries(ENUMS)) {
 
 // ADR 0138 rule 2 (bipe-chat/bipe#513): what anyone can read about another account never names who is behind it.
 // A company account must not lead to its owner's personal account, user ID, phone, CPF or e-mail.
-const PUBLIC_SCHEMAS = ["InvitePreview", "PublicProfile", "BadgeEnvelope", "BadgeGone"];
+const PUBLIC_SCHEMAS = ["InvitePreview", "GroupLinkPreview", "PublicProfile", "BadgeEnvelope", "BadgeGone"];
 const NOT_PUBLIC = /(^|_)(user_id|phone|cpf|owner|created_by|email)$/;
 for (const name of PUBLIC_SCHEMAS) {
   const spec = schemas[name];

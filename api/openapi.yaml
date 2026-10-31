@@ -1313,6 +1313,141 @@ paths:
             text/html:
               schema: { type: string }
         "429": { $ref: "#/components/responses/Error" }
+  /v1/me/group-links:
+    get:
+      summary: The active group links of one group (ADR 0184, bipe-chat/bipe#744)
+      description: >
+        The caller must be a joined member of the group with a power level of 50 or more, else not_found.
+        Lists the links that still work, newest first, with their counts. A code is never returned again:
+        the app keeps the code it got at creation.
+      security: [{ matrix: [] }]
+      parameters:
+        - { name: room_id, in: query, required: true, schema: { type: string, maxLength: 255 } }
+      responses:
+        "200":
+          description: Active links
+          content:
+            application/json:
+              schema:
+                type: object
+                required: [links]
+                properties:
+                  links: { type: array, items: { $ref: "#/components/schemas/GroupLink" } }
+        "401": { $ref: "#/components/responses/Error" }
+        "404": { $ref: "#/components/responses/Error" }
+    post:
+      summary: Create a group link that brings people into one group (ADR 0184, bipe-chat/bipe#744)
+      description: >
+        The caller must be a joined member of the group with a power level of 50 or more, else not_found.
+        Before the call the app invites the groups service account (registries/official-accounts.json role groups)
+        and gives it the power level that m.room.power_levels needs for invite. The service account joins the group
+        with the server's token here; it has no E2EE device, so it gets no room keys and reads no message
+        (security.md, no server-side bot in an encrypted room). It reads room state only: name, members, power levels.
+        Without the invite or the power level the answer is 409 group_link_no_access, and the app shows
+        bipe_group_link_error_access. With the service account off (no token on the server): 500 internal,
+        reason group_links_unavailable.
+        A link from a caller with a badge (GET /v1/badges/{userId} answers a badge) signs people up past the
+        waitlist (signs_up true). Else it joins existing accounts only. The link works for 14 days, and signs up
+        at most 1024 people (ADR 0184; the room member limit until a group size ADR). A new link revokes the
+        caller's earlier active link for the same group. The code is returned once and stored only as a SHA-256 hash.
+      security: [{ matrix: [] }]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [room_id]
+              properties:
+                room_id: { type: string, maxLength: 255 }
+      responses:
+        "201":
+          description: New link
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/CreatedGroupLink" }
+        "400": { $ref: "#/components/responses/Error" }
+        "401": { $ref: "#/components/responses/Error" }
+        "404": { $ref: "#/components/responses/Error" }
+        "409": { $ref: "#/components/responses/Error" }
+        "429": { $ref: "#/components/responses/Error" }
+        "500": { $ref: "#/components/responses/Error" }
+  /v1/me/group-links/{linkId}:
+    delete:
+      summary: Revoke a group link
+      description: >
+        The creator of the link, or a joined member of its group with a power level of 50 or more. The link
+        signs up and joins nobody after this. Unknown, ended and foreign links are not_found.
+      security: [{ matrix: [] }]
+      parameters:
+        - { name: linkId, in: path, required: true, schema: { type: string } }
+      responses:
+        "204": { description: Revoked }
+        "401": { $ref: "#/components/responses/Error" }
+        "404": { $ref: "#/components/responses/Error" }
+  /v1/group-links/{code}:
+    get:
+      summary: Preview a group link
+      x-summary-pt: "Se um link de grupo ainda vale, o nome do grupo e quantas pessoas já estão nele"
+      security: []
+      description: >
+        No auth. Rate-limited per IP. CORS allows https://bipe.chat. The code is a secret the admin shared in the
+        group, so the group name and the member count go to its holder. Never member names, never the room ID.
+        An unknown, expired or revoked link, or a group the service account left, is valid false with no reason.
+      parameters:
+        - { name: code, in: path, required: true, schema: { type: string, maxLength: 2048 } }
+      responses:
+        "200":
+          description: Result
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/GroupLinkPreview" }
+        "429": { $ref: "#/components/responses/Error" }
+  /v1/group-links/{code}/join:
+    post:
+      summary: Get into the group of a group link
+      description: >
+        Signed in. The service account invites the caller into the group, and the app then joins the room
+        (Client.joinRoomById). A caller who is already a joined member gets the room ID and no invite.
+        An unusable link is not_found. A room that refuses the invite (the person is banned, or the service
+        account lost its power level) is 409 group_link_no_access. 30 per hour per account.
+      security: [{ matrix: [] }]
+      parameters:
+        - { name: code, in: path, required: true, schema: { type: string, maxLength: 2048 } }
+      responses:
+        "200":
+          description: Invited, or already a member
+          content:
+            application/json:
+              schema:
+                type: object
+                required: [room_id]
+                properties:
+                  room_id: { type: string }
+        "401": { $ref: "#/components/responses/Error" }
+        "404": { $ref: "#/components/responses/Error" }
+        "409": { $ref: "#/components/responses/Error" }
+        "429": { $ref: "#/components/responses/Error" }
+  /v1/web/g/{code}:
+    get:
+      summary: Link preview head for a group link (bipe-chat/bipe#744)
+      x-summary-pt: "Prévia de link de grupo para os robôs de prévia"
+      security: []
+      description: >
+        No auth. Rate-limited per IP. The site edge sends only link-preview crawlers for https://bipe.chat/g/{code}
+        here; browsers get the static group link page. The Open Graph title is the group name in
+        bipe_group_link_preview_title and the description has the member count in bipe_group_link_preview_count.
+        An unusable link gets the generic invite card, so the preview never says why a link does not work.
+        No member names and no photo. The page is noindex and sends no referrer.
+      parameters:
+        - { name: code, in: path, required: true, schema: { type: string, maxLength: 2048 } }
+      responses:
+        "200":
+          description: HTML head for link previews
+          content:
+            text/html:
+              schema: { type: string }
+        "429": { $ref: "#/components/responses/Error" }
   /v1/events:
     post:
       summary: Count one experiment event (headline test, issue #77)
@@ -5592,7 +5727,7 @@ components:
     SignupRequest:
       type: object
       properties:
-        invite_code: { type: string, maxLength: 2048, description: "Optional while the server runs with SIGNUP_INVITE_REQUIRED=false (beta). A code, an invite link or a whole pasted message; the server extracts the code (test-vectors/invite-codes.json). A given code must be valid." }
+        invite_code: { type: string, maxLength: 2048, description: "Optional while the server runs with SIGNUP_INVITE_REQUIRED=false (beta). A code, an invite link or a whole pasted message; the server extracts the code (test-vectors/invite-codes.json). A given code must be valid. A group link code (bipe.chat/g/<code>, ADR 0184) is valid only when its link signs people up and has sign-ups left; the new account makes no invite pair, and the service account invites it into the group of the link." }
         email: { type: string, format: email, maxLength: 254, description: "Device-first: optional recovery fallback, confirmed by a link. Legacy: the login, required with password." }
         password: { type: string, minLength: 8, maxLength: 256, description: "Legacy only. Absent: device-first, the server makes the password." }
         pin: { type: string, maxLength: 64, description: "Device-first only, optional: the PIN, set at once. Must pass pinProblem() (400 pin_weak)." }
@@ -5663,6 +5798,7 @@ components:
         user_id: { type: string, description: "Random Matrix ID, e.g. @k7q2m9x4tpab:bipe.net.br" }
         handle: { type: string }
         inviter_user_id: { type: string, description: "Present when a personal invite was used for a personal account. The app can offer a chat with the inviter. Never present for a company account (ADR 0138 rule 2)." }
+        group_room_id: { type: string, description: "Present when a group link code was used (ADR 0184). The service account has invited the new account into this group; after sign-in the app joins it (Client.joinRoomById) and opens it." }
         password: { type: string, description: "Device-first only. The hidden MAS password, shown once. Keep it on this device only." }
         recovery_token: { type: string, description: "Device-first only. base64url, 32 random bytes, shown once. Sync it (iCloud Keychain, Block Store)." }
     DiscoverySettings:
@@ -5676,6 +5812,36 @@ components:
       properties:
         valid: { type: boolean, description: "False when the code is unknown, used, expired or revoked. No reason is given." }
         inviter_handle: { type: string, description: "Only for a valid personal invite whose inviter has a handle. Without @." }
+    GroupLink:
+      type: object
+      required: [id, created_by, created_at, expires_at, signs_up, joined, signups, signups_left]
+      properties:
+        id: { type: string }
+        created_by: { type: string, description: "Matrix user ID of the admin who made the link." }
+        created_at: { type: string, format: date-time }
+        expires_at: { type: string, format: date-time }
+        signs_up: { type: boolean, description: "True when people without an account can sign up with the link (the creator had a badge)." }
+        joined: { type: integer, description: "People the link put into the group, sign-ups included." }
+        signups: { type: integer, description: "New accounts made with the link." }
+        signups_left: { type: integer, description: "Sign-ups the link still allows. 0 when signs_up is false." }
+    CreatedGroupLink:
+      type: object
+      required: [id, code, url, expires_at, signs_up]
+      properties:
+        id: { type: string }
+        code: { type: string, description: "Shown once. Format XXXX-XXXX-XXXX, the same alphabet as invite codes." }
+        url: { type: string, description: "https://bipe.chat/g/<code>, a universal link into the app." }
+        expires_at: { type: string, format: date-time }
+        signs_up: { type: boolean }
+    GroupLinkPreview:
+      type: object
+      required: [valid]
+      properties:
+        valid: { type: boolean, description: "False when the link is unknown, expired, revoked or its group is gone. No reason is given." }
+        name: { type: string, description: "The group name (m.room.name). Absent when the group has none." }
+        members: { type: integer, description: "Joined members of the group, the service account not counted." }
+        inviter_name: { type: string, description: "The creator's public profile name, else the handle with @. Absent when neither is public." }
+        signs_up: { type: boolean, description: "True when a person without an account can sign up with this link." }
     InviteStatus:
       type: string
       enum: [pending, used, expired, revoked]
@@ -6386,7 +6552,7 @@ components:
       properties:
         error:
           type: string
-          enum: [bad_request, invite_invalid, invite_quota_exhausted, email_taken, handle_invalid, handle_taken, handle_cooldown, password_weak, attestation_invalid, profile_invalid, photo_invalid, unauthorized, not_found, rate_limited, internal, cnpj_invalid, cnpj_not_active, cnpj_taken, signature_invalid, pin_weak, pin_wrong, pin_blocked, pin_not_set, recovery_invalid, email_unavailable, terms_required, support_unavailable, link_taken, link_unavailable, brand_not_verified, brand_mark_limit, deletion_pending, keep_limit]
+          enum: [bad_request, invite_invalid, invite_quota_exhausted, email_taken, handle_invalid, handle_taken, handle_cooldown, password_weak, attestation_invalid, profile_invalid, photo_invalid, unauthorized, not_found, rate_limited, internal, cnpj_invalid, cnpj_not_active, cnpj_taken, signature_invalid, pin_weak, pin_wrong, pin_blocked, pin_not_set, recovery_invalid, email_unavailable, terms_required, support_unavailable, link_taken, link_unavailable, brand_not_verified, brand_mark_limit, deletion_pending, keep_limit, group_link_no_access]
         reason: { type: string, description: "Detail, e.g. a HandleProblem or PinProblem id." }
         tries_left: { type: integer, description: "With pin_wrong: wrong PINs left before the PIN blocks." }
     BadgeEnvelope:

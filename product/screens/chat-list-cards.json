@@ -7,7 +7,7 @@
     "cards": {
       "type": "list",
       "of": { "type": "enum", "values": ["invite", "profile", "notes"], "description": "A card of registries/onboarding.json firstList.cards." },
-      "description": "The cards that show, in registry order: Conversas lists at most firstList.maxChats chats, the card was neither used nor dismissed on this account, and a card with when hasHandle shows only while the account has an @."
+      "description": "The cards that show, in registry order: Conversas lists at most firstList.maxChats chats, the card was neither used nor dismissed on this account, and a card with when hasHandle shows only while the account has an @. chat-list-prompt shows only the first of them at a time."
     },
     "handle": { "type": "string", "optional": true, "description": "The account's @ without the @, for bipe_first_card_profile_body." }
   },
@@ -55,6 +55,7 @@
     "Without an @ the profile card does not show; the handle prompt (registries/onboarding.json prompts.handle, trigger chatListWithoutHandle) asks for one above the list instead.",
     "Anotações stays in Você (voce openNotes, ADR 0112): the notes card opens it from the chat list and is not a pinned chat row.",
     "Used and dismissed cards are kept per account on this phone and never come back.",
-    "Grupos: \"Entre com um link\" waits for joining a group by link, which Bipe Next does not have yet."
+    "Grupos: \"Entre com um link\" waits for joining a group by link, which Bipe Next does not have yet.",
+    "Place and look (MZ, 31 Oct 2026, bipe-chat/bipe#894): this shows as the entry invite, profile and notes of chat-list-prompt, one card at a time in the first list row. chat-list-prompt decides when it shows against the other entries; this spec keeps the condition and the come-back time."
   ]
 }

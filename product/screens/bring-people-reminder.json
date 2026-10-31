@@ -30,6 +30,7 @@
     "Trigger bringPeopleDue: Conversas is on screen; at least bringPeople.followUpEveryDays (7) days since the last bring-people ask on this account; fewer than 2 declines; and a slot is sent for at least bringPeople.pendingAfterDays (3) days, or expired. Pick the oldest such slot. No slot qualifies: no reminder.",
     "Every reminder names one person. No generic \"invite someone\" reminder.",
     "Slot prompt: shares the 24-hour slot with the handle, photo and PIN prompts (registries/onboarding.json promptSlot). A slot that joined or is filled again leaves the reminder pool.",
-    "The reminder stops for good when every slot joined, or after the second decline."
+    "The reminder stops for good when every slot joined, or after the second decline.",
+    "Place and look (MZ, 31 Oct 2026, bipe-chat/bipe#894): this shows as the entry bringPeopleReminder of chat-list-prompt, one card at a time in the first list row. chat-list-prompt decides when it shows against the other entries; this spec keeps the condition and the come-back time."
   ]
 }

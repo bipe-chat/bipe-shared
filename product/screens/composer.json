@@ -8,7 +8,8 @@
       "userId": { "type": "string", "optional": true, "description": "The member. Absent for the whole-group entry." },
       "name": { "type": "string", "description": "Room.memberDisplayName, or bipe_app_composer_mention_everyone." },
       "handle": { "type": "string", "optional": true, "description": "The member's @ from POST /v1/handles/resolve." },
-      "avatarUrl": { "type": "url", "optional": true, "description": "mxc URL of the member avatar." }
+      "avatarUrl": { "type": "url", "optional": true, "description": "mxc URL of the member avatar." },
+      "nameAmbiguous": { "type": "bool", "description": "RoomMember.isNameAmbiguous, or another joined member has the same name after NameNormalizer (bipe#825). The row shows the @ after the name, as in timeline-rows. The pill keeps the name alone: the mention carries the user ID." }
     },
     "ComposerMention": {
       "userId": { "type": "string", "optional": true, "description": "The mentioned member. Absent for the whole group." },

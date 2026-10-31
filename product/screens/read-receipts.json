@@ -20,7 +20,8 @@
       "userId": { "type": "string", "description": "Matrix ID." },
       "name": { "type": "string", "description": "Display name in this room." },
       "avatarUrl": { "type": "url", "optional": true, "description": "mxc URL of the member avatar." },
-      "readAt": { "type": "date", "optional": true, "description": "Receipt time, when the server gave one." }
+      "readAt": { "type": "date", "optional": true, "description": "Receipt time, when the server gave one." },
+      "nameAmbiguous": { "type": "bool", "description": "Another member of the room has the same name after NameNormalizer (bipe#825). The read-by row shows the @ after the name, as in timeline-rows." }
     }
   },
   "state": {

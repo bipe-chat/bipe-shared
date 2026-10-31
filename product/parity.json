@@ -3149,14 +3149,18 @@
         "status": "built",
         "evidence": [
           "bipe-app/ios/Bipe/Groups/GroupMembersModel.swift",
-          "bipe-app/ios/Bipe/Groups/GroupMembersView.swift"
+          "bipe-app/ios/Bipe/Groups/GroupMembersView.swift",
+          "bipe-app/ios/Bipe/Composer/ComposerSupport.swift",
+          "bipe-app/ios/Bipe/Timeline/MessageSheets.swift"
         ]
       },
       "android": {
         "status": "built",
         "evidence": [
           "bipe-app/android/app/src/main/kotlin/chat/bipe/app/groups/GroupMembersModel.kt",
-          "bipe-app/android/app/src/main/kotlin/chat/bipe/app/groups/GroupMembersScreen.kt"
+          "bipe-app/android/app/src/main/kotlin/chat/bipe/app/groups/GroupMembersScreen.kt",
+          "bipe-app/android/app/src/main/kotlin/chat/bipe/app/composer/ComposerSupport.kt",
+          "bipe-app/android/app/src/main/kotlin/chat/bipe/app/timeline/MessageSheets.kt"
         ]
       },
       "web": {
@@ -3306,7 +3310,7 @@
     },
     {
       "id": "ambiguous-names",
-      "name": "Group members with the same name show their @ after the name, look-alike names included (bipe#825)",
+      "name": "Group members with the same name show their @ after the name in the timeline, member list, @ suggestions and read-by list, look-alike names included (bipe#825)",
       "ios": {
         "status": "built",
         "evidence": [

@@ -2571,6 +2571,36 @@
       "issue": 501
     },
     {
+      "id": "hide-media",
+      "name": "Hide photos and videos until tapped, and the photos of people who invite you, stored in the account (MSC4278, bipe#827)",
+      "ios": {
+        "status": "built",
+        "evidence": [
+          "bipe-app/ios/Bipe/Media/MediaSettings.swift",
+          "bipe-app/ios/Bipe/Media/TimelineMediaRow.swift",
+          "bipe-app/ios/Bipe/ChatList/ChatRequestsView.swift"
+        ]
+      },
+      "android": {
+        "status": "built",
+        "evidence": [
+          "bipe-app/android/app/src/main/kotlin/chat/bipe/app/media/MediaSettings.kt",
+          "bipe-app/android/app/src/main/kotlin/chat/bipe/app/media/TimelineMediaRow.kt",
+          "bipe-app/android/app/src/main/kotlin/chat/bipe/app/chatlist/ChatRequests.kt"
+        ]
+      },
+      "web": {
+        "status": "n/a",
+        "reason": "No web chat (ADR 0004); the site shows a demo at most"
+      },
+      "server": {
+        "status": "n/a",
+        "reason": "Runs on the device; the setting is standard Matrix account data"
+      },
+      "issue": 827,
+      "fork": true
+    },
+    {
       "id": "data-use",
       "name": "Data use: a budget for a normal day, light media defaults and a data saver (bipe#242)",
       "ios": {

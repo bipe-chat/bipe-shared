@@ -1,11 +1,11 @@
 {
   "version": 1,
-  "date": "2026-10-30",
+  "date": "2026-10-31",
   "encarregado": null,
   "pt": {
     "nav": "LGPD",
     "title": "Seus dados no Bipe (LGPD)",
-    "meta": "Bipe, versão de testes. Atualizada em 30 de outubro de 2026.",
+    "meta": "Bipe, versão de testes. Atualizada em 31 de outubro de 2026.",
     "lede": "Cada dado que o Bipe guarda, para quê, com qual base da LGPD, por quanto tempo e onde fica. A página é gerada do mesmo registro que a equipe usa para cuidar dos dados.",
     "policy": "O texto corrido está na [política de privacidade](/privacidade/).",
     "itemsTitle": "O que a gente guarda",
@@ -34,7 +34,7 @@
   "en": {
     "nav": "LGPD",
     "title": "Your data on Bipe (LGPD)",
-    "meta": "Bipe, test version. Updated 30 October 2026.",
+    "meta": "Bipe, test version. Updated 31 October 2026.",
     "lede": "Every piece of data Bipe keeps, what it is for, its LGPD legal basis, how long we keep it and where it lives. The page is built from the same record the team uses to manage the data. The Portuguese version is the reference text.",
     "policy": "The plain-language text is in the [privacy policy](/en/privacy/).",
     "itemsTitle": "What we keep",
@@ -368,6 +368,23 @@
         "what": "Who invited whom, and a protected form of each invite code.",
         "why": "During testing, only people with an invite can join. The record helps find fake accounts and abuse.",
         "retention": "No time limit set yet."
+      }
+    },
+    {
+      "id": "first-contacts",
+      "basis": "legitimate-interest",
+      "places": ["server"],
+      "pt": {
+        "name": "Primeiros contatos",
+        "what": "Quando você chama alguém que não está em nenhuma conversa com você: a data, a conversa e um código derivado da conta de quem recebeu, nunca o nome dela. Depois, se a pessoa aceitou, recusou, não respondeu ou bloqueou você, e quantas denúncias suas mensagens receberam, contados por dia. Sem conteúdo.",
+        "why": "Saber como as pessoas respondem a uma conta que chama desconhecidos e limitar quantas pessoas desconhecidas uma conta pode chamar por dia, para frear spam e golpes. Quem já conversa com você nunca entra nesse limite.",
+        "retention": "7 dias para cada primeiro contato. Depois fica só a contagem por dia, por 90 dias."
+      },
+      "en": {
+        "name": "First contacts",
+        "what": "When you start a chat with someone who shares no conversation with you: the date, the conversation and a code derived from the other person's account, never their name. Then whether they accepted, declined, did not answer or blocked you, and how many reports your messages got, counted per day. No content.",
+        "why": "To learn how people respond to an account that contacts strangers and to limit how many strangers one account can reach per day, to slow down spam and scams. People you already talk to never count against that limit.",
+        "retention": "7 days for each first contact. After that only the daily counts stay, for 90 days."
       }
     },
     {

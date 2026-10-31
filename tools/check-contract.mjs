@@ -71,6 +71,7 @@ const NOT_IN_APPS = {
     "AgendaFeedOptions", "AgendaFeed", "BusyImportInput", "BusyImport", "AgendaError",
   ].map((name) => [name, "contract first (bipe#315); app clients follow in bipe#321 to bipe#324"])),
   DiscoverySettings: "one boolean; iOS sends it from a private request type in BipeAPIClient",
+  ReachStatus: "contract first (bipe#851); the budget notice and \"Status da conta\" in the app follow in bipe#846",
   MessagingSetting: "one enum field; iOS decodes it in a private MessagingSetting type in BipeAPIClient, exposed as BipeWhoCanMessage",
   TermsAcceptance: "one string; the apps send it from a private request type in their API client (ADR 0113)",
   ExperimentEvent: "web only (headline test)",

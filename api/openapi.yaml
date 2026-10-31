@@ -1649,13 +1649,34 @@ paths:
         "400": { $ref: "#/components/responses/Error" }
         "401": { $ref: "#/components/responses/Error" }
         "429": { $ref: "#/components/responses/Error" }
+  /v1/me/reach:
+    get:
+      summary: The caller's first-contact tier and budget (security.md rule 11, bipe-chat/bipe#851)
+      description: >
+        A first contact is an invite to a person who shares no other joined room and no invite pair with the
+        caller (DMs and group adds). Each tier has a budget of first contacts per rolling windowHours
+        (registries/reach.json). Over the budget, the Synapse module refuses the invite with M_LIMIT_EXCEEDED;
+        a policy refusal stays M_FORBIDDEN. Contacts and replies are never limited. The budgets and thresholds are
+        server configuration, not part of the contract. No score is shown. Without the server's first-contact
+        record (no growth secret) the route answers 500 internal with reason reach_unavailable.
+      security: [{ matrix: [] }]
+      responses:
+        "200":
+          description: The caller's reach state
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/ReachStatus" }
+        "401": { $ref: "#/components/responses/Error" }
+        "429": { $ref: "#/components/responses/Error" }
+        "500": { $ref: "#/components/responses/Error" }
   /v1/me/export:
     get:
       summary: A copy of everything the API stores about the caller (LGPD art. 18, ADR 0112)
       description: >
         One JSON file: account state, recovery email and recoveries, handle and its history,
         public profile (photo as base64 JPEG), messaging and discovery settings, phone link
-        status, personal invites and invite connections, the CNPJ claim, terms acceptances and growth events. It
+        status, personal invites and invite connections, the CNPJ claim, terms acceptances, growth events and
+        the daily first-contact counts as a sender (bipe-chat/bipe#845; never the recipients). It
         leaves out hashes, sealed secrets and the phone number (never stored). Messages are not
         on the server. The app asks for a biometric check first. 3 per hour per account.
       security: [{ matrix: [] }]
@@ -5656,6 +5677,32 @@ components:
       required: [who_can_message]
       properties:
         who_can_message: { type: string, enum: [everyone, verified, contacts], description: "everyone: invites from strangers arrive in Pedidos. contacts: only people you share a room with or your invite pair." }
+    ReachStatus:
+      type: object
+      required: [tier, budget, used, resets_at, raise_by]
+      properties:
+        tier:
+          type: string
+          enum: [unattested, new, normal, verified, company, slowed]
+          description: >
+            unattested: the account signed up without device attestation (third-party clients included).
+            new: attested, unverified, younger than the new-account age. normal: attested, unverified, older.
+            verified: a pix or govbr person verification. company: a verified CNPJ seal. slowed: blocks and reports
+            on first contacts above the threshold. The order of checks: slowed, unattested, company, verified, new, normal.
+        budget: { type: integer, minimum: 0, description: "First contacts allowed per rolling windowHours." }
+        used: { type: integer, minimum: 0, description: "First contacts in the last windowHours." }
+        resets_at:
+          type: string
+          format: date-time
+          nullable: true
+          description: "When the oldest first contact in the window leaves it and one unit comes back. null when used is 0."
+        raise_by:
+          type: string
+          enum: [verify, wait]
+          nullable: true
+          description: >
+            The step that raises the budget. verify: a person verification (new, normal). wait: the budget rises
+            with time (slowed). null: no step the owner can take (unattested, verified, company).
     SignupResponse:
       type: object
       required: [user_id]

@@ -23,7 +23,7 @@
       "of": { "type": "ChatRequestSummary", "description": "One request." },
       "description": "Newest first."
     },
-    "hidePhotos": { "type": "bool", "description": "The privacy setting bipe_privacy_requests_hide_photos." },
+    "hidePhotos": { "type": "bool", "description": "The privacy setting bipe_privacy_requests_hide_photos. Stored in the account as MSC4278 invite_avatars (see notes)." },
     "rowCount": { "type": "int", "description": "The number on the requests row of the chat list. 0 hides the row." }
   },
   "actions": {
@@ -55,15 +55,19 @@
     "Room.roomInfo",
     "RoomInfo",
     "Room.inviter",
-    "RoomMember"
+    "RoomMember",
+    "Client.setInviteAvatarsDisplayPolicy",
+    "Client.subscribeToMediaPreviewConfig",
+    "InviteAvatars"
   ],
-  "parity": ["requests", "who-can-message"],
+  "parity": ["requests", "who-can-message", "hide-media"],
   "notes": [
     "A request is a room with membership invited whose invite is direct: RoomInfo.isDirect true (is_direct in the invite) and at most two active members, service members not counted. Not RoomInfo.isDm and not the Category filter: both read m.direct, which the invitee writes only when joining, so they put every DM invite with the groups. After the join the SDK writes m.direct and RoomInfo.isDm is the DM test again (ADR 0141). Group invites are not requests: they show as invite rows in the Grupos tab (chat-list-filters).",
     "The server already applies who can message me (ADR 0038): an invite that the setting refuses never arrives. The box holds what passed.",
     "Requests stay out of chat-list and out of the Conversas unread badge (ADR 0053: Pedidos is a row, not a tab). The row shows rowCount when it is above 0, with bipe_requests_title and bipe_requests_row_body.",
     "Trust per row: verified shows the verified seal (bipe_badge_verified), unverified shows bipe_banner_unverified_title, external shows bipe_banner_external. Move, do not rewrite: BipeKit BipeTrustProfile.swift and BadgeVerifier.swift, libraries/bipe BipeTrustProfile.kt and BadgeVerifier.kt (GET /v1/badges/{userId}).",
-    "hidePhotos: rows show the initials avatar, never the photo, until accepted.",
+    "hidePhotos: rows show the initials avatar, never the photo, until accepted. The group invite rows of chat-list-filters follow it too (bipe-chat/bipe#827).",
+    "hidePhotos lives in the account (bipe-chat/bipe#827): the standard account data m.media_preview_config of MSC4278, through Client.setInviteAvatarsDisplayPolicy and Client.subscribeToMediaPreviewConfig. hidePhotos true = InviteAvatars.off, false = on. An account without the setting keeps the phone's value (default true) and the app writes it once.",
     "Empty box: bipe_app_requests_empty and a link row bipe_messaging_title to the setting.",
     "A request from a blocked person never shows (Matrix ignore list).",
     "Invite pairs (ADR 0034): a DM invite from an invite pair joins by itself and never shows as a request. The app keeps the last GET /v1/me/invite-connections answer and asks again at most once a minute. A DM invite from someone not in that answer asks again after 5 seconds, so the chat from a person who just joined with the user's invite opens in the chat list at once, with their first message."

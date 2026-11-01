@@ -8,7 +8,7 @@
     "phase": {
       "type": "enum",
       "values": ["loading", "preview", "joining", "invalid", "failed"],
-      "description": "loading: GET /v1/group-links/{code}. preview: the group. joining: join runs. invalid: valid false or a 404 on join, bipe_group_link_open_invalid. failed: bipe_error_network with bipe_app_retry; a 409 shows bipe_app_room_link_invite_only."
+      "description": "loading: GET /v1/group-links/{code}. preview: the group, then bipe_group_link_open_history above the join button. joining: join runs. invalid: valid false or a 404 on join, bipe_group_link_open_invalid. failed: bipe_error_network with bipe_app_retry; a 409 shows bipe_app_room_link_invite_only."
     },
     "name": { "type": "string", "description": "GroupLinkPreview.name, else bipe_group_common_no_room_name." },
     "members": { "type": "int", "description": "GroupLinkPreview.members, with bipe_app_room_link_members." },
@@ -27,6 +27,7 @@
     "bipe_app_room_link_invite_only",
     "bipe_group_link_open_invited_by",
     "bipe_group_link_open_invalid",
+    "bipe_group_link_open_history",
     "bipe_group_common_no_room_name",
     "bipe_error_network",
     "bipe_app_retry",
@@ -38,6 +39,7 @@
     "Where a link comes from: the universal link https://bipe.chat/g/<code> (iOS associated domains, Android app link), and a tapped link in a message, like invite links.",
     "A phone with no account: onboarding takes the code like an invite code (signup-invite-code, extractInviteCode). POST /v1/signup with the group code answers group_room_id; after sign-in the app runs Client.joinRoomById with it and opens the group. A link that does not sign people up gives invite_invalid at sign-up, as an unusable invite.",
     "A link that arrives before sign-in waits until account-start ends, then opens, like room-link-open.",
-    "Default chosen (bipe-chat/bipe#744): no list of contacts who are already in the group, because the preview never returns member names. It can come after the person joins, from the room members. mz can overrule."
+    "Default chosen (bipe-chat/bipe#744): no list of contacts who are already in the group, because the preview never returns member names. It can come after the person joins, from the room members. mz can overrule.",
+    "bipe_group_link_open_history shows in every preview: the groups account invites the person and has no room keys to share, so the earlier messages of an encrypted group stay unreadable for them, whatever the history setting (bipe docs/groups.md)."
   ]
 }

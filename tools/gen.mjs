@@ -292,6 +292,9 @@ ${reg.workHours.defaultDays.map((d) => `        (day: ${d.day}, ranges: [${d.ran
     /// Forward marks (bipe-chat/bipe#83; registries/voice-media.json): the content field and the many-times threshold. Rules: BipeForwardMark, test-vectors/forward-marks.json.
     public static let forwardKey = ${swiftString(reg.voiceMedia.forwardKey)}
     public static let forwardedManyTimes = ${reg.voiceMedia.forwardedManyTimes}
+    /// The most chats one forward goes to, and the most when a sent content reaches forwardedManyTimes (bipe-chat/bipe#933).
+    public static let forwardChats = ${reg.voiceMedia.forwardChats}
+    public static let forwardChatsManyTimes = ${reg.voiceMedia.forwardChatsManyTimes}
 
     /// Assistant drafts (bipe ADR 0210, bipe-chat/bipe#866; registries/drafts.json, docs/drafts-room.md). Rules: test-vectors/drafts.json.
     public static let draftsRoomType = ${swiftString(reg.drafts.roomType)}
@@ -691,6 +694,9 @@ ${reg.workHours.defaultDays.map((d) => `        ${d.day} to listOf(${d.ranges.ma
     /** Forward marks (bipe-chat/bipe#83; registries/voice-media.json): the content field and the many-times threshold. Rules: BipeForwardMark, test-vectors/forward-marks.json. */
     const val FORWARD_KEY = ${kotlinString(reg.voiceMedia.forwardKey)}
     const val FORWARDED_MANY_TIMES = ${reg.voiceMedia.forwardedManyTimes}
+    /** The most chats one forward goes to, and the most when a sent content reaches FORWARDED_MANY_TIMES (bipe-chat/bipe#933). */
+    const val FORWARD_CHATS = ${reg.voiceMedia.forwardChats}
+    const val FORWARD_CHATS_MANY_TIMES = ${reg.voiceMedia.forwardChatsManyTimes}
 
     /** Assistant drafts (bipe ADR 0210, bipe-chat/bipe#866; registries/drafts.json, docs/drafts-room.md). Rules: test-vectors/drafts.json. */
     const val DRAFTS_ROOM_TYPE = ${kotlinString(reg.drafts.roomType)}

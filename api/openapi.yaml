@@ -593,7 +593,10 @@ paths:
       summary: Set or change the caller's PIN
       description: >
         A signed-in device sets the PIN after a biometric check on the device (client side, ADR
-        0057). No old PIN is needed. The PIN must pass pinProblem() (400 pin_weak, reason: a
+        0057). When the account has a PIN, old_pin must be that PIN (bipe-chat/bipe#908): a
+        session alone cannot change it. It is checked like /v1/me/pin/check (403 pin_wrong with
+        tries_left, 403 pin_blocked); a missing old_pin is 400 bad_request reason old_pin. The
+        first PIN needs no old_pin. The PIN must pass pinProblem() (400 pin_weak, reason: a
         PinProblem id). Setting the PIN unblocks it, sets the wrong-try count to 0 and cancels
         every waiting PIN reset. The server sends a notice to the verified recovery email.
       security: [{ matrix: [] }]
@@ -606,10 +609,12 @@ paths:
               required: [pin]
               properties:
                 pin: { type: string, maxLength: 64 }
+                old_pin: { type: string, maxLength: 64, description: "The current PIN. Required when the account has one." }
       responses:
         "204": { description: Saved }
         "400": { $ref: "#/components/responses/Error" }
         "401": { $ref: "#/components/responses/Error" }
+        "403": { $ref: "#/components/responses/Error" }
         "429": { $ref: "#/components/responses/Error" }
   /v1/me/pin/check:
     post:
@@ -705,15 +710,29 @@ paths:
         new random password through the MAS admin API and issues a new recovery token, and
         returns both once. The user's own password stops working. The MAS email stays (it does
         not sign in without the password); to use email for recovery, the app adds it with PUT
-        /v1/me/email. Also for a device-first account whose app lost the stored password.
+        /v1/me/email. Only for an account that is not device-first yet (409 already_device_first,
+        bipe-chat/bipe#908): a device-first account that lost its password recovers with the
+        token or email. The body carries the current PIN, checked like /v1/me/pin/check
+        (403 pin_wrong with tries_left, 403 pin_blocked, 409 pin_not_set): a session alone cannot take the account.
       security: [{ matrix: [] }]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [pin]
+              properties:
+                pin: { type: string, maxLength: 64 }
       responses:
         "200":
           description: New credentials, shown once
           content:
             application/json:
               schema: { $ref: "#/components/schemas/Credentials" }
+        "400": { $ref: "#/components/responses/Error" }
         "401": { $ref: "#/components/responses/Error" }
+        "403": { $ref: "#/components/responses/Error" }
         "409": { $ref: "#/components/responses/Error" }
         "429": { $ref: "#/components/responses/Error" }
   /v1/me/recovery-token:
@@ -721,8 +740,18 @@ paths:
       summary: Issue a new recovery token for the caller
       description: >
         Returned once. The old token stops working. For an app that lost the synced token, or
-        after a suspected leak.
+        after a suspected leak. The body carries the current PIN, checked like /v1/me/pin/check
+        (403 pin_wrong with tries_left, 403 pin_blocked, 409 pin_not_set, bipe-chat/bipe#908).
       security: [{ matrix: [] }]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [pin]
+              properties:
+                pin: { type: string, maxLength: 64 }
       responses:
         "200":
           description: The new token
@@ -733,7 +762,10 @@ paths:
                 required: [recovery_token]
                 properties:
                   recovery_token: { type: string, description: "base64url, 32 random bytes." }
+        "400": { $ref: "#/components/responses/Error" }
         "401": { $ref: "#/components/responses/Error" }
+        "403": { $ref: "#/components/responses/Error" }
+        "409": { $ref: "#/components/responses/Error" }
         "429": { $ref: "#/components/responses/Error" }
   /v1/me/keychain-move:
     post:
@@ -2050,7 +2082,8 @@ paths:
         the server checks that each ID is an account on this homeserver and not the caller. Errors:
         400 bad_request with reason guardian_self, guardian_unknown or guardian_too_many. A guardian
         removed here can no longer mark or clear. While a mark is on, the list cannot change
-        (400 reason guardian_marked).
+        (400 reason guardian_marked). The body carries the current PIN, checked like
+        /v1/me/pin/check (403 pin_wrong with tries_left, 403 pin_blocked, 409 pin_not_set, bipe-chat/bipe#908).
       security: [{ matrix: [] }]
       requestBody:
         required: true
@@ -2058,9 +2091,10 @@ paths:
           application/json:
             schema:
               type: object
-              required: [user_ids]
+              required: [user_ids, pin]
               properties:
                 user_ids: { type: array, maxItems: 3, items: { type: string } }
+                pin: { type: string, maxLength: 64 }
       responses:
         "200":
           description: Guardian state after the change.
@@ -2069,6 +2103,8 @@ paths:
               schema: { $ref: "#/components/schemas/GuardianState" }
         "400": { $ref: "#/components/responses/Error" }
         "401": { $ref: "#/components/responses/Error" }
+        "403": { $ref: "#/components/responses/Error" }
+        "409": { $ref: "#/components/responses/Error" }
   /v1/me/phone:
     put:
       summary: Records this phone for the account (bipe#268)
@@ -6552,7 +6588,7 @@ components:
       properties:
         error:
           type: string
-          enum: [bad_request, invite_invalid, invite_quota_exhausted, email_taken, handle_invalid, handle_taken, handle_cooldown, password_weak, attestation_invalid, profile_invalid, photo_invalid, unauthorized, not_found, rate_limited, internal, cnpj_invalid, cnpj_not_active, cnpj_taken, signature_invalid, pin_weak, pin_wrong, pin_blocked, pin_not_set, recovery_invalid, email_unavailable, terms_required, support_unavailable, link_taken, link_unavailable, brand_not_verified, brand_mark_limit, deletion_pending, keep_limit, group_link_no_access]
+          enum: [bad_request, invite_invalid, invite_quota_exhausted, email_taken, handle_invalid, handle_taken, handle_cooldown, password_weak, attestation_invalid, profile_invalid, photo_invalid, unauthorized, not_found, rate_limited, internal, cnpj_invalid, cnpj_not_active, cnpj_taken, signature_invalid, pin_weak, pin_wrong, pin_blocked, pin_not_set, already_device_first, recovery_invalid, email_unavailable, terms_required, support_unavailable, link_taken, link_unavailable, brand_not_verified, brand_mark_limit, deletion_pending, keep_limit, group_link_no_access]
         reason: { type: string, description: "Detail, e.g. a HandleProblem or PinProblem id." }
         tries_left: { type: integer, description: "With pin_wrong: wrong PINs left before the PIN blocks." }
     BadgeEnvelope:

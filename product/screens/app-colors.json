@@ -2,21 +2,31 @@
   "id": "app-colors",
   "title": "App colours",
   "flow": "settings",
-  "summary": "The user picks one of the palettes of design/tokens.json appThemes. The choice sets the accent colours, the own chat bubble and the app icon at once, and the app redraws in the new colours.",
+  "summary": "The user picks one of the palettes of design/tokens.json appThemes and a chat background. The palette sets the accent colours, the own chat bubble, the chat background and the app icon at once, and the app redraws in the new colours.",
   "types": {
     "PaletteOption": {
       "palette": { "type": "enum", "values": ["acai", "goiaba", "pitanga", "maracuja", "jenipapo", "jabuticaba"], "description": "The palette id, in appThemes order." },
       "title": { "type": "string", "description": "String key bipe_colors_<palette>." },
       "isSelected": { "type": "bool", "description": "true for the stored palette." }
+    },
+    "BackgroundOption": {
+      "background": { "type": "enum", "values": ["marca", "cor", "liso"], "description": "The chat background id, in appThemes.chatBackground.options order." },
+      "title": { "type": "string", "description": "String key bipe_chats_background_<background>." },
+      "isSelected": { "type": "bool", "description": "true for the stored chat background." }
     }
   },
   "state": {
-    "options": { "type": "list", "of": { "type": "PaletteOption", "description": "One option per palette." }, "description": "All palettes, in appThemes order. The default palette (acai) is first." }
+    "options": { "type": "list", "of": { "type": "PaletteOption", "description": "One option per palette." }, "description": "All palettes, in appThemes order. The default palette (acai) is first." },
+    "backgrounds": { "type": "list", "of": { "type": "BackgroundOption", "description": "One option per chat background." }, "description": "All chat backgrounds, in appThemes.chatBackground.options order. The default (marca) is first." }
   },
   "actions": {
     "pick": {
       "params": { "palette": { "type": "string", "description": "The palette id." } },
       "effect": "Keeps the palette on the phone, sets the app theme at once (no restart) and switches the app icon to the icon of the palette. Plays the tick haptic."
+    },
+    "pickBackground": {
+      "params": { "background": { "type": "string", "description": "The chat background id." } },
+      "effect": "Keeps the chat background on the phone and shows it at once in every chat. Plays the tick haptic."
     }
   },
   "strings": [
@@ -27,7 +37,12 @@
     "bipe_colors_pitanga",
     "bipe_colors_maracuja",
     "bipe_colors_jenipapo",
-    "bipe_colors_jabuticaba"
+    "bipe_colors_jabuticaba",
+    "bipe_chats_background",
+    "bipe_chats_background_footer",
+    "bipe_chats_background_marca",
+    "bipe_chats_background_cor",
+    "bipe_chats_background_liso"
   ],
   "sdk": [],
   "parity": ["app-colors"],
@@ -38,6 +53,10 @@
     "Storage: the palette id under bipe.settings.palette, on the phone only. iOS keeps it in the app group defaults, so the share extension reads the same palette. A missing or unknown id is the default palette.",
     "iOS: the icon changes with UIApplication.setAlternateIconName (BipePalette.alternateIconName; nil is the primary icon). iOS shows its own alert after each change; the app cannot hide it. A failed change keeps the theme and leaves the icon as it was.",
     "Android: one launcher activity-alias per palette, all with the same intent filter; the app enables the alias of the palette and disables the others (PackageManager.DONT_KILL_APP). Some launchers move or drop the home screen icon after the change.",
-    "Palettes (MZ, 31 October 2026): six fruits with the most colour distance at the same contrast. Goiaba (hue 355) and pitanga (hue 42) keep off danger red (hue 27); caju left the picker because it sits on caution amber. A stored id that is no longer a palette (caju) is the default palette."
+    "Palettes (MZ, 31 October 2026): six fruits with the most colour distance at the same contrast. Goiaba (hue 355) and pitanga (hue 42) keep off danger red (hue 27); caju left the picker because it sits on caution amber. A stored id that is no longer a palette (caju) is the default palette.",
+    "Chat background (ADR 0213, MZ 2026-11-01): a second section, titled bipe_chats_background, below the palettes, with its footer. marca (default) draws BipeChatBackground blobs and marks on chat.background; cor is chat.background alone; liso is surface.base, the timeline as before. The chat.* tokens are themed, so every option follows the palette.",
+    "The chat background fills the timeline behind the messages and stays still while they scroll. The marks are the app icon shape, upright (BipeMark). Places and sizes come from BipeChatBackground: x and y are fractions of the timeline width and height, a mark side is a fraction of the shorter side and a blob radius a fraction of the longer side.",
+    "High contrast: every chat.* token is the flat palette colour, so marca looks like cor. ink.primary on chat.background is AAA in every palette (tools/lib/gen-tokens.mjs).",
+    "Storage: the id under bipe.settings.chatBackground, next to the palette (iOS app group defaults, Android settings file). A missing or unknown id is the default (marca)."
   ]
 }

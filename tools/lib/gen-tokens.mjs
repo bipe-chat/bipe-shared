@@ -15,10 +15,12 @@ export const CONTRAST_RULES = [
   { fg: "ink.onAccent", bg: "accent.fill", min: 7, minHighContrast: 7 },
   { fg: "ink.primary", bg: "bubble.own", min: 7, minHighContrast: 10 },
   { fg: "ink.primary", bg: "bubble.other", min: 7, minHighContrast: 10 },
+  // Day separators and room notices sit on the chat background with no bubble (ADR 0213).
+  { fg: "ink.primary", bg: "chat.background", min: 7, minHighContrast: 10 },
 ];
 
 // Bipe's own names: group.role, lower camel case. Compound's naming (color.bg.*, color.text.*, ...) must not come back.
-const NAME = /^(surface|ink|glyph|line|accent|bubble|trust|status)\.[a-z][A-Za-z]*(\.[a-z][A-Za-z]*)?$/;
+const NAME = /^(surface|ink|glyph|line|accent|bubble|chat|trust|status)\.[a-z][A-Za-z]*(\.[a-z][A-Za-z]*)?$/;
 
 // App themes (bipe-chat/bipe#811): the palettes the user can pick, the tokens they swap, the icon step of each.
 // Fails closed: a themed token must name acai in every variant, a trust token is never themed.
@@ -40,6 +42,22 @@ export function appThemes(tokens = loadTokens()) {
     }
   }
   return { palettes, themed: themes.themed ?? [], iconStep: (p) => themes.palettes[p].iconStep };
+}
+
+// The chat background (ADR 0213): the options and the places of the blobs and marks. Fails closed: every tone is a
+// themed chat token, so the composition follows the palette.
+export function chatBackground(tokens = loadTokens()) {
+  const bg = tokens.appThemes?.chatBackground;
+  if (!bg) throw new Error("tokens.json: appThemes.chatBackground is missing");
+  const themed = appThemes(tokens).themed;
+  if (!Array.isArray(bg.options) || bg.options[0] !== bg.default) throw new Error("tokens.json: chatBackground.options must start with its default");
+  for (const id of bg.options) if (!/^[a-z]+$/.test(id)) throw new Error(`tokens.json: chatBackground option "${id}" must be lower case letters`);
+  const num = (v, what) => { if (typeof v !== "number" || !Number.isFinite(v)) throw new Error(`tokens.json: chatBackground ${what} must be a number`); };
+  const tone = (t, what) => { if (!t?.startsWith("chat.") || !themed.includes(t)) throw new Error(`tokens.json: chatBackground ${what} tone "${t}" is not a themed chat token`); };
+  num(bg.blobOpacity, "blobOpacity");
+  bg.blobs.forEach((b, i) => { ["x", "y", "radius"].forEach((k) => num(b[k], `blobs[${i}].${k}`)); tone(b.tone, `blobs[${i}]`); });
+  bg.marks.forEach((m, i) => { ["x", "y", "side", "opacity"].forEach((k) => num(m[k], `marks[${i}].${k}`)); tone(m.tone, `marks[${i}]`); });
+  return { options: bg.options, default: bg.default, blobOpacity: bg.blobOpacity, blobs: bg.blobs, marks: bg.marks };
 }
 
 // Every palette of appThemes, resolved and checked against the contrast rules.
@@ -111,6 +129,10 @@ export function generateColors(lang, tokens = loadTokens()) {
   const byPalette = resolveThemes(tokens);
   const icons = appIconColors(tokens);
   const entries = Object.entries(resolved);
+  const chat = chatBackground(tokens);
+  const n = (v) => String(v);
+  const toneId = (t) => camelName(t.replace(/^chat\./, ""));
+  const kt = (t) => toneId(t).replace(/[A-Z]/g, (c) => `_${c}`).toUpperCase();
   if (lang === "swift") {
     const props = entries.map(([name, v]) => {
       const doc = `    /// ${tokens.semantic[name].description}`;
@@ -209,6 +231,52 @@ ${props.join("\n\n")}
         #endif
     }
 }
+
+/// Chat background (ADR 0213): the options in Settings, Cores, and the places of the blobs and marks on
+/// BipeColor.chatBackground. Every tone is a themed chat colour, so the composition follows the palette.
+public enum BipeChatBackground: String, CaseIterable, Sendable {
+${chat.options.map((o) => `    case ${o}`).join("\n")}
+
+    /// The option of a new install.
+    public static let standard: BipeChatBackground = .${chat.default}
+
+    /// A colour of the composition: one of the themed chat tokens.
+    public enum Tone: Sendable {
+        case ${["blob", "blobDeep", "mark", "markAlt"].join(", ")}
+
+        public var colour: Color {
+            switch self {
+            case .blob: BipeColor.chatBlob
+            case .blobDeep: BipeColor.chatBlobDeep
+            case .mark: BipeColor.chatMark
+            case .markAlt: BipeColor.chatMarkAlt
+            }
+        }
+    }
+
+    /// A soft blob: a radial gradient from the tone at blobOpacity to clear. Centre x, y as fractions of the width
+    /// and height; radius as a fraction of the longer side.
+    public struct Blob: Sendable {
+        public let x: Double, y: Double, radius: Double, tone: Tone
+    }
+
+    /// A Bipe mark (the app icon shape, upright). Top-leading corner x, y as fractions of the width and height;
+    /// side as a fraction of the shorter side.
+    public struct Mark: Sendable {
+        public let x: Double, y: Double, side: Double, opacity: Double, tone: Tone
+    }
+
+    public static let blobOpacity: Double = ${n(chat.blobOpacity)}
+
+    public static let blobs: [Blob] = [
+${chat.blobs.map((b) => `        Blob(x: ${n(b.x)}, y: ${n(b.y)}, radius: ${n(b.radius)}, tone: .${toneId(b.tone)}),`).join("\n")}
+    ]
+
+    /// In drawing order: the big mark is last.
+    public static let marks: [Mark] = [
+${chat.marks.map((m) => `        Mark(x: ${n(m.x)}, y: ${n(m.y)}, side: ${n(m.side)}, opacity: ${n(m.opacity)}, tone: .${toneId(m.tone)}),`).join("\n")}
+    ]
+}
 `;
   }
   const LABEL = { light: "Light", dark: "Dark", lightHighContrast: "LightHighContrast", darkHighContrast: "DarkHighContrast" };
@@ -271,6 +339,52 @@ fun bipeColors(palette: BipePalette, dark: Boolean, highContrast: Boolean): Bipe
 ${branches.join("\n")}
     }
 }
+
+/**
+ * Chat background (ADR 0213): the options in Settings, Cores, and the places of the blobs and marks on
+ * chatBackground. Every tone is a themed chat colour, so the composition follows the palette.
+ */
+enum class BipeChatBackground(val id: String) {
+${chat.options.map((o) => `    ${o.toUpperCase()}("${o}"),`).join("\n")}
+    ;
+
+    /** A colour of the composition: one of the themed chat tokens. */
+    enum class Tone {
+        BLOB, BLOB_DEEP, MARK, MARK_ALT;
+
+        fun colour(colors: BipeColors): Color = when (this) {
+            BLOB -> colors.chatBlob
+            BLOB_DEEP -> colors.chatBlobDeep
+            MARK -> colors.chatMark
+            MARK_ALT -> colors.chatMarkAlt
+        }
+    }
+
+    /** A soft blob: centre x, y as fractions of the width and height; radius as a fraction of the longer side. */
+    data class Blob(val x: Float, val y: Float, val radius: Float, val tone: Tone)
+
+    /** A Bipe mark (the app icon shape, upright): top-start corner x, y as fractions; side as a fraction of the shorter side. */
+    data class Mark(val x: Float, val y: Float, val side: Float, val opacity: Float, val tone: Tone)
+
+    companion object {
+        /** The option of a new install. */
+        val DEFAULT: BipeChatBackground = ${chat.default.toUpperCase()}
+
+        /** The stored option id, or DEFAULT for a missing or unknown id. */
+        fun fromId(id: String?): BipeChatBackground = entries.firstOrNull { it.id == id } ?: DEFAULT
+
+        const val BLOB_OPACITY: Float = ${n(chat.blobOpacity)}f
+
+        val BLOBS: List<Blob> = listOf(
+${chat.blobs.map((b) => `            Blob(${n(b.x)}f, ${n(b.y)}f, ${n(b.radius)}f, Tone.${kt(b.tone)}),`).join("\n")}
+        )
+
+        /** In drawing order: the big mark is last. */
+        val MARKS: List<Mark> = listOf(
+${chat.marks.map((m) => `            Mark(${n(m.x)}f, ${n(m.y)}f, ${n(m.side)}f, ${n(m.opacity)}f, Tone.${kt(m.tone)}),`).join("\n")}
+        )
+    }
+}
 `;
 }
 
@@ -280,6 +394,8 @@ const kebab = (name) => name.replace(/\./g, "-").replace(/[A-Z]/g, (c) => `-${c.
 // system light or dark mode; the semantic tokens also follow prefers-contrast: more. The ramps have no
 // high contrast set: a high contrast variant is a choice of step, so it lives in the semantic tokens only.
 function cssColors(tokens, resolved) {
+  const themes = appThemes(tokens);
+  const byPalette = resolveThemes(tokens);
   const block = (theme, variant) => {
     const lines = [];
     if (theme) {
@@ -289,7 +405,11 @@ function cssColors(tokens, resolved) {
       }
     }
     for (const [name, v] of Object.entries(resolved)) lines.push(`  --bipe-${kebab(name)}: ${v[variant]};`);
-    return `:root {\n${lines.join("\n")}\n}`;
+    // The app palettes (ADR 0213): an element with data-palette="<palette>" (the site phone scenes) takes that
+    // palette's themed tokens, as the app does.
+    const palettes = Object.entries(byPalette).filter(([p]) => p !== "acai").map(([p, set]) =>
+      `[data-palette="${p}"] {\n${themes.themed.map((name) => `  --bipe-${kebab(name)}: ${set[name][variant]};`).join("\n")}\n}`);
+    return [`:root {\n${lines.join("\n")}\n}`, ...palettes].join("\n");
   };
   return `/* Bipe's colour tokens (bipe-shared design/tokens.json). Generated by tools/lib/gen-tokens.mjs. Do not edit. */
 ${block("light", "light")}

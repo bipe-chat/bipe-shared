@@ -2,7 +2,7 @@
   "id": "pin-change",
   "title": "Change PIN",
   "flow": "settings",
-  "summary": "Changes the account PIN (senha de 8 números) from Sua conta. A biometric check comes first; no old PIN is needed (ADR 0057). The server checks the new PIN, unblocks it and cancels any waiting PIN reset.",
+  "summary": "Changes the account PIN (senha de 8 números) from Sua conta. The current PIN comes first (bipe-chat/bipe#908). The server checks the new PIN, unblocks it and cancels any waiting PIN reset.",
   "state": {
     "phase": {
       "type": "enum",
@@ -19,14 +19,14 @@
   },
   "actions": {
     "confirmIdentity": {
-      "effect": "Asks for the approval owner check (bipe#785, security.md rules 5 and 14): biometrics only, with no passcode fallback (Android: BIOMETRIC_STRONG, class 3); a phone with no biometrics set up asks for the Bipe PIN (bipe_pin_enter_title), checked by POST /v1/me/pin/check, where wrong tries count against the account (bipe_pin_wrong with tries left, bipe_pin_blocked_body); a phone with no screen lock is refused and the screen closes. bipe_pin_change_biometric_reason is the biometric reason. A pass sets create; a fail or cancel closes the screen."
+      "effect": "Asks for the current Bipe PIN (bipe_pin_enter_title) on every phone, checked by POST /v1/me/pin/check, where wrong tries count against the account (bipe_pin_wrong with tries left, bipe_pin_blocked_body). The server needs the same PIN again with the new one (bipe-chat/bipe#908), so biometrics alone do not pass; the passcode never passes (security.md rules 5 and 14). A phone with no screen lock cannot change the PIN: the screen closes (fail closed). The PIN is held in memory only until save."
     },
     "typeDigit": {
       "params": { "digit": { "type": "string", "description": "One digit, 0 to 9." } },
       "effect": "The signup-pin steps: pinProblem() at the end of create, a match check at the end of confirm. A match sets saving and calls save."
     },
     "save": {
-      "effect": "PUT /v1/me/pin with the PIN. 204: while the app lock is on and the phone holds one account, also sets the app lock PIN (app-lock); success haptic (use pin_set); shows bipe_pin_changed and closes. 400 pin_weak: sets problem from reason and goes back to create. 429: failed with bipe_error_rate_limited."
+      "effect": "PUT /v1/me/pin with the new PIN and old_pin, the PIN of confirmIdentity. 204: while the app lock is on and the phone holds one account, also sets the app lock PIN (app-lock); success haptic (use pin_set); shows bipe_pin_changed and closes. 400 pin_weak: sets problem from reason and goes back to create. 429: failed with bipe_error_rate_limited."
     },
     "retry": { "effect": "From failed: calls save again with the same PIN while the screen is open." },
     "cancel": { "effect": "Closes the screen. Nothing changes." }

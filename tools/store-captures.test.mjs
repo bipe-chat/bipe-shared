@@ -45,14 +45,19 @@ test("the seal, groups and sticker captures generate their data", () => {
   const kotlin = generateStoreCaptures(fresh(), reg, JSON.stringify, "// header");
   assert.match(kotlin, /val sealCnpj: String = "\d{14}"/);
   assert.match(kotlin, /StoreGroup\(StoreCast\.familia, StoreCast\.antonio, /);
-  assert.match(kotlin, /sticker = "caramelo"\)/);
+  assert.match(kotlin, /sticker = "caio-bora"\)/);
   assert.match(kotlin, /photo = "joana"\)/);
 });
 
 test("a message shows one of text, image or sticker, and media needs a cast photo", () => {
   const input = fresh();
-  input.data.captures.stickers.messages = [{ from: "viewer", time: "10:00", text: "Oi", sticker: "thiago" }];
+  input.data.captures.stickers.messages = [
+    { from: "viewer", time: "10:00", text: "Oi", sticker: "caio-bora" },
+    { from: "viewer", time: "10:01", image: "thiago" },
+    { from: "viewer", time: "10:02", sticker: "Caio Bora.png" },
+  ];
   const problems = checkStoreCaptures(input, reg);
   assert.ok(problems.includes("captures.stickers.messages[0]: one of text, image or sticker"));
-  assert.ok(problems.includes("captures.stickers.messages[0].sticker: thiago has no photo"));
+  assert.ok(problems.includes("captures.stickers.messages[1].image: thiago has no photo"));
+  assert.ok(problems.includes("captures.stickers.messages[2].sticker: a file name of bipe-web src/cast/stickers, without .png"));
 });

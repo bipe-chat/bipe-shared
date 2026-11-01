@@ -12,6 +12,7 @@ import { scamWarningKind } from "./registries.mjs";
 export const STORE_CAPTURES_PATH = "android/app/src/screenshotTest/kotlin/chat/bipe/app/store/generated/StoreCaptures.kt";
 const TRUST = ["verified", "unverified", "external"];
 const TIME_RE = /^([01]\d|2[0-3]):[0-5]\d$/;
+const STICKER_RE = /^[a-z0-9]+(-[a-z0-9]+)*$/;
 
 /** The cast id whose photo an entry shows (its own, or the entry it copies), or null when it has no photo. */
 export function photoOf(cast, id) {
@@ -49,7 +50,7 @@ export function checkStoreCaptures({ data, cast, listing }, reg) {
       if (!TIME_RE.test(m.time ?? "")) problems.push(`${at}: time is HH:MM`);
       if ([m.text, m.image, m.sticker].filter(Boolean).length !== 1) problems.push(`${at}: one of text, image or sticker`);
       if (m.image) photo(`${at}.image`, m.image);
-      if (m.sticker) photo(`${at}.sticker`, m.sticker);
+      if (m.sticker && !STICKER_RE.test(m.sticker)) problems.push(`${at}.sticker: a file name of bipe-web src/cast/stickers, without .png`);
     }
   };
   for (const [slug, capture] of Object.entries(data.captures ?? {})) {
@@ -145,7 +146,8 @@ data class StorePerson(val id: String, val name: String, val short: String, val 
 
 /**
  * A sample message. from null: the viewer sent it. warning: the scam warning id of the reference detector, or null.
- * image and sticker: the cast photo id that the message shows in place of text.
+ * image: the cast photo id (bipe-web src/cast/photos) and sticker: the file name (bipe-web src/cast/stickers) that the
+ * message shows in place of text.
  */
 data class StoreMessage(val from: StorePerson?, val time: String, val text: String, val warning: String?, val image: String? = null, val sticker: String? = null)
 
@@ -202,7 +204,7 @@ ${c.pedidos.requests.map((r) => `        StoreRequest(${val(r.from)}, ${kotlinSt
   }
   const message = (m) => {
     const warning = m.text ? scamWarningKind(m.text, reg) : null;
-    const media = [m.image ? `image = ${kotlinString(photoOf(cast, m.image))}` : null, m.sticker ? `sticker = ${kotlinString(photoOf(cast, m.sticker))}` : null].filter(Boolean);
+    const media = [m.image ? `image = ${kotlinString(photoOf(cast, m.image))}` : null, m.sticker ? `sticker = ${kotlinString(m.sticker)}` : null].filter(Boolean);
     return `        StoreMessage(${m.from === "viewer" ? "null" : val(m.from)}, ${kotlinString(m.time)}, ${kotlinString(m.text ?? "")}, ${warning ? kotlinString(warning) : "null"}${media.map((x) => `, ${x}`).join("")}),`;
   };
   if (c["selo-cnpj"]) {

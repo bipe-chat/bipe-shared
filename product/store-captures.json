@@ -1,5 +1,5 @@
 {
-  "$comment": "Sample data of the store captures (bipe-chat/bipe#457): one entry per slug of the `## Screenshots` table in appstore.md, read by the bipe-app capture sources (Android screenshotTest, iOS BipeStoreCaptures UI test). People and groups are cast ids (cast.json); `image` and `sticker` name the cast photo that a message shows. Message text is people's voice, so it is the same in both locales; the app's own text comes from the strings. tools/gen.mjs writes it into bipe-app android/app/src/screenshotTest; bipe-app tools/store-captures-ios.mjs reads it for iOS; tools/lib/store-captures.mjs checks it.",
+  "$comment": "Sample data of the store captures (bipe-chat/bipe#457): one entry per slug of the `## Screenshots` table in appstore.md, read by the bipe-app capture sources (Android screenshotTest, iOS BipeStoreCaptures UI test). People and groups are cast ids (cast.json). A message `image` names a cast photo; a message `sticker` names a file of bipe-web src/cast/stickers (`<name>.png`, RGBA with its die-cut edge). Message text is people's voice, so it is the same in both locales; the app's own text comes from the strings. tools/gen.mjs writes it into bipe-app android/app/src/screenshotTest; bipe-app tools/store-captures-ios.mjs reads it for iOS; tools/lib/store-captures.mjs checks it.",
   "version": 1,
   "viewer": "gabi",
   "captures": {
@@ -46,8 +46,9 @@
       "chat": "faculdade",
       "messages": [
         { "from": "bia", "time": "10:20", "text": "Sexta tem churrasco lá em casa" },
-        { "from": "leo", "time": "10:21", "image": "rafa" },
-        { "from": "viewer", "time": "10:22", "sticker": "caramelo" }
+        { "from": "caio", "time": "10:21", "sticker": "caio-bora" },
+        { "from": "leo", "time": "10:22", "text": "Posso levar o Caramelo?" },
+        { "from": "viewer", "time": "10:23", "sticker": "vira-lata" }
       ]
     }
   }

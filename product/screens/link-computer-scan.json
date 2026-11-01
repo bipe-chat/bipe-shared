@@ -23,8 +23,9 @@
     "error": {
       "type": "string",
       "optional": true,
-      "description": "String key of the failed phase: bipe_app_link_computer_not_bipe_code, bipe_app_link_computer_expired, bipe_app_link_computer_insecure, bipe_app_link_computer_needs_recovery_key, bipe_app_link_computer_stopped, bipe_error_network or bipe_error_generic."
-    }
+      "description": "String key of the failed phase: bipe_app_link_computer_not_bipe_code, bipe_app_link_computer_expired, bipe_app_link_computer_insecure, bipe_app_link_computer_needs_approval, bipe_app_link_computer_stopped, bipe_error_network or bipe_error_generic."
+    },
+    "errorCode": { "type": "string", "optional": true, "description": "A short code for support, shown under the error as bipe_app_error_code: keys-missing, backup-version or no-crypto for missingSecretsBackup, else the SDK error case. Never a key or a secret. The full SDK text goes to the app log." }
   },
   "actions": {
     "open": {
@@ -43,13 +44,13 @@
     },
     "taskFailed": {
       "params": { "reason": { "type": "string", "description": "The HumanQrGrantLoginError case from GrantLoginWithQrCodeTask.wait." } },
-      "effect": "Maps the error to a string and sets failed: notFound and expired → bipe_app_link_computer_expired; connectionInsecure and invalidCheckCode → bipe_app_link_computer_insecure; missingSecretsBackup → bipe_app_link_computer_needs_recovery_key; cancelled → bipe_app_link_computer_stopped; unsupportedQrCodeType, unsupportedProtocol and otherDeviceAlreadySignedIn → bipe_app_link_computer_not_bipe_code; anything else → bipe_error_generic."
+      "effect": "Maps the error to a string and sets failed: notFound and expired → bipe_app_link_computer_expired; connectionInsecure and invalidCheckCode → bipe_app_link_computer_insecure; missingSecretsBackup → bipe_app_link_computer_needs_approval or bipe_error_generic (see notes); cancelled → bipe_app_link_computer_stopped; unsupportedQrCodeType, unsupportedProtocol and otherDeviceAlreadySignedIn → bipe_app_link_computer_not_bipe_code; anything else → bipe_error_generic."
     },
     "scanAgain": {
       "effect": "From failed: drops the task and sets scanning."
     },
-    "setUpRecoveryKey": {
-      "effect": "From failed with bipe_app_link_computer_needs_recovery_key: opens recovery-key-save."
+    "approvePhone": {
+      "effect": "From failed with bipe_app_link_computer_needs_approval: closes this flow and opens the encryption-status sheet (openSheet), with its approveWithDevice and useRecoveryKey rows."
     },
     "openSystemSettings": {
       "effect": "From cameraDenied: opens the app's page in the system settings."
@@ -74,7 +75,9 @@
     "bipe_app_link_computer_not_bipe_code",
     "bipe_app_link_computer_expired",
     "bipe_app_link_computer_insecure",
-    "bipe_app_link_computer_needs_recovery_key",
+    "bipe_app_link_computer_needs_approval",
+    "bipe_app_link_approve_phone",
+    "bipe_app_error_code",
     "bipe_app_link_computer_stopped",
     "bipe_app_link_computer_scan_again",
     "bipe_app_recovery_key_create",
@@ -105,7 +108,7 @@
     "needsPin is the beta account case (made before ADR 0057): POST /v1/me/device-first needs a PIN first (409 pin_not_set). bipe_link_computer_needs_pin takes pinLength from registries/accounts.json.",
     "Time: the Synapse rendezvous session lives 60 seconds from the QR code on the computer (registries/accounts.json webLinkCooldownSeconds comment). The scan, the check code, the warning, the cooldown, the biometric check and the MAS page must fit in it. An expired session ends as notFound or expired; the user reloads the site for a new code.",
     "The check code is not secret from the user: it proves that the browser and this phone share the channel. Show it large. Never read it aloud and never send it anywhere.",
-    "missingSecretsBackup: this phone has no recovery key and key backup, so the computer cannot get the history (ADR 0116 History). The user sets up the recovery key first (recovery-key-save).",
+    "missingSecretsBackup carries the SDK cause as text (SecretsBundleExportError, matrix-sdk-crypto export_secrets_bundle). A cause that names cross-signing keys: this phone lacks a private cross-signing key, so it cannot hand the account to another device: bipe_app_link_computer_needs_approval, errorCode keys-missing. A missing backup version: bipe_error_generic, errorCode backup-version. Any other cause: bipe_error_generic, errorCode no-crypto. A recovery key alone does not fix a missing cross-signing key (1 Nov 2026).",
     "bipe_recovery_qr_never_from_others shows under the camera: it is the scam guard of rule 5 at the moment of the scan.",
     "Out of scope: the linked devices list and sign-out of a device are the settings spec (bipe-chat/bipe#571). Phone-to-phone sign-in by QR keeps the ADR 0059 direction and is not this screen."
   ]

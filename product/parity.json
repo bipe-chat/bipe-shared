@@ -3614,6 +3614,26 @@
       "fork": true
     },
     {
+      "id": "accessibility-settings",
+      "name": "Accessibility screen in settings: the state of the system settings Bipe follows (bipe#917)",
+      "ios": {
+        "status": "built",
+        "evidence": [
+          "bipe-app/ios/Bipe/Settings/AccessibilitySettingsView.swift",
+          "bipe-app/ios/Bipe/Settings/SettingsGroupView.swift"
+        ]
+      },
+      "android": {
+        "status": "built",
+        "evidence": [
+          "bipe-app/android/app/src/main/kotlin/chat/bipe/app/settings/AccessibilitySettingsScreen.kt",
+          "bipe-app/android/app/src/main/kotlin/chat/bipe/app/settings/SettingsScreens.kt"
+        ]
+      },
+      "web": { "status": "n/a", "reason": "No settings on the site; the site has /acessibilidade/" },
+      "server": { "status": "n/a", "reason": "Reads the phone's settings; no server state" }
+    },
+    {
       "id": "app-colors",
       "name": "App colours: the user picks a palette for the accent, the own bubble and the app icon (bipe#811)",
       "ios": {

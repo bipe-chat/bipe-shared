@@ -1,0 +1,51 @@
+{
+  "id": "accessibility-settings",
+  "title": "Accessibility",
+  "flow": "settings",
+  "summary": "Shows the system accessibility settings that Bipe follows and the current state of each one. Bipe has no own switch for them: the screen sends the person to the system settings and to the accessibility page on bipe.chat.",
+  "types": {
+    "AccessibilityState": {
+      "setting": { "type": "enum", "values": ["screenReader", "textSize", "reduceMotion", "increaseContrast"], "description": "The system setting." },
+      "title": { "type": "string", "description": "String key of the setting name: bipe_accessibility_screen_reader, bipe_accessibility_text_size, bipe_accessibility_reduce_motion or bipe_accessibility_contrast." },
+      "value": { "type": "string", "description": "String key of the current state: bipe_accessibility_on or bipe_accessibility_off; for textSize bipe_accessibility_text_default, bipe_accessibility_text_larger or bipe_accessibility_text_smaller." }
+    }
+  },
+  "state": {
+    "items": { "type": "list", "of": { "type": "AccessibilityState", "description": "One row per setting." }, "description": "All four settings, in the order of the setting enum." }
+  },
+  "actions": {
+    "openSystemSettings": {
+      "effect": "Android only: opens the system accessibility settings (Settings.ACTION_ACCESSIBILITY_SETTINGS)."
+    },
+    "openAccessibilityPage": {
+      "effect": "Opens urls.accessibility of registries/settings.json in the in-app browser, in the app language."
+    }
+  },
+  "strings": [
+    "bipe_chats_accessibility",
+    "bipe_accessibility_intro",
+    "bipe_accessibility_screen_reader",
+    "bipe_accessibility_text_size",
+    "bipe_accessibility_reduce_motion",
+    "bipe_accessibility_contrast",
+    "bipe_accessibility_on",
+    "bipe_accessibility_off",
+    "bipe_accessibility_text_default",
+    "bipe_accessibility_text_larger",
+    "bipe_accessibility_text_smaller",
+    "bipe_accessibility_ios_path",
+    "bipe_accessibility_open_system",
+    "bipe_accessibility_page"
+  ],
+  "sdk": [],
+  "parity": ["accessibility-settings"],
+  "notes": [
+    "Opens from the row accessibility in Conversas e mídia (registries/settings.json, bipe-chat/bipe#917).",
+    "Order: the intro text, the four info rows, then the system button (Android) or the path footer (iOS), then the page row.",
+    "The rows show state only and have no action. A second switch in Bipe could disagree with the system setting.",
+    "The state updates when the person changes a system setting and comes back to the screen.",
+    "Each info row reads as one element for VoiceOver and TalkBack: the name, then the state.",
+    "iOS sources: UIAccessibility.isVoiceOverRunning; accessibilityReduceMotion; colorSchemeContrast == .increased; dynamicTypeSize (.large is the default). iOS has no public URL to the Accessibility pane of Settings, so iOS shows bipe_accessibility_ios_path as the footer and has no system button.",
+    "Android sources: AccessibilityManager.isTouchExplorationEnabled; the animator duration scale (common/Motion.kt reduceMotion); the contrast level and High contrast text (BipeTheme.kt highContrast); the font scale (1.0 is the default)."
+  ]
+}

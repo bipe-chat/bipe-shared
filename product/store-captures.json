@@ -1,5 +1,5 @@
 {
-  "$comment": "Sample data of the store captures (bipe-chat/bipe#457): one entry per slug of the `## Screenshots` table in appstore.md that has a capture source in bipe-app. People are cast ids (cast.json). Message text is people's voice, so it is the same in both locales; the app's own text comes from the strings. tools/gen.mjs writes it into bipe-app android/app/src/screenshotTest; tools/lib/store-captures.mjs checks it.",
+  "$comment": "Sample data of the store captures (bipe-chat/bipe#457): one entry per slug of the `## Screenshots` table in appstore.md, read by the bipe-app capture sources (Android screenshotTest, iOS BipeStoreCaptures UI test). People and groups are cast ids (cast.json); `image` and `sticker` name the cast photo that a message shows. Message text is people's voice, so it is the same in both locales; the app's own text comes from the strings. tools/gen.mjs writes it into bipe-app android/app/src/screenshotTest; bipe-app tools/store-captures-ios.mjs reads it for iOS; tools/lib/store-captures.mjs checks it.",
   "version": 1,
   "viewer": "gabi",
   "captures": {
@@ -23,6 +23,32 @@
     },
     "seu-arroba": {
       "owner": "viewer"
+    },
+    "selo-cnpj": {
+      "company": "clinica",
+      "legalName": "Clínica Vida Serviços Médicos Ltda",
+      "checkedMonth": "2026-10",
+      "messages": [
+        { "from": "clinica", "time": "10:20", "text": "Sua consulta é amanhã, às 14h, com a Dra. Ana. Responda 1 para confirmar ou 2 para remarcar." },
+        { "from": "viewer", "time": "10:21", "text": "1" },
+        { "from": "clinica", "time": "10:22", "text": "Consulta confirmada. Até amanhã." }
+      ]
+    },
+    "grupos": {
+      "groups": [
+        { "group": "familia", "from": "antonio", "time": "10:58", "text": "Gabi, domingo tem almoço aqui em casa", "unread": 1, "mentions": 1 },
+        { "group": "avisos", "from": "valdir", "time": "10:41", "text": "A água volta às 14h", "unread": 3, "muted": true },
+        { "group": "faculdade", "from": "bia", "time": "10:30", "text": "Sexta tem churrasco lá em casa", "unread": 12, "muted": true },
+        { "group": "igreja", "from": "debora", "time": "10:15", "text": "Culto de domingo às 18h", "unread": 5, "muted": true }
+      ]
+    },
+    "stickers": {
+      "chat": "faculdade",
+      "messages": [
+        { "from": "bia", "time": "10:20", "text": "Sexta tem churrasco lá em casa" },
+        { "from": "leo", "time": "10:21", "image": "rafa" },
+        { "from": "viewer", "time": "10:22", "sticker": "caramelo" }
+      ]
     }
   }
 }

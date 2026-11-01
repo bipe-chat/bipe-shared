@@ -19,7 +19,8 @@
       "values": ["starting", "creatingBackup", "creatingRecoveryKey", "backingUp", "roomKeyUploadError", "done"],
       "description": "From EnableRecoveryProgressListener."
     },
-    "recoveryKey": { "type": "string", "optional": true, "description": "The key, held in memory while showKey lasts. Never logged, never stored by the app." }
+    "recoveryKey": { "type": "string", "optional": true, "description": "The key, held in memory while showKey lasts. Never logged, never stored by the app." },
+    "account": { "type": "string", "description": "The account the key belongs to: display name and @handle, or the Matrix user ID while the profile has no handle. Shown in showKey as bipe_app_recovery_key_account above the key, so a screenshot of the key names its account (MZ, 1 Nov 2026)." }
   },
   "actions": {
     "create": {
@@ -45,6 +46,7 @@
     "bipe_app_recovery_key_create",
     "bipe_app_recovery_key_creating",
     "bipe_app_recovery_key_show_body",
+    "bipe_app_recovery_key_account",
     "bipe_app_recovery_key_replace",
     "bipe_app_recovery_key_replace_body",
     "bipe_app_recovery_key_saved_action",

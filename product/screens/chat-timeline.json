@@ -33,6 +33,7 @@
         "values": ["sent", "sending", "failed"],
         "description": "Only own messages use sending and failed."
       },
+      "forwardCount": { "type": "int", "description": "The count of the chat.bipe.forward mark in the content (BipeForwardMark, test-vectors/forward-marks.json, bipe-chat/bipe#933). 0 when the mark is missing or malformed." },
       "notice": { "type": "OfficialNotice", "optional": true, "description": "Set on a text message from another account whose badge (GET /v1/badges/{userId}) verifies with lvl institution (docs/badge-attestation.md). The row shows as a notice card, not a chat bubble." }
     },
     "OfficialNotice": {
@@ -84,6 +85,8 @@
   },
   "strings": [
     "bipe_app_assistant_sent_label",
+    "bipe_forward_line",
+    "bipe_forward_line_many",
     "bipe_room_upgrade_replaced",
     "bipe_room_upgrade_go",
     "bipe_room_upgrade_continues",
@@ -129,6 +132,7 @@
   "parity": ["e2ee", "dm-left-bar", "dm-block-bar", "official-badge", "cvm-line", "official-notice", "profile-change-facts", "theft-protection"],
   "notes": [
     "The chat menu is the info button in the top bar. In a DM it is a menu with the business tools, bipe_search_in_chat and dm-delete. In a group it is a menu with bipe_app_group_details_title (group-details) and bipe_search_in_chat. Default chosen (bipe-chat/bipe#861): the group info button opens a menu, not group-details at once, because a group had no chat menu for the search. mz can overrule.",
+    "Forward line (bipe-chat/bipe#933): a message of any kind with forwardCount of 1 or more shows a small line at the top of the bubble, under the sender name and above the reply quote: a forward arrow and bipe_forward_line, or bipe_forward_line_many when forwardCount is forwardedManyTimes or more (forwardLine, test-vectors/forward-marks.json line). Voice messages and audio files keep their own source line (voice-message) and show no second line. A missing mark means no line, never proof that the message was not forwarded: only Bipe apps set the mark, and a modified app can drop or fake it.",
     "Assistant sends (ADR 0210, bipe-chat/bipe#439): a message whose content has chat.bipe.assistant with a client name (assistantSender, test-vectors/assistant-send.json) shows bipe_app_assistant_sent_label with the sender's display name, in small text under the bubble, on every member's app. The sender's own app shows it too.",
     "CVM stop order (ADR 0077, bipe-chat/bipe#238): in a DM whose other person has a verified company seal with a cvm stop order (test-vectors/cvm-lines.json danger true), a red caution card with bipe_cvm_stop_order_card and the date sits at the top of the timeline. It stays while the badge says so. It comes from the signed badge only.",
     "Official accounts (ADR 0117, bipe-chat/bipe#384): isOfficial follows the chat-list rule (exact user ID in BipeRegistries.officialAccountIDs, a DM only). A group never shows the badge, even with an official account in it.",

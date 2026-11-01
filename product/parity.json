@@ -2846,17 +2846,19 @@
     },
     {
       "id": "message-forward",
-      "name": "Forward a message or media to another chat (bipe#664)",
+      "name": "Forward a message or media to another chat, with a forward line on the copy (bipe#664, bipe#933)",
       "ios": {
         "status": "built",
         "evidence": [
-          "bipe-app/ios/Bipe/Timeline/MessageForward.swift"
+          "bipe-app/ios/Bipe/Timeline/MessageForward.swift",
+          "bipe-app/ios/Bipe/Timeline/TimelineRowView.swift"
         ]
       },
       "android": {
         "status": "built",
         "evidence": [
-          "bipe-app/android/app/src/main/kotlin/chat/bipe/app/timeline/MessageForward.kt"
+          "bipe-app/android/app/src/main/kotlin/chat/bipe/app/timeline/MessageForward.kt",
+          "bipe-app/android/app/src/main/kotlin/chat/bipe/app/timeline/TimelineRowItem.kt"
         ]
       },
       "web": {

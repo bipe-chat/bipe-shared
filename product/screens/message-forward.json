@@ -38,7 +38,7 @@
         "type": "string",
         "description": "A room ID."
       },
-      "description": "At most 5. A sixth pick shows bipe_forward_limit with the limit and is not added."
+      "description": "At most forwardChats (registries/voice-media.json, 5). When a content the forward sends has a count of forwardedManyTimes or more (the original count plus 1), at most forwardChatsManyTimes (1): forwardChatLimit, test-vectors/forward-marks.json chatLimit (bipe-chat/bipe#933). A pick over the limit is not added and shows bipe_forward_limit with the limit, or bipe_forward_limit_many when the limit is forwardChatsManyTimes."
     },
     "isSending": {
       "type": "bool",
@@ -115,6 +115,7 @@
     "bipe_forward_action",
     "bipe_forward_title",
     "bipe_forward_limit",
+    "bipe_forward_limit_many",
     "bipe_forward_done",
     "bipe_forward_failed",
     "bipe_dm_no_name",
@@ -147,8 +148,8 @@
   ],
   "notes": [
     "Which messages: a sent message (it has an event ID) of kind message (MsgLikeKind.message). Stickers, polls, undecryptable and deleted messages have no forward. Default chosen (bipe-chat/bipe#664): polls are not forwarded, because a copied poll would collect votes in another chat. mz can overrule.",
-    "Default chosen (bipe-chat/bipe#664): at most 5 chats per forward, because more is a broadcast. mz can overrule.",
-    "The copy carries the chat.bipe.forward mark (bipe-chat/bipe#83). Default chosen: every forwarded message type gets the mark, because it costs nothing and a later label on text needs it; only voice messages and audio files show it (voice-message). MZ can overrule.",
+    "Default chosen (bipe-chat/bipe#664): at most 5 chats per forward (forwardChats), because more is a broadcast. Default chosen (bipe-chat/bipe#933): a message forwarded many times goes to 1 chat at a time (forwardChatsManyTimes), the brake other messengers put on chain messages. mz can overrule.",
+    "The copy carries the chat.bipe.forward mark (bipe-chat/bipe#83). Every forwarded message type gets the mark. Every row shows it: voice messages and audio files in their source line (voice-message), all other kinds in the forward line of chat-timeline (bipe-chat/bipe#933).",
     "Default chosen (bipe-chat/bipe#83): a message whose event JSON the app does not have (a local echo before the server copy arrives) has no forward, because a copy without the mark would show as recorded in the app. MZ can overrule.",
     "Selection mode (bipe-chat/bipe#860): selectable rows are sent messages that can be forwarded or own messages with canDelete. Default chosen (bipe-chat/bipe#860): at most 10 messages, the number in the issue. mz can overrule.",
     "Default chosen (bipe-chat/bipe#860): bipe_forward_action stays off while a picked message cannot be forwarded (an own sticker), because a forward that skips messages is a surprise. mz can overrule.",

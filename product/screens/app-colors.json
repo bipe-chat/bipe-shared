@@ -10,7 +10,7 @@
       "isSelected": { "type": "bool", "description": "true for the stored palette." }
     },
     "BackgroundOption": {
-      "background": { "type": "enum", "values": ["marca", "cor", "liso"], "description": "The chat background id, in appThemes.chatBackground.options order." },
+      "background": { "type": "enum", "values": ["marca", "frutas", "cor", "liso"], "description": "The chat background id, in appThemes.chatBackground.options order." },
       "title": { "type": "string", "description": "String key bipe_chats_background_<background>." },
       "isSelected": { "type": "bool", "description": "true for the stored chat background." }
     }
@@ -41,6 +41,7 @@
     "bipe_chats_background",
     "bipe_chats_background_footer",
     "bipe_chats_background_marca",
+    "bipe_chats_background_frutas",
     "bipe_chats_background_cor",
     "bipe_chats_background_liso"
   ],
@@ -57,6 +58,7 @@
     "Chat background (ADR 0213, MZ 2026-11-01): a second section, titled bipe_chats_background, below the palettes, with its footer. marca (default) draws BipeChatBackground blobs and marks on chat.background; cor is chat.background alone; liso is surface.base, the timeline as before. The chat.* tokens are themed, so every option follows the palette.",
     "The chat background fills the timeline behind the messages and stays still while they scroll. The marks are the app icon shape, upright (BipeMark). Places and sizes come from BipeChatBackground: x and y are fractions of the timeline width and height, a mark side is a fraction of the shorter side and a blob radius a fraction of the longer side.",
     "High contrast: every chat.* token is the flat palette colour, so marca looks like cor. ink.primary on chat.background is AAA in every palette (tools/lib/gen-tokens.mjs).",
-    "Storage: the id under bipe.settings.chatBackground, next to the palette (iOS app group defaults, Android settings file). A missing or unknown id is the default (marca)."
+    "Storage: the id under bipe.settings.chatBackground, next to the palette (iOS app group defaults, Android settings file). A missing or unknown id is the default (marca).",
+    "Salada de frutas (ADR 0215, MZ 2026-11-01): frutas draws BipeChatFruits, a seamless tile of outlined fruit and small fillers, repeated over the timeline with each tile clipped to its square: bodies filled with chat.fruitFill and stroked in chat.fruit, lines stroked in chat.fruit, dots filled with chat.fruit, the outline BipeChatFruits.stroke wide. Draft artwork; drawn artwork replaces the glyph data later."
   ]
 }

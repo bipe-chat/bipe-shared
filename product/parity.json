@@ -2443,6 +2443,44 @@
       "issue": 537
     },
     {
+      "id": "dm-delivered-tick",
+      "name": "Delivered tick in a DM from a device ack, chat.bipe.delivered (ADR 0222, bipe#956)",
+      "ios": {
+        "status": "planned"
+      },
+      "android": {
+        "status": "planned"
+      },
+      "web": {
+        "status": "n/a",
+        "reason": "Stock Element Web cannot do this by config; accepted gap until after launch (ADR 0141, bipe#477)"
+      },
+      "server": {
+        "status": "n/a",
+        "reason": "Client behaviour; no Bipe server code"
+      },
+      "issue": 956
+    },
+    {
+      "id": "read-receipts-switch",
+      "name": "Read receipts switch, reciprocal in DMs; groups always public (ADR 0222, bipe#956)",
+      "ios": {
+        "status": "planned"
+      },
+      "android": {
+        "status": "planned"
+      },
+      "web": {
+        "status": "n/a",
+        "reason": "Stock Element Web keeps its own read receipt setting; config only (bipe#477)"
+      },
+      "server": {
+        "status": "n/a",
+        "reason": "Client behaviour; no Bipe server code"
+      },
+      "issue": 956
+    },
+    {
       "id": "screen-reader-labels",
       "name": "Screen reader labels on every control, with an audit in CI (bipe#495)",
       "ios": {
@@ -3630,8 +3668,14 @@
           "bipe-app/android/app/src/main/kotlin/chat/bipe/app/settings/SettingsScreens.kt"
         ]
       },
-      "web": { "status": "n/a", "reason": "No settings on the site; the site has /acessibilidade/" },
-      "server": { "status": "n/a", "reason": "Reads the phone's settings; no server state" }
+      "web": {
+        "status": "n/a",
+        "reason": "No settings on the site; the site has /acessibilidade/"
+      },
+      "server": {
+        "status": "n/a",
+        "reason": "Reads the phone's settings; no server state"
+      }
     },
     {
       "id": "app-colors",

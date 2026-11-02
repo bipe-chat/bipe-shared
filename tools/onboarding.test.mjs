@@ -46,7 +46,7 @@ test("validation fails on a screen without a filled button", () => {
 
 test("the OS theft protection prompt waits a day and uses the slot (#125)", () => {
   const p = o.prompts.find((x) => x.key === "osTheftProtection");
-  assert.equal(p.trigger, "voceAfterDays");
+  assert.equal(p.trigger, "afterDaysOnPhone");
   assert.equal(p.slot, true);
   assert.equal(p.primary.to, "osTheftSettings");
   assert.deepEqual(p.text.map((b) => b.to), ["dismiss"]);

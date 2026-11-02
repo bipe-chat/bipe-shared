@@ -2,7 +2,7 @@
   "id": "voce",
   "title": "Você",
   "flow": "voce",
-  "summary": "The Você tab (ADR 0112): who you are first, then the six settings groups. Header with photo, name and @; Anotações; Convidar pessoas; then settings-root.",
+  "summary": "The Você tab (ADR 0112): who you are first, then the settings groups. Header with photo, name and @; Anotações; Convidar pessoas; then settings-root.",
   "state": {
     "displayName": {
       "type": "string",
@@ -62,7 +62,9 @@
     "bipe_self_chat_title",
     "bipe_self_chat_subtitle",
     "bipe_invites_title",
-    "bipe_app_link_phone_action"
+    "bipe_app_link_phone_action",
+    "bipe_agenda_my_bookings",
+    "bipe_settings_profile"
   ],
   "sdk": [
     "Client.displayName",
@@ -78,6 +80,9 @@
     "The header never shows the Matrix ID (ADR 0112).",
     "The trust card (Perfil de confiança, ADR 0019) sits after Anotações: spec trust-card, which opens trust-profile.",
     "Below the invite row comes settings-root (Configurações).",
-    "The header and account rows load the actual Matrix avatar through the SDK media API. Without a photo use initials. Shape follows ADR 0132: company is a rounded square; personal/unknown is a circle. A profile name or CNPJ badge must not determine account type."
+    "The header and account rows load the actual Matrix avatar through the SDK media API. Without a photo use initials. Shape follows ADR 0132: company is a rounded square; personal/unknown is a circle. A profile name or CNPJ badge must not determine account type.",
+    "Seu perfil (iPhone Settings layout): under the name and @, the header shows bipe_settings_profile in accent.ink with a chevron. A tap on the header opens Seu perfil.",
+    "Rows above Configurações (Anotações, Convidar pessoas, the link-phone row, Meus agendamentos) use the same icon tile as settings-root. Nova conta stays an accent text action without a tile, as the iPhone's add-account rows.",
+    "A personal account has a Meus agendamentos row (bipe_agenda_my_bookings) after the link-phone row, above Configurações; it opens agenda-my-bookings. A booking list is not a setting."
   ]
 }

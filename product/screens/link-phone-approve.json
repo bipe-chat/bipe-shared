@@ -2,7 +2,7 @@
   "id": "link-phone-approve",
   "title": "Move to a new phone: approve on the old phone",
   "flow": "devices",
-  "summary": "On the old phone, after the check code: warns that the new phone gets full access, shows the time of the request, waits through the cooldown, asks for the biometric check and runs the MAS approval with the app's HTTP client and shows a native consent screen, where the user checks the new phone's device text, IP and place and taps Connect (ADR 0059, ADR 0118, ADR 0223). The SDK then sends cross-signing and the backup key to the new phone.",
+  "summary": "On the old phone, after the check code: warns that the new phone gets full access, shows the time of the request, waits through the cooldown, asks for the biometric check and runs the MAS approval with the app's HTTP client and shows a native consent screen, where the user checks the new phone's device text, IP and place and taps Connect (ADR 0059, ADR 0118, ADR 0224). The SDK then sends cross-signing and the backup key to the new phone.",
   "state": {
     "phase": {
       "type": "enum",
@@ -127,7 +127,7 @@
   ],
   "notes": [
     "ADR 0059 QR approval: before the old phone approves, it shows the new phone's device text, approximate place and time and asks for a biometric check. Time: requestedAt on the warning. Device: the device card of the MAS consent page (recovery-old-phone sets the user agent with the phone model, ADR 0118 F6). Place: GET /v1/web-link/place for the IP of the consent page, as in link-computer-approve. Connect is on the native consent screen, after all three are on screen.",
-    "No web view (ADR 0223): this screen reuses the link-computer-approve HTTP client, form posts, place lookup and finish as they are; only the strings and the first phase differ.",
+    "No web view (ADR 0224): this screen reuses the link-computer-approve HTTP client, form posts, place lookup and finish as they are; only the strings and the first phase differ.",
     "History: syncingSecrets passes cross-signing and the backup key to the new phone, so it decrypts the history itself and needs no recovery key or other approval (bipe-chat/bipe#201).",
     "The hidden password stays on the old phone (ADR 0059). The new phone signs in through MAS with its own OAuth session and has no hidden password; link-computer-scan then shows needsPin on the new phone until it gets one.",
     "Unverified (24 October 2026): the full flow between two phones and between two Simulators."

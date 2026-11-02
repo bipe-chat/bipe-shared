@@ -13,6 +13,7 @@
       "filename": { "type": "string", "description": "The file name." },
       "sizeLabel": { "type": "string", "description": "Size, formatted." },
       "isTooLarge": { "type": "bool", "description": "true when the file is over the homeserver upload limit." },
+      "sendFailed": { "type": "bool", "description": "true when send could not prepare the file or hand it to the send queue. The page shows bipe_app_upload_failed." },
       "description": { "type": "string", "optional": true, "description": "image only: the sender's description of the photo for screen readers (bipe-chat/bipe#501), at most imageDescriptionMaxLength characters (registries/image-descriptions.json)." }
     }
   },
@@ -49,7 +50,7 @@
       "effect": "Drops one item; the screen closes when none is left."
     },
     "send": {
-      "effect": "Sends each item as an attachment with its thumbnail and info, the caption on the first item, an image's description in the content field of registries/image-descriptions.json (UploadParameters.extraContentJson; none when blank), as a reply when replyingTo is set, then closes. Off while an item isTooLarge or isPreparing."
+      "effect": "Sends each item as an attachment with its thumbnail and info, the caption on the first item, an image's description in the content field of registries/image-descriptions.json (UploadParameters.extraContentJson; none when blank), as a reply when replyingTo is set, then closes. An item that cannot be prepared or handed to the send queue stays with sendFailed, and the screen stays open: the items sent leave the list, and Send again sends only the rest. The caption and reply go with the first item that gets through. Off while an item isTooLarge or isPreparing."
     },
     "cancel": {
       "effect": "Closes without sending; the composer draft stays."
@@ -85,7 +86,7 @@
     "quality standard: photos at most 2048 px on the long side, JPEG; videos at most 1280 px. high: no change. The row in Conversas e mídia sets it (bipe_chats_media_quality).",
     "Every image and video gets a thumbnail and a blurhash in its info, so timeline-media can show a placeholder at once.",
     "The SDK encrypts the file before upload; the homeserver stores only the encrypted file.",
-    "The send queue keeps the upload when the app goes to the background or the network drops; a failure shows the row as failed with bipe_app_upload_failed and the message-actions retry.",
+    "The send queue keeps the upload when the app goes to the background or the network drops; a failure shows the row as failed with bipe_app_upload_failed and the message-actions retry. A failure before the send queue (the file cannot be read or resized, or the SDK refuses the attachment) never reaches the timeline, so it shows on this screen with sendFailed.",
     "Metadata: photos lose location and camera data before upload.",
     "Image descriptions (bipe-chat/bipe#501, default (a) of the issue): each image item has its own optional description field (label bipe_app_upload_description, placeholder bipe_app_upload_description_placeholder, footer bipe_app_upload_description_footer). Videos and files have none. The description travels inside the encrypted event; no model describes photos and nothing leaves the phone."
   ]

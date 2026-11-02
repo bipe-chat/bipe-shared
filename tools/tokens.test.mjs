@@ -107,7 +107,7 @@ test("every palette passes the contrast rules and keeps the trust colours", () =
     }
   }
   assert.equal(themes.jenipapo["accent.fill"].light, tokens.ramps.jenipapo.light["1100"]);
-  assert.equal(themes.pitanga["bubble.own"].dark, tokens.ramps.pitanga.dark["400"]);
+  assert.equal(themes.pitanga["bubble.own"].dark, tokens.ramps.pitanga.dark["500"]);
 });
 
 test("app icon backgrounds are the icon step of each palette (MZ, bipe-chat/bipe#811)", () => {

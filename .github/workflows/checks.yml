@@ -71,7 +71,7 @@ jobs:
             case "$1" in
               bipe) echo "docs/product.md" ;;
               bipe-api) echo "src/generated test/fixtures" ;;
-              bipe-app) echo "ios/BipeKit/Sources/BipeKit/Generated ios/BipeKit/Sources/BipeKit/Resources android/libraries/bipe/src/main" ;;
+              bipe-app) echo "ios/BipeKit/Sources/BipeKit/Generated ios/BipeKit/Sources/BipeKit/Resources android/libraries/bipe/src/main web/src/bipe/generated" ;;
             esac
           }
           repos=""
@@ -180,11 +180,25 @@ jobs:
             echo "::warning::BIPE_REGEN_TOKEN cannot push to bipe-app: its generated files are not checked. Give the token access to bipe-app."
             rm -rf bipe-app
           fi
+          # The removed-names check compares the bipe-app branch with bipe-app main.
+          if [ -d bipe-app ] && [ "$GITHUB_EVENT_NAME" = pull_request ]; then
+            git clone -q --depth 1 "https://x-access-token:${TOKEN}@github.com/bipe-chat/bipe-app.git" bipe-app-main
+          fi
       - uses: actions/setup-node@v4
         with:
           node-version: 24
       - name: Contract
         run: node bipe-shared/tools/check-contract.mjs
+      # A name removed from the generated files must not be in use on bipe-app main: else every bipe-app
+      # branch cut from main fails to compile until the app pull request merges (bipe-shared#345, bipe-app#351).
+      - name: Removed names
+        if: github.event_name == 'pull_request'
+        run: |
+          if [ ! -d bipe-app-main ]; then
+            echo "::warning::bipe-app not checked out: removed names not checked."
+            exit 0
+          fi
+          node bipe-shared/tools/check-removed.mjs --main bipe-app-main --branch bipe-app
       - name: Drift
         run: node bipe-shared/tools/check-drift.mjs --against head --repos "$GITHUB_WORKSPACE"
       # --issues: every iOS/Android gap names an open issue on bipe-chat/bipe (M2 exit test, bipe#300).

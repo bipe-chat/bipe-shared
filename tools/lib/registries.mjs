@@ -1,6 +1,6 @@
 // Loads and validates registries. Reference normalisation lives here: every
 // platform implementation must match it via test-vectors/.
-import { readFileSync } from "node:fs";
+import { existsSync, readFileSync } from "node:fs";
 import { join } from "node:path";
 import { evaluateTrustFacts, validateTrustRegistry } from "./trust.mjs";
 import { validateAgendaTemplates } from "./agenda-templates.mjs";
@@ -57,7 +57,9 @@ export function loadRegistries(root) {
     strings: read("strings/pt-BR.json"),
     stringsEn: read("strings/en.json"),
   };
-  validate(reg);
+  // The settings icons must exist in bipe-app's Phosphor set; checked when that checkout is next to this repo.
+  const phosphorPath = join(root, "../bipe-app/tools/phosphor.json");
+  validate(reg, existsSync(phosphorPath) ? JSON.parse(readFileSync(phosphorPath, "utf8")).icons : undefined);
   return reg;
 }
 
@@ -211,6 +213,8 @@ export function validateDmPowerLevels(pl) {
   for (const type of ["m.room.message", "m.reaction", "m.room.redaction", "org.matrix.msc3401.call.member"]) {
     if (pl.events?.[type] !== undefined && pl.events[type] > pl.usersDefault) fail(`dm-power-levels: ${type} must stay open`);
   }
+  // bipe-chat/bipe#879: room state is locked, so the assistant notice (ADR 0130) must be listed open.
+  if (!(pl.events?.["chat.bipe.assistant"] <= pl.usersDefault)) fail("dm-power-levels: chat.bipe.assistant must stay open");
 }
 
 /** Throws unless `hours` is a valid WorkHours value (api/openapi.yaml, registries/work-hours.json). */
@@ -297,12 +301,12 @@ export function validateMessageFormatting(formatting) {
   if (formatting.safeSchemes.some(scheme => !["https", "http", "mailto", "tel", "matrix"].includes(scheme))) fail("message-formatting: unsafe scheme");
 }
 
-function validate(reg) {
+function validate(reg, phosphor) {
   validateReportCategories(reg);
   validateMessageFormatting(reg.messageFormatting);
   validateTrustRegistry(reg.trust);
   validateAgendaTemplates(reg);
-  validateSettings(reg);
+  validateSettings(reg, phosphor);
   validateOnboarding(reg);
   validateHaptics(reg.haptics);
   const archive = reg.chatArchive;

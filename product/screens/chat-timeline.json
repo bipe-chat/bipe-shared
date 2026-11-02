@@ -119,7 +119,9 @@
     "bipe_call_voice",
     "bipe_call_video",
     "bipe_archive_action",
-    "bipe_unarchive_action"
+    "bipe_unarchive_action",
+    "bipe_settings_notifications",
+    "bipe_gallery_title"
   ],
   "sdk": [
     "Client.getRoom",
@@ -136,7 +138,7 @@
   ],
   "parity": ["e2ee", "dm-left-bar", "dm-block-bar", "official-badge", "cvm-line", "official-notice", "profile-change-facts", "theft-protection"],
   "notes": [
-    "The chat menu is the info button in the top bar. In a DM the top bar has one button on the right, a three-dots menu labelled bipe_chat_actions, and no separate call buttons (mz, 2 November 2026). The DM menu has, in this order: bipe_search_in_chat, bipe_dm_details_title (person-profile with fromDm, as the title does), bipe_call_voice and bipe_call_video (only when the call buttons of the call spec would show), the business tools, and bipe_archive_action (bipe_unarchive_action when the chat is archived; chat-archive). Archive closes the chat. The DM menu has no dm-delete: a DM is archived from here, never deleted. In a group it is a menu with bipe_app_group_details_title (group-details) and bipe_search_in_chat. Default chosen (bipe-chat/bipe#861): the group info button opens a menu, not group-details at once, because a group had no chat menu for the search. mz can overrule.",
+    "The chat menu is the info button in the top bar. In a DM the top bar has one button on the right, a three-dots menu labelled bipe_chat_actions, and no separate call buttons (mz, 2 November 2026). The DM menu has, in this order: bipe_search_in_chat, bipe_dm_details_title (person-profile with fromDm, as the title does), bipe_settings_notifications (chat-notifications, where the chat is muted), bipe_gallery_title (chat-media-gallery), bipe_call_voice and bipe_call_video (only when the call buttons of the call spec would show), the business tools, and bipe_archive_action (bipe_unarchive_action when the chat is archived; chat-archive). Archive closes the chat. The DM menu has no dm-delete: a DM is archived from here, never deleted. In a group it is a menu with bipe_app_group_details_title (group-details) and bipe_search_in_chat. Default chosen (bipe-chat/bipe#861): the group info button opens a menu, not group-details at once, because a group had no chat menu for the search. mz can overrule.",
     "Forward line (bipe-chat/bipe#933): a message of any kind with forwardCount of 1 or more shows a small line at the top of the bubble, under the sender name and above the reply quote: a forward arrow and bipe_forward_line, or bipe_forward_line_many when forwardCount is forwardedManyTimes or more (forwardLine, test-vectors/forward-marks.json line). Voice messages and audio files keep their own source line (voice-message) and show no second line. A missing mark means no line, never proof that the message was not forwarded: only Bipe apps set the mark, and a modified app can drop or fake it.",
     "Assistant sends (ADR 0210, bipe-chat/bipe#439): a message whose content has chat.bipe.assistant with a client name (assistantSender, test-vectors/assistant-send.json) shows bipe_app_assistant_sent_label with the sender's display name, in small text under the bubble, on every member's app. The sender's own app shows it too.",
     "CVM stop order (ADR 0077, bipe-chat/bipe#238): in a DM whose other person has a verified company seal with a cvm stop order (test-vectors/cvm-lines.json danger true), a red caution card with bipe_cvm_stop_order_card and the date sits at the top of the timeline. It stays while the badge says so. It comes from the signed badge only.",

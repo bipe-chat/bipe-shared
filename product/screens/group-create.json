@@ -6,7 +6,7 @@
   "types": {
     "Person": {
       "userId": { "type": "string", "description": "The Matrix user ID. Stable key." },
-      "displayName": { "type": "string", "description": "The name to show: the saved contact name, else the profile name, else the @." },
+      "displayName": { "type": "string", "description": "The name to show, by the people-names rule (README, People names). Never the Matrix ID or its localpart." },
       "avatarUrl": { "type": "url", "optional": true, "description": "mxc URL of the profile photo." },
       "handle": { "type": "string", "optional": true, "description": "The Bipe @ without the at sign, when the person has one." }
     }

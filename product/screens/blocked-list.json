@@ -23,7 +23,8 @@
   "strings": [
     "bipe_privacy_blocked",
     "bipe_privacy_blocked_none",
-    "bipe_action_unblock_person"
+    "bipe_action_unblock_person",
+    "bipe_person_no_name"
   ],
   "sdk": [
     "Client.ignoredUsers",
@@ -33,6 +34,6 @@
   "parity": ["settings-structure"],
   "notes": [
     "The row value in Privacidade (settings-group privacy) is the count of blocked people, or bipe_privacy_blocked_none.",
-    "A profile that does not load shows the @ or the Matrix ID's localpart. The row stays, so the user can still unblock."
+    "A profile that does not load shows the @, else bipe_person_no_name (README, People names). The row stays, so the user can still unblock."
   ]
 }

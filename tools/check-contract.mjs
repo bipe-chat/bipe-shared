@@ -34,6 +34,8 @@ const MODELS = {
   PublicProfile: { ios: "BipePublicProfile", android: "BipePublicProfile" },
   MyProfile: { ios: "BipeMyProfile", android: "BipeMyProfile" },
   ProfileUpdate: { ios: "BipeProfileUpdate", android: "BipeProfileUpdate" },
+  // Join pushes (bipe-chat/bipe#967).
+  NotificationPrefs: { ios: "BipeNotificationPrefs", android: "BipeNotificationPrefs" },
   // Device-first accounts (ADR 0057): iOS done in bipe-chat/bipe#153, Android in #154.
   AccountStatus: { ios: "BipeAccountStatus", android: "BipeAccountStatus" },
   Recovery: { ios: "BipeRecovery", android: "BipeRecovery" },

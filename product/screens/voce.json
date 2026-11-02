@@ -52,6 +52,9 @@
     },
     "openTrust": {
       "effect": "Opens trust-profile from the trust card (spec trust-card)."
+    },
+    "openYearRecap": {
+      "effect": "Opens year-recap (ADR 0223). The row sits after the link-phone row, with bipe_year_recap_row_subtitle and the year."
     }
   },
   "strings": [
@@ -64,7 +67,9 @@
     "bipe_invites_title",
     "bipe_app_link_phone_action",
     "bipe_agenda_my_bookings",
-    "bipe_settings_profile"
+    "bipe_settings_profile",
+    "bipe_year_recap_title",
+    "bipe_year_recap_row_subtitle"
   ],
   "sdk": [
     "Client.displayName",
@@ -82,7 +87,7 @@
     "Below the invite row comes settings-root (Configurações).",
     "The header and account rows load the actual Matrix avatar through the SDK media API. Without a photo use initials. Shape follows ADR 0132: company is a rounded square; personal/unknown is a circle. A profile name or CNPJ badge must not determine account type.",
     "Seu perfil (iPhone Settings layout): under the name and @, the header shows bipe_settings_profile in accent.ink with a chevron. A tap on the header opens Seu perfil.",
-    "Rows above Configurações (Anotações, Convidar pessoas, the link-phone row, Meus agendamentos) use the same icon tile as settings-root. Nova conta stays an accent text action without a tile, as the iPhone's add-account rows.",
-    "A personal account has a Meus agendamentos row (bipe_agenda_my_bookings) after the link-phone row, above Configurações; it opens agenda-my-bookings. A booking list is not a setting."
+    "Rows above Configurações (Anotações, Convidar pessoas, the link-phone row, the year-recap row, Meus agendamentos) use the same icon tile as settings-root. Nova conta stays an accent text action without a tile, as the iPhone's add-account rows.",
+    "A personal account has a Meus agendamentos row (bipe_agenda_my_bookings) after the year-recap row, above Configurações; it opens agenda-my-bookings. A booking list is not a setting."
   ]
 }

@@ -33,7 +33,7 @@
       "effect": "Clears Room.setIsLowPriority and removes the cached marker after the server accepts the write."
     },
     "openArchived": {
-      "effect": "Shows archived chats in the current tab, with access even when the active list is empty."
+      "effect": "Shows archived chats in the current tab, with access even when the active list is empty. The Archived entry (bipe_archived_title) is the last row of the active list, under the chats and the load-more button, in the same row layout as the requests row: an archive icon in the 48 pt avatar footprint, then the title (MZ, 2 Nov 2026). In the archived list, the first row has the same layout with a back caret and the scope title (bipe_app_chat_list_title or bipe_tab_groups) and returns to the active list."
     },
     "openChat": {
       "params": {

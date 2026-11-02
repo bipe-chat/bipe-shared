@@ -2,7 +2,7 @@
   "id": "trust-card",
   "title": "Perfil de confiança card on the Você tab",
   "flow": "voce",
-  "summary": "The private trust ladder card on the Você tab, after Anotações (ADR 0112, ADR 0019). It shows how many steps the current account has done and the next things to do. When every live step is done it collapses to one row.",
+  "summary": "The private trust ladder card on the Você tab, right after the profile row (ADR 0112, ADR 0019; bipe-chat/bipe#988). Its title is bipe_trust_title, Perfil de confiança, so it does not read as Seu perfil or Sua conta. It shows how many steps the current account has done and the next things to do. When every live step is done it collapses to one row.",
   "types": {
     "TrustStep": {
       "id": { "type": "enum", "values": ["account", "profile", "email", "pix", "govbr", "cnpj", "proof", "domain"], "description": "The step id, the same on both platforms (BipeTrustProfile.StepID)." },

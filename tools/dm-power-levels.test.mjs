@@ -14,7 +14,7 @@ test("DM power levels: nobody can invite or change the room, both can talk (ADR 
   for (const key of ["invite", "kick", "ban", "redact", "state_default"]) assert.ok(content[key] > top, key);
   assert.ok(content.notifications.room > top);
   for (const type of ["m.room.name", "m.room.avatar", "m.room.topic", "m.room.power_levels", "m.room.join_rules", "m.room.history_visibility"]) assert.ok(content.events[type] > top, type);
-  for (const type of ["m.room.message", "m.reaction", "m.room.redaction", "org.matrix.msc3401.call.member"]) assert.ok(content.events[type] <= top, type);
+  for (const type of ["m.room.message", "m.reaction", "m.room.redaction", "org.matrix.msc3401.call.member", "chat.bipe.assistant"]) assert.ok(content.events[type] <= top, type);
   assert.ok(content.events_default <= top);
 });
 
@@ -38,4 +38,6 @@ test("DM power levels: a level that unlocks the room fails validation", () => {
   assert.throws(() => validateDmPowerLevels({ ...pl, invite: pl.usersDefault }), /above usersDefault/);
   assert.throws(() => validateDmPowerLevels({ ...pl, events: { ...pl.events, "m.room.name": 0 } }), /m.room.name must be locked/);
   assert.throws(() => validateDmPowerLevels({ ...pl, events: { ...pl.events, "m.room.message": 100 } }), /must stay open/);
+  const { "chat.bipe.assistant": _, ...noMarker } = pl.events;
+  assert.throws(() => validateDmPowerLevels({ ...pl, events: noMarker }), /chat.bipe.assistant must stay open/);
 });

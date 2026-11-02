@@ -493,6 +493,32 @@
       },
       "nowMs": 1793448000000,
       "expected": "notes"
+    },
+    {
+      "name": "the bring-people sheet holds the slot: no card the same day",
+      "eligible": [
+        "handle",
+        "notes"
+      ],
+      "slot": {
+        "holder": "bringPeople",
+        "sinceMs": 1793444400000
+      },
+      "nowMs": 1793448000000,
+      "expected": null
+    },
+    {
+      "name": "the day after the bring-people sheet: the first card",
+      "eligible": [
+        "handle",
+        "notes"
+      ],
+      "slot": {
+        "holder": "bringPeople",
+        "sinceMs": 1793358000000
+      },
+      "nowMs": 1793448000000,
+      "expected": "handle"
     }
   ]
 }

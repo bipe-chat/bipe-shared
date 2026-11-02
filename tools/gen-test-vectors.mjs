@@ -614,6 +614,8 @@ const clpCases = [
   { name: "a Você prompt holds the slot", eligible: ["handle", "invite"], slot: { holder: "photo", sinceMs: CLP_NOW - 3 * CLP_HOUR } },
   { name: "safety before identity", eligible: ["handle", "pinReminder", "notificationCheckup"], slot: { holder: "photo", sinceMs: CLP_NOW - 48 * CLP_HOUR } },
   { name: "exactly the slot hours", eligible: ["notes"], slot: { holder: "invite", sinceMs: CLP_NOW - 24 * CLP_HOUR } },
+  { name: "the bring-people sheet holds the slot: no card the same day", eligible: ["handle", "notes"], slot: { holder: "bringPeople", sinceMs: CLP_NOW - 1 * CLP_HOUR } },
+  { name: "the day after the bring-people sheet: the first card", eligible: ["handle", "notes"], slot: { holder: "bringPeople", sinceMs: CLP_NOW - 25 * CLP_HOUR } },
 ];
 write("onboarding-schedule.json", {
   description: "Onboarding schedules (registries/onboarding.json pinReminder, bipe-chat/bipe#202). After a check at step with result (right, wrong, later): the next step and the days until the next reminder. bringPeopleReminder (registries/onboarding.json bringPeople, bipe-chat/bipe#752): for state and nowMs, the slot the weekly reminder names ({ slot, kind }) or null. Times are Unix ms; status is the invite status. chatListPrompt (registries/onboarding.json chatListPrompt, bipe-chat/bipe#894): for eligible keys, the prompt slot ({ holder, sinceMs } or null) and nowMs, the key of the one chat list card, or null.",

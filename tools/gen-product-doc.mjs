@@ -172,6 +172,7 @@ for (const t of product.tentpoles) {
 // Home page lists (ADR 0129): proof holds policies; features holds only features in the iPhone test app (bipe-web selfTest checks the same).
 for (const id of product.home.proof) if (status(id)?.ios !== "policy") fail(`home.proof: ${id} is not a policy`);
 for (const id of product.home.features) if (status(id)?.ios !== "testing") fail(`home.features: ${id} is not in the iPhone test app`);
+for (const id of product.home.business?.features ?? []) if (!["built", "testing"].includes(status(id)?.ios)) fail(`home.business: ${id} is not built on iPhone`);
 for (const a of dist.social.accounts) if (!/^[a-z]+$/.test(a.id) || !a.name || !/^(@|r\/)/.test(a.handle ?? "") || !a.url?.startsWith("https://")) fail(`social ${a.id}`);
 if (!dist.source?.org?.startsWith("https://github.com/bipe-chat")) fail("source.org");
 for (const r of dist.source.repos) {

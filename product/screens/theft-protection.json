@@ -6,7 +6,7 @@
   "types": {
     "GuardianRow": {
       "userId": { "type": "string", "description": "The guardian's Matrix ID." },
-      "name": { "type": "string", "description": "The display name the app knows, else the @ (POST /v1/handles/resolve), else the Matrix ID." }
+      "name": { "type": "string", "description": "The display name the app knows, else the @ (POST /v1/handles/resolve), else bipe_person_no_name. Never the Matrix ID (README, People names)." }
     },
     "GuardedRow": {
       "userId": { "type": "string", "description": "The Matrix ID of an account that chose the user." },

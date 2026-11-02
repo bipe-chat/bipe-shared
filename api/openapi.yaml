@@ -2270,10 +2270,18 @@ paths:
     put:
       summary: Replace the caller's profile photo
       description: >
+        The public photo is a copy of the Matrix avatar (ADR 0041, amended 2 Nov 2026). The web page cannot
+        read Matrix media, so the apps upload the same photo here, with its mxc URI in source.
         Body is a baseline or progressive JPEG, at most photoMaxBytes and photoMaxPixels on each side
         (registries/profiles.json). Apps re-encode before upload. The server removes every APPn and
         COM segment (EXIF, GPS, XMP) and stores only the result.
       security: [{ matrix: [] }]
+      parameters:
+        - name: source
+          in: query
+          required: false
+          schema: { type: string, maxLength: 255, pattern: "^mxc://[A-Za-z0-9.:-]+/[A-Za-z0-9_-]+$" }
+          description: "The mxc URI of the Matrix avatar this photo copies. Returned as MyProfile.photo_source. Other values: 400 photo_invalid, reason bad_source."
       requestBody:
         required: true
         content:
@@ -2290,6 +2298,7 @@ paths:
         "429": { $ref: "#/components/responses/Error" }
     delete:
       summary: Remove the caller's profile photo
+      description: The apps call it when the Matrix avatar is removed. Clears photo_source too.
       security: [{ matrix: [] }]
       responses:
         "200":
@@ -6423,6 +6432,7 @@ components:
         has_photo: { type: boolean }
         handle: { type: string, description: "Absent when the caller has no handle." }
         photo_url: { type: string, description: "Absent without a photo." }
+        photo_source: { type: string, description: "The mxc URI of the Matrix avatar that the photo copies. Absent without a photo, and for a photo uploaded before 2 Nov 2026. The apps upload the avatar again when it differs from Client.avatarUrl." }
     ProfileUpdate:
       type: object
       required: [enabled, name, bio]

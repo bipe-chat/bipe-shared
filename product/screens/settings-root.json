@@ -2,12 +2,13 @@
   "id": "settings-root",
   "title": "Settings list in the Você tab",
   "flow": "settings",
-  "summary": "The Configurações section of the Você tab: one row per settings group, in the order of registries/settings.json root. Each row shows the current state as its subtitle, so the list reads as a summary (ADR 0112).",
+  "summary": "The Configurações section of the Você tab: one row per settings group, in the order of registries/settings.json root, laid out as the iPhone Settings app: an icon tile, the title, the current state as the subtitle, and a chevron. The list reads as a summary (ADR 0112).",
   "types": {
     "SettingsGroupRow": {
       "key": { "type": "string", "description": "The group key from registries/settings.json (privacy, account, notifications, chats, help)." },
       "title": { "type": "string", "description": "String key of the group title." },
       "summary": { "type": "string", "optional": true, "description": "The subtitle, already formatted. Absent when the group has no state to sum up." },
+      "icon": { "type": "string", "description": "The Phosphor icon of the group (registries/settings.json icon)." },
       "needsAttention": { "type": "bool", "description": "true only for account when the account has one way back or none. The only warning mark in Settings." }
     }
   },
@@ -41,8 +42,7 @@
     "bipe_settings_account_paths_none",
     "bipe_account_paths_warning",
     "bipe_settings_notifications_on",
-    "bipe_settings_notifications_off",
-    "bipe_agenda_my_bookings"
+    "bipe_settings_notifications_off"
   ],
   "sdk": ["Client.encryption", "Encryption.recoveryState"],
   "parity": ["settings-structure", "agenda"],
@@ -51,9 +51,10 @@
     "Privacy summary: everyone → bipe_settings_privacy_summary_everyone, verified → bipe_settings_privacy_summary_verified, contacts → bipe_settings_privacy_summary_contacts.",
     "Account summary, the ways back: a confirmed recovery email (GET /v1/me/account), a linked Apple or Google account (ADR 0096), a recovery key (Encryption.recoveryState is enabled), and the recovery token synced to this phone's platform account. 0 → bipe_settings_account_paths_none; 1 → bipe_account_paths_warning; 2 or more → bipe_settings_account_paths with the count. needsAttention for 0 or 1. The Você tab icon never shows this mark (ADR 0112).",
     "Notifications summary: bipe_settings_notifications_on, or bipe_settings_notifications_off when the system permission is off.",
+    "Chats summary: the theme (bipe_chats_appearance_system, _light or _dark) and the title of the stored palette, joined with ' · '. Help summary: bipe_help_version with the version name.",
+    "Icon tile (iPhone Settings layout): the group icon in ink.onAccent on accent.fill, so it follows the app theme. iOS: a 29 pt rounded square (corner 7 pt) with an 18 pt glyph, leading in the row. Android: a 40 dp circle with a 22 dp glyph, the ListItem leading content. The tile is decorative: the title says what the row is. Trust colours (red, amber, green) never colour a tile.",
     "The rest of the Você tab (header with photo, name and @, account switcher, Anotações, Perfil de confiança, Convidar pessoas) is the people and profiles spec (bipe-chat/bipe#567). profile (Seu perfil) opens from the header, not from this list.",
     "Bipe logic: BipeWaysBack (count, needsWarning, summary) and BipeWhoCanMessage.settingsSummary in BipeKit BipeSettingsSupport.swift; BipeWayBack.kt and BipePrivacySettings.kt in libraries/bipe settings.",
-    "A personal account has a Meus agendamentos row (bipe_agenda_my_bookings) after the groups; it opens agenda-my-bookings.",
     "No Matrix or Element words in any row: no sala, sessão, dispositivo, criptografia, chave, homeserver (ADR 0112). Bipe has no haptics setting of its own: the system setting wins (design/haptics.md rule 6)."
   ]
 }

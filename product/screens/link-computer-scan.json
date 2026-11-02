@@ -2,7 +2,7 @@
   "id": "link-computer-scan",
   "title": "Link a computer: scan the code",
   "flow": "devices",
-  "summary": "Scans the QR code that chat.bipe.net.br shows on a computer and opens the MSC4108 secure channel to that browser (ADR 0116). The phone shows a 2-digit check code that the user types on the computer, then hands over to link-computer-warning.",
+  "summary": "Scans the QR code that the web client shows on a computer (web.bipe.chat, ADR 0214; stock Element Web at chat.bipe.net.br shows the same kind of code) and opens the MSC4108 secure channel to that browser (ADR 0116). The phone shows a 2-digit check code that the user types on the computer, then hands over to link-computer-warning.",
   "types": {
     "LinkComputerSupport": {
       "phase": {

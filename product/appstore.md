@@ -5,7 +5,7 @@ The source of truth for the App Store and Google Play text, the screenshot panel
 Rules for the text:
 
 - Frame and claims: `bipe/docs/positioning.md` (ADR 0047). Voice: `bipe/docs/design/linguagem.md` (store text is Bipe voice: "para", never "pra").
-- Order (MZ, 2 November 2026): knowing who is talking first, the @ second, the scam warning third, no ads fourth, the company account fifth. Data in Brazil is proof in the body (E MAIS), never a section heading, subtitle or panel title (bipe-chat/bipe#314, positioning.md).
+- Order (MZ, 2 November 2026): knowing who is talking first, the @ second, the scam warning third, data in Brazil fourth (with no ads in its sub), the company account fifth. Data in Brazil is the one panel title it gets, on the Brazil map; it stays out of section headings and the subtitle (bipe-chat/bipe#314, positioning.md). MZ, 2 November 2026: a "no ads" title over the map did not say what the map means.
 - Claim only features whose status in `parity.json` is `built`, `testing` or `policy` on that platform. Planned features stay out.
 - Every field passes the humanizer skill. No em or en dashes.
 
@@ -313,7 +313,7 @@ Accessibility: Bipe works with TalkBack, Voice Access, large text, dark theme, w
 | pedidos | requests | Saiba com quem está falando | Quem é novo chega como pedido. |
 | seu-arroba | handles | Seu @, não seu número | O link abre a conversa. |
 | aviso-golpe | scam-alerts | Aviso antes de agir | Se uma mensagem tem cara de golpe, um aviso diz o que fazer. |
-| sem-anuncio | - | Sem anúncio | Nenhum anúncio em nenhuma tela, e ninguém compra informação sobre você. |
+| dados-no-brasil | - | Seus dados ficam no Brasil | Sem anúncio e sem venda de dados. |
 | empresa | agenda | Sua empresa no mesmo app | Com agenda, catálogo e fila. |
 | selo-cnpj | cnpj-badge | Selo de CNPJ | O cliente vê o nome que está na Receita. |
 | conferir-pix | pix-check | Confira o Pix | Veja o nome e o valor do código antes de pagar. |
@@ -327,7 +327,7 @@ Accessibility: Bipe works with TalkBack, Voice Access, large text, dark theme, w
 | pedidos | requests | Know who you're talking to | Strangers arrive as a request. |
 | seu-arroba | handles | Your @, not your number | Your link opens the chat. |
 | aviso-golpe | scam-alerts | A warning before you act | If a message looks like a scam, a warning tells you what to do. |
-| sem-anuncio | - | No ads | No ads on any screen, and nobody buys information about you. |
+| dados-no-brasil | - | Your data stays in Brazil | No ads, and no data for sale. |
 | empresa | agenda | Your business, same app | With an agenda, a catalog and a queue. |
 | selo-cnpj | cnpj-badge | CNPJ seal | Customers see the name on the federal register. |
 | conferir-pix | pix-check | Check the Pix | See the name and the amount in the code before you pay. |

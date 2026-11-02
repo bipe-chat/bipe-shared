@@ -2,13 +2,13 @@
   "id": "public-profile-edit",
   "title": "Public profile",
   "flow": "profile",
-  "summary": "Turns the user's public profile on or off and edits its name, bio and photo. Anyone with the link bipe.chat/@handle sees it; it is not in any search (ADR 0041).",
+  "summary": "Turns the user's public profile on or off and edits its name and bio. The photo is the profile photo (profile-edit). Anyone with the link bipe.chat/@handle sees it; it is not in any search (ADR 0041).",
   "state": {
     "enabled": { "type": "bool", "description": "MyProfile.enabled. Off by default." },
     "handle": { "type": "string", "optional": true, "description": "MyProfile.handle. Without it the switch is off and locked: bipe_public_profile_needs_handle." },
     "name": { "type": "string", "description": "MyProfile.name. A profile never saved starts with the Matrix display name." },
     "bio": { "type": "string", "description": "MyProfile.bio, plain text." },
-    "photoUrl": { "type": "url", "optional": true, "description": "MyProfile.photo_url, or a local file URL of a newly picked photo. A profile never saved offers the Matrix photo." },
+    "photoUrl": { "type": "url", "optional": true, "description": "Client.avatarUrl, read only. The public page shows a copy of it (syncPhoto)." },
     "problem": {
       "type": "enum",
       "values": ["none", "nameEmpty", "nameTooLong", "nameReserved", "bioTooLong", "bioTooManyLines"],
@@ -21,7 +21,7 @@
     }
   },
   "actions": {
-    "appear": { "effect": "GET /v1/me/profile." },
+    "appear": { "effect": "GET /v1/me/profile, then syncPhoto." },
     "setEnabled": {
       "params": { "isOn": { "type": "bool", "description": "The new value." } },
       "effect": "Updates enabled. Saved with the rest."
@@ -34,10 +34,11 @@
       "params": { "bio": { "type": "string", "description": "The new text." } },
       "effect": "Updates bio and problem."
     },
-    "choosePhoto": { "effect": "Opens the system photo picker, then a square crop." },
-    "removePhoto": { "effect": "DELETE /v1/me/profile/photo." },
     "save": {
-      "effect": "PUT /v1/me/profile with enabled, name and bio (trimmed). A new photo: PUT /v1/me/profile/photo with the JPEG (see notes). Then bipe_public_profile_saved."
+      "effect": "PUT /v1/me/profile with enabled, name and bio (trimmed), then syncPhoto. Then bipe_public_profile_saved."
+    },
+    "syncPhoto": {
+      "effect": "Shared with profile-edit. Runs only when MyProfile.enabled. Client.avatarUrl absent and has_photo: DELETE /v1/me/profile/photo. Client.avatarUrl not equal to MyProfile.photo_source: Client.getMediaContent, square crop, JPEG (BipeProfilePhoto), PUT /v1/me/profile/photo?source=<mxc>. Else nothing. A failure shows nothing; the next run tries again."
     },
     "share": { "effect": "enabled and saved: opens profile-link." }
   },
@@ -49,9 +50,6 @@
     "bipe_public_profile_name",
     "bipe_public_profile_bio",
     "bipe_public_profile_bio_placeholder",
-    "bipe_public_profile_photo_change",
-    "bipe_public_profile_photo_remove",
-    "bipe_public_profile_photo_invalid",
     "bipe_public_profile_name_empty",
     "bipe_public_profile_name_too_long",
     "bipe_app_profile_name_reserved",
@@ -67,9 +65,9 @@
   "parity": ["public-profile", "reserved-names", "handles"],
   "notes": [
     "Opens from the publicProfile row of Seu perfil (settings-group profile). The row value is bipe_public_profile_on or bipe_public_profile_off.",
-    "Separate from the Matrix profile (ADR 0041): changing this name or photo does not change profile-edit, and the other way round. The first time, the app fills the fields from the Matrix profile (Client.displayName, and Client.getMediaContent for the photo).",
+    "Name and bio are separate from the Matrix profile (ADR 0041): changing them does not change profile-edit, and the other way round. The first time, the app fills the name from Client.displayName. The photo is not separate (ADR 0041, amended 2 Nov 2026): the screen shows the profile photo, and the user changes it in profile-edit.",
     "Rules: registries/profiles.json (nameMaxLength 50, bioMaxLength 160, bioMaxLines 4, photoMaxBytes, photoMaxPixels) and the reserved names, by profileProblem in tools/lib/registries.mjs. The server is the authority and returns the same ProfileProblem ids. Bipe logic: BipePublicProfileRules and BipeProfilePhoto.jpegData (BipeKit BipePublicProfile.swift); BipePublicProfile.kt (libraries/bipe).",
-    "Photo: JPEG only, at most photoMaxPixels on each side and photoMaxBytes. The app re-encodes; the server strips every metadata segment. A photo the app cannot encode: bipe_public_profile_photo_invalid.",
+    "Photo: the API keeps a copy of the Matrix avatar, because the web page cannot read Matrix media. JPEG only, at most photoMaxPixels on each side and photoMaxBytes. The app re-encodes; the server strips every metadata segment. syncPhoto runs on appear and save here and after a photo change in profile-edit, so an avatar changed in another client reaches the public page the next time the user opens either screen.",
     "Without a handle: the switch is locked, bipe_public_profile_needs_handle shows with bipe_handle_prompt_action, which opens handle-pick.",
     "Turning it off hides the profile at once: GET /v1/profiles/{handle} answers 404, the same as for an unknown handle."
   ]

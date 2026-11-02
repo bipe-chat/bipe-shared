@@ -2,7 +2,7 @@
   "id": "voce",
   "title": "Você",
   "flow": "voce",
-  "summary": "The Você tab (ADR 0112): who you are first, then the six settings groups. Header with photo, name and @; Anotações; Convidar pessoas; then settings-root.",
+  "summary": "The Você tab (ADR 0112): who you are first, then the settings groups. Header with photo, name and @; Anotações; Convidar pessoas; then settings-root.",
   "state": {
     "displayName": {
       "type": "string",
@@ -32,12 +32,6 @@
     }
   },
   "actions": {
-    "photoPrompt": {
-      "effect": "Prompt photo of registries/onboarding.json (trigger voceWithoutPhoto, bipe-chat/bipe#200): a card under the header while the account has no avatar, the prompt slot allows it and it was not dismissed. Escolher foto opens the profile editor; Agora não hides it for good."
-    },
-    "osTheftPrompt": {
-      "effect": "Prompt osTheftProtection of registries/onboarding.json (trigger voceAfterDays, bipe-chat/bipe#125, ADR 0045 tier 0): a card under the header once this phone first saw the account BipeOnboarding.osTheftProtectionAfterDays ago, the prompt slot allows it, the photo card is not on screen and it was not dismissed on this phone. The card shows the body, then the path text of spec theft-protection osPath. Conferir proteção runs theft-protection openOsSettings and hides the card for good on this phone; Agora não hides it for good on this phone."
-    },
     "openProfile": {
       "effect": "Opens the current account's profile (a later spec, Seu perfil)."
     },
@@ -58,19 +52,12 @@
     },
     "openTrust": {
       "effect": "Opens trust-profile from the trust card (spec trust-card)."
+    },
+    "openYearRecap": {
+      "effect": "Opens year-recap (ADR 0223). The row sits after the link-phone row, with bipe_year_recap_row_subtitle and the year."
     }
   },
   "strings": [
-    "bipe_photo_prompt_title",
-    "bipe_photo_prompt_body",
-    "bipe_photo_prompt_action",
-    "bipe_os_theft_prompt_title",
-    "bipe_os_theft_prompt_body",
-    "bipe_os_theft_action",
-    "bipe_os_theft_path_ios_face_id",
-    "bipe_os_theft_path_ios_touch_id",
-    "bipe_os_theft_path_android",
-    "bipe_os_theft_path_samsung",
     "bipe_fallback_skip",
     "bipe_tab_you",
     "bipe_profile_share",
@@ -78,7 +65,11 @@
     "bipe_self_chat_title",
     "bipe_self_chat_subtitle",
     "bipe_invites_title",
-    "bipe_app_link_phone_action"
+    "bipe_app_link_phone_action",
+    "bipe_agenda_my_bookings",
+    "bipe_settings_profile",
+    "bipe_year_recap_title",
+    "bipe_year_recap_row_subtitle"
   ],
   "sdk": [
     "Client.displayName",
@@ -90,10 +81,13 @@
   "notes": [
     "MZ decision 25 Oct 2026 (bipe#577): Você has no account rows. The accounts on this phone switch from the Você tab: a hold opens account-switcher, a double tap goes to the next account, and screen readers use the tab's accessibility action (app-tabs). Nova conta stays on Você, under the header.",
     "MZ decision 25 Oct 2026 (bipe#577): the header shows the current account's avatar (photo, else initials). Since the chat list has no account avatar, Você is the one screen that shows it.",
-    "Prompt slot (bipe-chat/bipe#200): prompts with slot true in registries/onboarding.json share one slot per account; after one shows, no other shows for promptSlot.hours. The same prompt keeps its slot while it shows. Bipe logic: BipePromptSlot (BipeKit; libraries/bipe).",
+    "Asks (MZ, 2 Nov 2026, bipe-chat/bipe#894): Você shows no prompt cards. The photo and osTheftProtection asks are entries of chat-list-prompt, the one ask system of the app.",
     "The header never shows the Matrix ID (ADR 0112).",
     "The trust card (Perfil de confiança, ADR 0019) sits after Anotações: spec trust-card, which opens trust-profile.",
     "Below the invite row comes settings-root (Configurações).",
-    "The header and account rows load the actual Matrix avatar through the SDK media API. Without a photo use initials. Shape follows ADR 0132: company is a rounded square; personal/unknown is a circle. A profile name or CNPJ badge must not determine account type."
+    "The header and account rows load the actual Matrix avatar through the SDK media API. Without a photo use initials. Shape follows ADR 0132: company is a rounded square; personal/unknown is a circle. A profile name or CNPJ badge must not determine account type.",
+    "Seu perfil (iPhone Settings layout): under the name and @, the header shows bipe_settings_profile in accent.ink with a chevron. A tap on the header opens Seu perfil.",
+    "Rows above Configurações (Anotações, Convidar pessoas, the link-phone row, the year-recap row, Meus agendamentos) use the same icon tile as settings-root. Nova conta stays an accent text action without a tile, as the iPhone's add-account rows.",
+    "A personal account has a Meus agendamentos row (bipe_agenda_my_bookings) after the year-recap row, above Configurações; it opens agenda-my-bookings. A booking list is not a setting."
   ]
 }

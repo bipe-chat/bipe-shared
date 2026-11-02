@@ -2,7 +2,7 @@
   "id": "profile-edit",
   "title": "Your name and photo",
   "flow": "profile",
-  "summary": "Edits the name and photo that people who chat with the user see (the Matrix profile). The public profile has its own name and photo (public-profile-edit, ADR 0041).",
+  "summary": "Edits the name and photo that people who chat with the user see (the Matrix profile). The photo is also the public profile photo; the public name is separate (public-profile-edit, ADR 0041).",
   "state": {
     "name": { "type": "string", "description": "The name field. Starts as Client.displayName." },
     "avatarUrl": { "type": "url", "optional": true, "description": "Client.avatarUrl, or a local file URL of a newly picked photo." },
@@ -26,7 +26,7 @@
     "choosePhoto": { "effect": "Opens the system photo picker, then a square crop." },
     "removePhoto": { "effect": "Marks the photo for removal." },
     "save": {
-      "effect": "Sends only what changed: Client.setDisplayName with the trimmed name; Client.uploadAvatar with a JPEG for a new photo, or Client.removeAvatar. Then phase saved."
+      "effect": "Sends only what changed: Client.setDisplayName with the trimmed name; Client.uploadAvatar with a JPEG for a new photo, or Client.removeAvatar. After a photo change, GET /v1/me/profile and syncPhoto of public-profile-edit. Then phase saved."
     },
     "cancel": { "effect": "Closes the screen. Nothing changes." }
   },
@@ -50,6 +50,7 @@
     "Client.setDisplayName",
     "Client.avatarUrl",
     "Client.cachedAvatarUrl",
+    "Client.getMediaContent",
     "Client.uploadAvatar",
     "Client.removeAvatar",
     "Client.subscribeToOwnProfile"

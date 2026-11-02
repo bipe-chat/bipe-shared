@@ -33,7 +33,7 @@
       "effect": "Clears Room.setIsLowPriority and removes the cached marker after the server accepts the write."
     },
     "openArchived": {
-      "effect": "Shows archived chats in the current tab, with access even when the active list is empty."
+      "effect": "Shows archived chats in the current tab, with access even when the active list is empty. The Archived entry (bipe_archived_title) is the last row of the active list, under the chats and the load-more button, in the same row layout as the requests row: an archive icon in the 48 pt avatar footprint, then the title (MZ, 2 Nov 2026). In the archived list, the first row has the same layout with a back caret and the scope title (bipe_app_chat_list_title or bipe_tab_groups) and returns to the active list."
     },
     "openChat": {
       "params": {
@@ -55,7 +55,6 @@
     "bipe_archived_empty",
     "bipe_archive_error",
     "bipe_app_retry",
-    "bipe_chat_list_more",
     "bipe_chat_actions"
   ],
   "sdk": [
@@ -74,7 +73,7 @@
     "The m.lowpriority tag is authoritative. Local markers remain partitioned by full account ID, atomic, excluded from cloud backup, and contain no message text. A legacy marker without a synced flag migrates once when its joined room is available. Mark that marker synced only after a successful tag write or an already-present server tag. Newer incoming messages that already restored a legacy chat do not migrate it back into the archive.",
     "The registry chat-archive.json defines the shared rule. Only a strictly newer remote incoming message restores a chat; own sends, equal timestamps, backfill and room state changes do not. Successful restoration removes its marker.",
     "Archive is applied after newest-DM selection. It never writes cleared-chats markers, clears a timeline, marks read, leaves a room, or changes badge/notification policy. Search and Start chat can still open an archived room.",
-    "Archived access resolves saved room IDs from the local SDK beyond the loaded page. The active list can request further pages even when all loaded rows are archived. Account switches cannot target another account store.",
+    "Archived access resolves saved room IDs from the local SDK beyond the loaded page. The active list requests further pages by itself while no loaded row is active. Account switches cannot target another account store.",
     "Corrupt or unreadable files are retained and reported. Mutations retry loading before writing so failed reads cannot silently replace saved markers. A failed write keeps the prior state and offers Retry. Phone acceptance stays pending until verified on both platforms.",
     "Import a tag made by another client with a baseline of the newest known activity/incoming timestamp. A remote unarchive clears a synced local marker. A strictly newer incoming message clears the server tag too. Own sends, backfill, equal timestamps and state changes do not restore it.",
     "Serialize tag writes per account, keep failed intents for Retry, and skip reconciliation of a room while its write is queued. A successful write may precede its SDK sync echo; keep the confirmed value for at most chat-archive.echoGraceMs, then honor the latest observed tag.",

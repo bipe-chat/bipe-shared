@@ -2,7 +2,7 @@
   "id": "attachment-picker",
   "title": "Attach",
   "flow": "chat",
-  "summary": "The sheet behind the composer's attach button: photos and videos, the camera, a file, a location, a sticker or a poll. Each choice hands over to the system picker or to its own screen.",
+  "summary": "The menu behind the composer's + button: photos and videos, the camera, a file, a location, a sticker or a poll. Each choice hands over to the system picker or to its own screen.",
   "state": {
     "roomId": { "type": "string", "description": "The chat." },
     "canPoll": { "type": "bool", "description": "false in a DM (RoomInfo.isDm, ADR 0192). Otherwise RoomPowerLevels.canOwnUserSendMessage for the poll start event." },
@@ -16,10 +16,10 @@
     "photos": { "effect": "Opens the system photo picker (several photos and videos). The picked items open upload-preview." },
     "camera": { "effect": "Opens the system camera for a photo or a video. The result opens upload-preview." },
     "file": { "effect": "Opens the system file picker (one file). The file opens upload-preview." },
-    "location": { "effect": "Closes the sheet and opens location-send." },
-    "sticker": { "effect": "Closes the sheet and opens sticker-picker." },
-    "poll": { "effect": "canPoll only: closes the sheet and opens poll-create (bipe-chat/bipe#569)." },
-    "cancel": { "effect": "Closes the sheet." }
+    "location": { "effect": "Closes the menu and opens location-send." },
+    "sticker": { "effect": "Closes the menu and opens sticker-picker." },
+    "poll": { "effect": "canPoll only: closes the menu and opens poll-create (bipe-chat/bipe#569)." },
+    "cancel": { "effect": "Closes the menu." }
   },
   "strings": [
     "bipe_app_composer_attach",
@@ -40,6 +40,7 @@
   "notes": [
     "The system pickers need no full library access: the iOS photo picker and the Android photo picker give only the chosen items. The permission problem shows only when the platform asks for access and the user said no.",
     "Contacts as vCard are out of scope.",
-    "Order of rows: photos and videos, camera, file, location, sticker, poll."
+    "Order of rows: photos and videos, camera, file, location, sticker, poll.",
+    "The menu is anchored to the + button (iOS Menu, Android DropdownMenu), not a bottom sheet."
   ]
 }

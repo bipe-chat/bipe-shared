@@ -46,6 +46,13 @@ const TARGETS = [
     repoBase: "android/libraries/bipe/src/main",
     generatedOnly: ["kotlin/chat/bipe/shared/generated"],
   },
+  // The web client (bipe-chat/bipe#901).
+  {
+    repo: "bipe-app",
+    tmpBase: join(tmp, "app/web/src/bipe"),
+    repoBase: "web/src/bipe",
+    generatedOnly: ["generated"],
+  },
   // Store captures (bipe-chat/bipe#457): the sample data of the Android capture source.
   {
     repo: "bipe-app",

@@ -52,6 +52,9 @@
     },
     "openTrust": {
       "effect": "Opens trust-profile from the trust card (spec trust-card)."
+    },
+    "openYearRecap": {
+      "effect": "Opens year-recap (ADR 0223). The row sits after the link-phone row, with bipe_year_recap_row_subtitle and the year."
     }
   },
   "strings": [
@@ -62,7 +65,9 @@
     "bipe_self_chat_title",
     "bipe_self_chat_subtitle",
     "bipe_invites_title",
-    "bipe_app_link_phone_action"
+    "bipe_app_link_phone_action",
+    "bipe_year_recap_title",
+    "bipe_year_recap_row_subtitle"
   ],
   "sdk": [
     "Client.displayName",

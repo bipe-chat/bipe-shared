@@ -2,7 +2,7 @@
   "id": "link-computer-approve",
   "title": "Link a computer: approve natively",
   "flow": "devices",
-  "summary": "After a biometric check, runs the MAS device-grant pages with the app's own HTTP client (no web view), signs that client in with the hidden password and shows a native consent screen with the device, the IP and the approximate place of the browser. The user taps Connect or Cancel; the app posts the MAS consent form, the SDK then sends the secrets to the browser and bipe-api ends the MAS browser session that the client made (ADR 0223, ADR 0118).",
+  "summary": "After a biometric check, runs the MAS device-grant pages with the app's own HTTP client (no web view), signs that client in with the hidden password and shows a native consent screen with the device, the IP and the approximate place of the browser. The user taps Connect or Cancel; the app posts the MAS consent form, the SDK then sends the secrets to the browser and bipe-api ends the MAS browser session that the client made (ADR 0224, ADR 0118).",
   "state": {
     "phase": {
       "type": "enum",
@@ -117,7 +117,7 @@
     "web-sign-in"
   ],
   "notes": [
-    "No web view (ADR 0223). MAS approves a device code grant only on its HTML consent page, with a MAS browser session. The app signs in with m.login.password, so it has none. The app's HTTP client makes one with the hidden password and posts the MAS forms itself. No SDK call approves the grant by API.",
+    "No web view (ADR 0224). MAS approves a device code grant only on its HTML consent page, with a MAS browser session. The app signs in with m.login.password, so it has none. The app's HTTP client makes one with the hidden password and posts the MAS forms itself. No SDK call approves the grant by API.",
     "The HTTP client: iOS URLSession with URLSessionConfiguration.ephemeral (own cookie storage, no URL cache) and a delegate that refuses a redirect off the MAS host; Android OkHttp with an in-memory CookieJar, followRedirects with a host check in an interceptor. Never ASWebAuthenticationSession, SFSafariViewController, a Custom Tab or a WebView. The client is dropped in finish.",
     "MAS form fields (MAS templates pages/login.html and pages/device_consent.html, checked at v1.28.0 and on production 2 November 2026): login form csrf, username, password; consent form csrf, confirm_device (required checkbox), button action=consent; reject form csrf, button action=reject. Forms post to their own page URL (no action attribute). The parser reads only form, input and button tags and the device card; it runs no script.",
     "The hidden password: read only after the biometric check passes. Sent once as a form field over https to the MAS host. Never logged, never shown, not kept after the post.",

@@ -1,7 +1,7 @@
 {
   "$comment": "Comparison register: /compare/ and one page per app. Source: bipe/docs/vs-whatsapp.md. Bipe status comes from the features of each threat, never from the copy. A competitor cell states what that app does, with a source in the app's list. No fact, no cell: never write 'we found nothing'. Repeat the research before a change. Each cell has a level for the summary table: on (on by default), setting (the user must turn it on), limited (a stated limit: beta, only non-contacts, both people must turn it on), none (a source shows the threat is not covered).",
   "version": 1,
-  "date": "2026-10-12",
+  "date": "2026-11-02",
   "pt": {
     "nav": "Comparar",
     "title": "Segurança nos apps de mensagens",
@@ -12,7 +12,7 @@
     "limitTitle": "O que o Bipe não resolve sozinho",
     "limit": "Os avisos do Bipe se aplicam às conversas no Bipe. Confira pedidos de dinheiro por um canal que você já conhece, mesmo quando a conta tem selo.",
     "sourcesTitle": "De onde vêm essas informações",
-    "sourcesNote": "Pesquisa feita em 12 de outubro de 2026, com base no que cada empresa publicou e no que a imprensa noticiou. Os apps mudam rápido. A gente atualiza esta página quando muda.",
+    "sourcesNote": "Pesquisa feita em 2 de novembro de 2026, com base no que cada empresa publicou e no que a imprensa noticiou. Os apps mudam rápido. A gente atualiza esta página quando muda.",
     "aheadTitle": "Outros recursos do {app}",
     "tableTitle": "Resumo",
     "threatCol": "Risco",
@@ -33,7 +33,7 @@
     "limitTitle": "What Bipe cannot fix alone",
     "limit": "Bipe warnings apply to chats in Bipe. Check requests for money through a channel you already know, even when an account has a seal.",
     "sourcesTitle": "Where this comes from",
-    "sourcesNote": "Researched on 12 October 2026, from what each company published and the press reported. The apps change fast. We update this page when they do.",
+    "sourcesNote": "Researched on 2 November 2026, from what each company published and the press reported. The apps change fast. We update this page when they do.",
     "aheadTitle": "Other {app} features",
     "tableTitle": "Summary",
     "threatCol": "Risk",
@@ -175,8 +175,8 @@
         },
         "numero": {
           "level": "limited",
-          "pt": "Os nomes de usuário estão chegando aos poucos desde junho de 2026. Para criar a conta, ainda precisa de número.",
-          "en": "Usernames have been arriving slowly since June 2026. You still need a number to create an account."
+          "pt": "Desde junho de 2026, dá para reservar um nome de usuário, mas o recurso ainda não foi lançado. Para criar a conta, precisa de número.",
+          "en": "Since June 2026, you can reserve a username, but the feature has not launched yet. You need a number to create an account."
         }
       },
       "sources": [
@@ -193,16 +193,12 @@
           "url": "https://macmagazine.com.br/post/2026/03/11/meta-anuncia-novas-protecoes-contra-golpes-no-whatsapp-facebook-e-messenger/"
         },
         {
-          "name": "Frances News: WhatsApp reforça proteção contra golpes e invasões (26 Aug 2026)",
+          "name": "Frances News: WhatsApp reforça proteção contra golpes e invasões (25 Aug 2026)",
           "url": "https://francesnews.com.br/post/2026/08/26/36543-whatsapp-reforca-protecao-contra-golpes-e-invasoes-veja-as-novidades"
         },
         {
           "name": "Malwarebytes: Protect your WhatsApp account with new passkey and 2FA upgrades (Aug 2026)",
           "url": "https://www.malwarebytes.com/blog/news/2026/08/protect-your-whatsapp-account-with-new-passkey-and-2fa-upgrades"
-        },
-        {
-          "name": "tbreak: WhatsApp's new safety overview helps catch group chat scams",
-          "url": "https://tbreak.com/whatsapps-new-safety-overview-helps-catch-group-chat-scams"
         },
         {
           "name": "Anadolu: WhatsApp bans over 6.8M scam-linked accounts",
@@ -211,6 +207,14 @@
         {
           "name": "BleepingComputer: WhatsApp rolls out usernames to help users hide their phone number",
           "url": "https://bleepingcomputer.com/news/security/whatsapp-rolls-out-usernames-to-help-users-hide-their-phone-number"
+        },
+        {
+          "name": "Engadget: WhatsApp adds a warning about group chat scams (5 Aug 2025)",
+          "url": "https://www.engadget.com/social-media/whatsapp-adds-new-warning-about-potential-group-chat-messaging-scams-160013367.html"
+        },
+        {
+          "name": "WhatsApp: Usernames FAQ",
+          "url": "https://www.whatsapp.com/usernames-faq"
         }
       ]
     },
@@ -245,8 +249,8 @@
       "cells": {
         "falso-parente": {
           "level": "on",
-          "pt": "Quem não está nos seus contatos chega como pedido. Desde maio de 2026, o pedido avisa que o nome não é verificado, porque cada um escolhe o seu.",
-          "en": "People not in your contacts arrive as a request. Since May 2026, the request says the name is not verified, because anyone can pick any name."
+          "pt": "Quem não está nos seus contatos chega como pedido. Desde maio de 2026, o Signal avisa que o nome não é verificado e pede uma segunda confirmação para aceitar.",
+          "en": "People not in your contacts arrive as a request. Since May 2026, Signal says the name is not verified and asks you to confirm again before you accept."
         },
         "contato-invadido": {
           "level": "on",
@@ -271,11 +275,11 @@
       },
       "sources": [
         {
-          "name": "Signal: Keeping spam off Signal",
+          "name": "Signal: Keeping spam off Signal (Nov 2021)",
           "url": "https://signal.org/blog/keeping-spam-off-signal/"
         },
         {
-          "name": "Signal: Message requests",
+          "name": "Signal: Message requests (Aug 2020)",
           "url": "https://signal.org/blog/message-requests/"
         },
         {
@@ -346,8 +350,8 @@
         },
         "numero": {
           "level": "on",
-          "pt": "Seu número aparece só para quem já salvou ele, e dá para conversar pelo @. Dá até para criar conta sem chip, com um número comprado no Fragment.",
-          "en": "Your number shows only to people who saved it, and you can chat by @. You can even sign up without a SIM, with a number bought on Fragment."
+          "pt": "Por padrão, seu número aparece só para quem está nos seus contatos, e dá para conversar pelo @. Dá até para criar conta sem chip, com um número comprado no Fragment.",
+          "en": "By default, your number shows only to people in your contacts, and you can chat by @. You can even sign up without a SIM, with a number bought on Fragment."
         }
       },
       "sources": [
@@ -489,7 +493,8 @@
         "line": "Já vem no celular. Confere golpe com IA, mas a conta é o seu número.",
         "on": "No RCS",
         "ahead": [
-          "Detecção de golpe com IA no celular, ligada por padrão. Cobre golpe de emprego, entrega, falso banco, prêmio e investimento.",
+          "Detecção de golpe com IA no celular, ligada por padrão, em conversas com desconhecidos que pedem dinheiro ou dados.",
+          "Proteção reforçada, que você liga: a IA do Google confere na nuvem as conversas com desconhecidos. Está chegando aos poucos desde outubro de 2026, e o Google não diz em quais países.",
           "Bloqueia links suspeitos em mensagem de golpe.",
           "Empresas com selo verificado pelo Google ou por um parceiro."
         ]
@@ -500,7 +505,8 @@
         "line": "Built into the phone. Checks for scams with AI, but your number is the account.",
         "on": "On RCS",
         "ahead": [
-          "On-device AI scam detection, on by default. It covers job, delivery, fake bank, prize and investment scams.",
+          "On-device AI scam detection, on by default, in chats with strangers that ask for money or data.",
+          "Enhanced protection, which you turn on: Google's AI checks chats with strangers in the cloud. It has been rolling out since October 2026, and Google does not say in which countries.",
           "Blocks suspicious links in scam messages.",
           "Businesses with a badge verified by Google or a partner."
         ]
@@ -513,8 +519,8 @@
         },
         "contato-invadido": {
           "level": "setting",
-          "pt": "Dá para conferir as chaves de criptografia de um contato com um QR code. A conferência pode cair quando o contato troca de celular ou de chip.",
-          "en": "You can check a contact's encryption keys with a QR code. The check can lapse when the contact gets a new phone or SIM."
+          "pt": "Dá para conferir as chaves de criptografia de um contato com um QR code, só entre dois Androids. A conferência cai quando o contato troca de celular ou de chip.",
+          "en": "You can check a contact's encryption keys with a QR code, only between two Android phones. The check lapses when the contact gets a new phone or SIM."
         },
         "codigo-sms": {
           "level": "none",
@@ -523,8 +529,8 @@
         },
         "pix": {
           "level": "limited",
-          "pt": "A detecção de golpe cobre emprego, entrega, falso banco, prêmio e investimento, para quem não está nos seus contatos. Links suspeitos são bloqueados.",
-          "en": "Scam detection covers job, delivery, fake bank, prize and investment scams, for people not in your contacts. Suspicious links are blocked."
+          "pt": "A detecção de golpe procura conversas que pedem dinheiro ou dados, só com quem não está nos seus contatos. O app bloqueia links suspeitos em mensagens de golpe.",
+          "en": "Scam detection looks for chats that ask for money or data, only with people not in your contacts. The app blocks suspicious links in scam messages."
         },
         "numero": {
           "level": "none",
@@ -544,6 +550,10 @@
         {
           "name": "Google: How Android protects you from scams (Oct 2025)",
           "url": "https://blog.google/security/how-android-protects-you-from-scams/"
+        },
+        {
+          "name": "Google: New Android scam protections (Oct 2026)",
+          "url": "https://blog.google/security/new-android-scam-protections/"
         },
         {
           "name": "Google Messages help: Spam protection",

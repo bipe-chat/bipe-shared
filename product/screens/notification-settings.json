@@ -12,7 +12,7 @@
           "mentions",
           "off"
         ],
-        "description": "all: every message. mentions: only when someone mentions you (groups only). off: no notifications."
+        "description": "all: every message. mentions: only what is for you, the quiet mode of chat-notifications (groups only). off: no notifications."
       }
     }
   },
@@ -161,7 +161,8 @@
     "bipe_notifications_whole_group",
     "bipe_notifications_invites",
     "bipe_app_notification_mode_all",
-    "bipe_app_notification_mode_mentions",
+    "bipe_app_notify_quiet",
+    "bipe_app_notify_mentions_legacy",
     "bipe_app_notification_mode_off",
     "bipe_group_screen_notification_settings_mentions_only_disclaimer",
     "bipe_notifications_sound",
@@ -214,7 +215,8 @@
     "Opens from settings-root, key notifications (registries/settings.json, screen element in the forks). settings-root shows bipe_settings_notifications_on or bipe_settings_notifications_off from phoneEnabled.",
     "phoneEnabled false: a card at the top with bipe_settings_notifications_off, bipe_notifications_permission_body and the button bipe_notifications_enable. The rows below stay editable: they are account rules and apply on every device.",
     "Mode map: all is RoomNotificationMode AllMessages, mentions is MentionsAndKeywordsOnly, off is Mute. getDefaultRoomNotificationMode takes isEncrypted and isOneToOne: the screen reads the encrypted value and writes both.",
-    "Chats offers all and off only (ADR 0141). A user who set mentions for DMs before keeps that server rule; the row then shows bipe_app_notification_mode_mentions until they change it.",
+    "Chats offers all and off only (ADR 0141). A user who set mentions for DMs before keeps that server rule; the row then shows bipe_app_notify_mentions_legacy until they change it.",
+    "One name per mode on every screen: the groups row shows mentions as bipe_app_notify_quiet, the same label as the quiet mode of chat-notifications. all and off use bipe_app_notification_mode_all and bipe_app_notification_mode_off, the same text as bipe_app_notify_all and bipe_app_notify_mute.",
     "mentionsMayMiss: under the groups row, bipe_group_screen_notification_settings_mentions_only_disclaimer, when canPushEncryptedEventToDevice is false.",
     "hasOlderChoices: the encrypted and unencrypted defaults differ, or containsKeywordsRules is true. The first change shows bipe_notifications_mismatch_title and bipe_notifications_mismatch_body with bipe_action_continue and bipe_app_cancel.",
     "Sound is a phone setting, not a push rule. bipe_notifications_tone_current is the accessibility value. Ringtones wait for calls (plan section 8: no calls at first).",

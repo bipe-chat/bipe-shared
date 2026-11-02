@@ -65,7 +65,7 @@ export type BipeScreenId = (typeof BipeScreen)[keyof typeof BipeScreen];
  * Writes the web target. `license` is the app licence text (no comment marks), `header` the "Generated" lines as
  * // comments, `check` throws when an Element name would reach bipe-app.
  */
-export function writeWeb(dir, { root, reg, screens, css, license, header, check }) {
+export function writeWeb(dir, { root, reg, screens, css, businessApi, license, header, check }) {
   const js = `${license.replace(/^(?=.)/gm, "// ")}${header}`;
   const block = `/*\n${license.replace(/^(?=.)/gm, " * ")}${header.replace(/^\/\/ /gm, " * ")} */\n`;
   const write = (file, text) => {
@@ -77,6 +77,7 @@ export function writeWeb(dir, { root, reg, screens, css, license, header, check 
   write("registries.json", `${JSON.stringify(reg, null, 1)}\n`);
   write("strings.ts", stringsModule(js, reg.strings.strings, reg.stringsEn.strings));
   write("screens.ts", screensModule(js.replace("bipe-shared/registries and bipe-shared/strings", "bipe-shared/product/screens"), screens));
+  write("business-api.ts", `${license.replace(/^(?=.)/gm, "// ")}${businessApi}`);
   write("tokens.css", `${block.replace("bipe-shared/registries and bipe-shared/strings", "bipe-shared/design/tokens.json")}\n${css}`);
   const libHeader = js.replace("bipe-shared/registries and bipe-shared/strings", "bipe-shared/tools/lib (reference rules)");
   write("lib/registries.mjs", `${libHeader}\n${browserRegistries(readFileSync(join(root, "tools/lib/registries.mjs"), "utf8"))}`);

@@ -1213,7 +1213,13 @@
           "bipe-app/android/app/src/main/kotlin/chat/bipe/app/business/AgendaSetup.kt"
         ]
       },
-      "web": "planned",
+      "web": {
+        "status": "built",
+        "evidence": [
+          "bipe-app/web/src/work/Agenda.tsx",
+          "bipe-app/web/src/work/WorkView.tsx"
+        ]
+      },
       "server": {
         "status": "built",
         "evidence": [
@@ -1237,7 +1243,13 @@
           "bipe-app/android/app/src/main/kotlin/chat/bipe/app/business/CatalogScreens.kt"
         ]
       },
-      "web": "planned",
+      "web": {
+        "status": "built",
+        "evidence": [
+          "bipe-app/web/src/work/Catalog.tsx",
+          "bipe-app/web/src/work/WorkView.tsx"
+        ]
+      },
       "server": {
         "status": "built",
         "evidence": [
@@ -1261,8 +1273,11 @@
         ]
       },
       "web": {
-        "status": "n/a",
-        "reason": "No web chat (ADR 0004); the site shows a demo at most"
+        "status": "built",
+        "evidence": [
+          "bipe-app/web/src/work/Orders.tsx",
+          "bipe-app/web/src/work/WorkView.tsx"
+        ]
       },
       "server": {
         "status": "built",
@@ -1287,8 +1302,11 @@
         ]
       },
       "web": {
-        "status": "n/a",
-        "reason": "No web chat (ADR 0004); the site shows a demo at most"
+        "status": "built",
+        "evidence": [
+          "bipe-app/web/src/work/Quotes.tsx",
+          "bipe-app/web/src/work/WorkView.tsx"
+        ]
       },
       "server": {
         "status": "built",
@@ -1313,8 +1331,11 @@
         ]
       },
       "web": {
-        "status": "n/a",
-        "reason": "No web chat (ADR 0004); the site shows a demo at most"
+        "status": "built",
+        "evidence": [
+          "bipe-app/web/src/work/Queue.tsx",
+          "bipe-app/web/src/work/WorkView.tsx"
+        ]
       },
       "server": {
         "status": "built",

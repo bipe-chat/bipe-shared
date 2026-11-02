@@ -1443,6 +1443,8 @@ paths:
         (Client.joinRoomById). A caller who is already a joined member gets the room ID and no invite.
         An unusable link is not_found. A room that refuses the invite (the person is banned, or the service
         account lost its power level) is 409 group_link_no_access. 30 per hour per account.
+        When the caller was not a member, the link's creator gets the push group_link_joined (best effort, no content,
+        bipe-chat/bipe#967) unless the creator turned group_link_joined off in /v1/me/notification-prefs.
       security: [{ matrix: [] }]
       parameters:
         - { name: code, in: path, required: true, schema: { type: string, maxLength: 2048 } }
@@ -2361,6 +2363,45 @@ paths:
         "400": { $ref: "#/components/responses/Error" }
         "401": { $ref: "#/components/responses/Error" }
         "404": { $ref: "#/components/responses/Error" }
+        "429": { $ref: "#/components/responses/Error" }
+  /v1/me/notification-prefs:
+    get:
+      summary: Which join pushes the caller gets
+      description: >
+        bipe-chat/bipe#967, spec notification-settings. invite_joined: a push when someone signs up with the caller's
+        personal invite. group_link_joined: a push when someone joins with a group link the caller made. Both are
+        content-free pushes through Sygnal (spec notification-service, kinds invite_joined and group_link_joined). An
+        account that never saved prefs gets both true. Every device of the account reads the same prefs.
+      security: [{ matrix: [] }]
+      responses:
+        "200":
+          description: Prefs
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/NotificationPrefs" }
+        "401": { $ref: "#/components/responses/Error" }
+    put:
+      summary: Save which join pushes the caller gets
+      description: >
+        A field that is missing keeps its saved value. Answers the prefs after the change. 30 changes per hour.
+      security: [{ matrix: [] }]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                invite_joined: { type: boolean }
+                group_link_joined: { type: boolean }
+      responses:
+        "200":
+          description: Saved
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/NotificationPrefs" }
+        "400": { $ref: "#/components/responses/Error" }
+        "401": { $ref: "#/components/responses/Error" }
         "429": { $ref: "#/components/responses/Error" }
   /v1/me/voice-media/{server}/{mediaId}:
     put:
@@ -5833,7 +5874,7 @@ components:
       properties:
         user_id: { type: string, description: "Random Matrix ID, e.g. @k7q2m9x4tpab:bipe.net.br" }
         handle: { type: string }
-        inviter_user_id: { type: string, description: "Present when a personal invite was used for a personal account. The app can offer a chat with the inviter. Never present for a company account (ADR 0138 rule 2)." }
+        inviter_user_id: { type: string, description: "Present when a personal invite was used for a personal account. The app can offer a chat with the inviter. Never present for a company account (ADR 0138 rule 2). The inviter gets the push invite_joined (bipe-chat/bipe#967) unless they turned it off in /v1/me/notification-prefs." }
         group_room_id: { type: string, description: "Present when a group link code was used (ADR 0184). The service account has invited the new account into this group; after sign-in the app joins it (Client.joinRoomById) and opens it." }
         password: { type: string, description: "Device-first only. The hidden MAS password, shown once. Keep it on this device only." }
         recovery_token: { type: string, description: "Device-first only. base64url, 32 random bytes, shown once. Sync it (iCloud Keychain, Block Store)." }
@@ -6507,6 +6548,12 @@ components:
       properties:
         start: { type: string, pattern: "^([01][0-9]|2[0-3]):[0-5][0-9]$" }
         end: { type: string, pattern: "^([01][0-9]|2[0-3]):[0-5][0-9]$|^24:00$", description: "Half-open: the range ends before end. 24:00 is midnight." }
+    NotificationPrefs:
+      type: object
+      required: [invite_joined, group_link_joined]
+      properties:
+        invite_joined: { type: boolean, description: "Push invite_joined when someone signs up with the caller's personal invite." }
+        group_link_joined: { type: boolean, description: "Push group_link_joined when someone joins with a group link the caller made." }
     LinkProviders:
       type: object
       required: [providers]

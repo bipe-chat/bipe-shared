@@ -3794,6 +3794,36 @@
         ]
       },
       "issue": 867
+    },
+    {
+      "id": "join-pushes",
+      "name": "Optional pushes when someone joins with your invite or your group link (bipe#967)",
+      "ios": {
+        "status": "built",
+        "evidence": [
+          "bipe-app/ios/NotificationService/NotificationService.swift",
+          "bipe-app/ios/Bipe/Notifications/NotificationSettingsModel.swift"
+        ]
+      },
+      "android": {
+        "status": "built",
+        "evidence": [
+          "bipe-app/android/libraries/bipe/src/main/kotlin/chat/bipe/shared/BipePushMessage.kt",
+          "bipe-app/android/app/src/main/kotlin/chat/bipe/app/notifications/NotificationSettingsModel.kt"
+        ]
+      },
+      "web": {
+        "status": "n/a",
+        "reason": "No web chat (ADR 0004); notifications are a phone feature"
+      },
+      "server": {
+        "status": "built",
+        "evidence": [
+          "bipe-api/src/notification-prefs.ts",
+          "bipe-api/src/device-push.ts"
+        ]
+      },
+      "issue": 967
     }
   ],
   "differences": [

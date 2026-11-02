@@ -2446,10 +2446,20 @@
       "id": "dm-delivered-tick",
       "name": "Delivered tick in a DM from a device ack, chat.bipe.delivered (ADR 0222, bipe#956)",
       "ios": {
-        "status": "planned"
+        "status": "built",
+        "evidence": [
+          "bipe-app/ios/Bipe/Timeline/DeliveredAcks.swift",
+          "bipe-app/ios/Bipe/Timeline/TimelineRows.swift",
+          "bipe-app/ios/NotificationService/NotificationService.swift"
+        ]
       },
       "android": {
-        "status": "planned"
+        "status": "built",
+        "evidence": [
+          "bipe-app/android/app/src/main/kotlin/chat/bipe/app/timeline/DeliveredAcks.kt",
+          "bipe-app/android/app/src/main/kotlin/chat/bipe/app/timeline/TimelineRows.kt",
+          "bipe-app/android/app/src/main/kotlin/chat/bipe/app/notifications/PhoneNotifications.kt"
+        ]
       },
       "web": {
         "status": "n/a",
@@ -2458,17 +2468,24 @@
       "server": {
         "status": "n/a",
         "reason": "Client behaviour; no Bipe server code"
-      },
-      "issue": 956
+      }
     },
     {
       "id": "read-receipts-switch",
       "name": "Read receipts switch, reciprocal in DMs; groups always public (ADR 0222, bipe#956)",
       "ios": {
-        "status": "planned"
+        "status": "built",
+        "evidence": [
+          "bipe-app/ios/Bipe/Settings/SettingsGroupView.swift",
+          "bipe-app/ios/Bipe/Timeline/DeliveredAcks.swift"
+        ]
       },
       "android": {
-        "status": "planned"
+        "status": "built",
+        "evidence": [
+          "bipe-app/android/app/src/main/kotlin/chat/bipe/app/settings/SettingsScreens.kt",
+          "bipe-app/android/app/src/main/kotlin/chat/bipe/app/timeline/DeliveredAcks.kt"
+        ]
       },
       "web": {
         "status": "n/a",
@@ -2477,8 +2494,7 @@
       "server": {
         "status": "n/a",
         "reason": "Client behaviour; no Bipe server code"
-      },
-      "issue": 956
+      }
     },
     {
       "id": "screen-reader-labels",

@@ -67,6 +67,22 @@
       "type": "bool",
       "description": "true while setNews runs: the switch is disabled."
     },
+    "joinPrefs": {
+      "type": "enum",
+      "values": [
+        "unknown",
+        "loaded"
+      ],
+      "description": "loaded: GET /v1/me/notification-prefs answered; the switches bipe_notifications_invite_joined and bipe_notifications_group_link_joined show with the footer bipe_notifications_joins_footer. unknown: not read yet, or the API answered an error: both switches are hidden."
+    },
+    "inviteJoined": {
+      "type": "bool",
+      "description": "invite_joined of GET /v1/me/notification-prefs: push inviteJoined when someone signs up with this account's personal invite (bipe-chat/bipe#967). Default true."
+    },
+    "groupLinkJoined": {
+      "type": "bool",
+      "description": "group_link_joined of GET /v1/me/notification-prefs: push groupLinkJoined when someone joins with a group link this account made (bipe-chat/bipe#967). Default true."
+    },
     "preview": {
       "type": "bool",
       "description": "Per account on this phone: true shows the sender and the text; false shows bipe_app_name with bipe_app_notification_new_message only. Default true."
@@ -128,6 +144,24 @@
       },
       "effect": "on: PUT /v1/me/news, then Client.joinRoomById(room_id) (the user's new or kept news room). off: Room.leave on the news room, then DELETE /v1/me/news. A failure puts the switch back and shows bipe_settings_news_failed."
     },
+    "setInviteJoined": {
+      "params": {
+        "isOn": {
+          "type": "bool",
+          "description": "The new value."
+        }
+      },
+      "effect": "PUT /v1/me/notification-prefs with invite_joined. A failure puts the switch back and shows bipe_error_generic."
+    },
+    "setGroupLinkJoined": {
+      "params": {
+        "isOn": {
+          "type": "bool",
+          "description": "The new value."
+        }
+      },
+      "effect": "PUT /v1/me/notification-prefs with group_link_joined. A failure puts the switch back and shows bipe_error_generic."
+    },
     "setSound": {
       "params": {
         "sound": {
@@ -186,7 +220,10 @@
     "bipe_work_hours_title",
     "bipe_work_hours_open_now",
     "bipe_work_hours_closed_now",
-    "bipe_app_notification_checkup_title"
+    "bipe_app_notification_checkup_title",
+    "bipe_notifications_invite_joined",
+    "bipe_notifications_group_link_joined",
+    "bipe_notifications_joins_footer"
   ],
   "sdk": [
     "Client.getNotificationSettings",
@@ -225,6 +262,7 @@
     "Per-chat modes are chat-notifications.",
     "News (ADR 0117): the news account (@bipe, registries/official-accounts.json) keeps one read-only room per user. Leaving that room, from the chat or with this switch, stops news; the switch turns it on again with a new room. The switch is the last row of the group, below the sound. Novidades items of importance normal are m.notice (no push by the default rule .m.rule.suppress_notices); important items are m.text. The news room is a named room, not a DM (bipe#809, spec chat-list notes).",
     "Per account (bipe-chat/bipe#511): the modes are push rules of the account and live on the server; sound and preview are kept per account on this phone, under the account's Matrix ID. With two accounts on the phone, the footer bipe_notifications_account_footer names the account. Mute of a whole account is chatsMode and groupsMode off.",
-    "Android only (bipe#823): a row bipe_app_notification_checkup_title under the phoneEnabled card, above the first section, opens notification-checkup. iOS has no such row."
+    "Android only (bipe#823): a row bipe_app_notification_checkup_title under the phoneEnabled card, above the first section, opens notification-checkup. iOS has no such row.",
+    "Join pushes (bipe-chat/bipe#967): the two switches are a section of their own above the news switch, with the footer bipe_notifications_joins_footer. They are account settings on the server (GET and PUT /v1/me/notification-prefs), not push rules: bipe-api reads them before it sends inviteJoined or groupLinkJoined (spec notification-service), so they apply on every device of the account. appear reads them with the push rules."
   ]
 }

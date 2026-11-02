@@ -3063,6 +3063,31 @@
       "fork": true
     },
     {
+      "id": "year-recap",
+      "name": "Seu ano no Bipe: yearly recap computed on the phone (bipe#973)",
+      "ios": {
+        "status": "built",
+        "evidence": [
+          "bipe-app/ios/Bipe/Voce/YearRecap.swift"
+        ]
+      },
+      "android": {
+        "status": "built",
+        "evidence": [
+          "bipe-app/android/app/src/main/kotlin/chat/bipe/app/voce/YearRecap.kt"
+        ]
+      },
+      "web": {
+        "status": "n/a",
+        "reason": "No web chat (ADR 0004)"
+      },
+      "server": {
+        "status": "n/a",
+        "reason": "Computed on the phone only (ADR 0223)"
+      },
+      "issue": 973
+    },
+    {
       "id": "sticker-save-received",
       "name": "Save a received sticker to my sticker pack (bipe#670)",
       "ios": {
@@ -3794,6 +3819,36 @@
         ]
       },
       "issue": 867
+    },
+    {
+      "id": "join-pushes",
+      "name": "Optional pushes when someone joins with your invite or your group link (bipe#967)",
+      "ios": {
+        "status": "built",
+        "evidence": [
+          "bipe-app/ios/NotificationService/NotificationService.swift",
+          "bipe-app/ios/Bipe/Notifications/NotificationSettingsModel.swift"
+        ]
+      },
+      "android": {
+        "status": "built",
+        "evidence": [
+          "bipe-app/android/libraries/bipe/src/main/kotlin/chat/bipe/shared/BipePushMessage.kt",
+          "bipe-app/android/app/src/main/kotlin/chat/bipe/app/notifications/NotificationSettingsModel.kt"
+        ]
+      },
+      "web": {
+        "status": "n/a",
+        "reason": "No web chat (ADR 0004); notifications are a phone feature"
+      },
+      "server": {
+        "status": "built",
+        "evidence": [
+          "bipe-api/src/notification-prefs.ts",
+          "bipe-api/src/device-push.ts"
+        ]
+      },
+      "issue": 967
     }
   ],
   "differences": [

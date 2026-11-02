@@ -1,0 +1,62 @@
+{
+  "id": "year-recap",
+  "title": "Seu ano no Bipe",
+  "flow": "voce",
+  "summary": "A yearly recap of the person's own activity, computed on the phone from its timelines (ADR 0223, bipe-chat/bipe#973). Opens from the Você row. The person can share a card with the numbers only.",
+  "types": {
+    "YearRecap": {
+      "year": { "type": "int", "description": "The calendar year the numbers cover." },
+      "messagesSent": { "type": "int", "description": "bipe_year_recap_messages: own message-like events (text, media, voice, poll, location, sticker) in the year." },
+      "activeDays": { "type": "int", "description": "bipe_year_recap_days: local calendar days with at least one own message." },
+      "people": { "type": "int", "description": "bipe_year_recap_people: DMs (RoomInfo.isDm) with at least one own message in the year." },
+      "topChatName": { "type": "string", "optional": true, "description": "bipe_year_recap_top_chat: the chat-list row name (chat-list, people names) of the chat with the most own messages. Screen only, never on the card." },
+      "topReaction": { "type": "string", "optional": true, "description": "bipe_year_recap_top_reaction: the reaction key the person sent most often in the year (Reaction.senders with the own user ID and a timestamp in the year). Ties go to the newest." },
+      "longestVoiceMs": { "type": "int", "optional": true, "description": "bipe_year_recap_longest_voice: the longest own audio message with the voice marker, in milliseconds." },
+      "isPartial": { "type": "bool", "description": "true when a chat did not reach the start of the year: a page failed, the page cap stopped it, or events stayed undecryptable. Shows bipe_year_recap_partial." }
+    }
+  },
+  "state": {
+    "phase": {
+      "type": "enum",
+      "values": ["reading", "ready", "empty"],
+      "description": "reading: bipe_year_recap_reading with roomsDone and roomsTotal. ready: the numbers. empty: messagesSent is 0, bipe_year_recap_empty."
+    },
+    "roomsDone": { "type": "int", "description": "Joined chats read so far." },
+    "roomsTotal": { "type": "int", "description": "Joined chats on this account." },
+    "recap": { "type": "YearRecap", "optional": true, "description": "Set when phase is ready." }
+  },
+  "actions": {
+    "appear": {
+      "effect": "For each joined room, one after the other: Room.timeline, then Timeline.paginateBackwards with 50 events until hitStart, the oldest event is before the start of the year, or 40 pages. Adds the room's own events to the tally, then drops the timeline. Then phase ready or empty."
+    },
+    "share": {
+      "effect": "Renders the card on the light theme (bipe_year_recap_card_title with the year, the numbers and the reaction, no names) and opens the system share sheet with the image. Nothing leaves the phone before the person picks a target."
+    },
+    "close": { "effect": "Back to Você. Stops the reading and keeps nothing." }
+  },
+  "strings": [
+    "bipe_year_recap_title",
+    "bipe_year_recap_card_title",
+    "bipe_year_recap_reading",
+    "bipe_year_recap_on_device",
+    "bipe_year_recap_messages",
+    "bipe_year_recap_days",
+    "bipe_year_recap_people",
+    "bipe_year_recap_top_chat",
+    "bipe_year_recap_top_reaction",
+    "bipe_year_recap_longest_voice",
+    "bipe_year_recap_partial",
+    "bipe_year_recap_empty",
+    "bipe_year_recap_share_note",
+    "bipe_app_share"
+  ],
+  "sdk": ["Client.rooms", "Room.membership", "Room.roomInfo", "Room.timeline", "Timeline.addListener", "Timeline.paginateBackwards", "MsgLikeContent", "Reaction", "AudioMessageContent"],
+  "parity": ["year-recap"],
+  "notes": [
+    "ADR 0223: no number leaves the phone before share. No server call, no cache on disk.",
+    "Year (default chosen, bipe-chat/bipe#973): the current calendar year in the phone's time zone; in January, the year before. MZ can overrule.",
+    "The work runs only while the screen is open (default chosen: no background job, so no opt-out setting is needed). MZ can overrule.",
+    "A tile with no value (no reaction, no voice message) does not show. A value of 0 shows.",
+    "Only own actions count. The card never shows another person's name, message or chat name."
+  ]
+}

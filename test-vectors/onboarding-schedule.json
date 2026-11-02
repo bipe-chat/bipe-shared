@@ -456,7 +456,7 @@
       "expected": "remoteBanner"
     },
     {
-      "name": "a Você prompt holds the slot",
+      "name": "the photo card holds the slot",
       "eligible": [
         "handle",
         "invite"
@@ -481,6 +481,51 @@
       },
       "nowMs": 1793448000000,
       "expected": "notificationCheckup"
+    },
+    {
+      "name": "notifications first in safety",
+      "eligible": [
+        "osTheftProtection",
+        "recovery",
+        "notifications"
+      ],
+      "slot": null,
+      "nowMs": 1793448000000,
+      "expected": "notifications"
+    },
+    {
+      "name": "osTheftProtection before every identity card",
+      "eligible": [
+        "photo",
+        "handle",
+        "osTheftProtection"
+      ],
+      "slot": null,
+      "nowMs": 1793448000000,
+      "expected": "osTheftProtection"
+    },
+    {
+      "name": "photo after handle, before profile",
+      "eligible": [
+        "profile",
+        "photo",
+        "handle"
+      ],
+      "slot": null,
+      "nowMs": 1793448000000,
+      "expected": "handle"
+    },
+    {
+      "name": "notifications waits for the slot",
+      "eligible": [
+        "notifications"
+      ],
+      "slot": {
+        "holder": "handle",
+        "sinceMs": 1793440800000
+      },
+      "nowMs": 1793448000000,
+      "expected": null
     },
     {
       "name": "exactly the slot hours",

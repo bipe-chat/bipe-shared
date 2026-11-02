@@ -71,7 +71,7 @@ jobs:
             case "$1" in
               bipe) echo "docs/product.md" ;;
               bipe-api) echo "src/generated test/fixtures" ;;
-              bipe-app) echo "ios/BipeKit/Sources/BipeKit/Generated ios/BipeKit/Sources/BipeKit/Resources android/libraries/bipe/src/main" ;;
+              bipe-app) echo "ios/BipeKit/Sources/BipeKit/Generated ios/BipeKit/Sources/BipeKit/Resources android/libraries/bipe/src/main web/src/bipe/generated" ;;
             esac
           }
           repos=""

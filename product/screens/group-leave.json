@@ -50,7 +50,7 @@
   ],
   "parity": ["group-types"],
   "notes": [
-    "Groups only. A DM never leaves: its menu has dm-delete instead (ADR 0141, bipe-chat/bipe#464).",
+    "Groups only. A DM never leaves (ADR 0141, bipe-chat/bipe#464): its chat menu has archive, and dm-delete is a chat-list row action.",
     "lastAdmin: the user can still leave. The sheet shows bipe_app_group_leave_choose_admin first and bipe_app_group_leave_confirm second. The user decides.",
     "The leave button uses the destructive style.",
     "Room.forget is not called. A left group can come back through a new invite."

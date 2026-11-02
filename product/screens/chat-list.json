@@ -96,7 +96,7 @@
       "effect": "Opens chat-timeline for that room."
     },
     "loadMore": {
-      "effect": "Asks the room list service for the next page when the list scrolls near its end."
+      "effect": "Asks the room list service for the next page when the last row is on screen, and again while a new page adds rooms. The empty state asks too. No button: paging is automatic."
     },
     "setFavourite": {
       "params": {

@@ -5,7 +5,7 @@ The source of truth for the App Store and Google Play text, the screenshot panel
 Rules for the text:
 
 - Frame and claims: `bipe/docs/positioning.md` (ADR 0047). Voice: `bipe/docs/design/linguagem.md` (store text is Bipe voice: "para", never "pra").
-- Order: scam warning and knowing who is talking first, no ads second, the @ third. Data in Brazil is proof in the body (E MAIS), never a section heading, subtitle or panel title (bipe-chat/bipe#314, positioning.md).
+- Order (MZ, 2 November 2026): knowing who is talking first, the @ second, the scam warning third, no ads fourth, the company account fifth. Data in Brazil is proof in the body (E MAIS), never a section heading, subtitle or panel title (bipe-chat/bipe#314, positioning.md).
 - Claim only features whose status in `parity.json` is `built`, `testing` or `policy` on that platform. Planned features stay out.
 - Every field passes the humanizer skill. No em or en dashes.
 
@@ -57,7 +57,7 @@ Saiba com quem está falando
 
 #### promotional_text
 
-Um aviso quando uma mensagem tem cara de golpe. Quem você não conhece chega como pedido. Quem você conhece te acha pelo @, sem ver seu número.
+Quem você não conhece chega como pedido. As pessoas te acham pelo @, sem ver seu número. Não tem anúncio, e sua empresa atende clientes no mesmo app.
 
 #### description
 
@@ -85,11 +85,14 @@ SEU @, NÃO SEU NÚMERO
 
 Escolha um nome de usuário e passe só o @. O link bipe.chat/@você e o QR code abrem a conversa direto, sem mostrar seu número. Não tem lista nem busca: só te acha quem sabe o seu @.
 
+PARA SUA EMPRESA
+
+Tenha a conta da empresa no mesmo celular e troque entre ela e a sua na aba Você. O cliente marca horário pela agenda, vê os preços no catálogo, faz pedidos e pede orçamento na conversa. Um QR code na porta coloca o cliente na fila virtual, e o Bipe avisa quando chega a vez. Com o selo de CNPJ, o cliente vê o nome que está na Receita. A agenda é gratuita.
+
 E MAIS
 
 • Conversas protegidas de ponta a ponta. Só quem está na conversa lê as mensagens. O Bipe não lê.
 • Sem código por SMS. Quem pega seu chip não pega sua conta.
-• Selo de CNPJ: empresa, escola ou associação prova o CNPJ e mostra o nome que está na Receita.
 • Grupos que só tocam quando é com você, e enquetes para decidir junto.
 • Stickers, inclusive feitos de uma foto.
 • Chamadas de voz e vídeo protegidas de ponta a ponta, por servidores no Brasil.
@@ -119,7 +122,7 @@ Know who you're talking to
 
 #### promotional_text
 
-A warning when a message looks like a scam. Strangers arrive as a request. People you know find you by your @, without seeing your number.
+People you don't know arrive as a request. People find you by your @, without seeing your number. There are no ads, and your business serves customers in the same app.
 
 #### description
 
@@ -147,11 +150,14 @@ YOUR @, NOT YOUR NUMBER
 
 Pick a username and share only your @. The link bipe.chat/@you and your QR code open a chat directly, without showing your number. There is no list and no search: only people who know your @ can find you.
 
+FOR YOUR BUSINESS
+
+Keep your business account on the same phone and switch between it and yours on the You tab. Customers book through the agenda, see prices in the catalog, place orders and ask for quotes in the chat. A QR code at the door puts customers in the virtual queue, and Bipe tells them when it's their turn. With the CNPJ seal, customers see the name on the federal register. The agenda is free.
+
 AND MORE
 
 • Chats encrypted end to end. Only the people in the chat can read the messages. Bipe can't.
 • No SMS codes. Whoever takes your SIM does not get your account.
-• Business seal: a company, school or association proves its CNPJ and shows the name on the federal register.
 • Groups that only ring when it's about you, and polls to decide together.
 • Stickers, including ones made from a photo.
 • Voice and video calls, end-to-end encrypted, through servers in Brazil.
@@ -207,11 +213,14 @@ SEU @, NÃO SEU NÚMERO
 
 Escolha um nome de usuário e passe só o @. O link bipe.chat/@você e o QR code abrem a conversa direto, sem mostrar seu número. Não tem lista nem busca: só te acha quem sabe o seu @.
 
+PARA SUA EMPRESA
+
+Tenha a conta da empresa no mesmo celular e troque entre ela e a sua na aba Você. O cliente marca horário pela agenda, vê os preços no catálogo, faz pedidos e pede orçamento na conversa. Um QR code na porta coloca o cliente na fila virtual, e o Bipe avisa quando chega a vez. Com o selo de CNPJ, o cliente vê o nome que está na Receita. A agenda é gratuita.
+
 E MAIS
 
 • Conversas protegidas de ponta a ponta. Só quem está na conversa lê as mensagens. O Bipe não lê.
 • Sem código por SMS. Quem pega seu chip não pega sua conta.
-• Selo de CNPJ: empresa, escola ou associação prova o CNPJ e mostra o nome que está na Receita.
 • Grupos que só tocam quando é com você, e enquetes para decidir junto.
 • Stickers, inclusive feitos de uma foto.
 • Servidores no Brasil, de empresas brasileiras. Vale a lei brasileira, com a LGPD.
@@ -256,11 +265,14 @@ YOUR @, NOT YOUR NUMBER
 
 Pick a username and share only your @. The link bipe.chat/@you and your QR code open a chat directly, without showing your number. There is no list and no search: only people who know your @ can find you.
 
+FOR YOUR BUSINESS
+
+Keep your business account on the same phone and switch between it and yours on the You tab. Customers book through the agenda, see prices in the catalog, place orders and ask for quotes in the chat. A QR code at the door puts customers in the virtual queue, and Bipe tells them when it's their turn. With the CNPJ seal, customers see the name on the federal register. The agenda is free.
+
 AND MORE
 
 • Chats encrypted end to end. Only the people in the chat can read the messages. Bipe can't.
 • No SMS codes. Whoever takes your SIM does not get your account.
-• Business seal: a company, school or association proves its CNPJ and shows the name on the federal register.
 • Groups that only ring when it's about you, and polls to decide together.
 • Stickers, including ones made from a photo.
 • Servers in Brazil, run by Brazilian companies. Brazilian law applies, including the LGPD.
@@ -298,25 +310,29 @@ Accessibility: Bipe works with TalkBack, Voice Access, large text, dark theme, w
 
 | slug | feature | title | sub |
 |---|---|---|---|
-| aviso-golpe | scam-alerts | Aviso de golpe | Quando uma mensagem tem cara de golpe, o Bipe avisa. |
-| pedidos | requests | Pedidos de conversa | Quem não é seu contato chega como pedido, e você decide. |
+| pedidos | requests | Saiba com quem está falando | Quem é novo chega como pedido. |
+| seu-arroba | handles | Seu @, não seu número | O link abre a conversa. |
+| aviso-golpe | scam-alerts | Aviso antes de agir | Se uma mensagem tem cara de golpe, um aviso diz o que fazer. |
+| sem-anuncio | - | Sem anúncio | Nenhum anúncio em nenhuma tela, e ninguém compra informação sobre você. |
+| empresa | agenda | Sua empresa no mesmo app | Com agenda, catálogo e fila. |
+| selo-cnpj | cnpj-badge | Selo de CNPJ | O cliente vê o nome que está na Receita. |
 | conferir-pix | pix-check | Confira o Pix | Veja o nome e o valor do código antes de pagar. |
-| seu-arroba | handles | Seu @, sem número | O link e o QR code abrem a conversa, sem mostrar seu número. |
-| selo-cnpj | cnpj-badge | Selo de CNPJ | Empresas mostram o nome que está na Receita. |
 | grupos | group-types | Grupos sem barulho | O grupo só toca quando é com você. |
-| stickers | stickers | Stickers | Faça um sticker de qualquer foto, sem anúncio em nenhuma tela. |
+| stickers | stickers | Stickers | Faça um sticker de qualquer foto. |
 
 ### en-US
 
 | slug | feature | title | sub |
 |---|---|---|---|
-| aviso-golpe | scam-alerts | Scam warnings | When a message looks like a scam, Bipe warns you. |
-| pedidos | requests | Message requests | People not in your contacts arrive as a request, and you decide. |
+| pedidos | requests | Know who you're talking to | Strangers arrive as a request. |
+| seu-arroba | handles | Your @, not your number | Your link opens the chat. |
+| aviso-golpe | scam-alerts | A warning before you act | If a message looks like a scam, a warning tells you what to do. |
+| sem-anuncio | - | No ads | No ads on any screen, and nobody buys information about you. |
+| empresa | agenda | Your business, same app | With an agenda, a catalog and a queue. |
+| selo-cnpj | cnpj-badge | CNPJ seal | Customers see the name on the federal register. |
 | conferir-pix | pix-check | Check the Pix | See the name and the amount in the code before you pay. |
-| seu-arroba | handles | Your @, no number | Your link and QR code open the chat without showing your number. |
-| selo-cnpj | cnpj-badge | CNPJ seal | Businesses show the name on the federal register. |
 | grupos | group-types | Quiet groups | A group only rings when it's about you. |
-| stickers | stickers | Stickers | Make a sticker from any photo, with no ads on any screen. |
+| stickers | stickers | Stickers | Make a sticker from any photo. |
 
 ## App Privacy
 

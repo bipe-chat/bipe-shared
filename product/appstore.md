@@ -310,11 +310,11 @@ Accessibility: Bipe works with TalkBack, Voice Access, large text, dark theme, w
 
 | slug | feature | title | sub |
 |---|---|---|---|
-| pedidos | requests | Saiba com quem está falando | Quem você não conhece chega como pedido, e você decide. |
-| seu-arroba | handles | Seu @, não seu número | O link e o QR code abrem a conversa sem mostrar seu número. |
+| pedidos | requests | Saiba com quem está falando | Quem é novo chega como pedido. |
+| seu-arroba | handles | Seu @, não seu número | O link abre a conversa. |
 | aviso-golpe | scam-alerts | Aviso antes de agir | Se uma mensagem tem cara de golpe, um aviso diz o que fazer. |
 | sem-anuncio | - | Sem anúncio | Nenhum anúncio em nenhuma tela, e ninguém compra informação sobre você. |
-| empresa | agenda | Sua empresa no mesmo app | Troque para a conta da empresa e atenda com agenda, catálogo e fila. |
+| empresa | agenda | Sua empresa no mesmo app | Com agenda, catálogo e fila. |
 | selo-cnpj | cnpj-badge | Selo de CNPJ | O cliente vê o nome que está na Receita. |
 | conferir-pix | pix-check | Confira o Pix | Veja o nome e o valor do código antes de pagar. |
 | grupos | group-types | Grupos sem barulho | O grupo só toca quando é com você. |
@@ -324,11 +324,11 @@ Accessibility: Bipe works with TalkBack, Voice Access, large text, dark theme, w
 
 | slug | feature | title | sub |
 |---|---|---|---|
-| pedidos | requests | Know who you're talking to | People not in your contacts arrive as a request, and you decide. |
-| seu-arroba | handles | Your @, not your number | Your link and QR code open the chat without showing your number. |
+| pedidos | requests | Know who you're talking to | Strangers arrive as a request. |
+| seu-arroba | handles | Your @, not your number | Your link opens the chat. |
 | aviso-golpe | scam-alerts | A warning before you act | If a message looks like a scam, a warning tells you what to do. |
 | sem-anuncio | - | No ads | No ads on any screen, and nobody buys information about you. |
-| empresa | agenda | Your business, same app | Switch to the business account for an agenda, a catalog and a queue. |
+| empresa | agenda | Your business, same app | With an agenda, a catalog and a queue. |
 | selo-cnpj | cnpj-badge | CNPJ seal | Customers see the name on the federal register. |
 | conferir-pix | pix-check | Check the Pix | See the name and the amount in the code before you pay. |
 | grupos | group-types | Quiet groups | A group only rings when it's about you. |

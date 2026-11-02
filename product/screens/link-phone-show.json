@@ -22,7 +22,7 @@
   },
   "actions": {
     "open": {
-      "effect": "From Você > Conectar outro aparelho (bipe_app_link_phone_action). Runs the support gate (never Client.isLoginWithQrCodeSupported, ADR 0118). supported: Client.newGrantLoginWithQrCodeHandler, then GrantLoginWithQrCodeHandler.generate with a GrantGeneratedQrLoginProgressListener; sets preparing. needsPin: shows bipe_app_link_phone_needs_pin. notSupported: shows bipe_app_link_phone_not_supported."
+      "effect": "From Sua conta > Aparelhos > Trocar de celular (bipe_app_link_phone_action, settings-group row account.linkPhone). Runs the support gate (never Client.isLoginWithQrCodeSupported, ADR 0118). supported: Client.newGrantLoginWithQrCodeHandler, then GrantLoginWithQrCodeHandler.generate with a GrantGeneratedQrLoginProgressListener; sets preparing. needsPin: shows bipe_app_link_phone_needs_pin. notSupported: shows bipe_app_link_phone_not_supported."
     },
     "progress": {
       "params": { "update": { "type": "string", "description": "The GrantGeneratedQrLoginProgress case that onUpdate got." } },
@@ -91,7 +91,7 @@
   "parity": ["new-phone"],
   "notes": [
     "Direction (ADR 0059): the signed-in old phone shows the code and the new phone scans it. A signed-in phone never scans a code to let another phone in, so a person told 'scan my code' has nothing to approve. link-computer-scan is the web exception of ADR 0116 and stays in Settings > Linked devices.",
-    "Single entry point: only Você > Conectar outro aparelho opens this screen. The code is never sent, shared or saved; bipe_app_link_phone_never_share shows under it. The copy button exists only in Debug builds and on the Simulator or emulator, where no camera works (bipe-chat/bipe#608). iOS gate: #if targetEnvironment(simulator) || DEBUG. Android gate: BuildConfig.DEBUG or an emulator build (Build.FINGERPRINT generic, Build.HARDWARE goldfish or ranchu).",
+    "Single entry point: only Sua conta > Aparelhos > Trocar de celular (row account.linkPhone, bipe-chat/bipe#988) opens this screen. The code is never sent, shared or saved; bipe_app_link_phone_never_share shows under it. The copy button exists only in Debug builds and on the Simulator or emulator, where no camera works (bipe-chat/bipe#608). iOS gate: #if targetEnvironment(simulator) || DEBUG. Android gate: BuildConfig.DEBUG or an emulator build (Build.FINGERPRINT generic, Build.HARDWARE goldfish or ranchu).",
     "The check code goes the other way round from link-computer-scan: the new phone shows it (QrLoginProgress.establishingSecureChannel) and the user types it here. It proves that both phones share the channel. A wrong number stops the flow; the user makes a new code.",
     "Time: the Synapse rendezvous session lives about 60 seconds (registries/accounts.json webLinkCooldownSeconds comment). The scan, the check code, the warning, the biometric check and the MAS page of link-phone-approve must fit in it. An expired session ends as notFound or expired; newCode makes a new code.",
     "Keep the screen awake while the code shows (iOS isIdleTimerDisabled, Android FLAG_KEEP_SCREEN_ON) and draw the code on a white field with a quiet zone, in light and dark mode.",

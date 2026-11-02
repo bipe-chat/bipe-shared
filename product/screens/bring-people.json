@@ -32,7 +32,7 @@
     },
     "invite": {
       "params": { "index": { "type": "int", "description": "The slot being edited." }, "name": { "type": "string", "description": "Not empty." } },
-      "effect": "POST /v1/me/invites, then PUT /v1/me/invites/{inviteId} with the name. Keeps the link and the invite id on this phone for this flow. Opens the system share sheet with bipe_invites_share_message and the link. The slot becomes sent whether or not the share sheet sent it. A retry never repeats POST."
+      "effect": "POST /v1/me/invites, then PUT /v1/me/invites/{inviteId} with the name. Keeps the link and the invite id on this phone for this flow. Opens the system share sheet with bipe_invites_share_message: the link and CreatedInvite.expires_at (day and month in words, no year). The slot becomes sent whether or not the share sheet sent it. A retry never repeats POST."
     },
     "openJoined": {
       "params": { "index": { "type": "int", "description": "A joined slot." } },

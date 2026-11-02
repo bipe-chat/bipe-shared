@@ -5848,6 +5848,7 @@ components:
       properties:
         valid: { type: boolean, description: "False when the code is unknown, used, expired or revoked. No reason is given." }
         inviter_handle: { type: string, description: "Only for a valid personal invite whose inviter has a handle. Without @." }
+        expires_at: { type: string, format: date-time, description: "Only for a valid invite: when it stops working. The invite page and the link preview show it (bipe_invite_link_expires)." }
     GroupLink:
       type: object
       required: [id, created_by, created_at, expires_at, signs_up, joined, signups, signups_left]

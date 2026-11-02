@@ -886,6 +886,8 @@ if (appIndex >= 0 || existsSync(appOut)) {
     reg,
     screens: loadScreens(root).map(({ spec }) => spec),
     css: generateColors("css"),
+    // The business tools contract, for the owner screens on the web (ADR 0226); bipe-api gets the same file.
+    businessApi: generateApiTypes(loadBusinessSchemas(root)),
     license: APP_LICENSE,
     header: HEADER,
     check: (text) => appPost(text, "swift"),

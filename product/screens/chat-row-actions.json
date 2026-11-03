@@ -19,6 +19,9 @@
     }
   },
   "actions": {
+    "sendMedia": {
+      "effect": "Opens the chat (chat-timeline) with the attachment-picker photos choice already open. Cancel leaves the chat open."
+    },
     "open": {
       "params": {
         "roomId": {
@@ -43,9 +46,6 @@
     "details": {
       "effect": "Opens the known DM partner profile or group-details without opening/marking the timeline read."
     },
-    "delete": {
-      "effect": "For a DM only, opens the existing explicit dm-delete confirmation. Check joined DM membership again before any clear write."
-    },
     "retry": {
       "effect": "Retries the failed read/unread intent in its original account; never substitutes the currently selected account."
     },
@@ -55,6 +55,7 @@
   },
   "strings": [
     "bipe_chat_actions",
+    "bipe_chat_send_media",
     "bipe_archive_action",
     "bipe_unarchive_action",
     "bipe_app_notification_mark_read",
@@ -62,7 +63,6 @@
     "bipe_chat_unread_state",
     "bipe_chat_details",
     "bipe_settings_notifications",
-    "bipe_dm_delete_action",
     "bipe_chat_read_error",
     "bipe_app_retry",
     "bipe_chat_favourite_action",
@@ -86,6 +86,7 @@
     "Mark read sends the receipt before clearing the manual flag. A partial failure remains retryable and does not claim complete success. A failed read write does not block local Archive or navigation. No new startup network gate.",
     "DM details need a known partner; disable that route while the SDK has no partner. Group details use the selected room ID and never a previously open timeline room. Native settings/detail models belong to the account session.",
     "Leave #587 open until actual iPhone and Android context/gesture/accessibility, offline retry, account switching and confirmed-deletion behavior is recorded.",
-    "Favourite (bipe#673): the menu item comes after Archive. iOS uses the SF Symbols star and star.slash. The SDK removes m.lowpriority when it sets m.favourite, so an archived chat has no Favourite item: unarchive first. Archiving a favourite removes m.favourite (chat-archive)."
+    "Menu order (mz, 3 November 2026): bipe_chat_send_media, Favourite, Mark read or unread, Notifications, Details, Archive. Send media comes first, Archive comes last. iOS uses the SF Symbols photo.on.rectangle for Send media. The menu has no dm-delete: a chat is archived, never deleted, from the chat list (mz, 3 November 2026), as in the chat-timeline DM menu and person-profile. Swipe stays archive only.",
+    "Favourite (bipe#673): the menu item comes after Send media. iOS uses the SF Symbols star and star.slash. The SDK removes m.lowpriority when it sets m.favourite, so an archived chat has no Favourite item: unarchive first. Archiving a favourite removes m.favourite (chat-archive)."
   ]
 }

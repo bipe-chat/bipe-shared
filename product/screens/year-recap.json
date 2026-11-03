@@ -2,7 +2,7 @@
   "id": "year-recap",
   "title": "Seu ano no Bipe",
   "flow": "voce",
-  "summary": "A yearly recap of the person's own activity, computed on the phone from its timelines (ADR 0223, bipe-chat/bipe#973). Opens from the Você row. The person can share a card with the numbers only.",
+  "summary": "A yearly recap of the person's own activity, computed on the phone from its timelines (ADR 0223, bipe-chat/bipe#973). Opens from the last row of Configurações > Conversas e mídia (settings-group chats). The person can share a card with the numbers only.",
   "types": {
     "YearRecap": {
       "year": { "type": "int", "description": "The calendar year the numbers cover." },
@@ -35,7 +35,7 @@
     "share": {
       "effect": "Renders the card on the light theme (bipe_year_recap_card_title with the year, the numbers, the reaction and the three charts, no names) and opens the system share sheet with the image. Nothing leaves the phone before the person picks a target."
     },
-    "close": { "effect": "Back to Você. Stops the reading and keeps nothing." }
+    "close": { "effect": "Back to Conversas e mídia. Stops the reading and keeps nothing." }
   },
   "strings": [
     "bipe_year_recap_title",

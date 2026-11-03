@@ -781,6 +781,16 @@
       "fork": true
     },
     {
+      "id": "profile-socials",
+      "name": "Social handles on the public profile",
+      "ios": "planned",
+      "android": "planned",
+      "web": "planned",
+      "server": "planned",
+      "issue": 993,
+      "note": "ADR 0228. The rule and vectors are in bipe-shared (socialHandleProblem, test-vectors/social-handles.json)"
+    },
+    {
       "id": "invites",
       "name": "Invites",
       "ios": {

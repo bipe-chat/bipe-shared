@@ -11,7 +11,7 @@ import { govbrIncoming, govbrResult } from "./lib/govbr.mjs";
 import { b64url as reportB64, deriveKeyPair as hpkeKeyPair, encryptMedia, envelopeError, open as hpkeOpen, openReport, sealReport, verifyMedia, REPORT_INFO } from "./lib/reports.mjs";
 import { canonicalJson, checkMoved, matrixKey, movedEnvelope, moveError, sentAfterMove, signAs, signedBytes } from "./lib/moves.mjs";
 import { loadSchedulingVectors, writeSchedulingApiFixture } from "./lib/scheduling-vectors.mjs";
-import { forwardChatLimit, forwardCount, forwardLine, forwardedContent, voiceSource, assistantSendAllowed, assistantSender, draftFromEvent, photoDistance, photoHash, photoMatches, profileFactLines, relationshipNameWarning, stickerEmojiKey, stickerMatches, stickerQueryTags, stickerSearchFold, newestDmRooms, clearedChatHidden, bringPeopleReminder, chatListPrompt, clearedChatKeepsEvent, clearedChatMarker, clearedChatsWithClear, compareAppVersions, extractInviteCode, handleProblem, isBipeUserID, handleSuggestions, pinReminderNext, pinProblem, remoteBannerState, normalizeCnpj, normalizePhone, displayPhone, handleSkeleton, loadRegistries, normalize, scamMatchIDs, scamWarningKind, trustFacts } from "./lib/registries.mjs";
+import { forwardChatLimit, forwardCount, forwardLine, forwardedContent, voiceSource, assistantSendAllowed, assistantSender, draftFromEvent, photoDistance, photoHash, photoMatches, profileFactLines, relationshipNameWarning, stickerEmojiKey, stickerMatches, stickerQueryTags, stickerSearchFold, newestDmRooms, clearedChatHidden, bringPeopleReminder, chatListPrompt, clearedChatKeepsEvent, clearedChatMarker, clearedChatsWithClear, compareAppVersions, extractInviteCode, handleProblem, isBipeUserID, socialHandleClean, socialHandleProblem, socialUrl, handleSuggestions, pinReminderNext, pinProblem, remoteBannerState, normalizeCnpj, normalizePhone, displayPhone, handleSkeleton, loadRegistries, normalize, scamMatchIDs, scamWarningKind, trustFacts } from "./lib/registries.mjs";
 
 const root = join(dirname(fileURLToPath(import.meta.url)), "..");
 const reg = loadRegistries(root);
@@ -573,6 +573,49 @@ const suggestionNames = [
   "  ana   souza  ", "李小龙", "Ana 2", "Pedro Henrique Alcântara de Oliveira Bragança", "O'Neil", "ana.souza", "",
   "Bipe", "123", "Dr. João Pedro",
 ];
+// ADR 0228: social handles on a public profile. ownHandle: the account's own Bipe @, or null.
+const socialCases = [
+  ...reg.profiles.socials.flatMap(({ id }) => [
+    { platform: id, input: "" },
+    { platform: id, input: "   " },
+    { platform: id, input: "anasouza" },
+    { platform: id, input: "@anasouza" },
+    { platform: id, input: " @AnaSouza " },
+    { platform: id, input: "ana.souza" },
+    { platform: id, input: "ana_souza" },
+    { platform: id, input: "ana-souza" },
+    { platform: id, input: "a" },
+    { platform: id, input: "ab" },
+    { platform: id, input: "a".repeat(15) },
+    { platform: id, input: "a".repeat(16) },
+    { platform: id, input: "a".repeat(30) },
+    { platform: id, input: "a".repeat(31) },
+    { platform: id, input: "a".repeat(39) },
+    { platform: id, input: "a".repeat(40) },
+    { platform: id, input: "a".repeat(101) },
+    { platform: id, input: "-ana" },
+    { platform: id, input: "ana-" },
+    { platform: id, input: "@@ana" },
+    { platform: id, input: "ana souza" },
+    { platform: id, input: "anã" },
+    { platform: id, input: "https://evil.site" },
+    { platform: id, input: "evil.site/x" },
+    { platform: id, input: "ana?x=1" },
+    { platform: id, input: "itau" },
+    { platform: id, input: "itau", ownHandle: "itau" },
+    { platform: id, input: "itau", ownHandle: "ana" },
+    { platform: id, input: "i.t.a.u" },
+  ]),
+];
+write("social-handles.json", {
+  description: "socialHandleProblem(platform, input, ownHandle) and socialUrl(platform, input) (ADR 0228, registries/profiles.json socials). handle: the input after socialHandleClean(). problem null and handle empty: no handle. url only when problem is null and handle is not empty.",
+  cases: socialCases.map(({ platform, input, ownHandle = null }) => {
+    const handle = socialHandleClean(input);
+    const problem = socialHandleProblem(platform, input, ownHandle, reg);
+    return { platform, input, ownHandle, handle, problem, ...(problem === null && handle ? { url: socialUrl(platform, input, reg) } : {}) };
+  }),
+});
+
 write("handle-suggestions.json", {
   description: "handleSuggestions(displayName): handles of the right shape for Escolha seu @, in order (registries/handles.json suggestions). The app checks availability in this order and shows the first suggestions.shown that are free.",
   cases: suggestionNames.map((name) => ({ name, suggestions: handleSuggestions(name, reg) })),

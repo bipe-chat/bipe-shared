@@ -2940,6 +2940,23 @@ paths:
               schema: { $ref: "#/components/schemas/RetentionReport" }
         "401": { $ref: "#/components/responses/Error" }
         "404": { $ref: "#/components/responses/Error" }
+  /v1/admin/accounts:
+    get:
+      summary: Staff count of accounts by user number
+      description: >
+        Only for users that MAS marks admin (ADR 0056); every other user gets 404 not_found. CORS allows PUBLIC_SITE_URL.
+        Every sign-up gets a user number in the same transaction as its signups row: 1, 2, 3 in sign-up order, from
+        one counter row, so a failed or concurrent sign-up leaves no gap and a deleted account keeps its number unused.
+        Accounts made before the number got numbers in sign-up order. Counts go through the minimum cell (bipe#371).
+      security: [{ matrix: [] }]
+      responses:
+        "200":
+          description: Report
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/AccountCount" }
+        "401": { $ref: "#/components/responses/Error" }
+        "404": { $ref: "#/components/responses/Error" }
   /v1/admin/transfer-readiness:
     get:
       summary: Staff report of accounts ready for the App Store transfer (bipe#531)
@@ -6147,6 +6164,15 @@ components:
               rows: { type: integer }
               oldest: { type: [string, "null"], format: date-time }
               over: { type: integer, description: "Rows past the limit." }
+    AccountCount:
+      type: object
+      description: User numbers (bipe-api signups.user_number). Every count goes through the minimum cell; null is a count of 1 or 2.
+      required: [min_cell, last_number, accounts, deleted]
+      properties:
+        min_cell: { type: integer, description: "Counts below this are null." }
+        last_number: { type: [integer, "null"], description: "The highest user number given: accounts ever numbered." }
+        accounts: { type: [integer, "null"], description: "Numbered accounts that exist now." }
+        deleted: { type: [integer, "null"], description: "last_number minus accounts: numbered accounts deleted since." }
     TransferReadiness:
       type: object
       description: bipe/docs/team-transfer-recovery.md section 6. Every count goes through the minimum cell; null is a count of 1 or 2. Shares come from the raw counts.

@@ -85,6 +85,7 @@ const NOT_IN_APPS = {
   InviterStats: "staff page on the site only (ADR 0056)",
   GrowthReport: "staff page on the site only (ADR 0098)",
   StaffSummary: "staff page on the site only (bipe#394)",
+  AccountCount: "staff route only",
   StaffMetrics: "staff page on the site only",
   StaffWindow: "staff page on the site only",
   ExperimentsReport: "staff page on the site only (bipe#368)",

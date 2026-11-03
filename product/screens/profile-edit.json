@@ -1,37 +1,184 @@
 {
   "id": "profile-edit",
-  "title": "Your name and photo",
+  "title": "Seu perfil",
   "flow": "profile",
-  "summary": "Edits the name and photo that people who chat with the user see (the Matrix profile). The photo is also the public profile photo; the public name is separate (public-profile-edit, ADR 0041).",
+  "summary": "Seu perfil, one screen (MZ, 3 Nov 2026): the name and photo people who chat with the user see (the Matrix profile), the @, the public profile (ADR 0041) with its name, bio and social handles (ADR 0228), and two facts about the account: Membro desde and the internal ID. One Salvar saves every part. It replaces the three screens Nome e foto, Nome de usuário and Perfil público.",
+  "types": {
+    "SocialField": {
+      "platform": {
+        "type": "string",
+        "description": "A registries/profiles.json socials id."
+      },
+      "handle": {
+        "type": "string",
+        "description": "The text in the field, without the fixed @."
+      },
+      "problem": {
+        "type": "enum",
+        "values": [
+          "none",
+          "invalid",
+          "reserved"
+        ],
+        "description": "socialHandleProblem with the user's own @: social_invalid, social_reserved or null."
+      }
+    }
+  },
   "state": {
-    "name": { "type": "string", "description": "The name field. Starts as Client.displayName." },
-    "avatarUrl": { "type": "url", "optional": true, "description": "Client.avatarUrl, or a local file URL of a newly picked photo." },
+    "name": {
+      "type": "string",
+      "description": "The name field. Starts as Client.displayName."
+    },
+    "avatarUrl": {
+      "type": "url",
+      "optional": true,
+      "description": "Client.avatarUrl, or a local file URL of a newly picked photo."
+    },
     "nameProblem": {
       "type": "enum",
-      "values": ["none", "empty", "tooLong", "reserved", "lookalikeEmoji"],
+      "values": [
+        "none",
+        "empty",
+        "tooLong",
+        "reserved",
+        "lookalikeEmoji"
+      ],
       "description": "empty: bipe_public_profile_name_empty. tooLong: bipe_public_profile_name_too_long with nameMaxLength. reserved: bipe_app_profile_name_reserved. lookalikeEmoji: bipe_warning_name_lookalike_emoji (security rule 8). Save is off unless none."
+    },
+    "handle": {
+      "type": "string",
+      "optional": true,
+      "description": "MyProfile.handle. Without it the switch is off and locked: bipe_public_profile_needs_handle."
+    },
+    "publicEnabled": {
+      "type": "bool",
+      "description": "MyProfile.enabled. Off by default."
+    },
+    "publicName": {
+      "type": "string",
+      "description": "MyProfile.name. A profile never saved starts with the Matrix display name."
+    },
+    "bio": {
+      "type": "string",
+      "description": "MyProfile.bio, plain text."
+    },
+    "socials": {
+      "type": "list",
+      "of": {
+        "type": "SocialField",
+        "description": "One registries/profiles.json socials entry: its name, the handle the user typed (MyProfile.socials[id], empty when none) and its socialHandleProblem (none, invalid or reserved, with the user's own @)."
+      },
+      "description": "One field per network, in registry order (ADR 0228)."
+    },
+    "publicProblem": {
+      "type": "enum",
+      "values": [
+        "none",
+        "nameEmpty",
+        "nameTooLong",
+        "nameReserved",
+        "bioTooLong",
+        "bioTooManyLines"
+      ],
+      "description": "From profileProblem: bipe_public_profile_name_empty, bipe_public_profile_name_too_long (nameMaxLength), bipe_app_profile_name_reserved, bipe_public_profile_bio_too_long (bioMaxLength), bipe_public_profile_bio_too_many_lines (bioMaxLines). Save is off unless none. A social field with a problem shows bipe_public_profile_social_invalid (argument: the network name) or bipe_public_profile_social_reserved under that field, and Save is off."
+    },
+    "memberSince": {
+      "type": "date",
+      "optional": true,
+      "description": "MyProfile.member_since, shown as bipe_profile_member_since with the date (medium style, the phone's locale). The row is hidden when absent."
+    },
+    "userId": {
+      "type": "string",
+      "description": "The Matrix user ID of the account (@localpart:server), shown as bipe_profile_internal_id in monospaced type. A tap copies it and shows bipe_app_copied."
     },
     "phase": {
       "type": "enum",
-      "values": ["editing", "saving", "saved", "failed"],
-      "description": "saved: closes the screen. failed: bipe_app_save_error, the fields keep their values."
+      "values": [
+        "loading",
+        "editing",
+        "saving",
+        "failed"
+      ],
+      "description": "loading: GET /v1/me/profile runs; the name and photo show at once. failed: bipe_app_save_error, or the problem the server returned (ProfileProblem); the fields keep their values. After a save without error the screen closes."
     }
   },
   "actions": {
-    "appear": { "effect": "Reads Client.displayName and Client.avatarUrl (Client.cachedAvatarUrl first, to show at once)." },
+    "appear": {
+      "effect": "Reads Client.displayName and Client.avatarUrl (Client.cachedAvatarUrl first, to show at once). Then GET /v1/me/profile and syncPhoto. A public profile never saved starts with the Matrix display name."
+    },
     "setName": {
-      "params": { "name": { "type": "string", "description": "The new text." } },
+      "params": {
+        "name": {
+          "type": "string",
+          "description": "The new text."
+        }
+      },
       "effect": "Updates name and nameProblem with the local rules (see notes)."
     },
-    "choosePhoto": { "effect": "Opens the system photo picker, then a square crop." },
-    "removePhoto": { "effect": "Marks the photo for removal." },
-    "save": {
-      "effect": "Sends only what changed: Client.setDisplayName with the trimmed name; Client.uploadAvatar with a JPEG for a new photo, or Client.removeAvatar. After a photo change, GET /v1/me/profile and syncPhoto of public-profile-edit. Then phase saved."
+    "choosePhoto": {
+      "effect": "Opens the system photo picker, then a square crop."
     },
-    "cancel": { "effect": "Closes the screen. Nothing changes." }
+    "removePhoto": {
+      "effect": "Marks the photo for removal."
+    },
+    "openHandle": {
+      "effect": "The @ row: with a handle, opens profile-link; without one, opens handle-pick. After handle-pick the screen reads GET /v1/me/profile again."
+    },
+    "setPublicEnabled": {
+      "params": {
+        "isOn": {
+          "type": "bool",
+          "description": "The new value."
+        }
+      },
+      "effect": "Updates publicEnabled. The public fields show only while it is on."
+    },
+    "setPublicName": {
+      "params": {
+        "name": {
+          "type": "string",
+          "description": "The new text."
+        }
+      },
+      "effect": "Updates publicName and publicProblem."
+    },
+    "setBio": {
+      "params": {
+        "bio": {
+          "type": "string",
+          "description": "The new text."
+        }
+      },
+      "effect": "Updates bio and problem."
+    },
+    "setSocial": {
+      "params": {
+        "platform": {
+          "type": "string",
+          "description": "A registries/profiles.json socials id."
+        },
+        "handle": {
+          "type": "string",
+          "description": "The new text."
+        }
+      },
+      "effect": "Updates that field and its problem (socialHandleProblem with the user's own @)."
+    },
+    "copyUserId": {
+      "effect": "Copies userId to the clipboard and shows bipe_app_copied."
+    },
+    "save": {
+      "effect": "Sends only what changed. Matrix: Client.setDisplayName with the trimmed name; Client.uploadAvatar with a JPEG for a new photo, or Client.removeAvatar. Public profile, when publicEnabled, publicName, bio or socials changed: PUT /v1/me/profile with enabled, name, bio (trimmed) and socials (every field after socialHandleClean; an empty field is left out). Then syncPhoto after a photo change or a public profile save. Then the screen closes. Salvar is off while nothing changed or nameProblem, publicProblem or a social field has a problem."
+    },
+    "syncPhoto": {
+      "effect": "Runs only when MyProfile.enabled. Client.avatarUrl absent and has_photo: DELETE /v1/me/profile/photo. Client.avatarUrl not equal to MyProfile.photo_source: Client.getMediaContent, square crop, JPEG (BipeProfilePhoto), PUT /v1/me/profile/photo?source=<mxc>. Else nothing. A failure shows nothing; the next run tries again."
+    },
+    "cancel": {
+      "effect": "Closes the screen. Nothing changes."
+    }
   },
   "strings": [
-    "bipe_settings_profile_name_photo",
+    "bipe_settings_profile",
     "bipe_profile_display_name",
     "bipe_profile_display_name_footer",
     "bipe_public_profile_photo_change",
@@ -43,7 +190,27 @@
     "bipe_company_name",
     "bipe_app_save",
     "bipe_app_save_error",
-    "bipe_app_cancel"
+    "bipe_app_cancel",
+    "bipe_settings_public_profile",
+    "bipe_public_profile_toggle",
+    "bipe_public_profile_footer",
+    "bipe_public_profile_needs_handle",
+    "bipe_public_profile_name",
+    "bipe_public_profile_bio",
+    "bipe_public_profile_bio_placeholder",
+    "bipe_public_profile_bio_too_long",
+    "bipe_public_profile_bio_too_many_lines",
+    "bipe_public_profile_socials",
+    "bipe_public_profile_socials_footer",
+    "bipe_public_profile_social_invalid",
+    "bipe_public_profile_social_reserved",
+    "bipe_handle_prompt_action",
+    "bipe_error_network",
+    "bipe_settings_handle",
+    "bipe_profile_member_since",
+    "bipe_profile_internal_id",
+    "bipe_profile_internal_id_footer",
+    "bipe_app_copied"
   ],
   "sdk": [
     "Client.displayName",
@@ -55,13 +222,27 @@
     "Client.removeAvatar",
     "Client.subscribeToOwnProfile"
   ],
-  "parity": ["reserved-names", "settings-structure", "lookalikes"],
+  "parity": [
+    "handles",
+    "lookalikes",
+    "public-profile",
+    "reserved-names",
+    "settings-structure"
+  ],
   "notes": [
-    "Opens from the namePhoto row of Seu perfil (settings-group profile).",
+    "Opens from the profile row at the top of Você (spec voce), from the trust card name and photo steps, and from the photo ask (chat-list-prompt). The settings registry has no profile group since 3 Nov 2026.",
+    "Layout, top to bottom (MZ, 3 Nov 2026: one screen, not three sub-screens): (1) the photo, 96 pt, with bipe_public_profile_photo_change and bipe_public_profile_photo_remove, then the name field (bipe_profile_display_name, or bipe_company_name for a company) with bipe_profile_display_name_footer or the nameProblem text; (2) the @ row: bipe_settings_handle with @handle as the value, or bipe_handle_prompt_action when none; (3) the section titled bipe_settings_public_profile: the switch bipe_public_profile_toggle with bipe_public_profile_footer (without a handle: locked, with bipe_public_profile_needs_handle), and while on, the public name, the bio and the socials section; (4) a section with Membro desde and the internal ID, with bipe_profile_internal_id_footer. Salvar sits in the navigation bar (iOS) or the top bar (Android).",
+    "The internal ID is the full Matrix ID (MZ, 3 Nov 2026), for support. It is the one place in the app that shows it; every other screen shows names and @ only (ADR 0112).",
     "Name rules: trimmed; not empty; at most nameMaxLength of registries/profiles.json; not a reserved name of registries/reserved-names.json after normalize() with the homoglyph map (exact match). Reference: profileProblem (name_empty, name_too_long, name_reserved) and normalize in tools/lib/registries.mjs; cases in test-vectors/normalization.json. Bipe logic: BipePublicProfileRules.profileProblem and NameNormalizer (BipeKit); BipePublicProfile.kt and NameNormalizer.kt (libraries/bipe).",
     "Matrix has no server check for reserved display names. The app check stops honest mistakes; other people's apps also show bipe_warning_reserved_name next to an unverified reserved name (person-profile).",
     "Photo: the app crops it square and re-encodes it as JPEG before upload. Client.subscribeToOwnProfile keeps the screen right when another device changes the profile.",
     "A company account (ADR 0132) edits the company name here too: the same fields, with bipe_company_name as the field label. The type comes from GET /v1/accounts/{userId}/type.",
-    "lookalikeEmoji (bipe#595): the name holds an entry of registries/profiles.json sealLookalikeEmoji, compared after removing U+FE0E and U+FE0F. Reference: sealLookalike in tools/lib/registries.mjs. Checked after reserved. Only the verified seal may sit beside a name; the check runs on the phone because Matrix has no server check for display names."
+    "lookalikeEmoji (bipe#595): the name holds an entry of registries/profiles.json sealLookalikeEmoji, compared after removing U+FE0E and U+FE0F. Reference: sealLookalike in tools/lib/registries.mjs. Checked after reserved. Only the verified seal may sit beside a name; the check runs on the phone because Matrix has no server check for display names.",
+    "Name and bio are separate from the Matrix profile (ADR 0041): changing them does not change profile-edit, and the other way round. The first time, the app fills the name from Client.displayName. The photo is not separate (ADR 0041, amended 2 Nov 2026): the screen shows the profile photo, and the user changes it in profile-edit.",
+    "Rules: registries/profiles.json (nameMaxLength 50, bioMaxLength 160, bioMaxLines 4, photoMaxBytes, photoMaxPixels) and the reserved names, by profileProblem in tools/lib/registries.mjs. The server is the authority and returns the same ProfileProblem ids. Bipe logic: BipePublicProfileRules and BipeProfilePhoto.jpegData (BipeKit BipePublicProfile.swift); BipePublicProfile.kt (libraries/bipe).",
+    "Photo: the API keeps a copy of the Matrix avatar, because the web page cannot read Matrix media. JPEG only, at most photoMaxPixels on each side and photoMaxBytes. The app re-encodes; the server strips every metadata segment. syncPhoto runs on appear and save here and after a photo change in profile-edit, so an avatar changed in another client reaches the public page the next time the user opens either screen.",
+    "Without a handle: the switch is locked, bipe_public_profile_needs_handle shows with bipe_handle_prompt_action, which opens handle-pick.",
+    "Turning it off hides the profile at once: GET /v1/profiles/{handle} answers 404, the same as for an unknown handle.",
+    "Social accounts (ADR 0228): a section titled bipe_public_profile_socials after the bio, one text field per registries/profiles.json socials entry labelled with its name and a fixed @ before the text, then bipe_public_profile_socials_footer. The field takes a handle, never a URL: no URL keyboard, no autocorrect, no autocapitalisation. Bipe logic: BipeSocialHandles (BipeKit, libraries/bipe), the port of socialHandleClean, socialHandleProblem and socialUrl, checked by test-vectors/social-handles.json."
   ]
 }

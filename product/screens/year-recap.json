@@ -1,6 +1,6 @@
 {
   "id": "year-recap",
-  "title": "Seu ano no Bipe",
+  "title": "Suas estatísticas",
   "flow": "voce",
   "summary": "A yearly recap of the person's own activity, computed on the phone from its timelines (ADR 0223, bipe-chat/bipe#973). Opens from the last row of Configurações > Conversas e mídia (settings-group chats). The person can share a card with the numbers only.",
   "types": {

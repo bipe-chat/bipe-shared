@@ -4,6 +4,11 @@
   "flow": "people",
   "summary": "Shows another person: photo, name, @, trust marks and bio, with what the user can do (message, add to a group, block, report). From a DM it is also the DM's info screen (ADR 0141).",
   "types": {
+    "SocialLink": {
+      "platform": { "type": "string", "description": "A registries/profiles.json socials id." },
+      "handle": { "type": "string", "description": "PublicProfile.socials[platform]." },
+      "url": { "type": "url", "description": "socialUrl(platform, handle), built on the device." }
+    },
     "TrustMark": {
       "kind": {
         "type": "enum",
@@ -27,6 +32,7 @@
     "facts": { "type": "TrustFacts", "description": "The separate trust facts of the person (ADR 0074, docs/trust-facts.md), from BipeTrustSources: identity, contact and change, each shown apart (see notes)." },
     "reservedNameWarning": { "type": "bool", "description": "The name is a reserved name (normalize, registries/reserved-names.json), the person is not an official account (isOfficial) and no company mark verifies it: bipe_warning_reserved_name under the name." },
     "bio": { "type": "string", "optional": true, "description": "PublicProfile.bio when the person has a public profile on, with bipe_public_profile_not_verified under it." },
+    "socials": {"type": "list", "of": {"type": "SocialLink", "description": "One network: its registry name, the handle and the link from socialUrl."}, "description": "PublicProfile.socials when the person has a public profile on, in registries/profiles.json socials order, unknown ids skipped (ADR 0228). Empty: no section."},
     "dmRoomId": { "type": "string", "optional": true, "description": "Client.getDmRoom: the newest DM with the person, when one exists." },
     "isBlocked": { "type": "bool", "description": "The user id is in Client.ignoredUsers: bipe_app_person_blocked, and block turns into unblock." },
     "fromDm": { "type": "bool", "description": "Opened from a DM header: the title is bipe_dm_details_title and the DM rows show (notifications). No delete row: a DM is archived from the chat-timeline chat menu, never deleted here (mz, 2 November 2026)." },
@@ -46,6 +52,7 @@
       "effect": "Opens the DM in chat-timeline. Without one: Client.createRoom with isDirect true, isEncrypted true, preset trustedPrivateChat and the person invited, with the DM power levels of ADR 0141, then opens it."
     },
     "share": { "effect": "Only when the person has an @: the system share sheet with the profile link (BipeProfileLink, https://bipe.chat/@<handle>)." },
+    "openSocial": {"params": {"platform": {"type": "string", "description": "A registries/profiles.json socials id."}}, "effect": "Opens socialUrl(platform, handle) in the system browser, which hands off to the network's app when it is installed. Never an in-app web view, never a link preview."},
     "addToGroup": { "effect": "Lists the user's groups where RoomPowerLevels.canOwnUserInvite, and invites the person to the chosen one (bipe_dm_invite_to_group, bipe_dm_invite_to_group_empty)." },
     "newGroup": { "effect": "Opens group-create with this person picked." },
     "notifications": { "effect": "fromDm only: opens chat-notifications for the DM." },
@@ -81,6 +88,8 @@
     "bipe_badge_suspended_body",
     "bipe_warning_reserved_name",
     "bipe_public_profile_not_verified",
+    "bipe_public_profile_socials",
+    "bipe_public_profile_socials_not_verified",
     "bipe_app_person_not_found",
     "bipe_person_number",
     "bipe_person_number_footer",
@@ -131,6 +140,7 @@
     "Calls are out of scope for this issue (client-rewrite-plan.md section 4, phase 3).",
     "Brand marks (ADR 0162, spec brand-mark): a reseller's verified marks show as one line under the name (first mark, then bipe_brand_mark_more); a tap opens the brand-mark sheet. bipe_brand_mark_ended shows once there after a mark the phone saw is gone.",
     "Profile change facts (ADR 0049, bipe-chat/bipe#598): below the header, apart from the trust facts; appear reads POST /v1/profile-facts for the person. Each line of profileFactLines (registries/profile-facts.json, test-vectors/profile-facts.json) on POST /v1/profile-facts: created is bipe_profile_fact_created (%1$s the age since at, formatted by the system: \"3 dias\"); photo and name with count 1 are bipe_profile_fact_photo_once and bipe_profile_fact_name_once (%1$s the age since at), with a count of 2 or more bipe_profile_fact_photo_times and bipe_profile_fact_name_times (%1$s the count, %2$s windowDays). No lines: nothing shows, no empty row.",
-    "Media and files (bipe-chat/bipe#672): a DM opened from its chat has a row bipe_gallery_title that opens chat-media-gallery for the DM."
+    "Media and files (bipe-chat/bipe#672): a DM opened from its chat has a row bipe_gallery_title that opens chat-media-gallery for the DM.",
+    "Social accounts (ADR 0228): under the bio, a section titled bipe_public_profile_socials with one row per entry of socials: the network name and @handle, with an outbound link mark. Under the rows, bipe_public_profile_socials_not_verified in secondary ink. A tap runs openSocial. The app builds the link from the registry template and never shows a URL from the server. Bipe logic: BipeSocialHandles (BipeKit, libraries/bipe)."
   ]
 }

@@ -1436,6 +1436,32 @@
       "fork": true
     },
     {
+      "id": "group-roles",
+      "name": "Group roles: Admin, Moderador, Membro",
+      "ios": {
+        "status": "built",
+        "evidence": [
+          "bipe-app/ios/Bipe/Groups/GroupMembersModel.swift",
+          "bipe-app/ios/Bipe/Groups/GroupPeople.swift"
+        ]
+      },
+      "android": {
+        "status": "built",
+        "evidence": [
+          "bipe-app/android/app/src/main/kotlin/chat/bipe/app/groups/GroupMembersModel.kt",
+          "bipe-app/android/app/src/main/kotlin/chat/bipe/app/groups/GroupPeople.kt"
+        ]
+      },
+      "web": {
+        "status": "n/a",
+        "reason": "No web chat (ADR 0004); the site shows a demo at most"
+      },
+      "server": {
+        "status": "n/a",
+        "reason": "Plain Matrix power levels; no Bipe server code"
+      }
+    },
+    {
       "id": "polls",
       "name": "Polls",
       "ios": {

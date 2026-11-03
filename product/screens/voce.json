@@ -2,7 +2,7 @@
   "id": "voce",
   "title": "Você",
   "flow": "voce",
-  "summary": "The Você tab (ADR 0112): who you are first, then the settings groups. A profile row (photo, name, @), the trust card, Anotações, Meus agendamentos, the year recap, Convidar pessoas, settings-root, then Adicionar conta.",
+  "summary": "The Você tab (ADR 0112): who you are first, then the settings groups. A profile row (photo, name, @), the trust card, Anotações, Meus agendamentos, Convidar pessoas, settings-root, then Adicionar conta.",
   "state": {
     "displayName": {
       "type": "string",
@@ -47,9 +47,6 @@
     "openTrust": {
       "effect": "Opens trust-profile from the trust card (spec trust-card)."
     },
-    "openYearRecap": {
-      "effect": "Opens year-recap (ADR 0223). The row has bipe_year_recap_row_subtitle with the year."
-    },
     "addAccount": {
       "effect": "Opens account-new (bipe_app_account_new). The last row of Você, after settings-root."
     }
@@ -62,8 +59,6 @@
     "bipe_self_chat_subtitle",
     "bipe_invites_title",
     "bipe_agenda_my_bookings",
-    "bipe_year_recap_title",
-    "bipe_year_recap_row_subtitle",
     "bipe_app_account_new",
     "bipe_settings_profile"
   ],
@@ -83,7 +78,7 @@
     "Below Convidar pessoas comes settings-root (Configurações). Adicionar conta follows it.",
     "The header and account rows load the actual Matrix avatar through the SDK media API. Without a photo use initials. Shape follows ADR 0132: company is a rounded square; personal/unknown is a circle. A profile name or CNPJ badge must not determine account type.",
     "Profile row (MZ, 2 Nov 2026, bipe-chat/bipe#988; iPhone Settings, WhatsApp and Signal layout): one full-width row at the top of the list, with the 60 pt avatar, the display name (headline), the @ (bipe secondary ink) and a chevron. A tap anywhere on the row opens Seu perfil; its accessibility hint is bipe_settings_profile. There is no centred hero, no text link and no bordered buttons. The QR code button (Phosphor qr-code, accessibility label bipe_profile_qr_action) sits at the trailing end of the navigation bar; a company account has it too.",
-    "Order above Configurações (bipe-chat/bipe#988): profile row; trust card; a section with Anotações, Meus agendamentos (personal accounts only) and the year-recap row (what you use); a section with Convidar pessoas. These rows use the same icon tile as settings-root.",
+    "Order above Configurações (bipe-chat/bipe#988): profile row; trust card; a section with Anotações and Meus agendamentos, personal accounts only (what you use); a section with Convidar pessoas. The year recap is not on Você (MZ, 3 Nov 2026): it is the last row of Conversas e mídia (settings-group chats). These rows use the same icon tile as settings-root.",
     "A personal account has a Meus agendamentos row (bipe_agenda_my_bookings) after Anotações; it opens agenda-my-bookings. A booking list is not a setting.",
     "The link-phone flow (link-phone-show) is not on Você since bipe-chat/bipe#988: its row bipe_app_link_phone_action (Trocar de celular) is the first row of Sua conta > Aparelhos (settings-group account). Conectar outro aparelho next to Aparelhos conectados read as the same thing."
   ]

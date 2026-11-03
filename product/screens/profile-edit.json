@@ -100,6 +100,11 @@
         "failed"
       ],
       "description": "loading: GET /v1/me/profile runs; the name and photo show at once. failed: bipe_app_save_error, or the problem the server returned (ProfileProblem); the fields keep their values. After a save without error the screen closes."
+    },
+    "publicLink": {
+      "type": "url",
+      "optional": true,
+      "description": "https://bipe.chat/@handle (BipeProfileLink), shown at the top of the socials section with bipe_app_profile_link as its label, in monospaced type. Only while the saved MyProfile.enabled is true and handle is set, so the link always opens a page."
     }
   },
   "actions": {
@@ -164,6 +169,12 @@
       },
       "effect": "Updates that field and its problem (socialHandleProblem with the user's own @)."
     },
+    "copyLink": {
+      "effect": "Copies publicLink to the clipboard and shows bipe_app_copied."
+    },
+    "shareLink": {
+      "effect": "Opens the system share sheet with publicLink."
+    },
     "copyUserId": {
       "effect": "Copies userId to the clipboard and shows bipe_app_copied."
     },
@@ -210,7 +221,10 @@
     "bipe_profile_member_since",
     "bipe_profile_internal_id",
     "bipe_profile_internal_id_footer",
-    "bipe_app_copied"
+    "bipe_app_copied",
+    "bipe_app_profile_link",
+    "bipe_app_copy",
+    "bipe_app_share"
   ],
   "sdk": [
     "Client.displayName",
@@ -243,6 +257,7 @@
     "Photo: the API keeps a copy of the Matrix avatar, because the web page cannot read Matrix media. JPEG only, at most photoMaxPixels on each side and photoMaxBytes. The app re-encodes; the server strips every metadata segment. syncPhoto runs on appear and save here and after a photo change in profile-edit, so an avatar changed in another client reaches the public page the next time the user opens either screen.",
     "Without a handle: the switch is locked, bipe_public_profile_needs_handle shows with bipe_handle_prompt_action, which opens handle-pick.",
     "Turning it off hides the profile at once: GET /v1/profiles/{handle} answers 404, the same as for an unknown handle.",
-    "Social accounts (ADR 0228): a section titled bipe_public_profile_socials after the bio, one text field per registries/profiles.json socials entry labelled with its name and a fixed @ before the text, then bipe_public_profile_socials_footer. The field takes a handle, never a URL: no URL keyboard, no autocorrect, no autocapitalisation. Bipe logic: BipeSocialHandles (BipeKit, libraries/bipe), the port of socialHandleClean, socialHandleProblem and socialUrl, checked by test-vectors/social-handles.json."
+    "Social accounts (ADR 0228): a section titled bipe_public_profile_socials after the bio: first publicLink with bipe_app_copy (copyLink) and bipe_app_share (shareLink), then one text field per registries/profiles.json socials entry labelled with its name and a fixed @ before the text, then bipe_public_profile_socials_footer. The field takes a handle, never a URL: no URL keyboard, no autocorrect, no autocapitalisation. Bipe logic: BipeSocialHandles (BipeKit, libraries/bipe), the port of socialHandleClean, socialHandleProblem and socialUrl, checked by test-vectors/social-handles.json.",
+    "Socials alignment (after an MZ report, 3 Nov 2026): every social field starts at the same x. iOS puts the network names in one column of fixed width (96 pt, scaled with Dynamic Type), then the fixed @ and the field; a field problem sits under the field, indented to the same x. Android uses full-width outlined fields with the network name as the label and @ as the prefix, the same width as the name and bio fields."
   ]
 }

@@ -1856,20 +1856,29 @@
       "id": "age-signal",
       "name": "Age band from the OS age signal, no date of birth (ADR 0229)",
       "ios": {
-        "status": "planned",
-        "note": "Declared Age Range, bipe-chat/bipe#994"
+        "status": "built",
+        "evidence": [
+          "bipe-app/ios/Bipe/Account/AgeSignal.swift"
+        ],
+        "note": "Declared Age Range; the entitlement goes into the archive with BIPE_DECLARED_AGE_RANGE"
       },
       "android": {
-        "status": "planned",
-        "note": "Play Age Signals in the play flavour, bipe-chat/bipe#994"
+        "status": "built",
+        "evidence": [
+          "bipe-app/android/app/src/main/kotlin/chat/bipe/app/account/AgeSignal.kt",
+          "bipe-app/android/app/src/play/kotlin/chat/bipe/app/account/AgeSignalSources.kt"
+        ],
+        "note": "Play Age Signals in the play flavour; the foss build sends none"
       },
       "web": {
         "status": "n/a",
         "reason": "A browser has no OS age signal; a web-only account stays unknown (ADR 0229)"
       },
       "server": {
-        "status": "planned",
-        "note": "PUT /v1/me/age and age_signals, bipe-chat/bipe#994"
+        "status": "built",
+        "evidence": [
+          "bipe-api/src/age.ts"
+        ]
       },
       "issue": 994
     },

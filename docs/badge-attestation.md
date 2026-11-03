@@ -38,7 +38,7 @@ Binding. Every badge binds to the account (ADR 0239):
 |---|---|---|
 | `msk` | every level | The account's cross-signing master key (Matrix unpadded base64), as the homeserver has it when the server signs. The master key signs every device of the account, so the badge shows on any of its devices. A company or institution account has several devices (ADR 0087, bipe#270). The Matrix SDK gives no sending device per event (bipe-chat/bipe#245, bipe-chat/bipe#596), so a device-bound badge cannot show on a message |
 
-A badge with `dev` and no `msk` is `malformed` on every level. `dev` was the device binding of `pix` and `govbr` before ADR 0239; no such badge was issued.
+A badge with `dev` and no `msk` is `malformed` on every level. The verifier ignores `dev` when `msk` is present. `dev` was the device binding of `pix` and `govbr` before ADR 0239; no such badge was issued.
 
 Company fields (`lvl: "cnpj"`, a verified company, ADR 0042):
 
@@ -102,7 +102,7 @@ Inputs: the envelope, the sender's user ID, the sender's cross-signing master ke
 2. The issuer (envelope `iss`, absent means `bipe`) is a trusted issuer, else `unknown_issuer`.
 3. `kid` is a key of that issuer, else `unknown_kid`.
 4. Ed25519 signature over the decoded payload bytes is valid, else `invalid_signature`.
-5. Payload parses and all required fields for its `lvl` are present and well formed, else `malformed`. An unknown `lvl` is `malformed`. Every level needs a non-empty `msk`. For `cnpj`: `cnpj` matches `^[0-9A-Z]{12}[0-9]{2}$`, `legal_name` and `msk` are not empty, `method` is one of the three values, `checked_month` matches `^[0-9]{4}-(0[1-9]|1[0-2])$`. A `cnpj` badge without `msk` is `malformed`, also when it has `dev`. For `institution`: `cnpj` matches the same pattern, `msk` is not empty, and `domains`, when present, is a list of strings that each match `^[a-z0-9-]+(\.[a-z0-9-]+)+$`. An `institution` badge without `msk` is `malformed`, also when it has `dev`. For `brand-mark`: `mark`, `brand`, `name` and `msk` are not empty, `cnpj` matches the `cnpj` pattern, and `label` is in `registries/brand-marks.json`; no `dev`.
+5. Payload parses and all required fields for its `lvl` are present and well formed, else `malformed`. An unknown `lvl` is `malformed`. Every level needs a non-empty `msk`. For `cnpj`: `cnpj` matches `^[0-9A-Z]{12}[0-9]{2}$`, `legal_name` and `msk` are not empty, `method` is one of the three values, `checked_month` matches `^[0-9]{4}-(0[1-9]|1[0-2])$`. For `institution`: `cnpj` matches the same pattern, `msk` is not empty, and `domains`, when present, is a list of strings that each match `^[a-z0-9-]+(\.[a-z0-9-]+)+$`. For `brand-mark`: `mark`, `brand`, `name` and `msk` are not empty, `cnpj` matches the `cnpj` pattern, and `label` is in `registries/brand-marks.json`.
 6. Payload `iss` (absent means `bipe`) equals the envelope issuer, else `issuer_mismatch`.
 7. `lvl` is in the issuer's `levels`, else `level_not_allowed`. Issuer `bipe` before a registry exists: every level.
 8. For an issuer other than `bipe`: `exp - iat <= lifeDays * 86400`, else `life_too_long`.

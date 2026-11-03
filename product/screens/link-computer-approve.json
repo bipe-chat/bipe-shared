@@ -4,6 +4,11 @@
   "flow": "devices",
   "summary": "After a biometric check, runs the MAS device-grant pages with the app's own HTTP client (no web view), signs that client in with the hidden password and shows a native consent screen with the device, the IP and the approximate place of the browser. The user taps Connect or Cancel; the app posts the MAS consent form, the SDK then sends the secrets to the browser and bipe-api ends the MAS browser session that the client made (ADR 0224, ADR 0118).",
   "state": {
+    "account": {
+      "type": "AccountSummary",
+      "optional": true,
+      "description": "The approving account, as on link-computer-scan. Shown read only at the top of the consent screen as bipe_app_link_computer_account, only when the phone holds more than one account."
+    },
     "phase": {
       "type": "enum",
       "values": [
@@ -79,6 +84,7 @@
     }
   },
   "strings": [
+    "bipe_app_link_computer_account",
     "bipe_link_computer_biometric",
     "bipe_link_computer_loading",
     "bipe_link_computer_consent_hint",

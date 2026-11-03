@@ -2995,8 +2995,11 @@
         ]
       },
       "web": {
-        "status": "n/a",
-        "reason": "No web chat (ADR 0004); the site shows a demo at most"
+        "status": "built",
+        "evidence": [
+          "bipe-app/web/src/Pins.tsx",
+          "bipe-app/web/src/Timeline.tsx"
+        ]
       },
       "server": {
         "status": "n/a",
@@ -3267,8 +3270,10 @@
         ]
       },
       "web": {
-        "status": "n/a",
-        "reason": "No web chat (ADR 0004); the site shows a demo at most"
+        "status": "built",
+        "evidence": [
+          "bipe-app/web/src/Chats.tsx"
+        ]
       },
       "server": {
         "status": "n/a",

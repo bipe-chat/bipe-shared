@@ -33,7 +33,7 @@
   },
   "actions": {
     "openProfile": {
-      "effect": "Opens Seu perfil (settings-group profile). A tap anywhere on the profile row."
+      "effect": "Opens Seu perfil (profile-edit). A tap anywhere on the profile row."
     },
     "openQr": {
       "effect": "Opens profile-link with the QR code shown (bipe_profile_qr_title). From the QR code button in the navigation bar. Share and copy live on that screen."

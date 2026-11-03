@@ -6567,6 +6567,7 @@ components:
         handle: { type: string, description: "Absent when the caller has no handle." }
         photo_url: { type: string, description: "Absent without a photo." }
         photo_source: { type: string, description: "The mxc URI of the Matrix avatar that the photo copies. Absent without a photo, and for a photo uploaded before 2 Nov 2026. The apps upload the avatar again when it differs from Client.avatarUrl." }
+        member_since: { type: string, format: date-time, description: "When the account signed up (signups.created_at). Seu perfil shows it as Membro desde. Absent for an account without a sign-up row." }
         socials:
           type: object
           description: "Social handles (ADR 0228), keyed by registries/profiles.json socials id. Empty object when none."

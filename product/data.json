@@ -286,6 +286,23 @@
       }
     },
     {
+      "id": "public-profile",
+      "basis": "consent",
+      "places": ["server"],
+      "pt": {
+        "name": "Perfil público",
+        "what": "O nome, a bio, uma cópia da sua foto e o @ das suas redes sociais que você coloca no perfil público.",
+        "why": "Mostrar seu perfil para quem abre o seu link, só quando você liga o perfil.",
+        "retention": "Até você apagar esses dados ou a conta. Quando você desliga o perfil, ninguém mais vê."
+      },
+      "en": {
+        "name": "Public profile",
+        "what": "The name, bio, a copy of your photo and the social handles you put on your public profile.",
+        "why": "To show your profile to people who open your link, only while your profile is on.",
+        "retention": "Until you delete them or the account. When you turn the profile off, nobody sees it."
+      }
+    },
+    {
       "id": "phone-number",
       "basis": "consent",
       "places": ["server"],

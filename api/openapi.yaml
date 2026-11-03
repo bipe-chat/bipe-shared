@@ -6493,6 +6493,10 @@ components:
         name: { type: string }
         bio: { type: string, description: "Plain text. Absent when empty." }
         photo_url: { type: string, description: "Absolute URL of GET /v1/profiles/{handle}/photo with a version. Absent without a photo." }
+        socials:
+          type: object
+          description: "Social handles (ADR 0228). Keys: ids of registries/profiles.json socials. Values: the handle without @. The apps build each link from the registry url template. Absent when empty."
+          additionalProperties: { type: string }
         badge:
           $ref: "#/components/schemas/BadgeEnvelope"
           description: The same envelope as GET /v1/badges/{userId}. Absent when that call would not answer 200.
@@ -6507,6 +6511,10 @@ components:
         handle: { type: string, description: "Absent when the caller has no handle." }
         photo_url: { type: string, description: "Absent without a photo." }
         photo_source: { type: string, description: "The mxc URI of the Matrix avatar that the photo copies. Absent without a photo, and for a photo uploaded before 2 Nov 2026. The apps upload the avatar again when it differs from Client.avatarUrl." }
+        socials:
+          type: object
+          description: "Social handles (ADR 0228), keyed by registries/profiles.json socials id. Empty object when none."
+          additionalProperties: { type: string }
     ProfileUpdate:
       type: object
       required: [enabled, name, bio]
@@ -6514,10 +6522,14 @@ components:
         enabled: { type: boolean }
         name: { type: string }
         bio: { type: string }
+        socials:
+          type: object
+          description: "Social handles (ADR 0228), keyed by registries/profiles.json socials id. Absent: keep the stored handles. Present: replace them all; an empty or missing key removes that handle. The server applies socialHandleClean() and socialHandleProblem() with the caller's own @. An unknown key is bad_request."
+          additionalProperties: { type: string }
     ProfileProblem:
       type: string
-      enum: [name_empty, name_too_long, name_reserved, bio_too_long, bio_too_many_lines, no_handle]
-      description: Same ids as bipe-shared profileProblem(), plus no_handle from the server.
+      enum: [name_empty, name_too_long, name_reserved, bio_too_long, bio_too_many_lines, no_handle, social_invalid, social_reserved]
+      description: Same ids as bipe-shared profileProblem() and socialHandleProblem(), plus no_handle from the server. A social problem does not name the network; the apps run socialHandleProblem() on each field to find it.
     PinProblem:
       type: string
       enum: [not_digits, wrong_length, repeated_digit, sequence, date]

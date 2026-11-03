@@ -67,10 +67,10 @@ export function checkApps(items, exists) {
         problems.push(`${where}: the fork app ships it, ${s} cannot be policy`);
       }
     }
-    // The apps differ: the one that lags names its issue (ADR 0031).
+    // The apps differ: the one that lags names its issue (ADR 0031). An app where the item is n/a does not lag.
     const ios = entry(item, "ios")?.status;
     const android = entry(item, "android")?.status;
-    if (ios && android && SHIPPED.has(ios) !== SHIPPED.has(android)) {
+    if (ios && android && ios !== "n/a" && android !== "n/a" && SHIPPED.has(ios) !== SHIPPED.has(android)) {
       const lagging = SHIPPED.has(ios) ? "android" : "ios";
       const issue = entry(item, lagging)?.issue ?? item.issue;
       if (!Number.isInteger(issue)) problems.push(`${where}: ios is ${ios}, android is ${android}, and no issue closes the gap`);

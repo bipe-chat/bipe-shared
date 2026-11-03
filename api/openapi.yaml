@@ -3234,6 +3234,33 @@ paths:
                 format: "binary"
         default: { $ref: "#/components/responses/AgendaError" }
   /v1/me/business/catalog/items/{itemId}/photo:
+    get:
+      summary: "Read an item photo as the owner"
+      operationId: "getV1MeBusinessCatalogItemsItemIdPhoto"
+      tags:
+        - "Catálogo"
+      security:
+        -
+          matrix: []
+      description: "Only a device of the company account may call this route. Any item that is not archived, hidden ones too, so the owner's catálogo shows every thumbnail; the public route serves active items only. Private: no shared cache."
+      parameters:
+        -
+          name: "itemId"
+          in: "path"
+          required: true
+          schema:
+            type: "string"
+            minLength: 1
+            maxLength: 128
+      responses:
+        "200":
+          description: "The photo"
+          content:
+            image/jpeg:
+              schema:
+                type: "string"
+                format: "binary"
+        default: { $ref: "#/components/responses/AgendaError" }
     put:
       summary: "Replace an item photo"
       operationId: "putV1MeBusinessCatalogItemsItemIdPhoto"

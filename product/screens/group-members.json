@@ -95,6 +95,10 @@
     "bipe_app_group_admin",
     "bipe_app_group_moderator",
     "bipe_app_group_roles_custom",
+    "bipe_app_group_roles_title",
+    "bipe_app_group_role_admin_body",
+    "bipe_app_group_role_moderator_body",
+    "bipe_app_group_role_member_body",
     "bipe_app_you",
     "bipe_app_group_add_people",
     "bipe_app_group_member_profile",
@@ -132,7 +136,7 @@
   "parity": ["group-types", "group-roles"],
   "notes": [
     "Action sheet rows, top to bottom, each only when allowed: bipe_app_group_member_profile (always); for a joined person whose level is below the user's: the two roles the person does not have, from bipe_app_group_member_make_admin, bipe_app_group_member_make_moderator, bipe_app_group_member_remove_admin (admin to member) and bipe_app_group_member_remove_moderator (moderator to member), when canChangeRoles; then bipe_app_group_member_remove (canKick) and bipe_app_group_member_ban (canBan); for an invited person, bipe_app_group_member_cancel_invite (canKick). Matrix refuses to kick, ban or change the role of a person at or above the user's level, so the sheet has no such rows.",
-    "Three roles in the UI (bipe-chat/bipe#733). Admin changes roles and group settings and notifies everyone with @room. Moderador removes and bans members, deletes other people's messages and pins messages. Membro posts, reacts and replies. No numbers and no custom levels. A creator (room version 12) shows as admin and has no role actions. Nobody changes their own role, so a group always keeps its admins.",
+    "Three roles in the UI (bipe-chat/bipe#733). Admin changes roles and group settings and notifies everyone with @room. Moderador removes and bans members, deletes other people's messages and pins messages. Membro posts, reacts and replies. No numbers and no custom levels. A creator (room version 12) shows as admin and has no role actions. Nobody changes their own role, so a group always keeps its admins. Under the lists, a section bipe_app_group_roles_title says what each role does: bipe_app_group_role_admin_body, bipe_app_group_role_moderator_body, bipe_app_group_role_member_body. It shows for everyone, so a member knows who to ask.",
     "Remove and ban are destructive: the confirm button uses the destructive style. A failed call shows bipe_app_group_member_error and changes nothing on the screen.",
     "Slow mode and reports to group admins need server work (#74).",
     "Only for a group (RoomInfo.isDm false, ADR 0141). A DM has no member list."

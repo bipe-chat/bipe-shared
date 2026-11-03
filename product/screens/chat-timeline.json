@@ -24,6 +24,7 @@
       },
       "body": { "type": "string", "optional": true, "description": "Plain text of a text message." },
       "senderName": { "type": "string", "description": "Display name of the sender." },
+      "senderRole": { "type": "enum", "values": ["admin", "moderator"], "optional": true, "description": "Groups only (bipe-chat/bipe#733): the sender's role from the room power levels, as GroupMember.role of group-members. The sender line shows bipe_app_role_badge_admin or bipe_app_role_badge_moderator after the name, in the accent colour. Absent for members, own messages and DMs." },
       "richText": { "type": "MessageText", "optional": true, "description": "Native text runs parsed from the supported Matrix HTML body; unknown formats use body. Separate from the original text for copying and editing." },
       "isEmote": { "type": "bool", "optional": true, "description": "true for m.emote. Prefix the displayed body with * and the sender name; keep body unchanged for copying and editing. Defaults to false." },
       "isOwn": { "type": "bool", "description": "true when this account sent it." },

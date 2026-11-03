@@ -74,7 +74,7 @@
       "effect": "expired and notFound → bipe_app_link_computer_expired; cancelled after reject → closes with no message; anything else → bipe_error_generic. Calls finish."
     },
     "finish": {
-      "effect": "Once per flow: drops the HTTP client and its cookies, then POST /v1/web-link/finish with since = the start time. bipe-api ends the MAS browser sessions of the user that started at or after it. A failure is logged and not shown."
+      "effect": "Once per flow: drops the HTTP client and its cookies, then POST /v1/web-link/finish with since = the start time and kind = computer. bipe-api ends the MAS browser sessions of the user that started at or after it, and records the web session that this phone approved, so signing the phone out of a company account (sign-out) or the theft mark signs that web session out too (bipe#398). A failure is logged and not shown."
     },
     "close": {
       "effect": "Before approve: ContinuationMessageSender.cancel, then finish. After approve: ContinuationMessageSender.confirm (the SDK learns the result from MAS), then finish."

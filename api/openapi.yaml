@@ -647,8 +647,12 @@ paths:
         The phone calls this after it approves a web sign-in in its private web view. The server
         finishes, through the MAS admin API, every active MAS browser session of the caller that
         started at or after `since` minus 60 seconds. Older sessions stay, so staff browser sessions
-        are not touched. 400 bad_request when `since` is more than 15 minutes in the past or in
-        the future.
+        are not touched. With `kind` computer (Link a computer), the server first records each active
+        MAS OAuth 2.0 session that one of those browser sessions approved (its user_session_id), with
+        a Matrix device other than the caller's, as a web session that the caller's device approved
+        (bipe#398). POST /v1/web-link/sign-out and the theft mark end them. The phone calls this after
+        the grant is done, so the computer's session exists. 400 bad_request when `since` is more than
+        15 minutes in the past or in the future.
       security: [{ matrix: [] }]
       requestBody:
         required: true
@@ -659,6 +663,12 @@ paths:
               required: [since]
               properties:
                 since: { type: string, format: date-time, description: When the phone started the flow }
+                kind:
+                  type: string
+                  enum: [computer, phone]
+                  description: >
+                    computer when the phone approved a web sign-in (link-computer), phone when it approved
+                    a new phone (link-phone). Without it the server records nothing.
       responses:
         "200":
           description: Done
@@ -670,6 +680,28 @@ paths:
                 properties:
                   finished: { type: integer, minimum: 0, description: Number of sessions finished }
         "400": { $ref: "#/components/responses/Error" }
+        "401": { $ref: "#/components/responses/Error" }
+        "429": { $ref: "#/components/responses/Error" }
+  /v1/web-link/sign-out:
+    post:
+      summary: Sign out the web sessions that this device approved (bipe#398)
+      description: >
+        The phone calls this before it signs out of a company account. The server finishes, through
+        the MAS admin API, the active MAS sessions of the caller whose Matrix device is a web session
+        that the caller's device approved (recorded by POST /v1/web-link/finish with kind computer).
+        Web sessions that other phones of the same account approved stay. The theft mark does the
+        same for a company account on the stolen phone.
+      security: [{ matrix: [] }]
+      responses:
+        "200":
+          description: Done
+          content:
+            application/json:
+              schema:
+                type: object
+                required: [signed_out]
+                properties:
+                  signed_out: { type: integer, minimum: 0, description: Number of web devices signed out }
         "401": { $ref: "#/components/responses/Error" }
         "429": { $ref: "#/components/responses/Error" }
   /v1/web-link/place:
@@ -2138,7 +2170,8 @@ paths:
         One guardian is enough. The server sets stolen_at, locks the MAS user, then ends every
         active OAuth 2.0, compatibility and browser session page by page (the lock first, so the
         thief cannot sign in again). The same runs for the personal accounts on the same phone; a
-        company account on that phone loses that phone's sessions only. The badge answers 410
+        company account on that phone loses that phone's sessions only, and the web sessions that
+        phone approved (POST /v1/web-link/sign-out). The badge answers 410
         stolen while the mark is on. A mark that is already on answers 200 with it. A MAS failure
         answers 500 internal reason theft_unavailable after the parts that worked; the guardian
         tries again.

@@ -54,11 +54,13 @@ const KID = "test-only-2026-10";
 const publicKeys = { [KID]: rawPublicKey(testKey) };
 
 const NOW = 1791720000; // 2026-10-11T12:00:00Z
+// Every badge binds to the account's cross-signing master key (ADR 0239). The sending device is not an input.
+const MASTER_KEY = "dGVzdC1jcm9zcy1zaWduaW5nLW1hc3Rlci1rZXktMDE";
 const basePayload = {
   sub: "@ana:bipe.net.br",
   lvl: "pix",
   name: "Ana Souza",
-  dev: "dGVzdC1kZXZpY2Uta2V5LWZpbmdlcnByaW50",
+  msk: MASTER_KEY,
   iat: NOW - 3600,
   exp: NOW + 30 * 86400,
 };
@@ -70,9 +72,8 @@ function envelope(payload, key = testKey, { v = 1, kid = KID } = {}) {
 
 const valid = envelope(basePayload);
 const tampered = { ...valid, payload: b64url(Buffer.from(JSON.stringify({ ...basePayload, name: "Ana Souza Lima" }), "utf8")) };
-// The sender's master key is ignored for a device-bound badge.
-const MASTER_KEY = "dGVzdC1jcm9zcy1zaWduaW5nLW1hc3Rlci1rZXktMDE";
-const context = { sender: basePayload.sub, senderDevice: basePayload.dev, senderMasterKey: MASTER_KEY };
+const context = { sender: basePayload.sub, senderMasterKey: MASTER_KEY };
+const personWithout = (key) => (({ [key]: _, ...rest }) => rest)(basePayload);
 
 // A verified company (lvl "cnpj", bipe#399): bound to the account's cross-signing master key, not a device.
 const cnpjPayload = {
@@ -88,7 +89,7 @@ const cnpjPayload = {
   iat: NOW - 3600,
   exp: NOW - 3600 + reg.badgeKeys.lifeDays * 86400,
 };
-const cnpjContext = { sender: cnpjPayload.sub, senderDevice: "Y29tcGFueS1zZWNvbmQtc2VhdA", senderMasterKey: MASTER_KEY };
+const cnpjContext = { sender: cnpjPayload.sub, senderMasterKey: MASTER_KEY };
 const without = (key) => (({ [key]: _, ...rest }) => rest)(cnpjPayload);
 if (normalizeCnpj(cnpjPayload.cnpj) !== cnpjPayload.cnpj) throw new Error("badges: the cnpj vector is not a normalised CNPJ");
 
@@ -104,7 +105,7 @@ const institutionPayload = {
   iat: NOW - 3600,
   exp: NOW - 3600 + reg.badgeKeys.lifeDays * 86400,
 };
-const institutionContext = { sender: institutionPayload.sub, senderDevice: "cHJlZmVpdHVyYS1zZWF0LTI", senderMasterKey: MASTER_KEY };
+const institutionContext = { sender: institutionPayload.sub, senderMasterKey: MASTER_KEY };
 const withoutInst = (key) => (({ [key]: _, ...rest }) => rest)(institutionPayload);
 // A brand mark (lvl "brand-mark", ADR 0162, bipe#483): a verified brand vouches for a reseller's work account.
 const markPayload = {
@@ -119,7 +120,7 @@ const markPayload = {
   iat: NOW - 3600,
   exp: NOW - 3600 + reg.badgeKeys.lifeDays * 86400,
 };
-const markContext = { sender: markPayload.sub, senderDevice: "cmVzZWxsZXItcGhvbmU", senderMasterKey: markPayload.msk };
+const markContext = { sender: markPayload.sub, senderMasterKey: markPayload.msk };
 const markWithout = (key) => (({ [key]: _, ...rest }) => rest)(markPayload);
 
 write("badges.json", {
@@ -136,15 +137,18 @@ write("badges.json", {
     { name: "not yet valid", envelope: envelope({ ...basePayload, iat: NOW + 60 }), ...context, expect: "not_yet_valid" },
     { name: "missing name", envelope: envelope((({ name, ...rest }) => rest)(basePayload)), ...context, expect: "malformed" },
     { name: "subject mismatch", envelope: valid, ...context, sender: "@mallory:bipe.net.br", expect: "subject_mismatch" },
-    { name: "device mismatch (new device, badge suspended)", envelope: valid, ...context, senderDevice: "bmV3LWRldmljZQ", expect: "device_mismatch" },
+    { name: "master key mismatch (identity reset, badge suspended)", envelope: valid, ...context, senderMasterKey: "bmV3LW1hc3Rlci1rZXk", expect: "master_key_mismatch" },
+    { name: "sender master key unknown", envelope: valid, ...context, senderMasterKey: null, expect: "master_key_mismatch" },
+    { name: "device-bound instead of msk", envelope: envelope({ ...personWithout("msk"), dev: "dGVzdC1kZXZpY2Uta2V5LWZpbmdlcnByaW50" }), ...context, expect: "malformed" },
+    { name: "empty msk", envelope: envelope({ ...basePayload, msk: "" }), ...context, expect: "malformed" },
+    { name: "govbr: valid", envelope: envelope({ ...basePayload, lvl: "govbr" }), ...context, expect: "valid" },
     { name: "unknown level", envelope: envelope({ ...basePayload, lvl: "gold" }), ...context, expect: "malformed" },
     { name: "cnpj: valid", envelope: envelope(cnpjPayload), ...cnpjContext, expect: "valid" },
-    { name: "cnpj: valid on any device of the account", envelope: envelope(cnpjPayload), ...cnpjContext, senderDevice: "b3duZXItcGhvbmU", expect: "valid" },
-    { name: "cnpj: valid without trade_name", envelope: envelope(without("trade_name")), ...cnpjContext, expect: "valid" },
+        { name: "cnpj: valid without trade_name", envelope: envelope(without("trade_name")), ...cnpjContext, expect: "valid" },
     { name: "cnpj: valid alphanumeric CNPJ", envelope: envelope({ ...cnpjPayload, cnpj: "12ABC34501DE35", method: "staff" }), ...cnpjContext, expect: "valid" },
     { name: "cnpj: master key mismatch (identity reset)", envelope: envelope(cnpjPayload), ...cnpjContext, senderMasterKey: "bmV3LW1hc3Rlci1rZXk", expect: "master_key_mismatch" },
     { name: "cnpj: sender master key unknown", envelope: envelope(cnpjPayload), ...cnpjContext, senderMasterKey: null, expect: "master_key_mismatch" },
-    { name: "cnpj: device-bound instead of msk", envelope: envelope({ ...without("msk"), dev: cnpjContext.senderDevice }), ...cnpjContext, expect: "malformed" },
+    { name: "cnpj: device-bound instead of msk", envelope: envelope({ ...without("msk"), dev: "Y29tcGFueS1zZWNvbmQtc2VhdA" }), ...cnpjContext, expect: "malformed" },
     { name: "cnpj: missing cnpj", envelope: envelope(without("cnpj")), ...cnpjContext, expect: "malformed" },
     { name: "cnpj: cnpj with separators", envelope: envelope({ ...cnpjPayload, cnpj: "11.222.333/0001-81" }), ...cnpjContext, expect: "malformed" },
     { name: "cnpj: lowercase cnpj", envelope: envelope({ ...cnpjPayload, cnpj: "12abc34501de35" }), ...cnpjContext, expect: "malformed" },
@@ -161,12 +165,11 @@ write("badges.json", {
     { name: "cnpj: valid with a cvm field", envelope: envelope({ ...cnpjPayload, cvm: { st: "stop_order", on: "2026-05-12" } }), ...cnpjContext, expect: "valid" },
     { name: "cnpj: valid with a cvm field the app does not know", envelope: envelope({ ...cnpjPayload, cvm: { st: "later", x: 1 } }), ...cnpjContext, expect: "valid" },
     { name: "institution: valid", envelope: envelope(institutionPayload), ...institutionContext, expect: "valid" },
-    { name: "institution: valid on any device of the account", envelope: envelope(institutionPayload), ...institutionContext, senderDevice: "b3V0cm8tYXBhcmVsaG8", expect: "valid" },
     { name: "institution: valid without domains", envelope: envelope(withoutInst("domains")), ...institutionContext, expect: "valid" },
     { name: "institution: valid with empty domains", envelope: envelope({ ...institutionPayload, domains: [] }), ...institutionContext, expect: "valid" },
     { name: "institution: master key mismatch (identity reset)", envelope: envelope(institutionPayload), ...institutionContext, senderMasterKey: "bmV3LW1hc3Rlci1rZXk", expect: "master_key_mismatch" },
     { name: "institution: sender master key unknown", envelope: envelope(institutionPayload), ...institutionContext, senderMasterKey: null, expect: "master_key_mismatch" },
-    { name: "institution: device-bound instead of msk", envelope: envelope({ ...withoutInst("msk"), dev: institutionContext.senderDevice }), ...institutionContext, expect: "malformed" },
+    { name: "institution: device-bound instead of msk", envelope: envelope({ ...withoutInst("msk"), dev: "cHJlZmVpdHVyYS1zZWF0LTI" }), ...institutionContext, expect: "malformed" },
     { name: "institution: empty msk", envelope: envelope({ ...institutionPayload, msk: "" }), ...institutionContext, expect: "malformed" },
     { name: "institution: missing cnpj", envelope: envelope(withoutInst("cnpj")), ...institutionContext, expect: "malformed" },
     { name: "institution: cnpj with separators", envelope: envelope({ ...institutionPayload, cnpj: "11.222.333/0001-81" }), ...institutionContext, expect: "malformed" },
@@ -178,7 +181,6 @@ write("badges.json", {
     { name: "institution: expired", envelope: envelope({ ...institutionPayload, exp: NOW - 1 }), ...institutionContext, expect: "expired" },
     { name: "brand-mark: valid", envelope: envelope(markPayload), ...markContext, expect: "valid" },
     ...reg.brandMarks.labels.slice(1).map((label) => ({ name: `brand-mark: valid with label ${label}`, envelope: envelope({ ...markPayload, label }), ...markContext, expect: "valid" })),
-    { name: "brand-mark: valid on any device of the account", envelope: envelope(markPayload), ...markContext, senderDevice: "b3RoZXItcGhvbmU", expect: "valid" },
     { name: "brand-mark: unknown label", envelope: envelope({ ...markPayload, label: "embaixadora" }), ...markContext, expect: "malformed" },
     { name: "brand-mark: missing label", envelope: envelope(markWithout("label")), ...markContext, expect: "malformed" },
     { name: "brand-mark: missing mark", envelope: envelope(markWithout("mark")), ...markContext, expect: "malformed" },
@@ -186,7 +188,7 @@ write("badges.json", {
     { name: "brand-mark: missing brand", envelope: envelope(markWithout("brand")), ...markContext, expect: "malformed" },
     { name: "brand-mark: missing cnpj", envelope: envelope(markWithout("cnpj")), ...markContext, expect: "malformed" },
     { name: "brand-mark: cnpj with separators", envelope: envelope({ ...markPayload, cnpj: "11.222.333/0001-81" }), ...markContext, expect: "malformed" },
-    { name: "brand-mark: device-bound instead of msk", envelope: envelope({ ...markWithout("msk"), dev: markContext.senderDevice }), ...markContext, expect: "malformed" },
+    { name: "brand-mark: device-bound instead of msk", envelope: envelope({ ...markWithout("msk"), dev: "cmVzZWxsZXItcGhvbmU" }), ...markContext, expect: "malformed" },
     { name: "brand-mark: master key mismatch (identity reset)", envelope: envelope(markPayload), ...markContext, senderMasterKey: MASTER_KEY, expect: "master_key_mismatch" },
     { name: "brand-mark: sender master key unknown", envelope: envelope(markPayload), ...markContext, senderMasterKey: null, expect: "master_key_mismatch" },
     { name: "brand-mark: the brand itself is not the subject", envelope: envelope(markPayload), ...markContext, sender: markPayload.brand, expect: "subject_mismatch" },

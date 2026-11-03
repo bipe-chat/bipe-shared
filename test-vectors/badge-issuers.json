@@ -45,11 +45,10 @@
       "envelope": {
         "v": 1,
         "kid": "test-only-2026-10",
-        "payload": "eyJzdWIiOiJAYW5hOmJpcGUubmV0LmJyIiwibHZsIjoicGl4IiwibmFtZSI6IkFuYSBTb3V6YSIsImRldiI6ImRHVnpkQzFrWlhacFkyVXRhMlY1TFdacGJtZGxjbkJ5YVc1MCIsImlhdCI6MTc5MTcxNjQwMCwiZXhwIjoxNzkyMzIxMjAwfQ",
-        "sig": "P0cCbm3g56Nos92PbUZcui5wYsNjGnZSwxYVh_Ov8DHAX-OpKTOwqwuHP3WBzndxYzjsd9YkiLEr4I3Hl642Ag"
+        "payload": "eyJzdWIiOiJAYW5hOmJpcGUubmV0LmJyIiwibHZsIjoicGl4IiwibmFtZSI6IkFuYSBTb3V6YSIsIm1zayI6ImRHVnpkQzFqY205emN5MXphV2R1YVc1bkxXMWhjM1JsY2kxclpYa3RNREUiLCJpYXQiOjE3OTE3MTY0MDAsImV4cCI6MTc5MjMyMTIwMH0",
+        "sig": "2iLuLBGSr7sCNhrHbHDEjUSXzXuteycKI_NlXEUxmBJHT04acPGoPPKoZVgQ_6LzpHISgF-deNWkGydjsYRxBg"
       },
       "sender": "@ana:bipe.net.br",
-      "senderDevice": "dGVzdC1kZXZpY2Uta2V5LWZpbmdlcnByaW50",
       "senderMasterKey": "dGVzdC1jcm9zcy1zaWduaW5nLW1hc3Rlci1rZXktMDE",
       "expect": "valid"
     },
@@ -58,12 +57,11 @@
       "envelope": {
         "v": 1,
         "kid": "test-only-2026-10",
-        "payload": "eyJzdWIiOiJAYW5hOmJpcGUubmV0LmJyIiwibHZsIjoicGl4IiwibmFtZSI6IkFuYSBTb3V6YSIsImRldiI6ImRHVnpkQzFrWlhacFkyVXRhMlY1TFdacGJtZGxjbkJ5YVc1MCIsImlhdCI6MTc5MTcxNjQwMCwiZXhwIjoxNzkyMzIxMjAwLCJpc3MiOiJiaXBlIn0",
-        "sig": "_yA98y9YkIPNEluRTh_X79_aM6QXJHcS7Map-tAFHavhyisCeE50jqkgNPkIVmQu7YUIcygnzHd2q7EW6FyPCg",
+        "payload": "eyJzdWIiOiJAYW5hOmJpcGUubmV0LmJyIiwibHZsIjoicGl4IiwibmFtZSI6IkFuYSBTb3V6YSIsIm1zayI6ImRHVnpkQzFqY205emN5MXphV2R1YVc1bkxXMWhjM1JsY2kxclpYa3RNREUiLCJpYXQiOjE3OTE3MTY0MDAsImV4cCI6MTc5MjMyMTIwMCwiaXNzIjoiYmlwZSJ9",
+        "sig": "I8V0RiXWu2roELBiDeD6QJtf6H5E4E0WUnbfL_8GcYHL2KTr_eKN8Gio9sK3F6s-6wvVCNB5vOIYfzOtaU5nCA",
         "iss": "bipe"
       },
       "sender": "@ana:bipe.net.br",
-      "senderDevice": "dGVzdC1kZXZpY2Uta2V5LWZpbmdlcnByaW50",
       "senderMasterKey": "dGVzdC1jcm9zcy1zaWduaW5nLW1hc3Rlci1rZXktMDE",
       "expect": "valid"
     },
@@ -72,12 +70,11 @@
       "envelope": {
         "v": 1,
         "kid": "test-only-banco-2026-11",
-        "payload": "eyJzdWIiOiJAYW5hOmJpcGUubmV0LmJyIiwibHZsIjoiZ292YnIiLCJuYW1lIjoiQW5hIFNvdXphIiwiZGV2IjoiZEdWemRDMWtaWFpwWTJVdGEyVjVMV1pwYm1kbGNuQnlhVzUwIiwiaWF0IjoxNzkxNzE2NDAwLCJleHAiOjE3OTIzMjEyMDAsImlzcyI6ImJhbmNvLWV4ZW1wbG8ifQ",
-        "sig": "exYbz88-mnjvkGEOPIgKPCdq_6kXplHl9sg8dwXbOCoTUTYEACZ21GItY6q-_WHeaVqRT1b_uJrO3MyuAP1pBw",
+        "payload": "eyJzdWIiOiJAYW5hOmJpcGUubmV0LmJyIiwibHZsIjoiZ292YnIiLCJuYW1lIjoiQW5hIFNvdXphIiwibXNrIjoiZEdWemRDMWpjbTl6Y3kxemFXZHVhVzVuTFcxaGMzUmxjaTFyWlhrdE1ERSIsImlhdCI6MTc5MTcxNjQwMCwiZXhwIjoxNzkyMzIxMjAwLCJpc3MiOiJiYW5jby1leGVtcGxvIn0",
+        "sig": "aDamsHCDnaP4YLQosOqfrgV3N6RWAMiBqHeENnMesiYwFqbKObrV0LX6fIQ7mwerWghbgzyRnvNvQjntJfN3Dg",
         "iss": "banco-exemplo"
       },
       "sender": "@ana:bipe.net.br",
-      "senderDevice": "dGVzdC1kZXZpY2Uta2V5LWZpbmdlcnByaW50",
       "senderMasterKey": "dGVzdC1jcm9zcy1zaWduaW5nLW1hc3Rlci1rZXktMDE",
       "expect": "valid"
     },
@@ -86,12 +83,11 @@
       "envelope": {
         "v": 1,
         "kid": "test-only-banco-2026-11",
-        "payload": "eyJzdWIiOiJAYW5hOmJpcGUubmV0LmJyIiwibHZsIjoiZ292YnIiLCJuYW1lIjoiQW5hIFNvdXphIiwiZGV2IjoiZEdWemRDMWtaWFpwWTJVdGEyVjVMV1pwYm1kbGNuQnlhVzUwIiwiaWF0IjoxNzkxNzE2NDAwLCJleHAiOjE3OTIzMjEyMDAsImlzcyI6ImJhbmNvLWZhbHNvIn0",
-        "sig": "WoeNXcRaHMO3FSQYYuQhok2i1qOc5jxh9mE4oKIGLhGjqOzkth_H3n24HVc__ITj4eJFFf9kR4CW3UQE0WEtAw",
+        "payload": "eyJzdWIiOiJAYW5hOmJpcGUubmV0LmJyIiwibHZsIjoiZ292YnIiLCJuYW1lIjoiQW5hIFNvdXphIiwibXNrIjoiZEdWemRDMWpjbTl6Y3kxemFXZHVhVzVuTFcxaGMzUmxjaTFyWlhrdE1ERSIsImlhdCI6MTc5MTcxNjQwMCwiZXhwIjoxNzkyMzIxMjAwLCJpc3MiOiJiYW5jby1mYWxzbyJ9",
+        "sig": "chfDvaENk2qqfe-P5b7yqOJbgcwus9c1QElENax4xsBqoEmo2-gJ41CxVJRTf0mRas0n5q-eBgp1ST4EfIcvAQ",
         "iss": "banco-falso"
       },
       "sender": "@ana:bipe.net.br",
-      "senderDevice": "dGVzdC1kZXZpY2Uta2V5LWZpbmdlcnByaW50",
       "senderMasterKey": "dGVzdC1jcm9zcy1zaWduaW5nLW1hc3Rlci1rZXktMDE",
       "expect": "unknown_issuer"
     },
@@ -100,12 +96,11 @@
       "envelope": {
         "v": 1,
         "kid": "test-only-banco-2026-11",
-        "payload": "eyJzdWIiOiJAYW5hOmJpcGUubmV0LmJyIiwibHZsIjoiZ292YnIiLCJuYW1lIjoiQW5hIFNvdXphIiwiZGV2IjoiZEdWemRDMWtaWFpwWTJVdGEyVjVMV1pwYm1kbGNuQnlhVzUwIiwiaWF0IjoxNzkxNzE2NDAwLCJleHAiOjE3OTIzMjEyMDAsImlzcyI6ImNhcnRvcmlvLWFudGlnbyJ9",
-        "sig": "RQAgc14YXBaM-6ztWoGexib1c-Zk2Azmw_dQTId5ActPu5s8L2277sd7j8O_7NzzJ1io-H-q6UyYGbWzVpxVAw",
+        "payload": "eyJzdWIiOiJAYW5hOmJpcGUubmV0LmJyIiwibHZsIjoiZ292YnIiLCJuYW1lIjoiQW5hIFNvdXphIiwibXNrIjoiZEdWemRDMWpjbTl6Y3kxemFXZHVhVzVuTFcxaGMzUmxjaTFyWlhrdE1ERSIsImlhdCI6MTc5MTcxNjQwMCwiZXhwIjoxNzkyMzIxMjAwLCJpc3MiOiJjYXJ0b3Jpby1hbnRpZ28ifQ",
+        "sig": "n2gXLmo5BBVMduAtr_icFex3iNrwuyz681y_oAntKwuhAG6OXh_VXnI2p9pQI2efNbiaybFV3llpLG4kvjlxCg",
         "iss": "cartorio-antigo"
       },
       "sender": "@ana:bipe.net.br",
-      "senderDevice": "dGVzdC1kZXZpY2Uta2V5LWZpbmdlcnByaW50",
       "senderMasterKey": "dGVzdC1jcm9zcy1zaWduaW5nLW1hc3Rlci1rZXktMDE",
       "expect": "unknown_issuer"
     },
@@ -114,12 +109,11 @@
       "envelope": {
         "v": 1,
         "kid": "test-only-2026-10",
-        "payload": "eyJzdWIiOiJAYW5hOmJpcGUubmV0LmJyIiwibHZsIjoiZ292YnIiLCJuYW1lIjoiQW5hIFNvdXphIiwiZGV2IjoiZEdWemRDMWtaWFpwWTJVdGEyVjVMV1pwYm1kbGNuQnlhVzUwIiwiaWF0IjoxNzkxNzE2NDAwLCJleHAiOjE3OTIzMjEyMDAsImlzcyI6ImJhbmNvLWV4ZW1wbG8ifQ",
-        "sig": "0wYNf_g-e90i_I9sVqCRZBaH08EC-agyTs0TklzD68_yC1E6VrFNHeTiF5Gvj6-74Q7lpHwIjeqs2-yLQq9oCw",
+        "payload": "eyJzdWIiOiJAYW5hOmJpcGUubmV0LmJyIiwibHZsIjoiZ292YnIiLCJuYW1lIjoiQW5hIFNvdXphIiwibXNrIjoiZEdWemRDMWpjbTl6Y3kxemFXZHVhVzVuTFcxaGMzUmxjaTFyWlhrdE1ERSIsImlhdCI6MTc5MTcxNjQwMCwiZXhwIjoxNzkyMzIxMjAwLCJpc3MiOiJiYW5jby1leGVtcGxvIn0",
+        "sig": "XLK_x4igHeel8lT0tL_9lcoBCBGFF0qLlAXT9OfuKoP7r5AyKK9DT4S88ECUFvlYfsOuhVFZD76KILZqE7OfAA",
         "iss": "banco-exemplo"
       },
       "sender": "@ana:bipe.net.br",
-      "senderDevice": "dGVzdC1kZXZpY2Uta2V5LWZpbmdlcnByaW50",
       "senderMasterKey": "dGVzdC1jcm9zcy1zaWduaW5nLW1hc3Rlci1rZXktMDE",
       "expect": "unknown_kid"
     },
@@ -128,11 +122,10 @@
       "envelope": {
         "v": 1,
         "kid": "test-only-banco-2026-11",
-        "payload": "eyJzdWIiOiJAYW5hOmJpcGUubmV0LmJyIiwibHZsIjoiZ292YnIiLCJuYW1lIjoiQW5hIFNvdXphIiwiZGV2IjoiZEdWemRDMWtaWFpwWTJVdGEyVjVMV1pwYm1kbGNuQnlhVzUwIiwiaWF0IjoxNzkxNzE2NDAwLCJleHAiOjE3OTIzMjEyMDAsImlzcyI6ImJhbmNvLWV4ZW1wbG8ifQ",
-        "sig": "exYbz88-mnjvkGEOPIgKPCdq_6kXplHl9sg8dwXbOCoTUTYEACZ21GItY6q-_WHeaVqRT1b_uJrO3MyuAP1pBw"
+        "payload": "eyJzdWIiOiJAYW5hOmJpcGUubmV0LmJyIiwibHZsIjoiZ292YnIiLCJuYW1lIjoiQW5hIFNvdXphIiwibXNrIjoiZEdWemRDMWpjbTl6Y3kxemFXZHVhVzVuTFcxaGMzUmxjaTFyWlhrdE1ERSIsImlhdCI6MTc5MTcxNjQwMCwiZXhwIjoxNzkyMzIxMjAwLCJpc3MiOiJiYW5jby1leGVtcGxvIn0",
+        "sig": "aDamsHCDnaP4YLQosOqfrgV3N6RWAMiBqHeENnMesiYwFqbKObrV0LX6fIQ7mwerWghbgzyRnvNvQjntJfN3Dg"
       },
       "sender": "@ana:bipe.net.br",
-      "senderDevice": "dGVzdC1kZXZpY2Uta2V5LWZpbmdlcnByaW50",
       "senderMasterKey": "dGVzdC1jcm9zcy1zaWduaW5nLW1hc3Rlci1rZXktMDE",
       "expect": "unknown_kid"
     },
@@ -141,12 +134,11 @@
       "envelope": {
         "v": 1,
         "kid": "test-only-banco-2026-11",
-        "payload": "eyJzdWIiOiJAYW5hOmJpcGUubmV0LmJyIiwibHZsIjoiZ292YnIiLCJuYW1lIjoiQW5hIFNvdXphIiwiZGV2IjoiZEdWemRDMWtaWFpwWTJVdGEyVjVMV1pwYm1kbGNuQnlhVzUwIiwiaWF0IjoxNzkxNzE2NDAwLCJleHAiOjE3OTIzMjEyMDAsImlzcyI6ImJhbmNvLWV4ZW1wbG8ifQ",
-        "sig": "OIpilsHWTdepDCpa1OIuqs1SYtasy4bZZql9ehgbjL7lUowRGShBl2LU5zJH4Gw8GtkEWjmzuGfJLV10giy8AA",
+        "payload": "eyJzdWIiOiJAYW5hOmJpcGUubmV0LmJyIiwibHZsIjoiZ292YnIiLCJuYW1lIjoiQW5hIFNvdXphIiwibXNrIjoiZEdWemRDMWpjbTl6Y3kxemFXZHVhVzVuTFcxaGMzUmxjaTFyWlhrdE1ERSIsImlhdCI6MTc5MTcxNjQwMCwiZXhwIjoxNzkyMzIxMjAwLCJpc3MiOiJiYW5jby1leGVtcGxvIn0",
+        "sig": "ueje2g4u9TVbOhbdHhFsDucUrHS6pBBS_mYCMrmaig1V8PvsXlpRQhcZK_a7QRTUxOmTguT_XaUmSvvVkb05BQ",
         "iss": "banco-exemplo"
       },
       "sender": "@ana:bipe.net.br",
-      "senderDevice": "dGVzdC1kZXZpY2Uta2V5LWZpbmdlcnByaW50",
       "senderMasterKey": "dGVzdC1jcm9zcy1zaWduaW5nLW1hc3Rlci1rZXktMDE",
       "expect": "invalid_signature"
     },
@@ -155,12 +147,11 @@
       "envelope": {
         "v": 1,
         "kid": "test-only-banco-2026-11",
-        "payload": "eyJzdWIiOiJAYW5hOmJpcGUubmV0LmJyIiwibHZsIjoiZ292YnIiLCJuYW1lIjoiQW5hIFNvdXphIiwiZGV2IjoiZEdWemRDMWtaWFpwWTJVdGEyVjVMV1pwYm1kbGNuQnlhVzUwIiwiaWF0IjoxNzkxNzE2NDAwLCJleHAiOjE3OTIzMjEyMDB9",
-        "sig": "gl6OQTKgsi48xNYYZLI9LRtCx3b33-ut5u_n5u0euWzVZb5uRmnmhvGRt8dCFWjzOBUyF8pgVEIDJ_egq5-ZBg",
+        "payload": "eyJzdWIiOiJAYW5hOmJpcGUubmV0LmJyIiwibHZsIjoiZ292YnIiLCJuYW1lIjoiQW5hIFNvdXphIiwibXNrIjoiZEdWemRDMWpjbTl6Y3kxemFXZHVhVzVuTFcxaGMzUmxjaTFyWlhrdE1ERSIsImlhdCI6MTc5MTcxNjQwMCwiZXhwIjoxNzkyMzIxMjAwfQ",
+        "sig": "OpNwG48ObMzeIPN5Tb5pgBdSmrwW5OI1T-b08HEb9f-T6sXe1PHFmQjMMofmZJXb5hERQUiyfMGEanjijNbSCw",
         "iss": "banco-exemplo"
       },
       "sender": "@ana:bipe.net.br",
-      "senderDevice": "dGVzdC1kZXZpY2Uta2V5LWZpbmdlcnByaW50",
       "senderMasterKey": "dGVzdC1jcm9zcy1zaWduaW5nLW1hc3Rlci1rZXktMDE",
       "expect": "issuer_mismatch"
     },
@@ -169,11 +160,10 @@
       "envelope": {
         "v": 1,
         "kid": "test-only-2026-10",
-        "payload": "eyJzdWIiOiJAYW5hOmJpcGUubmV0LmJyIiwibHZsIjoicGl4IiwibmFtZSI6IkFuYSBTb3V6YSIsImRldiI6ImRHVnpkQzFrWlhacFkyVXRhMlY1TFdacGJtZGxjbkJ5YVc1MCIsImlhdCI6MTc5MTcxNjQwMCwiZXhwIjoxNzkyMzIxMjAwLCJpc3MiOiJiYW5jby1leGVtcGxvIn0",
-        "sig": "TFrmEiipx4z2Xk1AgcKZcikHfnCQO1ZLuHqxfD6ie--2qvdPlQKQa8lDS0-p43NX4Tj_xGoZKvuZ6fUo27q4Bw"
+        "payload": "eyJzdWIiOiJAYW5hOmJpcGUubmV0LmJyIiwibHZsIjoicGl4IiwibmFtZSI6IkFuYSBTb3V6YSIsIm1zayI6ImRHVnpkQzFqY205emN5MXphV2R1YVc1bkxXMWhjM1JsY2kxclpYa3RNREUiLCJpYXQiOjE3OTE3MTY0MDAsImV4cCI6MTc5MjMyMTIwMCwiaXNzIjoiYmFuY28tZXhlbXBsbyJ9",
+        "sig": "Kx3Xlv0ckULe2GTbypNCnNwxitadLDGWAO8WPHAIODnLG6khvyXFYAiLqCz8L1rJ4gKUdEENZx73z2uszpSHDQ"
       },
       "sender": "@ana:bipe.net.br",
-      "senderDevice": "dGVzdC1kZXZpY2Uta2V5LWZpbmdlcnByaW50",
       "senderMasterKey": "dGVzdC1jcm9zcy1zaWduaW5nLW1hc3Rlci1rZXktMDE",
       "expect": "issuer_mismatch"
     },
@@ -182,12 +172,11 @@
       "envelope": {
         "v": 1,
         "kid": "test-only-banco-2026-11",
-        "payload": "eyJzdWIiOiJAYW5hOmJpcGUubmV0LmJyIiwibHZsIjoicGl4IiwibmFtZSI6IkFuYSBTb3V6YSIsImRldiI6ImRHVnpkQzFrWlhacFkyVXRhMlY1TFdacGJtZGxjbkJ5YVc1MCIsImlhdCI6MTc5MTcxNjQwMCwiZXhwIjoxNzkyMzIxMjAwLCJpc3MiOiJiYW5jby1leGVtcGxvIn0",
-        "sig": "eaU7gQTLw9nrIi6g2ToYHIah0qeXfZFEpk6y9jEEaPVxA_cCmaqd7QOjWszhouhodgQRYWdWN4rz1EInsDlhCg",
+        "payload": "eyJzdWIiOiJAYW5hOmJpcGUubmV0LmJyIiwibHZsIjoicGl4IiwibmFtZSI6IkFuYSBTb3V6YSIsIm1zayI6ImRHVnpkQzFqY205emN5MXphV2R1YVc1bkxXMWhjM1JsY2kxclpYa3RNREUiLCJpYXQiOjE3OTE3MTY0MDAsImV4cCI6MTc5MjMyMTIwMCwiaXNzIjoiYmFuY28tZXhlbXBsbyJ9",
+        "sig": "RF3PIJJvy3fd4owFhb4MC8oRPQwFnypBIlrBNnWLRxv4CjaRe3YRPQk9kQtuHZ0i1iJRewDvTMnKasPtLJ9fDg",
         "iss": "banco-exemplo"
       },
       "sender": "@ana:bipe.net.br",
-      "senderDevice": "dGVzdC1kZXZpY2Uta2V5LWZpbmdlcnByaW50",
       "senderMasterKey": "dGVzdC1jcm9zcy1zaWduaW5nLW1hc3Rlci1rZXktMDE",
       "expect": "level_not_allowed"
     },
@@ -196,12 +185,11 @@
       "envelope": {
         "v": 1,
         "kid": "test-only-banco-2026-11",
-        "payload": "eyJzdWIiOiJAYW5hOmJpcGUubmV0LmJyIiwibHZsIjoiZ292YnIiLCJuYW1lIjoiQW5hIFNvdXphIiwiZGV2IjoiZEdWemRDMWtaWFpwWTJVdGEyVjVMV1pwYm1kbGNuQnlhVzUwIiwiaWF0IjoxNzkxNzE2NDAwLCJleHAiOjE3OTQzMTIwMDAsImlzcyI6ImJhbmNvLWV4ZW1wbG8ifQ",
-        "sig": "Q1Z0LuuuPUiPpgrdlpeOG1WBKWibGB98V5aGjf8rSOc1d2lUYNM6BToIOZDm-mvRkhAWjb2iuDS4galHuomcCg",
+        "payload": "eyJzdWIiOiJAYW5hOmJpcGUubmV0LmJyIiwibHZsIjoiZ292YnIiLCJuYW1lIjoiQW5hIFNvdXphIiwibXNrIjoiZEdWemRDMWpjbTl6Y3kxemFXZHVhVzVuTFcxaGMzUmxjaTFyWlhrdE1ERSIsImlhdCI6MTc5MTcxNjQwMCwiZXhwIjoxNzk0MzEyMDAwLCJpc3MiOiJiYW5jby1leGVtcGxvIn0",
+        "sig": "tIZO4SLIgLKpvrlkIQ2aCs8lcoupxObam74kXqrYLzGFG2gRuER4eLxEJHyhn_GinaeeRAgFKQi9NP8wc1K_Cw",
         "iss": "banco-exemplo"
       },
       "sender": "@ana:bipe.net.br",
-      "senderDevice": "dGVzdC1kZXZpY2Uta2V5LWZpbmdlcnByaW50",
       "senderMasterKey": "dGVzdC1jcm9zcy1zaWduaW5nLW1hc3Rlci1rZXktMDE",
       "expect": "life_too_long"
     },
@@ -210,12 +198,11 @@
       "envelope": {
         "v": 1,
         "kid": "test-only-banco-2026-11",
-        "payload": "eyJzdWIiOiJAYW5hOmJpcGUubmV0LmJyIiwibHZsIjoiZ292YnIiLCJuYW1lIjoiQW5hIFNvdXphIiwiZGV2IjoiZEdWemRDMWtaWFpwWTJVdGEyVjVMV1pwYm1kbGNuQnlhVzUwIiwiaWF0IjoxNzkxMDI4ODAwLCJleHAiOjE3OTE2MzM2MDAsImlzcyI6ImJhbmNvLWV4ZW1wbG8ifQ",
-        "sig": "qKi7OCGm8PFtfnYEQpBUOihMIsILW2CwZkbaTEfVRFrUybnMKBJgkuObIuiyt84NzwOCsJX4-hHIqqiMF29UAg",
+        "payload": "eyJzdWIiOiJAYW5hOmJpcGUubmV0LmJyIiwibHZsIjoiZ292YnIiLCJuYW1lIjoiQW5hIFNvdXphIiwibXNrIjoiZEdWemRDMWpjbTl6Y3kxemFXZHVhVzVuTFcxaGMzUmxjaTFyWlhrdE1ERSIsImlhdCI6MTc5MTAyODgwMCwiZXhwIjoxNzkxNjMzNjAwLCJpc3MiOiJiYW5jby1leGVtcGxvIn0",
+        "sig": "va0VQQQ2tE5PdPnAiAXpcm-y8R0GxV3dr72dYc1u3pEgEdBOJ6Y3d2C8zzP3l5SwqwyFeGz5pNj6LZXDDLSrDw",
         "iss": "banco-exemplo"
       },
       "sender": "@ana:bipe.net.br",
-      "senderDevice": "dGVzdC1kZXZpY2Uta2V5LWZpbmdlcnByaW50",
       "senderMasterKey": "dGVzdC1jcm9zcy1zaWduaW5nLW1hc3Rlci1rZXktMDE",
       "expect": "expired"
     },
@@ -224,12 +211,11 @@
       "envelope": {
         "v": 1,
         "kid": "test-only-banco-2026-11",
-        "payload": "eyJzdWIiOiJAYW5hOmJpcGUubmV0LmJyIiwibHZsIjoiZ292YnIiLCJuYW1lIjoiQW5hIFNvdXphIiwiZGV2IjoiZEdWemRDMWtaWFpwWTJVdGEyVjVMV1pwYm1kbGNuQnlhVzUwIiwiaWF0IjoxNzkxNzE2NDAwLCJleHAiOjE3OTIzMjEyMDAsImlzcyI6ImJhbmNvLWV4ZW1wbG8ifQ",
-        "sig": "exYbz88-mnjvkGEOPIgKPCdq_6kXplHl9sg8dwXbOCoTUTYEACZ21GItY6q-_WHeaVqRT1b_uJrO3MyuAP1pBw",
+        "payload": "eyJzdWIiOiJAYW5hOmJpcGUubmV0LmJyIiwibHZsIjoiZ292YnIiLCJuYW1lIjoiQW5hIFNvdXphIiwibXNrIjoiZEdWemRDMWpjbTl6Y3kxemFXZHVhVzVuTFcxaGMzUmxjaTFyWlhrdE1ERSIsImlhdCI6MTc5MTcxNjQwMCwiZXhwIjoxNzkyMzIxMjAwLCJpc3MiOiJiYW5jby1leGVtcGxvIn0",
+        "sig": "aDamsHCDnaP4YLQosOqfrgV3N6RWAMiBqHeENnMesiYwFqbKObrV0LX6fIQ7mwerWghbgzyRnvNvQjntJfN3Dg",
         "iss": "banco-exemplo"
       },
       "sender": "@mallory:bipe.net.br",
-      "senderDevice": "dGVzdC1kZXZpY2Uta2V5LWZpbmdlcnByaW50",
       "senderMasterKey": "dGVzdC1jcm9zcy1zaWduaW5nLW1hc3Rlci1rZXktMDE",
       "expect": "subject_mismatch"
     }

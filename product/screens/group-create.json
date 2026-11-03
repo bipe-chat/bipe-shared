@@ -61,6 +61,7 @@
     "Client.uploadMedia",
     "Client.createRoom",
     "CreateRoomParameters",
+    "PowerLevels",
     "RoomPreset",
     "RoomVisibility",
     "Client.getRoom",
@@ -68,7 +69,7 @@
   ],
   "parity": ["group-types", "e2ee-only-rooms"],
   "notes": [
-    "CreateRoomParameters: name (trimmed), isEncrypted true, isDirect false, visibility private, preset privateChat, avatar the mxc URL from the upload, topic none, invite none. People are invited after the create, one call each, so one refused invite does not stop the group.",
+    "CreateRoomParameters: name (trimmed), isEncrypted true, isDirect false, visibility private, preset privateChat, avatar the mxc URL from the upload, topic none, invite none. People are invited after the create, one call each, so one refused invite does not stop the group. powerLevelContentOverride: the levels of registries/group-power-levels.json (BipeGroupPowerLevels, bipe-chat/bipe#733) with an empty users map, so the server keeps the creator at the top.",
     "Every group is end-to-end encrypted (parity e2ee-only-rooms). There is no switch for it, no public option and no room address. Join rule invite, from the preset.",
     "Quiet by default (ADR 0026, parity group-types): the group takes the account default for groups, which BipeQuietGroups sets to mentions and keywords plus the poll rule chat.bipe.poll_start. The screen does not set a mode per group. bipe_app_group_create_quiet_footer says it only when the default for groups is quiet (NotificationSettings.getDefaultRoomNotificationMode with isOneToOne false is mentionsAndKeywordsOnly). Bipe logic: BipeQuietGroups (libraries/bipe groups/BipeQuietGroups.kt; iOS app target, not BipeKit). Move it to the bipe-app SDK layer and run it once per account after the first sync.",
     "The create button is bipe_groups_empty_action (Criar grupo), the same words as the empty groups tab.",

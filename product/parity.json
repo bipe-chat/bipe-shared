@@ -1436,6 +1436,21 @@
       "fork": true
     },
     {
+      "id": "group-roles",
+      "name": "Group roles: Admin, Moderador, Membro",
+      "ios": "planned",
+      "android": "planned",
+      "web": {
+        "status": "n/a",
+        "reason": "No web chat (ADR 0004); the site shows a demo at most"
+      },
+      "server": {
+        "status": "n/a",
+        "reason": "Plain Matrix power levels; no Bipe server code"
+      },
+      "issue": 733
+    },
+    {
       "id": "polls",
       "name": "Polls",
       "ios": {

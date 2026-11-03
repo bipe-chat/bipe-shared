@@ -20,6 +20,7 @@ import { generateColors } from "./lib/gen-tokens.mjs";
 import { generateChatArchive } from "./lib/gen-chat-archive.mjs";
 import { generateDmSelection } from "./lib/gen-dm-selection.mjs";
 import { generateDmPowerLevels } from "./lib/gen-dm-power-levels.mjs";
+import { generateGroupPowerLevels } from "./lib/gen-group-power-levels.mjs";
 import { generateMessageFormatting } from "./lib/gen-message-formatting.mjs";
 import { generateRelationshipNames } from "./lib/gen-relationship-names.mjs";
 import { generateStoreCaptures, loadStoreCaptures, STORE_CAPTURES_PATH } from "./lib/store-captures.mjs";
@@ -900,11 +901,15 @@ if (appIndex >= 0 || existsSync(appOut)) {
   writeFileSync(join(swiftDir, "BipeScreen.swift"), appPost(appScreens("swift"), "swift"));
   // DM power levels (ADR 0141, bipe-chat/bipe#532).
   writeFileSync(join(swiftDir, "BipeDmPowerLevels.swift"), appPost(generateDmPowerLevels(reg.dmPowerLevels, "swift", HEADER, swiftString), "swift"));
+  // Group roles (bipe-chat/bipe#733).
+  writeFileSync(join(swiftDir, "BipeGroupPowerLevels.swift"), appPost(generateGroupPowerLevels(reg.groupPowerLevels, "swift", HEADER, swiftString), "swift"));
   const kotlinMain = join(appOut, "android/libraries/bipe/src/main");
   writeKotlin(kotlinMain, { packageName: KOTLIN_PACKAGE, post: appPost });
   writeFileSync(join(kotlinMain, "kotlin", ...KOTLIN_PACKAGE.split("."), "BipeScreen.kt"), appPost(appScreens("kotlin"), "kotlin"));
   writeFileSync(join(kotlinMain, "kotlin", ...KOTLIN_PACKAGE.split("."), "BipeDmPowerLevels.kt"),
     appPost(generateDmPowerLevels(reg.dmPowerLevels, "kotlin", KOTLIN_HEADER, kotlinString), "kotlin"));
+  writeFileSync(join(kotlinMain, "kotlin", ...KOTLIN_PACKAGE.split("."), "BipeGroupPowerLevels.kt"),
+    appPost(generateGroupPowerLevels(reg.groupPowerLevels, "kotlin", KOTLIN_HEADER, kotlinString), "kotlin"));
   // Store captures (bipe-chat/bipe#457): the sample data of the Android capture source, a test source set only.
   const storeHeader = HEADER.replace("bipe-shared/registries and bipe-shared/strings", "bipe-shared/product/store-captures.json and product/cast.json");
   mkdirSync(dirname(join(appOut, STORE_CAPTURES_PATH)), { recursive: true });

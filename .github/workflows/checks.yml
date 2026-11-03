@@ -75,15 +75,53 @@ jobs:
               bipe-app) echo "ios/BipeKit/Sources/BipeKit/Generated ios/BipeKit/Sources/BipeKit/Resources android/libraries/bipe/src/main web/src/bipe/generated" ;;
             esac
           }
+          # Branch B in a sibling falls behind its main while the bipe-shared pull request is open. Generated
+          # files on an old base broke the app build and lockstep on bipe-app#372 (2 November 2026). So regen
+          # merges the sibling's main into B first. A conflict inside the generated paths takes main's side:
+          # the generators write those files again below. A conflict outside them leaves B as it is.
+          catch_up() {
+            repo=$1
+            git -C "$repo" fetch -q origin main
+            git -C "$repo" merge-base --is-ancestor origin/main HEAD && return 0
+            if git -C "$repo" -c user.name="bipe-shared regen" -c user.email="regen@bipe.chat" \
+                merge -q --no-edit -m "Merge main into ${BRANCH} (bipe-shared regen)" origin/main; then
+              echo "${repo}: merged main into ${BRANCH}"
+              return 0
+            fi
+            outside=""
+            for f in $(git -C "$repo" diff --name-only --diff-filter=U); do
+              inside=no
+              for path in $(generated "$repo"); do
+                case "$f" in "$path"|"$path"/*) inside=yes ;; esac
+              done
+              if [ "$inside" = no ]; then
+                outside="$outside $f"
+              elif git -C "$repo" cat-file -e "origin/main:$f" 2>/dev/null; then
+                git -C "$repo" checkout -q origin/main -- "$f"
+              else
+                git -C "$repo" rm -q -- "$f"
+              fi
+            done
+            if [ -n "$outside" ]; then
+              git -C "$repo" merge --abort
+              echo "::warning::${repo} ${BRANCH}: main does not merge in (conflicts in${outside}). Merge main into ${BRANCH} by hand."
+              return 0
+            fi
+            git -C "$repo" -c user.name="bipe-shared regen" -c user.email="regen@bipe.chat" commit -q --no-edit
+            echo "${repo}: merged main into ${BRANCH} (generated conflicts took main)"
+          }
           repos=""
           for repo in bipe bipe-api bipe-app; do
             url="https://x-access-token:${TOKEN}@github.com/bipe-chat/${repo}.git"
             repos="$repos $repo"
             if git ls-remote --exit-code --heads "$url" "$BRANCH" > /dev/null; then
-              git clone -q --depth 1 --branch "$BRANCH" "$url" "$repo"
+              git clone -q --filter=blob:none --branch "$BRANCH" "$url" "$repo"
+              git -C "$repo" rev-parse HEAD > "$repo.start"
+              catch_up "$repo"
             else
               git clone -q --depth 1 "$url" "$repo"
               git -C "$repo" checkout -q -b "$BRANCH"
+              git -C "$repo" rev-parse HEAD > "$repo.start"
             fi
           done
           # bipe-app is public, so the clone works without access; the push would fail with 403.
@@ -102,12 +140,14 @@ jobs:
           for repo in $repos; do
             # shellcheck disable=SC2046
             git -C "$repo" add -A -- $(generated "$repo")
-            if git -C "$repo" diff --cached --quiet; then
+            if ! git -C "$repo" diff --cached --quiet; then
+              git -C "$repo" -c user.name="bipe-shared regen" -c user.email="regen@bipe.chat" \
+                commit -q -m "Regenerate from bipe-shared#${PR_NUMBER}" -m "Output of the bipe-shared generators for ${PR_URL}."
+            fi
+            if [ "$(git -C "$repo" rev-parse HEAD)" = "$(cat "$repo.start")" ]; then
               echo "${repo}: up to date"
               continue
             fi
-            git -C "$repo" -c user.name="bipe-shared regen" -c user.email="regen@bipe.chat" \
-              commit -q -m "Regenerate from bipe-shared#${PR_NUMBER}" -m "Output of the bipe-shared generators for ${PR_URL}."
             git -C "$repo" push -q origin "HEAD:refs/heads/${BRANCH}"
             echo "${repo}: pushed ${BRANCH}"
             # A pull request on branch B with a base other than main (a stacked pull request) carries the

@@ -148,6 +148,23 @@
       }
     },
     {
+      "id": "age-range",
+      "basis": "legal-obligation",
+      "places": ["server"],
+      "pt": {
+        "name": "Faixa de idade",
+        "what": "A faixa de idade que o celular informou (menos de 13, 13 a 15, 16 a 17, ou 18 anos ou mais), de onde ela veio (Apple ou Google) e a data. Nunca a data de nascimento.",
+        "why": "Dar às contas de menores de 18 anos as proteções que o ECA Digital pede. Uma conta sem faixa recebe as mesmas proteções.",
+        "retention": "Enquanto a conta existir."
+      },
+      "en": {
+        "name": "Age range",
+        "what": "The age range the phone reported (under 13, 13 to 15, 16 to 17, or 18 and over), where it came from (Apple or Google) and the date. Never the date of birth.",
+        "why": "To give accounts of people under 18 the protections that Brazil's ECA Digital requires. An account with no range gets the same protections.",
+        "retention": "As long as the account exists."
+      }
+    },
+    {
       "id": "recovery-token",
       "basis": "contract",
       "places": ["icloud-keychain"],

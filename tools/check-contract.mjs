@@ -78,6 +78,7 @@ const NOT_IN_APPS = {
   DiscoverySettings: "one boolean; iOS sends it from a private request type in BipeAPIClient",
   MessagingSetting: "one enum field; iOS decodes it in a private MessagingSetting type in BipeAPIClient, exposed as BipeWhoCanMessage",
   TermsAcceptance: "one string; the apps send it from a private request type in their API client (ADR 0113)",
+  AgeSignal: "the apps send it from a private request type in their API client (ADR 0229)",
   ExperimentEvent: "web only (headline test)",
   WaitlistRequest: "the site, and the apps' \"Não tem convite?\" sheet (bipe#415) from a private request type in their API client",
   OrganisationRequest: "web only",

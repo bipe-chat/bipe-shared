@@ -572,6 +572,35 @@ paths:
         "401": { $ref: "#/components/responses/Error" }
         "403": { $ref: "#/components/responses/Error" }
         "429": { $ref: "#/components/responses/Error" }
+  /v1/me/age:
+    put:
+      summary: Record the caller's OS age signal (ADR 0229)
+      description: >
+        The app reads Apple Declared Age Range or Google Play Age Signals and sends the range, or source none
+        when the OS gave nothing (declined, no signal, foss build). The server maps the range to one band with
+        ageBand() (registries/age-signals.json) and stores only the band, the source, the method and the time;
+        it keeps no range and no date of birth. The band is never shown to other users. The app sends it after
+        sign-up, at app start when age_checked_at is absent, and again when age_checked_at is older than
+        recheckDays.
+      security: [{ matrix: [] }]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: { $ref: "#/components/schemas/AgeSignal" }
+      responses:
+        "200":
+          description: Recorded
+          content:
+            application/json:
+              schema:
+                type: object
+                required: [age_band]
+                properties:
+                  age_band: { type: string, enum: [unknown, under_13, "13_15", "16_17", 18_plus] }
+        "400": { $ref: "#/components/responses/Error" }
+        "401": { $ref: "#/components/responses/Error" }
+        "429": { $ref: "#/components/responses/Error" }
   /v1/me/account:
     get:
       summary: The caller's device-first account state (ADR 0057)
@@ -6635,6 +6664,16 @@ components:
         link_events: { type: array, items: { $ref: "#/components/schemas/LinkEvent" }, description: "Links and unlinks of the last 7 days, newest first. The other devices show each once." }
         independent_recovery: { type: boolean, description: "bipe#531: true when the account has a recovery factor that does not depend on the Apple Team ID and that the server can check: a verified recovery email or a linked Google account (ADR 0096; a linked Apple account does not count). The app shows the recovery-reminder card when false. Absent from an older server: the app shows no card." }
         deletion: { $ref: "#/components/schemas/AccountDeletion", description: "ADR 0140: the waiting deletion request. Absent when none. The device that asked shows a banner with due_at and Cancelar; every other device shows the deletion alert." }
+        age_band: { type: string, enum: [unknown, under_13, "13_15", "16_17", 18_plus], description: "ADR 0229: the band from the last OS age signal; unknown when none. Every band except 18_plus gets the under-18 defaults. Absent from an older server." }
+        age_checked_at: { type: string, format: date-time, description: "ADR 0229: when the app last sent an age signal. Absent when never: the app reads the OS signal and sends it (PUT /v1/me/age)." }
+    AgeSignal:
+      type: object
+      required: [source]
+      properties:
+        source: { type: string, enum: [apple, play, none], description: "apple: Declared Age Range. play: Play Age Signals. none: the OS gave no range." }
+        lower: { type: integer, minimum: 0, maximum: 150, description: "Lowest age of the range, inclusive. Absent when open below or when source is none." }
+        upper: { type: integer, minimum: 0, maximum: 150, description: "Highest age of the range, inclusive. Absent when open above or when source is none." }
+        method: { type: string, maxLength: 64, description: "How the OS got the age, as the OS names it (Apple AgeRangeDeclaration, Play userStatus). Optional." }
     TermsAcceptance:
       type: object
       required: [terms_version]

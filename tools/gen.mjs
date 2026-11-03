@@ -158,6 +158,10 @@ public enum BipeRegistries {
     public static let theftStatementLifeHours = ${reg.theft.statementLifeHours}
     public static let theftCheckMinutes = ${reg.theft.checkMinutes}
 
+    /// Age signals (ADR 0229, registries/age-signals.json). The server maps the range to a band; the app only reads and sends it.
+    public static let ageSignalAppleGates: [Int] = ${swiftArray(reg.ageSignals.appleGates.map(String))}
+    public static let ageSignalRecheckDays = ${reg.ageSignals.recheckDays}
+
     /// Username (handle) rules. The server is the authority; clients check early for feedback.
     public static let handleMinLength = ${reg.handles.minLength}
     public static let handleMaxLength = ${reg.handles.maxLength}
@@ -551,6 +555,9 @@ object BipeRegistries {
     const val THEFT_MARKED_MESSAGE_MINUTES = ${reg.theft.markedMessageMinutes}
     const val THEFT_STATEMENT_LIFE_HOURS = ${reg.theft.statementLifeHours}
     const val THEFT_CHECK_MINUTES = ${reg.theft.checkMinutes}
+
+    /** Age signals (ADR 0229, registries/age-signals.json). The server maps the range to a band; the app only reads and sends it. */
+    const val AGE_SIGNAL_RECHECK_DAYS = ${reg.ageSignals.recheckDays}
 
     /** Username (handle) rules. The server is the authority; clients check early for feedback. */
     const val HANDLE_MIN_LENGTH = ${reg.handles.minLength}

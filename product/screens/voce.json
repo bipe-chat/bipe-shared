@@ -70,7 +70,7 @@
     "settings-structure"
   ],
   "notes": [
-    "MZ decision 25 Oct 2026 (bipe#577): Você has no account rows. The accounts on this phone switch from the Você tab: a hold opens account-switcher, a double tap goes to the next account, and screen readers use the tab's accessibility action (app-tabs). MZ, 2 Nov 2026 (bipe-chat/bipe#988): Adicionar conta (bipe_app_account_new) is the last row of Você, after settings-root, as plain accent text without a tile, as Instagram's add-account row next to sign-out. Adding an account is rare, so it does not take the place under the header.",
+    "MZ decision 25 Oct 2026 (bipe#577): Você has no account rows. The accounts on this phone switch from the Você tab: a hold opens account-switcher, a double tap goes to the next account, and screen readers use the tab's accessibility action (app-tabs). MZ, 2 Nov 2026 (bipe-chat/bipe#988): Adicionar conta (bipe_app_account_new) is the last row of Você, after settings-root, with the same icon tile (plus) as every other Você row. Adding an account is rare, so it does not take the place under the header.",
     "MZ decision 25 Oct 2026 (bipe#577): the header shows the current account's avatar (photo, else initials). Since the chat list has no account avatar, Você is the one screen that shows it.",
     "Asks (MZ, 2 Nov 2026, bipe-chat/bipe#894): Você shows no prompt cards. The photo and osTheftProtection asks are entries of chat-list-prompt, the one ask system of the app.",
     "The header never shows the Matrix ID (ADR 0112).",

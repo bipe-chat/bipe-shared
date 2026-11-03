@@ -3251,7 +3251,7 @@
     },
     {
       "id": "chat-favourites-filters",
-      "name": "Favourite a chat; unread and favourites filters in the chat list (bipe#673)",
+      "name": "Favourite a chat; unread and favourites filters in the chat list (bipe#673); favourites in the order the user sets",
       "ios": {
         "status": "testing",
         "evidence": [

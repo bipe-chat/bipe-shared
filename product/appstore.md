@@ -15,7 +15,7 @@ Format:
 - `### <field>` before the first locale is a field for every locale. `### pt-BR` and `### en-US` start a locale. `#### <field>` is a field of that locale.
 - Android `full_description` is required in each locale. It starts from the iOS `description` and keeps only what the Android app does (bipe-chat/bipe#457). The Play text adds the locale's paragraph of `## Accessibility`.
 - `## Accessibility`: the App Store Accessibility Nutrition Labels and the Play accessibility paragraph, generated from `product/accessibility.json` by `node tools/check-appstore.mjs --write` (bipe-chat/bipe#503). Do not edit it by hand.
-- `## Screenshots`: one table per locale, panels in store order. `feature` is a feature id in `product.json`, or `-` for a panel with no capture: the image builder draws the Brazil network there. `title` is the feature name, short enough for 2 lines at store size. `sub` is one sentence of at most 2 lines. No highlight markup (bipe-chat/bipe#463).
+- `## Screenshots`: one table per locale, panels in store order. `feature` is a feature id in `product.json`, or `-` for a panel with no capture: the image builder draws the Brazil network there. `title` says what the feature does for the person, not its name (MZ, 2 November 2026), short enough for 2 lines at store size. `sub` is one sentence of at most 2 lines. No highlight markup (bipe-chat/bipe#463).
 
 Limits: name and subtitle 30, promotional text 170, description 4000, keywords 100 (comma separated, no space after a comma), Play title 30, Play short description 80, Play full description 4000.
 
@@ -311,28 +311,28 @@ Accessibility: Bipe works with TalkBack, Voice Access, large text, dark theme, w
 | slug | feature | title | sub |
 |---|---|---|---|
 | pedidos | requests | Saiba com quem está falando | Quem é novo chega como pedido. |
-| seu-arroba | handles | Seu @, não seu número | O link abre a conversa. |
-| aviso-golpe | scam-alerts | Aviso antes de agir | Se uma mensagem tem cara de golpe, um aviso diz o que fazer. |
+| seu-arroba | handles | Seu @, não seu número | Passe o @ e o número fica com você. |
+| aviso-golpe | scam-alerts | Avisa quando parece golpe | Pix com pressa ganha um aviso. |
 | dados-no-brasil | - | Seus dados ficam no Brasil | Sem anúncio e sem venda de dados. |
 | empresa | agenda | Sua empresa no mesmo app | Com agenda, catálogo e fila. |
-| selo-cnpj | cnpj-badge | Selo de CNPJ | O cliente vê o nome que está na Receita. |
+| selo-cnpj | cnpj-badge | Empresa com nome real | O selo traz o nome da Receita. |
 | conferir-pix | pix-check | Confira o Pix | Veja o nome e o valor do código antes de pagar. |
 | grupos | group-types | Grupos sem barulho | O grupo só toca quando é com você. |
-| stickers | stickers | Stickers | Faça um sticker de qualquer foto. |
+| stickers | stickers | Sticker de qualquer foto | Transforme e mande na conversa. |
 
 ### en-US
 
 | slug | feature | title | sub |
 |---|---|---|---|
 | pedidos | requests | Know who you're talking to | Strangers arrive as a request. |
-| seu-arroba | handles | Your @, not your number | Your link opens the chat. |
-| aviso-golpe | scam-alerts | A warning before you act | If a message looks like a scam, a warning tells you what to do. |
+| seu-arroba | handles | Your @, not your number | Share your @ and keep your number. |
+| aviso-golpe | scam-alerts | Flags what looks like a scam | A rushed Pix gets a warning. |
 | dados-no-brasil | - | Your data stays in Brazil | No ads, and no data for sale. |
 | empresa | agenda | Your business, same app | With an agenda, a catalog and a queue. |
-| selo-cnpj | cnpj-badge | CNPJ seal | Customers see the name on the federal register. |
+| selo-cnpj | cnpj-badge | Real business names | The seal shows the registered name. |
 | conferir-pix | pix-check | Check the Pix | See the name and the amount in the code before you pay. |
 | grupos | group-types | Quiet groups | A group only rings when it's about you. |
-| stickers | stickers | Stickers | Make a sticker from any photo. |
+| stickers | stickers | A sticker from any photo | Make one and send it in the chat. |
 
 ## App Privacy
 

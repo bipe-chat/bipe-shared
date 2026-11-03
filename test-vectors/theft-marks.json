@@ -49,8 +49,8 @@
       "envelope": {
         "v": 1,
         "kid": "test-only-2026-10",
-        "payload": "eyJzdWIiOiJAYW5hOmJpcGUubmV0LmJyIiwibHZsIjoicGl4IiwibmFtZSI6IkFuYSBTb3V6YSIsImRldiI6ImRHVnpkQzFrWlhacFkyVXRhMlY1TFdacGJtZGxjbkJ5YVc1MCIsImlhdCI6MTc5MTcxNjQwMCwiZXhwIjoxNzk0MzEyMDAwfQ",
-        "sig": "ObAYWuef27osnehTvYAv4a3vrHTj41wyQOMti4HPjmnaVMbZlErZYlMQHyY9zBxoFEnvkRvRDlYMDMpln2enDA"
+        "payload": "eyJzdWIiOiJAYW5hOmJpcGUubmV0LmJyIiwibHZsIjoicGl4IiwibmFtZSI6IkFuYSBTb3V6YSIsIm1zayI6ImRHVnpkQzFqY205emN5MXphV2R1YVc1bkxXMWhjM1JsY2kxclpYa3RNREUiLCJpYXQiOjE3OTE3MTY0MDAsImV4cCI6MTc5NDMxMjAwMH0",
+        "sig": "vsmwPt-OGeFZYAg8ofZAnBpmZ4TlyWkQxn7-J7qDt0S86lz9J-3jdEMIt7B6tDvd6HvQbQsUoexiwNJtEzVeDw"
       },
       "subject": "@ana:bipe.net.br",
       "expected": {

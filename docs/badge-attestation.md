@@ -32,12 +32,13 @@ Fields for every level:
 | `exp` | integer | Expires at, Unix seconds |
 | `iss` | string, optional | Issuer ID. Absent means `bipe`. Must equal the envelope `iss` (both absent is equal) |
 
-Binding. A badge binds to one device or to the account:
+Binding. Every badge binds to the account (ADR 0239):
 
 | Field | Levels | Meaning |
 |---|---|---|
-| `dev` | `pix`, `govbr` | Fingerprint of the device key the badge is bound to (Matrix device Ed25519 key, base64) |
-| `msk` | `cnpj`, `institution`, `brand-mark` | The account's cross-signing master key (Matrix unpadded base64), as the homeserver has it when the server signs. A company or institution account has several devices (ADR 0087), so the badge binds to the account, not one device (bipe#270). The Matrix SDK also gives no sending device per event, so a device-bound institution badge could not show on a notice (bipe-chat/bipe#245) |
+| `msk` | every level | The account's cross-signing master key (Matrix unpadded base64), as the homeserver has it when the server signs. The master key signs every device of the account, so the badge shows on any of its devices. A company or institution account has several devices (ADR 0087, bipe#270). The Matrix SDK gives no sending device per event (bipe-chat/bipe#245, bipe-chat/bipe#596), so a device-bound badge cannot show on a message |
+
+A badge with `dev` and no `msk` is `malformed` on every level. `dev` was the device binding of `pix` and `govbr` before ADR 0239; no such badge was issued.
 
 Company fields (`lvl: "cnpj"`, a verified company, ADR 0042):
 
@@ -95,21 +96,19 @@ ADR 0170 lets several accredited issuers sign badges (bipe-chat/bipe#637). The i
 
 ## Verification order
 
-Inputs: the envelope, the sender's user ID, the sending device's key fingerprint, the sender's cross-signing master key from the Matrix SDK (or none when the app does not know it), and the trusted issuers.
+Inputs: the envelope, the sender's user ID, the sender's cross-signing master key from the Matrix SDK (or none when the app does not know it), and the trusted issuers.
 
 1. `v` equals 1, else `unsupported_version`.
 2. The issuer (envelope `iss`, absent means `bipe`) is a trusted issuer, else `unknown_issuer`.
 3. `kid` is a key of that issuer, else `unknown_kid`.
 4. Ed25519 signature over the decoded payload bytes is valid, else `invalid_signature`.
-5. Payload parses and all required fields for its `lvl` are present and well formed, else `malformed`. An unknown `lvl` is `malformed`. For `cnpj`: `cnpj` matches `^[0-9A-Z]{12}[0-9]{2}$`, `legal_name` and `msk` are not empty, `method` is one of the three values, `checked_month` matches `^[0-9]{4}-(0[1-9]|1[0-2])$`. A `cnpj` badge without `msk` is `malformed`, also when it has `dev`. For `institution`: `cnpj` matches the same pattern, `msk` is not empty, and `domains`, when present, is a list of strings that each match `^[a-z0-9-]+(\.[a-z0-9-]+)+$`. An `institution` badge without `msk` is `malformed`, also when it has `dev`. For `brand-mark`: `mark`, `brand`, `name` and `msk` are not empty, `cnpj` matches the `cnpj` pattern, and `label` is in `registries/brand-marks.json`; no `dev`.
+5. Payload parses and all required fields for its `lvl` are present and well formed, else `malformed`. An unknown `lvl` is `malformed`. Every level needs a non-empty `msk`. For `cnpj`: `cnpj` matches `^[0-9A-Z]{12}[0-9]{2}$`, `legal_name` and `msk` are not empty, `method` is one of the three values, `checked_month` matches `^[0-9]{4}-(0[1-9]|1[0-2])$`. A `cnpj` badge without `msk` is `malformed`, also when it has `dev`. For `institution`: `cnpj` matches the same pattern, `msk` is not empty, and `domains`, when present, is a list of strings that each match `^[a-z0-9-]+(\.[a-z0-9-]+)+$`. An `institution` badge without `msk` is `malformed`, also when it has `dev`. For `brand-mark`: `mark`, `brand`, `name` and `msk` are not empty, `cnpj` matches the `cnpj` pattern, and `label` is in `registries/brand-marks.json`; no `dev`.
 6. Payload `iss` (absent means `bipe`) equals the envelope issuer, else `issuer_mismatch`.
 7. `lvl` is in the issuer's `levels`, else `level_not_allowed`. Issuer `bipe` before a registry exists: every level.
 8. For an issuer other than `bipe`: `exp - iat <= lifeDays * 86400`, else `life_too_long`.
 9. `iat <= now < exp`, else `expired` (or `not_yet_valid`).
 10. `sub` equals the sender's user ID, else `subject_mismatch`.
-11. Binding:
-   - `cnpj`, `institution` and `brand-mark`: `msk` equals the sender's master key, else `master_key_mismatch`. No known master key is also `master_key_mismatch`. A mismatch means the account reset its cryptographic identity: the badge is suspended until the server signs a new one.
-   - Other levels: `dev` equals the sending device's key fingerprint, else `device_mismatch`. A mismatch means the account moved to a new device: the badge is suspended (security rule 4).
+11. Binding: `msk` equals the sender's master key, else `master_key_mismatch`. No known master key is also `master_key_mismatch`. A mismatch means the account reset its cryptographic identity: the badge is suspended until the server signs a new one (security rule 4).
 
 Fail closed: any other error means no badge.
 

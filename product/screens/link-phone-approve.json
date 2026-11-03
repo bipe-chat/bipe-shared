@@ -71,7 +71,7 @@
       "effect": "expired and notFound → bipe_app_link_phone_expired; cancelled after the consent page → closes with no message (the user declined on the MAS page); anything else → bipe_error_generic. Calls finish."
     },
     "finish": {
-      "effect": "As link-computer-approve finish: drops the HTTP client, then POST /v1/web-link/finish so that bipe-api ends the MAS browser session the client made."
+      "effect": "As link-computer-approve finish: drops the HTTP client, then POST /v1/web-link/finish with kind = phone so that bipe-api ends the MAS browser session the client made."
     },
     "cancel": {
       "effect": "In warning: ContinuationMessageSender.cancel and closes the flow. The new phone does not sign in."

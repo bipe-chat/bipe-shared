@@ -781,6 +781,16 @@
       "fork": true
     },
     {
+      "id": "profile-socials",
+      "name": "Social handles on the public profile",
+      "ios": "planned",
+      "android": "planned",
+      "web": "planned",
+      "server": "planned",
+      "issue": 993,
+      "note": "ADR 0228. The rule and vectors are in bipe-shared (socialHandleProblem, test-vectors/social-handles.json)"
+    },
+    {
       "id": "invites",
       "name": "Invites",
       "ios": {
@@ -1841,6 +1851,27 @@
         ]
       },
       "fork": true
+    },
+    {
+      "id": "age-signal",
+      "name": "Age band from the OS age signal, no date of birth (ADR 0229)",
+      "ios": {
+        "status": "planned",
+        "note": "Declared Age Range, bipe-chat/bipe#994"
+      },
+      "android": {
+        "status": "planned",
+        "note": "Play Age Signals in the play flavour, bipe-chat/bipe#994"
+      },
+      "web": {
+        "status": "n/a",
+        "reason": "A browser has no OS age signal; a web-only account stays unknown (ADR 0229)"
+      },
+      "server": {
+        "status": "planned",
+        "note": "PUT /v1/me/age and age_signals, bipe-chat/bipe#994"
+      },
+      "issue": 994
     },
     {
       "id": "terms-reaccept",

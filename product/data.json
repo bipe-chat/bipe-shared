@@ -148,6 +148,23 @@
       }
     },
     {
+      "id": "age-range",
+      "basis": "legal-obligation",
+      "places": ["server"],
+      "pt": {
+        "name": "Faixa de idade",
+        "what": "A faixa de idade que o celular informou (menos de 13, 13 a 15, 16 a 17, ou 18 anos ou mais), de onde ela veio (Apple ou Google) e a data. Nunca a data de nascimento.",
+        "why": "Dar às contas de menores de 18 anos as proteções que o ECA Digital pede. Uma conta sem faixa recebe as mesmas proteções.",
+        "retention": "Enquanto a conta existir."
+      },
+      "en": {
+        "name": "Age range",
+        "what": "The age range the phone reported (under 13, 13 to 15, 16 to 17, or 18 and over), where it came from (Apple or Google) and the date. Never the date of birth.",
+        "why": "To give accounts of people under 18 the protections that Brazil's ECA Digital requires. An account with no range gets the same protections.",
+        "retention": "As long as the account exists."
+      }
+    },
+    {
       "id": "recovery-token",
       "basis": "contract",
       "places": ["icloud-keychain"],
@@ -283,6 +300,23 @@
         "what": "The @handle you choose. When you release a handle, it stays reserved for you for 90 days.",
         "why": "So people find you by @handle without seeing your phone number.",
         "retention": "Until you remove the handle. The reservation lasts 90 days."
+      }
+    },
+    {
+      "id": "public-profile",
+      "basis": "consent",
+      "places": ["server"],
+      "pt": {
+        "name": "Perfil público",
+        "what": "O nome, a bio, uma cópia da sua foto e o @ das suas redes sociais que você coloca no perfil público.",
+        "why": "Mostrar seu perfil para quem abre o seu link, só quando você liga o perfil.",
+        "retention": "Até você apagar esses dados ou a conta. Quando você desliga o perfil, ninguém mais vê."
+      },
+      "en": {
+        "name": "Public profile",
+        "what": "The name, bio, a copy of your photo and the social handles you put on your public profile.",
+        "why": "To show your profile to people who open your link, only while your profile is on.",
+        "retention": "Until you delete them or the account. When you turn the profile off, nobody sees it."
       }
     },
     {

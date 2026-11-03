@@ -61,6 +61,14 @@ public struct ScamPattern: Sendable, Equatable {
     public let regex: String
 }
 
+/// A network a public profile may link to (ADR 0228). url holds {handle} once.
+public struct SocialPlatform: Sendable, Equatable {
+    public let id: String
+    public let name: String
+    public let pattern: String
+    public let url: String
+}
+
 public enum BipeRegistries {
     /// Normalised reserved display names and their category.
     public static let reservedNames: [String: ReservedNameCategory] = ${swiftArray(reserved)}
@@ -158,10 +166,16 @@ public enum BipeRegistries {
     public static let theftStatementLifeHours = ${reg.theft.statementLifeHours}
     public static let theftCheckMinutes = ${reg.theft.checkMinutes}
 
+    /// Age signals (ADR 0229, registries/age-signals.json). The server maps the range to a band; the app only reads and sends it.
+    public static let ageSignalAppleGates: [Int] = ${swiftArray(reg.ageSignals.appleGates.map(String))}
+    public static let ageSignalRecheckDays = ${reg.ageSignals.recheckDays}
+
     /// Username (handle) rules. The server is the authority; clients check early for feedback.
     public static let handleMinLength = ${reg.handles.minLength}
     public static let handleMaxLength = ${reg.handles.maxLength}
     public static let handlePattern = ${swiftString(reg.handles.pattern)}
+    /// Characters handleSkeleton() removes after normalize() (a regex character class).
+    public static let handleSkeletonStrip = ${swiftString(reg.handles.skeletonStrip)}
     /// Owned handles (ADR 0065): only these may be shorter than \`handleMinLength\`, down to \`handleOwnerMinLength\`.
     public static let handleOwnerMinLength = ${reg.handles.ownerMinLength}
     /// Escolha seu @ (bipe-chat/bipe#200): how many free suggestions show, and how many candidates to check.
@@ -186,6 +200,8 @@ public enum BipeRegistries {
     public static let profilePhotoMaxPixels = ${reg.profiles.photoMaxPixels}
     /// Security rule 8: marks that look like the verified seal; none may sit in a display name (variation selectors removed).
     public static let sealLookalikeEmoji: [String] = ${swiftArray(reg.profiles.sealLookalikeEmoji.map(swiftString))}
+    /// Social handles on a public profile (ADR 0228), in display order.
+    public static let profileSocials: [SocialPlatform] = ${swiftArray(reg.profiles.socials.map((x) => `SocialPlatform(id: ${swiftString(x.id)}, name: ${swiftString(x.name)}, pattern: ${swiftString(x.pattern)}, url: ${swiftString(x.url)})`))}
 
     /// Invite codes: the code inside anything a user pastes (registries/invite-codes.json).
     public static let inviteCodePattern = ${swiftString(reg.inviteCodes.pattern)}
@@ -451,6 +467,9 @@ ${categories}
 
 data class ScamPattern(val id: String, val regex: String)
 
+/** A network a public profile may link to (ADR 0228). [url] holds {handle} once. */
+data class SocialPlatform(val id: String, val name: String, val pattern: String, val url: String)
+
 object BipeRegistries {
     /** Normalised reserved display names and their category. */
     val reservedNames: Map<String, ReservedNameCategory> = ${kotlinList("mapOf", reserved)}
@@ -552,6 +571,9 @@ object BipeRegistries {
     const val THEFT_STATEMENT_LIFE_HOURS = ${reg.theft.statementLifeHours}
     const val THEFT_CHECK_MINUTES = ${reg.theft.checkMinutes}
 
+    /** Age signals (ADR 0229, registries/age-signals.json). The server maps the range to a band; the app only reads and sends it. */
+    const val AGE_SIGNAL_RECHECK_DAYS = ${reg.ageSignals.recheckDays}
+
     /** Username (handle) rules. The server is the authority; clients check early for feedback. */
     const val HANDLE_MIN_LENGTH = ${reg.handles.minLength}
     const val HANDLE_MAX_LENGTH = ${reg.handles.maxLength}
@@ -559,6 +581,8 @@ object BipeRegistries {
     const val HANDLE_SUGGESTIONS_SHOWN = ${reg.handles.suggestions.shown}
     const val HANDLE_SUGGESTION_CANDIDATES = ${reg.handles.suggestions.candidates}
     const val HANDLE_PATTERN = ${kotlinString(reg.handles.pattern)}
+    /** Characters handleSkeleton() removes after normalize() (a regex character class). */
+    const val HANDLE_SKELETON_STRIP = ${kotlinString(reg.handles.skeletonStrip)}
 
     /** Owned handles (ADR 0065): only these may be shorter than [HANDLE_MIN_LENGTH], down to [HANDLE_OWNER_MIN_LENGTH]. */
     const val HANDLE_OWNER_MIN_LENGTH = ${reg.handles.ownerMinLength}
@@ -581,6 +605,8 @@ object BipeRegistries {
     const val PROFILE_PHOTO_MAX_PIXELS = ${reg.profiles.photoMaxPixels}
     /** Security rule 8: marks that look like the verified seal; none may sit in a display name (variation selectors removed). */
     val sealLookalikeEmoji: List<String> = ${kotlinList("listOf", reg.profiles.sealLookalikeEmoji.map(kotlinString))}
+    /** Social handles on a public profile (ADR 0228), in display order. */
+    val profileSocials: List<SocialPlatform> = ${kotlinList("listOf", reg.profiles.socials.map((x) => `SocialPlatform(${kotlinString(x.id)}, ${kotlinString(x.name)}, ${kotlinString(x.pattern)}, ${kotlinString(x.url)})`))}
 
     /** Invite codes: the code inside anything a user pastes (registries/invite-codes.json). */
     const val INVITE_CODE_PATTERN = ${kotlinString(reg.inviteCodes.pattern)}

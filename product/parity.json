@@ -2223,8 +2223,7 @@
       "server": {
         "status": "n/a",
         "reason": "bipe-infra apk-pull already serves latest.json and the APK"
-      },
-      "issue": 1008
+      }
     },
     {
       "id": "remote-banner",

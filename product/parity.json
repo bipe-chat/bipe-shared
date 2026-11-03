@@ -2203,6 +2203,30 @@
       "fork": true
     },
     {
+      "id": "app-update",
+      "name": "Tester APK updates itself from bipe.chat (ADR 0233)",
+      "ios": {
+        "status": "n/a",
+        "reason": "TestFlight and the App Store update the iOS app"
+      },
+      "android": {
+        "status": "built",
+        "evidence": [
+          "bipe-app/android/app/src/main/kotlin/chat/bipe/app/update/AppUpdate.kt"
+        ],
+        "note": "Tester APK only; the Play build updates through Google Play."
+      },
+      "web": {
+        "status": "n/a",
+        "reason": "The web client loads the newest version on each visit"
+      },
+      "server": {
+        "status": "n/a",
+        "reason": "bipe-infra apk-pull already serves latest.json and the APK"
+      },
+      "issue": 1008
+    },
+    {
       "id": "remote-banner",
       "name": "Remote critical banner above the chat list (ADR 0117)",
       "ios": {

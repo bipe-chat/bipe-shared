@@ -283,6 +283,10 @@ ${reg.workHours.defaultDays.map((d) => `        (day: ${d.day}, ranges: [${d.ran
     /// Cleared DMs (bipe-chat/bipe#464; registries/cleared-chats.json): the global account data event with the markers.
     public static let clearedChatsEventType = ${swiftString(reg.clearedChats.eventType)}
 
+    /// Favourites order (spec chat-list; registries/chat-favourites.json): the global account data event with the room IDs in order.
+    public static let chatFavouritesOrderEventType = ${swiftString(reg.chatFavourites.orderEventType)}
+    public static let chatFavouritesOrderMax = ${reg.chatFavourites.orderMax}
+
     /// Image descriptions (bipe-chat/bipe#501; registries/image-descriptions.json): the m.image content field and its length limit.
     public static let imageDescriptionField = ${swiftString(reg.imageDescriptions.field)}
     public static let imageDescriptionMaxLength = ${reg.imageDescriptions.maxLength}
@@ -694,6 +698,10 @@ ${reg.workHours.defaultDays.map((d) => `        ${d.day} to listOf(${d.ranges.ma
 
     /** Cleared DMs (bipe-chat/bipe#464; registries/cleared-chats.json): the global account data event with the markers. */
     const val CLEARED_CHATS_EVENT_TYPE = ${kotlinString(reg.clearedChats.eventType)}
+
+    /** Favourites order (spec chat-list; registries/chat-favourites.json): the global account data event with the room IDs in order. */
+    const val CHAT_FAVOURITES_ORDER_EVENT_TYPE = ${kotlinString(reg.chatFavourites.orderEventType)}
+    const val CHAT_FAVOURITES_ORDER_MAX = ${reg.chatFavourites.orderMax}
 
     /** Image descriptions (bipe-chat/bipe#501; registries/image-descriptions.json): the m.image content field and its length limit. */
     const val IMAGE_DESCRIPTION_FIELD = ${kotlinString(reg.imageDescriptions.field)}

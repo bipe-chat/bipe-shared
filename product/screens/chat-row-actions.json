@@ -51,6 +51,9 @@
     },
     "favourite": {
       "effect": "Runs chat-list setFavourite: Favourite when the chat is not a favourite, Remove from favourites when it is. Not shown for an archived chat. An SDK error shows bipe_error_generic."
+    },
+    "reorderFavourites": {
+      "effect": "Starts chat-list reorder mode for the favourites row (chat-list reorderingFavourites). Shown only for a favourite, when its scope has two or more favourites. Comes after the favourite item."
     }
   },
   "strings": [
@@ -67,6 +70,7 @@
     "bipe_app_retry",
     "bipe_chat_favourite_action",
     "bipe_chat_unfavourite_action",
+    "bipe_chat_favourites_reorder_action",
     "bipe_error_generic"
   ],
   "sdk": [

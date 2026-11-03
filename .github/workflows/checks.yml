@@ -15,7 +15,8 @@
 # After the merge to main:
 #   land     turns on auto-merge for every open sibling pull request on branch B, feature pull requests
 #            too. Each merges when its own checks pass. In bipe it merges only the regen pull request.
-#   lockstep waits until the open sibling pull requests on branch B merge, then checks the siblings on
+#   lockstep waits until the open sibling pull requests on branch B, and on every other bipe-shared
+#            branch merged in the last 2 hours, merge, then checks the siblings on
 #            their default branch. It waits for feature pull requests too: for bipe-shared#60 and #61 it
 #            skipped them (title filter), checked the default branches before the strings landed and
 #            failed. Branch B alone is not enough: it misses the regen output of changes that merged
@@ -148,12 +149,20 @@ jobs:
         run: |
           if [ -z "$BRANCH" ] && [ "$GITHUB_EVENT_NAME" = push ]; then
             BRANCH=$(bipe-shared/.github/scripts/merged-branch.sh)
+            # Wait for the sibling pull requests of every bipe-shared branch that merged in the last
+            # 2 hours, not only this one: three merges in 4 minutes on 3 Nov 2026 (#376, #377, #379)
+            # checked bipe-app main before the other two branches landed there, and main went red.
+            since=$(date -u -d '2 hours ago' +%Y-%m-%dT%H:%M:%SZ)
+            merged=$(gh pr list -R "$GITHUB_REPOSITORY" --state merged --base main -L 50 \
+              --json headRefName,mergedAt --jq ".[] | select(.mergedAt >= \"${since}\") | .headRefName")
+            merged=$(printf '%s\n%s\n' "$BRANCH" "$merged" | sed '/^$/d' | sort -u)
             for _ in $(seq 60); do
               [ -n "$BRANCH" ] || break
               open=""
               for repo in bipe-api bipe-app; do
-                open="${open}$(gh pr list -R "bipe-chat/${repo}" --head "$BRANCH" --base main --state open \
-                  --json number --jq '.[] | " '"${repo}"'#\(.number)"')"
+                open="${open}$(gh pr list -R "bipe-chat/${repo}" --base main --state open -L 100 \
+                  --json number,headRefName \
+                  | jq -r --arg b "$merged" '($b | split("\n")) as $m | .[] | select(.headRefName as $h | $m | index($h)) | " '"${repo}"'#\(.number)"')"
               done
               if [ -z "$open" ]; then
                 BRANCH=""

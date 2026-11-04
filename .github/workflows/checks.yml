@@ -15,7 +15,8 @@
 # After the merge to main:
 #   land     turns on auto-merge for every open sibling pull request on branch B, feature pull requests
 #            too. Each merges when its own checks pass. In bipe it merges only the regen pull request.
-#   lockstep waits until the open sibling pull requests on branch B merge, then checks the siblings on
+#   lockstep waits until the open sibling pull requests on branch B, and on every other bipe-shared
+#            branch merged in the last 2 hours, merge, then checks the siblings on
 #            their default branch. It waits for feature pull requests too: for bipe-shared#60 and #61 it
 #            skipped them (title filter), checked the default branches before the strings landed and
 #            failed. Branch B alone is not enough: it misses the regen output of changes that merged
@@ -71,18 +72,56 @@ jobs:
             case "$1" in
               bipe) echo "docs/product.md" ;;
               bipe-api) echo "src/generated test/fixtures" ;;
-              bipe-app) echo "ios/BipeKit/Sources/BipeKit/Generated ios/BipeKit/Sources/BipeKit/Resources android/libraries/bipe/src/main" ;;
+              bipe-app) echo "ios/BipeKit/Sources/BipeKit/Generated ios/BipeKit/Sources/BipeKit/Resources android/libraries/bipe/src/main web/src/bipe/generated" ;;
             esac
+          }
+          # Branch B in a sibling falls behind its main while the bipe-shared pull request is open. Generated
+          # files on an old base broke the app build and lockstep on bipe-app#372 (2 November 2026). So regen
+          # merges the sibling's main into B first. A conflict inside the generated paths takes main's side:
+          # the generators write those files again below. A conflict outside them leaves B as it is.
+          catch_up() {
+            repo=$1
+            git -C "$repo" fetch -q origin main
+            git -C "$repo" merge-base --is-ancestor origin/main HEAD && return 0
+            if git -C "$repo" -c user.name="bipe-shared regen" -c user.email="regen@bipe.chat" \
+                merge -q --no-edit -m "Merge main into ${BRANCH} (bipe-shared regen)" origin/main; then
+              echo "${repo}: merged main into ${BRANCH}"
+              return 0
+            fi
+            outside=""
+            for f in $(git -C "$repo" diff --name-only --diff-filter=U); do
+              inside=no
+              for path in $(generated "$repo"); do
+                case "$f" in "$path"|"$path"/*) inside=yes ;; esac
+              done
+              if [ "$inside" = no ]; then
+                outside="$outside $f"
+              elif git -C "$repo" cat-file -e "origin/main:$f" 2>/dev/null; then
+                git -C "$repo" checkout -q origin/main -- "$f"
+              else
+                git -C "$repo" rm -q -- "$f"
+              fi
+            done
+            if [ -n "$outside" ]; then
+              git -C "$repo" merge --abort
+              echo "::warning::${repo} ${BRANCH}: main does not merge in (conflicts in${outside}). Merge main into ${BRANCH} by hand."
+              return 0
+            fi
+            git -C "$repo" -c user.name="bipe-shared regen" -c user.email="regen@bipe.chat" commit -q --no-edit
+            echo "${repo}: merged main into ${BRANCH} (generated conflicts took main)"
           }
           repos=""
           for repo in bipe bipe-api bipe-app; do
             url="https://x-access-token:${TOKEN}@github.com/bipe-chat/${repo}.git"
             repos="$repos $repo"
             if git ls-remote --exit-code --heads "$url" "$BRANCH" > /dev/null; then
-              git clone -q --depth 1 --branch "$BRANCH" "$url" "$repo"
+              git clone -q --filter=blob:none --branch "$BRANCH" "$url" "$repo"
+              git -C "$repo" rev-parse HEAD > "$repo.start"
+              catch_up "$repo"
             else
               git clone -q --depth 1 "$url" "$repo"
               git -C "$repo" checkout -q -b "$BRANCH"
+              git -C "$repo" rev-parse HEAD > "$repo.start"
             fi
           done
           # bipe-app is public, so the clone works without access; the push would fail with 403.
@@ -101,12 +140,14 @@ jobs:
           for repo in $repos; do
             # shellcheck disable=SC2046
             git -C "$repo" add -A -- $(generated "$repo")
-            if git -C "$repo" diff --cached --quiet; then
+            if ! git -C "$repo" diff --cached --quiet; then
+              git -C "$repo" -c user.name="bipe-shared regen" -c user.email="regen@bipe.chat" \
+                commit -q -m "Regenerate from bipe-shared#${PR_NUMBER}" -m "Output of the bipe-shared generators for ${PR_URL}."
+            fi
+            if [ "$(git -C "$repo" rev-parse HEAD)" = "$(cat "$repo.start")" ]; then
               echo "${repo}: up to date"
               continue
             fi
-            git -C "$repo" -c user.name="bipe-shared regen" -c user.email="regen@bipe.chat" \
-              commit -q -m "Regenerate from bipe-shared#${PR_NUMBER}" -m "Output of the bipe-shared generators for ${PR_URL}."
             git -C "$repo" push -q origin "HEAD:refs/heads/${BRANCH}"
             echo "${repo}: pushed ${BRANCH}"
             # A pull request on branch B with a base other than main (a stacked pull request) carries the
@@ -148,12 +189,20 @@ jobs:
         run: |
           if [ -z "$BRANCH" ] && [ "$GITHUB_EVENT_NAME" = push ]; then
             BRANCH=$(bipe-shared/.github/scripts/merged-branch.sh)
+            # Wait for the sibling pull requests of every bipe-shared branch that merged in the last
+            # 2 hours, not only this one: three merges in 4 minutes on 3 Nov 2026 (#376, #377, #379)
+            # checked bipe-app main before the other two branches landed there, and main went red.
+            since=$(date -u -d '2 hours ago' +%Y-%m-%dT%H:%M:%SZ)
+            merged=$(gh pr list -R "$GITHUB_REPOSITORY" --state merged --base main -L 50 \
+              --json headRefName,mergedAt --jq ".[] | select(.mergedAt >= \"${since}\") | .headRefName")
+            merged=$(printf '%s\n%s\n' "$BRANCH" "$merged" | sed '/^$/d' | sort -u)
             for _ in $(seq 60); do
               [ -n "$BRANCH" ] || break
               open=""
               for repo in bipe-api bipe-app; do
-                open="${open}$(gh pr list -R "bipe-chat/${repo}" --head "$BRANCH" --base main --state open \
-                  --json number --jq '.[] | " '"${repo}"'#\(.number)"')"
+                open="${open}$(gh pr list -R "bipe-chat/${repo}" --base main --state open -L 100 \
+                  --json number,headRefName \
+                  | jq -r --arg b "$merged" '($b | split("\n")) as $m | .[] | select(.headRefName as $h | $m | index($h)) | " '"${repo}"'#\(.number)"')"
               done
               if [ -z "$open" ]; then
                 BRANCH=""
@@ -180,11 +229,25 @@ jobs:
             echo "::warning::BIPE_REGEN_TOKEN cannot push to bipe-app: its generated files are not checked. Give the token access to bipe-app."
             rm -rf bipe-app
           fi
+          # The removed-names check compares the bipe-app branch with bipe-app main.
+          if [ -d bipe-app ] && [ "$GITHUB_EVENT_NAME" = pull_request ]; then
+            git clone -q --depth 1 "https://x-access-token:${TOKEN}@github.com/bipe-chat/bipe-app.git" bipe-app-main
+          fi
       - uses: actions/setup-node@v4
         with:
           node-version: 24
       - name: Contract
         run: node bipe-shared/tools/check-contract.mjs
+      # A name removed from the generated files must not be in use on bipe-app main: else every bipe-app
+      # branch cut from main fails to compile until the app pull request merges (bipe-shared#345, bipe-app#351).
+      - name: Removed names
+        if: github.event_name == 'pull_request'
+        run: |
+          if [ ! -d bipe-app-main ]; then
+            echo "::warning::bipe-app not checked out: removed names not checked."
+            exit 0
+          fi
+          node bipe-shared/tools/check-removed.mjs --main bipe-app-main --branch bipe-app
       - name: Drift
         run: node bipe-shared/tools/check-drift.mjs --against head --repos "$GITHUB_WORKSPACE"
       # --issues: every iOS/Android gap names an open issue on bipe-chat/bipe (M2 exit test, bipe#300).

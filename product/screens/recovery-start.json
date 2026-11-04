@@ -59,7 +59,7 @@
       "effect": "Opens recovery-email."
     },
     "chooseBeta": {
-      "effect": "Opens the sign-in for old beta accounts with e-mail and password. Input with @ that is not a Matrix ID (@localpart:server) is an e-mail: POST /v1/beta/login with the e-mail and the password gives the Matrix ID (bipe#627), then Client.login with that Matrix ID and the password. A localpart or a full Matrix ID goes to Client.login as it is. A 401 from /v1/beta/login shows the same text as a failed Client.login, so an unknown e-mail and a wrong password look the same. After sign-in the app moves the account to device-first (POST /v1/me/device-first)."
+      "effect": "Opens the sign-in for old beta accounts with e-mail and password. Input with @ that is not a Matrix ID (@localpart:server) is an e-mail: POST /v1/beta/login with the e-mail and the password gives the Matrix ID (bipe#627), then Client.login with that Matrix ID and the password. A localpart or a full Matrix ID goes to Client.login as it is. A 401 from /v1/beta/login shows the same text as a failed Client.login, so an unknown e-mail and a wrong password look the same. The form has an optional third field for the account PIN (placeholder bipe_pin_enter_title). After sign-in, when the PIN field holds a full PIN, the app moves the account to device-first (POST /v1/me/device-first with the PIN, bipe-chat/bipe#908); a failed move keeps the beta sign-in and shows nothing. With the field empty there is no move, so the App Review demo account keeps its password."
     },
     "chooseLinked": {
       "params": {

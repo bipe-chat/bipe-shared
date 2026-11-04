@@ -31,7 +31,7 @@
       "effect": "Closes the sheet and opens Sua conta (settings-group account) at Jeitos de voltar."
     },
     "signOut": {
-      "effect": "Client.logout, then deletes this account's hidden password, session and SDK store from this phone. Keeps the recovery token in the synced store, so recovery-start finds it. Then account-start: the next account on the phone, or onboarding."
+      "effect": "A company account first calls POST /v1/web-link/sign-out, so the web sessions this phone approved end too (bipe#398); a failure is logged and does not stop the sign-out. Then Client.logout, then deletes this account's hidden password, session and SDK store from this phone. Keeps the recovery token in the synced store, so recovery-start finds it. Then account-start: the next account on the phone, or onboarding."
     },
     "cancel": { "effect": "Closes the sheet. Nothing changes." }
   },

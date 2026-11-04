@@ -7,10 +7,11 @@ import { fileURLToPath } from "node:url";
 import { buildBrCode, crc16, pixCheck, pixMarkLines, pixTxid } from "./lib/pix.mjs";
 import { cvmLines } from "./lib/cvm.mjs";
 import { noticeLinkClickable } from "./lib/notice.mjs";
+import { govbrIncoming, govbrResult } from "./lib/govbr.mjs";
 import { b64url as reportB64, deriveKeyPair as hpkeKeyPair, encryptMedia, envelopeError, open as hpkeOpen, openReport, sealReport, verifyMedia, REPORT_INFO } from "./lib/reports.mjs";
 import { canonicalJson, checkMoved, matrixKey, movedEnvelope, moveError, sentAfterMove, signAs, signedBytes } from "./lib/moves.mjs";
 import { loadSchedulingVectors, writeSchedulingApiFixture } from "./lib/scheduling-vectors.mjs";
-import { forwardCount, forwardedContent, voiceSource, assistantSendAllowed, assistantSender, draftFromEvent, photoDistance, photoHash, photoMatches, profileFactLines, relationshipNameWarning, stickerEmojiKey, stickerMatches, stickerQueryTags, stickerSearchFold, newestDmRooms, clearedChatHidden, bringPeopleReminder, clearedChatKeepsEvent, clearedChatMarker, clearedChatsWithClear, compareAppVersions, extractInviteCode, handleProblem, isBipeUserID, handleSuggestions, pinReminderNext, pinProblem, remoteBannerState, normalizeCnpj, normalizePhone, displayPhone, handleSkeleton, loadRegistries, normalize, scamMatchIDs, scamWarningKind, trustFacts } from "./lib/registries.mjs";
+import { forwardChatLimit, forwardCount, forwardLine, forwardedContent, voiceSource, assistantSendAllowed, assistantSender, draftFromEvent, photoDistance, photoHash, photoMatches, profileFactLines, relationshipNameWarning, stickerEmojiKey, stickerMatches, stickerQueryTags, stickerSearchFold, newestDmRooms, clearedChatHidden, bringPeopleReminder, chatListPrompt, clearedChatKeepsEvent, clearedChatMarker, clearedChatsWithClear, compareAppVersions, extractInviteCode, handleProblem, isBipeUserID, socialHandleClean, socialHandleProblem, socialUrl, handleSuggestions, pinReminderNext, pinProblem, remoteBannerState, normalizeCnpj, normalizePhone, displayPhone, handleSkeleton, loadRegistries, normalize, scamMatchIDs, scamWarningKind, trustFacts } from "./lib/registries.mjs";
 
 const root = join(dirname(fileURLToPath(import.meta.url)), "..");
 const reg = loadRegistries(root);
@@ -53,11 +54,13 @@ const KID = "test-only-2026-10";
 const publicKeys = { [KID]: rawPublicKey(testKey) };
 
 const NOW = 1791720000; // 2026-10-11T12:00:00Z
+// Every badge binds to the account's cross-signing master key (ADR 0239). The sending device is not an input.
+const MASTER_KEY = "dGVzdC1jcm9zcy1zaWduaW5nLW1hc3Rlci1rZXktMDE";
 const basePayload = {
   sub: "@ana:bipe.net.br",
   lvl: "pix",
   name: "Ana Souza",
-  dev: "dGVzdC1kZXZpY2Uta2V5LWZpbmdlcnByaW50",
+  msk: MASTER_KEY,
   iat: NOW - 3600,
   exp: NOW + 30 * 86400,
 };
@@ -69,9 +72,8 @@ function envelope(payload, key = testKey, { v = 1, kid = KID } = {}) {
 
 const valid = envelope(basePayload);
 const tampered = { ...valid, payload: b64url(Buffer.from(JSON.stringify({ ...basePayload, name: "Ana Souza Lima" }), "utf8")) };
-// The sender's master key is ignored for a device-bound badge.
-const MASTER_KEY = "dGVzdC1jcm9zcy1zaWduaW5nLW1hc3Rlci1rZXktMDE";
-const context = { sender: basePayload.sub, senderDevice: basePayload.dev, senderMasterKey: MASTER_KEY };
+const context = { sender: basePayload.sub, senderMasterKey: MASTER_KEY };
+const personWithout = (key) => (({ [key]: _, ...rest }) => rest)(basePayload);
 
 // A verified company (lvl "cnpj", bipe#399): bound to the account's cross-signing master key, not a device.
 const cnpjPayload = {
@@ -87,7 +89,7 @@ const cnpjPayload = {
   iat: NOW - 3600,
   exp: NOW - 3600 + reg.badgeKeys.lifeDays * 86400,
 };
-const cnpjContext = { sender: cnpjPayload.sub, senderDevice: "Y29tcGFueS1zZWNvbmQtc2VhdA", senderMasterKey: MASTER_KEY };
+const cnpjContext = { sender: cnpjPayload.sub, senderMasterKey: MASTER_KEY };
 const without = (key) => (({ [key]: _, ...rest }) => rest)(cnpjPayload);
 if (normalizeCnpj(cnpjPayload.cnpj) !== cnpjPayload.cnpj) throw new Error("badges: the cnpj vector is not a normalised CNPJ");
 
@@ -103,7 +105,7 @@ const institutionPayload = {
   iat: NOW - 3600,
   exp: NOW - 3600 + reg.badgeKeys.lifeDays * 86400,
 };
-const institutionContext = { sender: institutionPayload.sub, senderDevice: "cHJlZmVpdHVyYS1zZWF0LTI", senderMasterKey: MASTER_KEY };
+const institutionContext = { sender: institutionPayload.sub, senderMasterKey: MASTER_KEY };
 const withoutInst = (key) => (({ [key]: _, ...rest }) => rest)(institutionPayload);
 // A brand mark (lvl "brand-mark", ADR 0162, bipe#483): a verified brand vouches for a reseller's work account.
 const markPayload = {
@@ -118,7 +120,7 @@ const markPayload = {
   iat: NOW - 3600,
   exp: NOW - 3600 + reg.badgeKeys.lifeDays * 86400,
 };
-const markContext = { sender: markPayload.sub, senderDevice: "cmVzZWxsZXItcGhvbmU", senderMasterKey: markPayload.msk };
+const markContext = { sender: markPayload.sub, senderMasterKey: markPayload.msk };
 const markWithout = (key) => (({ [key]: _, ...rest }) => rest)(markPayload);
 
 write("badges.json", {
@@ -135,15 +137,18 @@ write("badges.json", {
     { name: "not yet valid", envelope: envelope({ ...basePayload, iat: NOW + 60 }), ...context, expect: "not_yet_valid" },
     { name: "missing name", envelope: envelope((({ name, ...rest }) => rest)(basePayload)), ...context, expect: "malformed" },
     { name: "subject mismatch", envelope: valid, ...context, sender: "@mallory:bipe.net.br", expect: "subject_mismatch" },
-    { name: "device mismatch (new device, badge suspended)", envelope: valid, ...context, senderDevice: "bmV3LWRldmljZQ", expect: "device_mismatch" },
+    { name: "master key mismatch (identity reset, badge suspended)", envelope: valid, ...context, senderMasterKey: "bmV3LW1hc3Rlci1rZXk", expect: "master_key_mismatch" },
+    { name: "sender master key unknown", envelope: valid, ...context, senderMasterKey: null, expect: "master_key_mismatch" },
+    { name: "device-bound instead of msk", envelope: envelope({ ...personWithout("msk"), dev: "dGVzdC1kZXZpY2Uta2V5LWZpbmdlcnByaW50" }), ...context, expect: "malformed" },
+    { name: "empty msk", envelope: envelope({ ...basePayload, msk: "" }), ...context, expect: "malformed" },
+    { name: "govbr: valid", envelope: envelope({ ...basePayload, lvl: "govbr" }), ...context, expect: "valid" },
     { name: "unknown level", envelope: envelope({ ...basePayload, lvl: "gold" }), ...context, expect: "malformed" },
     { name: "cnpj: valid", envelope: envelope(cnpjPayload), ...cnpjContext, expect: "valid" },
-    { name: "cnpj: valid on any device of the account", envelope: envelope(cnpjPayload), ...cnpjContext, senderDevice: "b3duZXItcGhvbmU", expect: "valid" },
-    { name: "cnpj: valid without trade_name", envelope: envelope(without("trade_name")), ...cnpjContext, expect: "valid" },
+        { name: "cnpj: valid without trade_name", envelope: envelope(without("trade_name")), ...cnpjContext, expect: "valid" },
     { name: "cnpj: valid alphanumeric CNPJ", envelope: envelope({ ...cnpjPayload, cnpj: "12ABC34501DE35", method: "staff" }), ...cnpjContext, expect: "valid" },
     { name: "cnpj: master key mismatch (identity reset)", envelope: envelope(cnpjPayload), ...cnpjContext, senderMasterKey: "bmV3LW1hc3Rlci1rZXk", expect: "master_key_mismatch" },
     { name: "cnpj: sender master key unknown", envelope: envelope(cnpjPayload), ...cnpjContext, senderMasterKey: null, expect: "master_key_mismatch" },
-    { name: "cnpj: device-bound instead of msk", envelope: envelope({ ...without("msk"), dev: cnpjContext.senderDevice }), ...cnpjContext, expect: "malformed" },
+    { name: "cnpj: device-bound instead of msk", envelope: envelope({ ...without("msk"), dev: "Y29tcGFueS1zZWNvbmQtc2VhdA" }), ...cnpjContext, expect: "malformed" },
     { name: "cnpj: missing cnpj", envelope: envelope(without("cnpj")), ...cnpjContext, expect: "malformed" },
     { name: "cnpj: cnpj with separators", envelope: envelope({ ...cnpjPayload, cnpj: "11.222.333/0001-81" }), ...cnpjContext, expect: "malformed" },
     { name: "cnpj: lowercase cnpj", envelope: envelope({ ...cnpjPayload, cnpj: "12abc34501de35" }), ...cnpjContext, expect: "malformed" },
@@ -160,12 +165,11 @@ write("badges.json", {
     { name: "cnpj: valid with a cvm field", envelope: envelope({ ...cnpjPayload, cvm: { st: "stop_order", on: "2026-05-12" } }), ...cnpjContext, expect: "valid" },
     { name: "cnpj: valid with a cvm field the app does not know", envelope: envelope({ ...cnpjPayload, cvm: { st: "later", x: 1 } }), ...cnpjContext, expect: "valid" },
     { name: "institution: valid", envelope: envelope(institutionPayload), ...institutionContext, expect: "valid" },
-    { name: "institution: valid on any device of the account", envelope: envelope(institutionPayload), ...institutionContext, senderDevice: "b3V0cm8tYXBhcmVsaG8", expect: "valid" },
     { name: "institution: valid without domains", envelope: envelope(withoutInst("domains")), ...institutionContext, expect: "valid" },
     { name: "institution: valid with empty domains", envelope: envelope({ ...institutionPayload, domains: [] }), ...institutionContext, expect: "valid" },
     { name: "institution: master key mismatch (identity reset)", envelope: envelope(institutionPayload), ...institutionContext, senderMasterKey: "bmV3LW1hc3Rlci1rZXk", expect: "master_key_mismatch" },
     { name: "institution: sender master key unknown", envelope: envelope(institutionPayload), ...institutionContext, senderMasterKey: null, expect: "master_key_mismatch" },
-    { name: "institution: device-bound instead of msk", envelope: envelope({ ...withoutInst("msk"), dev: institutionContext.senderDevice }), ...institutionContext, expect: "malformed" },
+    { name: "institution: device-bound instead of msk", envelope: envelope({ ...withoutInst("msk"), dev: "cHJlZmVpdHVyYS1zZWF0LTI" }), ...institutionContext, expect: "malformed" },
     { name: "institution: empty msk", envelope: envelope({ ...institutionPayload, msk: "" }), ...institutionContext, expect: "malformed" },
     { name: "institution: missing cnpj", envelope: envelope(withoutInst("cnpj")), ...institutionContext, expect: "malformed" },
     { name: "institution: cnpj with separators", envelope: envelope({ ...institutionPayload, cnpj: "11.222.333/0001-81" }), ...institutionContext, expect: "malformed" },
@@ -177,7 +181,6 @@ write("badges.json", {
     { name: "institution: expired", envelope: envelope({ ...institutionPayload, exp: NOW - 1 }), ...institutionContext, expect: "expired" },
     { name: "brand-mark: valid", envelope: envelope(markPayload), ...markContext, expect: "valid" },
     ...reg.brandMarks.labels.slice(1).map((label) => ({ name: `brand-mark: valid with label ${label}`, envelope: envelope({ ...markPayload, label }), ...markContext, expect: "valid" })),
-    { name: "brand-mark: valid on any device of the account", envelope: envelope(markPayload), ...markContext, senderDevice: "b3RoZXItcGhvbmU", expect: "valid" },
     { name: "brand-mark: unknown label", envelope: envelope({ ...markPayload, label: "embaixadora" }), ...markContext, expect: "malformed" },
     { name: "brand-mark: missing label", envelope: envelope(markWithout("label")), ...markContext, expect: "malformed" },
     { name: "brand-mark: missing mark", envelope: envelope(markWithout("mark")), ...markContext, expect: "malformed" },
@@ -185,7 +188,7 @@ write("badges.json", {
     { name: "brand-mark: missing brand", envelope: envelope(markWithout("brand")), ...markContext, expect: "malformed" },
     { name: "brand-mark: missing cnpj", envelope: envelope(markWithout("cnpj")), ...markContext, expect: "malformed" },
     { name: "brand-mark: cnpj with separators", envelope: envelope({ ...markPayload, cnpj: "11.222.333/0001-81" }), ...markContext, expect: "malformed" },
-    { name: "brand-mark: device-bound instead of msk", envelope: envelope({ ...markWithout("msk"), dev: markContext.senderDevice }), ...markContext, expect: "malformed" },
+    { name: "brand-mark: device-bound instead of msk", envelope: envelope({ ...markWithout("msk"), dev: "cmVzZWxsZXItcGhvbmU" }), ...markContext, expect: "malformed" },
     { name: "brand-mark: master key mismatch (identity reset)", envelope: envelope(markPayload), ...markContext, senderMasterKey: MASTER_KEY, expect: "master_key_mismatch" },
     { name: "brand-mark: sender master key unknown", envelope: envelope(markPayload), ...markContext, senderMasterKey: null, expect: "master_key_mismatch" },
     { name: "brand-mark: the brand itself is not the subject", envelope: envelope(markPayload), ...markContext, sender: markPayload.brand, expect: "subject_mismatch" },
@@ -572,6 +575,49 @@ const suggestionNames = [
   "  ana   souza  ", "李小龙", "Ana 2", "Pedro Henrique Alcântara de Oliveira Bragança", "O'Neil", "ana.souza", "",
   "Bipe", "123", "Dr. João Pedro",
 ];
+// ADR 0228: social handles on a public profile. ownHandle: the account's own Bipe @, or null.
+const socialCases = [
+  ...reg.profiles.socials.flatMap(({ id }) => [
+    { platform: id, input: "" },
+    { platform: id, input: "   " },
+    { platform: id, input: "anasouza" },
+    { platform: id, input: "@anasouza" },
+    { platform: id, input: " @AnaSouza " },
+    { platform: id, input: "ana.souza" },
+    { platform: id, input: "ana_souza" },
+    { platform: id, input: "ana-souza" },
+    { platform: id, input: "a" },
+    { platform: id, input: "ab" },
+    { platform: id, input: "a".repeat(15) },
+    { platform: id, input: "a".repeat(16) },
+    { platform: id, input: "a".repeat(30) },
+    { platform: id, input: "a".repeat(31) },
+    { platform: id, input: "a".repeat(39) },
+    { platform: id, input: "a".repeat(40) },
+    { platform: id, input: "a".repeat(101) },
+    { platform: id, input: "-ana" },
+    { platform: id, input: "ana-" },
+    { platform: id, input: "@@ana" },
+    { platform: id, input: "ana souza" },
+    { platform: id, input: "anã" },
+    { platform: id, input: "https://evil.site" },
+    { platform: id, input: "evil.site/x" },
+    { platform: id, input: "ana?x=1" },
+    { platform: id, input: "itau" },
+    { platform: id, input: "itau", ownHandle: "itau" },
+    { platform: id, input: "itau", ownHandle: "ana" },
+    { platform: id, input: "i.t.a.u" },
+  ]),
+];
+write("social-handles.json", {
+  description: "socialHandleProblem(platform, input, ownHandle) and socialUrl(platform, input) (ADR 0228, registries/profiles.json socials). handle: the input after socialHandleClean(). problem null and handle empty: no handle. url only when problem is null and handle is not empty.",
+  cases: socialCases.map(({ platform, input, ownHandle = null }) => {
+    const handle = socialHandleClean(input);
+    const problem = socialHandleProblem(platform, input, ownHandle, reg);
+    return { platform, input, ownHandle, handle, problem, ...(problem === null && handle ? { url: socialUrl(platform, input, reg) } : {}) };
+  }),
+});
+
 write("handle-suggestions.json", {
   description: "handleSuggestions(displayName): handles of the right shape for Escolha seu @, in order (registries/handles.json suggestions). The app checks availability in this order and shows the first suggestions.shown that are free.",
   cases: suggestionNames.map((name) => ({ name, suggestions: handleSuggestions(name, reg) })),
@@ -598,10 +644,33 @@ const bringCases = [
 ];
 const pinCases = [];
 for (const step of [0, 1, 2, 3, 4, 5, 9]) for (const result of ["right", "wrong", "later"]) pinCases.push({ step, result });
+const CLP_NOW = Date.UTC(2026, 9, 31, 12);
+const CLP_HOUR = 3_600_000;
+const clpCases = [
+  { name: "nothing eligible", eligible: [], slot: null },
+  { name: "new account: invite first of the first-list cards", eligible: ["invite", "notes"], slot: null },
+  { name: "the holder keeps the card", eligible: ["invite", "notes"], slot: { holder: "invite", sinceMs: CLP_NOW - 2 * CLP_HOUR } },
+  { name: "holder used: next card waits for the slot", eligible: ["profile", "notes"], slot: { holder: "invite", sinceMs: CLP_NOW - 2 * CLP_HOUR } },
+  { name: "holder used: next card the next day", eligible: ["profile", "notes"], slot: { holder: "invite", sinceMs: CLP_NOW - 25 * CLP_HOUR } },
+  { name: "after the slot hours the queue order wins over the holder", eligible: ["recovery", "invite"], slot: { holder: "invite", sinceMs: CLP_NOW - 25 * CLP_HOUR } },
+  { name: "inside the slot hours the holder stays above a higher entry", eligible: ["recovery", "invite"], slot: { holder: "invite", sinceMs: CLP_NOW - 1 * CLP_HOUR } },
+  { name: "approvePhone preempts the slot", eligible: ["approvePhone", "invite"], slot: { holder: "invite", sinceMs: CLP_NOW - 1 * CLP_HOUR } },
+  { name: "remoteBanner above approvePhone", eligible: ["notes", "approvePhone", "remoteBanner"], slot: null },
+  { name: "the photo card holds the slot", eligible: ["handle", "invite"], slot: { holder: "photo", sinceMs: CLP_NOW - 3 * CLP_HOUR } },
+  { name: "safety before identity", eligible: ["handle", "pinReminder", "notificationCheckup"], slot: { holder: "photo", sinceMs: CLP_NOW - 48 * CLP_HOUR } },
+  { name: "notifications first in safety", eligible: ["osTheftProtection", "recovery", "notifications"], slot: null },
+  { name: "osTheftProtection before every identity card", eligible: ["photo", "handle", "osTheftProtection"], slot: null },
+  { name: "photo after handle, before profile", eligible: ["profile", "photo", "handle"], slot: null },
+  { name: "notifications waits for the slot", eligible: ["notifications"], slot: { holder: "handle", sinceMs: CLP_NOW - 2 * CLP_HOUR } },
+  { name: "exactly the slot hours", eligible: ["notes"], slot: { holder: "invite", sinceMs: CLP_NOW - 24 * CLP_HOUR } },
+  { name: "the bring-people sheet holds the slot: no card the same day", eligible: ["handle", "notes"], slot: { holder: "bringPeople", sinceMs: CLP_NOW - 1 * CLP_HOUR } },
+  { name: "the day after the bring-people sheet: the first card", eligible: ["handle", "notes"], slot: { holder: "bringPeople", sinceMs: CLP_NOW - 25 * CLP_HOUR } },
+];
 write("onboarding-schedule.json", {
-  description: "Onboarding schedules (registries/onboarding.json pinReminder, bipe-chat/bipe#202). After a check at step with result (right, wrong, later): the next step and the days until the next reminder. bringPeopleReminder (registries/onboarding.json bringPeople, bipe-chat/bipe#752): for state and nowMs, the slot the weekly reminder names ({ slot, kind }) or null. Times are Unix ms; status is the invite status.",
+  description: "Onboarding schedules (registries/onboarding.json pinReminder, bipe-chat/bipe#202). After a check at step with result (right, wrong, later): the next step and the days until the next reminder. bringPeopleReminder (registries/onboarding.json bringPeople, bipe-chat/bipe#752): for state and nowMs, the slot the weekly reminder names ({ slot, kind }) or null. Times are Unix ms; status is the invite status. chatListPrompt (registries/onboarding.json chatListPrompt, bipe-chat/bipe#894): for eligible keys, the prompt slot ({ holder, sinceMs } or null) and nowMs, the key of the one chat list card, or null.",
   pinReminder: pinCases.map((c) => ({ ...c, ...(({ step, gapDays }) => ({ nextStep: step, gapDays }))(pinReminderNext(c.step, c.result, reg)) })),
   bringPeopleReminder: bringCases.map((c) => ({ ...c, expected: bringPeopleReminder(c.state, c.nowMs, reg) })),
+  chatListPrompt: clpCases.map((c) => ({ ...c, nowMs: CLP_NOW, expected: chatListPrompt(c.eligible, c.slot, CLP_NOW, reg) })),
 });
 
 // --- Invite codes ------------------------------------------------------------
@@ -783,6 +852,35 @@ write("photo-match.json", {
   }),
 });
 
+// Verificar com gov.br (bipe-chat/bipe#544): what the app does with an incoming PDF, and the phase after an answer.
+const govbrMax = reg.govbr.maxDocumentBytes;
+const govbrIncomingCases = [
+  ["open check, small file", "waitingForSignature", 2048],
+  ["open check, file at the limit", "waitingForSignature", govbrMax],
+  ["open check, file over the limit", "waitingForSignature", govbrMax + 1],
+  ["open check, empty file", "waitingForSignature", 0],
+  ["no check started", "ready", 2048],
+  ["check still starting", "preparing", 2048],
+  ["check running", "checking", 2048],
+  ["already verified", "verified", 2048],
+  ["after a rejection", "rejected", 2048],
+  ["after a failure", "failed", 2048],
+];
+const govbrResultCases = [
+  ["verified", "verified", null],
+  ["rejected with reason", "rejected", "cpf_in_use"],
+  ["rejected, changed after signing", "rejected", "changed_after_signing"],
+  ["rejected without reason", "rejected", null],
+  ["rejected with an unknown reason", "rejected", "other"],
+  ["expired", "expired", null],
+  ["still pending", "pending", null],
+];
+write("govbr-verify.json", {
+  $comment: "Generated by tools/gen-test-vectors.mjs from tools/lib/govbr.mjs and registries/govbr.json (bipe-chat/bipe#544). incoming: govbrIncoming(phase, byteCount, maxDocumentBytes), one of upload, noOpenVerification, ignore, notSigned. results: govbrResult(state, reason) for a VerificationStatus answer; reason null means absent.",
+  maxDocumentBytes: govbrMax,
+  incoming: govbrIncomingCases.map(([name, phase, byteCount]) => ({ name, phase, byteCount, expected: govbrIncoming(phase, byteCount, govbrMax) })),
+  results: govbrResultCases.map(([name, state, reason]) => ({ name, state, reason, expected: govbrResult(state, reason) })),
+});
 // --- Forward marks (bipe-chat/bipe#83; registries/voice-media.json) -------------------------------------------
 const fk = reg.voiceMedia.forwardKey;
 const voiceContent = { msgtype: "m.audio", body: "Mensagem de voz", url: "mxc://bipe.net.br/abc", "org.matrix.msc3245.voice": {} };
@@ -809,13 +907,25 @@ const forwardCases = [
 ];
 const sourceCases = [];
 for (const isVoice of [true, false]) for (const count of [0, 1, reg.voiceMedia.forwardedManyTimes - 1, reg.voiceMedia.forwardedManyTimes, 40]) sourceCases.push({ isVoice, count });
+const lineCounts = [0, 1, reg.voiceMedia.forwardedManyTimes - 1, reg.voiceMedia.forwardedManyTimes, 40];
+const chatLimitCases = [
+  ["one message, first forward", [1]],
+  ["one message under the threshold", [reg.voiceMedia.forwardedManyTimes - 1]],
+  ["one message at the threshold", [reg.voiceMedia.forwardedManyTimes]],
+  ["selection with one message at the threshold", [1, reg.voiceMedia.forwardedManyTimes + 3, 2]],
+  ["selection under the threshold", [1, 2, reg.voiceMedia.forwardedManyTimes - 1]],
+];
 write("forward-marks.json", {
-  $comment: "Generated by tools/gen-test-vectors.mjs from registries/voice-media.json (bipe-chat/bipe#83). count: forwardCount of content. forward: forwardedContent of content and newContent (the m.new_content of the latest edit, null when none). source: voiceSource.",
+  $comment: "Generated by tools/gen-test-vectors.mjs from registries/voice-media.json (bipe-chat/bipe#83, bipe-chat/bipe#933). count: forwardCount of content. forward: forwardedContent of content and newContent (the m.new_content of the latest edit, null when none). source: voiceSource. line: forwardLine of a count (null: no line). chatLimit: forwardChatLimit of the counts of the contents a forward sends.",
   forwardKey: fk,
   forwardedManyTimes: reg.voiceMedia.forwardedManyTimes,
+  forwardChats: reg.voiceMedia.forwardChats,
+  forwardChatsManyTimes: reg.voiceMedia.forwardChatsManyTimes,
   count: forwardCounts.map(([name, content]) => ({ name, content, expected: forwardCount(content, reg) })),
   forward: forwardCases.map(([name, content, newContent]) => ({ name, content, newContent, expected: forwardedContent(content, newContent, reg) })),
   source: sourceCases.map((c) => ({ ...c, expected: voiceSource(c.isVoice, c.count, reg) })),
+  line: lineCounts.map((count) => ({ count, expected: forwardLine(count, reg) })),
+  chatLimit: chatLimitCases.map(([name, counts]) => ({ name, counts, expected: forwardChatLimit(counts, reg) })),
 });
 // Assistant drafts (bipe ADR 0210, bipe-chat/bipe#866): which drafts room events the apps show.
 const draftCtx = { ownUserId: "@ana:bipe.net.br", joinedRoomIds: ["!chat:bipe.net.br", "!group:bipe.net.br"] };

@@ -94,6 +94,7 @@
     "iOS has no screen: iOS has no battery optimisation that stops push.",
     "Banner: in chat-list, above the list, when the permission check or the battery check fails and the person did not close the banner in the last 7 days. It shows bipe_app_notification_checkup_banner with the button bipe_app_notification_checkup_fix (opens this screen) and a close button labelled bipe_app_close.",
     "Default chosen (bipe#823): no test push row. The screen shows the last push time instead, because a test push needs a send route (Sygnal or bipe-api) that does not exist. mz can overrule.",
-    "Default chosen (bipe#823): the banner uses the permission and battery checks only, because the app cannot tell reliably that pushes were missed. mz can overrule."
+    "Default chosen (bipe#823): the banner uses the permission and battery checks only, because the app cannot tell reliably that pushes were missed. mz can overrule.",
+    "Place and look (MZ, 31 Oct 2026, bipe-chat/bipe#894): this shows as the entry notificationCheckup of chat-list-prompt, one card at a time in the first list row. chat-list-prompt decides when it shows against the other entries; this spec keeps the condition and the come-back time."
   ]
 }

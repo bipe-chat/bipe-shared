@@ -10,7 +10,9 @@
     "description": { "type": "string", "optional": true, "description": "RoomInfo.topic. Hidden when empty and the user cannot edit." },
     "memberCount": { "type": "int", "description": "RoomInfo.joinedMembersCount, for bipe_app_group_details_people." },
     "notificationMode": { "type": "string", "description": "String key of the current mode, from chat-notifications: bipe_app_notify_quiet, bipe_app_notify_all, bipe_app_notify_mute or bipe_app_notify_mentions_legacy." },
-    "canEdit": { "type": "bool", "description": "RoomPowerLevels.canOwnUserSendState for m.room.name. The same answer covers the photo and the description in Bipe groups (see notes)." },
+    "canEdit": { "type": "bool", "description": "RoomPowerLevels.canOwnUserSendState for m.room.name. It opens editing for the name and the description; the photo has its own gate, canEditPhoto." },
+    "canEditPhoto": { "type": "bool", "description": "RoomPowerLevels.canOwnUserSendState for m.room.avatar. In editing, the photo and emoji controls show only when true (bipe-chat/bipe#1004)." },
+    "avatarMembers": { "type": "list", "of": { "type": "string", "description": "A hero user ID; the row reads its name and photo from RoomInfo.heroes." }, "optional": true, "description": "Up to 3 heroes for the group avatar when the group has no photo (chat-list notes, Group avatar)." },
     "canInvite": { "type": "bool", "description": "RoomPowerLevels.canOwnUserInvite." },
     "phase": {
       "type": "enum",
@@ -26,21 +28,24 @@
     "save": {
       "params": {
         "name": { "type": "string", "description": "The new name, trimmed. Cannot be empty." },
-        "description": { "type": "string", "description": "The new description. Empty removes it." }
+        "description": { "type": "string", "description": "The new description. Empty removes it." },
+        "emoji": { "type": "string", "optional": true, "description": "An emoji picked with bipe_app_group_photo_emoji. One grapheme only." }
       },
-      "effect": "Sends only what changed: Room.setName, Room.setTopic, and Room.uploadAvatar or Room.removeAvatar for a new or removed photo. Then phase viewing."
+      "effect": "Sends only what changed: Room.setName, Room.setTopic, and Room.uploadAvatar or Room.removeAvatar for a new or removed photo. An emoji is rendered to a 512 px square PNG (the emoji centred on accentWash, at 60 % of the side) and sent with Room.uploadAvatar as image/png, so every Matrix client shows it as a normal m.room.avatar. Then phase viewing."
     },
     "cancelEdit": { "effect": "Drops the changes. phase viewing." },
     "openPeople": { "effect": "Opens group-members." },
     "addPeople": { "effect": "canInvite only: opens group-invite-members in invite mode." },
     "openNotifications": { "effect": "Opens chat-notifications for this group." },
-    "leave": { "effect": "Opens group-leave." }
+    "leave": { "effect": "Opens group-leave." },
+    "openGroupLink": { "effect": "Opens group-link, for members with a power level of 50 or more who can change power levels." }
   },
   "strings": [
     "bipe_app_report_group",
     "bipe_gallery_title",
     "bipe_poll_history",
     "bipe_group_privacy_title",
+    "bipe_group_link_title",
     "bipe_app_group_details_title",
     "bipe_app_group_details_people",
     "bipe_app_group_name",
@@ -48,6 +53,8 @@
     "bipe_app_group_description_placeholder",
     "bipe_app_group_photo_choose",
     "bipe_app_group_photo_remove",
+    "bipe_app_group_photo_emoji",
+    "bipe_app_group_photo_emoji_hint",
     "bipe_app_group_add_people",
     "bipe_settings_notifications",
     "bipe_app_group_leave_action",
@@ -73,11 +80,13 @@
   "notes": [
     "Only for a group: RoomInfo.isDm is false (ADR 0141, the one DM test). A DM opens the person's profile instead (bipe-chat/bipe#567). A room that stops being a DM because a third person joined becomes a group and opens this screen.",
     "A group is the Matrix word room. The screen never says sala (linguagem.md section 4).",
-    "canEdit: Bipe groups keep the default power levels of the privateChat preset, where name, avatar and topic need the same level. If a group from another client sets them apart, ask canOwnUserSendState for each event type and show only the fields the user can change.",
+    "canEdit and canEditPhoto: Bipe groups keep the default power levels of the privateChat preset, where name, avatar and topic need the same level. If a group from another client sets them apart, ask canOwnUserSendState for each event type and show only the fields the user can change.",
+    "Emoji photo (bipe-chat/bipe#1004): bipe_app_group_photo_emoji asks for one emoji (field hint bipe_app_group_photo_emoji_hint). The edit preview shows the emoji before save. No custom state event: once sent, the emoji is a picture.",
     "No room address, no join rule, no history visibility, no encryption switch and no roles editor beyond admin in group-members (client-rewrite-plan.md section 4).",
     "Pinned messages and search in the group are later issues. Report (bipe-chat/bipe#674): a row bipe_app_report_group above the leave row opens report-chat with isDm false. The O que você perdeu block (ADR 0026, bipe_group_missed_*) belongs to chat-timeline, not to this screen.",
     "Media and files (bipe-chat/bipe#672): a row bipe_gallery_title in the members section opens chat-media-gallery for the group.",
     "Polls (bipe-chat/bipe#669): a row bipe_poll_history opens poll-history for the group.",
-    "Privacy (bipe-chat/bipe#772): a row bipe_group_privacy_title opens group-privacy, for members who can change the join rule. It shows the number of requests to join when there are some."
+    "Privacy (bipe-chat/bipe#772): a row bipe_group_privacy_title opens group-privacy, for members who can change the join rule or remove people (RoomPowerLevels.canOwnUserKick: a moderator, bipe-chat/bipe#733). A moderator sees the settings read only and answers the requests to join. It shows the number of requests to join when there are some.",
+    "Group link (ADR 0184, bipe-chat/bipe#744): a row bipe_group_link_title under the privacy row opens group-link."
   ]
 }

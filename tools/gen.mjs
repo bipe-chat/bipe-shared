@@ -1,6 +1,6 @@
 // Generates platform code from registries/ and strings/.
 // Usage: node tools/gen.mjs [--app <dir>] [--api <dir>]
-//   Default app output: ../bipe-app (ios/BipeKit and android/libraries/bipe), when that folder exists
+//   Default app output: ../bipe-app (ios/BipeKit, android/libraries/bipe and web/src/bipe/generated), when that folder exists
 //   Default API output: ../bipe-api/src/generated, when ../bipe-api exists
 // The Element X forks (bipe-ios, bipe-android) are archived and get no output (ADR 0155).
 import { copyFileSync, existsSync, mkdirSync, readdirSync, rmSync, writeFileSync } from "node:fs";
@@ -20,10 +20,12 @@ import { generateColors } from "./lib/gen-tokens.mjs";
 import { generateChatArchive } from "./lib/gen-chat-archive.mjs";
 import { generateDmSelection } from "./lib/gen-dm-selection.mjs";
 import { generateDmPowerLevels } from "./lib/gen-dm-power-levels.mjs";
+import { generateGroupPowerLevels } from "./lib/gen-group-power-levels.mjs";
 import { generateMessageFormatting } from "./lib/gen-message-formatting.mjs";
 import { generateRelationshipNames } from "./lib/gen-relationship-names.mjs";
 import { generateStoreCaptures, loadStoreCaptures, STORE_CAPTURES_PATH } from "./lib/store-captures.mjs";
 import { generateReports } from "./lib/gen-reports.mjs";
+import { writeWeb } from "./lib/gen-web.mjs";
 
 const root = join(dirname(fileURLToPath(import.meta.url)), "..");
 const args = process.argv.slice(2);
@@ -58,6 +60,14 @@ ${categories}
 public struct ScamPattern: Sendable, Equatable {
     public let id: String
     public let regex: String
+}
+
+/// A network a public profile may link to (ADR 0228). url holds {handle} once.
+public struct SocialPlatform: Sendable, Equatable {
+    public let id: String
+    public let name: String
+    public let pattern: String
+    public let url: String
 }
 
 public enum BipeRegistries {
@@ -157,10 +167,16 @@ public enum BipeRegistries {
     public static let theftStatementLifeHours = ${reg.theft.statementLifeHours}
     public static let theftCheckMinutes = ${reg.theft.checkMinutes}
 
+    /// Age signals (ADR 0229, registries/age-signals.json). The server maps the range to a band; the app only reads and sends it.
+    public static let ageSignalAppleGates: [Int] = ${swiftArray(reg.ageSignals.appleGates.map(String))}
+    public static let ageSignalRecheckDays = ${reg.ageSignals.recheckDays}
+
     /// Username (handle) rules. The server is the authority; clients check early for feedback.
     public static let handleMinLength = ${reg.handles.minLength}
     public static let handleMaxLength = ${reg.handles.maxLength}
     public static let handlePattern = ${swiftString(reg.handles.pattern)}
+    /// Characters handleSkeleton() removes after normalize() (a regex character class).
+    public static let handleSkeletonStrip = ${swiftString(reg.handles.skeletonStrip)}
     /// Owned handles (ADR 0065): only these may be shorter than \`handleMinLength\`, down to \`handleOwnerMinLength\`.
     public static let handleOwnerMinLength = ${reg.handles.ownerMinLength}
     /// Escolha seu @ (bipe-chat/bipe#200): how many free suggestions show, and how many candidates to check.
@@ -174,6 +190,9 @@ public enum BipeRegistries {
     /// Full Matrix user IDs of official Bipe accounts. Match exactly; names and handles are not proof.
     public static let officialAccountIDs: Set<String> = ${swiftArray(Object.values(reg.officialAccounts.accounts).map((a) => swiftString(a.userId)))}
 
+    /// The groups service account (ADR 0184): the admin invites it before making a group link.
+    public static let groupsAccountID = ${swiftString(reg.officialAccounts.accounts.groups.userId)}
+
     /// Public profile rules (ADR 0041). Lengths count Unicode scalars. The server is the authority.
     public static let profileNameMaxLength = ${reg.profiles.nameMaxLength}
     public static let profileBioMaxLength = ${reg.profiles.bioMaxLength}
@@ -182,6 +201,8 @@ public enum BipeRegistries {
     public static let profilePhotoMaxPixels = ${reg.profiles.photoMaxPixels}
     /// Security rule 8: marks that look like the verified seal; none may sit in a display name (variation selectors removed).
     public static let sealLookalikeEmoji: [String] = ${swiftArray(reg.profiles.sealLookalikeEmoji.map(swiftString))}
+    /// Social handles on a public profile (ADR 0228), in display order.
+    public static let profileSocials: [SocialPlatform] = ${swiftArray(reg.profiles.socials.map((x) => `SocialPlatform(id: ${swiftString(x.id)}, name: ${swiftString(x.name)}, pattern: ${swiftString(x.pattern)}, url: ${swiftString(x.url)})`))}
 
     /// Invite codes: the code inside anything a user pastes (registries/invite-codes.json).
     public static let inviteCodePattern = ${swiftString(reg.inviteCodes.pattern)}
@@ -263,6 +284,10 @@ ${reg.workHours.defaultDays.map((d) => `        (day: ${d.day}, ranges: [${d.ran
     /// Cleared DMs (bipe-chat/bipe#464; registries/cleared-chats.json): the global account data event with the markers.
     public static let clearedChatsEventType = ${swiftString(reg.clearedChats.eventType)}
 
+    /// Favourites order (spec chat-list; registries/chat-favourites.json): the global account data event with the room IDs in order.
+    public static let chatFavouritesOrderEventType = ${swiftString(reg.chatFavourites.orderEventType)}
+    public static let chatFavouritesOrderMax = ${reg.chatFavourites.orderMax}
+
     /// Image descriptions (bipe-chat/bipe#501; registries/image-descriptions.json): the m.image content field and its length limit.
     public static let imageDescriptionField = ${swiftString(reg.imageDescriptions.field)}
     public static let imageDescriptionMaxLength = ${reg.imageDescriptions.maxLength}
@@ -289,6 +314,9 @@ ${reg.workHours.defaultDays.map((d) => `        (day: ${d.day}, ranges: [${d.ran
     /// Forward marks (bipe-chat/bipe#83; registries/voice-media.json): the content field and the many-times threshold. Rules: BipeForwardMark, test-vectors/forward-marks.json.
     public static let forwardKey = ${swiftString(reg.voiceMedia.forwardKey)}
     public static let forwardedManyTimes = ${reg.voiceMedia.forwardedManyTimes}
+    /// The most chats one forward goes to, and the most when a sent content reaches forwardedManyTimes (bipe-chat/bipe#933).
+    public static let forwardChats = ${reg.voiceMedia.forwardChats}
+    public static let forwardChatsManyTimes = ${reg.voiceMedia.forwardChatsManyTimes}
 
     /// Assistant drafts (bipe ADR 0210, bipe-chat/bipe#866; registries/drafts.json, docs/drafts-room.md). Rules: test-vectors/drafts.json.
     public static let draftsRoomType = ${swiftString(reg.drafts.roomType)}
@@ -346,6 +374,11 @@ ${reg.workHours.defaultDays.map((d) => `        (day: ${d.day}, ranges: [${d.ran
     public static let mapsLiveDefaultDistanceMetres = ${reg.maps.live.defaultDistanceMetres}
     public static let mapsLiveMinIntervalSeconds = ${reg.maps.live.minIntervalSeconds}
     public static let mapsLiveMaxIntervalSeconds = ${reg.maps.live.maxIntervalSeconds}
+
+    /// Verificar com gov.br (bipe-chat/bipe#544; registries/govbr.json). Rules: BipeGovbrFlow, test-vectors/govbr-verify.json.
+    public static let govbrFileName = ${swiftString(reg.govbr.fileName)}
+    public static let govbrMaxDocumentBytes = ${reg.govbr.maxDocumentBytes}
+    public static let govbrIosStoreUrl = ${swiftString(reg.govbr.iosStoreUrl)}
 
     /// Voice transcript paragraphs (registries/voice-transcript.json). Rule: product/screens/voice-recording.json notes.
     public static let voiceTranscriptPauseSeconds: Double = ${reg.voiceTranscript.pauseSeconds}
@@ -438,6 +471,9 @@ ${categories}
 }
 
 data class ScamPattern(val id: String, val regex: String)
+
+/** A network a public profile may link to (ADR 0228). [url] holds {handle} once. */
+data class SocialPlatform(val id: String, val name: String, val pattern: String, val url: String)
 
 object BipeRegistries {
     /** Normalised reserved display names and their category. */
@@ -540,6 +576,9 @@ object BipeRegistries {
     const val THEFT_STATEMENT_LIFE_HOURS = ${reg.theft.statementLifeHours}
     const val THEFT_CHECK_MINUTES = ${reg.theft.checkMinutes}
 
+    /** Age signals (ADR 0229, registries/age-signals.json). The server maps the range to a band; the app only reads and sends it. */
+    const val AGE_SIGNAL_RECHECK_DAYS = ${reg.ageSignals.recheckDays}
+
     /** Username (handle) rules. The server is the authority; clients check early for feedback. */
     const val HANDLE_MIN_LENGTH = ${reg.handles.minLength}
     const val HANDLE_MAX_LENGTH = ${reg.handles.maxLength}
@@ -547,6 +586,8 @@ object BipeRegistries {
     const val HANDLE_SUGGESTIONS_SHOWN = ${reg.handles.suggestions.shown}
     const val HANDLE_SUGGESTION_CANDIDATES = ${reg.handles.suggestions.candidates}
     const val HANDLE_PATTERN = ${kotlinString(reg.handles.pattern)}
+    /** Characters handleSkeleton() removes after normalize() (a regex character class). */
+    const val HANDLE_SKELETON_STRIP = ${kotlinString(reg.handles.skeletonStrip)}
 
     /** Owned handles (ADR 0065): only these may be shorter than [HANDLE_MIN_LENGTH], down to [HANDLE_OWNER_MIN_LENGTH]. */
     const val HANDLE_OWNER_MIN_LENGTH = ${reg.handles.ownerMinLength}
@@ -558,6 +599,9 @@ object BipeRegistries {
     /** Full Matrix user IDs of official Bipe accounts. Match exactly; names and handles are not proof. */
     val officialAccountIds: Set<String> = ${kotlinList("setOf", Object.values(reg.officialAccounts.accounts).map((a) => kotlinString(a.userId)))}
 
+    /** The groups service account (ADR 0184): the admin invites it before making a group link. */
+    val groupsAccountId = ${kotlinString(reg.officialAccounts.accounts.groups.userId)}
+
     /** Public profile rules (ADR 0041). Lengths count code points. The server is the authority. */
     const val PROFILE_NAME_MAX_LENGTH = ${reg.profiles.nameMaxLength}
     const val PROFILE_BIO_MAX_LENGTH = ${reg.profiles.bioMaxLength}
@@ -566,6 +610,8 @@ object BipeRegistries {
     const val PROFILE_PHOTO_MAX_PIXELS = ${reg.profiles.photoMaxPixels}
     /** Security rule 8: marks that look like the verified seal; none may sit in a display name (variation selectors removed). */
     val sealLookalikeEmoji: List<String> = ${kotlinList("listOf", reg.profiles.sealLookalikeEmoji.map(kotlinString))}
+    /** Social handles on a public profile (ADR 0228), in display order. */
+    val profileSocials: List<SocialPlatform> = ${kotlinList("listOf", reg.profiles.socials.map((x) => `SocialPlatform(${kotlinString(x.id)}, ${kotlinString(x.name)}, ${kotlinString(x.pattern)}, ${kotlinString(x.url)})`))}
 
     /** Invite codes: the code inside anything a user pastes (registries/invite-codes.json). */
     const val INVITE_CODE_PATTERN = ${kotlinString(reg.inviteCodes.pattern)}
@@ -654,6 +700,10 @@ ${reg.workHours.defaultDays.map((d) => `        ${d.day} to listOf(${d.ranges.ma
     /** Cleared DMs (bipe-chat/bipe#464; registries/cleared-chats.json): the global account data event with the markers. */
     const val CLEARED_CHATS_EVENT_TYPE = ${kotlinString(reg.clearedChats.eventType)}
 
+    /** Favourites order (spec chat-list; registries/chat-favourites.json): the global account data event with the room IDs in order. */
+    const val CHAT_FAVOURITES_ORDER_EVENT_TYPE = ${kotlinString(reg.chatFavourites.orderEventType)}
+    const val CHAT_FAVOURITES_ORDER_MAX = ${reg.chatFavourites.orderMax}
+
     /** Image descriptions (bipe-chat/bipe#501; registries/image-descriptions.json): the m.image content field and its length limit. */
     const val IMAGE_DESCRIPTION_FIELD = ${kotlinString(reg.imageDescriptions.field)}
     const val IMAGE_DESCRIPTION_MAX_LENGTH = ${reg.imageDescriptions.maxLength}
@@ -680,6 +730,9 @@ ${reg.workHours.defaultDays.map((d) => `        ${d.day} to listOf(${d.ranges.ma
     /** Forward marks (bipe-chat/bipe#83; registries/voice-media.json): the content field and the many-times threshold. Rules: BipeForwardMark, test-vectors/forward-marks.json. */
     const val FORWARD_KEY = ${kotlinString(reg.voiceMedia.forwardKey)}
     const val FORWARDED_MANY_TIMES = ${reg.voiceMedia.forwardedManyTimes}
+    /** The most chats one forward goes to, and the most when a sent content reaches FORWARDED_MANY_TIMES (bipe-chat/bipe#933). */
+    const val FORWARD_CHATS = ${reg.voiceMedia.forwardChats}
+    const val FORWARD_CHATS_MANY_TIMES = ${reg.voiceMedia.forwardChatsManyTimes}
 
     /** Assistant drafts (bipe ADR 0210, bipe-chat/bipe#866; registries/drafts.json, docs/drafts-room.md). Rules: test-vectors/drafts.json. */
     const val DRAFTS_ROOM_TYPE = ${kotlinString(reg.drafts.roomType)}
@@ -737,6 +790,12 @@ ${reg.workHours.defaultDays.map((d) => `        ${d.day} to listOf(${d.ranges.ma
     const val MAPS_LIVE_DEFAULT_DISTANCE_METRES = ${reg.maps.live.defaultDistanceMetres}
     const val MAPS_LIVE_MIN_INTERVAL_SECONDS = ${reg.maps.live.minIntervalSeconds}
     const val MAPS_LIVE_MAX_INTERVAL_SECONDS = ${reg.maps.live.maxIntervalSeconds}
+
+    /** Verificar com gov.br (bipe-chat/bipe#544; registries/govbr.json). Rules: BipeGovbrFlow, test-vectors/govbr-verify.json. */
+    const val GOVBR_FILE_NAME = ${kotlinString(reg.govbr.fileName)}
+    const val GOVBR_MAX_DOCUMENT_BYTES = ${reg.govbr.maxDocumentBytes}
+    const val GOVBR_ANDROID_PACKAGE = ${kotlinString(reg.govbr.androidPackage)}
+    const val GOVBR_ANDROID_STORE_URL = ${kotlinString(reg.govbr.androidStoreUrl)}
 
     /** Voice transcript paragraphs (registries/voice-transcript.json). Rule: product/screens/voice-recording.json notes. */
     const val VOICE_TRANSCRIPT_PAUSE_SECONDS: Double = ${reg.voiceTranscript.pauseSeconds}
@@ -842,11 +901,15 @@ if (appIndex >= 0 || existsSync(appOut)) {
   writeFileSync(join(swiftDir, "BipeScreen.swift"), appPost(appScreens("swift"), "swift"));
   // DM power levels (ADR 0141, bipe-chat/bipe#532).
   writeFileSync(join(swiftDir, "BipeDmPowerLevels.swift"), appPost(generateDmPowerLevels(reg.dmPowerLevels, "swift", HEADER, swiftString), "swift"));
+  // Group roles (bipe-chat/bipe#733).
+  writeFileSync(join(swiftDir, "BipeGroupPowerLevels.swift"), appPost(generateGroupPowerLevels(reg.groupPowerLevels, "swift", HEADER, swiftString), "swift"));
   const kotlinMain = join(appOut, "android/libraries/bipe/src/main");
   writeKotlin(kotlinMain, { packageName: KOTLIN_PACKAGE, post: appPost });
   writeFileSync(join(kotlinMain, "kotlin", ...KOTLIN_PACKAGE.split("."), "BipeScreen.kt"), appPost(appScreens("kotlin"), "kotlin"));
   writeFileSync(join(kotlinMain, "kotlin", ...KOTLIN_PACKAGE.split("."), "BipeDmPowerLevels.kt"),
     appPost(generateDmPowerLevels(reg.dmPowerLevels, "kotlin", KOTLIN_HEADER, kotlinString), "kotlin"));
+  writeFileSync(join(kotlinMain, "kotlin", ...KOTLIN_PACKAGE.split("."), "BipeGroupPowerLevels.kt"),
+    appPost(generateGroupPowerLevels(reg.groupPowerLevels, "kotlin", KOTLIN_HEADER, kotlinString), "kotlin"));
   // Store captures (bipe-chat/bipe#457): the sample data of the Android capture source, a test source set only.
   const storeHeader = HEADER.replace("bipe-shared/registries and bipe-shared/strings", "bipe-shared/product/store-captures.json and product/cast.json");
   mkdirSync(dirname(join(appOut, STORE_CAPTURES_PATH)), { recursive: true });
@@ -856,11 +919,30 @@ if (appIndex >= 0 || existsSync(appOut)) {
   writeFileSync(join(swiftDir, "BipeColors.swift"), appPost(`${TOKENS_HEADER}\n${generateColors("swift")}`, "swift"));
   writeFileSync(join(kotlinMain, "kotlin", ...KOTLIN_PACKAGE.split("."), "BipeColors.kt"),
     appPost(`${KOTLIN_LICENSE}${TOKENS_HEADER}\n@file:Suppress("all", "ktlint")\n\npackage ${KOTLIN_PACKAGE}\n\n${generateColors("kotlin")}`, "kotlin"));
+  // The web client (bipe-chat/bipe#901, ADR 0216): data, strings, screen ids, tokens and the reference rules.
+  writeWeb(join(appOut, "web/src/bipe/generated"), {
+    root,
+    reg,
+    screens: loadScreens(root).map(({ spec }) => spec),
+    css: generateColors("css"),
+    // The business tools contract, for the owner screens on the web (ADR 0226); bipe-api gets the same file.
+    businessApi: generateApiTypes(loadBusinessSchemas(root)),
+    license: APP_LICENSE,
+    header: HEADER,
+    check: (text) => appPost(text, "swift"),
+  });
   // App icons of the app theme (bipe-chat/bipe#811): an asset catalog that the Bipe app target compiles, and
   // the Android icon colours and mark.
   const xmlHeader = `<!--\n${APP_LICENSE.replace(/^(?=.)/gm, "  ")}\n  Generated by bipe-shared tools/gen.mjs from bipe-shared/design/tokens.json (appThemes). Do not edit.\n-->`;
   const icons = generateAppIcons(undefined, { xmlHeader });
   rmSync(join(swiftDir, "AppIcons.xcassets"), { recursive: true, force: true });
+  // A palette that left appThemes leaves no icon behind: its colour is gone, so the icon would not link.
+  const mipmapDir = join(kotlinMain, "res/mipmap-anydpi-v26");
+  if (existsSync(mipmapDir)) {
+    for (const f of readdirSync(mipmapDir)) {
+      if (/^bipe_app_icon_\w+\.xml$/.test(f) && !(`res/mipmap-anydpi-v26/${f}` in icons.android)) rmSync(join(mipmapDir, f));
+    }
+  }
   for (const [base, files] of [[swiftDir, icons.ios], [kotlinMain, icons.android]]) {
     for (const [file, content] of Object.entries(files)) {
       mkdirSync(dirname(join(base, file)), { recursive: true });

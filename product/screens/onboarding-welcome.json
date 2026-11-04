@@ -55,6 +55,7 @@
     "Layout: a full-bleed açaí cover with the Bipe mark, the wordmark, the welcome line and the title; the cover also holds learnMore. The cover is not an inset card. Under it, the variant's primary button (filled) and its text buttons (haveAccount) as a tonal button of the same width. A tall window gives the cover all the height above the buttons; a wide window makes the cover the left half of the whole window, so the split meets the iPhone Duo fold. No paste row here: pasting an invite belongs to signup-invite-code.",
     "bipe_onboarding_invited_by takes the inviter's handle with @ in front. An invite without a handle, or not valid, shows the open or inviteOnly variant and keeps the code for signup-invite-code.",
     "The screen talks only to bipe-api (no auth). The Matrix client does not exist yet. Bipe logic: BipeAPIClient.signupConfig and invitePreview, BipeInviteLink (iOS); BipeApiClient, BipeStartScreenInfo (Android).",
-    "account-start shows this screen when its phase is noAccount."
+    "account-start shows this screen when its phase is noAccount.",
+    "The cover ends with the app version in small, faded text: the same version name, build and commit as bipe_help_version in Settings (\"1.0.0 (412) abc1234\"), so a tester sees which build runs before sign-up. It is not a string resource and has no action."
   ]
 }

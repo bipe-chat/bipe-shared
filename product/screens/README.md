@@ -25,6 +25,19 @@ A field has `type`, `description` and optional `optional: true`. Types:
 - `list` with `of` (a field without a name);
 - the name of a record type from `types` in any spec.
 
+## People names
+
+MZ decided on 2 November 2026: the Matrix user ID and its localpart are internal. The UI never shows them. Debug and about panels are the only exception, and the localpart stays where it is a login username (link-computer, linked-devices).
+
+Every screen that names a person uses this order:
+
+1. The saved contact name, when the user allowed contacts.
+2. The profile display name, when it is not empty, not the full Matrix ID and not its localpart. Synapse sets a new account's display name to its localpart, so that value is no name.
+3. The Bipe `@handle` from `POST /v1/handles/resolve`.
+4. `bipe_person_no_name`.
+
+A label that tells two people apart adds the `@handle`, never the Matrix ID. iOS: `BipeChatRowName.person` (BipeKit). Android: `BipeChatRowName.person` (`libraries/bipe`).
+
 ## Rules for spec writers
 
 - A spec says what the screen does. It says nothing about how Element X does it.

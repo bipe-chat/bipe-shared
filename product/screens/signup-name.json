@@ -37,6 +37,7 @@
     "bipe_signup_terms_link",
     "bipe_signup_privacy_link",
     "bipe_signup_terms_required",
+    "bipe_onboarding_point_brazil",
     "bipe_action_continue"
   ],
   "sdk": [],
@@ -45,6 +46,7 @@
     "bipe_signup_terms_accept takes the two link texts as %1$s and %2$s. Each link text is tappable on its own; a tap on the rest of the sentence flips the checkbox.",
     "The app sends terms_version with POST /v1/signup only when termsAccepted is true. The server refuses an older version (403 terms_required).",
     "The @ is not asked here. It comes later from the handle prompt (handle-pick). The second-account flow (ADR 0135) also starts at this step.",
+    "bipe_onboarding_point_brazil shows above the terms row as read-only text: the person's region (bipe ADR 0197). The user never picks a region. It comes from the invite when a second region exists.",
     "Bipe logic: BipeLegalLinks.termsURL and privacyURL (iOS), BipeLegalLinks.termsUrl and privacyUrl (Android)."
   ]
 }

@@ -1,8 +1,8 @@
 {
   "id": "data-use",
-  "title": "Data use",
+  "title": "Data and storage",
   "flow": "settings",
-  "summary": "Shows the data budget of a normal day, the media Bipe sent and downloaded on this phone today and this month, split by mobile data and Wi-Fi, and the switch that saves mobile data.",
+  "summary": "Shows the data budget of a normal day, the media Bipe sent and downloaded on this phone today and this month, split by mobile data and Wi-Fi, the switch that saves mobile data, and the space Bipe uses on the phone with a button that clears the media cache.",
   "types": {
     "DataUseCount": {
       "sentBytes": { "type": "int", "description": "Media Bipe uploaded: photos, videos, voice messages, files and stickers." },
@@ -16,12 +16,28 @@
     "monthMobile": { "type": "DataUseCount", "description": "This calendar month, on mobile data." },
     "monthWifi": { "type": "DataUseCount", "description": "This calendar month, on Wi-Fi or a cable." },
     "dataSaver": { "type": "bool", "description": "The switch bipe_data_use_saver, kept on the phone. Default dataSaverDefault." },
-    "systemSaverOn": { "type": "bool", "description": "true when the system Low Data Mode (iOS) or Data Saver (Android) is on: bipe_data_use_saver_system shows, and the app saves data as if the switch were on." }
+    "systemSaverOn": { "type": "bool", "description": "true when the system Low Data Mode (iOS) or Data Saver (Android) is on: bipe_data_use_saver_system shows, and the app saves data as if the switch were on." },
+    "mediaCacheBytes": { "type": "int", "optional": true, "description": "Row bipe_storage_media: the SDK media store (StoreSizes.mediaStore) plus the files in the app's own media folders that are not voice (see notes). Absent while it loads." },
+    "voiceBytes": { "type": "int", "optional": true, "description": "Row bipe_storage_voice: the voice files in the app's own media folders (see notes). Absent while it loads." },
+    "storeBytes": { "type": "int", "optional": true, "description": "Row bipe_storage_store: messages, chat state and keys, StoreSizes.stateStore + eventCacheStore + cryptoStore. Absent while it loads." },
+    "confirmClear": { "type": "bool", "description": "true while the dialog bipe_storage_clear_title is open." },
+    "clearing": { "type": "bool", "description": "true while clearMediaCache runs: the button is off and shows progress." },
+    "freedBytes": { "type": "int", "optional": true, "description": "After clearMediaCache: the space it freed (the sizes before minus the sizes after), shown with bipe_storage_cleared as the one-time notice of account-start, because the tabs build again for the new session. Never below 0." },
+    "clearFailed": { "type": "bool", "description": "true after a failed clearMediaCache. Shows bipe_error_generic." }
   },
   "actions": {
     "setDataSaver": {
       "params": { "isOn": { "type": "bool", "description": "The new value." } },
       "effect": "Keeps the switch on the phone. timeline-media reads it on the next row."
+    },
+    "measureStorage": {
+      "effect": "On appear and after clearMediaCache: reads Client.getStoreSizes of the current account and the sizes of the app's media folders, off the main thread."
+    },
+    "askClearMediaCache": {
+      "effect": "Opens the dialog bipe_storage_clear_title with bipe_storage_clear_body, bipe_storage_clear_confirm and bipe_app_cancel."
+    },
+    "clearMediaCache": {
+      "effect": "Stops the sync of the current account, calls Client.clearCaches(syncService:), deletes the app's media folders (see notes), then builds the account's session again, as after soft-logout. Measures again and shows freedBytes. When the session cannot be built again, clearFailed; the next app start restores it."
     }
   },
   "strings": [
@@ -36,15 +52,31 @@
     "bipe_data_use_footer",
     "bipe_data_use_saver",
     "bipe_data_use_saver_footer",
-    "bipe_data_use_saver_system"
+    "bipe_data_use_saver_system",
+    "bipe_storage_title",
+    "bipe_storage_media",
+    "bipe_storage_voice",
+    "bipe_storage_store",
+    "bipe_storage_footer",
+    "bipe_storage_clear",
+    "bipe_storage_clear_title",
+    "bipe_storage_clear_body",
+    "bipe_storage_clear_confirm",
+    "bipe_storage_cleared",
+    "bipe_app_cancel",
+    "bipe_error_generic"
   ],
-  "sdk": ["Client.getMediaContent", "Client.getMediaFile", "Timeline.sendImage", "Timeline.sendVideo", "Timeline.sendFile", "Timeline.sendVoiceMessage"],
-  "parity": ["data-use"],
+  "sdk": ["Client.getMediaContent", "Client.getMediaFile", "Timeline.sendImage", "Timeline.sendVideo", "Timeline.sendFile", "Timeline.sendVoiceMessage", "Client.getStoreSizes", "StoreSizes", "Client.clearCaches", "Client.session", "Client.restoreSession", "SyncService.stop"],
+  "parity": ["data-use", "storage-use"],
   "notes": [
-    "Opens from the row dataUse in Conversas e mídia (registries/settings.json).",
+    "Opens from the row dataUse (bipe_chats_data_use, Dados e armazenamento) in Conversas e mídia (registries/settings.json).",
     "Counting: the app adds the size of each media download (thumbnail, image, file, voice) and each upload it starts, to the counter of the network in use at that moment (iOS NWPathMonitor: cellular is mobile data; Android ConnectivityManager: TRANSPORT_CELLULAR is mobile data). Text, sync and calls are not counted: the SDK does not report them, and bipe_data_use_footer says so. The counters stay on the phone, never leave it and roll over at the start of each calendar month (today at midnight).",
     "Sizes are formatted by the system (ByteCountFormatter on iOS, Formatter.formatShortFileSize on Android).",
     "dataSaver or the system saver, on mobile data: timeline-media shows photos and stickers as tapToShow, like showMedia never. On Wi-Fi nothing changes. Videos and voice messages download only on a tap or play in every case.",
+    "Storage (bipe-chat/bipe#826): a section bipe_storage_title under the data saver with three rows (bipe_storage_media, bipe_storage_voice, bipe_storage_store), each with its size formatted by the system, a footer bipe_storage_footer and the button bipe_storage_clear. Sizes are of the current account's SDK stores; the app folders are shared by every account on the phone.",
+    "The app's media folders: iOS Library/Caches/Voice (decoded voice), Library/Caches/Uploads (picked and prepared media), the app's tmp folder (SDK media files) and the app group folders SharePending and PixPending; Android cacheDir/media (SDK media files) and cacheDir/uploads. A file counts as voice when its extension is ogg, oga, opus, m4a, aac, mp3, wav or caf; every other file counts in mediaCacheBytes. Voice downloads inside the SDK media store count in mediaCacheBytes: the store does not split them.",
+    "clearMediaCache deletes: iOS Caches/Voice and the contents of tmp; Android cacheDir/media, and the in-memory media caches on both. Uploads, share and Pix handoff folders stay, because a send or a share may still need them.",
+    "The pinned SDK has no call that clears only media. Client.clearCaches drops the state store and every room's event cache and trims the media store by the media retention policy; the crypto store and the session stay. After it the Client must be built again: the app restores the saved session (Client.session before the clear) into a new Client, and the tabs build again for it. Chats load again from the server. Keys stay, so every message stays readable.",
     "The budget is an estimate (registries/data-use.json); a measured value replaces it after MZ measures a normal day on both platforms."
   ]
 }

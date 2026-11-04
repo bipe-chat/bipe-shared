@@ -5139,6 +5139,96 @@ paths:
                 $ref: "#/components/schemas/WebSettings"
         default:
           $ref: "#/components/responses/BusinessToolError"
+  /v1/businesses/{handle}/web/queue:
+    post:
+      summary: "Join the queue on the web with a first name"
+      x-summary-pt: "Entrar na fila pela web com o primeiro nome"
+      operationId: "postV1BusinessesHandleWebQueue"
+      tags:
+        - "Agenda"
+      security: []
+      description: "Public CORS for PUBLIC_SITE_URL. No session (ADR 0185). A rate limit per address on each shop."
+      parameters:
+        -
+          name: "handle"
+          in: "path"
+          required: true
+          schema:
+            type: "string"
+            minLength: 1
+            maxLength: 128
+        -
+          name: "x-bipe-shop-token"
+          in: "header"
+          required: false
+          schema:
+            type: "string"
+            minLength: 1
+            maxLength: 128
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/WebQueueJoin"
+      responses:
+        "200":
+          description: "Success"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/WebQueueResult"
+        default:
+          $ref: "#/components/responses/BusinessToolError"
+  /v1/businesses/{handle}/web/queue/places/{placeId}/leave:
+    post:
+      summary: "Leave the queue with a shop token"
+      x-summary-pt: "Sair da fila feita pela web"
+      operationId: "postV1BusinessesHandleWebQueuePlacesPlaceIdLeave"
+      tags:
+        - "Agenda"
+      security: []
+      description: "Public CORS for PUBLIC_SITE_URL. The shop token is the only key."
+      parameters:
+        -
+          name: "handle"
+          in: "path"
+          required: true
+          schema:
+            type: "string"
+            minLength: 1
+            maxLength: 128
+        -
+          name: "placeId"
+          in: "path"
+          required: true
+          schema:
+            type: "string"
+            minLength: 1
+            maxLength: 128
+        -
+          name: "x-bipe-shop-token"
+          in: "header"
+          required: true
+          schema:
+            type: "string"
+            minLength: 1
+            maxLength: 128
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/EmptyBusinessRequest"
+      responses:
+        "200":
+          description: "Success"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/QueuePosition"
+        default:
+          $ref: "#/components/responses/BusinessToolError"
   /v1/me/business/queue/open:
     post:
       summary: "Open today’s queue"
@@ -7501,6 +7591,10 @@ components:
       $ref: "./business-schemas.json#/$defs/AgendaActivation"
     AgendaState:
       $ref: "./business-schemas.json#/$defs/AgendaState"
+    WebQueueJoin:
+      $ref: "./business-schemas.json#/$defs/WebQueueJoin"
+    WebQueueResult:
+      $ref: "./business-schemas.json#/$defs/WebQueueResult"
     WebBooking:
       $ref: "./business-schemas.json#/$defs/WebBooking"
     WebOrder:

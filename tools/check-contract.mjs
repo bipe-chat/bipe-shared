@@ -87,6 +87,7 @@ const NOT_IN_APPS = {
   ...Object.fromEntries([
     "QuoteLinkInput", "QuoteLinkResult", "WebQuote",
   ].map((name) => [name, "quote link: bipe-web reads WebQuote; the apps use private types (bipe#754)"])),
+  BusinessStop: "one boolean; the apps read it in a private type (bipe#1013)",
   DiscoverySettings: "one boolean; iOS sends it from a private request type in BipeAPIClient",
   ReachStatus: "contract first (bipe#851); the budget notice and \"Status da conta\" in the app follow in bipe#846",
   MessagingSetting: "one enum field; iOS decodes it in a private MessagingSetting type in BipeAPIClient, exposed as BipeWhoCanMessage",

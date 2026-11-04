@@ -2569,6 +2569,19 @@
           "$ref": "#/$defs/QuoteVersion"
         }
       }
+    },
+    "BusinessStop": {
+      "description": "Whether the caller stopped this work account (ADR 0237).",
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "stopped"
+      ],
+      "properties": {
+        "stopped": {
+          "type": "boolean"
+        }
+      }
     }
   }
 }

@@ -2,7 +2,7 @@
   "id": "voce",
   "title": "Você",
   "flow": "voce",
-  "summary": "The Você tab (ADR 0112): who you are first, then the settings groups. A profile row (photo, name, @), the trust card, Anotações, Meus agendamentos, Convidar pessoas, settings-root, then Adicionar conta.",
+  "summary": "The Você tab (ADR 0112): who you are first, then the settings groups. A profile row (photo, name, @), the trust card, Anotações, Meus agendamentos, Convidar pessoas, settings-root, then Contas neste celular and Adicionar conta.",
   "state": {
     "displayName": {
       "type": "string",
@@ -47,6 +47,9 @@
     "openTrust": {
       "effect": "Opens trust-profile from the trust card (spec trust-card)."
     },
+    "openAccounts": {
+      "effect": "Opens account-switcher, the same menu as a hold on the Você tab. The row above Adicionar conta."
+    },
     "addAccount": {
       "effect": "Opens account-new (bipe_app_account_new). The last row of Você, after settings-root."
     }
@@ -59,6 +62,7 @@
     "bipe_self_chat_subtitle",
     "bipe_invites_title",
     "bipe_agenda_my_bookings",
+    "bipe_app_account_switcher_title",
     "bipe_app_account_new",
     "bipe_settings_profile"
   ],
@@ -70,12 +74,12 @@
     "settings-structure"
   ],
   "notes": [
-    "MZ decision 25 Oct 2026 (bipe#577): Você has no account rows. The accounts on this phone switch from the Você tab: a hold opens account-switcher, a double tap goes to the next account, and screen readers use the tab's accessibility action (app-tabs). MZ, 2 Nov 2026 (bipe-chat/bipe#988): Adicionar conta (bipe_app_account_new) is the last row of Você, after settings-root, with the same icon tile (plus) as every other Você row. Adding an account is rare, so it does not take the place under the header.",
+    "MZ decision 25 Oct 2026 (bipe#577): Você does not list the accounts in its rows. The accounts on this phone switch from the Você tab: a hold opens account-switcher, a double tap goes to the next account, and screen readers use the tab's accessibility action (app-tabs). MZ, 2 Nov 2026 (bipe-chat/bipe#988): Adicionar conta (bipe_app_account_new) is the last row of Você, after settings-root, with the same icon tile (plus) as every other Você row. Adding an account is rare, so it does not take the place under the header. MZ, 4 Nov 2026: a row Contas neste celular (bipe_app_account_switcher_title, always shown, same icon tile) sits right above it and opens account-switcher, so the two account actions are together and not only on the tab.",
     "MZ decision 25 Oct 2026 (bipe#577): the header shows the current account's avatar (photo, else initials). Since the chat list has no account avatar, Você is the one screen that shows it.",
     "Asks (MZ, 2 Nov 2026, bipe-chat/bipe#894): Você shows no prompt cards. The photo and osTheftProtection asks are entries of chat-list-prompt, the one ask system of the app.",
     "The header never shows the Matrix ID (ADR 0112).",
     "The trust card (Perfil de confiança, ADR 0019) sits right after the profile row: spec trust-card, which opens trust-profile.",
-    "Below Convidar pessoas comes settings-root (Configurações). Adicionar conta follows it.",
+    "Below Convidar pessoas comes settings-root (Configurações). A section with Contas neste celular and Adicionar conta follows it.",
     "The header and account rows load the actual Matrix avatar through the SDK media API. Without a photo use initials. Shape follows ADR 0132: company is a rounded square; personal/unknown is a circle. A profile name or CNPJ badge must not determine account type.",
     "Profile row (MZ, 2 Nov 2026, bipe-chat/bipe#988; iPhone Settings, WhatsApp and Signal layout): one full-width row at the top of the list, with the 60 pt avatar, the display name (headline), the @ (bipe secondary ink) and a chevron. A tap anywhere on the row opens Seu perfil; its accessibility hint is bipe_settings_profile. There is no centred hero, no text link and no bordered buttons. The QR code button (Phosphor qr-code, accessibility label bipe_profile_qr_action) sits at the trailing end of the navigation bar; a company account has it too.",
     "Order above Configurações (bipe-chat/bipe#988): profile row; trust card; a section with Anotações and Meus agendamentos, personal accounts only (what you use); a section with Convidar pessoas. The year recap is not on Você (MZ, 3 Nov 2026): it is the last row of Conversas e mídia (settings-group chats). These rows use the same icon tile as settings-root.",

@@ -901,6 +901,25 @@
       }
     },
     {
+      "id": "agenda-external-calendars",
+      "basis": "contract",
+      "places": [
+        "server"
+      ],
+      "pt": {
+        "name": "Calendários externos da agenda",
+        "what": "O endereço secreto do calendário que o negócio colou, e o início e o fim de cada compromisso. Nunca títulos nem descrições. O link de assinatura fica guardado só como hash.",
+        "why": "Não oferecer um horário em que quem atende está ocupado, e mostrar os agendamentos no calendário do negócio.",
+        "retention": "Até o negócio remover o calendário, ou o link. Se o negócio ligar o nome do cliente, o primeiro nome sai para o serviço de calendário dele."
+      },
+      "en": {
+        "name": "External calendars of an agenda",
+        "what": "The secret calendar address the business pasted, and the start and end of each event. Never titles or descriptions. The subscription link is kept only as a hash.",
+        "why": "To not offer a time when the person is busy, and to show bookings in the business's calendar.",
+        "retention": "Until the business removes the calendar or the link. If the business turns on the customer's name, the first name goes to its calendar service."
+      }
+    },
+    {
       "id": "shop-web-records",
       "basis": "contract",
       "places": [

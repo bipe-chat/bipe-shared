@@ -1090,7 +1090,7 @@
         "url": {
           "type": "string",
           "format": "uri",
-          "pattern": "^https?://",
+          "pattern": "^https://",
           "description": "Secret ICS URL. Server resolves and checks every address and redirect; refuses private and link-local addresses; caps redirects, bytes and time. Never log this URL."
         }
       }
@@ -1118,6 +1118,10 @@
           "format": "date-time",
           "pattern": "Z$",
           "description": "UTC, with a trailing Z."
+        },
+        "failing": {
+          "type": "boolean",
+          "description": "The last three reads failed. The agenda keeps working."
         }
       },
       "description": "Fetch every 15 minutes; retain start and end only, never titles or descriptions. Do not return the secret URL."

@@ -1,0 +1,60 @@
+{
+  "id": "loja-web",
+  "title": "Shop on the web",
+  "flow": "business",
+  "summary": "bipe.chat/@loja is the shop on the web, for people with no Bipe account (ADR 0195): profile, seal, opening hours and every live tool. Agendar and Fazer pedido take a first name and no phone, e-mail or location. Seus pedidos e horários lists the records of this browser's shop token. It is served by bipe-web.",
+  "state": {
+    "tools": {
+      "type": "list",
+      "of": {
+        "type": "string",
+        "description": "A live tool ID."
+      },
+      "description": "GET /v1/businesses/{handle}/tools with web_booking and web_orders."
+    },
+    "token": {
+      "type": "string",
+      "optional": true,
+      "description": "The shop token, in localStorage per shop. The server returns it once, on the first web action."
+    },
+    "records": {
+      "type": "string",
+      "optional": true,
+      "description": "GET .../web/records, read every 20 seconds while the page is visible."
+    }
+  },
+  "actions": {
+    "book": {
+      "effect": "POST .../web/bookings. Shows bipe_loja_waiting."
+    },
+    "order": {
+      "effect": "POST .../web/orders, with bipe_loja_pickup and bipe_loja_pay_at_pickup. Opening days and the cut-off time apply."
+    },
+    "cancel": {
+      "effect": "POST .../web/bookings/{id}/cancel or .../web/orders/{id}/cancel with the token."
+    },
+    "getAlerts": {
+      "effect": "bipe_loja_get_alerts on each record: opens the business's invite with the token for the claim."
+    }
+  },
+  "strings": [
+    "bipe_loja_your_name",
+    "bipe_loja_records_title",
+    "bipe_loja_get_alerts",
+    "bipe_loja_pickup",
+    "bipe_loja_pay_at_pickup",
+    "bipe_loja_waiting",
+    "bipe_loja_send",
+    "bipe_loja_app_only",
+    "bipe_agenda_book",
+    "bipe_order_make"
+  ],
+  "sdk": [],
+  "parity": [
+    "loja-web"
+  ],
+  "notes": [
+    "No login, card, password, phone or e-mail fields, and no notifications (ADR 0195 point 6).",
+    "A tool that is not live does not show. With web_orders off, ordering shows bipe_loja_app_only."
+  ]
+}

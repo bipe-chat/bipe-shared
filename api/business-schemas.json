@@ -897,6 +897,10 @@
           "format": "date-time",
           "pattern": "Z$",
           "description": "UTC, with a trailing Z."
+        },
+        "web": {
+          "type": "boolean",
+          "description": "Made on the web with a first name and a shop token, with no account (ADR 0195). No chat."
         }
       },
       "description": "Minimal record (ADR 0102). No notes, address, allergy, message or other customer text. The only name is a name-only owner entry or a retained name after account deletion. End and hold expiry are server-derived. A held row expires five minutes after creation."
@@ -1183,7 +1187,9 @@
             "payment_requires_verified_business",
             "pix_charge_unavailable",
             "tool_needs_catalog",
-            "tool_not_live"
+            "tool_not_live",
+            "web_off",
+            "shop_token_invalid"
           ]
         },
         "reason": {
@@ -2037,6 +2043,10 @@
           "type": "string",
           "minLength": 1,
           "maxLength": 128
+        },
+        "web": {
+          "type": "boolean",
+          "description": "Made on the web with a first name and a shop token, with no account (ADR 0195). No chat."
         }
       },
       "description": "Minimal order record. No address, notes or customer messages. One open order per customer per business; sent/accepted/ready are open. Payment choice and a charge link do not establish paid status. Retain for two years (ADR 0105)."
@@ -2130,6 +2140,14 @@
           "items": {
             "$ref": "#/$defs/BusinessToolId"
           }
+        },
+        "web_booking": {
+          "type": "boolean",
+          "description": "The Agenda is live and the owner keeps booking on the web on."
+        },
+        "web_orders": {
+          "type": "boolean",
+          "description": "Pedidos is live and the owner keeps orders on the web on."
         }
       }
     },
@@ -2264,6 +2282,150 @@
           "items": {
             "$ref": "#/$defs/QuoteRequest"
           }
+        }
+      }
+    },
+    "WebBooking": {
+      "description": "No session. A first name and no phone, e-mail or location (ADR 0195 point 4). Always starts requested.",
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "name",
+        "service_id",
+        "agenda_id",
+        "start"
+      ],
+      "properties": {
+        "name": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 40
+        },
+        "service_id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128
+        },
+        "agenda_id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128,
+          "description": "An eligible agenda ID or any."
+        },
+        "start": {
+          "type": "string",
+          "format": "date-time"
+        }
+      }
+    },
+    "WebOrder": {
+      "description": "No session. Retirada and pago na hora only: delivery needs an address, and free text stays in the encrypted chat (ADR 0195 point 14).",
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "name",
+        "lines"
+      ],
+      "properties": {
+        "name": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 40
+        },
+        "lines": {
+          "type": "array",
+          "minItems": 1,
+          "maxItems": 50,
+          "items": {
+            "$ref": "#/$defs/OrderLineInput"
+          }
+        }
+      }
+    },
+    "WebBookingResult": {
+      "description": "token: only on the first web action of this browser at this shop. The server keeps its hash.",
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "booking"
+      ],
+      "properties": {
+        "token": {
+          "type": "string"
+        },
+        "booking": {
+          "$ref": "#/$defs/Booking"
+        }
+      }
+    },
+    "WebOrderResult": {
+      "description": "token: only on the first web action of this browser at this shop. The server keeps its hash.",
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "order"
+      ],
+      "properties": {
+        "token": {
+          "type": "string"
+        },
+        "order": {
+          "$ref": "#/$defs/Order"
+        }
+      }
+    },
+    "WebRecords": {
+      "description": "Every record of one shop token at one shop, open ones and the last 30 days.",
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "bookings",
+        "orders"
+      ],
+      "properties": {
+        "bookings": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/Booking"
+          }
+        },
+        "orders": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/Order"
+          }
+        }
+      }
+    },
+    "WebClaim": {
+      "description": "A signed-in person takes the records of the token. The token then stops working.",
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "token"
+      ],
+      "properties": {
+        "token": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128
+        }
+      }
+    },
+    "WebSettings": {
+      "description": "Owner switches, on by default (ADR 0195 points 12 and 16).",
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "web_booking",
+        "web_orders"
+      ],
+      "properties": {
+        "web_booking": {
+          "type": "boolean"
+        },
+        "web_orders": {
+          "type": "boolean"
         }
       }
     }

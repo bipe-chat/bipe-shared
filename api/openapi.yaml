@@ -7338,10 +7338,13 @@ components:
         end: { type: string, pattern: "^([01][0-9]|2[0-3]):[0-5][0-9]$|^24:00$", description: "Half-open: the range ends before end. 24:00 is midnight." }
     NotificationPrefs:
       type: object
-      required: [invite_joined, group_link_joined]
+      required: [invite_joined, group_link_joined, booking_reminders, work_alerts, work_summary]
       properties:
         invite_joined: { type: boolean, description: "Push invite_joined when someone signs up with the caller's personal invite." }
         group_link_joined: { type: boolean, description: "Push group_link_joined when someone joins with a group link the caller made." }
+        booking_reminders: { type: boolean, description: "Push the booking reminders to the caller as a customer (ADR 0102)." }
+        work_alerts: { type: boolean, description: "Company account: push new bookings, new orders and customer cancellations." }
+        work_summary: { type: boolean, description: "Company account: push the morning summary on a day with bookings." }
     LinkProviders:
       type: object
       required: [providers]

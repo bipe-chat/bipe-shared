@@ -90,6 +90,18 @@
     "isCompany": {
       "type": "bool",
       "description": "account_type company in GET /v1/me/account: the row bipe_work_hours_title shows and opens work-hours, with its value bipe_work_hours_open_now or bipe_work_hours_closed_now when enabled."
+    },
+    "bookingReminders": {
+      "type": "bool",
+      "description": "booking_reminders: the reminders of a customer's bookings (bipe-chat/bipe#320). Default true."
+    },
+    "workAlerts": {
+      "type": "bool",
+      "description": "work_alerts, company account only: new bookings, new orders and customer cancellations. Default true."
+    },
+    "workSummary": {
+      "type": "bool",
+      "description": "work_summary, company account only: the morning summary. Default true."
     }
   },
   "actions": {
@@ -182,6 +194,33 @@
     },
     "openWorkHours": {
       "effect": "Company accounts: opens work-hours."
+    },
+    "setBookingReminders": {
+      "params": {
+        "isOn": {
+          "type": "bool",
+          "description": "The new value."
+        }
+      },
+      "effect": "PUT /v1/me/notification-prefs. A failure puts the switch back and shows bipe_error_generic."
+    },
+    "setWorkAlerts": {
+      "params": {
+        "isOn": {
+          "type": "bool",
+          "description": "The new value."
+        }
+      },
+      "effect": "PUT /v1/me/notification-prefs. A failure puts the switch back and shows bipe_error_generic."
+    },
+    "setWorkSummary": {
+      "params": {
+        "isOn": {
+          "type": "bool",
+          "description": "The new value."
+        }
+      },
+      "effect": "PUT /v1/me/notification-prefs. A failure puts the switch back and shows bipe_error_generic."
     }
   },
   "strings": [
@@ -223,7 +262,10 @@
     "bipe_app_notification_checkup_title",
     "bipe_notifications_invite_joined",
     "bipe_notifications_group_link_joined",
-    "bipe_notifications_joins_footer"
+    "bipe_notifications_joins_footer",
+    "bipe_notifications_booking_reminders",
+    "bipe_notifications_work_alerts",
+    "bipe_notifications_work_summary"
   ],
   "sdk": [
     "Client.getNotificationSettings",

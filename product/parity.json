@@ -1490,8 +1490,7 @@
         ]
       },
       "web": {
-        "status": "n/a",
-        "reason": "No web chat (ADR 0004); the site shows a demo at most"
+        "status": "planned"
       },
       "server": {
         "status": "n/a",
@@ -2337,8 +2336,11 @@
         ]
       },
       "web": {
-        "status": "n/a",
-        "reason": "No web chat (ADR 0004)"
+        "status": "built",
+        "evidence": [
+          "bipe-app/web/src/ChatActions.tsx",
+          "bipe-app/web/src/Timeline.tsx"
+        ]
       },
       "server": {
         "status": "n/a",
@@ -2521,8 +2523,11 @@
         ]
       },
       "web": {
-        "status": "n/a",
-        "reason": "Stock Element Web cannot do this by config; accepted gap until after launch (ADR 0141, bipe#477)"
+        "status": "built",
+        "evidence": [
+          "bipe-app/web/src/ChatInfo.tsx",
+          "bipe-app/web/src/Timeline.tsx"
+        ]
       },
       "server": {
         "status": "n/a",
@@ -3116,8 +3121,7 @@
         ]
       },
       "web": {
-        "status": "n/a",
-        "reason": "No web chat (ADR 0004); the site shows a demo at most"
+        "status": "planned"
       },
       "server": {
         "status": "n/a",

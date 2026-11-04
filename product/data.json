@@ -439,6 +439,25 @@
       }
     },
     {
+      "id": "phone-moves",
+      "basis": "contract",
+      "places": [
+        "server"
+      ],
+      "pt": {
+        "name": "Troca de número entre contas",
+        "what": "Quando outra conta prova um número ligado à sua: o código do número, o número cifrado, as duas contas, as datas e se a troca terminou ou foi bloqueada.",
+        "why": "Para esperar 7 dias, avisar quem tem o número hoje e deixar essa pessoa bloquear a troca.",
+        "retention": "Até 30 dias depois do fim da troca, ou até uma das contas ser apagada."
+      },
+      "en": {
+        "name": "Number moves between accounts",
+        "what": "When another account proves a number linked to yours: the number's code, the encrypted number, both accounts, the dates, and whether the move ended or was blocked.",
+        "why": "To wait 7 days, alert the current holder of the number, and let that person block the move.",
+        "retention": "Up to 30 days after the move ends, or until either account is deleted."
+      }
+    },
+    {
       "id": "phone-number",
       "basis": "consent",
       "places": [

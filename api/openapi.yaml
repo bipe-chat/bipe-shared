@@ -5229,6 +5229,209 @@ paths:
                 $ref: "#/components/schemas/QueuePosition"
         default:
           $ref: "#/components/responses/BusinessToolError"
+  /v1/me/business/quotes/links:
+    post:
+      summary: "Make a quote for a person with no Bipe account"
+      operationId: "postV1MeBusinessQuotesLinks"
+      tags:
+        - "Agenda"
+      security:
+        -
+          matrix: []
+      description: "Only a device of this company account may call this route. bad_request reason no_handle: the account needs a handle."
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/QuoteLinkInput"
+      responses:
+        "200":
+          description: "Success"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/QuoteLinkResult"
+        default:
+          $ref: "#/components/responses/BusinessToolError"
+  /v1/me/business/quotes/{quoteId}/link:
+    post:
+      summary: "Make a new link for a quote; the old one stops"
+      operationId: "postV1MeBusinessQuotesQuoteIdLink"
+      tags:
+        - "Agenda"
+      security:
+        -
+          matrix: []
+      description: "Only a device of this company account may call this route."
+      parameters:
+        -
+          name: "quoteId"
+          in: "path"
+          required: true
+          schema:
+            type: "string"
+            minLength: 1
+            maxLength: 128
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/EmptyBusinessRequest"
+      responses:
+        "200":
+          description: "Success"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/QuoteLinkResult"
+        default:
+          $ref: "#/components/responses/BusinessToolError"
+    delete:
+      summary: "Revoke the link of a quote"
+      operationId: "deleteV1MeBusinessQuotesQuoteIdLink"
+      tags:
+        - "Agenda"
+      security:
+        -
+          matrix: []
+      description: "Only a device of this company account may call this route."
+      parameters:
+        -
+          name: "quoteId"
+          in: "path"
+          required: true
+          schema:
+            type: "string"
+            minLength: 1
+            maxLength: 128
+      responses:
+        "200":
+          description: "Success"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Quote"
+        default:
+          $ref: "#/components/responses/BusinessToolError"
+  /v1/businesses/{handle}/quote-links/{linkId}:
+    get:
+      summary: "Read a quote by its link"
+      x-summary-pt: "Ler um orçamento pelo link"
+      operationId: "getV1BusinessesHandleQuoteLinksLinkId"
+      tags:
+        - "Agenda"
+      security: []
+      description: "Public CORS for PUBLIC_SITE_URL. No session (ADR 0185). The link ID is the only key."
+      parameters:
+        -
+          name: "handle"
+          in: "path"
+          required: true
+          schema:
+            type: "string"
+            minLength: 1
+            maxLength: 128
+        -
+          name: "linkId"
+          in: "path"
+          required: true
+          schema:
+            type: "string"
+            minLength: 1
+            maxLength: 128
+      responses:
+        "200":
+          description: "Success"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/WebQuote"
+        default:
+          $ref: "#/components/responses/BusinessToolError"
+  /v1/businesses/{handle}/quote-links/{linkId}/accept:
+    post:
+      summary: "Accept a quote by its link"
+      x-summary-pt: "Aceitar um orçamento pelo link"
+      operationId: "postV1BusinessesHandleQuoteLinksLinkIdAccept"
+      tags:
+        - "Agenda"
+      security: []
+      description: "Public CORS for PUBLIC_SITE_URL. No session (ADR 0185). The link ID is the only key. Makes a name-only order: pickup and pay on pickup. A visit makes no booking."
+      parameters:
+        -
+          name: "handle"
+          in: "path"
+          required: true
+          schema:
+            type: "string"
+            minLength: 1
+            maxLength: 128
+        -
+          name: "linkId"
+          in: "path"
+          required: true
+          schema:
+            type: "string"
+            minLength: 1
+            maxLength: 128
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/QuoteDecline"
+      responses:
+        "200":
+          description: "Success"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/WebQuote"
+        default:
+          $ref: "#/components/responses/BusinessToolError"
+  /v1/businesses/{handle}/quote-links/{linkId}/refuse:
+    post:
+      summary: "Refuse a quote by its link"
+      x-summary-pt: "Recusar um orçamento pelo link"
+      operationId: "postV1BusinessesHandleQuoteLinksLinkIdRefuse"
+      tags:
+        - "Agenda"
+      security: []
+      description: "Public CORS for PUBLIC_SITE_URL. No session (ADR 0185). The link ID is the only key."
+      parameters:
+        -
+          name: "handle"
+          in: "path"
+          required: true
+          schema:
+            type: "string"
+            minLength: 1
+            maxLength: 128
+        -
+          name: "linkId"
+          in: "path"
+          required: true
+          schema:
+            type: "string"
+            minLength: 1
+            maxLength: 128
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/QuoteDecline"
+      responses:
+        "200":
+          description: "Success"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/WebQuote"
+        default:
+          $ref: "#/components/responses/BusinessToolError"
   /v1/me/business/queue/open:
     post:
       summary: "Open today’s queue"
@@ -7594,6 +7797,12 @@ components:
       $ref: "./business-schemas.json#/$defs/AgendaActivation"
     AgendaState:
       $ref: "./business-schemas.json#/$defs/AgendaState"
+    QuoteLinkInput:
+      $ref: "./business-schemas.json#/$defs/QuoteLinkInput"
+    QuoteLinkResult:
+      $ref: "./business-schemas.json#/$defs/QuoteLinkResult"
+    WebQuote:
+      $ref: "./business-schemas.json#/$defs/WebQuote"
     WebQueueJoin:
       $ref: "./business-schemas.json#/$defs/WebQueueJoin"
     WebQueueResult:

@@ -1646,8 +1646,7 @@
         },
         "request_id": {
           "type": "string",
-          "minLength": 1,
-          "maxLength": 128
+          "description": "The request. Empty for a quote shared as a link."
         },
         "business_id": {
           "type": "string",
@@ -1655,7 +1654,7 @@
         },
         "customer_id": {
           "type": "string",
-          "pattern": "^@[^:]+:.+$"
+          "description": "The customer's Matrix ID. Empty for a quote shared as a link (ADR 0185)."
         },
         "status": {
           "type": "string",
@@ -1691,6 +1690,14 @@
           "type": "string",
           "minLength": 1,
           "maxLength": 128
+        },
+        "customer_name": {
+          "type": "string",
+          "description": "The name the owner typed, for a quote shared as a link."
+        },
+        "has_link": {
+          "type": "boolean",
+          "description": "A link to this quote works now."
         }
       },
       "description": "A business may issue a quote only after this customer requested one. No customer free text or photos. Never infer paid from a quote or a linked Pix charge."
@@ -2472,6 +2479,89 @@
         },
         "position": {
           "$ref": "#/$defs/QueuePosition"
+        }
+      }
+    },
+    "QuoteLinkInput": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "lines",
+        "valid_until",
+        "customer_name"
+      ],
+      "properties": {
+        "lines": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/QuoteLineInput"
+          },
+          "minItems": 1
+        },
+        "valid_until": {
+          "type": "string",
+          "format": "date-time",
+          "pattern": "Z$",
+          "description": "UTC, with a trailing Z."
+        },
+        "visit_service_id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128
+        },
+        "customer_name": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 40
+        }
+      },
+      "description": "Owner-only. A quote with no Bipe customer, shared as a link (ADR 0185). No request comes first."
+    },
+    "QuoteLinkResult": {
+      "description": "link: the only copy. The server keeps a hash of its ID.",
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "quote",
+        "link"
+      ],
+      "properties": {
+        "quote": {
+          "$ref": "#/$defs/Quote"
+        },
+        "link": {
+          "type": "string"
+        }
+      }
+    },
+    "WebQuote": {
+      "description": "What the link shows, with no session. The current version only.",
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "business_name",
+        "customer_name",
+        "status",
+        "version"
+      ],
+      "properties": {
+        "business_name": {
+          "type": "string"
+        },
+        "customer_name": {
+          "type": "string"
+        },
+        "status": {
+          "type": "string",
+          "enum": [
+            "offered",
+            "accepted",
+            "refused",
+            "expired"
+          ]
+        },
+        "version": {
+          "$ref": "#/$defs/QuoteVersion"
         }
       }
     }

@@ -41,6 +41,9 @@
     },
     "leaveQueue": {
       "effect": "POST .../web/queue/places/{id}/leave with the token."
+    },
+    "quoteLink": {
+      "effect": "bipe.chat/@loja?orcamento=<link>: GET .../quote-links/{link} shows the business, the lines, the total, the validity and the version, with bipe_quote_accept and bipe_quote_decline. A gone link shows bipe_quote_link_gone. No payment until the Pix in chat milestone."
     }
   },
   "strings": [
@@ -56,7 +59,12 @@
     "bipe_order_make",
     "bipe_queue_join",
     "bipe_queue_leave",
-    "bipe_loja_queue_position"
+    "bipe_loja_queue_position",
+    "bipe_quote_link_gone",
+    "bipe_quote_link_accepted",
+    "bipe_quote_link_refused",
+    "bipe_quote_accept",
+    "bipe_quote_decline"
   ],
   "sdk": [],
   "parity": [

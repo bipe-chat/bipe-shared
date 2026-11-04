@@ -35,6 +35,12 @@
     },
     "getAlerts": {
       "effect": "bipe_loja_get_alerts on each record: opens the business's invite with the token for the claim."
+    },
+    "joinQueue": {
+      "effect": "POST .../web/queue with a first name. The position and wait range then show in Seus pedidos e horários, read every 20 seconds while the page is visible. The counter QR code (?fila) opens this form."
+    },
+    "leaveQueue": {
+      "effect": "POST .../web/queue/places/{id}/leave with the token."
     }
   },
   "strings": [
@@ -47,11 +53,15 @@
     "bipe_loja_send",
     "bipe_loja_app_only",
     "bipe_agenda_book",
-    "bipe_order_make"
+    "bipe_order_make",
+    "bipe_queue_join",
+    "bipe_queue_leave",
+    "bipe_loja_queue_position"
   ],
   "sdk": [],
   "parity": [
-    "loja-web"
+    "loja-web",
+    "queue"
   ],
   "notes": [
     "No login, card, password, phone or e-mail fields, and no notifications (ADR 0195 point 6).",

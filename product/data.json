@@ -569,12 +569,14 @@
         "what": "Which account made each group link, for which group, a protected form of the code, and which accounts joined or signed up through the link.",
         "why": "To put people who have the link into the group, count who joined, stop the link when it expires or an admin turns it off, and find abuse.",
         "retention": "365 days after the link expires or is turned off."
-        }
-      },
-      {
+      }
+    },
+    {
       "id": "first-contacts",
       "basis": "legitimate-interest",
-      "places": ["server"],
+      "places": [
+        "server"
+      ],
       "pt": {
         "name": "Primeiros contatos",
         "what": "Quando você chama alguém que não está em nenhuma conversa com você: a data, a conversa e um código derivado da conta de quem recebeu, nunca o nome dela. Depois, se a pessoa aceitou, recusou, não respondeu ou bloqueou você, e quantas denúncias suas mensagens receberam, contados por dia. Sem conteúdo.",
@@ -905,16 +907,16 @@
         "server"
       ],
       "pt": {
-        "name": "Agendamentos e pedidos pela página da loja",
-        "what": "Quem usa a página de uma loja sem conta no Bipe: o primeiro nome que você digita, o serviço e o horário ou os produtos do pedido, e a situação. Um código aleatório deste navegador liga esses registros a você, e o servidor guarda só o hash dele. O endereço IP conta o limite de envios por loja, só na memória do servidor. Não pedimos telefone, e-mail nem localização.",
+        "name": "Agendamentos, pedidos e fila pela página da loja",
+        "what": "Quem usa a página de uma loja sem conta no Bipe: o primeiro nome que você digita, o serviço e o horário, os produtos do pedido ou o lugar na fila, e a situação. Um código aleatório deste navegador liga esses registros a você, e o servidor guarda só o hash dele. O endereço IP conta o limite de envios por loja, só na memória do servidor. Não pedimos telefone, e-mail nem localização.",
         "why": "Guardar o horário ou o pedido para você e para a loja, e mostrar a situação nesta página. Se você tocar em Receba avisos no Bipe, os registros passam para a sua conta.",
-        "retention": "2 anos depois do horário ou do pedido, passando para a sua conta ou não. O limite por endereço some em até uma hora."
+        "retention": "2 anos depois do horário ou do pedido, passando para a sua conta ou não. O lugar na fila fica 30 dias. O limite por endereço some em até uma hora."
       },
       "en": {
-        "name": "Bookings and orders on a shop's page",
-        "what": "For people who use a shop's page with no Bipe account: the first name you type, the service and time or the products of the order, and the status. A random code in this browser links these records to you, and the server keeps only its hash. The IP address counts the send limit per shop, only in the server's memory. We ask for no phone number, e-mail or location.",
+        "name": "Bookings, orders and queue places on a shop's page",
+        "what": "For people who use a shop's page with no Bipe account: the first name you type, the service and time, the products of the order or the place in the queue, and the status. A random code in this browser links these records to you, and the server keeps only its hash. The IP address counts the send limit per shop, only in the server's memory. We ask for no phone number, e-mail or location.",
         "why": "To keep the booking or order for you and the shop, and to show its status on this page. If you tap Get alerts on Bipe, the records move to your account.",
-        "retention": "2 years after the booking or order, whether it moves to your account or not. The limit per address is gone within one hour."
+        "retention": "2 years after the booking or order, whether it moves to your account or not. A queue place stays for 30 days. The limit per address is gone within one hour."
       }
     },
     {

@@ -1181,7 +1181,9 @@
             "price_not_fixed",
             "orders_closed",
             "payment_requires_verified_business",
-            "pix_charge_unavailable"
+            "pix_charge_unavailable",
+            "tool_needs_catalog",
+            "tool_not_live"
           ]
         },
         "reason": {
@@ -2038,6 +2040,232 @@
         }
       },
       "description": "Minimal order record. No address, notes or customer messages. One open order per customer per business; sent/accepted/ready are open. Payment choice and a charge link do not establish paid status. Retain for two years (ADR 0105)."
+    },
+    "BusinessToolId": {
+      "type": "string",
+      "enum": [
+        "agenda",
+        "catalog",
+        "orders",
+        "quotes",
+        "queue"
+      ]
+    },
+    "BusinessToolState": {
+      "type": "string",
+      "enum": [
+        "off",
+        "setup",
+        "live"
+      ]
+    },
+    "BusinessToolStatus": {
+      "description": "One tool of the account. missing: what the tool needs before it can leave off (registries/business-tools.json needs).",
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "state"
+      ],
+      "properties": {
+        "id": {
+          "$ref": "#/$defs/BusinessToolId"
+        },
+        "state": {
+          "$ref": "#/$defs/BusinessToolState"
+        },
+        "missing": {
+          "type": "string",
+          "enum": [
+            "catalog_service",
+            "catalog_product"
+          ]
+        }
+      }
+    },
+    "BusinessTools": {
+      "description": "The owner's read. sector is absent when the owner skipped the question or chose nothing yet.",
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "tools"
+      ],
+      "properties": {
+        "tools": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/BusinessToolStatus"
+          }
+        },
+        "sector": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 40
+        }
+      }
+    },
+    "BusinessToolChange": {
+      "description": "The owner's write. Refused with tool_needs_catalog when a dependency is missing.",
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "state"
+      ],
+      "properties": {
+        "state": {
+          "$ref": "#/$defs/BusinessToolState"
+        }
+      }
+    },
+    "BusinessLiveTools": {
+      "description": "The public read: live tools only (ADR 0194 point 2).",
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "tools"
+      ],
+      "properties": {
+        "tools": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/BusinessToolId"
+          }
+        }
+      }
+    },
+    "WorkSector": {
+      "description": "One sector ID of registries/business-tools.json. Absent clears the sector (Pular).",
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "sector": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 40
+        }
+      }
+    },
+    "WorkSetupStep": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "done"
+      ],
+      "properties": {
+        "id": {
+          "type": "string",
+          "enum": [
+            "profile",
+            "link",
+            "catalog",
+            "first_tool",
+            "seal",
+            "second_seat"
+          ]
+        },
+        "done": {
+          "type": "boolean"
+        }
+      }
+    },
+    "WorkSetup": {
+      "description": "The steps in the order of the sector, each computed by the server from records (ADR 0194 point 12). first_tool: the tool of the first_tool step and the first suggestion.",
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "steps",
+        "done_count",
+        "first_tool"
+      ],
+      "properties": {
+        "steps": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/WorkSetupStep"
+          }
+        },
+        "done_count": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "first_tool": {
+          "$ref": "#/$defs/BusinessToolId"
+        }
+      }
+    },
+    "WorkSuggestion": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "tool"
+      ],
+      "properties": {
+        "id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 40
+        },
+        "tool": {
+          "$ref": "#/$defs/BusinessToolId"
+        }
+      }
+    },
+    "WorkSuggestions": {
+      "description": "From records only, never from chats (ADR 0194 point 15). A dismissed suggestion stays out for suggestionDismissDays.",
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "suggestions"
+      ],
+      "properties": {
+        "suggestions": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/WorkSuggestion"
+          }
+        }
+      }
+    },
+    "BusinessToday": {
+      "description": "The Hoje section in one call: today's bookings in the business time zone, open orders, today's queue and the requests that wait for a quote.",
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "bookings",
+        "orders",
+        "queue_open",
+        "queue_waiting",
+        "quote_requests"
+      ],
+      "properties": {
+        "bookings": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/Booking"
+          }
+        },
+        "orders": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/Order"
+          }
+        },
+        "queue_open": {
+          "type": "boolean"
+        },
+        "queue_waiting": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "quote_requests": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/QuoteRequest"
+          }
+        }
+      }
     }
   }
 }

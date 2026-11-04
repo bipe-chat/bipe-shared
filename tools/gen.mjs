@@ -307,6 +307,12 @@ ${reg.workHours.defaultDays.map((d) => `        (day: ${d.day}, ranges: [${d.ran
     public static let brandMarkMaxPerAccount = ${reg.brandMarks.maxPerAccount}
     public static let brandMarkRecheckMinutes = ${reg.brandMarks.recheckMinutes}
 
+    /// Business tools, steps and sectors (registries/business-tools.json, ADR 0194). The titles are strings by ID.
+    public static let businessToolIds: [String] = [${reg.businessTools.tools.map((t) => swiftString(t.id)).join(", ")}]
+    public static let businessSectorIds: [String] = [${reg.businessTools.sectors.map((s) => swiftString(s.id)).join(", ")}]
+    public static let businessResaleSector = ${swiftString(reg.businessTools.resaleSector)}
+    public static let businessCatalogMinItems = ${reg.businessTools.catalogMinItems}
+
     /// Voice message audio expiry (ADR 0164, bipe-chat/bipe#622; registries/voice-media.json).
     public static let voiceMediaTranscriptDays = ${reg.voiceMedia.transcriptDays}
     public static let voiceMediaNoTranscriptDays = ${reg.voiceMedia.noTranscriptDays}
@@ -722,6 +728,12 @@ ${reg.workHours.defaultDays.map((d) => `        ${d.day} to listOf(${d.ranges.ma
     val BRAND_MARK_LABELS: List<String> = listOf(${reg.brandMarks.labels.map(kotlinString).join(", ")})
     const val BRAND_MARK_MAX_PER_ACCOUNT = ${reg.brandMarks.maxPerAccount}
     const val BRAND_MARK_RECHECK_MINUTES = ${reg.brandMarks.recheckMinutes}
+
+    /** Business tools, steps and sectors (registries/business-tools.json, ADR 0194). The titles are strings by ID. */
+    val BUSINESS_TOOL_IDS: List<String> = listOf(${reg.businessTools.tools.map((t) => kotlinString(t.id)).join(", ")})
+    val BUSINESS_SECTOR_IDS: List<String> = listOf(${reg.businessTools.sectors.map((s) => kotlinString(s.id)).join(", ")})
+    const val BUSINESS_RESALE_SECTOR = ${kotlinString(reg.businessTools.resaleSector)}
+    const val BUSINESS_CATALOG_MIN_ITEMS = ${reg.businessTools.catalogMinItems}
 
     /** Voice message audio expiry (ADR 0164, bipe-chat/bipe#622; registries/voice-media.json). */
     const val VOICE_MEDIA_TRANSCRIPT_DAYS = ${reg.voiceMedia.transcriptDays}

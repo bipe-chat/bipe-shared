@@ -2841,8 +2841,10 @@
         ]
       },
       "web": {
-        "status": "n/a",
-        "reason": "No web chat (ADR 0004); the site shows a demo at most"
+        "status": "built",
+        "evidence": [
+          "bipe-app/web/src/work/BrandMarks.tsx"
+        ]
       },
       "server": {
         "status": "built",
@@ -3969,6 +3971,22 @@
         ]
       },
       "issue": 967
+    },
+    {
+      "id": "work-setup",
+      "name": "Trabalho step by step: tool state, sector, steps, suggestions, Hoje (ADR 0194)",
+      "ios": {
+        "status": "planned"
+      },
+      "android": {
+        "status": "planned"
+      },
+      "web": {
+        "status": "planned"
+      },
+      "server": {
+        "status": "planned"
+      }
     }
   ],
   "differences": [

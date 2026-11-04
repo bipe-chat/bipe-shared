@@ -4605,6 +4605,227 @@ paths:
                 $ref: "#/components/schemas/Queue"
         default:
           $ref: "#/components/responses/BusinessToolError"
+  /v1/me/business/tools:
+    get:
+      summary: "Read the state of each business tool and the sector"
+      operationId: "getV1MeBusinessTools"
+      tags:
+        - "Agenda"
+      security:
+        -
+          matrix: []
+      description: "Only a device of this company account may call this route. ADR 0194."
+      responses:
+        "200":
+          description: "Success"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/BusinessTools"
+        default:
+          $ref: "#/components/responses/BusinessToolError"
+  /v1/me/business/tools/{toolId}:
+    put:
+      summary: "Turn a business tool on, publish it or turn it off"
+      operationId: "putV1MeBusinessToolsToolId"
+      tags:
+        - "Agenda"
+      security:
+        -
+          matrix: []
+      description: "Only a device of this company account may call this route. tool_needs_catalog when a dependency is missing. Records stay readable when a tool goes off."
+      parameters:
+        -
+          name: "toolId"
+          in: "path"
+          required: true
+          schema:
+            type: "string"
+            minLength: 1
+            maxLength: 128
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/BusinessToolChange"
+      responses:
+        "200":
+          description: "Success"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/BusinessTools"
+        default:
+          $ref: "#/components/responses/BusinessToolError"
+  /v1/me/business/sector:
+    put:
+      summary: "Set or clear the sector of the work account"
+      operationId: "putV1MeBusinessSector"
+      tags:
+        - "Agenda"
+      security:
+        -
+          matrix: []
+      description: "Only a device of this company account may call this route. The sector sets the order of the steps and never limits the tools."
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/WorkSector"
+      responses:
+        "200":
+          description: "Success"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/BusinessTools"
+        default:
+          $ref: "#/components/responses/BusinessToolError"
+  /v1/me/business/setup:
+    get:
+      summary: "Read the setup steps with their done flags"
+      operationId: "getV1MeBusinessSetup"
+      tags:
+        - "Agenda"
+      security:
+        -
+          matrix: []
+      description: "Only a device of this company account may call this route. The server computes each step from records."
+      responses:
+        "200":
+          description: "Success"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/WorkSetup"
+        default:
+          $ref: "#/components/responses/BusinessToolError"
+  /v1/me/business/setup/link-opened:
+    post:
+      summary: "Record that the owner opened the link or QR code screen"
+      operationId: "postV1MeBusinessSetupLinkOpened"
+      tags:
+        - "Agenda"
+      security:
+        -
+          matrix: []
+      description: "Only a device of this company account may call this route. The done rule of the link step."
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/EmptyBusinessRequest"
+      responses:
+        "200":
+          description: "Success"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/WorkSetup"
+        default:
+          $ref: "#/components/responses/BusinessToolError"
+  /v1/me/business/suggestions:
+    get:
+      summary: "Read the suggestions from records"
+      operationId: "getV1MeBusinessSuggestions"
+      tags:
+        - "Agenda"
+      security:
+        -
+          matrix: []
+      description: "Only a device of this company account may call this route. From records only, never from chats."
+      responses:
+        "200":
+          description: "Success"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/WorkSuggestions"
+        default:
+          $ref: "#/components/responses/BusinessToolError"
+  /v1/me/business/suggestions/{suggestionId}/dismiss:
+    post:
+      summary: "Dismiss one suggestion for 30 days"
+      operationId: "postV1MeBusinessSuggestionsSuggestionIdDismiss"
+      tags:
+        - "Agenda"
+      security:
+        -
+          matrix: []
+      description: "Only a device of this company account may call this route."
+      parameters:
+        -
+          name: "suggestionId"
+          in: "path"
+          required: true
+          schema:
+            type: "string"
+            minLength: 1
+            maxLength: 128
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/EmptyBusinessRequest"
+      responses:
+        "200":
+          description: "Success"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/WorkSuggestions"
+        default:
+          $ref: "#/components/responses/BusinessToolError"
+  /v1/me/business/today:
+    get:
+      summary: "Read the Hoje summary"
+      operationId: "getV1MeBusinessToday"
+      tags:
+        - "Agenda"
+      security:
+        -
+          matrix: []
+      description: "Only a device of this company account may call this route. Every owner read of Hoje in one call."
+      responses:
+        "200":
+          description: "Success"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/BusinessToday"
+        default:
+          $ref: "#/components/responses/BusinessToolError"
+  /v1/businesses/{handle}/tools:
+    get:
+      summary: "Read the live tools of a business"
+      x-summary-pt: "Ferramentas publicadas de uma empresa"
+      operationId: "getV1BusinessesHandleTools"
+      tags:
+        - "Agenda"
+      security: []
+      description: "Public CORS for PUBLIC_SITE_URL. Returns live tool IDs only. handle is the handle or the Matrix ID."
+      parameters:
+        -
+          name: "handle"
+          in: "path"
+          required: true
+          schema:
+            type: "string"
+            minLength: 1
+            maxLength: 128
+      responses:
+        "200":
+          description: "Success"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/BusinessLiveTools"
+        default:
+          $ref: "#/components/responses/BusinessToolError"
   /v1/me/business/queue/open:
     post:
       summary: "Open today’s queue"
@@ -6941,6 +7162,30 @@ components:
       $ref: "./business-schemas.json#/$defs/AgendaActivation"
     AgendaState:
       $ref: "./business-schemas.json#/$defs/AgendaState"
+    BusinessToolId:
+      $ref: "./business-schemas.json#/$defs/BusinessToolId"
+    BusinessToolState:
+      $ref: "./business-schemas.json#/$defs/BusinessToolState"
+    BusinessToolStatus:
+      $ref: "./business-schemas.json#/$defs/BusinessToolStatus"
+    BusinessTools:
+      $ref: "./business-schemas.json#/$defs/BusinessTools"
+    BusinessToolChange:
+      $ref: "./business-schemas.json#/$defs/BusinessToolChange"
+    BusinessLiveTools:
+      $ref: "./business-schemas.json#/$defs/BusinessLiveTools"
+    WorkSector:
+      $ref: "./business-schemas.json#/$defs/WorkSector"
+    WorkSetupStep:
+      $ref: "./business-schemas.json#/$defs/WorkSetupStep"
+    WorkSetup:
+      $ref: "./business-schemas.json#/$defs/WorkSetup"
+    WorkSuggestion:
+      $ref: "./business-schemas.json#/$defs/WorkSuggestion"
+    WorkSuggestions:
+      $ref: "./business-schemas.json#/$defs/WorkSuggestions"
+    BusinessToday:
+      $ref: "./business-schemas.json#/$defs/BusinessToday"
     BookingStatus:
       $ref: "./business-schemas.json#/$defs/BookingStatus"
     BookingCustomer:

@@ -36,6 +36,7 @@
         "type": "bool",
         "description": "true for a DM."
       },
+      "sealMark": {"type": "enum", "values": ["none", "person", "company", "personSuspended", "companySuspended"], "optional": true, "description": "DM only: BipeCompanySeals.mark of the other person (person-profile notes), after the name. Absent in a group."},
       "isOfficial": {
         "type": "bool",
         "description": "A DM whose other person's full user ID is in registries/official-accounts.json: the row shows the Bipe badge after the name (bipe_badge_official, label bipe_badge_official_a11y). Never from a name or a handle."
@@ -145,7 +146,11 @@
     "bipe_chat_favourites_reorder_hint",
     "bipe_chat_favourites_reorder_done",
     "bipe_chat_favourite_move_earlier",
-    "bipe_chat_favourite_move_later"
+    "bipe_chat_favourite_move_later",
+    "bipe_badge_verified",
+    "bipe_badge_company",
+    "bipe_badge_suspended",
+    "bipe_badge_company_suspended"
   ],
   "sdk": [
     "Client.syncService",
@@ -168,7 +173,9 @@
     "dm-one-row",
     "dm-name-photo",
     "official-badge",
-    "chat-favourites-filters"
+    "chat-favourites-filters",
+    "verified-badge",
+    "cnpj-badge"
   ],
   "notes": [
     "MZ decision 25 Oct 2026 (bipe#577): no current-account avatar in the top bar. Você shows the current account (spec voce). This replaces the top-bar avatar of ADR 0135 point 5 for Bipe Next.",

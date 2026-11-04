@@ -29,7 +29,7 @@ The source adapter must reject revoked or expired attestations and unauthorized 
 
 | Fact | Values | Meaning |
 |---|---|---|
-| identity | verified, suspended, unverified | Current identity proof is bound to the sender/device and is fresh after known changes. Stale or wrong-device proof is suspended. Invalid proof gives no verified name |
+| identity | verified, suspended, unverified | Current identity proof is bound to the sender/device and is fresh after known changes. Stale proof, or a badge for another master key, is suspended. A new cross-signed device keeps the proof (ADR 0239). Invalid proof gives no verified name |
 | verifiedName | Name or null | Present only with current verified identity |
 | contact | confirmed, unconfirmed | An in-person confirmation is current, or an approved old device carries forward an existing relationship |
 | change | unknown, none, device, identity, device_and_identity | Lifecycle information and change facts, independent of fresh proof |

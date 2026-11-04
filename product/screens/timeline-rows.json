@@ -207,7 +207,11 @@
     "bipe_app_state_removed_admin",
     "bipe_app_state_removed_moderator",
     "bipe_app_role_badge_admin",
-    "bipe_app_role_badge_moderator"
+    "bipe_app_role_badge_moderator",
+    "bipe_badge_verified",
+    "bipe_badge_company",
+    "bipe_badge_suspended",
+    "bipe_badge_company_suspended"
   ],
   "sdk": [
     "Room.timelineWithConfiguration",
@@ -234,7 +238,8 @@
     "handle-change-notice",
     "timeline-notice-emote",
     "timeline-links-formatting",
-    "group-state-lines"
+    "group-state-lines",
+    "verified-badge"
   ],
   "notes": [
     "Text, notice and emote messages render Matrix org.matrix.custom.html as native text runs (bipe#660). Render bold, italic, strike, code, pre, ordered and unordered lists, blockquotes and safe links. Use registries/message-formatting.json for schemes, detection and parser limits, and test-vectors/message-formatting.json on both apps. Strip unsupported attributes and never load images, scripts, styles or other remote resources. Remove mx-reply fallback. On parse or size/depth failure, use the plain body. Detect URLs, email and phone numbers outside code. A Matrix user mention is a styled native link to the person profile; Bipe profile and invite links stay in the app. Other supported links use the system. Link activation respects the money pause. Scam checks include the original body, visible text and link destinations; copying and editing keep the original body. Institution notice cards keep their verified-domain link rule (ADR 0036).",
@@ -250,6 +255,7 @@
     "stateLine text: the people are bipe_app_state_names_two for two, bipe_app_state_names_more for three or more (more as a number), else the one name. joined and left use the _one string for one person and the _many string for two or more. invited, removed, banned and the role changes take the actor, then the people. One power levels event gives one line: the first role change in the order madeAdmin, madeModerator, removedAdmin, removedModerator, with every person of that change. Role lines never fold. The other changes take the actor (renamed also newName). The row is the quiet centred line of the call lines and the start of the chat; a tap does nothing.",
     "Handle-change rows are local lines from bipe-api, not Matrix events (handle-change-line, ADR 0066).",
     "Read receipts are always public (ADR 0050): the client never sends ReceiptType.ReadPrivate.",
-    "Same names in groups (bipe#825): a sender line shows the @ after the name when another member of the room shows the same name. Same means EventTimelineItem.senderProfile displayNameAmbiguous, or the same name after NameNormalizer (registries homoglyphs, security rule 8) among the known members, so a look-alike \"Mãe\" counts. A Bipe user shows \"Maria @maria1\" once the handle resolves and the name alone before; a user of another server shows the name alone; never the Matrix ID (README, People names). DMs and own messages never show it. No new string: the name and the @ are joined with a space."
+    "Same names in groups (bipe#825): a sender line shows the @ after the name when another member of the room shows the same name. Same means EventTimelineItem.senderProfile displayNameAmbiguous, or the same name after NameNormalizer (registries homoglyphs, security rule 8) among the known members, so a look-alike \"Mãe\" counts. A Bipe user shows \"Maria @maria1\" once the handle resolves and the name alone before; a user of another server shows the name alone; never the Matrix ID (README, People names). DMs and own messages never show it. No new string: the name and the @ are joined with a space.",
+    "Sender line of a group row: after the name and the role, BipeCompanySeals.mark of the sender (person-profile notes). No mark on own messages or in a DM."
   ]
 }

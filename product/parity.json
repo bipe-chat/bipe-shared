@@ -3976,13 +3976,22 @@
       "id": "work-setup",
       "name": "Trabalho step by step: tool state, sector, steps, suggestions, Hoje (ADR 0194)",
       "ios": {
-        "status": "planned"
+        "status": "built",
+        "evidence": [
+          "bipe-app/ios/Bipe/Business/WorkHome.swift"
+        ]
       },
       "android": {
-        "status": "planned"
+        "status": "built",
+        "evidence": [
+          "bipe-app/android/app/src/main/kotlin/chat/bipe/app/business/WorkHome.kt"
+        ]
       },
       "web": {
-        "status": "planned"
+        "status": "built",
+        "evidence": [
+          "bipe-app/web/src/work/WorkHome.tsx"
+        ]
       },
       "server": {
         "status": "built",

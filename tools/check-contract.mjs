@@ -75,6 +75,9 @@ const NOT_IN_APPS = {
     "BookingStatus", "BookingCustomer", "Booking", "BookingHold", "OwnerBooking", "BookingMove", "Slot", "SlotDay", "SlotDays",
     "AgendaFeedOptions", "AgendaFeed", "BusyImportInput", "BusyImport", "AgendaError",
   ].map((name) => [name, "contract first (bipe#315); app clients follow in bipe#321 to bipe#324"])),
+  ...Object.fromEntries([
+    "BusinessToolId", "BusinessToolState", "BusinessToolStatus", "BusinessTools", "BusinessToolChange", "BusinessLiveTools", "WorkSector", "WorkSetupStep", "WorkSetup", "WorkSuggestion", "WorkSuggestions", "BusinessToday",
+  ].map((name) => [name, "contract first (bipe#798); app clients follow in bipe#800 to bipe#802"])),
   DiscoverySettings: "one boolean; iOS sends it from a private request type in BipeAPIClient",
   MessagingSetting: "one enum field; iOS decodes it in a private MessagingSetting type in BipeAPIClient, exposed as BipeWhoCanMessage",
   TermsAcceptance: "one string; the apps send it from a private request type in their API client (ADR 0113)",

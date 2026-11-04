@@ -155,6 +155,13 @@ jobs:
             stacked=$(gh pr list -R "bipe-chat/${repo}" --head "$BRANCH" --state open \
               --json number,baseRefName --jq '.[] | select(.baseRefName != "main") | "#\(.number) (base \(.baseRefName))"')
             [ -z "$stacked" ] || echo "::warning::${repo} ${stacked}: not based on main, so the generated files miss main. Retarget it to main."
+            # Branch B can already be merged: catch_up then only brings it level with main, and B has nothing
+            # to merge. gh pr create failed on that for bipe-shared#404 (4 November 2026), and the job stopped
+            # before bipe-api and bipe-app. The push above stays: lockstep reads B, so B must not fall behind.
+            if git -C "$repo" diff --quiet origin/main HEAD; then
+              echo "${repo}: ${BRANCH} has no changes against main, no pull request"
+              continue
+            fi
             if [ -z "$(gh pr list -R "bipe-chat/${repo}" --head "$BRANCH" --state open --json number --jq '.[].number')" ]; then
               gh pr create -R "bipe-chat/${repo}" --base main --head "$BRANCH" \
                 --title "Regenerate from bipe-shared#${PR_NUMBER}" \

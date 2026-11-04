@@ -4012,13 +4012,22 @@
       "id": "loja-web",
       "name": "Shop on the web: booking and orders with no account (ADR 0195)",
       "ios": {
-        "status": "planned"
+        "status": "built",
+        "evidence": [
+          "bipe-app/ios/Bipe/Business/ShopClaim.swift"
+        ]
       },
       "android": {
-        "status": "planned"
+        "status": "built",
+        "evidence": [
+          "bipe-app/android/app/src/main/kotlin/chat/bipe/app/business/ShopClaims.kt"
+        ]
       },
       "web": {
-        "status": "planned"
+        "status": "built",
+        "evidence": [
+          "bipe-web/src/sim/ShopWeb.tsx"
+        ]
       },
       "server": {
         "status": "built",

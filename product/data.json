@@ -9,8 +9,18 @@
     "lede": "Cada dado que o Bipe guarda, para quê, com qual base da LGPD, por quanto tempo e onde fica. A página é gerada do mesmo registro que a equipe usa para cuidar dos dados.",
     "policy": "O texto corrido está na [política de privacidade](/privacidade/).",
     "itemsTitle": "O que a gente guarda",
-    "labels": { "what": "O que", "why": "Para quê", "basis": "Base legal", "retention": "Por quanto tempo", "where": "Onde fica" },
-    "brazil": { "yes": "no Brasil", "no": "fora do Brasil", "unknown": "país a confirmar" },
+    "labels": {
+      "what": "O que",
+      "why": "Para quê",
+      "basis": "Base legal",
+      "retention": "Por quanto tempo",
+      "where": "Onde fica"
+    },
+    "brazil": {
+      "yes": "no Brasil",
+      "no": "fora do Brasil",
+      "unknown": "país a confirmar"
+    },
     "outsideTitle": "O que passa por fora do Brasil",
     "outsideLede": "Quase tudo fica no servidor do Bipe, em São Paulo. Estes são os casos em que um dado passa por outro serviço:",
     "deviceTitle": "O que fica só no seu celular",
@@ -38,8 +48,18 @@
     "lede": "Every piece of data Bipe keeps, what it is for, its LGPD legal basis, how long we keep it and where it lives. The page is built from the same record the team uses to manage the data. The Portuguese version is the reference text.",
     "policy": "The plain-language text is in the [privacy policy](/en/privacy/).",
     "itemsTitle": "What we keep",
-    "labels": { "what": "What", "why": "Why", "basis": "Legal basis", "retention": "How long", "where": "Where it lives" },
-    "brazil": { "yes": "in Brazil", "no": "outside Brazil", "unknown": "country to be confirmed" },
+    "labels": {
+      "what": "What",
+      "why": "Why",
+      "basis": "Legal basis",
+      "retention": "How long",
+      "where": "Where it lives"
+    },
+    "brazil": {
+      "yes": "in Brazil",
+      "no": "outside Brazil",
+      "unknown": "country to be confirmed"
+    },
     "outsideTitle": "What passes outside Brazil",
     "outsideLede": "Almost everything stays on the Bipe server in São Paulo. These are the cases where data passes through another service:",
     "deviceTitle": "What stays on your phone",
@@ -61,28 +81,100 @@
     "encarregadoMissing": "The data protection officer (encarregado) is not yet named. Until then, requests go to the same contact."
   },
   "bases": [
-    { "id": "consent", "article": "art. 7, I", "pt": "Consentimento", "en": "Consent" },
-    { "id": "legal-obligation", "article": "art. 7, II", "pt": "Obrigação legal", "en": "Legal obligation" },
-    { "id": "contract", "article": "art. 7, V", "pt": "Execução do serviço que você pediu", "en": "Performing the service you asked for" },
-    { "id": "legitimate-interest", "article": "art. 7, IX", "pt": "Interesse legítimo", "en": "Legitimate interest" }
+    {
+      "id": "consent",
+      "article": "art. 7, I",
+      "pt": "Consentimento",
+      "en": "Consent"
+    },
+    {
+      "id": "legal-obligation",
+      "article": "art. 7, II",
+      "pt": "Obrigação legal",
+      "en": "Legal obligation"
+    },
+    {
+      "id": "contract",
+      "article": "art. 7, V",
+      "pt": "Execução do serviço que você pediu",
+      "en": "Performing the service you asked for"
+    },
+    {
+      "id": "legitimate-interest",
+      "article": "art. 7, IX",
+      "pt": "Interesse legítimo",
+      "en": "Legitimate interest"
+    }
   ],
   "places": [
-    { "id": "server", "brazil": true, "pt": "Servidor do Bipe em São Paulo", "en": "Bipe server in São Paulo" },
-    { "id": "apple-push", "brazil": false, "pt": "Apple, serviço de notificações do iPhone", "en": "Apple, the iPhone notification service" },
-    { "id": "google-push", "brazil": false, "pt": "Google, serviço de notificações do Android (Firebase)", "en": "Google, the Android notification service (Firebase)" },
-    { "id": "email-relay", "brazil": null, "pt": "Serviço que entrega os e-mails do Bipe", "en": "The service that delivers Bipe's emails" },
-    { "id": "icloud-keychain", "brazil": null, "pt": "Chaveiro do iCloud, na sua conta Apple", "en": "iCloud Keychain, in your Apple account" },
-    { "id": "google-block-store", "brazil": null, "pt": "Block Store do Google, na sua conta Google (Android)", "en": "Google Block Store, in your Google account (Android)" },
-    { "id": "support-tool", "brazil": null, "pt": "Ferramenta da equipe do Bipe para ler e responder pedidos de ajuda. Recebe só texto, nunca arquivos", "en": "The tool the Bipe team uses to read and answer help requests. It gets text only, never files" },
-    { "id": "starlings", "brazil": false, "pt": "Starlings, o sistema de trabalho da Envisioning, na União Europeia", "en": "Starlings, Envisioning's work system, in the European Union" },
-    { "id": "apple-sign-in", "brazil": false, "pt": "Apple, quando você entra com a conta Apple para vincular ou voltar à conta", "en": "Apple, when you sign in with your Apple account to link it or to get back in" },
-    { "id": "google-sign-in", "brazil": false, "pt": "Google, quando você entra com a conta Google para vincular ou voltar à conta", "en": "Google, when you sign in with your Google account to link it or to get back in" }
+    {
+      "id": "server",
+      "brazil": true,
+      "pt": "Servidor do Bipe em São Paulo",
+      "en": "Bipe server in São Paulo"
+    },
+    {
+      "id": "apple-push",
+      "brazil": false,
+      "pt": "Apple, serviço de notificações do iPhone",
+      "en": "Apple, the iPhone notification service"
+    },
+    {
+      "id": "google-push",
+      "brazil": false,
+      "pt": "Google, serviço de notificações do Android (Firebase)",
+      "en": "Google, the Android notification service (Firebase)"
+    },
+    {
+      "id": "email-relay",
+      "brazil": null,
+      "pt": "Serviço que entrega os e-mails do Bipe",
+      "en": "The service that delivers Bipe's emails"
+    },
+    {
+      "id": "icloud-keychain",
+      "brazil": null,
+      "pt": "Chaveiro do iCloud, na sua conta Apple",
+      "en": "iCloud Keychain, in your Apple account"
+    },
+    {
+      "id": "google-block-store",
+      "brazil": null,
+      "pt": "Block Store do Google, na sua conta Google (Android)",
+      "en": "Google Block Store, in your Google account (Android)"
+    },
+    {
+      "id": "support-tool",
+      "brazil": null,
+      "pt": "Ferramenta da equipe do Bipe para ler e responder pedidos de ajuda. Recebe só texto, nunca arquivos",
+      "en": "The tool the Bipe team uses to read and answer help requests. It gets text only, never files"
+    },
+    {
+      "id": "starlings",
+      "brazil": false,
+      "pt": "Starlings, o sistema de trabalho da Envisioning, na União Europeia",
+      "en": "Starlings, Envisioning's work system, in the European Union"
+    },
+    {
+      "id": "apple-sign-in",
+      "brazil": false,
+      "pt": "Apple, quando você entra com a conta Apple para vincular ou voltar à conta",
+      "en": "Apple, when you sign in with your Apple account to link it or to get back in"
+    },
+    {
+      "id": "google-sign-in",
+      "brazil": false,
+      "pt": "Google, quando você entra com a conta Google para vincular ou voltar à conta",
+      "en": "Google, when you sign in with your Google account to link it or to get back in"
+    }
   ],
   "items": [
     {
       "id": "account",
       "basis": "contract",
-      "places": ["server"],
+      "places": [
+        "server"
+      ],
       "pt": {
         "name": "Sua conta",
         "what": "Nome de usuário, nome de exibição, os aparelhos conectados, as chaves de criptografia e quem pode te mandar mensagem.",
@@ -99,7 +191,9 @@
     {
       "id": "access",
       "basis": "contract",
-      "places": ["server"],
+      "places": [
+        "server"
+      ],
       "pt": {
         "name": "PIN e acesso",
         "what": "Uma versão protegida do seu PIN, da senha que o app cria sozinho e do código de recuperação, e quantas vezes o PIN foi digitado errado. O PIN e a senha em si, a gente nunca vê.",
@@ -116,7 +210,9 @@
     {
       "id": "account-deletion",
       "basis": "legal-obligation",
-      "places": ["server"],
+      "places": [
+        "server"
+      ],
       "pt": {
         "name": "Pedido para apagar a conta",
         "what": "Quando você pediu para apagar a conta, quando ela vai ser apagada, de qual aparelho veio o pedido e se você pediu para apagar suas mensagens. Depois que a conta é apagada, ficam só uma versão protegida do seu CPF, o registro do selo e a reserva do seu @. Nada mais sobre você fica.",
@@ -133,7 +229,9 @@
     {
       "id": "terms-acceptance",
       "basis": "contract",
-      "places": ["server"],
+      "places": [
+        "server"
+      ],
       "pt": {
         "name": "Aceite dos termos",
         "what": "Qual versão dos Termos de uso e da Política de privacidade você aceitou, e quando.",
@@ -150,7 +248,9 @@
     {
       "id": "age-range",
       "basis": "legal-obligation",
-      "places": ["server"],
+      "places": [
+        "server"
+      ],
       "pt": {
         "name": "Faixa de idade",
         "what": "A faixa de idade que o celular informou (menos de 13, 13 a 15, 16 a 17, ou 18 anos ou mais), de onde ela veio (Apple ou Google) e a data. Nunca a data de nascimento.",
@@ -167,7 +267,9 @@
     {
       "id": "recovery-token",
       "basis": "contract",
-      "places": ["icloud-keychain"],
+      "places": [
+        "icloud-keychain"
+      ],
       "pt": {
         "name": "Código para voltar à conta (iPhone)",
         "what": "Um código que o app cria e guarda no Chaveiro do iCloud, na sua conta Apple. O Bipe não recebe uma cópia dele.",
@@ -184,7 +286,9 @@
     {
       "id": "recovery-token-android",
       "basis": "contract",
-      "places": ["google-block-store"],
+      "places": [
+        "google-block-store"
+      ],
       "pt": {
         "name": "Código para voltar à conta (Android)",
         "what": "No Android, o app do Bipe guarda o mesmo código no Block Store do Google, na sua conta Google, junto com o ID da sua conta no Bipe. O Bipe não recebe uma cópia dele.",
@@ -201,7 +305,10 @@
     {
       "id": "recovery-email",
       "basis": "contract",
-      "places": ["server", "email-relay"],
+      "places": [
+        "server",
+        "email-relay"
+      ],
       "pt": {
         "name": "E-mail de recuperação (opcional)",
         "what": "O e-mail que você escolher, o idioma e os pedidos de recuperação de acesso.",
@@ -218,7 +325,9 @@
     {
       "id": "work-hours",
       "basis": "contract",
-      "places": ["server"],
+      "places": [
+        "server"
+      ],
       "pt": {
         "name": "Horário de atendimento (conta de trabalho)",
         "what": "Os dias e horários de atendimento que você define numa conta de trabalho, o fuso horário e se o silêncio fora do horário está ligado.",
@@ -235,7 +344,9 @@
     {
       "id": "notification-prefs",
       "basis": "contract",
-      "places": ["server"],
+      "places": [
+        "server"
+      ],
       "pt": {
         "name": "Avisos de quem entra",
         "what": "Se você quer ser avisado quando alguém entra com seu convite e quando alguém entra com seu link de grupo.",
@@ -252,7 +363,11 @@
     {
       "id": "linked-account",
       "basis": "contract",
-      "places": ["server", "apple-sign-in", "google-sign-in"],
+      "places": [
+        "server",
+        "apple-sign-in",
+        "google-sign-in"
+      ],
       "pt": {
         "name": "Conta Apple ou Google vinculada (opcional)",
         "what": "Um código feito a partir do identificador da conta Apple ou Google que você vinculou, e quando você vinculou ou desvinculou. O Bipe não guarda o e-mail, o nome nem nenhum acesso à conta Apple ou Google. A Apple e o Google só ficam sabendo que você usou a conta com o Bipe.",
@@ -288,7 +403,9 @@
     {
       "id": "handle",
       "basis": "contract",
-      "places": ["server"],
+      "places": [
+        "server"
+      ],
       "pt": {
         "name": "Seu @",
         "what": "O @ que você escolher. Quando você solta um @, ele fica reservado para você por 90 dias.",
@@ -305,7 +422,9 @@
     {
       "id": "public-profile",
       "basis": "consent",
-      "places": ["server"],
+      "places": [
+        "server"
+      ],
       "pt": {
         "name": "Perfil público",
         "what": "O nome, a bio, uma cópia da sua foto e o @ das suas redes sociais que você coloca no perfil público.",
@@ -322,7 +441,9 @@
     {
       "id": "phone-number",
       "basis": "consent",
-      "places": ["server"],
+      "places": [
+        "server"
+      ],
       "pt": {
         "name": "Seu número",
         "what": "O número que você ligou à conta. O servidor guarda o número cifrado e um código feito a partir dele para a busca de contatos. O servidor só mostra o número para você.",
@@ -339,7 +460,9 @@
     {
       "id": "brand-marks",
       "basis": "contract",
-      "places": ["server"],
+      "places": [
+        "server"
+      ],
       "pt": {
         "name": "Marcas de revenda",
         "what": "Para uma conta de trabalho que revende uma marca: qual marca deu o selo, as palavras do selo, quando ele começou e quando terminou, e quem fez cada passo (só a conta, nunca a conversa). A marca vê só que o selo está ativo; nunca vê conversas, clientes ou contatos.",
@@ -356,7 +479,9 @@
     {
       "id": "handle-history",
       "basis": "legitimate-interest",
-      "places": ["server"],
+      "places": [
+        "server"
+      ],
       "pt": {
         "name": "Histórico de @",
         "what": "As trocas de @ de cada conta, com a data.",
@@ -373,7 +498,9 @@
     {
       "id": "profile-change-dates",
       "basis": "legitimate-interest",
-      "places": ["server"],
+      "places": [
+        "server"
+      ],
       "pt": {
         "name": "Datas de troca de nome e foto",
         "what": "Quando cada conta trocou o nome ou a foto, só a data. O servidor guarda um resumo do nome e da foto atuais para notar a troca, nunca o nome antigo nem a imagem.",
@@ -390,7 +517,9 @@
     {
       "id": "theft-guardians",
       "basis": "legitimate-interest",
-      "places": ["server"],
+      "places": [
+        "server"
+      ],
       "pt": {
         "name": "Guardiões e marca de roubo",
         "what": "Quem você escolheu como guardião, quando uma conta foi marcada como roubada, quem marcou e quando a marca saiu. Um código aleatório do celular para cada conta nele, para a marca cobrir as contas do mesmo celular.",
@@ -407,7 +536,9 @@
     {
       "id": "invites",
       "basis": "legitimate-interest",
-      "places": ["server"],
+      "places": [
+        "server"
+      ],
       "pt": {
         "name": "Convites",
         "what": "Quem convidou quem, e uma versão protegida de cada código de convite.",
@@ -424,7 +555,9 @@
     {
       "id": "group-links",
       "basis": "legitimate-interest",
-      "places": ["server"],
+      "places": [
+        "server"
+      ],
       "pt": {
         "name": "Links de grupo",
         "what": "Qual conta criou cada link de grupo, para qual grupo, uma versão protegida do código, e quais contas entraram ou foram criadas pelo link.",
@@ -441,7 +574,9 @@
     {
       "id": "archived-chats",
       "basis": "contract",
-      "places": ["server"],
+      "places": [
+        "server"
+      ],
       "pt": {
         "name": "Conversas arquivadas",
         "what": "Quais conversas você arquivou, separadas por conta. Essa escolha fica aberta no servidor, sem o texto das mensagens. Só os aparelhos da sua conta recebem a lista.",
@@ -458,7 +593,9 @@
     {
       "id": "messages",
       "basis": "contract",
-      "places": ["server"],
+      "places": [
+        "server"
+      ],
       "pt": {
         "name": "Mensagens",
         "what": "Conversas privadas são criptografadas de ponta a ponta: o servidor guarda tudo embaralhado e não consegue ler. Em salas sem criptografia, o servidor guarda o texto. Em todas, o servidor sabe quem está em cada conversa, quando cada mensagem chegou, o nome e a foto da sala.",
@@ -475,7 +612,9 @@
     {
       "id": "media",
       "basis": "contract",
-      "places": ["server"],
+      "places": [
+        "server"
+      ],
       "pt": {
         "name": "Fotos e arquivos",
         "what": "O que você envia, até 50 MB por arquivo. Em conversas criptografadas, o arquivo também fica embaralhado.",
@@ -492,7 +631,9 @@
     {
       "id": "voice-media",
       "basis": "contract",
-      "places": ["server"],
+      "places": [
+        "server"
+      ],
       "pt": {
         "name": "Prazo dos áudios",
         "what": "Para cada mensagem de voz que você envia: o código do arquivo no servidor, se ela tem transcrição e a data do envio. Para cada áudio que você guarda: o código e a data.",
@@ -509,7 +650,9 @@
     {
       "id": "connection-logs",
       "basis": "legal-obligation",
-      "places": ["server"],
+      "places": [
+        "server"
+      ],
       "pt": {
         "name": "Registros de conexão",
         "what": "Endereço IP, data e hora de cada conexão.",
@@ -526,7 +669,9 @@
     {
       "id": "maps-errors",
       "basis": "legitimate-interest",
-      "places": ["server"],
+      "places": [
+        "server"
+      ],
       "pt": {
         "name": "Erros do servidor de mapas",
         "what": "Quando um pedido de mapa falha: a data e hora e o endereço do mapa pedido, que tem o ponto do mapa (latitude e longitude). O Bipe não registra o endereço IP nem os pedidos que dão certo.",
@@ -543,7 +688,11 @@
     {
       "id": "push",
       "basis": "contract",
-      "places": ["server", "apple-push", "google-push"],
+      "places": [
+        "server",
+        "apple-push",
+        "google-push"
+      ],
       "pt": {
         "name": "Notificações",
         "what": "O endereço de notificação do seu aparelho e os códigos da conversa e da mensagem nova. No iPhone, a Apple entrega o aviso. No Android, o Google entrega pelo Firebase. Vai também um código aleatório para o celular escolher a conta certa, sem enviar o ID da conta à Apple ou ao Google. O texto da mensagem não vai junto: o app busca o conteúdo direto no servidor do Bipe.",
@@ -560,7 +709,9 @@
     {
       "id": "site-visits",
       "basis": "legitimate-interest",
-      "places": ["server"],
+      "places": [
+        "server"
+      ],
       "pt": {
         "name": "Visitas ao site",
         "what": "Página visitada, site de origem, tipo de aparelho e de navegador, idioma e cidade aproximada. Sem cookie, sem IP e sem nada que diga quem visitou.",
@@ -577,7 +728,9 @@
     {
       "id": "app-growth",
       "basis": "legitimate-interest",
-      "places": ["server"],
+      "places": [
+        "server"
+      ],
       "pt": {
         "name": "Marcos de uso do app",
         "what": "Por dia, quais marcos uma conta atingiu: conta criada, primeira entrada no app, primeira mensagem, contato verificado, convite enviado, convite usado, grupo criado, chamada iniciada, quinto contato, dia de uso e onde a pessoa usou o Bipe: iOS, Android ou web. A conta aparece só como um código derivado dela, nunca pelo nome de usuário. Sem conteúdo, sem IP, sem modelo do aparelho, sem sala e sem saber com quem a pessoa fala. O app não manda nada: o servidor tira isso do que ele já vê.",
@@ -594,7 +747,10 @@
     {
       "id": "waitlist",
       "basis": "consent",
-      "places": ["server", "email-relay"],
+      "places": [
+        "server",
+        "email-relay"
+      ],
       "pt": {
         "name": "Lista de espera",
         "what": "Seu e-mail, o sistema do celular, o idioma, a página do site onde você se inscreveu e a versão do título que você viu.",
@@ -611,7 +767,9 @@
     {
       "id": "organisation-requests",
       "basis": "legitimate-interest",
-      "places": ["starlings"],
+      "places": [
+        "starlings"
+      ],
       "pt": {
         "name": "Pedido de organização",
         "what": "Nome, tipo e CNPJ da organização, nome, cargo e e-mail de quem escreveu, quantos clientes ela atende, os canais que usa, quanto paga hoje para falar com os clientes, a mensagem e o idioma.",
@@ -628,7 +786,10 @@
     {
       "id": "help-messages",
       "basis": "legitimate-interest",
-      "places": ["starlings", "email-relay"],
+      "places": [
+        "starlings",
+        "email-relay"
+      ],
       "pt": {
         "name": "Mensagem pelo site",
         "what": "Nome, e-mail, a mensagem e o idioma de quem escreve pelo formulário de ajuda, e as respostas da conversa.",
@@ -645,7 +806,10 @@
     {
       "id": "support-chat",
       "basis": "contract",
-      "places": ["server", "support-tool"],
+      "places": [
+        "server",
+        "support-tool"
+      ],
       "pt": {
         "name": "Conversa com o Suporte Bipe",
         "what": "O que você escreve na conversa com o Suporte Bipe, seu ID no Bipe, seu nome de usuário e seu nome. Fotos e arquivos ficam só no servidor do Bipe.",
@@ -662,7 +826,9 @@
     {
       "id": "news-room",
       "basis": "contract",
-      "places": ["server"],
+      "places": [
+        "server"
+      ],
       "pt": {
         "name": "Novidades do Bipe",
         "what": "Seu ID no Bipe, a conversa de novidades que o Bipe criou para você, se você saiu dela ou desligou as novidades, e quais novidades chegaram para você. O texto das novidades é do Bipe e é igual para todo mundo.",
@@ -679,7 +845,10 @@
     {
       "id": "problem-reports",
       "basis": "consent",
-      "places": ["server", "support-tool"],
+      "places": [
+        "server",
+        "support-tool"
+      ],
       "pt": {
         "name": "Avisos de problema",
         "what": "O que você escreve em Avisar sobre um problema, a versão do app e do sistema do celular e, se você escolher, os registros técnicos do app e as capturas de tela.",
@@ -696,7 +865,9 @@
     {
       "id": "business-bookings",
       "basis": "contract",
-      "places": ["server"],
+      "places": [
+        "server"
+      ],
       "pt": {
         "name": "Agendamentos com negócios",
         "what": "Os horários que você marca com um negócio no Bipe: o serviço, quem atende, o dia, a hora, a situação e a sua conta. Num encaixe feito pelo negócio, só o nome que ele digitou. O que você escreve sobre o horário fica na conversa, não no agendamento.",
@@ -711,9 +882,30 @@
       }
     },
     {
+      "id": "shop-web-records",
+      "basis": "contract",
+      "places": [
+        "server"
+      ],
+      "pt": {
+        "name": "Agendamentos e pedidos pela página da loja",
+        "what": "Quem usa a página de uma loja sem conta no Bipe: o primeiro nome que você digita, o serviço e o horário ou os produtos do pedido, e a situação. Um código aleatório deste navegador liga esses registros a você, e o servidor guarda só o hash dele. O endereço IP conta o limite de envios por loja, só na memória do servidor. Não pedimos telefone, e-mail nem localização.",
+        "why": "Guardar o horário ou o pedido para você e para a loja, e mostrar a situação nesta página. Se você tocar em Receba avisos no Bipe, os registros passam para a sua conta.",
+        "retention": "2 anos depois do horário ou do pedido, passando para a sua conta ou não. O limite por endereço some em até uma hora."
+      },
+      "en": {
+        "name": "Bookings and orders on a shop's page",
+        "what": "For people who use a shop's page with no Bipe account: the first name you type, the service and time or the products of the order, and the status. A random code in this browser links these records to you, and the server keeps only its hash. The IP address counts the send limit per shop, only in the server's memory. We ask for no phone number, e-mail or location.",
+        "why": "To keep the booking or order for you and the shop, and to show its status on this page. If you tap Get alerts on Bipe, the records move to your account.",
+        "retention": "2 years after the booking or order, whether it moves to your account or not. The limit per address is gone within one hour."
+      }
+    },
+    {
       "id": "business-orders",
       "basis": "contract",
-      "places": ["server"],
+      "places": [
+        "server"
+      ],
       "pt": {
         "name": "Pedidos a negócios",
         "what": "Os pedidos que você faz a um negócio no Bipe: os itens, as quantidades, os preços do momento, o total, retirada ou entrega, a forma de pagamento, a situação e a sua conta. O endereço e os recados ficam na conversa, não no pedido.",
@@ -730,7 +922,9 @@
     {
       "id": "business-quotes",
       "basis": "contract",
-      "places": ["server"],
+      "places": [
+        "server"
+      ],
       "pt": {
         "name": "Orçamentos de negócios",
         "what": "Que você pediu um orçamento a um negócio, e quando. As linhas, os valores e a validade que o negócio mandou, e a sua resposta. O que você descreve e as fotos ficam na conversa, não no orçamento.",
@@ -747,7 +941,9 @@
     {
       "id": "queue-places",
       "basis": "contract",
-      "places": ["server"],
+      "places": [
+        "server"
+      ],
       "pt": {
         "name": "Lugar na fila de um negócio",
         "what": "Que você entrou na fila de um negócio no Bipe, a hora em que entrou, foi chamado e atendido, e a sua conta. O Bipe nunca pede sua localização.",
@@ -764,7 +960,10 @@
     {
       "id": "proposta-visits",
       "basis": "legitimate-interest",
-      "places": ["server", "email-relay"],
+      "places": [
+        "server",
+        "email-relay"
+      ],
       "pt": {
         "name": "Acesso às páginas de proposta do Bipe",
         "what": "Para quem entra nas páginas de proposta: o e-mail que você digita. A cada página e slide que você abre, a hora, a página, o título do slide, quanto tempo você ficou nele, o site de onde você veio, as etiquetas utm do link e a cidade estimada pelo endereço de IP. O Bipe não guarda o IP.",
@@ -780,10 +979,30 @@
     }
   ],
   "device": [
-    { "id": "scam-warnings", "pt": "Os avisos de golpe e a checagem de links. Nenhum texto, resultado ou pontuação sai do celular.", "en": "Scam warnings and link checks. No text, match or score leaves the phone." },
-    { "id": "voice-transcripts", "pt": "A transcrição de mensagens de voz. O texto só sai do celular como legenda da mensagem, com a mesma proteção dela.", "en": "Voice message transcripts. The text leaves the phone only as the message caption, with the same protection as the message." },
-    { "id": "access-vault", "pt": "A senha que o app cria sozinho. Ela fica guardada no cofre do aparelho.", "en": "The password the app makes by itself. It stays in the device's secure storage." },
-    { "id": "notification-accounts", "pt": "No app do Bipe, a relação entre cada conta e seu código aleatório de notificação fica no celular. O app não envia essa relação ao Bipe, à Apple nem ao Google e a apaga quando você sai da conta.", "en": "In the Bipe app, the map from each account to its random notification code stays on the phone. The app does not send the map to Bipe, Apple or Google and removes it at sign-out." },
-    {"id": "archive-cache", "pt": "Uma cópia da lista de conversas arquivadas e a data da última atividade, separadas por conta. O app usa a data para trazer a conversa de volta quando chega uma mensagem nova. Essa cópia não vai para o backup na nuvem.", "en": "A copy of the archived chat list and the latest activity timestamp, separated by account. The app uses the timestamp to restore a chat when a new message arrives. This copy stays out of cloud backups."}
+    {
+      "id": "scam-warnings",
+      "pt": "Os avisos de golpe e a checagem de links. Nenhum texto, resultado ou pontuação sai do celular.",
+      "en": "Scam warnings and link checks. No text, match or score leaves the phone."
+    },
+    {
+      "id": "voice-transcripts",
+      "pt": "A transcrição de mensagens de voz. O texto só sai do celular como legenda da mensagem, com a mesma proteção dela.",
+      "en": "Voice message transcripts. The text leaves the phone only as the message caption, with the same protection as the message."
+    },
+    {
+      "id": "access-vault",
+      "pt": "A senha que o app cria sozinho. Ela fica guardada no cofre do aparelho.",
+      "en": "The password the app makes by itself. It stays in the device's secure storage."
+    },
+    {
+      "id": "notification-accounts",
+      "pt": "No app do Bipe, a relação entre cada conta e seu código aleatório de notificação fica no celular. O app não envia essa relação ao Bipe, à Apple nem ao Google e a apaga quando você sai da conta.",
+      "en": "In the Bipe app, the map from each account to its random notification code stays on the phone. The app does not send the map to Bipe, Apple or Google and removes it at sign-out."
+    },
+    {
+      "id": "archive-cache",
+      "pt": "Uma cópia da lista de conversas arquivadas e a data da última atividade, separadas por conta. O app usa a data para trazer a conversa de volta quando chega uma mensagem nova. Essa cópia não vai para o backup na nuvem.",
+      "en": "A copy of the archived chat list and the latest activity timestamp, separated by account. The app uses the timestamp to restore a chat when a new message arrives. This copy stays out of cloud backups."
+    }
   ]
 }

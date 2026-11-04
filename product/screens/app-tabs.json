@@ -64,7 +64,7 @@
     },
     "conversasUnread": {
       "type": "int",
-      "description": "Unread DMs and Pedidos for the Conversas badge. For a company account the badge adds gruposAttention, because its groups are in Conversas."
+      "description": "Unread DMs and Pedidos for the Conversas badge. For a company account the badge adds gruposAttention, because its groups are in Conversas. With Mural on (spec chat-list, ADR 0246) it adds gruposAttention for every account."
     },
     "gruposAttention": {
       "type": "int",

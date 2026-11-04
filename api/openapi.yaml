@@ -5432,6 +5432,88 @@ paths:
                 $ref: "#/components/schemas/WebQuote"
         default:
           $ref: "#/components/responses/BusinessToolError"
+  /v1/business-stops/{workAccount}:
+    get:
+      summary: "Read whether the caller stopped this work account"
+      operationId: "getV1BusinessStopsWorkAccount"
+      tags:
+        - "Agenda"
+      security:
+        -
+          matrix: []
+      description: "The caller is the customer. workAccount is a Matrix ID of a company account (ADR 0237). A stopped work account cannot start a chat with the caller."
+      parameters:
+        -
+          name: "workAccount"
+          in: "path"
+          required: true
+          schema:
+            type: "string"
+            minLength: 1
+            maxLength: 256
+      responses:
+        "200":
+          description: "Success"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/BusinessStop"
+        default:
+          $ref: "#/components/responses/BusinessToolError"
+    put:
+      summary: "Stop this work account"
+      operationId: "putV1BusinessStopsWorkAccount"
+      tags:
+        - "Agenda"
+      security:
+        -
+          matrix: []
+      description: "The caller is the customer. workAccount is a Matrix ID of a company account (ADR 0237). A stopped work account cannot start a chat with the caller."
+      parameters:
+        -
+          name: "workAccount"
+          in: "path"
+          required: true
+          schema:
+            type: "string"
+            minLength: 1
+            maxLength: 256
+      responses:
+        "200":
+          description: "Success"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/BusinessStop"
+        default:
+          $ref: "#/components/responses/BusinessToolError"
+    delete:
+      summary: "Receive from this work account again"
+      operationId: "deleteV1BusinessStopsWorkAccount"
+      tags:
+        - "Agenda"
+      security:
+        -
+          matrix: []
+      description: "The caller is the customer. workAccount is a Matrix ID of a company account (ADR 0237). A stopped work account cannot start a chat with the caller."
+      parameters:
+        -
+          name: "workAccount"
+          in: "path"
+          required: true
+          schema:
+            type: "string"
+            minLength: 1
+            maxLength: 256
+      responses:
+        "200":
+          description: "Success"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/BusinessStop"
+        default:
+          $ref: "#/components/responses/BusinessToolError"
   /v1/me/business/queue/open:
     post:
       summary: "Open today’s queue"
@@ -7797,6 +7879,8 @@ components:
       $ref: "./business-schemas.json#/$defs/AgendaActivation"
     AgendaState:
       $ref: "./business-schemas.json#/$defs/AgendaState"
+    BusinessStop:
+      $ref: "./business-schemas.json#/$defs/BusinessStop"
     QuoteLinkInput:
       $ref: "./business-schemas.json#/$defs/QuoteLinkInput"
     QuoteLinkResult:

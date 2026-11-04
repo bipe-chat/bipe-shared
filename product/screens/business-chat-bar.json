@@ -123,6 +123,10 @@
         "description": "A tool ID."
       },
       "description": "GET /v1/businesses/{business}/tools. A tool shows only when it is here (ADR 0194 point 2). Open record cards still show when their tool goes off."
+    },
+    "stopped": {
+      "type": "bool",
+      "description": "GET /v1/business-stops/{businessId} (ADR 0237)."
     }
   },
   "actions": {
@@ -143,6 +147,9 @@
     },
     "joinQueue": {
       "effect": "Opens queue-customer."
+    },
+    "toggleStop": {
+      "effect": "One tap: PUT or DELETE /v1/business-stops/{businessId}, in the chat menu and on the profile. Shows bipe_business_stopped. It takes effect at once. The work account cannot start a chat with this person; a chat that exists stays."
     }
   },
   "strings": [
@@ -151,7 +158,10 @@
     "bipe_business_tools_a11y",
     "bipe_order_make",
     "bipe_quote_request",
-    "bipe_queue_join"
+    "bipe_queue_join",
+    "bipe_business_stop",
+    "bipe_business_stop_undo",
+    "bipe_business_stopped"
   ],
   "sdk": [
     "Room.members",

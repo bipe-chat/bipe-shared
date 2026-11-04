@@ -11,7 +11,7 @@
     "expiresAt": { "type": "date", "description": "Invite.expires_at, for bipe_invites_expires (date only)." }
   },
   "actions": {
-    "share": { "effect": "Primary button. The system share sheet with bipe_invites_share_message and the link." },
+    "share": { "effect": "Primary button. The system share sheet with bipe_invites_share_message: the link and expiresAt (day and month in words, no year, for example \"9 de novembro\")." },
     "copy": { "effect": "Copies the link. The button label changes to bipe_app_copied." },
     "setName": { "effect": "bipe_invites_name_action: a dialog with the name field. PUT /v1/me/invites/{inviteId}." },
     "revoke": { "effect": "bipe_invites_revoke with a confirmation. DELETE /v1/me/invites/{inviteId}, then closes the card." },

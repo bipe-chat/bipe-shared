@@ -15,7 +15,7 @@
     },
     "GrantedRow": {
       "id": { "type": "string", "description": "GrantedBrandMark.id." },
-      "reseller": { "type": "string", "description": "The reseller's display name from the Matrix profile, else the Matrix ID." },
+      "reseller": { "type": "string", "description": "The reseller's name by the people-names rule (README, People names). Never the Matrix ID." },
       "line": { "type": "string", "description": "The mark's line with the brand's own name." }
     }
   },

@@ -1,5 +1,6 @@
 // Parity ledger (ADR 0092): product/parity.json holds each capability's status on iOS and Android (Bipe's app,
-// bipe-app), the web (bipe-web) and the server (bipe-api, bipe-infra), and the deliberate differences between
+// bipe-app), the web (the site bipe-web and the web client bipe-app/web, ADR 0216) and the server (bipe-api,
+// bipe-infra), and the deliberate differences between
 // the apps. This tool checks the ledger and prints the gap report.
 // The ledger is the one status per feature: bipe-web and gen-product-doc.mjs read it, product.json has none.
 // The app surfaces and the fork scope (items the archived Element X fork app ships) live in tools/lib/parity-apps.mjs.
@@ -24,7 +25,9 @@ const report = args.includes("--report");
 const checkIssues = args.includes("--issues");
 
 // The app surfaces (ios, android) are checked in lib/parity-apps.mjs; these are the others.
-const SURFACES = { web: ["bipe-web"], server: ["bipe-api", "bipe-infra"] };
+const SURFACES = { web: ["bipe-web", "bipe-app"], server: ["bipe-api", "bipe-infra"] };
+// Web evidence in bipe-app is the web client only (ADR 0216, ADR 0226), never the phone apps.
+const WEB_CLIENT = "bipe-app/web/";
 const ALL = ["ios", "android", "web", "server"];
 const LABEL = { ios: "iOS", android: "Android", web: "Web", server: "Server" };
 const STATUSES = ["planned", "built", "testing", "policy", "n/a"];
@@ -81,6 +84,7 @@ for (const item of ledger.items ?? []) {
       for (const path of e.evidence ?? []) {
         const repo = SURFACES[s].find((r) => path.startsWith(`${r}/`));
         if (!repo) { problems.push(`${where}: ${s} evidence ${path} must start with ${SURFACES[s].join(" or ")}/`); continue; }
+        if (s === "web" && repo === "bipe-app" && !path.startsWith(WEB_CLIENT)) { problems.push(`${where}: web evidence ${path} in bipe-app must start with ${WEB_CLIENT}`); continue; }
         if (!existsSync(repoPath(repo))) { missingRepos.add(repo); continue; }
         if (!existsInRepo(repo, path.slice(repo.length + 1))) problems.push(`${where}: ${s} evidence ${path} does not exist (against ${against})`);
       }

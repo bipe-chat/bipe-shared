@@ -1,0 +1,1501 @@
+{
+  "description": "socialHandleProblem(platform, input, ownHandle) and socialUrl(platform, input) (ADR 0228, registries/profiles.json socials). handle: the input after socialHandleClean(). problem null and handle empty: no handle. url only when problem is null and handle is not empty.",
+  "cases": [
+    {
+      "platform": "instagram",
+      "input": "",
+      "ownHandle": null,
+      "handle": "",
+      "problem": null
+    },
+    {
+      "platform": "instagram",
+      "input": "   ",
+      "ownHandle": null,
+      "handle": "",
+      "problem": null
+    },
+    {
+      "platform": "instagram",
+      "input": "anasouza",
+      "ownHandle": null,
+      "handle": "anasouza",
+      "problem": null,
+      "url": "https://www.instagram.com/anasouza"
+    },
+    {
+      "platform": "instagram",
+      "input": "@anasouza",
+      "ownHandle": null,
+      "handle": "anasouza",
+      "problem": null,
+      "url": "https://www.instagram.com/anasouza"
+    },
+    {
+      "platform": "instagram",
+      "input": " @AnaSouza ",
+      "ownHandle": null,
+      "handle": "AnaSouza",
+      "problem": null,
+      "url": "https://www.instagram.com/AnaSouza"
+    },
+    {
+      "platform": "instagram",
+      "input": "ana.souza",
+      "ownHandle": null,
+      "handle": "ana.souza",
+      "problem": null,
+      "url": "https://www.instagram.com/ana.souza"
+    },
+    {
+      "platform": "instagram",
+      "input": "ana_souza",
+      "ownHandle": null,
+      "handle": "ana_souza",
+      "problem": null,
+      "url": "https://www.instagram.com/ana_souza"
+    },
+    {
+      "platform": "instagram",
+      "input": "ana-souza",
+      "ownHandle": null,
+      "handle": "ana-souza",
+      "problem": "social_invalid"
+    },
+    {
+      "platform": "instagram",
+      "input": "a",
+      "ownHandle": null,
+      "handle": "a",
+      "problem": null,
+      "url": "https://www.instagram.com/a"
+    },
+    {
+      "platform": "instagram",
+      "input": "ab",
+      "ownHandle": null,
+      "handle": "ab",
+      "problem": null,
+      "url": "https://www.instagram.com/ab"
+    },
+    {
+      "platform": "instagram",
+      "input": "aaaaaaaaaaaaaaa",
+      "ownHandle": null,
+      "handle": "aaaaaaaaaaaaaaa",
+      "problem": null,
+      "url": "https://www.instagram.com/aaaaaaaaaaaaaaa"
+    },
+    {
+      "platform": "instagram",
+      "input": "aaaaaaaaaaaaaaaa",
+      "ownHandle": null,
+      "handle": "aaaaaaaaaaaaaaaa",
+      "problem": null,
+      "url": "https://www.instagram.com/aaaaaaaaaaaaaaaa"
+    },
+    {
+      "platform": "instagram",
+      "input": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+      "ownHandle": null,
+      "handle": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+      "problem": null,
+      "url": "https://www.instagram.com/aaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+    },
+    {
+      "platform": "instagram",
+      "input": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+      "ownHandle": null,
+      "handle": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+      "problem": "social_invalid"
+    },
+    {
+      "platform": "instagram",
+      "input": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+      "ownHandle": null,
+      "handle": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+      "problem": "social_invalid"
+    },
+    {
+      "platform": "instagram",
+      "input": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+      "ownHandle": null,
+      "handle": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+      "problem": "social_invalid"
+    },
+    {
+      "platform": "instagram",
+      "input": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+      "ownHandle": null,
+      "handle": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+      "problem": "social_invalid"
+    },
+    {
+      "platform": "instagram",
+      "input": "-ana",
+      "ownHandle": null,
+      "handle": "-ana",
+      "problem": "social_invalid"
+    },
+    {
+      "platform": "instagram",
+      "input": "ana-",
+      "ownHandle": null,
+      "handle": "ana-",
+      "problem": "social_invalid"
+    },
+    {
+      "platform": "instagram",
+      "input": "@@ana",
+      "ownHandle": null,
+      "handle": "@ana",
+      "problem": "social_invalid"
+    },
+    {
+      "platform": "instagram",
+      "input": "ana souza",
+      "ownHandle": null,
+      "handle": "ana souza",
+      "problem": "social_invalid"
+    },
+    {
+      "platform": "instagram",
+      "input": "anã",
+      "ownHandle": null,
+      "handle": "anã",
+      "problem": "social_invalid"
+    },
+    {
+      "platform": "instagram",
+      "input": "https://evil.site",
+      "ownHandle": null,
+      "handle": "https://evil.site",
+      "problem": "social_invalid"
+    },
+    {
+      "platform": "instagram",
+      "input": "evil.site/x",
+      "ownHandle": null,
+      "handle": "evil.site/x",
+      "problem": "social_invalid"
+    },
+    {
+      "platform": "instagram",
+      "input": "ana?x=1",
+      "ownHandle": null,
+      "handle": "ana?x=1",
+      "problem": "social_invalid"
+    },
+    {
+      "platform": "instagram",
+      "input": "itau",
+      "ownHandle": null,
+      "handle": "itau",
+      "problem": "social_reserved"
+    },
+    {
+      "platform": "instagram",
+      "input": "itau",
+      "ownHandle": "itau",
+      "handle": "itau",
+      "problem": null,
+      "url": "https://www.instagram.com/itau"
+    },
+    {
+      "platform": "instagram",
+      "input": "itau",
+      "ownHandle": "ana",
+      "handle": "itau",
+      "problem": "social_reserved"
+    },
+    {
+      "platform": "instagram",
+      "input": "i.t.a.u",
+      "ownHandle": null,
+      "handle": "i.t.a.u",
+      "problem": "social_reserved"
+    },
+    {
+      "platform": "linkedin",
+      "input": "",
+      "ownHandle": null,
+      "handle": "",
+      "problem": null
+    },
+    {
+      "platform": "linkedin",
+      "input": "   ",
+      "ownHandle": null,
+      "handle": "",
+      "problem": null
+    },
+    {
+      "platform": "linkedin",
+      "input": "anasouza",
+      "ownHandle": null,
+      "handle": "anasouza",
+      "problem": null,
+      "url": "https://www.linkedin.com/in/anasouza"
+    },
+    {
+      "platform": "linkedin",
+      "input": "@anasouza",
+      "ownHandle": null,
+      "handle": "anasouza",
+      "problem": null,
+      "url": "https://www.linkedin.com/in/anasouza"
+    },
+    {
+      "platform": "linkedin",
+      "input": " @AnaSouza ",
+      "ownHandle": null,
+      "handle": "AnaSouza",
+      "problem": null,
+      "url": "https://www.linkedin.com/in/AnaSouza"
+    },
+    {
+      "platform": "linkedin",
+      "input": "ana.souza",
+      "ownHandle": null,
+      "handle": "ana.souza",
+      "problem": "social_invalid"
+    },
+    {
+      "platform": "linkedin",
+      "input": "ana_souza",
+      "ownHandle": null,
+      "handle": "ana_souza",
+      "problem": "social_invalid"
+    },
+    {
+      "platform": "linkedin",
+      "input": "ana-souza",
+      "ownHandle": null,
+      "handle": "ana-souza",
+      "problem": null,
+      "url": "https://www.linkedin.com/in/ana-souza"
+    },
+    {
+      "platform": "linkedin",
+      "input": "a",
+      "ownHandle": null,
+      "handle": "a",
+      "problem": "social_invalid"
+    },
+    {
+      "platform": "linkedin",
+      "input": "ab",
+      "ownHandle": null,
+      "handle": "ab",
+      "problem": "social_invalid"
+    },
+    {
+      "platform": "linkedin",
+      "input": "aaaaaaaaaaaaaaa",
+      "ownHandle": null,
+      "handle": "aaaaaaaaaaaaaaa",
+      "problem": null,
+      "url": "https://www.linkedin.com/in/aaaaaaaaaaaaaaa"
+    },
+    {
+      "platform": "linkedin",
+      "input": "aaaaaaaaaaaaaaaa",
+      "ownHandle": null,
+      "handle": "aaaaaaaaaaaaaaaa",
+      "problem": null,
+      "url": "https://www.linkedin.com/in/aaaaaaaaaaaaaaaa"
+    },
+    {
+      "platform": "linkedin",
+      "input": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+      "ownHandle": null,
+      "handle": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+      "problem": null,
+      "url": "https://www.linkedin.com/in/aaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+    },
+    {
+      "platform": "linkedin",
+      "input": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+      "ownHandle": null,
+      "handle": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+      "problem": null,
+      "url": "https://www.linkedin.com/in/aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+    },
+    {
+      "platform": "linkedin",
+      "input": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+      "ownHandle": null,
+      "handle": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+      "problem": null,
+      "url": "https://www.linkedin.com/in/aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+    },
+    {
+      "platform": "linkedin",
+      "input": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+      "ownHandle": null,
+      "handle": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+      "problem": null,
+      "url": "https://www.linkedin.com/in/aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+    },
+    {
+      "platform": "linkedin",
+      "input": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+      "ownHandle": null,
+      "handle": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+      "problem": "social_invalid"
+    },
+    {
+      "platform": "linkedin",
+      "input": "-ana",
+      "ownHandle": null,
+      "handle": "-ana",
+      "problem": null,
+      "url": "https://www.linkedin.com/in/-ana"
+    },
+    {
+      "platform": "linkedin",
+      "input": "ana-",
+      "ownHandle": null,
+      "handle": "ana-",
+      "problem": null,
+      "url": "https://www.linkedin.com/in/ana-"
+    },
+    {
+      "platform": "linkedin",
+      "input": "@@ana",
+      "ownHandle": null,
+      "handle": "@ana",
+      "problem": "social_invalid"
+    },
+    {
+      "platform": "linkedin",
+      "input": "ana souza",
+      "ownHandle": null,
+      "handle": "ana souza",
+      "problem": "social_invalid"
+    },
+    {
+      "platform": "linkedin",
+      "input": "anã",
+      "ownHandle": null,
+      "handle": "anã",
+      "problem": "social_invalid"
+    },
+    {
+      "platform": "linkedin",
+      "input": "https://evil.site",
+      "ownHandle": null,
+      "handle": "https://evil.site",
+      "problem": "social_invalid"
+    },
+    {
+      "platform": "linkedin",
+      "input": "evil.site/x",
+      "ownHandle": null,
+      "handle": "evil.site/x",
+      "problem": "social_invalid"
+    },
+    {
+      "platform": "linkedin",
+      "input": "ana?x=1",
+      "ownHandle": null,
+      "handle": "ana?x=1",
+      "problem": "social_invalid"
+    },
+    {
+      "platform": "linkedin",
+      "input": "itau",
+      "ownHandle": null,
+      "handle": "itau",
+      "problem": "social_reserved"
+    },
+    {
+      "platform": "linkedin",
+      "input": "itau",
+      "ownHandle": "itau",
+      "handle": "itau",
+      "problem": null,
+      "url": "https://www.linkedin.com/in/itau"
+    },
+    {
+      "platform": "linkedin",
+      "input": "itau",
+      "ownHandle": "ana",
+      "handle": "itau",
+      "problem": "social_reserved"
+    },
+    {
+      "platform": "linkedin",
+      "input": "i.t.a.u",
+      "ownHandle": null,
+      "handle": "i.t.a.u",
+      "problem": "social_invalid"
+    },
+    {
+      "platform": "tiktok",
+      "input": "",
+      "ownHandle": null,
+      "handle": "",
+      "problem": null
+    },
+    {
+      "platform": "tiktok",
+      "input": "   ",
+      "ownHandle": null,
+      "handle": "",
+      "problem": null
+    },
+    {
+      "platform": "tiktok",
+      "input": "anasouza",
+      "ownHandle": null,
+      "handle": "anasouza",
+      "problem": null,
+      "url": "https://www.tiktok.com/@anasouza"
+    },
+    {
+      "platform": "tiktok",
+      "input": "@anasouza",
+      "ownHandle": null,
+      "handle": "anasouza",
+      "problem": null,
+      "url": "https://www.tiktok.com/@anasouza"
+    },
+    {
+      "platform": "tiktok",
+      "input": " @AnaSouza ",
+      "ownHandle": null,
+      "handle": "AnaSouza",
+      "problem": null,
+      "url": "https://www.tiktok.com/@AnaSouza"
+    },
+    {
+      "platform": "tiktok",
+      "input": "ana.souza",
+      "ownHandle": null,
+      "handle": "ana.souza",
+      "problem": null,
+      "url": "https://www.tiktok.com/@ana.souza"
+    },
+    {
+      "platform": "tiktok",
+      "input": "ana_souza",
+      "ownHandle": null,
+      "handle": "ana_souza",
+      "problem": null,
+      "url": "https://www.tiktok.com/@ana_souza"
+    },
+    {
+      "platform": "tiktok",
+      "input": "ana-souza",
+      "ownHandle": null,
+      "handle": "ana-souza",
+      "problem": "social_invalid"
+    },
+    {
+      "platform": "tiktok",
+      "input": "a",
+      "ownHandle": null,
+      "handle": "a",
+      "problem": "social_invalid"
+    },
+    {
+      "platform": "tiktok",
+      "input": "ab",
+      "ownHandle": null,
+      "handle": "ab",
+      "problem": null,
+      "url": "https://www.tiktok.com/@ab"
+    },
+    {
+      "platform": "tiktok",
+      "input": "aaaaaaaaaaaaaaa",
+      "ownHandle": null,
+      "handle": "aaaaaaaaaaaaaaa",
+      "problem": null,
+      "url": "https://www.tiktok.com/@aaaaaaaaaaaaaaa"
+    },
+    {
+      "platform": "tiktok",
+      "input": "aaaaaaaaaaaaaaaa",
+      "ownHandle": null,
+      "handle": "aaaaaaaaaaaaaaaa",
+      "problem": null,
+      "url": "https://www.tiktok.com/@aaaaaaaaaaaaaaaa"
+    },
+    {
+      "platform": "tiktok",
+      "input": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+      "ownHandle": null,
+      "handle": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+      "problem": "social_invalid"
+    },
+    {
+      "platform": "tiktok",
+      "input": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+      "ownHandle": null,
+      "handle": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+      "problem": "social_invalid"
+    },
+    {
+      "platform": "tiktok",
+      "input": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+      "ownHandle": null,
+      "handle": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+      "problem": "social_invalid"
+    },
+    {
+      "platform": "tiktok",
+      "input": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+      "ownHandle": null,
+      "handle": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+      "problem": "social_invalid"
+    },
+    {
+      "platform": "tiktok",
+      "input": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+      "ownHandle": null,
+      "handle": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+      "problem": "social_invalid"
+    },
+    {
+      "platform": "tiktok",
+      "input": "-ana",
+      "ownHandle": null,
+      "handle": "-ana",
+      "problem": "social_invalid"
+    },
+    {
+      "platform": "tiktok",
+      "input": "ana-",
+      "ownHandle": null,
+      "handle": "ana-",
+      "problem": "social_invalid"
+    },
+    {
+      "platform": "tiktok",
+      "input": "@@ana",
+      "ownHandle": null,
+      "handle": "@ana",
+      "problem": "social_invalid"
+    },
+    {
+      "platform": "tiktok",
+      "input": "ana souza",
+      "ownHandle": null,
+      "handle": "ana souza",
+      "problem": "social_invalid"
+    },
+    {
+      "platform": "tiktok",
+      "input": "anã",
+      "ownHandle": null,
+      "handle": "anã",
+      "problem": "social_invalid"
+    },
+    {
+      "platform": "tiktok",
+      "input": "https://evil.site",
+      "ownHandle": null,
+      "handle": "https://evil.site",
+      "problem": "social_invalid"
+    },
+    {
+      "platform": "tiktok",
+      "input": "evil.site/x",
+      "ownHandle": null,
+      "handle": "evil.site/x",
+      "problem": "social_invalid"
+    },
+    {
+      "platform": "tiktok",
+      "input": "ana?x=1",
+      "ownHandle": null,
+      "handle": "ana?x=1",
+      "problem": "social_invalid"
+    },
+    {
+      "platform": "tiktok",
+      "input": "itau",
+      "ownHandle": null,
+      "handle": "itau",
+      "problem": "social_reserved"
+    },
+    {
+      "platform": "tiktok",
+      "input": "itau",
+      "ownHandle": "itau",
+      "handle": "itau",
+      "problem": null,
+      "url": "https://www.tiktok.com/@itau"
+    },
+    {
+      "platform": "tiktok",
+      "input": "itau",
+      "ownHandle": "ana",
+      "handle": "itau",
+      "problem": "social_reserved"
+    },
+    {
+      "platform": "tiktok",
+      "input": "i.t.a.u",
+      "ownHandle": null,
+      "handle": "i.t.a.u",
+      "problem": "social_reserved"
+    },
+    {
+      "platform": "youtube",
+      "input": "",
+      "ownHandle": null,
+      "handle": "",
+      "problem": null
+    },
+    {
+      "platform": "youtube",
+      "input": "   ",
+      "ownHandle": null,
+      "handle": "",
+      "problem": null
+    },
+    {
+      "platform": "youtube",
+      "input": "anasouza",
+      "ownHandle": null,
+      "handle": "anasouza",
+      "problem": null,
+      "url": "https://www.youtube.com/@anasouza"
+    },
+    {
+      "platform": "youtube",
+      "input": "@anasouza",
+      "ownHandle": null,
+      "handle": "anasouza",
+      "problem": null,
+      "url": "https://www.youtube.com/@anasouza"
+    },
+    {
+      "platform": "youtube",
+      "input": " @AnaSouza ",
+      "ownHandle": null,
+      "handle": "AnaSouza",
+      "problem": null,
+      "url": "https://www.youtube.com/@AnaSouza"
+    },
+    {
+      "platform": "youtube",
+      "input": "ana.souza",
+      "ownHandle": null,
+      "handle": "ana.souza",
+      "problem": null,
+      "url": "https://www.youtube.com/@ana.souza"
+    },
+    {
+      "platform": "youtube",
+      "input": "ana_souza",
+      "ownHandle": null,
+      "handle": "ana_souza",
+      "problem": null,
+      "url": "https://www.youtube.com/@ana_souza"
+    },
+    {
+      "platform": "youtube",
+      "input": "ana-souza",
+      "ownHandle": null,
+      "handle": "ana-souza",
+      "problem": null,
+      "url": "https://www.youtube.com/@ana-souza"
+    },
+    {
+      "platform": "youtube",
+      "input": "a",
+      "ownHandle": null,
+      "handle": "a",
+      "problem": "social_invalid"
+    },
+    {
+      "platform": "youtube",
+      "input": "ab",
+      "ownHandle": null,
+      "handle": "ab",
+      "problem": "social_invalid"
+    },
+    {
+      "platform": "youtube",
+      "input": "aaaaaaaaaaaaaaa",
+      "ownHandle": null,
+      "handle": "aaaaaaaaaaaaaaa",
+      "problem": null,
+      "url": "https://www.youtube.com/@aaaaaaaaaaaaaaa"
+    },
+    {
+      "platform": "youtube",
+      "input": "aaaaaaaaaaaaaaaa",
+      "ownHandle": null,
+      "handle": "aaaaaaaaaaaaaaaa",
+      "problem": null,
+      "url": "https://www.youtube.com/@aaaaaaaaaaaaaaaa"
+    },
+    {
+      "platform": "youtube",
+      "input": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+      "ownHandle": null,
+      "handle": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+      "problem": null,
+      "url": "https://www.youtube.com/@aaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+    },
+    {
+      "platform": "youtube",
+      "input": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+      "ownHandle": null,
+      "handle": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+      "problem": "social_invalid"
+    },
+    {
+      "platform": "youtube",
+      "input": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+      "ownHandle": null,
+      "handle": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+      "problem": "social_invalid"
+    },
+    {
+      "platform": "youtube",
+      "input": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+      "ownHandle": null,
+      "handle": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+      "problem": "social_invalid"
+    },
+    {
+      "platform": "youtube",
+      "input": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+      "ownHandle": null,
+      "handle": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+      "problem": "social_invalid"
+    },
+    {
+      "platform": "youtube",
+      "input": "-ana",
+      "ownHandle": null,
+      "handle": "-ana",
+      "problem": null,
+      "url": "https://www.youtube.com/@-ana"
+    },
+    {
+      "platform": "youtube",
+      "input": "ana-",
+      "ownHandle": null,
+      "handle": "ana-",
+      "problem": null,
+      "url": "https://www.youtube.com/@ana-"
+    },
+    {
+      "platform": "youtube",
+      "input": "@@ana",
+      "ownHandle": null,
+      "handle": "@ana",
+      "problem": "social_invalid"
+    },
+    {
+      "platform": "youtube",
+      "input": "ana souza",
+      "ownHandle": null,
+      "handle": "ana souza",
+      "problem": "social_invalid"
+    },
+    {
+      "platform": "youtube",
+      "input": "anã",
+      "ownHandle": null,
+      "handle": "anã",
+      "problem": "social_invalid"
+    },
+    {
+      "platform": "youtube",
+      "input": "https://evil.site",
+      "ownHandle": null,
+      "handle": "https://evil.site",
+      "problem": "social_invalid"
+    },
+    {
+      "platform": "youtube",
+      "input": "evil.site/x",
+      "ownHandle": null,
+      "handle": "evil.site/x",
+      "problem": "social_invalid"
+    },
+    {
+      "platform": "youtube",
+      "input": "ana?x=1",
+      "ownHandle": null,
+      "handle": "ana?x=1",
+      "problem": "social_invalid"
+    },
+    {
+      "platform": "youtube",
+      "input": "itau",
+      "ownHandle": null,
+      "handle": "itau",
+      "problem": "social_reserved"
+    },
+    {
+      "platform": "youtube",
+      "input": "itau",
+      "ownHandle": "itau",
+      "handle": "itau",
+      "problem": null,
+      "url": "https://www.youtube.com/@itau"
+    },
+    {
+      "platform": "youtube",
+      "input": "itau",
+      "ownHandle": "ana",
+      "handle": "itau",
+      "problem": "social_reserved"
+    },
+    {
+      "platform": "youtube",
+      "input": "i.t.a.u",
+      "ownHandle": null,
+      "handle": "i.t.a.u",
+      "problem": "social_reserved"
+    },
+    {
+      "platform": "facebook",
+      "input": "",
+      "ownHandle": null,
+      "handle": "",
+      "problem": null
+    },
+    {
+      "platform": "facebook",
+      "input": "   ",
+      "ownHandle": null,
+      "handle": "",
+      "problem": null
+    },
+    {
+      "platform": "facebook",
+      "input": "anasouza",
+      "ownHandle": null,
+      "handle": "anasouza",
+      "problem": null,
+      "url": "https://www.facebook.com/anasouza"
+    },
+    {
+      "platform": "facebook",
+      "input": "@anasouza",
+      "ownHandle": null,
+      "handle": "anasouza",
+      "problem": null,
+      "url": "https://www.facebook.com/anasouza"
+    },
+    {
+      "platform": "facebook",
+      "input": " @AnaSouza ",
+      "ownHandle": null,
+      "handle": "AnaSouza",
+      "problem": null,
+      "url": "https://www.facebook.com/AnaSouza"
+    },
+    {
+      "platform": "facebook",
+      "input": "ana.souza",
+      "ownHandle": null,
+      "handle": "ana.souza",
+      "problem": null,
+      "url": "https://www.facebook.com/ana.souza"
+    },
+    {
+      "platform": "facebook",
+      "input": "ana_souza",
+      "ownHandle": null,
+      "handle": "ana_souza",
+      "problem": "social_invalid"
+    },
+    {
+      "platform": "facebook",
+      "input": "ana-souza",
+      "ownHandle": null,
+      "handle": "ana-souza",
+      "problem": "social_invalid"
+    },
+    {
+      "platform": "facebook",
+      "input": "a",
+      "ownHandle": null,
+      "handle": "a",
+      "problem": "social_invalid"
+    },
+    {
+      "platform": "facebook",
+      "input": "ab",
+      "ownHandle": null,
+      "handle": "ab",
+      "problem": "social_invalid"
+    },
+    {
+      "platform": "facebook",
+      "input": "aaaaaaaaaaaaaaa",
+      "ownHandle": null,
+      "handle": "aaaaaaaaaaaaaaa",
+      "problem": null,
+      "url": "https://www.facebook.com/aaaaaaaaaaaaaaa"
+    },
+    {
+      "platform": "facebook",
+      "input": "aaaaaaaaaaaaaaaa",
+      "ownHandle": null,
+      "handle": "aaaaaaaaaaaaaaaa",
+      "problem": null,
+      "url": "https://www.facebook.com/aaaaaaaaaaaaaaaa"
+    },
+    {
+      "platform": "facebook",
+      "input": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+      "ownHandle": null,
+      "handle": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+      "problem": null,
+      "url": "https://www.facebook.com/aaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+    },
+    {
+      "platform": "facebook",
+      "input": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+      "ownHandle": null,
+      "handle": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+      "problem": null,
+      "url": "https://www.facebook.com/aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+    },
+    {
+      "platform": "facebook",
+      "input": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+      "ownHandle": null,
+      "handle": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+      "problem": null,
+      "url": "https://www.facebook.com/aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+    },
+    {
+      "platform": "facebook",
+      "input": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+      "ownHandle": null,
+      "handle": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+      "problem": null,
+      "url": "https://www.facebook.com/aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+    },
+    {
+      "platform": "facebook",
+      "input": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+      "ownHandle": null,
+      "handle": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+      "problem": "social_invalid"
+    },
+    {
+      "platform": "facebook",
+      "input": "-ana",
+      "ownHandle": null,
+      "handle": "-ana",
+      "problem": "social_invalid"
+    },
+    {
+      "platform": "facebook",
+      "input": "ana-",
+      "ownHandle": null,
+      "handle": "ana-",
+      "problem": "social_invalid"
+    },
+    {
+      "platform": "facebook",
+      "input": "@@ana",
+      "ownHandle": null,
+      "handle": "@ana",
+      "problem": "social_invalid"
+    },
+    {
+      "platform": "facebook",
+      "input": "ana souza",
+      "ownHandle": null,
+      "handle": "ana souza",
+      "problem": "social_invalid"
+    },
+    {
+      "platform": "facebook",
+      "input": "anã",
+      "ownHandle": null,
+      "handle": "anã",
+      "problem": "social_invalid"
+    },
+    {
+      "platform": "facebook",
+      "input": "https://evil.site",
+      "ownHandle": null,
+      "handle": "https://evil.site",
+      "problem": "social_invalid"
+    },
+    {
+      "platform": "facebook",
+      "input": "evil.site/x",
+      "ownHandle": null,
+      "handle": "evil.site/x",
+      "problem": "social_invalid"
+    },
+    {
+      "platform": "facebook",
+      "input": "ana?x=1",
+      "ownHandle": null,
+      "handle": "ana?x=1",
+      "problem": "social_invalid"
+    },
+    {
+      "platform": "facebook",
+      "input": "itau",
+      "ownHandle": null,
+      "handle": "itau",
+      "problem": "social_invalid"
+    },
+    {
+      "platform": "facebook",
+      "input": "itau",
+      "ownHandle": "itau",
+      "handle": "itau",
+      "problem": "social_invalid"
+    },
+    {
+      "platform": "facebook",
+      "input": "itau",
+      "ownHandle": "ana",
+      "handle": "itau",
+      "problem": "social_invalid"
+    },
+    {
+      "platform": "facebook",
+      "input": "i.t.a.u",
+      "ownHandle": null,
+      "handle": "i.t.a.u",
+      "problem": "social_reserved"
+    },
+    {
+      "platform": "x",
+      "input": "",
+      "ownHandle": null,
+      "handle": "",
+      "problem": null
+    },
+    {
+      "platform": "x",
+      "input": "   ",
+      "ownHandle": null,
+      "handle": "",
+      "problem": null
+    },
+    {
+      "platform": "x",
+      "input": "anasouza",
+      "ownHandle": null,
+      "handle": "anasouza",
+      "problem": null,
+      "url": "https://x.com/anasouza"
+    },
+    {
+      "platform": "x",
+      "input": "@anasouza",
+      "ownHandle": null,
+      "handle": "anasouza",
+      "problem": null,
+      "url": "https://x.com/anasouza"
+    },
+    {
+      "platform": "x",
+      "input": " @AnaSouza ",
+      "ownHandle": null,
+      "handle": "AnaSouza",
+      "problem": null,
+      "url": "https://x.com/AnaSouza"
+    },
+    {
+      "platform": "x",
+      "input": "ana.souza",
+      "ownHandle": null,
+      "handle": "ana.souza",
+      "problem": "social_invalid"
+    },
+    {
+      "platform": "x",
+      "input": "ana_souza",
+      "ownHandle": null,
+      "handle": "ana_souza",
+      "problem": null,
+      "url": "https://x.com/ana_souza"
+    },
+    {
+      "platform": "x",
+      "input": "ana-souza",
+      "ownHandle": null,
+      "handle": "ana-souza",
+      "problem": "social_invalid"
+    },
+    {
+      "platform": "x",
+      "input": "a",
+      "ownHandle": null,
+      "handle": "a",
+      "problem": null,
+      "url": "https://x.com/a"
+    },
+    {
+      "platform": "x",
+      "input": "ab",
+      "ownHandle": null,
+      "handle": "ab",
+      "problem": null,
+      "url": "https://x.com/ab"
+    },
+    {
+      "platform": "x",
+      "input": "aaaaaaaaaaaaaaa",
+      "ownHandle": null,
+      "handle": "aaaaaaaaaaaaaaa",
+      "problem": null,
+      "url": "https://x.com/aaaaaaaaaaaaaaa"
+    },
+    {
+      "platform": "x",
+      "input": "aaaaaaaaaaaaaaaa",
+      "ownHandle": null,
+      "handle": "aaaaaaaaaaaaaaaa",
+      "problem": "social_invalid"
+    },
+    {
+      "platform": "x",
+      "input": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+      "ownHandle": null,
+      "handle": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+      "problem": "social_invalid"
+    },
+    {
+      "platform": "x",
+      "input": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+      "ownHandle": null,
+      "handle": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+      "problem": "social_invalid"
+    },
+    {
+      "platform": "x",
+      "input": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+      "ownHandle": null,
+      "handle": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+      "problem": "social_invalid"
+    },
+    {
+      "platform": "x",
+      "input": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+      "ownHandle": null,
+      "handle": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+      "problem": "social_invalid"
+    },
+    {
+      "platform": "x",
+      "input": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+      "ownHandle": null,
+      "handle": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+      "problem": "social_invalid"
+    },
+    {
+      "platform": "x",
+      "input": "-ana",
+      "ownHandle": null,
+      "handle": "-ana",
+      "problem": "social_invalid"
+    },
+    {
+      "platform": "x",
+      "input": "ana-",
+      "ownHandle": null,
+      "handle": "ana-",
+      "problem": "social_invalid"
+    },
+    {
+      "platform": "x",
+      "input": "@@ana",
+      "ownHandle": null,
+      "handle": "@ana",
+      "problem": "social_invalid"
+    },
+    {
+      "platform": "x",
+      "input": "ana souza",
+      "ownHandle": null,
+      "handle": "ana souza",
+      "problem": "social_invalid"
+    },
+    {
+      "platform": "x",
+      "input": "anã",
+      "ownHandle": null,
+      "handle": "anã",
+      "problem": "social_invalid"
+    },
+    {
+      "platform": "x",
+      "input": "https://evil.site",
+      "ownHandle": null,
+      "handle": "https://evil.site",
+      "problem": "social_invalid"
+    },
+    {
+      "platform": "x",
+      "input": "evil.site/x",
+      "ownHandle": null,
+      "handle": "evil.site/x",
+      "problem": "social_invalid"
+    },
+    {
+      "platform": "x",
+      "input": "ana?x=1",
+      "ownHandle": null,
+      "handle": "ana?x=1",
+      "problem": "social_invalid"
+    },
+    {
+      "platform": "x",
+      "input": "itau",
+      "ownHandle": null,
+      "handle": "itau",
+      "problem": "social_reserved"
+    },
+    {
+      "platform": "x",
+      "input": "itau",
+      "ownHandle": "itau",
+      "handle": "itau",
+      "problem": null,
+      "url": "https://x.com/itau"
+    },
+    {
+      "platform": "x",
+      "input": "itau",
+      "ownHandle": "ana",
+      "handle": "itau",
+      "problem": "social_reserved"
+    },
+    {
+      "platform": "x",
+      "input": "i.t.a.u",
+      "ownHandle": null,
+      "handle": "i.t.a.u",
+      "problem": "social_invalid"
+    },
+    {
+      "platform": "github",
+      "input": "",
+      "ownHandle": null,
+      "handle": "",
+      "problem": null
+    },
+    {
+      "platform": "github",
+      "input": "   ",
+      "ownHandle": null,
+      "handle": "",
+      "problem": null
+    },
+    {
+      "platform": "github",
+      "input": "anasouza",
+      "ownHandle": null,
+      "handle": "anasouza",
+      "problem": null,
+      "url": "https://github.com/anasouza"
+    },
+    {
+      "platform": "github",
+      "input": "@anasouza",
+      "ownHandle": null,
+      "handle": "anasouza",
+      "problem": null,
+      "url": "https://github.com/anasouza"
+    },
+    {
+      "platform": "github",
+      "input": " @AnaSouza ",
+      "ownHandle": null,
+      "handle": "AnaSouza",
+      "problem": null,
+      "url": "https://github.com/AnaSouza"
+    },
+    {
+      "platform": "github",
+      "input": "ana.souza",
+      "ownHandle": null,
+      "handle": "ana.souza",
+      "problem": "social_invalid"
+    },
+    {
+      "platform": "github",
+      "input": "ana_souza",
+      "ownHandle": null,
+      "handle": "ana_souza",
+      "problem": "social_invalid"
+    },
+    {
+      "platform": "github",
+      "input": "ana-souza",
+      "ownHandle": null,
+      "handle": "ana-souza",
+      "problem": null,
+      "url": "https://github.com/ana-souza"
+    },
+    {
+      "platform": "github",
+      "input": "a",
+      "ownHandle": null,
+      "handle": "a",
+      "problem": null,
+      "url": "https://github.com/a"
+    },
+    {
+      "platform": "github",
+      "input": "ab",
+      "ownHandle": null,
+      "handle": "ab",
+      "problem": null,
+      "url": "https://github.com/ab"
+    },
+    {
+      "platform": "github",
+      "input": "aaaaaaaaaaaaaaa",
+      "ownHandle": null,
+      "handle": "aaaaaaaaaaaaaaa",
+      "problem": null,
+      "url": "https://github.com/aaaaaaaaaaaaaaa"
+    },
+    {
+      "platform": "github",
+      "input": "aaaaaaaaaaaaaaaa",
+      "ownHandle": null,
+      "handle": "aaaaaaaaaaaaaaaa",
+      "problem": null,
+      "url": "https://github.com/aaaaaaaaaaaaaaaa"
+    },
+    {
+      "platform": "github",
+      "input": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+      "ownHandle": null,
+      "handle": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+      "problem": null,
+      "url": "https://github.com/aaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+    },
+    {
+      "platform": "github",
+      "input": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+      "ownHandle": null,
+      "handle": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+      "problem": null,
+      "url": "https://github.com/aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+    },
+    {
+      "platform": "github",
+      "input": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+      "ownHandle": null,
+      "handle": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+      "problem": null,
+      "url": "https://github.com/aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+    },
+    {
+      "platform": "github",
+      "input": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+      "ownHandle": null,
+      "handle": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+      "problem": "social_invalid"
+    },
+    {
+      "platform": "github",
+      "input": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+      "ownHandle": null,
+      "handle": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+      "problem": "social_invalid"
+    },
+    {
+      "platform": "github",
+      "input": "-ana",
+      "ownHandle": null,
+      "handle": "-ana",
+      "problem": "social_invalid"
+    },
+    {
+      "platform": "github",
+      "input": "ana-",
+      "ownHandle": null,
+      "handle": "ana-",
+      "problem": "social_invalid"
+    },
+    {
+      "platform": "github",
+      "input": "@@ana",
+      "ownHandle": null,
+      "handle": "@ana",
+      "problem": "social_invalid"
+    },
+    {
+      "platform": "github",
+      "input": "ana souza",
+      "ownHandle": null,
+      "handle": "ana souza",
+      "problem": "social_invalid"
+    },
+    {
+      "platform": "github",
+      "input": "anã",
+      "ownHandle": null,
+      "handle": "anã",
+      "problem": "social_invalid"
+    },
+    {
+      "platform": "github",
+      "input": "https://evil.site",
+      "ownHandle": null,
+      "handle": "https://evil.site",
+      "problem": "social_invalid"
+    },
+    {
+      "platform": "github",
+      "input": "evil.site/x",
+      "ownHandle": null,
+      "handle": "evil.site/x",
+      "problem": "social_invalid"
+    },
+    {
+      "platform": "github",
+      "input": "ana?x=1",
+      "ownHandle": null,
+      "handle": "ana?x=1",
+      "problem": "social_invalid"
+    },
+    {
+      "platform": "github",
+      "input": "itau",
+      "ownHandle": null,
+      "handle": "itau",
+      "problem": "social_reserved"
+    },
+    {
+      "platform": "github",
+      "input": "itau",
+      "ownHandle": "itau",
+      "handle": "itau",
+      "problem": null,
+      "url": "https://github.com/itau"
+    },
+    {
+      "platform": "github",
+      "input": "itau",
+      "ownHandle": "ana",
+      "handle": "itau",
+      "problem": "social_reserved"
+    },
+    {
+      "platform": "github",
+      "input": "i.t.a.u",
+      "ownHandle": null,
+      "handle": "i.t.a.u",
+      "problem": "social_invalid"
+    }
+  ]
+}

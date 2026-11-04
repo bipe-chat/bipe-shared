@@ -7,7 +7,7 @@
     "userId": { "type": "string", "description": "The reseller's work account." },
     "marks": {
       "type": "list",
-      "of": { "type": "string", "description": "One verified mark: its line bipe_brand_mark_label_<label> with the brand's name, the brand's Matrix ID and the brand's CNPJ." },
+      "of": { "type": "string", "description": "One verified mark: its line bipe_brand_mark_label_<label> with the brand's name and the brand's CNPJ. The brand's Matrix ID is the key only and never shows." },
       "description": "The verified lvl brand-mark envelopes of GET /v1/brand-marks/{userId}, oldest grant first, at most brandMarkMaxPerAccount. Empty: nothing shows."
     },
     "brandSeal": {

@@ -32,7 +32,7 @@
     },
     "invite": {
       "params": { "index": { "type": "int", "description": "The slot being edited." }, "name": { "type": "string", "description": "Not empty." } },
-      "effect": "POST /v1/me/invites, then PUT /v1/me/invites/{inviteId} with the name. Keeps the link and the invite id on this phone for this flow. Opens the system share sheet with bipe_invites_share_message and the link. The slot becomes sent whether or not the share sheet sent it. A retry never repeats POST."
+      "effect": "POST /v1/me/invites, then PUT /v1/me/invites/{inviteId} with the name. Keeps the link and the invite id on this phone for this flow. Opens the system share sheet with bipe_invites_share_message: the link and CreatedInvite.expires_at (day and month in words, no year). The slot becomes sent whether or not the share sheet sent it. A retry never repeats POST."
     },
     "openJoined": {
       "params": { "index": { "type": "int", "description": "A joined slot." } },
@@ -78,6 +78,7 @@
     "Registry to add in the build (generate, never copy, ADR 0031): registries/onboarding.json bringPeople { slots: 4, firstCircle: \"family\", followUpEveryDays: 7, pendingAfterDays: 3, stopAfterDeclines: 2 }, the prompt key bringPeople with trigger firstChatListAfterSignup and target bringPeopleSheet, and the prompt key bringPeopleReminder with trigger bringPeopleDue (spec bring-people-reminder). gen-onboarding.mjs gets the new triggers and targets; the schedule rule goes in tools/lib/registries.mjs with test vectors, like pinReminderNext.",
     "Each slot is one personal invite from the normal quota (INVITES_PER_USER, 10 today). The flow makes no bulk send, reads no address book and sends no message to a person who did not start a chat (security rule 11).",
     "The name stays on the server as Invite.name, seen only by the user, as in invite-note. The invite ids of this flow are kept on this phone per account; the slots of another phone start empty.",
-    "Out of scope: a reward per invite (it makes spam), group asks (waits for joining a group by link), and any text that names a party or a politician (strategy principle 1)."
+    "Out of scope: a reward per invite (it makes spam), group asks (waits for joining a group by link), and any text that names a party or a politician (strategy principle 1).",
+    "One ask per session (MZ, 2 Nov 2026): the sheet is a slot prompt (registries/onboarding.json prompts.bringPeople, slot true). When it opens it claims BipePromptSlot (BipePromptSlot.claim), whatever holds the slot, so chat-list-prompt shows no new card until promptSlot.hours later. A card that showed before the sheet in the same session leaves the slot. After the sheet showed, the invite card of chat-list-cards does not show (firstList invite, when bringPeopleNotShown); bring-people-reminder does the follow-up."
   ]
 }

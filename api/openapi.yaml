@@ -572,6 +572,35 @@ paths:
         "401": { $ref: "#/components/responses/Error" }
         "403": { $ref: "#/components/responses/Error" }
         "429": { $ref: "#/components/responses/Error" }
+  /v1/me/age:
+    put:
+      summary: Record the caller's OS age signal (ADR 0229)
+      description: >
+        The app reads Apple Declared Age Range or Google Play Age Signals and sends the range, or source none
+        when the OS gave nothing (declined, no signal, foss build). The server maps the range to one band with
+        ageBand() (registries/age-signals.json) and stores only the band, the source, the method and the time;
+        it keeps no range and no date of birth. The band is never shown to other users. The app sends it after
+        sign-up, at app start when age_checked_at is absent, and again when age_checked_at is older than
+        recheckDays.
+      security: [{ matrix: [] }]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: { $ref: "#/components/schemas/AgeSignal" }
+      responses:
+        "200":
+          description: Recorded
+          content:
+            application/json:
+              schema:
+                type: object
+                required: [age_band]
+                properties:
+                  age_band: { type: string, enum: [unknown, under_13, "13_15", "16_17", 18_plus] }
+        "400": { $ref: "#/components/responses/Error" }
+        "401": { $ref: "#/components/responses/Error" }
+        "429": { $ref: "#/components/responses/Error" }
   /v1/me/account:
     get:
       summary: The caller's device-first account state (ADR 0057)
@@ -593,7 +622,10 @@ paths:
       summary: Set or change the caller's PIN
       description: >
         A signed-in device sets the PIN after a biometric check on the device (client side, ADR
-        0057). No old PIN is needed. The PIN must pass pinProblem() (400 pin_weak, reason: a
+        0057). When the account has a PIN, old_pin must be that PIN (bipe-chat/bipe#908): a
+        session alone cannot change it. It is checked like /v1/me/pin/check (403 pin_wrong with
+        tries_left, 403 pin_blocked); a missing old_pin is 400 bad_request reason old_pin. The
+        first PIN needs no old_pin. The PIN must pass pinProblem() (400 pin_weak, reason: a
         PinProblem id). Setting the PIN unblocks it, sets the wrong-try count to 0 and cancels
         every waiting PIN reset. The server sends a notice to the verified recovery email.
       security: [{ matrix: [] }]
@@ -606,10 +638,12 @@ paths:
               required: [pin]
               properties:
                 pin: { type: string, maxLength: 64 }
+                old_pin: { type: string, maxLength: 64, description: "The current PIN. Required when the account has one." }
       responses:
         "204": { description: Saved }
         "400": { $ref: "#/components/responses/Error" }
         "401": { $ref: "#/components/responses/Error" }
+        "403": { $ref: "#/components/responses/Error" }
         "429": { $ref: "#/components/responses/Error" }
   /v1/me/pin/check:
     post:
@@ -642,8 +676,12 @@ paths:
         The phone calls this after it approves a web sign-in in its private web view. The server
         finishes, through the MAS admin API, every active MAS browser session of the caller that
         started at or after `since` minus 60 seconds. Older sessions stay, so staff browser sessions
-        are not touched. 400 bad_request when `since` is more than 15 minutes in the past or in
-        the future.
+        are not touched. With `kind` computer (Link a computer), the server first records each active
+        MAS OAuth 2.0 session that one of those browser sessions approved (its user_session_id), with
+        a Matrix device other than the caller's, as a web session that the caller's device approved
+        (bipe#398). POST /v1/web-link/sign-out and the theft mark end them. The phone calls this after
+        the grant is done, so the computer's session exists. 400 bad_request when `since` is more than
+        15 minutes in the past or in the future.
       security: [{ matrix: [] }]
       requestBody:
         required: true
@@ -654,6 +692,12 @@ paths:
               required: [since]
               properties:
                 since: { type: string, format: date-time, description: When the phone started the flow }
+                kind:
+                  type: string
+                  enum: [computer, phone]
+                  description: >
+                    computer when the phone approved a web sign-in (link-computer), phone when it approved
+                    a new phone (link-phone). Without it the server records nothing.
       responses:
         "200":
           description: Done
@@ -665,6 +709,28 @@ paths:
                 properties:
                   finished: { type: integer, minimum: 0, description: Number of sessions finished }
         "400": { $ref: "#/components/responses/Error" }
+        "401": { $ref: "#/components/responses/Error" }
+        "429": { $ref: "#/components/responses/Error" }
+  /v1/web-link/sign-out:
+    post:
+      summary: Sign out the web sessions that this device approved (bipe#398)
+      description: >
+        The phone calls this before it signs out of a company account. The server finishes, through
+        the MAS admin API, the active MAS sessions of the caller whose Matrix device is a web session
+        that the caller's device approved (recorded by POST /v1/web-link/finish with kind computer).
+        Web sessions that other phones of the same account approved stay. The theft mark does the
+        same for a company account on the stolen phone.
+      security: [{ matrix: [] }]
+      responses:
+        "200":
+          description: Done
+          content:
+            application/json:
+              schema:
+                type: object
+                required: [signed_out]
+                properties:
+                  signed_out: { type: integer, minimum: 0, description: Number of web devices signed out }
         "401": { $ref: "#/components/responses/Error" }
         "429": { $ref: "#/components/responses/Error" }
   /v1/web-link/place:
@@ -705,15 +771,29 @@ paths:
         new random password through the MAS admin API and issues a new recovery token, and
         returns both once. The user's own password stops working. The MAS email stays (it does
         not sign in without the password); to use email for recovery, the app adds it with PUT
-        /v1/me/email. Also for a device-first account whose app lost the stored password.
+        /v1/me/email. Only for an account that is not device-first yet (409 already_device_first,
+        bipe-chat/bipe#908): a device-first account that lost its password recovers with the
+        token or email. The body carries the current PIN, checked like /v1/me/pin/check
+        (403 pin_wrong with tries_left, 403 pin_blocked, 409 pin_not_set): a session alone cannot take the account.
       security: [{ matrix: [] }]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [pin]
+              properties:
+                pin: { type: string, maxLength: 64 }
       responses:
         "200":
           description: New credentials, shown once
           content:
             application/json:
               schema: { $ref: "#/components/schemas/Credentials" }
+        "400": { $ref: "#/components/responses/Error" }
         "401": { $ref: "#/components/responses/Error" }
+        "403": { $ref: "#/components/responses/Error" }
         "409": { $ref: "#/components/responses/Error" }
         "429": { $ref: "#/components/responses/Error" }
   /v1/me/recovery-token:
@@ -721,8 +801,18 @@ paths:
       summary: Issue a new recovery token for the caller
       description: >
         Returned once. The old token stops working. For an app that lost the synced token, or
-        after a suspected leak.
+        after a suspected leak. The body carries the current PIN, checked like /v1/me/pin/check
+        (403 pin_wrong with tries_left, 403 pin_blocked, 409 pin_not_set, bipe-chat/bipe#908).
       security: [{ matrix: [] }]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [pin]
+              properties:
+                pin: { type: string, maxLength: 64 }
       responses:
         "200":
           description: The new token
@@ -733,7 +823,10 @@ paths:
                 required: [recovery_token]
                 properties:
                   recovery_token: { type: string, description: "base64url, 32 random bytes." }
+        "400": { $ref: "#/components/responses/Error" }
         "401": { $ref: "#/components/responses/Error" }
+        "403": { $ref: "#/components/responses/Error" }
+        "409": { $ref: "#/components/responses/Error" }
         "429": { $ref: "#/components/responses/Error" }
   /v1/me/keychain-move:
     post:
@@ -1306,6 +1399,143 @@ paths:
         The page is noindex and sends no referrer.
       parameters:
         - { name: code, in: path, required: true, schema: { type: string, maxLength: 64 } }
+      responses:
+        "200":
+          description: HTML head for link previews
+          content:
+            text/html:
+              schema: { type: string }
+        "429": { $ref: "#/components/responses/Error" }
+  /v1/me/group-links:
+    get:
+      summary: The active group links of one group (ADR 0184, bipe-chat/bipe#744)
+      description: >
+        The caller must be a joined member of the group with a power level of 50 or more, else not_found.
+        Lists the links that still work, newest first, with their counts. A code is never returned again:
+        the app keeps the code it got at creation.
+      security: [{ matrix: [] }]
+      parameters:
+        - { name: room_id, in: query, required: true, schema: { type: string, maxLength: 255 } }
+      responses:
+        "200":
+          description: Active links
+          content:
+            application/json:
+              schema:
+                type: object
+                required: [links]
+                properties:
+                  links: { type: array, items: { $ref: "#/components/schemas/GroupLink" } }
+        "401": { $ref: "#/components/responses/Error" }
+        "404": { $ref: "#/components/responses/Error" }
+    post:
+      summary: Create a group link that brings people into one group (ADR 0184, bipe-chat/bipe#744)
+      description: >
+        The caller must be a joined member of the group with a power level of 50 or more, else not_found.
+        Before the call the app invites the groups service account (registries/official-accounts.json role groups)
+        and gives it the power level that m.room.power_levels needs for invite. The service account joins the group
+        with the server's token here; it has no E2EE device, so it gets no room keys and reads no message
+        (security.md, no server-side bot in an encrypted room). It reads room state only: name, members, power levels.
+        Without the invite or the power level the answer is 409 group_link_no_access, and the app shows
+        bipe_group_link_error_access. With the service account off (no token on the server): 500 internal,
+        reason group_links_unavailable.
+        A link from a caller with a badge (GET /v1/badges/{userId} answers a badge) signs people up past the
+        waitlist (signs_up true). Else it joins existing accounts only. The link works for 14 days, and signs up
+        at most 1024 people (ADR 0184; the room member limit until a group size ADR). A new link revokes the
+        caller's earlier active link for the same group. The code is returned once and stored only as a SHA-256 hash.
+      security: [{ matrix: [] }]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [room_id]
+              properties:
+                room_id: { type: string, maxLength: 255 }
+      responses:
+        "201":
+          description: New link
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/CreatedGroupLink" }
+        "400": { $ref: "#/components/responses/Error" }
+        "401": { $ref: "#/components/responses/Error" }
+        "404": { $ref: "#/components/responses/Error" }
+        "409": { $ref: "#/components/responses/Error" }
+        "429": { $ref: "#/components/responses/Error" }
+        "500": { $ref: "#/components/responses/Error" }
+  /v1/me/group-links/{linkId}:
+    delete:
+      summary: Revoke a group link
+      description: >
+        The creator of the link, or a joined member of its group with a power level of 50 or more. The link
+        signs up and joins nobody after this. Unknown, ended and foreign links are not_found.
+      security: [{ matrix: [] }]
+      parameters:
+        - { name: linkId, in: path, required: true, schema: { type: string } }
+      responses:
+        "204": { description: Revoked }
+        "401": { $ref: "#/components/responses/Error" }
+        "404": { $ref: "#/components/responses/Error" }
+  /v1/group-links/{code}:
+    get:
+      summary: Preview a group link
+      x-summary-pt: "Se um link de grupo ainda vale, o nome do grupo e quantas pessoas já estão nele"
+      security: []
+      description: >
+        No auth. Rate-limited per IP. CORS allows https://bipe.chat. The code is a secret the admin shared in the
+        group, so the group name and the member count go to its holder. Never member names, never the room ID.
+        An unknown, expired or revoked link, or a group the service account left, is valid false with no reason.
+      parameters:
+        - { name: code, in: path, required: true, schema: { type: string, maxLength: 2048 } }
+      responses:
+        "200":
+          description: Result
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/GroupLinkPreview" }
+        "429": { $ref: "#/components/responses/Error" }
+  /v1/group-links/{code}/join:
+    post:
+      summary: Get into the group of a group link
+      description: >
+        Signed in. The service account invites the caller into the group, and the app then joins the room
+        (Client.joinRoomById). A caller who is already a joined member gets the room ID and no invite.
+        An unusable link is not_found. A room that refuses the invite (the person is banned, or the service
+        account lost its power level) is 409 group_link_no_access. 30 per hour per account.
+        When the caller was not a member, the link's creator gets the push group_link_joined (best effort, no content,
+        bipe-chat/bipe#967) unless the creator turned group_link_joined off in /v1/me/notification-prefs.
+      security: [{ matrix: [] }]
+      parameters:
+        - { name: code, in: path, required: true, schema: { type: string, maxLength: 2048 } }
+      responses:
+        "200":
+          description: Invited, or already a member
+          content:
+            application/json:
+              schema:
+                type: object
+                required: [room_id]
+                properties:
+                  room_id: { type: string }
+        "401": { $ref: "#/components/responses/Error" }
+        "404": { $ref: "#/components/responses/Error" }
+        "409": { $ref: "#/components/responses/Error" }
+        "429": { $ref: "#/components/responses/Error" }
+  /v1/web/g/{code}:
+    get:
+      summary: Link preview head for a group link (bipe-chat/bipe#744)
+      x-summary-pt: "Prévia de link de grupo para os robôs de prévia"
+      security: []
+      description: >
+        No auth. Rate-limited per IP. The site edge sends only link-preview crawlers for https://bipe.chat/g/{code}
+        here; browsers get the static group link page. The Open Graph title is the group name in
+        bipe_group_link_preview_title and the description has the member count in bipe_group_link_preview_count.
+        An unusable link gets the generic invite card, so the preview never says why a link does not work.
+        No member names and no photo. The page is noindex and sends no referrer.
+      parameters:
+        - { name: code, in: path, required: true, schema: { type: string, maxLength: 2048 } }
       responses:
         "200":
           description: HTML head for link previews
@@ -1916,7 +2146,8 @@ paths:
         the server checks that each ID is an account on this homeserver and not the caller. Errors:
         400 bad_request with reason guardian_self, guardian_unknown or guardian_too_many. A guardian
         removed here can no longer mark or clear. While a mark is on, the list cannot change
-        (400 reason guardian_marked).
+        (400 reason guardian_marked). The body carries the current PIN, checked like
+        /v1/me/pin/check (403 pin_wrong with tries_left, 403 pin_blocked, 409 pin_not_set, bipe-chat/bipe#908).
       security: [{ matrix: [] }]
       requestBody:
         required: true
@@ -1924,9 +2155,10 @@ paths:
           application/json:
             schema:
               type: object
-              required: [user_ids]
+              required: [user_ids, pin]
               properties:
                 user_ids: { type: array, maxItems: 3, items: { type: string } }
+                pin: { type: string, maxLength: 64 }
       responses:
         "200":
           description: Guardian state after the change.
@@ -1935,6 +2167,8 @@ paths:
               schema: { $ref: "#/components/schemas/GuardianState" }
         "400": { $ref: "#/components/responses/Error" }
         "401": { $ref: "#/components/responses/Error" }
+        "403": { $ref: "#/components/responses/Error" }
+        "409": { $ref: "#/components/responses/Error" }
   /v1/me/phone:
     put:
       summary: Records this phone for the account (bipe#268)
@@ -1966,7 +2200,8 @@ paths:
         One guardian is enough. The server sets stolen_at, locks the MAS user, then ends every
         active OAuth 2.0, compatibility and browser session page by page (the lock first, so the
         thief cannot sign in again). The same runs for the personal accounts on the same phone; a
-        company account on that phone loses that phone's sessions only. The badge answers 410
+        company account on that phone loses that phone's sessions only, and the web sessions that
+        phone approved (POST /v1/web-link/sign-out). The badge answers 410
         stolen while the mark is on. A mark that is already on answers 200 with it. A MAS failure
         answers 500 internal reason theft_unavailable after the parts that worked; the guardian
         tries again.
@@ -2100,10 +2335,18 @@ paths:
     put:
       summary: Replace the caller's profile photo
       description: >
+        The public photo is a copy of the Matrix avatar (ADR 0041, amended 2 Nov 2026). The web page cannot
+        read Matrix media, so the apps upload the same photo here, with its mxc URI in source.
         Body is a baseline or progressive JPEG, at most photoMaxBytes and photoMaxPixels on each side
         (registries/profiles.json). Apps re-encode before upload. The server removes every APPn and
         COM segment (EXIF, GPS, XMP) and stores only the result.
       security: [{ matrix: [] }]
+      parameters:
+        - name: source
+          in: query
+          required: false
+          schema: { type: string, maxLength: 255, pattern: "^mxc://[A-Za-z0-9.:-]+/[A-Za-z0-9_-]+$" }
+          description: "The mxc URI of the Matrix avatar this photo copies. Returned as MyProfile.photo_source. Other values: 400 photo_invalid, reason bad_source."
       requestBody:
         required: true
         content:
@@ -2120,6 +2363,7 @@ paths:
         "429": { $ref: "#/components/responses/Error" }
     delete:
       summary: Remove the caller's profile photo
+      description: The apps call it when the Matrix avatar is removed. Clears photo_source too.
       security: [{ matrix: [] }]
       responses:
         "200":
@@ -2191,6 +2435,45 @@ paths:
         "400": { $ref: "#/components/responses/Error" }
         "401": { $ref: "#/components/responses/Error" }
         "404": { $ref: "#/components/responses/Error" }
+        "429": { $ref: "#/components/responses/Error" }
+  /v1/me/notification-prefs:
+    get:
+      summary: Which join pushes the caller gets
+      description: >
+        bipe-chat/bipe#967, spec notification-settings. invite_joined: a push when someone signs up with the caller's
+        personal invite. group_link_joined: a push when someone joins with a group link the caller made. Both are
+        content-free pushes through Sygnal (spec notification-service, kinds invite_joined and group_link_joined). An
+        account that never saved prefs gets both true. Every device of the account reads the same prefs.
+      security: [{ matrix: [] }]
+      responses:
+        "200":
+          description: Prefs
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/NotificationPrefs" }
+        "401": { $ref: "#/components/responses/Error" }
+    put:
+      summary: Save which join pushes the caller gets
+      description: >
+        A field that is missing keeps its saved value. Answers the prefs after the change. 30 changes per hour.
+      security: [{ matrix: [] }]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                invite_joined: { type: boolean }
+                group_link_joined: { type: boolean }
+      responses:
+        "200":
+          description: Saved
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/NotificationPrefs" }
+        "400": { $ref: "#/components/responses/Error" }
+        "401": { $ref: "#/components/responses/Error" }
         "429": { $ref: "#/components/responses/Error" }
   /v1/me/voice-media/{server}/{mediaId}:
     put:
@@ -2658,6 +2941,23 @@ paths:
               schema: { $ref: "#/components/schemas/RetentionReport" }
         "401": { $ref: "#/components/responses/Error" }
         "404": { $ref: "#/components/responses/Error" }
+  /v1/admin/accounts:
+    get:
+      summary: Staff count of accounts by user number
+      description: >
+        Only for users that MAS marks admin (ADR 0056); every other user gets 404 not_found. CORS allows PUBLIC_SITE_URL.
+        Every sign-up gets a user number in the same transaction as its signups row: 1, 2, 3 in sign-up order, from
+        one counter row, so a failed or concurrent sign-up leaves no gap and a deleted account keeps its number unused.
+        Accounts made before the number got numbers in sign-up order. Counts go through the minimum cell (bipe#371).
+      security: [{ matrix: [] }]
+      responses:
+        "200":
+          description: Report
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/AccountCount" }
+        "401": { $ref: "#/components/responses/Error" }
+        "404": { $ref: "#/components/responses/Error" }
   /v1/admin/transfer-readiness:
     get:
       summary: Staff report of accounts ready for the App Store transfer (bipe#531)
@@ -2952,6 +3252,33 @@ paths:
                 format: "binary"
         default: { $ref: "#/components/responses/AgendaError" }
   /v1/me/business/catalog/items/{itemId}/photo:
+    get:
+      summary: "Read an item photo as the owner"
+      operationId: "getV1MeBusinessCatalogItemsItemIdPhoto"
+      tags:
+        - "Catálogo"
+      security:
+        -
+          matrix: []
+      description: "Only a device of the company account may call this route. Any item that is not archived, hidden ones too, so the owner's catálogo shows every thumbnail; the public route serves active items only. Private: no shared cache."
+      parameters:
+        -
+          name: "itemId"
+          in: "path"
+          required: true
+          schema:
+            type: "string"
+            minLength: 1
+            maxLength: 128
+      responses:
+        "200":
+          description: "The photo"
+          content:
+            image/jpeg:
+              schema:
+                type: "string"
+                format: "binary"
+        default: { $ref: "#/components/responses/AgendaError" }
     put:
       summary: "Replace an item photo"
       operationId: "putV1MeBusinessCatalogItemsItemIdPhoto"
@@ -4279,6 +4606,227 @@ paths:
                 $ref: "#/components/schemas/Queue"
         default:
           $ref: "#/components/responses/BusinessToolError"
+  /v1/me/business/tools:
+    get:
+      summary: "Read the state of each business tool and the sector"
+      operationId: "getV1MeBusinessTools"
+      tags:
+        - "Agenda"
+      security:
+        -
+          matrix: []
+      description: "Only a device of this company account may call this route. ADR 0194."
+      responses:
+        "200":
+          description: "Success"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/BusinessTools"
+        default:
+          $ref: "#/components/responses/BusinessToolError"
+  /v1/me/business/tools/{toolId}:
+    put:
+      summary: "Turn a business tool on, publish it or turn it off"
+      operationId: "putV1MeBusinessToolsToolId"
+      tags:
+        - "Agenda"
+      security:
+        -
+          matrix: []
+      description: "Only a device of this company account may call this route. tool_needs_catalog when a dependency is missing. Records stay readable when a tool goes off."
+      parameters:
+        -
+          name: "toolId"
+          in: "path"
+          required: true
+          schema:
+            type: "string"
+            minLength: 1
+            maxLength: 128
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/BusinessToolChange"
+      responses:
+        "200":
+          description: "Success"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/BusinessTools"
+        default:
+          $ref: "#/components/responses/BusinessToolError"
+  /v1/me/business/sector:
+    put:
+      summary: "Set or clear the sector of the work account"
+      operationId: "putV1MeBusinessSector"
+      tags:
+        - "Agenda"
+      security:
+        -
+          matrix: []
+      description: "Only a device of this company account may call this route. The sector sets the order of the steps and never limits the tools."
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/WorkSector"
+      responses:
+        "200":
+          description: "Success"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/BusinessTools"
+        default:
+          $ref: "#/components/responses/BusinessToolError"
+  /v1/me/business/setup:
+    get:
+      summary: "Read the setup steps with their done flags"
+      operationId: "getV1MeBusinessSetup"
+      tags:
+        - "Agenda"
+      security:
+        -
+          matrix: []
+      description: "Only a device of this company account may call this route. The server computes each step from records."
+      responses:
+        "200":
+          description: "Success"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/WorkSetup"
+        default:
+          $ref: "#/components/responses/BusinessToolError"
+  /v1/me/business/setup/link-opened:
+    post:
+      summary: "Record that the owner opened the link or QR code screen"
+      operationId: "postV1MeBusinessSetupLinkOpened"
+      tags:
+        - "Agenda"
+      security:
+        -
+          matrix: []
+      description: "Only a device of this company account may call this route. The done rule of the link step."
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/EmptyBusinessRequest"
+      responses:
+        "200":
+          description: "Success"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/WorkSetup"
+        default:
+          $ref: "#/components/responses/BusinessToolError"
+  /v1/me/business/suggestions:
+    get:
+      summary: "Read the suggestions from records"
+      operationId: "getV1MeBusinessSuggestions"
+      tags:
+        - "Agenda"
+      security:
+        -
+          matrix: []
+      description: "Only a device of this company account may call this route. From records only, never from chats."
+      responses:
+        "200":
+          description: "Success"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/WorkSuggestions"
+        default:
+          $ref: "#/components/responses/BusinessToolError"
+  /v1/me/business/suggestions/{suggestionId}/dismiss:
+    post:
+      summary: "Dismiss one suggestion for 30 days"
+      operationId: "postV1MeBusinessSuggestionsSuggestionIdDismiss"
+      tags:
+        - "Agenda"
+      security:
+        -
+          matrix: []
+      description: "Only a device of this company account may call this route."
+      parameters:
+        -
+          name: "suggestionId"
+          in: "path"
+          required: true
+          schema:
+            type: "string"
+            minLength: 1
+            maxLength: 128
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/EmptyBusinessRequest"
+      responses:
+        "200":
+          description: "Success"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/WorkSuggestions"
+        default:
+          $ref: "#/components/responses/BusinessToolError"
+  /v1/me/business/today:
+    get:
+      summary: "Read the Hoje summary"
+      operationId: "getV1MeBusinessToday"
+      tags:
+        - "Agenda"
+      security:
+        -
+          matrix: []
+      description: "Only a device of this company account may call this route. Every owner read of Hoje in one call."
+      responses:
+        "200":
+          description: "Success"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/BusinessToday"
+        default:
+          $ref: "#/components/responses/BusinessToolError"
+  /v1/businesses/{handle}/tools:
+    get:
+      summary: "Read the live tools of a business"
+      x-summary-pt: "Ferramentas publicadas de uma empresa"
+      operationId: "getV1BusinessesHandleTools"
+      tags:
+        - "Agenda"
+      security: []
+      description: "Public CORS for PUBLIC_SITE_URL. Returns live tool IDs only. handle is the handle or the Matrix ID."
+      parameters:
+        -
+          name: "handle"
+          in: "path"
+          required: true
+          schema:
+            type: "string"
+            minLength: 1
+            maxLength: 128
+      responses:
+        "200":
+          description: "Success"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/BusinessLiveTools"
+        default:
+          $ref: "#/components/responses/BusinessToolError"
   /v1/me/business/queue/open:
     post:
       summary: "Open today’s queue"
@@ -5593,7 +6141,7 @@ components:
     SignupRequest:
       type: object
       properties:
-        invite_code: { type: string, maxLength: 2048, description: "Optional while the server runs with SIGNUP_INVITE_REQUIRED=false (beta). A code, an invite link or a whole pasted message; the server extracts the code (test-vectors/invite-codes.json). A given code must be valid." }
+        invite_code: { type: string, maxLength: 2048, description: "Optional while the server runs with SIGNUP_INVITE_REQUIRED=false (beta). A code, an invite link or a whole pasted message; the server extracts the code (test-vectors/invite-codes.json). A given code must be valid. A group link code (bipe.chat/g/<code>, ADR 0184) is valid only when its link signs people up and has sign-ups left; the new account makes no invite pair, and the service account invites it into the group of the link." }
         email: { type: string, format: email, maxLength: 254, description: "Device-first: optional recovery fallback, confirmed by a link. Legacy: the login, required with password." }
         password: { type: string, minLength: 8, maxLength: 256, description: "Legacy only. Absent: device-first, the server makes the password." }
         pin: { type: string, maxLength: 64, description: "Device-first only, optional: the PIN, set at once. Must pass pinProblem() (400 pin_weak)." }
@@ -5663,7 +6211,8 @@ components:
       properties:
         user_id: { type: string, description: "Random Matrix ID, e.g. @k7q2m9x4tpab:bipe.net.br" }
         handle: { type: string }
-        inviter_user_id: { type: string, description: "Present when a personal invite was used for a personal account. The app can offer a chat with the inviter. Never present for a company account (ADR 0138 rule 2)." }
+        inviter_user_id: { type: string, description: "Present when a personal invite was used for a personal account. The app can offer a chat with the inviter. Never present for a company account (ADR 0138 rule 2). The inviter gets the push invite_joined (bipe-chat/bipe#967) unless they turned it off in /v1/me/notification-prefs." }
+        group_room_id: { type: string, description: "Present when a group link code was used (ADR 0184). The service account has invited the new account into this group; after sign-in the app joins it (Client.joinRoomById) and opens it." }
         password: { type: string, description: "Device-first only. The hidden MAS password, shown once. Keep it on this device only." }
         recovery_token: { type: string, description: "Device-first only. base64url, 32 random bytes, shown once. Sync it (iCloud Keychain, Block Store)." }
     DiscoverySettings:
@@ -5677,6 +6226,37 @@ components:
       properties:
         valid: { type: boolean, description: "False when the code is unknown, used, expired or revoked. No reason is given." }
         inviter_handle: { type: string, description: "Only for a valid personal invite whose inviter has a handle. Without @." }
+        expires_at: { type: string, format: date-time, description: "Only for a valid invite: when it stops working. The invite page and the link preview show it (bipe_invite_link_expires)." }
+    GroupLink:
+      type: object
+      required: [id, created_by, created_at, expires_at, signs_up, joined, signups, signups_left]
+      properties:
+        id: { type: string }
+        created_by: { type: string, description: "Matrix user ID of the admin who made the link." }
+        created_at: { type: string, format: date-time }
+        expires_at: { type: string, format: date-time }
+        signs_up: { type: boolean, description: "True when people without an account can sign up with the link (the creator had a badge)." }
+        joined: { type: integer, description: "People the link put into the group, sign-ups included." }
+        signups: { type: integer, description: "New accounts made with the link." }
+        signups_left: { type: integer, description: "Sign-ups the link still allows. 0 when signs_up is false." }
+    CreatedGroupLink:
+      type: object
+      required: [id, code, url, expires_at, signs_up]
+      properties:
+        id: { type: string }
+        code: { type: string, description: "Shown once. Format XXXX-XXXX-XXXX, the same alphabet as invite codes." }
+        url: { type: string, description: "https://bipe.chat/g/<code>, a universal link into the app." }
+        expires_at: { type: string, format: date-time }
+        signs_up: { type: boolean }
+    GroupLinkPreview:
+      type: object
+      required: [valid]
+      properties:
+        valid: { type: boolean, description: "False when the link is unknown, expired, revoked or its group is gone. No reason is given." }
+        name: { type: string, description: "The group name (m.room.name). Absent when the group has none." }
+        members: { type: integer, description: "Joined members of the group, the service account not counted." }
+        inviter_name: { type: string, description: "The creator's public profile name, else the handle with @. Absent when neither is public." }
+        signs_up: { type: boolean, description: "True when a person without an account can sign up with this link." }
     InviteStatus:
       type: string
       enum: [pending, used, expired, revoked]
@@ -5806,6 +6386,15 @@ components:
               rows: { type: integer }
               oldest: { type: [string, "null"], format: date-time }
               over: { type: integer, description: "Rows past the limit." }
+    AccountCount:
+      type: object
+      description: User numbers (bipe-api signups.user_number). Every count goes through the minimum cell; null is a count of 1 or 2.
+      required: [min_cell, last_number, accounts, deleted]
+      properties:
+        min_cell: { type: integer, description: "Counts below this are null." }
+        last_number: { type: [integer, "null"], description: "The highest user number given: accounts ever numbered." }
+        accounts: { type: [integer, "null"], description: "Numbered accounts that exist now." }
+        deleted: { type: [integer, "null"], description: "last_number minus accounts: numbered accounts deleted since." }
     TransferReadiness:
       type: object
       description: bipe/docs/team-transfer-recovery.md section 6. Every count goes through the minimum cell; null is a count of 1 or 2. Shares come from the raw counts.
@@ -6208,6 +6797,10 @@ components:
         name: { type: string }
         bio: { type: string, description: "Plain text. Absent when empty." }
         photo_url: { type: string, description: "Absolute URL of GET /v1/profiles/{handle}/photo with a version. Absent without a photo." }
+        socials:
+          type: object
+          description: "Social handles (ADR 0228). Keys: ids of registries/profiles.json socials. Values: the handle without @. The apps build each link from the registry url template. Absent when empty."
+          additionalProperties: { type: string }
         badge:
           $ref: "#/components/schemas/BadgeEnvelope"
           description: The same envelope as GET /v1/badges/{userId}. Absent when that call would not answer 200.
@@ -6221,6 +6814,12 @@ components:
         has_photo: { type: boolean }
         handle: { type: string, description: "Absent when the caller has no handle." }
         photo_url: { type: string, description: "Absent without a photo." }
+        photo_source: { type: string, description: "The mxc URI of the Matrix avatar that the photo copies. Absent without a photo, and for a photo uploaded before 2 Nov 2026. The apps upload the avatar again when it differs from Client.avatarUrl." }
+        member_since: { type: string, format: date-time, description: "When the account signed up (signups.created_at). Seu perfil shows it as Membro desde. Absent for an account without a sign-up row." }
+        socials:
+          type: object
+          description: "Social handles (ADR 0228), keyed by registries/profiles.json socials id. Empty object when none."
+          additionalProperties: { type: string }
     ProfileUpdate:
       type: object
       required: [enabled, name, bio]
@@ -6228,10 +6827,14 @@ components:
         enabled: { type: boolean }
         name: { type: string }
         bio: { type: string }
+        socials:
+          type: object
+          description: "Social handles (ADR 0228), keyed by registries/profiles.json socials id. Absent: keep the stored handles. Present: replace them all; an empty or missing key removes that handle. The server applies socialHandleClean() and socialHandleProblem() with the caller's own @. An unknown key is bad_request."
+          additionalProperties: { type: string }
     ProfileProblem:
       type: string
-      enum: [name_empty, name_too_long, name_reserved, bio_too_long, bio_too_many_lines, no_handle]
-      description: Same ids as bipe-shared profileProblem(), plus no_handle from the server.
+      enum: [name_empty, name_too_long, name_reserved, bio_too_long, bio_too_many_lines, no_handle, social_invalid, social_reserved]
+      description: Same ids as bipe-shared profileProblem() and socialHandleProblem(), plus no_handle from the server. A social problem does not name the network; the apps run socialHandleProblem() on each field to find it.
     PinProblem:
       type: string
       enum: [not_digits, wrong_length, repeated_digit, sequence, date]
@@ -6305,6 +6908,12 @@ components:
       properties:
         start: { type: string, pattern: "^([01][0-9]|2[0-3]):[0-5][0-9]$" }
         end: { type: string, pattern: "^([01][0-9]|2[0-3]):[0-5][0-9]$|^24:00$", description: "Half-open: the range ends before end. 24:00 is midnight." }
+    NotificationPrefs:
+      type: object
+      required: [invite_joined, group_link_joined]
+      properties:
+        invite_joined: { type: boolean, description: "Push invite_joined when someone signs up with the caller's personal invite." }
+        group_link_joined: { type: boolean, description: "Push group_link_joined when someone joins with a group link the caller made." }
     LinkProviders:
       type: object
       required: [providers]
@@ -6376,6 +6985,16 @@ components:
         link_events: { type: array, items: { $ref: "#/components/schemas/LinkEvent" }, description: "Links and unlinks of the last 7 days, newest first. The other devices show each once." }
         independent_recovery: { type: boolean, description: "bipe#531: true when the account has a recovery factor that does not depend on the Apple Team ID and that the server can check: a verified recovery email or a linked Google account (ADR 0096; a linked Apple account does not count). The app shows the recovery-reminder card when false. Absent from an older server: the app shows no card." }
         deletion: { $ref: "#/components/schemas/AccountDeletion", description: "ADR 0140: the waiting deletion request. Absent when none. The device that asked shows a banner with due_at and Cancelar; every other device shows the deletion alert." }
+        age_band: { type: string, enum: [unknown, under_13, "13_15", "16_17", 18_plus], description: "ADR 0229: the band from the last OS age signal; unknown when none. Every band except 18_plus gets the under-18 defaults. Absent from an older server." }
+        age_checked_at: { type: string, format: date-time, description: "ADR 0229: when the app last sent an age signal. Absent when never: the app reads the OS signal and sends it (PUT /v1/me/age)." }
+    AgeSignal:
+      type: object
+      required: [source]
+      properties:
+        source: { type: string, enum: [apple, play, none], description: "apple: Declared Age Range. play: Play Age Signals. none: the OS gave no range." }
+        lower: { type: integer, minimum: 0, maximum: 150, description: "Lowest age of the range, inclusive. Absent when open below or when source is none." }
+        upper: { type: integer, minimum: 0, maximum: 150, description: "Highest age of the range, inclusive. Absent when open above or when source is none." }
+        method: { type: string, maxLength: 64, description: "How the OS got the age, as the OS names it (Apple AgeRangeDeclaration, Play userStatus). Optional." }
     TermsAcceptance:
       type: object
       required: [terms_version]
@@ -6387,7 +7006,7 @@ components:
       properties:
         error:
           type: string
-          enum: [bad_request, invite_invalid, invite_quota_exhausted, email_taken, handle_invalid, handle_taken, handle_cooldown, password_weak, attestation_invalid, profile_invalid, photo_invalid, unauthorized, not_found, rate_limited, internal, cnpj_invalid, cnpj_not_active, cnpj_taken, signature_invalid, pin_weak, pin_wrong, pin_blocked, pin_not_set, recovery_invalid, email_unavailable, terms_required, support_unavailable, link_taken, link_unavailable, brand_not_verified, brand_mark_limit, deletion_pending, keep_limit]
+          enum: [bad_request, invite_invalid, invite_quota_exhausted, email_taken, handle_invalid, handle_taken, handle_cooldown, password_weak, attestation_invalid, profile_invalid, photo_invalid, unauthorized, not_found, rate_limited, internal, cnpj_invalid, cnpj_not_active, cnpj_taken, signature_invalid, pin_weak, pin_wrong, pin_blocked, pin_not_set, already_device_first, recovery_invalid, email_unavailable, terms_required, support_unavailable, link_taken, link_unavailable, brand_not_verified, brand_mark_limit, deletion_pending, keep_limit, group_link_no_access]
         reason: { type: string, description: "Detail, e.g. a HandleProblem or PinProblem id." }
         tries_left: { type: integer, description: "With pin_wrong: wrong PINs left before the PIN blocks." }
     BadgeEnvelope:
@@ -6544,6 +7163,30 @@ components:
       $ref: "./business-schemas.json#/$defs/AgendaActivation"
     AgendaState:
       $ref: "./business-schemas.json#/$defs/AgendaState"
+    BusinessToolId:
+      $ref: "./business-schemas.json#/$defs/BusinessToolId"
+    BusinessToolState:
+      $ref: "./business-schemas.json#/$defs/BusinessToolState"
+    BusinessToolStatus:
+      $ref: "./business-schemas.json#/$defs/BusinessToolStatus"
+    BusinessTools:
+      $ref: "./business-schemas.json#/$defs/BusinessTools"
+    BusinessToolChange:
+      $ref: "./business-schemas.json#/$defs/BusinessToolChange"
+    BusinessLiveTools:
+      $ref: "./business-schemas.json#/$defs/BusinessLiveTools"
+    WorkSector:
+      $ref: "./business-schemas.json#/$defs/WorkSector"
+    WorkSetupStep:
+      $ref: "./business-schemas.json#/$defs/WorkSetupStep"
+    WorkSetup:
+      $ref: "./business-schemas.json#/$defs/WorkSetup"
+    WorkSuggestion:
+      $ref: "./business-schemas.json#/$defs/WorkSuggestion"
+    WorkSuggestions:
+      $ref: "./business-schemas.json#/$defs/WorkSuggestions"
+    BusinessToday:
+      $ref: "./business-schemas.json#/$defs/BusinessToday"
     BookingStatus:
       $ref: "./business-schemas.json#/$defs/BookingStatus"
     BookingCustomer:

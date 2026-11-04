@@ -2,7 +2,7 @@
   "id": "version-history",
   "title": "Version history",
   "flow": "settings",
-  "summary": "Lists what changed in each version and build of the app, newest first, from the same changelog as bipe.chat/versoes/. Opens from Configurações › Ajuda › Histórico de versões.",
+  "summary": "Lists what changed in the app by day and then by build, newest first, from the same changelog as bipe.chat/versoes/. Opens from Configurações › Ajuda › Histórico de versões.",
   "types": {
     "ChangelogUpdate": {
       "id": { "type": "string", "description": "The update file name without .md." },
@@ -13,14 +13,12 @@
     "ChangelogBuild": {
       "build": { "type": "int", "description": "The build number." },
       "version": { "type": "string", "optional": true, "description": "The version name of the build, for example 1.0.1." },
-      "released": { "type": "bool", "description": "True when the version is public." },
-      "releaseDate": { "type": "date", "optional": true, "description": "The day the version was released." },
       "date": { "type": "date", "description": "The day of the build." },
       "updates": { "type": "list", "of": { "type": "ChangelogUpdate", "description": "One change." }, "description": "The changes for this platform." }
     }
   },
   "state": {
-    "builds": { "type": "list", "of": { "type": "ChangelogBuild", "description": "One build." }, "description": "Newest first, grouped by version. Only builds with a change for this platform." },
+    "builds": { "type": "list", "of": { "type": "ChangelogBuild", "description": "One build." }, "description": "Newest first, grouped by date. Only builds with a change for this platform." },
     "loading": { "type": "bool", "description": "True while the app gets the list." },
     "failed": { "type": "bool", "description": "True when the list did not load." }
   },
@@ -33,8 +31,6 @@
     "bipe_help_versions",
     "bipe_versions_note",
     "bipe_help_version",
-    "bipe_versions_testing",
-    "bipe_versions_released",
     "bipe_versions_build",
     "bipe_versions_kind_new",
     "bipe_versions_kind_improved",
@@ -47,7 +43,7 @@
   "parity": ["settings-structure"],
   "notes": [
     "The data is bipe-app tools/changelog.mjs --json. bipe-web publishes it next to the page (versoes/changelog.json, en/versions/changelog.json) on every deploy, so the screen also shows builds newer than the installed one.",
-    "A version heading shows bipe_help_version and bipe_versions_testing or bipe_versions_released with the release date. Each change shows its headline, its detail, and bipe_versions_build with the kind label.",
+    "MZ, 4 Nov 2026: a section is one day (the date as its heading), and inside it each build has a label: bipe_help_version with \"1.0.1 (446)\", the same text as the Ajuda e sobre row of settings-root, or bipe_versions_build when the build has no version. Each change shows its headline, its detail and the kind label. The screen does not show whether a version is released or in testing.",
     "The headline and detail are in English and are not translated; bipe_versions_note says so in pt.",
     "No account and no token: the file is public."
   ]

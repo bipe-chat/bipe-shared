@@ -2523,7 +2523,8 @@
       "additionalProperties": false,
       "required": [
         "quote",
-        "link"
+        "link",
+        "business_name"
       ],
       "properties": {
         "quote": {
@@ -2531,6 +2532,10 @@
         },
         "link": {
           "type": "string"
+        },
+        "business_name": {
+          "type": "string",
+          "description": "The name for the share text."
         }
       }
     },

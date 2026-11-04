@@ -649,10 +649,13 @@ paths:
     post:
       summary: Check the caller's PIN (for a PIN reminder)
       description: >
-        A wrong PIN counts against the account like on the recovery paths: 403 pin_wrong with
-        tries_left, then 403 pin_blocked after pinMaxWrongTries in total. A correct PIN sets the
-        count to 0. 409 pin_not_set when the account has no PIN. The app lock does not use this
-        route: it checks on the device.
+        A wrong PIN counts against the account's session count: 403 pin_wrong with tries_left, then
+        403 pin_blocked after pinMaxWrongTries in total. All signed-in sessions of the account and
+        every route of a signed-in session that takes the PIN share this count. It is separate from
+        the recovery paths' count, so a stolen phone cannot block the PIN for recovery
+        (bipe-chat/bipe#915). A PIN that the recovery paths blocked is also blocked here. A correct
+        PIN sets both counts to 0, unless this path is blocked. 409 pin_not_set when the account has
+        no PIN. The app lock does not use this route: it checks on the device.
       security: [{ matrix: [] }]
       requestBody:
         required: true

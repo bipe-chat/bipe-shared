@@ -79,6 +79,7 @@ const NOT_IN_APPS = {
     "BusinessToolId", "BusinessToolState", "BusinessToolStatus", "BusinessTools", "BusinessToolChange", "BusinessLiveTools", "WorkSector", "WorkSetupStep", "WorkSetup", "WorkSuggestion", "WorkSuggestions", "BusinessToday",
   ].map((name) => [name, "contract first (bipe#798); app clients follow in bipe#800 to bipe#802"])),
   DiscoverySettings: "one boolean; iOS sends it from a private request type in BipeAPIClient",
+  ReachStatus: "contract first (bipe#851); the budget notice and \"Status da conta\" in the app follow in bipe#846",
   MessagingSetting: "one enum field; iOS decodes it in a private MessagingSetting type in BipeAPIClient, exposed as BipeWhoCanMessage",
   TermsAcceptance: "one string; the apps send it from a private request type in their API client (ADR 0113)",
   AgeSignal: "the apps send it from a private request type in their API client (ADR 0229)",

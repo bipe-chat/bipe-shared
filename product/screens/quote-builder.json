@@ -122,6 +122,9 @@
     },
     "openChat": {
       "effect": "Opens the DM with the customer."
+    },
+    "shareLink": {
+      "effect": "bipe_quote_for_no_app: the builder with bipe_quote_customer_name, then POST /v1/me/business/quotes/links and the share sheet with bipe_quote_share_text. A new version keeps the link. bipe_quote_share_link makes a new link and stops the old one; bipe_quote_revoke_link stops it (ADR 0185)."
     }
   },
   "strings": [
@@ -149,7 +152,12 @@
     "bipe_quote_status_expired",
     "bipe_quote_error",
     "bipe_quote_load_failed",
-    "bipe_app_cancel"
+    "bipe_app_cancel",
+    "bipe_quote_for_no_app",
+    "bipe_quote_customer_name",
+    "bipe_quote_share_text",
+    "bipe_quote_share_link",
+    "bipe_quote_revoke_link"
   ],
   "sdk": [],
   "parity": [

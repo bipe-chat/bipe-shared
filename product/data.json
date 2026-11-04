@@ -148,6 +148,23 @@
       }
     },
     {
+      "id": "age-range",
+      "basis": "legal-obligation",
+      "places": ["server"],
+      "pt": {
+        "name": "Faixa de idade",
+        "what": "A faixa de idade que o celular informou (menos de 13, 13 a 15, 16 a 17, ou 18 anos ou mais), de onde ela veio (Apple ou Google) e a data. Nunca a data de nascimento.",
+        "why": "Dar às contas de menores de 18 anos as proteções que o ECA Digital pede. Uma conta sem faixa recebe as mesmas proteções.",
+        "retention": "Enquanto a conta existir."
+      },
+      "en": {
+        "name": "Age range",
+        "what": "The age range the phone reported (under 13, 13 to 15, 16 to 17, or 18 and over), where it came from (Apple or Google) and the date. Never the date of birth.",
+        "why": "To give accounts of people under 18 the protections that Brazil's ECA Digital requires. An account with no range gets the same protections.",
+        "retention": "As long as the account exists."
+      }
+    },
+    {
       "id": "recovery-token",
       "basis": "contract",
       "places": ["icloud-keychain"],
@@ -216,6 +233,23 @@
       }
     },
     {
+      "id": "notification-prefs",
+      "basis": "contract",
+      "places": ["server"],
+      "pt": {
+        "name": "Avisos de quem entra",
+        "what": "Se você quer ser avisado quando alguém entra com seu convite e quando alguém entra com seu link de grupo.",
+        "why": "Mandar ou não esses avisos para os seus aparelhos.",
+        "retention": "Enquanto a conta existir."
+      },
+      "en": {
+        "name": "Join notices",
+        "what": "Whether you want a notice when someone joins with your invite and when someone joins with your group link.",
+        "why": "To send these notices to your devices, or not.",
+        "retention": "As long as the account exists."
+      }
+    },
+    {
       "id": "linked-account",
       "basis": "contract",
       "places": ["server", "apple-sign-in", "google-sign-in"],
@@ -266,6 +300,23 @@
         "what": "The @handle you choose. When you release a handle, it stays reserved for you for 90 days.",
         "why": "So people find you by @handle without seeing your phone number.",
         "retention": "Until you remove the handle. The reservation lasts 90 days."
+      }
+    },
+    {
+      "id": "public-profile",
+      "basis": "consent",
+      "places": ["server"],
+      "pt": {
+        "name": "Perfil público",
+        "what": "O nome, a bio, uma cópia da sua foto e o @ das suas redes sociais que você coloca no perfil público.",
+        "why": "Mostrar seu perfil para quem abre o seu link, só quando você liga o perfil.",
+        "retention": "Até você apagar esses dados ou a conta. Quando você desliga o perfil, ninguém mais vê."
+      },
+      "en": {
+        "name": "Public profile",
+        "what": "The name, bio, a copy of your photo and the social handles you put on your public profile.",
+        "why": "To show your profile to people who open your link, only while your profile is on.",
+        "retention": "Until you delete them or the account. When you turn the profile off, nobody sees it."
       }
     },
     {
@@ -371,6 +422,23 @@
       }
     },
     {
+      "id": "group-links",
+      "basis": "legitimate-interest",
+      "places": ["server"],
+      "pt": {
+        "name": "Links de grupo",
+        "what": "Qual conta criou cada link de grupo, para qual grupo, uma versão protegida do código, e quais contas entraram ou foram criadas pelo link.",
+        "why": "Colocar no grupo quem tem o link, contar quem entrou, parar o link quando ele vence ou quando o administrador desativa, e achar abuso.",
+        "retention": "365 dias depois que o link vence ou é desativado."
+      },
+      "en": {
+        "name": "Group links",
+        "what": "Which account made each group link, for which group, a protected form of the code, and which accounts joined or signed up through the link.",
+        "why": "To put people who have the link into the group, count who joined, stop the link when it expires or an admin turns it off, and find abuse.",
+        "retention": "365 days after the link expires or is turned off."
+        }
+      },
+      {
       "id": "first-contacts",
       "basis": "legitimate-interest",
       "places": ["server"],
@@ -496,13 +564,13 @@
       "pt": {
         "name": "Notificações",
         "what": "O endereço de notificação do seu aparelho e os códigos da conversa e da mensagem nova. No iPhone, a Apple entrega o aviso. No Android, o Google entrega pelo Firebase. Vai também um código aleatório para o celular escolher a conta certa, sem enviar o ID da conta à Apple ou ao Google. O texto da mensagem não vai junto: o app busca o conteúdo direto no servidor do Bipe.",
-        "why": "Te avisar que chegou mensagem ou que alguém está levando sua conta para outro aparelho.",
+        "why": "Te avisar que chegou mensagem, que alguém entrou com seu convite ou link de grupo, ou que alguém está levando sua conta para outro aparelho.",
         "retention": "Enquanto as notificações estiverem ligadas naquele aparelho."
       },
       "en": {
         "name": "Notifications",
         "what": "Your device's notification address and the IDs of the conversation and the new message. On iPhone, Apple delivers the signal. On Android, Google delivers it through Firebase. A random code also goes with it so the phone selects the right account, without sending the account ID to Apple or Google. The message text does not go with it: the app fetches the content directly from the Bipe server.",
-        "why": "To tell you a message arrived, or that someone is moving your account to another device.",
+        "why": "To tell you a message arrived, that someone joined with your invite or group link, or that someone is moving your account to another device.",
         "retention": "As long as notifications are on for that device."
       }
     },

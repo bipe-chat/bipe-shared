@@ -115,6 +115,14 @@
         "description": "One card: agenda-booking-card, the open order (order-customer), offered or recent quotes (quote-card) and the active queue place (queue-customer)."
       },
       "description": "Every card with this business, from GET /v1/me/bookings, /v1/me/orders, /v1/me/quotes and /v1/me/queue-places filtered by business."
+    },
+    "liveTools": {
+      "type": "list",
+      "of": {
+        "type": "string",
+        "description": "A tool ID."
+      },
+      "description": "GET /v1/businesses/{business}/tools. A tool shows only when it is here (ADR 0194 point 2). Open record cards still show when their tool goes off."
     }
   },
   "actions": {

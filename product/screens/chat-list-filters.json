@@ -74,6 +74,7 @@
   ],
   "parity": ["requests", "dm-delete", "dm-one-row"],
   "notes": [
+    "Official account invites (bipe#978): a group invite from an official account joins by itself and never shows at the top of Grupos (chat-requests notes).",
     "Filters: chats is All of Joined, NonSpace, DeduplicateVersions and Category People; groups is the same with Category Group. The Category rule follows RoomInfo.isDm (ADR 0141: one DM test), so a DM with a third member moves to groups.",
     "ADR 0053: a group of two that is not a DM stays in groups. The self-chat shows in neither tab; it is the first item of Você.",
     "Two DMs with one person (ADR 0141): the list keeps only the newest room; the older one is hidden, not deleted.",

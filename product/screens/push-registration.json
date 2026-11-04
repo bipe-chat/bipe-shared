@@ -2,7 +2,7 @@
   "id": "push-registration",
   "title": "Push registration",
   "flow": "notifications",
-  "summary": "Registers this phone for pushes with Bipe's push gateway (Sygnal) when the person allows notifications, keeps the registration current, and removes it at sign-out. No screen: it runs behind notifications-prompt and notification-settings.",
+  "summary": "Registers this phone for pushes with Bipe's push gateway (Sygnal) when the person allows notifications, keeps the registration current, and removes it at sign-out. No screen: it runs behind notifications-prompt (an entry of chat-list-prompt) and notification-settings.",
   "types": {
     "PushRegistration": {
       "channel": {

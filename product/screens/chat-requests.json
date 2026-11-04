@@ -66,6 +66,7 @@
     "hidePhotos: rows show the initials avatar, never the photo, until accepted.",
     "Empty box: bipe_app_requests_empty and a link row bipe_messaging_title to the setting.",
     "A request from a blocked person never shows (Matrix ignore list).",
+    "Official account invites (MZ decision 2 Nov 2026, bipe#978): an invite from an official account (the exact inviter user ID in registries/official-accounts.json, BipeOfficialAccounts.isOfficial) joins by itself, DM or group, and never shows as a request or a group invite. It never shows bipe_banner_unverified_title. Blocking still wins: an ignored inviter's invite stays out. Bipe logic: BipeInviteTrust.acceptsAutomatically (BipeKit, libraries/bipe).",
     "Invite pairs (ADR 0034): a DM invite from an invite pair joins by itself and never shows as a request. The app keeps the last GET /v1/me/invite-connections answer and asks again at most once a minute. A DM invite from someone not in that answer asks again after 5 seconds, so the chat from a person who just joined with the user's invite opens in the chat list at once, with their first message."
   ]
 }

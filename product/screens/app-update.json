@@ -1,0 +1,47 @@
+{
+  "id": "app-update",
+  "title": "Tester APK update",
+  "flow": "home",
+  "summary": "Android tester APK only (ADR 0233): the app finds a newer tester build on bipe.chat, downloads it on a tap, checks its SHA-256 and installs it over itself with the system installer. The Play build and the foss build never have it; Play updates the Play build, and TestFlight updates iOS.",
+  "types": {
+    "AppUpdateOffer": {
+      "versionName": { "type": "string", "description": "version of latest.json." },
+      "build": { "type": "int", "description": "build of latest.json: the versionCode of the new APK." },
+      "url": { "type": "url", "description": "The APK URL for this phone: arm64.url on an arm64 phone, else universal.url. Always https://bipe.chat/baixar/android/." },
+      "sha256": { "type": "string", "description": "The SHA-256 of that APK, lower-case hex." }
+    }
+  },
+  "state": {
+    "offer": { "type": "AppUpdateOffer", "optional": true, "description": "Set when latest.json names this application ID and a build above the installed versionCode." },
+    "phase": {
+      "type": "enum",
+      "values": ["idle", "downloading", "installing", "needsPermission", "failed"],
+      "description": "idle: the card offers the update. downloading: the APK comes down. installing: the system installer has it. needsPermission: Android blocks installs from Bipe until the person allows it. failed: download, hash check or install failed."
+    }
+  },
+  "actions": {
+    "check": {
+      "effect": "Fetches https://bipe.chat/baixar/android/latest.json (no auth, sends nothing about the person) when the chat list appears and on foreground, at most once an hour. A failure keeps the last offer."
+    },
+    "install": {
+      "effect": "When Android does not allow installs from Bipe: opens the system screen for that and sets needsPermission. Else downloads the APK into the app cache, fails closed when its SHA-256 differs from offer.sha256, and gives it to the system installer in one session. The system asks the person to confirm, unless Android 12 or later allows Bipe to update itself without asking."
+    }
+  },
+  "strings": [
+    "bipe_app_update_title",
+    "bipe_app_update_body",
+    "bipe_app_update_downloading",
+    "bipe_app_update_failed",
+    "bipe_app_update_permission",
+    "bipe_remote_banner_update"
+  ],
+  "sdk": [],
+  "parity": ["app-update"],
+  "notes": [
+    "Shows as the entry appUpdate of chat-list-prompt (critical tier). The card has no Agora não: it holds the slot until the new build is installed.",
+    "Card: title bipe_app_update_title, body bipe_app_update_body with versionName and build as \"1.0.2 (432)\", primary bipe_remote_banner_update. downloading: body bipe_app_update_downloading and no primary. needsPermission: body bipe_app_update_permission. failed: body bipe_app_update_failed and the primary again.",
+    "The download starts only on a tap, never in the background, so mobile data goes only when the person asks.",
+    "Fail closed: an offer with another app_id, a URL outside https://bipe.chat/baixar/android/, or a missing or malformed sha256 is no offer. The installer refuses an APK with another signing key; every tester APK carries the fixed tester key (testflight.yml).",
+    "The build flag BIPE_SELF_UPDATE is true only for the tester APK that testflight.yml builds (-PbipeSelfUpdate=true). Only then does the manifest hold REQUEST_INSTALL_PACKAGES. Google Play forbids an app that updates itself outside Play."
+  ]
+}

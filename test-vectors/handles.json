@@ -222,6 +222,41 @@
       "skeleton": "bipechat"
     },
     {
+      "input": "grupos",
+      "problem": null,
+      "skeleton": "grupos"
+    },
+    {
+      "input": "grupos",
+      "claimant": "@grupos:bipe.net.br",
+      "problem": null,
+      "skeleton": "grupos"
+    },
+    {
+      "input": "grupos",
+      "claimant": "@ana:bipe.net.br",
+      "problem": "reserved",
+      "skeleton": "grupos"
+    },
+    {
+      "input": "grupos",
+      "claimant": "",
+      "problem": "reserved",
+      "skeleton": "grupos"
+    },
+    {
+      "input": "g.rupos",
+      "claimant": "@grupos:bipe.net.br",
+      "problem": null,
+      "skeleton": "grupos"
+    },
+    {
+      "input": "g.rupos",
+      "claimant": "@ana:bipe.net.br",
+      "problem": "reserved",
+      "skeleton": "grupos"
+    },
+    {
       "input": "novidades_bipe",
       "claimant": "@ana:bipe.net.br",
       "problem": "reserved",

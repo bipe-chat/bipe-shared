@@ -2,7 +2,7 @@
   "id": "voce",
   "title": "Você",
   "flow": "voce",
-  "summary": "The Você tab (ADR 0112): who you are first, then the six settings groups. Header with photo, name and @; Anotações; Convidar pessoas; then settings-root.",
+  "summary": "The Você tab (ADR 0112): who you are first, then the settings groups. A profile row (photo, name, @), the trust card, Anotações, Meus agendamentos, Convidar pessoas, settings-root, then Contas neste celular and Adicionar conta.",
   "state": {
     "displayName": {
       "type": "string",
@@ -32,20 +32,11 @@
     }
   },
   "actions": {
-    "photoPrompt": {
-      "effect": "Prompt photo of registries/onboarding.json (trigger voceWithoutPhoto, bipe-chat/bipe#200): a card under the header while the account has no avatar, the prompt slot allows it and it was not dismissed. Escolher foto opens the profile editor; Agora não hides it for good."
-    },
-    "osTheftPrompt": {
-      "effect": "Prompt osTheftProtection of registries/onboarding.json (trigger voceAfterDays, bipe-chat/bipe#125, ADR 0045 tier 0): a card under the header once this phone first saw the account BipeOnboarding.osTheftProtectionAfterDays ago, the prompt slot allows it, the photo card is not on screen and it was not dismissed on this phone. The card shows the body, then the path text of spec theft-protection osPath. Conferir proteção runs theft-protection openOsSettings and hides the card for good on this phone; Agora não hides it for good on this phone."
-    },
     "openProfile": {
-      "effect": "Opens the current account's profile (a later spec, Seu perfil)."
+      "effect": "Opens Seu perfil (profile-edit). A tap anywhere on the profile row."
     },
     "openQr": {
-      "effect": "Shows the profile QR code (bipe_profile_qr_title)."
-    },
-    "shareProfile": {
-      "effect": "Opens the system share sheet with the bipe.chat/@handle link."
+      "effect": "Opens profile-link with the QR code shown (bipe_profile_qr_title). From the QR code button in the navigation bar. Share and copy live on that screen."
     },
     "openNotes": {
       "effect": "Opens the self-chat Anotações (ADR 0053)."
@@ -53,32 +44,27 @@
     "openInvites": {
       "effect": "Opens the invites screen (a later spec)."
     },
-    "openLinkPhone": {
-      "effect": "Opens link-phone-show (bipe_app_link_phone_action): the code that a new phone scans to move the account (ADR 0059). The only way into that flow."
-    },
     "openTrust": {
       "effect": "Opens trust-profile from the trust card (spec trust-card)."
+    },
+    "openAccounts": {
+      "effect": "Opens account-switcher, the same menu as a hold on the Você tab. The row above Adicionar conta."
+    },
+    "addAccount": {
+      "effect": "Opens account-new (bipe_app_account_new). The last row of Você, after settings-root."
     }
   },
   "strings": [
-    "bipe_photo_prompt_title",
-    "bipe_photo_prompt_body",
-    "bipe_photo_prompt_action",
-    "bipe_os_theft_prompt_title",
-    "bipe_os_theft_prompt_body",
-    "bipe_os_theft_action",
-    "bipe_os_theft_path_ios_face_id",
-    "bipe_os_theft_path_ios_touch_id",
-    "bipe_os_theft_path_android",
-    "bipe_os_theft_path_samsung",
     "bipe_fallback_skip",
     "bipe_tab_you",
-    "bipe_profile_share",
     "bipe_profile_qr_action",
     "bipe_self_chat_title",
     "bipe_self_chat_subtitle",
     "bipe_invites_title",
-    "bipe_app_link_phone_action"
+    "bipe_agenda_my_bookings",
+    "bipe_app_account_switcher_title",
+    "bipe_app_account_new",
+    "bipe_settings_profile"
   ],
   "sdk": [
     "Client.displayName",
@@ -88,12 +74,16 @@
     "settings-structure"
   ],
   "notes": [
-    "MZ decision 25 Oct 2026 (bipe#577): Você has no account rows. The accounts on this phone switch from the Você tab: a hold opens account-switcher, a double tap goes to the next account, and screen readers use the tab's accessibility action (app-tabs). Nova conta stays on Você, under the header.",
+    "MZ decision 25 Oct 2026 (bipe#577): Você does not list the accounts in its rows. The accounts on this phone switch from the Você tab: a hold opens account-switcher, a double tap goes to the next account, and screen readers use the tab's accessibility action (app-tabs). MZ, 2 Nov 2026 (bipe-chat/bipe#988): Adicionar conta (bipe_app_account_new) is the last row of Você, after settings-root, with the same icon tile (plus) as every other Você row. Adding an account is rare, so it does not take the place under the header. MZ, 4 Nov 2026: a row Contas neste celular (bipe_app_account_switcher_title, always shown, same icon tile) sits right above it and opens account-switcher, so the two account actions are together and not only on the tab.",
     "MZ decision 25 Oct 2026 (bipe#577): the header shows the current account's avatar (photo, else initials). Since the chat list has no account avatar, Você is the one screen that shows it.",
-    "Prompt slot (bipe-chat/bipe#200): prompts with slot true in registries/onboarding.json share one slot per account; after one shows, no other shows for promptSlot.hours. The same prompt keeps its slot while it shows. Bipe logic: BipePromptSlot (BipeKit; libraries/bipe).",
+    "Asks (MZ, 2 Nov 2026, bipe-chat/bipe#894): Você shows no prompt cards. The photo and osTheftProtection asks are entries of chat-list-prompt, the one ask system of the app.",
     "The header never shows the Matrix ID (ADR 0112).",
-    "The trust card (Perfil de confiança, ADR 0019) sits after Anotações: spec trust-card, which opens trust-profile.",
-    "Below the invite row comes settings-root (Configurações).",
-    "The header and account rows load the actual Matrix avatar through the SDK media API. Without a photo use initials. Shape follows ADR 0132: company is a rounded square; personal/unknown is a circle. A profile name or CNPJ badge must not determine account type."
+    "The trust card (Perfil de confiança, ADR 0019) sits right after the profile row: spec trust-card, which opens trust-profile.",
+    "Below Convidar pessoas comes settings-root (Configurações). A section with Contas neste celular and Adicionar conta follows it.",
+    "The header and account rows load the actual Matrix avatar through the SDK media API. Without a photo use initials. Shape follows ADR 0132: company is a rounded square; personal/unknown is a circle. A profile name or CNPJ badge must not determine account type.",
+    "Profile row (MZ, 2 Nov 2026, bipe-chat/bipe#988; iPhone Settings, WhatsApp and Signal layout): one full-width row at the top of the list, with the 60 pt avatar, the display name (headline), the @ (bipe secondary ink) and a chevron. A tap anywhere on the row opens Seu perfil; its accessibility hint is bipe_settings_profile. There is no centred hero, no text link and no bordered buttons. The QR code button (Phosphor qr-code, accessibility label bipe_profile_qr_action) sits at the trailing end of the navigation bar; a company account has it too.",
+    "Order above Configurações (bipe-chat/bipe#988): profile row; trust card; a section with Anotações and Meus agendamentos, personal accounts only (what you use); a section with Convidar pessoas. The year recap is not on Você (MZ, 3 Nov 2026): it is the last row of Conversas e mídia (settings-group chats). These rows use the same icon tile as settings-root.",
+    "A personal account has a Meus agendamentos row (bipe_agenda_my_bookings) after Anotações; it opens agenda-my-bookings. A booking list is not a setting.",
+    "The link-phone flow (link-phone-show) is not on Você since bipe-chat/bipe#988: its row bipe_app_link_phone_action (Trocar de celular) is the first row of Sua conta > Aparelhos (settings-group account). Conectar outro aparelho next to Aparelhos conectados read as the same thing."
   ]
 }

@@ -4847,6 +4847,298 @@ paths:
                 $ref: "#/components/schemas/BusinessLiveTools"
         default:
           $ref: "#/components/responses/BusinessToolError"
+  /v1/businesses/{handle}/web/bookings:
+    post:
+      summary: "Book on the web with a first name"
+      x-summary-pt: "Agendar pela web com o primeiro nome"
+      operationId: "postV1BusinessesHandleWebBookings"
+      tags:
+        - "Agenda"
+      security: []
+      description: "Public CORS for PUBLIC_SITE_URL. No session (ADR 0195). A rate limit per address on each shop. Starts requested. One open web booking per token per shop."
+      parameters:
+        -
+          name: "handle"
+          in: "path"
+          required: true
+          schema:
+            type: "string"
+            minLength: 1
+            maxLength: 128
+        -
+          name: "x-bipe-shop-token"
+          in: "header"
+          required: false
+          schema:
+            type: "string"
+            minLength: 1
+            maxLength: 128
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/WebBooking"
+      responses:
+        "200":
+          description: "Success"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/WebBookingResult"
+        default:
+          $ref: "#/components/responses/BusinessToolError"
+  /v1/businesses/{handle}/web/orders:
+    post:
+      summary: "Order on the web with a first name"
+      x-summary-pt: "Pedir pela web com o primeiro nome"
+      operationId: "postV1BusinessesHandleWebOrders"
+      tags:
+        - "Agenda"
+      security: []
+      description: "Public CORS for PUBLIC_SITE_URL. No session (ADR 0195). A rate limit per address on each shop. Pickup and pay on pickup only. One open web order per token per shop."
+      parameters:
+        -
+          name: "handle"
+          in: "path"
+          required: true
+          schema:
+            type: "string"
+            minLength: 1
+            maxLength: 128
+        -
+          name: "x-bipe-shop-token"
+          in: "header"
+          required: false
+          schema:
+            type: "string"
+            minLength: 1
+            maxLength: 128
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/WebOrder"
+      responses:
+        "200":
+          description: "Success"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/WebOrderResult"
+        default:
+          $ref: "#/components/responses/BusinessToolError"
+  /v1/businesses/{handle}/web/records:
+    get:
+      summary: "Read the records of a shop token"
+      x-summary-pt: "Pedidos e horários de um navegador"
+      operationId: "getV1BusinessesHandleWebRecords"
+      tags:
+        - "Agenda"
+      security: []
+      description: "Public CORS for PUBLIC_SITE_URL. The shop token is the only key."
+      parameters:
+        -
+          name: "handle"
+          in: "path"
+          required: true
+          schema:
+            type: "string"
+            minLength: 1
+            maxLength: 128
+        -
+          name: "x-bipe-shop-token"
+          in: "header"
+          required: true
+          schema:
+            type: "string"
+            minLength: 1
+            maxLength: 128
+      responses:
+        "200":
+          description: "Success"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/WebRecords"
+        default:
+          $ref: "#/components/responses/BusinessToolError"
+  /v1/businesses/{handle}/web/bookings/{bookingId}/cancel:
+    post:
+      summary: "Cancel a web booking with its shop token"
+      x-summary-pt: "Cancelar um horário feito pela web"
+      operationId: "postV1BusinessesHandleWebBookingsBookingIdCancel"
+      tags:
+        - "Agenda"
+      security: []
+      description: "Public CORS for PUBLIC_SITE_URL. The shop token is the only key."
+      parameters:
+        -
+          name: "handle"
+          in: "path"
+          required: true
+          schema:
+            type: "string"
+            minLength: 1
+            maxLength: 128
+        -
+          name: "bookingId"
+          in: "path"
+          required: true
+          schema:
+            type: "string"
+            minLength: 1
+            maxLength: 128
+        -
+          name: "x-bipe-shop-token"
+          in: "header"
+          required: true
+          schema:
+            type: "string"
+            minLength: 1
+            maxLength: 128
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/EmptyBusinessRequest"
+      responses:
+        "200":
+          description: "Success"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Booking"
+        default:
+          $ref: "#/components/responses/BusinessToolError"
+  /v1/businesses/{handle}/web/orders/{orderId}/cancel:
+    post:
+      summary: "Cancel a web order with its shop token"
+      x-summary-pt: "Cancelar um pedido feito pela web"
+      operationId: "postV1BusinessesHandleWebOrdersOrderIdCancel"
+      tags:
+        - "Agenda"
+      security: []
+      description: "Public CORS for PUBLIC_SITE_URL. The shop token is the only key."
+      parameters:
+        -
+          name: "handle"
+          in: "path"
+          required: true
+          schema:
+            type: "string"
+            minLength: 1
+            maxLength: 128
+        -
+          name: "orderId"
+          in: "path"
+          required: true
+          schema:
+            type: "string"
+            minLength: 1
+            maxLength: 128
+        -
+          name: "x-bipe-shop-token"
+          in: "header"
+          required: true
+          schema:
+            type: "string"
+            minLength: 1
+            maxLength: 128
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/EmptyBusinessRequest"
+      responses:
+        "200":
+          description: "Success"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Order"
+        default:
+          $ref: "#/components/responses/BusinessToolError"
+  /v1/businesses/{handle}/web/claim:
+    post:
+      summary: "Move the records of a shop token to the signed-in person"
+      operationId: "postV1BusinessesHandleWebClaim"
+      tags:
+        - "Agenda"
+      security:
+        -
+          matrix: []
+      description: "The token stops working after this. The records then get cards and pushes (ADR 0102)."
+      parameters:
+        -
+          name: "handle"
+          in: "path"
+          required: true
+          schema:
+            type: "string"
+            minLength: 1
+            maxLength: 128
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/WebClaim"
+      responses:
+        "200":
+          description: "Success"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/WebRecords"
+        default:
+          $ref: "#/components/responses/BusinessToolError"
+  /v1/me/business/web-settings:
+    get:
+      summary: "Read the web switches"
+      operationId: "getV1MeBusinessWebSettings"
+      tags:
+        - "Agenda"
+      security:
+        -
+          matrix: []
+      description: "Only a device of this company account may call this route."
+      responses:
+        "200":
+          description: "Success"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/WebSettings"
+        default:
+          $ref: "#/components/responses/BusinessToolError"
+    put:
+      summary: "Set the web switches"
+      operationId: "putV1MeBusinessWebSettings"
+      tags:
+        - "Agenda"
+      security:
+        -
+          matrix: []
+      description: "Only a device of this company account may call this route."
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/WebSettings"
+      responses:
+        "200":
+          description: "Success"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/WebSettings"
+        default:
+          $ref: "#/components/responses/BusinessToolError"
   /v1/me/business/queue/open:
     post:
       summary: "Open today’s queue"
@@ -7209,6 +7501,20 @@ components:
       $ref: "./business-schemas.json#/$defs/AgendaActivation"
     AgendaState:
       $ref: "./business-schemas.json#/$defs/AgendaState"
+    WebBooking:
+      $ref: "./business-schemas.json#/$defs/WebBooking"
+    WebOrder:
+      $ref: "./business-schemas.json#/$defs/WebOrder"
+    WebBookingResult:
+      $ref: "./business-schemas.json#/$defs/WebBookingResult"
+    WebOrderResult:
+      $ref: "./business-schemas.json#/$defs/WebOrderResult"
+    WebRecords:
+      $ref: "./business-schemas.json#/$defs/WebRecords"
+    WebClaim:
+      $ref: "./business-schemas.json#/$defs/WebClaim"
+    WebSettings:
+      $ref: "./business-schemas.json#/$defs/WebSettings"
     BusinessToolId:
       $ref: "./business-schemas.json#/$defs/BusinessToolId"
     BusinessToolState:

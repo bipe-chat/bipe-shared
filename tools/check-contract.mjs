@@ -78,6 +78,9 @@ const NOT_IN_APPS = {
   ...Object.fromEntries([
     "BusinessToolId", "BusinessToolState", "BusinessToolStatus", "BusinessTools", "BusinessToolChange", "BusinessLiveTools", "WorkSector", "WorkSetupStep", "WorkSetup", "WorkSuggestion", "WorkSuggestions", "BusinessToday",
   ].map((name) => [name, "contract first (bipe#798); app clients follow in bipe#800 to bipe#802"])),
+  ...Object.fromEntries([
+    "WebBooking", "WebOrder", "WebBookingResult", "WebOrderResult", "WebRecords", "WebClaim", "WebSettings",
+  ].map((name) => [name, "web path, used by bipe-web and the claim (bipe#803)"])),
   DiscoverySettings: "one boolean; iOS sends it from a private request type in BipeAPIClient",
   ReachStatus: "contract first (bipe#851); the budget notice and \"Status da conta\" in the app follow in bipe#846",
   MessagingSetting: "one enum field; iOS decodes it in a private MessagingSetting type in BipeAPIClient, exposed as BipeWhoCanMessage",

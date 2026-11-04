@@ -32,7 +32,11 @@
     "showMedia": {
       "type": "enum",
       "values": ["always", "privateOnly", "never"],
-      "description": "The setting bipe_chats_show_media: always, only in DMs and closed groups, or only on tap."
+      "description": "The setting bipe_chats_show_media: always, only in DMs and closed groups, or only on tap. Stored in the account (MSC4278, see notes)."
+    },
+    "fromStranger": {
+      "type": "bool",
+      "description": "true in a DM that the person accepted from chat-requests while the other person is not a contact (see notes): their images, videos and stickers show as tapToShow, whatever showMedia says."
     }
   },
   "actions": {
@@ -87,9 +91,14 @@
     "MediaFileHandle",
     "EventSendState",
     "MediaUploadProgress",
-    "Timeline.abortSend"
+    "Timeline.abortSend",
+    "Client.fetchMediaPreviewConfig",
+    "Client.subscribeToMediaPreviewConfig",
+    "Client.setMediaPreviewDisplayPolicy",
+    "MediaPreviewConfig",
+    "MediaPreviews"
   ],
-  "parity": ["e2ee"],
+  "parity": ["e2ee", "hide-media"],
   "notes": [
     "Encrypted media: the event's MediaSource holds the key; the SDK downloads and decrypts on the phone. Media never goes through a Bipe server other than the homeserver.",
     "showMedia privateOnly: media shows in DMs and in groups that need an invite; in a public group it waits for a tap. The setting row lives in the Conversas e mídia group of settings.",
@@ -100,6 +109,8 @@
     "A photo that is a receipt image gets no special card here; the receipt scam check reads text only.",
     "Delete and forward come from message-actions; media delete uses message-delete (bipe_dm_media_delete_body is the media library text, not this row).",
     "Image descriptions (bipe-chat/bipe#501): the accessibility label of an image row is bipe_app_media_image_described with the description when it has one, else bipe_app_media_image; VoiceOver and TalkBack read it before the caption. The SDK message types have no field for it, so the app reads it from the event JSON (EventTimelineItemDebugInfo.originalJson, the decrypted event). A field on any other message type is ignored.",
+    "showMedia lives in the account, not only on the phone (bipe-chat/bipe#827): the standard account data m.media_preview_config of MSC4278, read and written through the SDK, so both phones of one person and other Matrix clients agree. always = MediaPreviews.on, privateOnly = private, never = off. The app keeps a copy on the phone for the rows and follows Client.subscribeToMediaPreviewConfig of the current account. An account without the setting keeps the phone's value (default always) and the app writes it once.",
+    "fromStranger (bipe-chat/bipe#827): a DM counts as accepted from chat-requests when the person accepted it in chat-request on this phone (the app remembers the room ID on the phone). The other person is a contact when the address book lookup of people found them (contacts). Without contacts access nobody is a contact, so the media waits. Own media always shows. A tap shows that one message only.",
     "An animated sticker plays in a loop. It shows its first frame with a play mark (bipe_a11y_sticker_play) and waits for a tap (playAnimation) when the data saver is on and the phone is not on Wi-Fi (data-use), or with Reduce Motion (iOS) or animations off (Android)."
   ]
 }

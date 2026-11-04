@@ -1342,6 +1342,10 @@
           "format": "date-time",
           "pattern": "Z$",
           "description": "UTC, with a trailing Z."
+        },
+        "web": {
+          "type": "boolean",
+          "description": "Joined on the web with a first name and a shop token, with no account (ADR 0185). No chat."
         }
       },
       "description": "No location, notes or customer description. Name-only entries are owner-created. Retain for 30 days after the queue day ends (ADR 0107)."
@@ -2148,6 +2152,10 @@
         "web_orders": {
           "type": "boolean",
           "description": "Pedidos is live and the owner keeps orders on the web on."
+        },
+        "web_queue": {
+          "type": "boolean",
+          "description": "The queue is live and the owner keeps joining on the web on."
         }
       }
     },
@@ -2394,6 +2402,9 @@
           "items": {
             "$ref": "#/$defs/Order"
           }
+        },
+        "queue_place": {
+          "$ref": "#/$defs/QueuePosition"
         }
       }
     },
@@ -2418,7 +2429,8 @@
       "additionalProperties": false,
       "required": [
         "web_booking",
-        "web_orders"
+        "web_orders",
+        "web_queue"
       ],
       "properties": {
         "web_booking": {
@@ -2426,6 +2438,40 @@
         },
         "web_orders": {
           "type": "boolean"
+        },
+        "web_queue": {
+          "type": "boolean"
+        }
+      }
+    },
+    "WebQueueJoin": {
+      "description": "No session. A first name only (ADR 0185). One active place per token per shop.",
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "name"
+      ],
+      "properties": {
+        "name": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 40
+        }
+      }
+    },
+    "WebQueueResult": {
+      "description": "token: only on the first web action of this browser at this shop.",
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "position"
+      ],
+      "properties": {
+        "token": {
+          "type": "string"
+        },
+        "position": {
+          "$ref": "#/$defs/QueuePosition"
         }
       }
     }

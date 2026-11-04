@@ -32,6 +32,6 @@
     "The link is the @ on the bipe.chat host: https://bipe.chat/@<handle>. Bipe logic: BipeProfileLink.url and handle(from:) (BipeKit BipeProfileLink.swift); BipeLinks.kt (libraries/bipe). The rule is used by both apps and the site, so it belongs in registries/ (ADR 0031); until it moves, the two Bipe implementations are the reference.",
     "On the web, the link shows the public profile when it is on, else a page that opens the app or the store. In the app it always opens profile-link-open.",
     "The QR code holds exactly the link. Drawn on the device with the same permissive encoder as invite-qr, dark on light in both themes.",
-    "Opens from Seu perfil (settings-group profile, handle row) and from public-profile-edit."
+    "Opens from the @ row of Seu perfil (profile-edit)."
   ]
 }

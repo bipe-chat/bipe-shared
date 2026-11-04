@@ -15,7 +15,7 @@ The flat input is an adapter contract for the apps and reference library. It is 
 | deviceChangedAt, identityChangedAt | Latest relevant change watermarks, in Unix seconds. Null means the complete source reports no such change. Preserve watermarks after showing a notice |
 | badgeStatus | Result of the existing badge verifier, including revocation checks. Only valid can verify identity; these rules do not verify a signature |
 | badgeAccountId, badgeDeviceKey, badgeName, badgeIssuedAt | Fields from the successfully decoded verified payload; issue time in Unix seconds |
-| badgeDeviceKey for a `cnpj` badge | A company badge binds to the account master key, not a device (docs/badge-attestation.md). The verifier already checked `msk` against the sender's master key, so the adapter passes the sending device key. A master key change still suspends it: the verifier answers `master_key_mismatch` |
+| badgeDeviceKey | Every badge binds to the account master key, not a device (docs/badge-attestation.md, ADR 0239). The verifier already checked `msk` against the sender's master key, so the adapter passes that master key. A master key change still suspends it: the verifier answers `master_key_mismatch` |
 | confirmationMethod | in_person for a completed in-person check; old_device_approval for an authenticated approval by the old device; invite_pair never confirms the person |
 | confirmationAccountId, confirmationDeviceKey, confirmedAt | The account/device and time bound to that local confirmation or approved handover |
 | priorInPersonConfirmedAt | For old-device approval, the prior in-person confirmation of the same account/relationship. The adapter must establish that provenance; an arbitrary timestamp is not proof |
@@ -29,7 +29,7 @@ The source adapter must reject revoked or expired attestations and unauthorized 
 
 | Fact | Values | Meaning |
 |---|---|---|
-| identity | verified, suspended, unverified | Current identity proof is bound to the sender/device and is fresh after known changes. Stale or wrong-device proof is suspended. Invalid proof gives no verified name |
+| identity | verified, suspended, unverified | Current identity proof is bound to the sender/device and is fresh after known changes. Stale proof, or a badge for another master key, is suspended. A new cross-signed device keeps the proof (ADR 0239). Invalid proof gives no verified name |
 | verifiedName | Name or null | Present only with current verified identity |
 | contact | confirmed, unconfirmed | An in-person confirmation is current, or an approved old device carries forward an existing relationship |
 | change | unknown, none, device, identity, device_and_identity | Lifecycle information and change facts, independent of fresh proof |

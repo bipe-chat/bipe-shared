@@ -30,6 +30,7 @@
   "notes": [
     "A wrong PIN counts against the account like on the recovery paths (POST /v1/me/pin/check in api/openapi.yaml); a right PIN sets the count to 0. So the reminder allows one check, then offers to change the PIN.",
     "The gaps come from the generated onboarding code (BipeOnboarding.pinReminderDays, pinReminderThenEveryDays). The first reminder comes pinReminderDays[0] after this phone first saw the account. The step and the next time are kept per account on this phone. Rule: pinReminderNext, test-vectors/onboarding-schedule.json.",
-    "bipe_pin_reminder_body takes pinLength. bipe_pin_blocked_body takes pinMaxWrongTries and names only the recovery email, the one PIN reset path that is built."
+    "bipe_pin_reminder_body takes pinLength. bipe_pin_blocked_body takes pinMaxWrongTries and names only the recovery email, the one PIN reset path that is built.",
+    "Place and look (MZ, 31 Oct 2026, bipe-chat/bipe#894): this shows as the entry pinReminder of chat-list-prompt, one card at a time in the first list row. chat-list-prompt decides when it shows against the other entries; this spec keeps the condition and the come-back time."
   ]
 }

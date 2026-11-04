@@ -2,7 +2,7 @@
   "id": "group-members",
   "title": "People in a group",
   "flow": "groups",
-  "summary": "Lists the people in a group and the people invited who have not joined. An admin makes or removes admins, takes people out, bans them and cancels invites.",
+  "summary": "Lists the people in a group and the people invited who have not joined. An admin sets each person to one of three roles: Admin, Moderador or Membro. An admin or a moderator takes people out, bans them and cancels invites.",
   "types": {
     "GroupMember": {
       "person": { "type": "Person", "description": "The person. displayName falls back to RoomMember.displayName, then the @." },
@@ -11,7 +11,12 @@
         "values": ["joined", "invited", "banned"],
         "description": "MembershipState join, invite or ban. Other states are not listed."
       },
-      "isAdmin": { "type": "bool", "description": "RoomMember.suggestedRoleForPowerLevel is creator or administrator: bipe_app_group_admin on the row." },
+      "role": {
+        "type": "enum",
+        "values": ["admin", "moderator", "member"],
+        "description": "From the power level (registries/group-power-levels.json, bipe-chat/bipe#733): a creator or a level of at least BipeGroupPowerLevels.admin is admin, at least moderator is moderator, else member. A level between two roles shows the lower one. The row shows bipe_app_group_admin or bipe_app_group_moderator."
+      },
+      "isAdmin": { "type": "bool", "description": "role is admin." },
       "isYou": { "type": "bool", "description": "The own user: bipe_app_you on the row, no action sheet." },
       "nameAmbiguous": { "type": "bool", "description": "RoomMember.isNameAmbiguous, or another member has the same name after NameNormalizer (bipe#825). The row shows the @ after the name, as in timeline-rows." }
     }
@@ -26,6 +31,7 @@
     "canKick": { "type": "bool", "description": "RoomPowerLevels.canOwnUserKick." },
     "canBan": { "type": "bool", "description": "RoomPowerLevels.canOwnUserBan." },
     "canChangeRoles": { "type": "bool", "description": "RoomPowerLevels.canOwnUserSendState for m.room.power_levels." },
+    "customRoles": { "type": "bool", "description": "Another Matrix app set permissions off the three roles: RoomPowerLevels.values kick, ban or redact is not BipeGroupPowerLevels.moderator, or a person's level is not one of the three roles. Shows bipe_app_group_roles_custom above the list. The app does not rewrite the levels." },
     "loading": { "type": "bool", "description": "true until the first members list arrives." }
   },
   "actions": {
@@ -46,11 +52,19 @@
     },
     "makeAdmin": {
       "params": { "userId": { "type": "string", "description": "The person." } },
-      "effect": "Room.updatePowerLevelsForUsers with the level of suggestedPowerLevelForRole(administrator)."
+      "effect": "Room.updatePowerLevelsForUsers with BipeGroupPowerLevels.admin."
     },
     "removeAdmin": {
       "params": { "userId": { "type": "string", "description": "The person." } },
-      "effect": "Room.updatePowerLevelsForUsers with the level of suggestedPowerLevelForRole(user)."
+      "effect": "Room.updatePowerLevelsForUsers with BipeGroupPowerLevels.member."
+    },
+    "makeModerator": {
+      "params": { "userId": { "type": "string", "description": "The person." } },
+      "effect": "Room.updatePowerLevelsForUsers with BipeGroupPowerLevels.moderator."
+    },
+    "removeModerator": {
+      "params": { "userId": { "type": "string", "description": "The person." } },
+      "effect": "Room.updatePowerLevelsForUsers with BipeGroupPowerLevels.member."
     },
     "remove": {
       "params": { "userId": { "type": "string", "description": "The person." } },
@@ -79,11 +93,19 @@
     "bipe_app_group_members_joined",
     "bipe_app_group_members_invited",
     "bipe_app_group_admin",
+    "bipe_app_group_moderator",
+    "bipe_app_group_roles_custom",
+    "bipe_app_group_roles_title",
+    "bipe_app_group_role_admin_body",
+    "bipe_app_group_role_moderator_body",
+    "bipe_app_group_role_member_body",
     "bipe_app_you",
     "bipe_app_group_add_people",
     "bipe_app_group_member_profile",
     "bipe_app_group_member_make_admin",
     "bipe_app_group_member_remove_admin",
+    "bipe_app_group_member_make_moderator",
+    "bipe_app_group_member_remove_moderator",
     "bipe_app_group_member_remove",
     "bipe_app_group_member_remove_body",
     "bipe_app_group_member_ban",
@@ -111,10 +133,10 @@
     "Room.kickUser",
     "Room.banUser"
   ],
-  "parity": ["group-types"],
+  "parity": ["group-types", "group-roles"],
   "notes": [
-    "Action sheet rows, top to bottom, each only when allowed: bipe_app_group_member_profile (always); for a joined person, bipe_app_group_member_make_admin or bipe_app_group_member_remove_admin (canChangeRoles, and the person's level is below the user's), bipe_app_group_member_remove (canKick), bipe_app_group_member_ban (canBan); for an invited person, bipe_app_group_member_cancel_invite (canKick).",
-    "Two roles in the UI: admin and member. Moderator levels from other clients show as member, with no action to set them. A creator (room version 12) shows as admin and has no role actions.",
+    "Action sheet rows, top to bottom, each only when allowed: bipe_app_group_member_profile (always); for a joined person whose level is below the user's: the two roles the person does not have, from bipe_app_group_member_make_admin, bipe_app_group_member_make_moderator, bipe_app_group_member_remove_admin (admin to member) and bipe_app_group_member_remove_moderator (moderator to member), when canChangeRoles; then bipe_app_group_member_remove (canKick) and bipe_app_group_member_ban (canBan); for an invited person, bipe_app_group_member_cancel_invite (canKick). Matrix refuses to kick, ban or change the role of a person at or above the user's level, so the sheet has no such rows.",
+    "Three roles in the UI (bipe-chat/bipe#733). Admin changes roles and group settings and notifies everyone with @room. Moderador removes and bans members, deletes other people's messages and pins messages. Membro posts, reacts and replies. No numbers and no custom levels. A creator (room version 12) shows as admin and has no role actions. Nobody changes their own role, so a group always keeps its admins. Under the lists, a section bipe_app_group_roles_title says what each role does: bipe_app_group_role_admin_body, bipe_app_group_role_moderator_body, bipe_app_group_role_member_body. It shows for everyone, so a member knows who to ask.",
     "Remove and ban are destructive: the confirm button uses the destructive style. A failed call shows bipe_app_group_member_error and changes nothing on the screen.",
     "Slow mode and reports to group admins need server work (#74).",
     "Only for a group (RoomInfo.isDm false, ADR 0141). A DM has no member list."

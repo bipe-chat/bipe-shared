@@ -1,0 +1,56 @@
+{
+  "id": "work-sector",
+  "title": "What do you do?",
+  "flow": "business",
+  "summary": "One optional screen after the owner creates a work account, and from the Ramo row of the work account settings (ADR 0194 points 8 to 10): a short list of sectors, Outro and Pular. The sector sets the order of the steps and the first tool the tab suggests. It never limits the tools.",
+  "state": {
+    "sectors": {
+      "type": "list",
+      "of": {
+        "type": "string",
+        "description": "bipe_sector_<id>."
+      },
+      "description": "registries/business-tools.json sectors, in order."
+    },
+    "selected": {
+      "type": "string",
+      "optional": true,
+      "description": "The sector from GET /v1/me/business/tools."
+    }
+  },
+  "actions": {
+    "pick": {
+      "effect": "PUT /v1/me/business/sector with the ID, then closes. A failure closes too: the question is optional and the settings row stays.",
+      "params": {
+        "id": {
+          "type": "string",
+          "description": "The sector."
+        }
+      }
+    },
+    "skip": {
+      "effect": "PUT /v1/me/business/sector with no sector, then closes. Shows the generic path."
+    }
+  },
+  "strings": [
+    "bipe_work_sector_title",
+    "bipe_work_sector_body",
+    "bipe_work_sector_skip",
+    "bipe_work_sector_row",
+    "bipe_work_sector_none",
+    "bipe_sector_beauty",
+    "bipe_sector_food",
+    "bipe_sector_repair",
+    "bipe_sector_health",
+    "bipe_sector_resale",
+    "bipe_sector_home_services",
+    "bipe_sector_other"
+  ],
+  "sdk": [],
+  "parity": [
+    "work-setup"
+  ],
+  "notes": [
+    "Web: the settings row only; a work account is created on the phone (ADR 0226 point 6)."
+  ]
+}

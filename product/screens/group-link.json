@@ -1,0 +1,65 @@
+{
+  "id": "group-link",
+  "title": "Group link",
+  "flow": "groups",
+  "summary": "An admin makes one link that brings people into the group, and sends it in any chat (ADR 0184, bipe-chat/bipe#744). A link from an admin with a verified name also signs people up past the waitlist. Opens from the row bipe_group_link_title in group-details.",
+  "state": {
+    "roomId": { "type": "string", "description": "The group." },
+    "phase": {
+      "type": "enum",
+      "values": ["loading", "none", "active", "working", "failed"],
+      "description": "loading: GET /v1/me/group-links?room_id runs. none: no active link; bipe_group_link_body, bipe_group_link_service_note and bipe_group_link_create. active: the link with its counts, bipe_group_link_share and bipe_group_link_revoke. working: create or revoke runs; the buttons are disabled. failed: bipe_error_network with bipe_app_retry, or bipe_group_link_error_access after a 404 or a 409."
+    },
+    "link": { "type": "GroupLink", "optional": true, "description": "The newest active link (GET /v1/me/group-links)." },
+    "code": { "type": "string", "optional": true, "description": "The code of link, when this phone kept it at creation (per room ID, in the app's own store). Never logged." },
+    "signsUp": { "type": "bool", "description": "link.signs_up. true: bipe_group_link_signs_up with signups_left. false: bipe_group_link_existing_only." },
+    "expires": { "type": "string", "description": "link.expires_at as a short date, in bipe_group_link_expires." },
+    "joined": { "type": "int", "description": "link.joined, in bipe_group_link_joined." }
+  },
+  "types": {
+    "GroupLink": {
+      "id": { "type": "string", "description": "GroupLink.id." },
+      "expiresAt": { "type": "string", "description": "GroupLink.expires_at." },
+      "signsUp": { "type": "bool", "description": "GroupLink.signs_up." },
+      "joined": { "type": "int", "description": "GroupLink.joined." },
+      "signupsLeft": { "type": "int", "description": "GroupLink.signups_left." }
+    }
+  },
+  "actions": {
+    "appear": { "effect": "GET /v1/me/group-links with roomId. The newest link is link; a kept code for another link ID is dropped." },
+    "create": {
+      "effect": "When the service account (BipeOfficialAccounts groups) is not a joined or invited member: Room.inviteUserById. When its power level is below the invite level: Room.updatePowerLevelsForUsers with the invite level (RoomPowerLevels.values.invite). Then POST /v1/me/group-links. The code is kept for roomId and the share sheet opens at once with bipe_group_link_message (group name, link url). Phase active."
+    },
+    "share": { "effect": "With a kept code: the system share sheet with bipe_group_link_message. Without one: an alert with bipe_group_link_no_code and bipe_group_link_create." },
+    "revoke": { "effect": "A confirm with bipe_group_link_revoke_body. DELETE /v1/me/group-links/{id}; the kept code goes. Phase none. The service account stays in the group: the admin removes it in group-members like any member." },
+    "retry": { "effect": "Runs appear again." }
+  },
+  "strings": [
+    "bipe_group_link_title",
+    "bipe_group_link_body",
+    "bipe_group_link_signs_up",
+    "bipe_group_link_existing_only",
+    "bipe_group_link_service_note",
+    "bipe_group_link_create",
+    "bipe_group_link_share",
+    "bipe_group_link_revoke",
+    "bipe_group_link_revoke_body",
+    "bipe_group_link_expires",
+    "bipe_group_link_joined",
+    "bipe_group_link_no_code",
+    "bipe_group_link_message",
+    "bipe_group_link_error_access",
+    "bipe_error_network",
+    "bipe_app_retry",
+    "bipe_app_cancel"
+  ],
+  "sdk": ["Room.inviteUserById", "Room.members", "Room.getPowerLevels", "Room.updatePowerLevelsForUsers", "RoomPowerLevels"],
+  "parity": ["group-link"],
+  "notes": [
+    "The row shows for members whose power level is 50 or more and who can change power levels (RoomPowerLevels.canOwnUserSendState for m.room.power_levels). The server checks the level again.",
+    "bipe_group_link_message is the text a person sends (people voice, pra). It works without the link preview.",
+    "Default chosen (bipe-chat/bipe#744): the screen does not name WhatsApp, because linguagem.md asks for neutral words about other apps (ADR 0129). The link works in any app. mz can overrule.",
+    "Default chosen (bipe-chat/bipe#744): the code stays only on the phone that made it, because the server keeps only its hash, as for invites. Another admin or phone makes a new link. mz can overrule.",
+    "The service account has no E2EE device: it gets no room keys and reads no message (security.md). It shows in group-members with the Bipe badge (official account)."
+  ]
+}

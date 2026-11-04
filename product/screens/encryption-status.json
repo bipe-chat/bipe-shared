@@ -116,6 +116,8 @@
     "No Element crypto screens or words (parity onboarding-no-element-crypto): no reset of the identity, no 'verify this session', no key backup settings.",
     "Security rule 13 (bipe#774): every SDK client uses roomKeyRecipientStrategy IdentityBasedStrategy and decryptionSettings with senderDeviceTrustRequirement CrossSignedOrLegacy. Apply the same builder to sign-in, restore, reauthentication and the iOS notification service. No runtime switch or permissive fallback.",
     "The owner must cross-sign a device before it receives room keys. Do not require manual trust of each contact (OnlyTrustedDevices). CrossSignedOrLegacy preserves sessions made before the SDK collected sender trust metadata; it does not permit current unsigned senders.",
-    "Changing this policy does not revoke plaintext or room keys a device already holds. The SDK rotates a previously shared outbound session when it excludes a recipient. No Bipe crypto implementation or automatic identity reset is added."
+    "Changing this policy does not revoke plaintext or room keys a device already holds. The SDK rotates a previously shared outbound session when it excludes a recipient. No Bipe crypto implementation or automatic identity reset is added.",
+    "Agora não (MZ, 31 Oct 2026, bipe-chat/bipe#894): while hasOtherDevices, or recoveryState is enabled or incomplete, the card has no Agora não. Only an unverified phone with no way out can dismiss it (bannerDismissed, 7 days).",
+    "Place and look (MZ, 31 Oct 2026, bipe-chat/bipe#894): this shows as the entry approvePhone of chat-list-prompt, one card at a time in the first list row. chat-list-prompt decides when it shows against the other entries; this spec keeps the condition and the come-back time."
   ]
 }

@@ -13,7 +13,7 @@
         ]
       },
       "android": {
-        "status": "built",
+        "status": "testing",
         "evidence": [
           "bipe-app/android/libraries/bipe/src/main/kotlin/chat/bipe/shared/ScamDetector.kt",
           "bipe-app/android/app/src/main/kotlin/chat/bipe/app/timeline/TimelineRowItem.kt"
@@ -27,7 +27,6 @@
         "status": "n/a",
         "reason": "Runs on the device only"
       },
-      "issue": 606,
       "fork": true
     },
     {
@@ -42,7 +41,7 @@
         ]
       },
       "android": {
-        "status": "built",
+        "status": "testing",
         "evidence": [
           "bipe-app/android/app/src/main/kotlin/chat/bipe/app/chatlist/ChatRequests.kt",
           "bipe-app/android/app/src/main/kotlin/chat/bipe/app/chatlist/RequestNameWarning.kt"
@@ -59,7 +58,6 @@
           "bipe-infra/compose/synapse-modules/bipe_messaging.py"
         ]
       },
-      "issue": 606,
       "fork": true
     },
     {
@@ -99,7 +97,7 @@
         ]
       },
       "android": {
-        "status": "built",
+        "status": "testing",
         "evidence": [
           "bipe-app/android/app/src/main/kotlin/chat/bipe/app/signup/SignupFlowModel.kt",
           "bipe-app/android/app/src/main/kotlin/chat/bipe/app/signup/SignupScreens.kt"
@@ -115,7 +113,6 @@
           "bipe-api/src/signup.ts"
         ]
       },
-      "issue": 606,
       "fork": true
     },
     {
@@ -280,14 +277,27 @@
     {
       "id": "verified-badge",
       "name": "Verified seal",
-      "ios": "planned",
-      "android": "planned",
+      "ios": {
+        "status": "built",
+        "evidence": [
+          "bipe-app/ios/Bipe/Common/SealMark.swift",
+          "bipe-app/ios/BipeKit/Sources/BipeKit/BipeCompanySeals.swift"
+        ]
+      },
+      "android": {
+        "status": "built",
+        "evidence": [
+          "bipe-app/android/app/src/main/kotlin/chat/bipe/app/common/SealMark.kt",
+          "bipe-app/android/libraries/bipe/src/main/kotlin/chat/bipe/shared/company/BipeCompanySeals.kt"
+        ]
+      },
       "web": {
         "status": "n/a",
         "reason": "No web chat (ADR 0004); the site shows a demo at most"
       },
       "server": "planned",
-      "note": "BadgeVerifier exists on both apps, nothing shows a seal"
+      "note": "The apps show the seal for a valid pix or govbr badge. No issuer signs those levels in production yet (bipe#17, bipe#543), so server stays planned and no person has a seal today",
+      "issue": 543
     },
     {
       "id": "trust-facts",
@@ -315,6 +325,35 @@
         "reason": "Runs on the device; the rules are registries/trust-facts.json"
       },
       "issue": 227
+    },
+    {
+      "id": "govbr-verify",
+      "name": "Verificar com gov.br: trust step 5 with a gov.br signature, two taps in Bipe (bipe#544)",
+      "ios": {
+        "status": "built",
+        "evidence": [
+          "bipe-app/ios/BipeKit/Sources/BipeKit/BipeGovbrFlow.swift",
+          "bipe-app/ios/Bipe/Voce/GovbrVerifyView.swift"
+        ]
+      },
+      "android": {
+        "status": "built",
+        "evidence": [
+          "bipe-app/android/libraries/bipe/src/main/kotlin/chat/bipe/shared/BipeGovbrFlow.kt",
+          "bipe-app/android/app/src/main/kotlin/chat/bipe/app/voce/GovbrVerify.kt"
+        ]
+      },
+      "web": {
+        "status": "n/a",
+        "reason": "Web has no trust ladder step (bipe#544)"
+      },
+      "server": {
+        "status": "built",
+        "evidence": [
+          "bipe-api/src/govbr.ts"
+        ]
+      },
+      "note": "Behind the build flag govbrEnabled (iOS AppConfig.govbrEnabled, Android BuildConfig.BIPE_GOVBR): debug builds of the tester ID set only, off in Release and store builds until bipe#542 and the legal review bipe#17 close"
     },
     {
       "id": "cnpj-badge",
@@ -536,7 +575,7 @@
         "evidence": [
           "bipe-app/android/libraries/bipe/src/main/kotlin/chat/bipe/shared/BipeNameLookalikes.kt",
           "bipe-app/android/app/src/main/kotlin/chat/bipe/app/chatlist/ChatRequests.kt",
-          "bipe-app/android/app/src/main/kotlin/chat/bipe/app/people/OwnProfileScreens.kt"
+          "bipe-app/android/app/src/main/kotlin/chat/bipe/app/people/ProfileEditScreen.kt"
         ]
       },
       "web": {
@@ -641,7 +680,7 @@
         ]
       },
       "android": {
-        "status": "built",
+        "status": "testing",
         "evidence": [
           "bipe-app/android/app/src/main/kotlin/chat/bipe/app/handle/HandlePick.kt"
         ]
@@ -656,7 +695,6 @@
           "bipe-api/src/handles.ts"
         ]
       },
-      "issue": 606,
       "fork": true
     },
     {
@@ -670,7 +708,7 @@
         ]
       },
       "android": {
-        "status": "built",
+        "status": "testing",
         "evidence": [
           "bipe-app/android/app/src/main/kotlin/chat/bipe/app/people/OwnProfileScreens.kt"
         ]
@@ -688,7 +726,6 @@
           "bipe-infra/compose/site/.well-known/assetlinks.json"
         ]
       },
-      "issue": 606,
       "fork": true
     },
     {
@@ -731,14 +768,14 @@
       "ios": {
         "status": "built",
         "evidence": [
-          "bipe-app/ios/Bipe/People/PublicProfileEditView.swift",
+          "bipe-app/ios/Bipe/People/ProfileEditView.swift",
           "bipe-app/ios/BipeKit/Sources/BipeKit/BipePublicProfile.swift"
         ]
       },
       "android": {
         "status": "built",
         "evidence": [
-          "bipe-app/android/app/src/main/kotlin/chat/bipe/app/people/OwnProfileScreens.kt",
+          "bipe-app/android/app/src/main/kotlin/chat/bipe/app/people/ProfileEditScreen.kt",
           "bipe-app/android/libraries/bipe/src/main/kotlin/chat/bipe/shared/BipeProfileRules.kt"
         ]
       },
@@ -757,6 +794,16 @@
       "fork": true
     },
     {
+      "id": "profile-socials",
+      "name": "Social handles on the public profile",
+      "ios": "planned",
+      "android": "planned",
+      "web": "planned",
+      "server": "planned",
+      "issue": 993,
+      "note": "ADR 0228. The rule and vectors are in bipe-shared (socialHandleProblem, test-vectors/social-handles.json)"
+    },
+    {
       "id": "invites",
       "name": "Invites",
       "ios": {
@@ -767,7 +814,7 @@
         ]
       },
       "android": {
-        "status": "built",
+        "status": "testing",
         "evidence": [
           "bipe-app/android/app/src/main/kotlin/chat/bipe/app/invites/InvitesScreens.kt",
           "bipe-app/android/app/src/main/kotlin/chat/bipe/app/invites/InvitesModel.kt"
@@ -786,7 +833,6 @@
           "bipe-api/src/invites.ts"
         ]
       },
-      "issue": 606,
       "fork": true
     },
     {
@@ -1031,7 +1077,7 @@
         ]
       },
       "android": {
-        "status": "built",
+        "status": "testing",
         "evidence": [
           "bipe-app/android/app/src/main/kotlin/chat/bipe/app/encryption/EncryptionStatusScreen.kt",
           "bipe-app/android/app/src/main/kotlin/chat/bipe/app/timeline/TimelineRowItem.kt",
@@ -1048,7 +1094,6 @@
           "bipe-infra/compose/templates/synapse-bipe.yaml"
         ]
       },
-      "issue": 606,
       "fork": true
     },
     {
@@ -1191,7 +1236,13 @@
           "bipe-app/android/app/src/main/kotlin/chat/bipe/app/business/AgendaSetup.kt"
         ]
       },
-      "web": "planned",
+      "web": {
+        "status": "built",
+        "evidence": [
+          "bipe-app/web/src/work/Agenda.tsx",
+          "bipe-app/web/src/work/WorkView.tsx"
+        ]
+      },
       "server": {
         "status": "built",
         "evidence": [
@@ -1215,7 +1266,13 @@
           "bipe-app/android/app/src/main/kotlin/chat/bipe/app/business/CatalogScreens.kt"
         ]
       },
-      "web": "planned",
+      "web": {
+        "status": "built",
+        "evidence": [
+          "bipe-app/web/src/work/Catalog.tsx",
+          "bipe-app/web/src/work/WorkView.tsx"
+        ]
+      },
       "server": {
         "status": "built",
         "evidence": [
@@ -1239,8 +1296,11 @@
         ]
       },
       "web": {
-        "status": "n/a",
-        "reason": "No web chat (ADR 0004); the site shows a demo at most"
+        "status": "built",
+        "evidence": [
+          "bipe-app/web/src/work/Orders.tsx",
+          "bipe-app/web/src/work/WorkView.tsx"
+        ]
       },
       "server": {
         "status": "built",
@@ -1265,8 +1325,11 @@
         ]
       },
       "web": {
-        "status": "n/a",
-        "reason": "No web chat (ADR 0004); the site shows a demo at most"
+        "status": "built",
+        "evidence": [
+          "bipe-app/web/src/work/Quotes.tsx",
+          "bipe-app/web/src/work/WorkView.tsx"
+        ]
       },
       "server": {
         "status": "built",
@@ -1291,8 +1354,11 @@
         ]
       },
       "web": {
-        "status": "n/a",
-        "reason": "No web chat (ADR 0004); the site shows a demo at most"
+        "status": "built",
+        "evidence": [
+          "bipe-app/web/src/work/Queue.tsx",
+          "bipe-app/web/src/work/WorkView.tsx"
+        ]
       },
       "server": {
         "status": "built",
@@ -1383,6 +1449,32 @@
       "fork": true
     },
     {
+      "id": "group-roles",
+      "name": "Group roles: Admin, Moderador, Membro",
+      "ios": {
+        "status": "built",
+        "evidence": [
+          "bipe-app/ios/Bipe/Groups/GroupMembersModel.swift",
+          "bipe-app/ios/Bipe/Groups/GroupPeople.swift"
+        ]
+      },
+      "android": {
+        "status": "built",
+        "evidence": [
+          "bipe-app/android/app/src/main/kotlin/chat/bipe/app/groups/GroupMembersModel.kt",
+          "bipe-app/android/app/src/main/kotlin/chat/bipe/app/groups/GroupPeople.kt"
+        ]
+      },
+      "web": {
+        "status": "n/a",
+        "reason": "No web chat (ADR 0004); the site shows a demo at most"
+      },
+      "server": {
+        "status": "n/a",
+        "reason": "Plain Matrix power levels; no Bipe server code"
+      }
+    },
+    {
       "id": "polls",
       "name": "Polls",
       "ios": {
@@ -1392,20 +1484,18 @@
         ]
       },
       "android": {
-        "status": "built",
+        "status": "testing",
         "evidence": [
           "bipe-app/android/app/src/main/kotlin/chat/bipe/app/polls/PollScreens.kt"
         ]
       },
       "web": {
-        "status": "n/a",
-        "reason": "No web chat (ADR 0004); the site shows a demo at most"
+        "status": "planned"
       },
       "server": {
         "status": "n/a",
         "reason": "Plain Matrix events; no Bipe server code"
       },
-      "issue": 606,
       "fork": true
     },
     {
@@ -1801,6 +1891,36 @@
       "fork": true
     },
     {
+      "id": "age-signal",
+      "name": "Age band from the OS age signal, no date of birth (ADR 0229)",
+      "ios": {
+        "status": "built",
+        "evidence": [
+          "bipe-app/ios/Bipe/Account/AgeSignal.swift"
+        ],
+        "note": "Declared Age Range; the entitlement goes into the archive with BIPE_DECLARED_AGE_RANGE"
+      },
+      "android": {
+        "status": "built",
+        "evidence": [
+          "bipe-app/android/app/src/main/kotlin/chat/bipe/app/account/AgeSignal.kt",
+          "bipe-app/android/app/src/play/kotlin/chat/bipe/app/account/AgeSignalSources.kt"
+        ],
+        "note": "Play Age Signals in the play flavour; the foss build sends none"
+      },
+      "web": {
+        "status": "n/a",
+        "reason": "A browser has no OS age signal; a web-only account stays unknown (ADR 0229)"
+      },
+      "server": {
+        "status": "built",
+        "evidence": [
+          "bipe-api/src/age.ts"
+        ]
+      },
+      "issue": 994
+    },
+    {
       "id": "terms-reaccept",
       "name": "Re-accept screen for old accounts and new terms versions (ADR 0113)",
       "ios": {
@@ -2121,6 +2241,29 @@
       "fork": true
     },
     {
+      "id": "app-update",
+      "name": "Tester APK updates itself from bipe.chat (ADR 0233)",
+      "ios": {
+        "status": "n/a",
+        "reason": "TestFlight and the App Store update the iOS app"
+      },
+      "android": {
+        "status": "built",
+        "evidence": [
+          "bipe-app/android/app/src/main/kotlin/chat/bipe/app/update/AppUpdate.kt"
+        ],
+        "note": "Tester APK only; the Play build updates through Google Play."
+      },
+      "web": {
+        "status": "n/a",
+        "reason": "The web client loads the newest version on each visit"
+      },
+      "server": {
+        "status": "n/a",
+        "reason": "bipe-infra apk-pull already serves latest.json and the APK"
+      }
+    },
+    {
       "id": "remote-banner",
       "name": "Remote critical banner above the chat list (ADR 0117)",
       "ios": {
@@ -2193,8 +2336,11 @@
         ]
       },
       "web": {
-        "status": "n/a",
-        "reason": "No web chat (ADR 0004)"
+        "status": "built",
+        "evidence": [
+          "bipe-app/web/src/ChatActions.tsx",
+          "bipe-app/web/src/Timeline.tsx"
+        ]
       },
       "server": {
         "status": "n/a",
@@ -2377,8 +2523,11 @@
         ]
       },
       "web": {
-        "status": "n/a",
-        "reason": "Stock Element Web cannot do this by config; accepted gap until after launch (ADR 0141, bipe#477)"
+        "status": "built",
+        "evidence": [
+          "bipe-app/web/src/ChatInfo.tsx",
+          "bipe-app/web/src/Timeline.tsx"
+        ]
       },
       "server": {
         "status": "n/a",
@@ -2412,6 +2561,60 @@
         "reason": "Client behaviour; no Bipe server code"
       },
       "issue": 537
+    },
+    {
+      "id": "dm-delivered-tick",
+      "name": "Delivered tick in a DM from a device ack, chat.bipe.delivered (ADR 0222, bipe#956)",
+      "ios": {
+        "status": "built",
+        "evidence": [
+          "bipe-app/ios/Bipe/Timeline/DeliveredAcks.swift",
+          "bipe-app/ios/Bipe/Timeline/TimelineRows.swift",
+          "bipe-app/ios/NotificationService/NotificationService.swift"
+        ]
+      },
+      "android": {
+        "status": "built",
+        "evidence": [
+          "bipe-app/android/app/src/main/kotlin/chat/bipe/app/timeline/DeliveredAcks.kt",
+          "bipe-app/android/app/src/main/kotlin/chat/bipe/app/timeline/TimelineRows.kt",
+          "bipe-app/android/app/src/main/kotlin/chat/bipe/app/notifications/PhoneNotifications.kt"
+        ]
+      },
+      "web": {
+        "status": "n/a",
+        "reason": "Stock Element Web cannot do this by config; accepted gap until after launch (ADR 0141, bipe#477)"
+      },
+      "server": {
+        "status": "n/a",
+        "reason": "Client behaviour; no Bipe server code"
+      }
+    },
+    {
+      "id": "read-receipts-switch",
+      "name": "Read receipts switch, reciprocal in DMs; groups always public (ADR 0222, bipe#956)",
+      "ios": {
+        "status": "built",
+        "evidence": [
+          "bipe-app/ios/Bipe/Settings/SettingsGroupView.swift",
+          "bipe-app/ios/Bipe/Timeline/DeliveredAcks.swift"
+        ]
+      },
+      "android": {
+        "status": "built",
+        "evidence": [
+          "bipe-app/android/app/src/main/kotlin/chat/bipe/app/settings/SettingsScreens.kt",
+          "bipe-app/android/app/src/main/kotlin/chat/bipe/app/timeline/DeliveredAcks.kt"
+        ]
+      },
+      "web": {
+        "status": "n/a",
+        "reason": "Stock Element Web keeps its own read receipt setting; config only (bipe#477)"
+      },
+      "server": {
+        "status": "n/a",
+        "reason": "Client behaviour; no Bipe server code"
+      }
     },
     {
       "id": "screen-reader-labels",
@@ -2671,8 +2874,10 @@
         ]
       },
       "web": {
-        "status": "n/a",
-        "reason": "No web chat (ADR 0004); the site shows a demo at most"
+        "status": "built",
+        "evidence": [
+          "bipe-app/web/src/work/BrandMarks.tsx"
+        ]
       },
       "server": {
         "status": "built",
@@ -2845,17 +3050,19 @@
     },
     {
       "id": "message-forward",
-      "name": "Forward a message or media to another chat (bipe#664)",
+      "name": "Forward a message or media to another chat, with a forward line on the copy (bipe#664, bipe#933)",
       "ios": {
         "status": "built",
         "evidence": [
-          "bipe-app/ios/Bipe/Timeline/MessageForward.swift"
+          "bipe-app/ios/Bipe/Timeline/MessageForward.swift",
+          "bipe-app/ios/Bipe/Timeline/TimelineRowView.swift"
         ]
       },
       "android": {
         "status": "built",
         "evidence": [
-          "bipe-app/android/app/src/main/kotlin/chat/bipe/app/timeline/MessageForward.kt"
+          "bipe-app/android/app/src/main/kotlin/chat/bipe/app/timeline/MessageForward.kt",
+          "bipe-app/android/app/src/main/kotlin/chat/bipe/app/timeline/TimelineRowItem.kt"
         ]
       },
       "web": {
@@ -2885,8 +3092,11 @@
         ]
       },
       "web": {
-        "status": "n/a",
-        "reason": "No web chat (ADR 0004); the site shows a demo at most"
+        "status": "built",
+        "evidence": [
+          "bipe-app/web/src/Pins.tsx",
+          "bipe-app/web/src/Timeline.tsx"
+        ]
       },
       "server": {
         "status": "n/a",
@@ -2941,8 +3151,7 @@
         ]
       },
       "web": {
-        "status": "n/a",
-        "reason": "No web chat (ADR 0004); the site shows a demo at most"
+        "status": "planned"
       },
       "server": {
         "status": "n/a",
@@ -3004,6 +3213,31 @@
       },
       "issue": 669,
       "fork": true
+    },
+    {
+      "id": "year-recap",
+      "name": "Suas estatísticas: personal stats of the year, computed on the phone (bipe#973)",
+      "ios": {
+        "status": "built",
+        "evidence": [
+          "bipe-app/ios/Bipe/Voce/YearRecap.swift"
+        ]
+      },
+      "android": {
+        "status": "built",
+        "evidence": [
+          "bipe-app/android/app/src/main/kotlin/chat/bipe/app/voce/YearRecap.kt"
+        ]
+      },
+      "web": {
+        "status": "n/a",
+        "reason": "No web chat (ADR 0004)"
+      },
+      "server": {
+        "status": "n/a",
+        "reason": "Computed on the phone only (ADR 0223)"
+      },
+      "issue": 973
     },
     {
       "id": "sticker-save-received",
@@ -3116,7 +3350,7 @@
     },
     {
       "id": "chat-favourites-filters",
-      "name": "Favourite a chat; unread and favourites filters in the chat list (bipe#673)",
+      "name": "Favourite a chat; unread and favourites filters in the chat list (bipe#673); favourites in the order the user sets",
       "ios": {
         "status": "testing",
         "evidence": [
@@ -3132,8 +3366,10 @@
         ]
       },
       "web": {
-        "status": "n/a",
-        "reason": "No web chat (ADR 0004); the site shows a demo at most"
+        "status": "built",
+        "evidence": [
+          "bipe-app/web/src/Chats.tsx"
+        ]
       },
       "server": {
         "status": "n/a",
@@ -3177,14 +3413,18 @@
         "status": "built",
         "evidence": [
           "bipe-app/ios/Bipe/Groups/GroupMembersModel.swift",
-          "bipe-app/ios/Bipe/Groups/GroupMembersView.swift"
+          "bipe-app/ios/Bipe/Groups/GroupMembersView.swift",
+          "bipe-app/ios/Bipe/Composer/ComposerSupport.swift",
+          "bipe-app/ios/Bipe/Timeline/MessageSheets.swift"
         ]
       },
       "android": {
         "status": "built",
         "evidence": [
           "bipe-app/android/app/src/main/kotlin/chat/bipe/app/groups/GroupMembersModel.kt",
-          "bipe-app/android/app/src/main/kotlin/chat/bipe/app/groups/GroupMembersScreen.kt"
+          "bipe-app/android/app/src/main/kotlin/chat/bipe/app/groups/GroupMembersScreen.kt",
+          "bipe-app/android/app/src/main/kotlin/chat/bipe/app/composer/ComposerSupport.kt",
+          "bipe-app/android/app/src/main/kotlin/chat/bipe/app/timeline/MessageSheets.kt"
         ]
       },
       "web": {
@@ -3334,7 +3574,7 @@
     },
     {
       "id": "ambiguous-names",
-      "name": "Group members with the same name show their @ after the name, look-alike names included (bipe#825)",
+      "name": "Group members with the same name show their @ after the name in the timeline, member list, @ suggestions and read-by list, look-alike names included (bipe#825)",
       "ios": {
         "status": "built",
         "evidence": [
@@ -3471,6 +3711,35 @@
       "fork": true
     },
     {
+      "id": "group-link",
+      "name": "Group link: one link brings people into a group, and signs them up from a verified admin (ADR 0184, bipe#744)",
+      "ios": {
+        "status": "built",
+        "evidence": [
+          "bipe-app/ios/Bipe/Groups/GroupLink.swift"
+        ]
+      },
+      "android": {
+        "status": "built",
+        "evidence": [
+          "bipe-app/android/app/src/main/kotlin/chat/bipe/app/groups/GroupLink.kt"
+        ]
+      },
+      "web": {
+        "status": "built",
+        "evidence": [
+          "bipe-web/src/sim/LinkPages.tsx"
+        ]
+      },
+      "server": {
+        "status": "built",
+        "evidence": [
+          "bipe-api/src/group-links.ts"
+        ]
+      },
+      "issue": 744
+    },
+    {
       "id": "archived-groups",
       "name": "Archived groups: an upgraded group points to its new group (bipe#773)",
       "ios": {
@@ -3582,6 +3851,32 @@
       "fork": true
     },
     {
+      "id": "accessibility-settings",
+      "name": "Accessibility screen in settings: the state of the system settings Bipe follows (bipe#917)",
+      "ios": {
+        "status": "built",
+        "evidence": [
+          "bipe-app/ios/Bipe/Settings/AccessibilitySettingsView.swift",
+          "bipe-app/ios/Bipe/Settings/SettingsGroupView.swift"
+        ]
+      },
+      "android": {
+        "status": "built",
+        "evidence": [
+          "bipe-app/android/app/src/main/kotlin/chat/bipe/app/settings/AccessibilitySettingsScreen.kt",
+          "bipe-app/android/app/src/main/kotlin/chat/bipe/app/settings/SettingsScreens.kt"
+        ]
+      },
+      "web": {
+        "status": "n/a",
+        "reason": "No settings on the site; the site has /acessibilidade/"
+      },
+      "server": {
+        "status": "n/a",
+        "reason": "Reads the phone's settings; no server state"
+      }
+    },
+    {
       "id": "app-colors",
       "name": "App colours: the user picks a palette for the accent, the own bubble and the app icon (bipe#811)",
       "ios": {
@@ -3682,6 +3977,92 @@
         ]
       },
       "issue": 867
+    },
+    {
+      "id": "join-pushes",
+      "name": "Optional pushes when someone joins with your invite or your group link (bipe#967)",
+      "ios": {
+        "status": "built",
+        "evidence": [
+          "bipe-app/ios/NotificationService/NotificationService.swift",
+          "bipe-app/ios/Bipe/Notifications/NotificationSettingsModel.swift"
+        ]
+      },
+      "android": {
+        "status": "built",
+        "evidence": [
+          "bipe-app/android/libraries/bipe/src/main/kotlin/chat/bipe/shared/BipePushMessage.kt",
+          "bipe-app/android/app/src/main/kotlin/chat/bipe/app/notifications/NotificationSettingsModel.kt"
+        ]
+      },
+      "web": {
+        "status": "n/a",
+        "reason": "No web chat (ADR 0004); notifications are a phone feature"
+      },
+      "server": {
+        "status": "built",
+        "evidence": [
+          "bipe-api/src/notification-prefs.ts",
+          "bipe-api/src/device-push.ts"
+        ]
+      },
+      "issue": 967
+    },
+    {
+      "id": "work-setup",
+      "name": "Trabalho step by step: tool state, sector, steps, suggestions, Hoje (ADR 0194)",
+      "ios": {
+        "status": "built",
+        "evidence": [
+          "bipe-app/ios/Bipe/Business/WorkHome.swift"
+        ]
+      },
+      "android": {
+        "status": "built",
+        "evidence": [
+          "bipe-app/android/app/src/main/kotlin/chat/bipe/app/business/WorkHome.kt"
+        ]
+      },
+      "web": {
+        "status": "built",
+        "evidence": [
+          "bipe-app/web/src/work/WorkHome.tsx"
+        ]
+      },
+      "server": {
+        "status": "built",
+        "evidence": [
+          "bipe-api/src/business-tools.ts"
+        ]
+      }
+    },
+    {
+      "id": "loja-web",
+      "name": "Shop on the web: booking and orders with no account (ADR 0195)",
+      "ios": {
+        "status": "built",
+        "evidence": [
+          "bipe-app/ios/Bipe/Business/ShopClaim.swift"
+        ]
+      },
+      "android": {
+        "status": "built",
+        "evidence": [
+          "bipe-app/android/app/src/main/kotlin/chat/bipe/app/business/ShopClaims.kt"
+        ]
+      },
+      "web": {
+        "status": "built",
+        "evidence": [
+          "bipe-web/src/sim/ShopWeb.tsx"
+        ]
+      },
+      "server": {
+        "status": "built",
+        "evidence": [
+          "bipe-api/src/shop-web.ts"
+        ]
+      }
     }
   ],
   "differences": [

@@ -2,32 +2,64 @@
   "id": "business-tools",
   "title": "Business tools",
   "flow": "business",
-  "summary": "The Trabalho tab of a company account (app-tabs) lists the business tools: Agenda, Catálogo, Pedidos, Orçamentos and Fila virtual. Each row opens its owner screen inside the tab. Você does not show them.",
+  "summary": "The Trabalho tab of a company account (app-tabs), step by step (ADR 0194): Hoje when a tool is live, one Próximo passo card with the progress, one suggestion, the live and setup tools as rows, and Todas as ferramentas with the tools that are off. Mobile first; the web follows the same layout (ADR 0226 point 4). Você does not show them.",
   "state": {
     "isCompany": {
       "type": "bool",
       "description": "Shown only for a company account (ADR 0132 account type)."
     },
-    "agendaPublished": {
+    "tools": {
+      "type": "list",
+      "of": {
+        "type": "Tool",
+        "description": "One tool."
+      },
+      "description": "GET /v1/me/business/tools. A failed read shows every tool as a row, so that nothing hides (ADR 0194 point 5)."
+    },
+    "today": {
+      "type": "string",
+      "optional": true,
+      "description": "GET /v1/me/business/today, shown when at least one tool is live: today's bookings (Confirmar), open orders (Aceitar), the queue (Chamar próximo) and requests that wait (Responder)."
+    },
+    "nextStep": {
+      "type": "string",
+      "optional": true,
+      "description": "The first step not done from GET /v1/me/business/setup, with bipe_work_progress. Absent when every step is done."
+    },
+    "suggestion": {
+      "type": "string",
+      "optional": true,
+      "description": "The first of GET /v1/me/business/suggestions."
+    },
+    "showBrandMarks": {
       "type": "bool",
-      "description": "Subtitle bipe_agenda_published or bipe_agenda_not_published, or bipe_agenda_activate before activation."
+      "description": "true for the sector resale or when the account holds a mark (ADR 0194 point 19). Work account settings always show the row."
     }
   },
   "actions": {
-    "openAgenda": {
-      "effect": "Opens agenda-owner."
+    "load": {
+      "effect": "Reads the tools, the steps, the suggestions and, with a live tool, Hoje. Runs when the tab opens and when the app comes to the front."
     },
-    "openCatalog": {
-      "effect": "Opens catalog-owner."
+    "openTool": {
+      "effect": "Opens the owner screen of the tool: agenda-owner, catalog-owner, order-owner, quote-builder or queue-owner."
     },
-    "openOrders": {
-      "effect": "Opens order-owner."
+    "openSetup": {
+      "effect": "Opens work-setup."
     },
-    "openQuotes": {
-      "effect": "Opens quote-builder."
+    "turnOn": {
+      "effect": "PUT /v1/me/business/tools/{id} with setup, then openTool. tool_needs_catalog shows bipe_work_tool_needs_service or bipe_work_tool_needs_product with bipe_work_tool_open_catalog."
     },
-    "openQueue": {
-      "effect": "Opens queue-owner."
+    "dismissSuggestion": {
+      "effect": "POST /v1/me/business/suggestions/{id}/dismiss."
+    },
+    "confirmBooking": {
+      "effect": "Hoje: POST /v1/me/business/agenda/bookings/{id}/accept for a requested booking."
+    },
+    "acceptOrder": {
+      "effect": "Hoje: POST /v1/me/business/orders/{id}/accept."
+    },
+    "callNext": {
+      "effect": "Hoje: POST /v1/me/business/queue/call-next."
     },
     "openBrandMarks": {
       "effect": "Opens brand-marks (ADR 0162)."
@@ -45,7 +77,33 @@
     "bipe_orders_title",
     "bipe_quotes_title",
     "bipe_queue_title",
-    "bipe_brand_marks_title"
+    "bipe_brand_marks_title",
+    "bipe_work_next_step",
+    "bipe_work_progress",
+    "bipe_work_today",
+    "bipe_work_today_bookings",
+    "bipe_work_today_orders",
+    "bipe_work_today_queue",
+    "bipe_work_today_queue_waiting",
+    "bipe_work_today_quotes",
+    "bipe_work_today_confirm",
+    "bipe_work_today_accept",
+    "bipe_work_today_call_next",
+    "bipe_work_today_answer",
+    "bipe_work_all_tools",
+    "bipe_work_tool_turn_on",
+    "bipe_work_tool_publish",
+    "bipe_work_tool_turn_off",
+    "bipe_work_tool_state_setup",
+    "bipe_work_tool_state_live",
+    "bipe_work_tool_needs_service",
+    "bipe_work_tool_needs_product",
+    "bipe_work_tool_open_catalog",
+    "bipe_work_tool_error",
+    "bipe_work_suggest_quotes_for_on_request",
+    "bipe_work_suggest_agenda_for_services",
+    "bipe_work_suggest_orders_for_products",
+    "bipe_work_suggest_dismiss"
   ],
   "sdk": [],
   "parity": [
@@ -54,5 +112,37 @@
     "orders",
     "quotes",
     "queue"
+  ],
+  "types": {
+    "Tool": {
+      "id": {
+        "type": "string",
+        "description": "catalog, agenda, orders, quotes or queue."
+      },
+      "state": {
+        "type": "enum",
+        "values": [
+          "off",
+          "setup",
+          "live"
+        ],
+        "description": "GET /v1/me/business/tools."
+      },
+      "missing": {
+        "type": "enum",
+        "values": [
+          "catalogService",
+          "catalogProduct"
+        ],
+        "optional": true,
+        "description": "What the tool needs before it can leave off."
+      }
+    }
+  },
+  "notes": [
+    "The tab suggests an order and never hides a tool (ADR 0194 point 5). Only a real dependency blocks a tool.",
+    "Each owner screen has Publicar (live) and Desligar (off): PUT /v1/me/business/tools/{id}. Records stay readable when a tool is off.",
+    "The Agenda's activation and publication are its setup and live: there is one source of truth in bipe-api.",
+    "No suggestion reads a chat, on the server or on the phone (ADR 0194 point 15)."
   ]
 }

@@ -4,11 +4,11 @@
   "promise": {
     "pt": {
       "title": "Converse com tranquilidade.",
-      "lede": "Um app de mensagens gratuito e sem anúncio, com seus dados no Brasil. Seu número fica com você, e o Bipe te avisa quando algo parecer estranho."
+      "lede": "Saiba com quem está falando: o Bipe avisa quando algo parece estranho, e seu número fica com você. É gratuito, sem anúncio, e seus dados ficam no Brasil."
     },
     "en": {
       "title": "Chat with peace of mind.",
-      "lede": "A free messaging app with no ads and your data in Brazil. Your number stays with you, and Bipe warns you when something looks off."
+      "lede": "Know who you're talking to: Bipe warns you when something looks off, and your number stays with you. It's free, with no ads, and your data stays in Brazil."
     }
   },
   "headlineTest": {
@@ -4023,7 +4023,7 @@
     ]
   },
   "home": {
-    "$comment": "The home page (bipe-web HomePage). proof: the always-true promises in a row under the hero. features: features in the iPhone test app (ADR 0129: planned and built-only features stay on their pages; bipe-web selfTest checks it).",
+    "$comment": "The home page (bipe-web HomePage). proof: the always-true promises in a row under the hero. features: features in the iPhone test app (ADR 0129: planned and built-only features stay on their pages; bipe-web selfTest checks it). business: the company section, with a link to /empresas/ (MZ, 2 November 2026). Its features must be built or testing on iOS; the feature card shows no status, the feature page does.",
     "proof": [
       "free",
       "no-ads",
@@ -4037,6 +4037,22 @@
       "handles",
       "e2ee",
       "polls"
-    ]
+    ],
+    "business": {
+      "features": [
+        "cnpj-badge",
+        "agenda",
+        "catalog",
+        "queue"
+      ],
+      "pt": {
+        "title": "Para sua empresa",
+        "line": "Uma conta da empresa no mesmo celular, para atender clientes com selo de CNPJ, agenda, catálogo e fila virtual."
+      },
+      "en": {
+        "title": "For your business",
+        "line": "A business account on the same phone, to serve customers with a CNPJ seal, an agenda, a catalog and a virtual queue."
+      }
+    }
   }
 }

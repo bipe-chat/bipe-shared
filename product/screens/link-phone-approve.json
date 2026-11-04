@@ -2,15 +2,29 @@
   "id": "link-phone-approve",
   "title": "Move to a new phone: approve on the old phone",
   "flow": "devices",
-  "summary": "On the old phone, after the check code: warns that the new phone gets full access, shows the time of the request, waits through the cooldown, asks for the biometric check and opens the MAS consent page in a private web view, where the user checks the new phone's model and place and approves (ADR 0059, ADR 0118). The SDK then sends cross-signing and the backup key to the new phone.",
+  "summary": "On the old phone, after the check code: warns that the new phone gets full access, shows the time of the request, waits through the cooldown, asks for the biometric check and runs the MAS approval with the app's HTTP client and shows a native consent screen, where the user checks the new phone's device text, IP and place and taps Connect (ADR 0059, ADR 0118, ADR 0224). The SDK then sends cross-signing and the backup key to the new phone.",
   "state": {
     "phase": {
       "type": "enum",
-      "values": ["warning", "confirmIdentity", "loading", "consent", "finishing", "done", "failed"],
+      "values": [
+        "warning",
+        "confirmIdentity",
+        "loading",
+        "consent",
+        "finishing",
+        "done",
+        "failed"
+      ],
       "description": "warning: the full-access warning with the time of the request and the cooldown. confirmIdentity: the biometric check (rule 14, tier 3). loading, consent, finishing, done and failed: as link-computer-approve."
     },
-    "requestedAt": { "type": "date", "description": "When the new phone scanned the code (GrantGeneratedQrLoginProgress.qrScanned), shown as the local time with bipe_app_link_phone_time." },
-    "secondsLeft": { "type": "int", "description": "Cooldown left, from registries/accounts.json webLinkCooldownSeconds to 0." },
+    "requestedAt": {
+      "type": "date",
+      "description": "When the new phone scanned the code (GrantGeneratedQrLoginProgress.qrScanned), shown as the local time with bipe_app_link_phone_time."
+    },
+    "secondsLeft": {
+      "type": "int",
+      "description": "Cooldown left, from registries/accounts.json webLinkCooldownSeconds to 0."
+    },
     "place": {
       "type": "string",
       "optional": true,
@@ -32,23 +46,32 @@
     "confirmIdentity": {
       "effect": "Asks for the approval owner check (bipe#785, security.md rules 5 and 14): biometrics only, with no passcode fallback (Android: BIOMETRIC_STRONG, class 3); a phone with no biometrics set up asks for the Bipe PIN (bipe_pin_enter_title), checked by POST /v1/me/pin/check, where wrong tries count against the account (bipe_pin_wrong with tries left, bipe_pin_blocked_body); a phone with no screen lock is refused and the flow goes back. bipe_app_link_phone_biometric is the biometric reason. On a pass, reads the hidden password and opens the MAS page as link-computer-approve open. On a fail or cancel, back to warning."
     },
-    "pageLoaded": {
-      "params": {
-        "isLoginForm": { "type": "bool", "description": "The page has a form with a password field (the MAS login form)." },
-        "isConsentPage": { "type": "bool", "description": "The path is /device/<id> and the page has a form." }
-      },
-      "effect": "As link-computer-approve pageLoaded: fills the MAS login form once with the hidden password, looks up the place on the consent page, and calls ContinuationMessageSender.confirm when the user leaves the consent page."
+    "approve": {
+      "effect": "As link-computer-approve approve."
+    },
+    "reject": {
+      "effect": "As link-computer-approve reject."
     },
     "progress": {
-      "params": { "update": { "type": "string", "description": "The GrantGeneratedQrLoginProgress case that onUpdate got." } },
+      "params": {
+        "update": {
+          "type": "string",
+          "description": "The GrantGeneratedQrLoginProgress case that onUpdate got."
+        }
+      },
       "effect": "syncingSecrets: finishing. done: sets done and shows bipe_app_link_phone_done."
     },
     "taskFailed": {
-      "params": { "reason": { "type": "string", "description": "The HumanQrGrantLoginError case that GrantLoginWithQrCodeHandler.generate threw." } },
+      "params": {
+        "reason": {
+          "type": "string",
+          "description": "The HumanQrGrantLoginError case that GrantLoginWithQrCodeHandler.generate threw."
+        }
+      },
       "effect": "expired and notFound → bipe_app_link_phone_expired; cancelled after the consent page → closes with no message (the user declined on the MAS page); anything else → bipe_error_generic. Calls finish."
     },
     "finish": {
-      "effect": "As link-computer-approve finish: clears the web view, then POST /v1/web-link/finish so that bipe-api ends the MAS browser session the web view made."
+      "effect": "As link-computer-approve finish: drops the HTTP client, then POST /v1/web-link/finish with kind = phone so that bipe-api ends the MAS browser session the client made."
     },
     "cancel": {
       "effect": "In warning: ContinuationMessageSender.cancel and closes the flow. The new phone does not sign in."
@@ -70,9 +93,13 @@
     "bipe_app_link_phone_biometric",
     "bipe_link_computer_loading",
     "bipe_app_link_phone_consent_hint",
+    "bipe_link_computer_device",
+    "bipe_link_computer_device_unknown",
+    "bipe_link_computer_ip",
     "bipe_link_computer_place",
     "bipe_link_computer_place_unknown",
     "bipe_link_computer_place_source",
+    "bipe_link_computer_approve",
     "bipe_app_link_phone_finishing",
     "bipe_app_link_phone_done",
     "bipe_app_link_phone_error_title",
@@ -95,12 +122,14 @@
     "Client.userId",
     "Client.homeserver"
   ],
-  "parity": ["new-phone"],
+  "parity": [
+    "new-phone"
+  ],
   "notes": [
-    "ADR 0059 QR approval: before the old phone approves, it shows the new phone's model, approximate place and time and asks for a biometric check. Time: requestedAt on the warning. Model: the MAS consent page shows the client name and the user agent of the new phone (recovery-old-phone sets both with the phone model, ADR 0118 F6). Place: GET /v1/web-link/place for the IP on the MAS page, shown above it as in link-computer-approve. The approve button is on the MAS page, after all three are on screen.",
-    "Why a web view: MAS approves a device code grant only on its consent page (ADR 0118). This screen reuses the link-computer-approve web view, form fill, place lookup and finish as they are; only the strings and the first phase differ.",
+    "ADR 0059 QR approval: before the old phone approves, it shows the new phone's device text, approximate place and time and asks for a biometric check. Time: requestedAt on the warning. Device: the device card of the MAS consent page (recovery-old-phone sets the user agent with the phone model, ADR 0118 F6). Place: GET /v1/web-link/place for the IP of the consent page, as in link-computer-approve. Connect is on the native consent screen, after all three are on screen.",
+    "No web view (ADR 0224): this screen reuses the link-computer-approve HTTP client, form posts, place lookup and finish as they are; only the strings and the first phase differ.",
     "History: syncingSecrets passes cross-signing and the backup key to the new phone, so it decrypts the history itself and needs no recovery key or other approval (bipe-chat/bipe#201).",
     "The hidden password stays on the old phone (ADR 0059). The new phone signs in through MAS with its own OAuth session and has no hidden password; link-computer-scan then shows needsPin on the new phone until it gets one.",
-    "Unverified (24 October 2026): that the MAS consent page shows the client name of a device code grant; the full flow between two phones and between two Simulators."
+    "Unverified (24 October 2026): the full flow between two phones and between two Simulators."
   ]
 }

@@ -1,13 +1,35 @@
 {
   "id": "link-computer-approve",
-  "title": "Link a computer: approve on the MAS page",
+  "title": "Link a computer: approve natively",
   "flow": "devices",
-  "summary": "After a biometric check, opens the MAS consent page in a private web view, signs that web view in with the hidden password, and shows the approximate place of the browser above the page. The user approves there; the SDK then sends the secrets to the browser and bipe-api ends the MAS browser session that the web view made (ADR 0118).",
+  "summary": "After a biometric check, runs the MAS device-grant pages with the app's own HTTP client (no web view), signs that client in with the hidden password and shows a native consent screen with the device, the IP and the approximate place of the browser. The user taps Connect or Cancel; the app posts the MAS consent form, the SDK then sends the secrets to the browser and bipe-api ends the MAS browser session that the client made (ADR 0224, ADR 0118).",
   "state": {
+    "account": {
+      "type": "AccountSummary",
+      "optional": true,
+      "description": "The approving account, as on link-computer-scan. Shown read only at the top of the consent screen as bipe_app_link_computer_account, only when the phone holds more than one account."
+    },
     "phase": {
       "type": "enum",
-      "values": ["confirmIdentity", "loading", "consent", "finishing", "done", "failed"],
-      "description": "confirmIdentity: the biometric check (rule 14, tier 3). loading: the MAS page loads, or the web view fills the MAS login form; the user never sees the login form. consent: the MAS consent page is in front. finishing: the user left the consent page; GrantQrLoginProgress.syncingSecrets. done: GrantQrLoginProgress.done. failed: see error."
+      "values": [
+        "confirmIdentity",
+        "loading",
+        "consent",
+        "finishing",
+        "done",
+        "failed"
+      ],
+      "description": "confirmIdentity: the biometric check (rule 14, tier 3). loading: the app loads the MAS pages and posts the login form; the user sees bipe_link_computer_loading. consent: the native consent screen. finishing: the app posted the consent form; GrantQrLoginProgress.syncingSecrets. done: GrantQrLoginProgress.done. failed: see error."
+    },
+    "device": {
+      "type": "string",
+      "optional": true,
+      "description": "The browser or phone as MAS describes it: the text of the device card header on the consent page (model, OS and browser). Empty when the page has none."
+    },
+    "ip": {
+      "type": "string",
+      "optional": true,
+      "description": "The IP address of the requesting browser from the consent page."
     },
     "place": {
       "type": "string",
@@ -25,40 +47,55 @@
       "effect": "Asks for the approval owner check (bipe#785, security.md rules 5 and 14): biometrics only, with no passcode fallback (Android: BIOMETRIC_STRONG, class 3); a phone with no biometrics set up asks for the Bipe PIN (bipe_pin_enter_title), checked by POST /v1/me/pin/check, where wrong tries count against the account (bipe_pin_wrong with tries left, bipe_pin_blocked_body); a phone with no screen lock is refused and the flow goes back. bipe_link_computer_biometric is the biometric reason. On a pass, reads the hidden password from the credential store and sets loading. On a fail or cancel, goes back to link-computer-warning."
     },
     "open": {
-      "effect": "Reads the MAS issuer from GET /_matrix/client/v1/auth_metadata (then the unstable MSC2965 path). Opens verificationUri of GrantQrLoginProgress.waitingForAuth in a private web view that loads only https pages on the MAS host. Notes the start time for finish. A URL on another host sets failed with bipe_link_computer_error_sign_in."
+      "effect": "Reads the MAS issuer from GET /_matrix/client/v1/auth_metadata (then the unstable MSC2965 path). Makes an ephemeral HTTP client: its own in-memory cookie store, no cache, https only, every request and every redirect on the MAS host; a redirect off the host stops it. GET verificationUri of GrantQrLoginProgress.waitingForAuth. Login form (a form with input password): POST csrf, username = the localpart of the Matrix ID, password = the hidden password, once, to the form URL; then forget the password. The next page must be the consent page: path /device/<id> with a form that has a button action=consent. Sets consent with device and ip, and looks up the place of ip. Notes the start time for finish. Fails with bipe_link_computer_error_sign_in and an error code on: a URL off the MAS host, an HTTP status of 400 or more, a second login form (wrong password or MAS rate limit), or any other page. The log names the error code, the HTTP status and the page path; never the query, the password or the CSRF token."
     },
-    "pageLoaded": {
-      "params": {
-        "isLoginForm": { "type": "bool", "description": "The page has a form with a password field (the MAS login form)." },
-        "isConsentPage": { "type": "bool", "description": "The path is /device/<id> and the page has a form." }
-      },
-      "effect": "Login form, first time: fills the localpart and the hidden password and submits once, then forgets the password. Login form a second time: sets failed with bipe_link_computer_error_sign_in. Consent page: sets consent and looks up the place of the first IP address in the page text. Any other page after the consent page: the user approved or declined; ContinuationMessageSender.confirm, sets finishing and calls finish."
+    "approve": {
+      "effect": "Only in consent. POST csrf (of the consent form), confirm_device=on, action=consent to the consent page URL. A response with no consent form and a status below 400 means MAS granted the request: ContinuationMessageSender.confirm, sets finishing. Anything else: failed with bipe_link_computer_error_sign_in, ContinuationMessageSender.cancel, finish."
+    },
+    "reject": {
+      "effect": "Only in consent. POST csrf, action=reject to the consent page URL (a failure is logged and not shown), ContinuationMessageSender.cancel, closes with no message, finish."
     },
     "progress": {
-      "params": { "update": { "type": "string", "description": "The GrantQrLoginProgress case that onUpdate got." } },
+      "params": {
+        "update": {
+          "type": "string",
+          "description": "The GrantQrLoginProgress case that onUpdate got."
+        }
+      },
       "effect": "syncingSecrets: finishing. done: sets done, shows bipe_link_computer_done and refreshes the linked devices list."
     },
     "taskFailed": {
-      "params": { "reason": { "type": "string", "description": "The HumanQrGrantLoginError case from GrantLoginWithQrCodeTask.wait." } },
-      "effect": "expired and notFound → bipe_app_link_computer_expired; cancelled after the consent page → closes with no message (the user declined on the MAS page); anything else → bipe_error_generic. Calls finish."
+      "params": {
+        "reason": {
+          "type": "string",
+          "description": "The HumanQrGrantLoginError case from GrantLoginWithQrCodeTask.wait."
+        }
+      },
+      "effect": "expired and notFound → bipe_app_link_computer_expired; cancelled after reject → closes with no message; anything else → bipe_error_generic. Calls finish."
     },
     "finish": {
-      "effect": "Once per flow: clears the web view cookies and storage and stops it, then POST /v1/web-link/finish with since = the start time. bipe-api ends the MAS browser sessions of the user that started at or after it. A failure is logged and not shown."
+      "effect": "Once per flow: drops the HTTP client and its cookies, then POST /v1/web-link/finish with since = the start time and kind = computer. bipe-api ends the MAS browser sessions of the user that started at or after it, and records the web session that this phone approved, so signing the phone out of a company account (sign-out) or the theft mark signs that web session out too (bipe#398). A failure is logged and not shown."
     },
     "close": {
-      "effect": "Before the consent page: ContinuationMessageSender.cancel, then finish. After the consent page: ContinuationMessageSender.confirm (the SDK learns the result from MAS), then finish."
+      "effect": "Before approve: ContinuationMessageSender.cancel, then finish. After approve: ContinuationMessageSender.confirm (the SDK learns the result from MAS), then finish."
     },
     "retry": {
       "effect": "From failed: closes the flow and opens link-computer-scan again. A new QR code is needed for each try."
     }
   },
   "strings": [
+    "bipe_app_link_computer_account",
     "bipe_link_computer_biometric",
     "bipe_link_computer_loading",
     "bipe_link_computer_consent_hint",
+    "bipe_link_computer_device",
+    "bipe_link_computer_device_unknown",
+    "bipe_link_computer_ip",
     "bipe_link_computer_place",
     "bipe_link_computer_place_unknown",
     "bipe_link_computer_place_source",
+    "bipe_link_computer_approve",
+    "bipe_app_cancel",
     "bipe_app_link_computer_finishing",
     "bipe_link_computer_done",
     "bipe_link_computer_error_title",
@@ -82,17 +119,20 @@
     "Client.homeserver",
     "Client.session"
   ],
-  "parity": ["web-sign-in"],
+  "parity": [
+    "web-sign-in"
+  ],
   "notes": [
-    "Why a web view: MAS approves a device code grant only on its consent page, with a MAS browser session. The app signs in with m.login.password, so it has none. The web view makes one with the hidden password (ADR 0118 option 1). No SDK call approves the grant by API.",
-    "The web view: iOS WKWebView with WKWebsiteDataStore.nonPersistent(); Android a WebView in the app process with its own profile, or with cookies and storage cleared on an old WebView. Never ASWebAuthenticationSession, SFSafariViewController or a Custom Tab: they share cookies with the system browser. No autofill, no file access, no new windows. A navigation or a form post off the MAS host stops the load.",
-    "The hidden password: read only after the biometric check passes. Put into the MAS login form fields username (the localpart of the Matrix ID) and password once, as escaped string values. Never logged, never shown, not kept after the submit. The user never sees the MAS login form.",
-    "The user code: MAS fills it in (oauth.device_code_user_code_auto_fill_enabled, bipe-chat/bipe#474), so the user only taps approve. If the SDK passes a verificationUri without the code, MAS shows the code field and the user types the code that the computer shows.",
-    "The place: the MAS consent page shows the browser and its IP (ADR 0118 F6). The app takes the first IPv4 or IPv6 address in the page text and calls GET /v1/web-link/place?ip=. The IP goes to no outside service. Show bipe_link_computer_place with the place, or bipe_link_computer_place_unknown, and bipe_link_computer_place_source (DB-IP licence) above the page with bipe_link_computer_consent_hint.",
+    "No web view (ADR 0224). MAS approves a device code grant only on its HTML consent page, with a MAS browser session. The app signs in with m.login.password, so it has none. The app's HTTP client makes one with the hidden password and posts the MAS forms itself. No SDK call approves the grant by API.",
+    "The HTTP client: iOS URLSession with URLSessionConfiguration.ephemeral (own cookie storage, no URL cache) and a delegate that refuses a redirect off the MAS host; Android OkHttp with an in-memory CookieJar, followRedirects with a host check in an interceptor. Never ASWebAuthenticationSession, SFSafariViewController, a Custom Tab or a WebView. The client is dropped in finish.",
+    "MAS form fields (MAS templates pages/login.html and pages/device_consent.html, checked at v1.28.0 and on production 2 November 2026): login form csrf, username, password; consent form csrf, confirm_device (required checkbox), button action=consent; reject form csrf, button action=reject. Forms post to their own page URL (no action attribute). The parser reads only form, input and button tags and the device card; it runs no script.",
+    "The hidden password: read only after the biometric check passes. Sent once as a form field over https to the MAS host. Never logged, never shown, not kept after the post.",
+    "The user code: MAS fills it in (oauth.device_code_user_code_auto_fill_enabled, bipe-chat/bipe#474). If the verificationUri has no code, MAS shows a code form and the flow fails with an error code; the SDK passes verification_uri_complete.",
+    "The consent screen: bipe_link_computer_device with the device text (or bipe_link_computer_device_unknown), bipe_link_computer_ip, bipe_link_computer_place or bipe_link_computer_place_unknown with bipe_link_computer_place_source (DB-IP licence), bipe_link_computer_consent_hint, then bipe_link_computer_approve (primary) and bipe_app_cancel. The IP goes to no outside service.",
+    "Error codes in the log and under the error: consent-host (off the MAS host), consent-status-<n> (HTTP status), consent-login (second login form), consent-page (no consent form; the log names the path), consent-post (the consent post did not grant).",
     "History: the QR flow passes cross-signing and the backup key to the browser (syncingSecrets), so the browser decrypts the history itself. Bipe's servers never see message content (ADR 0116).",
     "A web device is unattested (ADR 0043): no badge, no Pix, no business account from the web. Nothing on this screen changes that.",
-    "MAS rate limits: each approval counts as one MAS password login per account and per IP (ADR 0118). A rate limit shows as the login form a second time, so failed with bipe_link_computer_error_sign_in.",
-    "Bipe logic to move, not rewrite: BipeWebLink.localpart, isAllowed, isDeviceConsentPath, firstIPAddress; BipeWebLinkPlace.label; BipeMatrixAccountAPI.authMetadata; BipeAuthMetadata.host (iOS BipeKit BipeWebLink.swift). BipeWebLinkSession.authMetadata, hiddenPassword, place and finish; BipeWebApprovalController steps and page checks (Android libraries/bipe weblink). The Android controller references fork types for the continuation; the new client uses ContinuationMessageSender from the SDK.",
-    "Unverified (ADR 0118): the full flow on a phone (bipe-chat/bipe#392); that a non-persistent WKWebView keeps the MAS cookie across the MAS redirects; that the MSC4108 channel stays open while the web view is in front."
+    "MAS rate limits: each approval counts as one MAS password login per account and per IP (ADR 0118). A rate limit shows as a second login form: error code consent-login.",
+    "Unverified: the full flow on a phone (bipe-chat/bipe#392, #900)."
   ]
 }

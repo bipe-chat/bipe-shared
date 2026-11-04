@@ -25,12 +25,17 @@ const MODELS = {
   Invite: { ios: "BipeInvite", android: "BipeInvite" },
   MyInvites: { ios: "BipeMyInvites", android: "BipeMyInvites" },
   CreatedInvite: { ios: "BipeCreatedInvite", android: "BipeCreatedInvite" },
+  GroupLink: { ios: "BipeGroupLink", android: "BipeGroupLink" },
+  CreatedGroupLink: { ios: "BipeCreatedGroupLink", android: "BipeCreatedGroupLink" },
+  GroupLinkPreview: { ios: "BipeGroupLinkPreview", android: "BipeGroupLinkPreview" },
   HandleAvailability: { ios: "BipeHandleAvailability", android: "BipeHandleAvailability" },
   HandleRecord: { ios: "BipeHandleRecord", android: "BipeHandleRecord" },
   MyHandle: { ios: "BipeMyHandle", android: "BipeMyHandle" },
   PublicProfile: { ios: "BipePublicProfile", android: "BipePublicProfile" },
   MyProfile: { ios: "BipeMyProfile", android: "BipeMyProfile" },
   ProfileUpdate: { ios: "BipeProfileUpdate", android: "BipeProfileUpdate" },
+  // Join pushes (bipe-chat/bipe#967).
+  NotificationPrefs: { ios: "BipeNotificationPrefs", android: "BipeNotificationPrefs" },
   // Device-first accounts (ADR 0057): iOS done in bipe-chat/bipe#153, Android in #154.
   AccountStatus: { ios: "BipeAccountStatus", android: "BipeAccountStatus" },
   Recovery: { ios: "BipeRecovery", android: "BipeRecovery" },
@@ -70,15 +75,24 @@ const NOT_IN_APPS = {
     "BookingStatus", "BookingCustomer", "Booking", "BookingHold", "OwnerBooking", "BookingMove", "Slot", "SlotDay", "SlotDays",
     "AgendaFeedOptions", "AgendaFeed", "BusyImportInput", "BusyImport", "AgendaError",
   ].map((name) => [name, "contract first (bipe#315); app clients follow in bipe#321 to bipe#324"])),
+  ...Object.fromEntries([
+    "BusinessToolId", "BusinessToolState", "BusinessToolStatus", "BusinessTools", "BusinessToolChange", "BusinessLiveTools", "WorkSector", "WorkSetupStep", "WorkSetup", "WorkSuggestion", "WorkSuggestions", "BusinessToday",
+  ].map((name) => [name, "contract first (bipe#798); app clients follow in bipe#800 to bipe#802"])),
+  ...Object.fromEntries([
+    "WebBooking", "WebOrder", "WebBookingResult", "WebOrderResult", "WebRecords", "WebClaim", "WebSettings",
+  ].map((name) => [name, "web path, used by bipe-web and the claim (bipe#803)"])),
   DiscoverySettings: "one boolean; iOS sends it from a private request type in BipeAPIClient",
+  ReachStatus: "contract first (bipe#851); the budget notice and \"Status da conta\" in the app follow in bipe#846",
   MessagingSetting: "one enum field; iOS decodes it in a private MessagingSetting type in BipeAPIClient, exposed as BipeWhoCanMessage",
   TermsAcceptance: "one string; the apps send it from a private request type in their API client (ADR 0113)",
+  AgeSignal: "the apps send it from a private request type in their API client (ADR 0229)",
   ExperimentEvent: "web only (headline test)",
   WaitlistRequest: "the site, and the apps' \"Não tem convite?\" sheet (bipe#415) from a private request type in their API client",
   OrganisationRequest: "web only",
   InviterStats: "staff page on the site only (ADR 0056)",
   GrowthReport: "staff page on the site only (ADR 0098)",
   StaffSummary: "staff page on the site only (bipe#394)",
+  AccountCount: "staff route only",
   StaffMetrics: "staff page on the site only",
   StaffWindow: "staff page on the site only",
   ExperimentsReport: "staff page on the site only (bipe#368)",
@@ -317,7 +331,7 @@ for (const [ref, types] of Object.entries(ENUMS)) {
 
 // ADR 0138 rule 2 (bipe-chat/bipe#513): what anyone can read about another account never names who is behind it.
 // A company account must not lead to its owner's personal account, user ID, phone, CPF or e-mail.
-const PUBLIC_SCHEMAS = ["InvitePreview", "PublicProfile", "BadgeEnvelope", "BadgeGone"];
+const PUBLIC_SCHEMAS = ["InvitePreview", "GroupLinkPreview", "PublicProfile", "BadgeEnvelope", "BadgeGone"];
 const NOT_PUBLIC = /(^|_)(user_id|phone|cpf|owner|created_by|email)$/;
 for (const name of PUBLIC_SCHEMAS) {
   const spec = schemas[name];

@@ -9,6 +9,15 @@
       "values": ["unknown", "enabled", "disabled", "incomplete"],
       "description": "Encryption.recoveryState. enabled: a key exists. incomplete: a key exists but this device does not hold all secrets."
     },
+    "verificationState": {
+      "type": "enum",
+      "values": ["unknown", "verified", "unverified"],
+      "description": "Encryption.verificationState: whether this phone is cross-signed."
+    },
+    "needsApproval": {
+      "type": "bool",
+      "description": "recoveryState incomplete, or verificationState not verified: this phone may lack the private cross-signing keys (bipe-chat/bipe#911). The intro shows bipe_app_history_none and bipe_app_link_approve_phone instead of create."
+    },
     "phase": {
       "type": "enum",
       "values": ["intro", "creating", "showKey", "saved", "failed"],
@@ -19,11 +28,15 @@
       "values": ["starting", "creatingBackup", "creatingRecoveryKey", "backingUp", "roomKeyUploadError", "done"],
       "description": "From EnableRecoveryProgressListener."
     },
-    "recoveryKey": { "type": "string", "optional": true, "description": "The key, held in memory while showKey lasts. Never logged, never stored by the app." }
+    "recoveryKey": { "type": "string", "optional": true, "description": "The key, held in memory while showKey lasts. Never logged, never stored by the app." },
+    "account": { "type": "string", "description": "The account the key belongs to: the display name, else the @handle, else the account label (README, People names). Never the Matrix user ID. Shown in showKey as bipe_app_recovery_key_account above the key, so a screenshot of the key names its account (MZ, 1 Nov 2026)." }
   },
   "actions": {
     "create": {
-      "effect": "disabled: runs Encryption.enableRecovery (wait for backups to upload, no passphrase). enabled or incomplete: asks for a biometric check, then runs Encryption.resetRecoveryKey. Sets recoveryKey and phase showKey."
+      "effect": "Never while needsApproval. disabled: runs Encryption.enableRecovery (wait for backups to upload, no passphrase). enabled or incomplete: asks for a biometric check, then runs Encryption.resetRecoveryKey. Sets recoveryKey and phase showKey."
+    },
+    "approvePhone": {
+      "effect": "needsApproval only: closes this screen and opens the encryption-status sheet (approve with another device, or enter the old recovery key on recovery-key-enter)."
     },
     "copy": {
       "effect": "Copies the key to the clipboard, marked as sensitive so the system does not show or sync it, and clears it after 60 s where the platform allows."
@@ -45,10 +58,13 @@
     "bipe_app_recovery_key_create",
     "bipe_app_recovery_key_creating",
     "bipe_app_recovery_key_show_body",
+    "bipe_app_recovery_key_account",
     "bipe_app_recovery_key_replace",
     "bipe_app_recovery_key_replace_body",
     "bipe_app_recovery_key_saved_action",
     "bipe_app_recovery_key_biometric",
+    "bipe_app_history_none",
+    "bipe_app_link_approve_phone",
     "bipe_app_copy",
     "bipe_app_copied",
     "bipe_app_share",
@@ -58,6 +74,7 @@
     "Client.encryption",
     "Encryption.recoveryState",
     "Encryption.recoveryStateListener",
+    "Encryption.verificationState",
     "Encryption.enableRecovery",
     "Encryption.resetRecoveryKey",
     "EnableRecoveryProgressListener.onUpdate",
@@ -68,6 +85,7 @@
     "No crypto words on screen: no backup, cross-signing, secret storage or key ID. The key is chave de recuperação and does one thing: brings back old messages on a new phone.",
     "Bipe never holds the key (security.md rule 13) and never asks for it. bipe_fallback_recovery_key_body says so.",
     "roomKeyUploadError: show bipe_error_generic with a retry; the key that was made stays valid.",
-    "The key is shown in groups of 4 characters in a monospace font, selectable."
+    "The key is shown in groups of 4 characters in a monospace font, selectable.",
+    "Never replace the key on a phone that may lack the private cross-signing keys (bipe-chat/bipe#911). On such a phone enableRecovery fails with BackupExistsOnServer or makes a secret storage that holds only the backup key, and resetRecoveryKey makes a new default secret storage key: the old recovery key stops working in every client, and the old secrets stay under the old key ID. The phone is approved first. A person who knows the old key enters it on recovery-key-enter; after that the key can be replaced."
   ]
 }

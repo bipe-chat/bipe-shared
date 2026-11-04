@@ -50,6 +50,9 @@
     },
     "openClaim": {
       "effect": "Company account: a tap on the cnpj, proof or domain step opens business-claim (bipe-chat/bipe#249). Those steps are todo until done."
+    },
+    "openGovbr": {
+      "effect": "Personal account, step 5 todo (build flag govbrEnabled on): a tap on the govbr step opens govbr-verify (bipe-chat/bipe#544). The only entry to that flow."
     }
   },
   "strings": [
@@ -93,6 +96,7 @@
     "Step row: number, title (bipe_trust_step_<id>), body (bipe_trust_step_<id>_body; profile on a company account uses bipe_trust_step_company_profile_body) and a status mark. done: a check icon; screen readers hear bipe_trust_step_done as the row value. todo: no mark; under the profile step, one action row per missingProfileItems entry. comingSoon: the text bipe_trust_coming_soon in secondary ink.",
     "Never colour alone (trust-ui.md): every status has an icon or words. The check mark is not the Bipe seal.",
     "The state is the same BipeTrustProfile value as trust-card; this screen reads it, it does not fetch on its own.",
-    "No step shows a CPF, a document or the verified name of another person (ADR 0019)."
+    "No step shows a CPF, a document or the verified name of another person (ADR 0019).",
+    "govbr: todo when the build flag govbrEnabled is on, else comingSoon; done when the account's own badge level is govbr (trust-card notes). A done or comingSoon govbr row opens nothing."
   ]
 }

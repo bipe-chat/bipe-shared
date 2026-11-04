@@ -84,6 +84,7 @@ test("a gap between the apps names an issue", () => {
   const { fork: _, ...gap } = item({ android: "planned" });
   assert.match(problems([gap])[0], /ios is built, android is planned, and no issue closes the gap/);
   assert.deepEqual(problems([{ ...gap, android: { status: "planned", issue: 9 } }]), []);
+  assert.deepEqual(problems([{ ...gap, android: { status: "n/a", reason: "r" } }]), []);
 });
 
 test("without a bipe-app checkout the evidence is not checked", () => {

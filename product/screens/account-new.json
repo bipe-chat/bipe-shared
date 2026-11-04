@@ -106,6 +106,7 @@
     "A sign-up from this window has no inviter: signup-name does not show bipe_signup_invited_by, signup-done does not open a chat with the account on screen, and no inviter greeting is stored (ADR 0034, ADR 0138 rules 2 and 5).",
     "The invite is made on the tap, never on appear, so opening and closing the window costs no invite.",
     "A first sign-up on a phone with no account keeps onboarding-welcome and signup-invite-code (account-start noAccount).",
-    "Bipe logic: BipeInviteCreator and BipeInviteQuota (iOS BipeKit); myInvites, createInvite and revokeInvite in libraries/bipe BipeApiInvites (Android)."
+    "Bipe logic: BipeInviteCreator and BipeInviteQuota (iOS BipeKit); myInvites, createInvite and revokeInvite in libraries/bipe BipeApiInvites (Android).",
+    "After a company account is created, work-sector shows once (ADR 0194 point 8)."
   ]
 }

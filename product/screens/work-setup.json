@@ -1,0 +1,71 @@
+{
+  "id": "work-setup",
+  "title": "Set up your business",
+  "flow": "business",
+  "summary": "The full list of the step-by-step path of a company account, opened from the Próximo passo card of the Trabalho tab (ADR 0194 point 13). The server computes each step from records; the owner does not tick a step by hand.",
+  "types": {
+    "Step": {
+      "id": {
+        "type": "string",
+        "description": "profile, link, catalog, first_tool, seal or second_seat."
+      },
+      "done": {
+        "type": "bool",
+        "description": "Computed by bipe-api."
+      }
+    }
+  },
+  "state": {
+    "steps": {
+      "type": "list",
+      "of": {
+        "type": "Step",
+        "description": "One step, in the order of the sector."
+      },
+      "description": "GET /v1/me/business/setup."
+    },
+    "firstTool": {
+      "type": "string",
+      "description": "The tool of the first_tool step."
+    }
+  },
+  "actions": {
+    "load": {
+      "effect": "GET /v1/me/business/setup."
+    },
+    "openStep": {
+      "effect": "profile opens the profile edit screen, link opens the link and QR code screen and calls POST /v1/me/business/setup/link-opened, catalog opens catalog-owner, first_tool opens the owner screen of the tool, seal opens the CNPJ flow on the phone, second_seat opens the seats screen on the phone.",
+      "params": {
+        "id": {
+          "type": "string",
+          "description": "The step."
+        }
+      }
+    }
+  },
+  "strings": [
+    "bipe_work_setup_title",
+    "bipe_work_setup_done",
+    "bipe_work_progress",
+    "bipe_work_step_profile",
+    "bipe_work_step_profile_body",
+    "bipe_work_step_link",
+    "bipe_work_step_link_body",
+    "bipe_work_step_catalog",
+    "bipe_work_step_catalog_body",
+    "bipe_work_step_first_tool",
+    "bipe_work_step_first_tool_body",
+    "bipe_work_step_seal",
+    "bipe_work_step_seal_body",
+    "bipe_work_step_second_seat",
+    "bipe_work_step_second_seat_body"
+  ],
+  "sdk": [],
+  "parity": [
+    "work-setup"
+  ],
+  "notes": [
+    "An autônomo with no CNPJ does not get the seal step (ADR 0138): the server leaves it out.",
+    "The web shows the seal and second_seat steps as text with bipe_web_work_phone_only (ADR 0226 point 6)."
+  ]
+}

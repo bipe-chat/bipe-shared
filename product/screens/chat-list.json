@@ -2,7 +2,7 @@
   "id": "chat-list",
   "title": "Chat list",
   "flow": "home",
-  "summary": "Shows the chats of the current account, newest activity first, from the SDK room list service. One screen with two scopes: Conversas (DMs and the Pedidos row) and Grupos (rooms with more than two members), ADR 0053.",
+  "summary": "Shows the chats of the current account, newest activity first, from the SDK room list service. One screen with two scopes: Conversas (DMs and the Pedidos row) and Grupos (rooms with more than two members), ADR 0053. An account can turn on Mural (ADR 0246): Conversas then shows DMs and groups as tiles sized by a score that the phone computes.",
   "types": {
     "ChatSummary": {
       "roomId": {
@@ -49,6 +49,38 @@
         "type": "bool",
         "description": "The SDK RoomInfo.isFavourite tag state (m.favourite). A favourite shows in the favourites row, not in the list below it."
       }
+    },
+    "MuralTile": {
+      "chat": {
+        "type": "ChatSummary",
+        "description": "The chat of the tile."
+      },
+      "tier": {
+        "type": "int",
+        "description": "1, 2, 3 or 4 from BipeHomeScore.plan. A chat with a null tier has no tile and is only in the plain list."
+      },
+      "reason": {
+        "type": "enum",
+        "values": [
+          "mention",
+          "unanswered"
+        ],
+        "optional": true,
+        "description": "From BipeHomeScore.plan. mention shows bipe_chat_mural_reason_mention, unanswered shows bipe_chat_mural_reason_unanswered. Tier 2 shows it; every tier's screen reader label reads it."
+      },
+      "messages": {
+        "type": "list",
+        "of": {
+          "type": "string",
+          "description": "The preview text of one message, as in the row text note."
+        },
+        "description": "The newest messages of the local timeline that the tile shows, oldest first. Their number comes from the tier (Mural tiles note)."
+      },
+      "draft": {
+        "type": "string",
+        "optional": true,
+        "description": "First tile only: the saved composer draft of the room, shown with bipe_app_chat_list_draft and put in the reply field."
+      }
     }
   },
   "state": {
@@ -88,6 +120,26 @@
     "reorderingFavourites": {
       "type": "bool",
       "description": "The favourites row is in reorder mode: cells drag to a new position, tap does not open a chat. Starts false; the chat-row-actions reorderFavourites item sets it, bipe_chat_favourites_reorder_done clears it."
+    },
+    "muralEnabled": {
+      "type": "bool",
+      "description": "The Mural setting of this account on this device (settings-group row chats.mural). Default false. False: the screen works as in the rest of this spec."
+    },
+    "muralTiles": {
+      "type": "list",
+      "of": {
+        "type": "MuralTile",
+        "description": "One tile."
+      },
+      "description": "Mural on, scope conversas: the tiles in BipeHomeScore.plan order, with a non-null tier. Empty while Mural is off."
+    },
+    "muralShowsList": {
+      "type": "bool",
+      "description": "Mural on: the person opened the plain list with bipe_chat_mural_view_list. Starts false."
+    },
+    "muralReplyText": {
+      "type": "string",
+      "description": "The text of the reply field on the first tile. Starts with the saved draft of the room, if there is one."
     }
   },
   "actions": {
@@ -128,6 +180,22 @@
         }
       },
       "effect": "Moves the favourite in the current scope and writes the favourites order (Client.setAccountData). The other scope's rooms keep their positions. The row shows the new order at once."
+    },
+    "openMuralList": {
+      "effect": "Sets muralShowsList. The plain list shows every chat of the Conversas and Grupos rooms, a chat with no tile too, and no tile. Back returns to the tiles."
+    },
+    "replyFromTile": {
+      "params": {
+        "roomId": {
+          "type": "string",
+          "description": "The room of the first tile."
+        },
+        "text": {
+          "type": "string",
+          "description": "The text in the reply field."
+        }
+      },
+      "effect": "Sends text with the send rules of composer (Timeline.send). Clears the reply field and the saved draft of the room. An empty text sends nothing. A failed send keeps the text and shows the composer's failed state. After the send, the chat is read: the same public receipt and flag as setUnread, so its unread score goes."
     }
   },
   "strings": [
@@ -150,7 +218,15 @@
     "bipe_badge_verified",
     "bipe_badge_company",
     "bipe_badge_suspended",
-    "bipe_badge_company_suspended"
+    "bipe_badge_company_suspended",
+    "bipe_chats_mural",
+    "bipe_chats_mural_footer",
+    "bipe_chat_mural_no_news",
+    "bipe_chat_mural_view_list",
+    "bipe_chat_mural_reason_mention",
+    "bipe_chat_mural_reason_unanswered",
+    "bipe_chats_message_placeholder",
+    "bipe_app_chat_list_draft"
   ],
   "sdk": [
     "Client.syncService",
@@ -166,7 +242,8 @@
     "Room.setIsFavourite",
     "RoomListEntriesDynamicFilterKind",
     "Client.accountData",
-    "Client.setAccountData"
+    "Client.setAccountData",
+    "Timeline.send"
   ],
   "parity": [
     "e2ee-only-rooms",
@@ -175,7 +252,8 @@
     "official-badge",
     "chat-favourites-filters",
     "verified-badge",
-    "cnpj-badge"
+    "cnpj-badge",
+    "mural-home"
   ],
   "notes": [
     "MZ decision 25 Oct 2026 (bipe#577): no current-account avatar in the top bar. Você shows the current account (spec voce). This replaces the top-bar avatar of ADR 0135 point 5 for Bipe Next.",
@@ -197,6 +275,14 @@
     "News room (MZ decision 27 Oct 2026, bipe#809): Novidades do Bipe is a named room, not a DM. bipe-api makes it without is_direct, so RoomInfo.isDm is false and the room takes the non-DM path everywhere: the row, the chat header, search and the notification title show RoomInfo.displayName (its m.room.name, bipe_news_room_name) and the room avatar, and the row is in the Grupos scope. News room mark (MZ decision 2 Nov 2026, bipe#978, replaces the no-badge rule): the app keeps the room_id of GET /v1/me/news on the phone for the account. The row and the chat header of that exact room show the Bipe badge (bipe_badge_official) and the name bipe_news_room_name in the app language, not its m.room.name. No other group shows the badge. The DM rule (ADR 0141) does not change. Rooms made before the fix are in the account's m.direct. Once per account on each phone, after the first sync, the app reads room_id from GET /v1/me/news and, when the room is joined, removes that room ID from the server copy of m.direct (Client.setAccountData; a user whose list becomes empty goes) and remembers that it ran. It waits while the room is only an invite, because joining an invite that says is_direct adds the room to m.direct again. A failure, or news_unavailable, tries again at the next start or return to the foreground. subscribed false counts as done. The support room stays a DM: it shows the support account's name, which bipe-api sets to bipe_support_room_name.",
     "Favourites row (MZ, 27 Oct 2026, bipe#673): favourite chats (m.favourite, RoomInfo.isFavourite) show at the top of their scope as a grid of large avatars, three per line, with the name under each avatar on one line. A favourite does not show again in the list below. An unread favourite shows the accent dot on its avatar, and its accessibility label adds bipe_chat_unread_state. Tap opens the chat; long press opens the same chat-row-actions menu. The row is the first item of the list, above the history banner, the first-list cards, the requests row and group invites (MZ, 27 Oct 2026, build 233: under the invites it looked wrong). It scrolls with the chats. The group's accessibility label is bipe_chat_favourites. Order: the favourites order below, not the room list order. No limit: more than three wrap to the next line. The archived list never shows the row. The tag syncs, so a favourite set on one phone shows on every phone of the account. Default chosen: per scope (Conversas shows favourite DMs, Grupos favourite groups, a company account's single list shows both), because a scope shows only its own chats everywhere else. MZ can overrule. A favourite outside the loaded pages still shows: a second room list stream with the Favourite filter (All of Joined, NonSpace, Favourite, DeduplicateVersions) finds it, the same way chat-archive finds archives.",
     "Favourites order (MZ, 3 Nov 2026: recency order moved the avatars at every new message, so the grid had no fixed places). The user sets the order; a new message never moves a favourite. The order is the global account data event registries/chat-favourites.json orderEventType (BipeRegistries.chatFavouritesOrderEventType), content { \"rooms\": [room IDs, first first] }, so every phone of the account shows the same order. Not the m.favourite tag order: the SDK writes it but cannot read it back. Rules (display, new favourite last, removal, other-scope positions, orderMax, malformed content, failed write) are in the registry $comment. Read the event when the list starts and when the favourite rooms change. Reorder mode: chat-row-actions reorderFavourites starts it. The row then shows bipe_chat_favourites_reorder_hint above the grid and a bipe_chat_favourites_reorder_done button; the unread dot stays; tap does nothing; a drag of a cell moves it to the cell under the finger, and the row writes the order when the drag ends. Each cell has the accessibility actions bipe_chat_favourite_move_earlier and bipe_chat_favourite_move_later (not on the first or last cell), which run moveFavourite one step. Leaving the list, changing scope or a row with fewer than two favourites ends reorder mode. Default chosen: an explicit mode, not drag straight from the long press, because the long press already opens the menu on both platforms. MZ can overrule.",
-    "Android only (bipe#823): when the permission or battery check of notification-checkup fails, a banner above the list shows bipe_app_notification_checkup_banner with bipe_app_notification_checkup_fix (opens notification-checkup) and a close button (bipe_app_close). Closing it hides it for 7 days on this phone."
+    "Android only (bipe#823): when the permission or battery check of notification-checkup fails, a banner above the list shows bipe_app_notification_checkup_banner with bipe_app_notification_checkup_fix (opens notification-checkup) and a close button (bipe_app_close). Closing it hides it for 7 days on this phone.",
+    "Mural setting (ADR 0246, bipe-chat/bipe#1044): the switch bipe_chats_mural with the footer bipe_chats_mural_footer, in Configurações > Conversas e mídia (settings-group row chats.mural). Default off. The app stores it per account on this device: it does not sync, and it is not in account data. Turning it on or off changes the Conversas tab at once. With Mural off, nothing else on this screen changes.",
+    "Mural scope (ADR 0246): with Mural on, the Conversas tab shows DMs and groups together, as the company todas scope does, and its badge adds gruposAttention (spec app-tabs). The Grupos tab does not change and keeps the plain list. The Pedidos row stays where it is. A request gets no score and no tile. An archived chat gets no score and no tile. The favourites row does not show in Mural: a favourite adds to the score only. The first-list cards and the banners stay above the tiles.",
+    "Mural score (ADR 0246): every tile comes from BipeHomeScore.plan (Swift, Kotlin) or homePlan (web, generated lib/home-score.mjs with registries.json homeScore). registries/home-score.json holds the formula, the weights and the limits; test-vectors/home-score.json checks them. No platform keeps a second copy or changes a tier. No score or signal leaves the device: not to bipe-api, not to account data, not to analytics, not to another device. Two devices of one person can show different tiles.",
+    "Mural inputs (BipeHomeChat): id is the room ID. kind: group when the room is not a DM (the news room too); company when GET /v1/accounts/{userId}/type says company (ADR 0132); else person. hasSeal: sealMark is company; companySuspended counts as no seal. official: isOfficial, and true for the news room (news room mark note), so that it stays at the official cap. favourite: isFavourite. muted: the RoomNotificationMode of the room is mute (spec chat-notifications). mentioned: RoomInfo.numUnreadMentions > 0; a reply to the person counts through its m.mentions. unreadCount: as in the row. lastFromOther: the newest message-like event of the local timeline has another sender; false when unknown. minutesSinceActivity: whole minutes, rounded down, from the row date (lastActivity) to now; null when the row date is unknown. trustWarning: false in step 1, no model runs. modelAttention and modelDue: absent in step 1.",
+    "messagesPerWeek (ADR 0246, default chosen for bipe-chat/bipe#1044): the count of message-like events, from anyone, with origin_server_ts in the last 7 days (registries/home-score.json tie.windowDays), in the local timeline of the room. It is the same read as the row date note (Room.timeline, the first Timeline.addListener update): no network, no pagination. Undecryptable events count, because their time is not encrypted. A room with no local events counts 0. The count therefore can be lower than the true count, and it never asks the server for more.",
+    "Mural tiles (ADR 0246). Tier 1: full width, avatar and name, then messages. The first tile shows the last 3 messages (BipeHomeScore firstTileMessages), the draft if there is one, and a reply field with bipe_chats_message_placeholder that sends with replyFromTile. The second tile shows the last message. Tier 2: half width, avatar, name, reason and one bubble with the last message. Tier 3: one third of the width, avatar, first word of the name, two lines of text. Tier 4: avatar only, in rows that wrap, under the heading bipe_chat_mural_no_news. A person or company name follows README People names. Step 1 shows real messages only, with no gist and no reason from a model. Tap on a tile opens chat-timeline; long press opens chat-row-actions. A tap on the reply field does not open the chat.",
+    "Mural grid rules (ADR 0246): the tier sets the tile and nothing else sets it. The last row of a tier stretches, so the grid has no hole. bipe_chat_mural_view_list ends the screen and opens the plain list. Avatar shape, seal and member cluster follow the rules of this spec at every size. Tiles meet the touch target rule (44 pt, 48 dp), Dynamic Type and font scaling. Screen readers read tiles in plan order, with name, reason and unread count (bipe_app_chat_list_unread). The reason already says the mention, so a tile does not add bipe_a11y_mention. Web difference: the web client cannot verify a seal, so hasSeal is false and a sealed company scores as a company without a seal there. A tile does not move during a touch or a scroll: new text and badges show in place, and new tiers and positions apply when the screen is at rest.",
+    "Mural model (ADR 0246): steps 2 and 3 are not built. No model runs, and privacy.json and data.json list none. registries/home-score.json keeps the model weights, marked unused-step-1, and the function reads them only when a caller passes model fields. No caller passes them in step 1."
   ]
 }

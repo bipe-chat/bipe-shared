@@ -1,0 +1,2883 @@
+{
+  "$comment": "Mural home score (ADR 0246, bipe-chat/bipe#1044). The formula and the tie-break are in registries/home-score.json. score: each input alone as a list of one chat; compare the score (2 places), the tier and the reason. plan: a list of chats; compare the order, each score and each tier. tier null: no tile. All IDs are fixtures. A case without modelAttention and modelDue has the model fields absent. Swift BipeHomeScore, Kotlin BipeHomeScore and the web lib/home-score.mjs must give the same values. The expected values come from a separate implementation, not from tools/lib/home-score.mjs.",
+  "version": 1,
+  "score": [
+    {
+      "name": "no signal, unknown time",
+      "input": {
+        "id": "!a:example.test",
+        "kind": "person",
+        "hasSeal": false,
+        "official": false,
+        "favourite": false,
+        "muted": false,
+        "mentioned": false,
+        "unreadCount": 0,
+        "lastFromOther": false,
+        "minutesSinceActivity": null,
+        "messagesPerWeek": 0,
+        "trustWarning": false
+      },
+      "expected": {
+        "score": 0.0,
+        "tier": 4,
+        "reason": null
+      }
+    },
+    {
+      "name": "no signal, old chat",
+      "input": {
+        "id": "!a:example.test",
+        "kind": "person",
+        "hasSeal": false,
+        "official": false,
+        "favourite": false,
+        "muted": false,
+        "mentioned": false,
+        "unreadCount": 0,
+        "lastFromOther": false,
+        "minutesSinceActivity": 100000,
+        "messagesPerWeek": 0,
+        "trustWarning": false
+      },
+      "expected": {
+        "score": 0.0,
+        "tier": 4,
+        "reason": null
+      }
+    },
+    {
+      "name": "mention in a group",
+      "input": {
+        "id": "!a:example.test",
+        "kind": "group",
+        "hasSeal": false,
+        "official": false,
+        "favourite": false,
+        "muted": false,
+        "mentioned": true,
+        "unreadCount": 0,
+        "lastFromOther": false,
+        "minutesSinceActivity": null,
+        "messagesPerWeek": 0,
+        "trustWarning": false
+      },
+      "expected": {
+        "score": 0.24,
+        "tier": 3,
+        "reason": "mention"
+      }
+    },
+    {
+      "name": "unread DM, person",
+      "input": {
+        "id": "!a:example.test",
+        "kind": "person",
+        "hasSeal": false,
+        "official": false,
+        "favourite": false,
+        "muted": false,
+        "mentioned": false,
+        "unreadCount": 3,
+        "lastFromOther": false,
+        "minutesSinceActivity": null,
+        "messagesPerWeek": 0,
+        "trustWarning": false
+      },
+      "expected": {
+        "score": 0.22,
+        "tier": 3,
+        "reason": null
+      }
+    },
+    {
+      "name": "unread DM, one or many is the same",
+      "input": {
+        "id": "!a:example.test",
+        "kind": "person",
+        "hasSeal": false,
+        "official": false,
+        "favourite": false,
+        "muted": false,
+        "mentioned": false,
+        "unreadCount": 500,
+        "lastFromOther": false,
+        "minutesSinceActivity": null,
+        "messagesPerWeek": 0,
+        "trustWarning": false
+      },
+      "expected": {
+        "score": 0.22,
+        "tier": 3,
+        "reason": null
+      }
+    },
+    {
+      "name": "unread DM, company with a seal",
+      "input": {
+        "id": "!a:example.test",
+        "kind": "company",
+        "hasSeal": true,
+        "official": false,
+        "favourite": false,
+        "muted": false,
+        "mentioned": false,
+        "unreadCount": 1,
+        "lastFromOther": false,
+        "minutesSinceActivity": null,
+        "messagesPerWeek": 0,
+        "trustWarning": false
+      },
+      "expected": {
+        "score": 0.22,
+        "tier": 3,
+        "reason": null
+      }
+    },
+    {
+      "name": "unread DM, company without a seal",
+      "input": {
+        "id": "!a:example.test",
+        "kind": "company",
+        "hasSeal": false,
+        "official": false,
+        "favourite": false,
+        "muted": false,
+        "mentioned": false,
+        "unreadCount": 1,
+        "lastFromOther": false,
+        "minutesSinceActivity": null,
+        "messagesPerWeek": 0,
+        "trustWarning": false
+      },
+      "expected": {
+        "score": 0.1,
+        "tier": 4,
+        "reason": null
+      }
+    },
+    {
+      "name": "mention in a company without a seal",
+      "input": {
+        "id": "!a:example.test",
+        "kind": "company",
+        "hasSeal": false,
+        "official": false,
+        "favourite": false,
+        "muted": false,
+        "mentioned": true,
+        "unreadCount": 1,
+        "lastFromOther": false,
+        "minutesSinceActivity": null,
+        "messagesPerWeek": 0,
+        "trustWarning": false
+      },
+      "expected": {
+        "score": 0.34,
+        "tier": 2,
+        "reason": "mention"
+      }
+    },
+    {
+      "name": "unread group, 1 message",
+      "input": {
+        "id": "!a:example.test",
+        "kind": "group",
+        "hasSeal": false,
+        "official": false,
+        "favourite": false,
+        "muted": false,
+        "mentioned": false,
+        "unreadCount": 1,
+        "lastFromOther": false,
+        "minutesSinceActivity": null,
+        "messagesPerWeek": 0,
+        "trustWarning": false
+      },
+      "expected": {
+        "score": 0.03,
+        "tier": 4,
+        "reason": null
+      }
+    },
+    {
+      "name": "unread group, 10 messages",
+      "input": {
+        "id": "!a:example.test",
+        "kind": "group",
+        "hasSeal": false,
+        "official": false,
+        "favourite": false,
+        "muted": false,
+        "mentioned": false,
+        "unreadCount": 10,
+        "lastFromOther": false,
+        "minutesSinceActivity": null,
+        "messagesPerWeek": 0,
+        "trustWarning": false
+      },
+      "expected": {
+        "score": 0.05,
+        "tier": 4,
+        "reason": null
+      }
+    },
+    {
+      "name": "unread group, 99 messages reach the maximum",
+      "input": {
+        "id": "!a:example.test",
+        "kind": "group",
+        "hasSeal": false,
+        "official": false,
+        "favourite": false,
+        "muted": false,
+        "mentioned": false,
+        "unreadCount": 99,
+        "lastFromOther": false,
+        "minutesSinceActivity": null,
+        "messagesPerWeek": 0,
+        "trustWarning": false
+      },
+      "expected": {
+        "score": 0.08,
+        "tier": 4,
+        "reason": null
+      }
+    },
+    {
+      "name": "unread group, 5000 messages stay at the maximum",
+      "input": {
+        "id": "!a:example.test",
+        "kind": "group",
+        "hasSeal": false,
+        "official": false,
+        "favourite": false,
+        "muted": false,
+        "mentioned": false,
+        "unreadCount": 5000,
+        "lastFromOther": false,
+        "minutesSinceActivity": null,
+        "messagesPerWeek": 0,
+        "trustWarning": false
+      },
+      "expected": {
+        "score": 0.08,
+        "tier": 4,
+        "reason": null
+      }
+    },
+    {
+      "name": "unanswered DM, 1 hour",
+      "input": {
+        "id": "!a:example.test",
+        "kind": "person",
+        "hasSeal": false,
+        "official": false,
+        "favourite": false,
+        "muted": false,
+        "mentioned": false,
+        "unreadCount": 0,
+        "lastFromOther": true,
+        "minutesSinceActivity": 60,
+        "messagesPerWeek": 0,
+        "trustWarning": false
+      },
+      "expected": {
+        "score": 0.18,
+        "tier": 3,
+        "reason": "unanswered"
+      }
+    },
+    {
+      "name": "unanswered DM, last minute under 3 days",
+      "input": {
+        "id": "!a:example.test",
+        "kind": "person",
+        "hasSeal": false,
+        "official": false,
+        "favourite": false,
+        "muted": false,
+        "mentioned": false,
+        "unreadCount": 0,
+        "lastFromOther": true,
+        "minutesSinceActivity": 4319,
+        "messagesPerWeek": 0,
+        "trustWarning": false
+      },
+      "expected": {
+        "score": 0.06,
+        "tier": 4,
+        "reason": "unanswered"
+      }
+    },
+    {
+      "name": "unanswered DM, exactly 3 days",
+      "input": {
+        "id": "!a:example.test",
+        "kind": "person",
+        "hasSeal": false,
+        "official": false,
+        "favourite": false,
+        "muted": false,
+        "mentioned": false,
+        "unreadCount": 0,
+        "lastFromOther": true,
+        "minutesSinceActivity": 4320,
+        "messagesPerWeek": 0,
+        "trustWarning": false
+      },
+      "expected": {
+        "score": 0.0,
+        "tier": 4,
+        "reason": null
+      }
+    },
+    {
+      "name": "unanswered DM, unknown time",
+      "input": {
+        "id": "!a:example.test",
+        "kind": "person",
+        "hasSeal": false,
+        "official": false,
+        "favourite": false,
+        "muted": false,
+        "mentioned": false,
+        "unreadCount": 0,
+        "lastFromOther": true,
+        "minutesSinceActivity": null,
+        "messagesPerWeek": 0,
+        "trustWarning": false
+      },
+      "expected": {
+        "score": 0.0,
+        "tier": 4,
+        "reason": null
+      }
+    },
+    {
+      "name": "own message last is not unanswered",
+      "input": {
+        "id": "!a:example.test",
+        "kind": "person",
+        "hasSeal": false,
+        "official": false,
+        "favourite": false,
+        "muted": false,
+        "mentioned": false,
+        "unreadCount": 0,
+        "lastFromOther": false,
+        "minutesSinceActivity": 60,
+        "messagesPerWeek": 0,
+        "trustWarning": false
+      },
+      "expected": {
+        "score": 0.12,
+        "tier": 4,
+        "reason": null
+      }
+    },
+    {
+      "name": "unread DM is not unanswered",
+      "input": {
+        "id": "!a:example.test",
+        "kind": "person",
+        "hasSeal": false,
+        "official": false,
+        "favourite": false,
+        "muted": false,
+        "mentioned": false,
+        "unreadCount": 1,
+        "lastFromOther": true,
+        "minutesSinceActivity": 60,
+        "messagesPerWeek": 0,
+        "trustWarning": false
+      },
+      "expected": {
+        "score": 0.34,
+        "tier": 2,
+        "reason": null
+      }
+    },
+    {
+      "name": "group is never unanswered",
+      "input": {
+        "id": "!a:example.test",
+        "kind": "group",
+        "hasSeal": false,
+        "official": false,
+        "favourite": false,
+        "muted": false,
+        "mentioned": false,
+        "unreadCount": 0,
+        "lastFromOther": true,
+        "minutesSinceActivity": 60,
+        "messagesPerWeek": 0,
+        "trustWarning": false
+      },
+      "expected": {
+        "score": 0.12,
+        "tier": 4,
+        "reason": null
+      }
+    },
+    {
+      "name": "company with a seal, unanswered",
+      "input": {
+        "id": "!a:example.test",
+        "kind": "company",
+        "hasSeal": true,
+        "official": false,
+        "favourite": false,
+        "muted": false,
+        "mentioned": false,
+        "unreadCount": 0,
+        "lastFromOther": true,
+        "minutesSinceActivity": 60,
+        "messagesPerWeek": 0,
+        "trustWarning": false
+      },
+      "expected": {
+        "score": 0.18,
+        "tier": 3,
+        "reason": "unanswered"
+      }
+    },
+    {
+      "name": "favourite",
+      "input": {
+        "id": "!a:example.test",
+        "kind": "person",
+        "hasSeal": false,
+        "official": false,
+        "favourite": true,
+        "muted": false,
+        "mentioned": false,
+        "unreadCount": 0,
+        "lastFromOther": false,
+        "minutesSinceActivity": null,
+        "messagesPerWeek": 0,
+        "trustWarning": false
+      },
+      "expected": {
+        "score": 0.1,
+        "tier": 4,
+        "reason": null
+      }
+    },
+    {
+      "name": "tie, 1 message a week",
+      "input": {
+        "id": "!a:example.test",
+        "kind": "person",
+        "hasSeal": false,
+        "official": false,
+        "favourite": false,
+        "muted": false,
+        "mentioned": false,
+        "unreadCount": 0,
+        "lastFromOther": false,
+        "minutesSinceActivity": null,
+        "messagesPerWeek": 1,
+        "trustWarning": false
+      },
+      "expected": {
+        "score": 0.03,
+        "tier": 4,
+        "reason": null
+      }
+    },
+    {
+      "name": "tie, 7 messages a week",
+      "input": {
+        "id": "!a:example.test",
+        "kind": "person",
+        "hasSeal": false,
+        "official": false,
+        "favourite": false,
+        "muted": false,
+        "mentioned": false,
+        "unreadCount": 0,
+        "lastFromOther": false,
+        "minutesSinceActivity": null,
+        "messagesPerWeek": 7,
+        "trustWarning": false
+      },
+      "expected": {
+        "score": 0.09,
+        "tier": 4,
+        "reason": null
+      }
+    },
+    {
+      "name": "tie, 30 messages a week",
+      "input": {
+        "id": "!a:example.test",
+        "kind": "person",
+        "hasSeal": false,
+        "official": false,
+        "favourite": false,
+        "muted": false,
+        "mentioned": false,
+        "unreadCount": 0,
+        "lastFromOther": false,
+        "minutesSinceActivity": null,
+        "messagesPerWeek": 30,
+        "trustWarning": false
+      },
+      "expected": {
+        "score": 0.15,
+        "tier": 3,
+        "reason": null
+      }
+    },
+    {
+      "name": "tie, 39 messages a week, below the maximum",
+      "input": {
+        "id": "!a:example.test",
+        "kind": "person",
+        "hasSeal": false,
+        "official": false,
+        "favourite": false,
+        "muted": false,
+        "mentioned": false,
+        "unreadCount": 0,
+        "lastFromOther": false,
+        "minutesSinceActivity": null,
+        "messagesPerWeek": 39,
+        "trustWarning": false
+      },
+      "expected": {
+        "score": 0.16,
+        "tier": 3,
+        "reason": null
+      }
+    },
+    {
+      "name": "tie, 2000 messages a week stay at the maximum",
+      "input": {
+        "id": "!a:example.test",
+        "kind": "person",
+        "hasSeal": false,
+        "official": false,
+        "favourite": false,
+        "muted": false,
+        "mentioned": false,
+        "unreadCount": 0,
+        "lastFromOther": false,
+        "minutesSinceActivity": null,
+        "messagesPerWeek": 2000,
+        "trustWarning": false
+      },
+      "expected": {
+        "score": 0.16,
+        "tier": 3,
+        "reason": null
+      }
+    },
+    {
+      "name": "tie counts in a group too",
+      "input": {
+        "id": "!a:example.test",
+        "kind": "group",
+        "hasSeal": false,
+        "official": false,
+        "favourite": false,
+        "muted": false,
+        "mentioned": false,
+        "unreadCount": 0,
+        "lastFromOther": false,
+        "minutesSinceActivity": null,
+        "messagesPerWeek": 7,
+        "trustWarning": false
+      },
+      "expected": {
+        "score": 0.09,
+        "tier": 4,
+        "reason": null
+      }
+    },
+    {
+      "name": "recency, now",
+      "input": {
+        "id": "!a:example.test",
+        "kind": "person",
+        "hasSeal": false,
+        "official": false,
+        "favourite": false,
+        "muted": false,
+        "mentioned": false,
+        "unreadCount": 0,
+        "lastFromOther": false,
+        "minutesSinceActivity": 0,
+        "messagesPerWeek": 0,
+        "trustWarning": false
+      },
+      "expected": {
+        "score": 0.14,
+        "tier": 3,
+        "reason": null
+      }
+    },
+    {
+      "name": "recency, half-life",
+      "input": {
+        "id": "!a:example.test",
+        "kind": "person",
+        "hasSeal": false,
+        "official": false,
+        "favourite": false,
+        "muted": false,
+        "mentioned": false,
+        "unreadCount": 0,
+        "lastFromOther": false,
+        "minutesSinceActivity": 333,
+        "messagesPerWeek": 0,
+        "trustWarning": false
+      },
+      "expected": {
+        "score": 0.07,
+        "tier": 4,
+        "reason": null
+      }
+    },
+    {
+      "name": "recency, 480 minutes",
+      "input": {
+        "id": "!a:example.test",
+        "kind": "person",
+        "hasSeal": false,
+        "official": false,
+        "favourite": false,
+        "muted": false,
+        "mentioned": false,
+        "unreadCount": 0,
+        "lastFromOther": false,
+        "minutesSinceActivity": 480,
+        "messagesPerWeek": 0,
+        "trustWarning": false
+      },
+      "expected": {
+        "score": 0.05,
+        "tier": 4,
+        "reason": null
+      }
+    },
+    {
+      "name": "recency, 1 day",
+      "input": {
+        "id": "!a:example.test",
+        "kind": "person",
+        "hasSeal": false,
+        "official": false,
+        "favourite": false,
+        "muted": false,
+        "mentioned": false,
+        "unreadCount": 0,
+        "lastFromOther": false,
+        "minutesSinceActivity": 1440,
+        "messagesPerWeek": 0,
+        "trustWarning": false
+      },
+      "expected": {
+        "score": 0.01,
+        "tier": 4,
+        "reason": null
+      }
+    },
+    {
+      "name": "negative time counts as now",
+      "input": {
+        "id": "!a:example.test",
+        "kind": "person",
+        "hasSeal": false,
+        "official": false,
+        "favourite": false,
+        "muted": false,
+        "mentioned": false,
+        "unreadCount": 0,
+        "lastFromOther": false,
+        "minutesSinceActivity": -5,
+        "messagesPerWeek": 0,
+        "trustWarning": false
+      },
+      "expected": {
+        "score": 0.14,
+        "tier": 3,
+        "reason": null
+      }
+    },
+    {
+      "name": "negative counts count as 0",
+      "input": {
+        "id": "!a:example.test",
+        "kind": "person",
+        "hasSeal": false,
+        "official": false,
+        "favourite": false,
+        "muted": false,
+        "mentioned": false,
+        "unreadCount": -3,
+        "lastFromOther": false,
+        "minutesSinceActivity": null,
+        "messagesPerWeek": -9,
+        "trustWarning": false
+      },
+      "expected": {
+        "score": 0.0,
+        "tier": 4,
+        "reason": null
+      }
+    },
+    {
+      "name": "close person, unread, now",
+      "input": {
+        "id": "!a:example.test",
+        "kind": "person",
+        "hasSeal": false,
+        "official": false,
+        "favourite": false,
+        "muted": false,
+        "mentioned": false,
+        "unreadCount": 2,
+        "lastFromOther": false,
+        "minutesSinceActivity": 5,
+        "messagesPerWeek": 20,
+        "trustWarning": false
+      },
+      "expected": {
+        "score": 0.49,
+        "tier": 2,
+        "reason": null
+      }
+    },
+    {
+      "name": "all rule signals reach tier 1",
+      "input": {
+        "id": "!a:example.test",
+        "kind": "person",
+        "hasSeal": false,
+        "official": false,
+        "favourite": true,
+        "muted": false,
+        "mentioned": true,
+        "unreadCount": 2,
+        "lastFromOther": false,
+        "minutesSinceActivity": 0,
+        "messagesPerWeek": 40,
+        "trustWarning": false
+      },
+      "expected": {
+        "score": 0.86,
+        "tier": 1,
+        "reason": "mention"
+      }
+    },
+    {
+      "name": "muted group, unread, no mention",
+      "input": {
+        "id": "!a:example.test",
+        "kind": "group",
+        "hasSeal": false,
+        "official": false,
+        "favourite": false,
+        "muted": true,
+        "mentioned": false,
+        "unreadCount": 120,
+        "lastFromOther": false,
+        "minutesSinceActivity": 2,
+        "messagesPerWeek": 10,
+        "trustWarning": false
+      },
+      "expected": {
+        "score": 0.13,
+        "tier": 4,
+        "reason": null
+      }
+    },
+    {
+      "name": "muted group with a mention keeps its score",
+      "input": {
+        "id": "!a:example.test",
+        "kind": "group",
+        "hasSeal": false,
+        "official": false,
+        "favourite": false,
+        "muted": true,
+        "mentioned": true,
+        "unreadCount": 120,
+        "lastFromOther": false,
+        "minutesSinceActivity": 2,
+        "messagesPerWeek": 10,
+        "trustWarning": false
+      },
+      "expected": {
+        "score": 0.56,
+        "tier": 2,
+        "reason": "mention"
+      }
+    },
+    {
+      "name": "muted DM, unread",
+      "input": {
+        "id": "!a:example.test",
+        "kind": "person",
+        "hasSeal": false,
+        "official": false,
+        "favourite": false,
+        "muted": true,
+        "mentioned": false,
+        "unreadCount": 1,
+        "lastFromOther": false,
+        "minutesSinceActivity": 0,
+        "messagesPerWeek": 0,
+        "trustWarning": false
+      },
+      "expected": {
+        "score": 0.14,
+        "tier": 3,
+        "reason": null
+      }
+    },
+    {
+      "name": "muted, favourite, close person",
+      "input": {
+        "id": "!a:example.test",
+        "kind": "person",
+        "hasSeal": false,
+        "official": false,
+        "favourite": true,
+        "muted": true,
+        "mentioned": false,
+        "unreadCount": 0,
+        "lastFromOther": false,
+        "minutesSinceActivity": 0,
+        "messagesPerWeek": 40,
+        "trustWarning": false
+      },
+      "expected": {
+        "score": 0.16,
+        "tier": 3,
+        "reason": null
+      }
+    },
+    {
+      "name": "official, under the cap",
+      "input": {
+        "id": "!a:example.test",
+        "kind": "person",
+        "hasSeal": false,
+        "official": true,
+        "favourite": false,
+        "muted": false,
+        "mentioned": false,
+        "unreadCount": 0,
+        "lastFromOther": false,
+        "minutesSinceActivity": 480,
+        "messagesPerWeek": 0,
+        "trustWarning": false
+      },
+      "expected": {
+        "score": 0.05,
+        "tier": 4,
+        "reason": null
+      }
+    },
+    {
+      "name": "official, at the cap",
+      "input": {
+        "id": "!a:example.test",
+        "kind": "person",
+        "hasSeal": false,
+        "official": true,
+        "favourite": true,
+        "muted": false,
+        "mentioned": false,
+        "unreadCount": 1,
+        "lastFromOther": false,
+        "minutesSinceActivity": 0,
+        "messagesPerWeek": 0,
+        "trustWarning": false
+      },
+      "expected": {
+        "score": 0.14,
+        "tier": 3,
+        "reason": null
+      }
+    },
+    {
+      "name": "official with a mention stays at the cap",
+      "input": {
+        "id": "!a:example.test",
+        "kind": "person",
+        "hasSeal": false,
+        "official": true,
+        "favourite": false,
+        "muted": false,
+        "mentioned": true,
+        "unreadCount": 1,
+        "lastFromOther": false,
+        "minutesSinceActivity": 0,
+        "messagesPerWeek": 0,
+        "trustWarning": false
+      },
+      "expected": {
+        "score": 0.14,
+        "tier": 3,
+        "reason": "mention"
+      }
+    },
+    {
+      "name": "official, muted, then the cap",
+      "input": {
+        "id": "!a:example.test",
+        "kind": "person",
+        "hasSeal": false,
+        "official": true,
+        "favourite": true,
+        "muted": true,
+        "mentioned": false,
+        "unreadCount": 1,
+        "lastFromOther": false,
+        "minutesSinceActivity": 0,
+        "messagesPerWeek": 40,
+        "trustWarning": false
+      },
+      "expected": {
+        "score": 0.14,
+        "tier": 3,
+        "reason": null
+      }
+    },
+    {
+      "name": "model absent",
+      "input": {
+        "id": "!a:example.test",
+        "kind": "person",
+        "hasSeal": false,
+        "official": false,
+        "favourite": false,
+        "muted": false,
+        "mentioned": false,
+        "unreadCount": 1,
+        "lastFromOther": false,
+        "minutesSinceActivity": 30,
+        "messagesPerWeek": 0,
+        "trustWarning": false
+      },
+      "expected": {
+        "score": 0.35,
+        "tier": 2,
+        "reason": null
+      }
+    },
+    {
+      "name": "model reply",
+      "input": {
+        "id": "!a:example.test",
+        "kind": "person",
+        "hasSeal": false,
+        "official": false,
+        "favourite": false,
+        "muted": false,
+        "mentioned": false,
+        "unreadCount": 1,
+        "lastFromOther": false,
+        "minutesSinceActivity": 30,
+        "messagesPerWeek": 0,
+        "trustWarning": false,
+        "modelAttention": "reply"
+      },
+      "expected": {
+        "score": 0.55,
+        "tier": 2,
+        "reason": null
+      }
+    },
+    {
+      "name": "model decide",
+      "input": {
+        "id": "!a:example.test",
+        "kind": "person",
+        "hasSeal": false,
+        "official": false,
+        "favourite": false,
+        "muted": false,
+        "mentioned": false,
+        "unreadCount": 1,
+        "lastFromOther": false,
+        "minutesSinceActivity": 30,
+        "messagesPerWeek": 0,
+        "trustWarning": false,
+        "modelAttention": "decide"
+      },
+      "expected": {
+        "score": 0.55,
+        "tier": 2,
+        "reason": null
+      }
+    },
+    {
+      "name": "model fyi",
+      "input": {
+        "id": "!a:example.test",
+        "kind": "person",
+        "hasSeal": false,
+        "official": false,
+        "favourite": false,
+        "muted": false,
+        "mentioned": false,
+        "unreadCount": 1,
+        "lastFromOther": false,
+        "minutesSinceActivity": 30,
+        "messagesPerWeek": 0,
+        "trustWarning": false,
+        "modelAttention": "fyi"
+      },
+      "expected": {
+        "score": 0.37,
+        "tier": 2,
+        "reason": null
+      }
+    },
+    {
+      "name": "model none, with unread",
+      "input": {
+        "id": "!a:example.test",
+        "kind": "person",
+        "hasSeal": false,
+        "official": false,
+        "favourite": false,
+        "muted": false,
+        "mentioned": false,
+        "unreadCount": 1,
+        "lastFromOther": false,
+        "minutesSinceActivity": 30,
+        "messagesPerWeek": 0,
+        "trustWarning": false,
+        "modelAttention": "none"
+      },
+      "expected": {
+        "score": 0.17,
+        "tier": 3,
+        "reason": null
+      }
+    },
+    {
+      "name": "model none, no unread",
+      "input": {
+        "id": "!a:example.test",
+        "kind": "person",
+        "hasSeal": false,
+        "official": false,
+        "favourite": false,
+        "muted": false,
+        "mentioned": false,
+        "unreadCount": 0,
+        "lastFromOther": false,
+        "minutesSinceActivity": 30,
+        "messagesPerWeek": 20,
+        "trustWarning": false,
+        "modelAttention": "none"
+      },
+      "expected": {
+        "score": 0.26,
+        "tier": 3,
+        "reason": null
+      }
+    },
+    {
+      "name": "model due",
+      "input": {
+        "id": "!a:example.test",
+        "kind": "person",
+        "hasSeal": false,
+        "official": false,
+        "favourite": false,
+        "muted": false,
+        "mentioned": false,
+        "unreadCount": 1,
+        "lastFromOther": false,
+        "minutesSinceActivity": 30,
+        "messagesPerWeek": 0,
+        "trustWarning": false,
+        "modelDue": true
+      },
+      "expected": {
+        "score": 0.41,
+        "tier": 2,
+        "reason": null
+      }
+    },
+    {
+      "name": "model reply and due reach the model maximum",
+      "input": {
+        "id": "!a:example.test",
+        "kind": "person",
+        "hasSeal": false,
+        "official": false,
+        "favourite": false,
+        "muted": false,
+        "mentioned": false,
+        "unreadCount": 1,
+        "lastFromOther": false,
+        "minutesSinceActivity": 30,
+        "messagesPerWeek": 0,
+        "trustWarning": false,
+        "modelAttention": "reply",
+        "modelDue": true
+      },
+      "expected": {
+        "score": 0.61,
+        "tier": 1,
+        "reason": null
+      }
+    },
+    {
+      "name": "model words alone do not reach tier 1",
+      "input": {
+        "id": "!a:example.test",
+        "kind": "person",
+        "hasSeal": false,
+        "official": false,
+        "favourite": false,
+        "muted": false,
+        "mentioned": false,
+        "unreadCount": 0,
+        "lastFromOther": false,
+        "minutesSinceActivity": 0,
+        "messagesPerWeek": 0,
+        "trustWarning": false,
+        "modelAttention": "reply",
+        "modelDue": true
+      },
+      "expected": {
+        "score": 0.4,
+        "tier": 2,
+        "reason": null
+      }
+    },
+    {
+      "name": "model invalid attention is dropped",
+      "input": {
+        "id": "!a:example.test",
+        "kind": "person",
+        "hasSeal": false,
+        "official": false,
+        "favourite": false,
+        "muted": false,
+        "mentioned": false,
+        "unreadCount": 1,
+        "lastFromOther": false,
+        "minutesSinceActivity": 30,
+        "messagesPerWeek": 0,
+        "trustWarning": false,
+        "modelAttention": "urgent"
+      },
+      "expected": {
+        "score": 0.35,
+        "tier": 2,
+        "reason": null
+      }
+    },
+    {
+      "name": "model in a company without a seal is ignored",
+      "input": {
+        "id": "!a:example.test",
+        "kind": "company",
+        "hasSeal": false,
+        "official": false,
+        "favourite": false,
+        "muted": false,
+        "mentioned": false,
+        "unreadCount": 1,
+        "lastFromOther": false,
+        "minutesSinceActivity": 30,
+        "messagesPerWeek": 0,
+        "trustWarning": false,
+        "modelAttention": "reply",
+        "modelDue": true
+      },
+      "expected": {
+        "score": 0.23,
+        "tier": 3,
+        "reason": null
+      }
+    },
+    {
+      "name": "model in a company with a seal counts",
+      "input": {
+        "id": "!a:example.test",
+        "kind": "company",
+        "hasSeal": true,
+        "official": false,
+        "favourite": false,
+        "muted": false,
+        "mentioned": false,
+        "unreadCount": 1,
+        "lastFromOther": false,
+        "minutesSinceActivity": 30,
+        "messagesPerWeek": 0,
+        "trustWarning": false,
+        "modelAttention": "reply",
+        "modelDue": true
+      },
+      "expected": {
+        "score": 0.61,
+        "tier": 1,
+        "reason": null
+      }
+    },
+    {
+      "name": "model in an official account is ignored",
+      "input": {
+        "id": "!a:example.test",
+        "kind": "person",
+        "hasSeal": false,
+        "official": true,
+        "favourite": false,
+        "muted": false,
+        "mentioned": false,
+        "unreadCount": 0,
+        "lastFromOther": false,
+        "minutesSinceActivity": 480,
+        "messagesPerWeek": 0,
+        "trustWarning": false,
+        "modelAttention": "reply",
+        "modelDue": true
+      },
+      "expected": {
+        "score": 0.05,
+        "tier": 4,
+        "reason": null
+      }
+    },
+    {
+      "name": "model with a trust warning is ignored",
+      "input": {
+        "id": "!a:example.test",
+        "kind": "person",
+        "hasSeal": false,
+        "official": false,
+        "favourite": false,
+        "muted": false,
+        "mentioned": false,
+        "unreadCount": 1,
+        "lastFromOther": false,
+        "minutesSinceActivity": 30,
+        "messagesPerWeek": 0,
+        "trustWarning": true,
+        "modelAttention": "reply",
+        "modelDue": true
+      },
+      "expected": {
+        "score": 0.35,
+        "tier": 2,
+        "reason": null
+      }
+    },
+    {
+      "name": "model before the muted factor",
+      "input": {
+        "id": "!a:example.test",
+        "kind": "person",
+        "hasSeal": false,
+        "official": false,
+        "favourite": false,
+        "muted": true,
+        "mentioned": false,
+        "unreadCount": 1,
+        "lastFromOther": false,
+        "minutesSinceActivity": 30,
+        "messagesPerWeek": 0,
+        "trustWarning": false,
+        "modelAttention": "reply"
+      },
+      "expected": {
+        "score": 0.22,
+        "tier": 3,
+        "reason": null
+      }
+    },
+    {
+      "name": "model none does not go below 0",
+      "input": {
+        "id": "!a:example.test",
+        "kind": "group",
+        "hasSeal": false,
+        "official": false,
+        "favourite": false,
+        "muted": false,
+        "mentioned": false,
+        "unreadCount": 1,
+        "lastFromOther": false,
+        "minutesSinceActivity": null,
+        "messagesPerWeek": 0,
+        "trustWarning": false,
+        "modelAttention": "none"
+      },
+      "expected": {
+        "score": 0.0,
+        "tier": 4,
+        "reason": null
+      }
+    },
+    {
+      "name": "rounding: 0.5950 rounds up to tier 1",
+      "input": {
+        "id": "!a:example.test",
+        "kind": "person",
+        "hasSeal": false,
+        "official": false,
+        "favourite": false,
+        "muted": false,
+        "mentioned": true,
+        "unreadCount": 1,
+        "lastFromOther": false,
+        "minutesSinceActivity": 138,
+        "messagesPerWeek": 1,
+        "trustWarning": false
+      },
+      "expected": {
+        "score": 0.6,
+        "tier": 1,
+        "reason": "mention"
+      }
+    },
+    {
+      "name": "rounding: 0.5949 stays in tier 2",
+      "input": {
+        "id": "!a:example.test",
+        "kind": "person",
+        "hasSeal": false,
+        "official": false,
+        "favourite": false,
+        "muted": false,
+        "mentioned": true,
+        "unreadCount": 1,
+        "lastFromOther": false,
+        "minutesSinceActivity": 300,
+        "messagesPerWeek": 3,
+        "trustWarning": false
+      },
+      "expected": {
+        "score": 0.59,
+        "tier": 2,
+        "reason": "mention"
+      }
+    },
+    {
+      "name": "rounding: 0.2950 rounds up to tier 2",
+      "input": {
+        "id": "!a:example.test",
+        "kind": "person",
+        "hasSeal": false,
+        "official": false,
+        "favourite": false,
+        "muted": false,
+        "mentioned": false,
+        "unreadCount": 1,
+        "lastFromOther": false,
+        "minutesSinceActivity": 545,
+        "messagesPerWeek": 1,
+        "trustWarning": false
+      },
+      "expected": {
+        "score": 0.3,
+        "tier": 2,
+        "reason": null
+      }
+    },
+    {
+      "name": "rounding: 0.2949 stays in tier 3",
+      "input": {
+        "id": "!a:example.test",
+        "kind": "person",
+        "hasSeal": false,
+        "official": false,
+        "favourite": false,
+        "muted": false,
+        "mentioned": false,
+        "unreadCount": 1,
+        "lastFromOther": false,
+        "minutesSinceActivity": 300,
+        "messagesPerWeek": 0,
+        "trustWarning": false
+      },
+      "expected": {
+        "score": 0.29,
+        "tier": 3,
+        "reason": null
+      }
+    },
+    {
+      "name": "rounding: 0.1350 rounds up to tier 3",
+      "input": {
+        "id": "!a:example.test",
+        "kind": "person",
+        "hasSeal": false,
+        "official": false,
+        "favourite": false,
+        "muted": false,
+        "mentioned": false,
+        "unreadCount": 0,
+        "lastFromOther": false,
+        "minutesSinceActivity": 138,
+        "messagesPerWeek": 1,
+        "trustWarning": false
+      },
+      "expected": {
+        "score": 0.14,
+        "tier": 3,
+        "reason": null
+      }
+    },
+    {
+      "name": "rounding: 0.1349 stays in tier 4",
+      "input": {
+        "id": "!a:example.test",
+        "kind": "person",
+        "hasSeal": false,
+        "official": false,
+        "favourite": false,
+        "muted": false,
+        "mentioned": false,
+        "unreadCount": 0,
+        "lastFromOther": false,
+        "minutesSinceActivity": 300,
+        "messagesPerWeek": 3,
+        "trustWarning": false
+      },
+      "expected": {
+        "score": 0.13,
+        "tier": 4,
+        "reason": null
+      }
+    }
+  ],
+  "plan": [
+    {
+      "name": "tier 1 holds 2 chats, the third goes to tier 2",
+      "input": [
+        {
+          "id": "!s3:example.test",
+          "kind": "person",
+          "hasSeal": false,
+          "official": false,
+          "favourite": true,
+          "muted": false,
+          "mentioned": true,
+          "unreadCount": 2,
+          "lastFromOther": false,
+          "minutesSinceActivity": 3,
+          "messagesPerWeek": 40,
+          "trustWarning": false
+        },
+        {
+          "id": "!s1:example.test",
+          "kind": "person",
+          "hasSeal": false,
+          "official": false,
+          "favourite": true,
+          "muted": false,
+          "mentioned": true,
+          "unreadCount": 2,
+          "lastFromOther": false,
+          "minutesSinceActivity": 1,
+          "messagesPerWeek": 40,
+          "trustWarning": false
+        },
+        {
+          "id": "!s2:example.test",
+          "kind": "person",
+          "hasSeal": false,
+          "official": false,
+          "favourite": true,
+          "muted": false,
+          "mentioned": true,
+          "unreadCount": 2,
+          "lastFromOther": false,
+          "minutesSinceActivity": 2,
+          "messagesPerWeek": 40,
+          "trustWarning": false
+        }
+      ],
+      "expected": [
+        {
+          "id": "!s1:example.test",
+          "score": 0.86,
+          "tier": 1
+        },
+        {
+          "id": "!s2:example.test",
+          "score": 0.86,
+          "tier": 1
+        },
+        {
+          "id": "!s3:example.test",
+          "score": 0.86,
+          "tier": 2
+        }
+      ]
+    },
+    {
+      "name": "tier 2 holds 6 chats, the rest go to tier 3",
+      "input": [
+        {
+          "id": "!m00:example.test",
+          "kind": "person",
+          "hasSeal": false,
+          "official": false,
+          "favourite": false,
+          "muted": false,
+          "mentioned": false,
+          "unreadCount": 1,
+          "lastFromOther": false,
+          "minutesSinceActivity": 100,
+          "messagesPerWeek": 7,
+          "trustWarning": false
+        },
+        {
+          "id": "!m01:example.test",
+          "kind": "person",
+          "hasSeal": false,
+          "official": false,
+          "favourite": false,
+          "muted": false,
+          "mentioned": false,
+          "unreadCount": 1,
+          "lastFromOther": false,
+          "minutesSinceActivity": 101,
+          "messagesPerWeek": 7,
+          "trustWarning": false
+        },
+        {
+          "id": "!m02:example.test",
+          "kind": "person",
+          "hasSeal": false,
+          "official": false,
+          "favourite": false,
+          "muted": false,
+          "mentioned": false,
+          "unreadCount": 1,
+          "lastFromOther": false,
+          "minutesSinceActivity": 102,
+          "messagesPerWeek": 7,
+          "trustWarning": false
+        },
+        {
+          "id": "!m03:example.test",
+          "kind": "person",
+          "hasSeal": false,
+          "official": false,
+          "favourite": false,
+          "muted": false,
+          "mentioned": false,
+          "unreadCount": 1,
+          "lastFromOther": false,
+          "minutesSinceActivity": 103,
+          "messagesPerWeek": 7,
+          "trustWarning": false
+        },
+        {
+          "id": "!m04:example.test",
+          "kind": "person",
+          "hasSeal": false,
+          "official": false,
+          "favourite": false,
+          "muted": false,
+          "mentioned": false,
+          "unreadCount": 1,
+          "lastFromOther": false,
+          "minutesSinceActivity": 104,
+          "messagesPerWeek": 7,
+          "trustWarning": false
+        },
+        {
+          "id": "!m05:example.test",
+          "kind": "person",
+          "hasSeal": false,
+          "official": false,
+          "favourite": false,
+          "muted": false,
+          "mentioned": false,
+          "unreadCount": 1,
+          "lastFromOther": false,
+          "minutesSinceActivity": 105,
+          "messagesPerWeek": 7,
+          "trustWarning": false
+        },
+        {
+          "id": "!m06:example.test",
+          "kind": "person",
+          "hasSeal": false,
+          "official": false,
+          "favourite": false,
+          "muted": false,
+          "mentioned": false,
+          "unreadCount": 1,
+          "lastFromOther": false,
+          "minutesSinceActivity": 106,
+          "messagesPerWeek": 7,
+          "trustWarning": false
+        },
+        {
+          "id": "!m07:example.test",
+          "kind": "person",
+          "hasSeal": false,
+          "official": false,
+          "favourite": false,
+          "muted": false,
+          "mentioned": false,
+          "unreadCount": 1,
+          "lastFromOther": false,
+          "minutesSinceActivity": 107,
+          "messagesPerWeek": 7,
+          "trustWarning": false
+        }
+      ],
+      "expected": [
+        {
+          "id": "!m00:example.test",
+          "score": 0.42,
+          "tier": 2
+        },
+        {
+          "id": "!m01:example.test",
+          "score": 0.42,
+          "tier": 2
+        },
+        {
+          "id": "!m02:example.test",
+          "score": 0.42,
+          "tier": 2
+        },
+        {
+          "id": "!m03:example.test",
+          "score": 0.42,
+          "tier": 2
+        },
+        {
+          "id": "!m04:example.test",
+          "score": 0.42,
+          "tier": 2
+        },
+        {
+          "id": "!m05:example.test",
+          "score": 0.42,
+          "tier": 2
+        },
+        {
+          "id": "!m06:example.test",
+          "score": 0.42,
+          "tier": 3
+        },
+        {
+          "id": "!m07:example.test",
+          "score": 0.42,
+          "tier": 3
+        }
+      ]
+    },
+    {
+      "name": "a demotion from tier 1 counts in tier 2",
+      "input": [
+        {
+          "id": "!s0:example.test",
+          "kind": "person",
+          "hasSeal": false,
+          "official": false,
+          "favourite": true,
+          "muted": false,
+          "mentioned": true,
+          "unreadCount": 2,
+          "lastFromOther": false,
+          "minutesSinceActivity": 0,
+          "messagesPerWeek": 40,
+          "trustWarning": false
+        },
+        {
+          "id": "!s1:example.test",
+          "kind": "person",
+          "hasSeal": false,
+          "official": false,
+          "favourite": true,
+          "muted": false,
+          "mentioned": true,
+          "unreadCount": 2,
+          "lastFromOther": false,
+          "minutesSinceActivity": 1,
+          "messagesPerWeek": 40,
+          "trustWarning": false
+        },
+        {
+          "id": "!s2:example.test",
+          "kind": "person",
+          "hasSeal": false,
+          "official": false,
+          "favourite": true,
+          "muted": false,
+          "mentioned": true,
+          "unreadCount": 2,
+          "lastFromOther": false,
+          "minutesSinceActivity": 2,
+          "messagesPerWeek": 40,
+          "trustWarning": false
+        },
+        {
+          "id": "!m00:example.test",
+          "kind": "person",
+          "hasSeal": false,
+          "official": false,
+          "favourite": false,
+          "muted": false,
+          "mentioned": false,
+          "unreadCount": 1,
+          "lastFromOther": false,
+          "minutesSinceActivity": 100,
+          "messagesPerWeek": 7,
+          "trustWarning": false
+        },
+        {
+          "id": "!m01:example.test",
+          "kind": "person",
+          "hasSeal": false,
+          "official": false,
+          "favourite": false,
+          "muted": false,
+          "mentioned": false,
+          "unreadCount": 1,
+          "lastFromOther": false,
+          "minutesSinceActivity": 101,
+          "messagesPerWeek": 7,
+          "trustWarning": false
+        },
+        {
+          "id": "!m02:example.test",
+          "kind": "person",
+          "hasSeal": false,
+          "official": false,
+          "favourite": false,
+          "muted": false,
+          "mentioned": false,
+          "unreadCount": 1,
+          "lastFromOther": false,
+          "minutesSinceActivity": 102,
+          "messagesPerWeek": 7,
+          "trustWarning": false
+        },
+        {
+          "id": "!m03:example.test",
+          "kind": "person",
+          "hasSeal": false,
+          "official": false,
+          "favourite": false,
+          "muted": false,
+          "mentioned": false,
+          "unreadCount": 1,
+          "lastFromOther": false,
+          "minutesSinceActivity": 103,
+          "messagesPerWeek": 7,
+          "trustWarning": false
+        },
+        {
+          "id": "!m04:example.test",
+          "kind": "person",
+          "hasSeal": false,
+          "official": false,
+          "favourite": false,
+          "muted": false,
+          "mentioned": false,
+          "unreadCount": 1,
+          "lastFromOther": false,
+          "minutesSinceActivity": 104,
+          "messagesPerWeek": 7,
+          "trustWarning": false
+        },
+        {
+          "id": "!m05:example.test",
+          "kind": "person",
+          "hasSeal": false,
+          "official": false,
+          "favourite": false,
+          "muted": false,
+          "mentioned": false,
+          "unreadCount": 1,
+          "lastFromOther": false,
+          "minutesSinceActivity": 105,
+          "messagesPerWeek": 7,
+          "trustWarning": false
+        }
+      ],
+      "expected": [
+        {
+          "id": "!s0:example.test",
+          "score": 0.86,
+          "tier": 1
+        },
+        {
+          "id": "!s1:example.test",
+          "score": 0.86,
+          "tier": 1
+        },
+        {
+          "id": "!s2:example.test",
+          "score": 0.86,
+          "tier": 2
+        },
+        {
+          "id": "!m00:example.test",
+          "score": 0.42,
+          "tier": 2
+        },
+        {
+          "id": "!m01:example.test",
+          "score": 0.42,
+          "tier": 2
+        },
+        {
+          "id": "!m02:example.test",
+          "score": 0.42,
+          "tier": 2
+        },
+        {
+          "id": "!m03:example.test",
+          "score": 0.42,
+          "tier": 2
+        },
+        {
+          "id": "!m04:example.test",
+          "score": 0.42,
+          "tier": 2
+        },
+        {
+          "id": "!m05:example.test",
+          "score": 0.42,
+          "tier": 3
+        }
+      ]
+    },
+    {
+      "name": "full tiers 1 and 2 send a strong chat to tier 3",
+      "input": [
+        {
+          "id": "!s0:example.test",
+          "kind": "person",
+          "hasSeal": false,
+          "official": false,
+          "favourite": true,
+          "muted": false,
+          "mentioned": true,
+          "unreadCount": 2,
+          "lastFromOther": false,
+          "minutesSinceActivity": 0,
+          "messagesPerWeek": 40,
+          "trustWarning": false
+        },
+        {
+          "id": "!s1:example.test",
+          "kind": "person",
+          "hasSeal": false,
+          "official": false,
+          "favourite": true,
+          "muted": false,
+          "mentioned": true,
+          "unreadCount": 2,
+          "lastFromOther": false,
+          "minutesSinceActivity": 1,
+          "messagesPerWeek": 40,
+          "trustWarning": false
+        },
+        {
+          "id": "!s2:example.test",
+          "kind": "person",
+          "hasSeal": false,
+          "official": false,
+          "favourite": true,
+          "muted": false,
+          "mentioned": true,
+          "unreadCount": 2,
+          "lastFromOther": false,
+          "minutesSinceActivity": 2,
+          "messagesPerWeek": 40,
+          "trustWarning": false
+        },
+        {
+          "id": "!s3:example.test",
+          "kind": "person",
+          "hasSeal": false,
+          "official": false,
+          "favourite": true,
+          "muted": false,
+          "mentioned": true,
+          "unreadCount": 2,
+          "lastFromOther": false,
+          "minutesSinceActivity": 3,
+          "messagesPerWeek": 40,
+          "trustWarning": false
+        },
+        {
+          "id": "!s4:example.test",
+          "kind": "person",
+          "hasSeal": false,
+          "official": false,
+          "favourite": true,
+          "muted": false,
+          "mentioned": true,
+          "unreadCount": 2,
+          "lastFromOther": false,
+          "minutesSinceActivity": 4,
+          "messagesPerWeek": 40,
+          "trustWarning": false
+        },
+        {
+          "id": "!s5:example.test",
+          "kind": "person",
+          "hasSeal": false,
+          "official": false,
+          "favourite": true,
+          "muted": false,
+          "mentioned": true,
+          "unreadCount": 2,
+          "lastFromOther": false,
+          "minutesSinceActivity": 5,
+          "messagesPerWeek": 40,
+          "trustWarning": false
+        },
+        {
+          "id": "!s6:example.test",
+          "kind": "person",
+          "hasSeal": false,
+          "official": false,
+          "favourite": true,
+          "muted": false,
+          "mentioned": true,
+          "unreadCount": 2,
+          "lastFromOther": false,
+          "minutesSinceActivity": 6,
+          "messagesPerWeek": 40,
+          "trustWarning": false
+        },
+        {
+          "id": "!s7:example.test",
+          "kind": "person",
+          "hasSeal": false,
+          "official": false,
+          "favourite": true,
+          "muted": false,
+          "mentioned": true,
+          "unreadCount": 2,
+          "lastFromOther": false,
+          "minutesSinceActivity": 7,
+          "messagesPerWeek": 40,
+          "trustWarning": false
+        },
+        {
+          "id": "!s8:example.test",
+          "kind": "person",
+          "hasSeal": false,
+          "official": false,
+          "favourite": true,
+          "muted": false,
+          "mentioned": true,
+          "unreadCount": 2,
+          "lastFromOther": false,
+          "minutesSinceActivity": 8,
+          "messagesPerWeek": 40,
+          "trustWarning": false
+        }
+      ],
+      "expected": [
+        {
+          "id": "!s0:example.test",
+          "score": 0.86,
+          "tier": 1
+        },
+        {
+          "id": "!s1:example.test",
+          "score": 0.86,
+          "tier": 1
+        },
+        {
+          "id": "!s2:example.test",
+          "score": 0.86,
+          "tier": 2
+        },
+        {
+          "id": "!s3:example.test",
+          "score": 0.86,
+          "tier": 2
+        },
+        {
+          "id": "!s4:example.test",
+          "score": 0.86,
+          "tier": 2
+        },
+        {
+          "id": "!s5:example.test",
+          "score": 0.86,
+          "tier": 2
+        },
+        {
+          "id": "!s6:example.test",
+          "score": 0.86,
+          "tier": 2
+        },
+        {
+          "id": "!s7:example.test",
+          "score": 0.86,
+          "tier": 2
+        },
+        {
+          "id": "!s8:example.test",
+          "score": 0.86,
+          "tier": 3
+        }
+      ]
+    },
+    {
+      "name": "tier 3 has no limit",
+      "input": [
+        {
+          "id": "!t0:example.test",
+          "kind": "group",
+          "hasSeal": false,
+          "official": false,
+          "favourite": true,
+          "muted": false,
+          "mentioned": false,
+          "unreadCount": 0,
+          "lastFromOther": false,
+          "minutesSinceActivity": 5000,
+          "messagesPerWeek": 3,
+          "trustWarning": false
+        },
+        {
+          "id": "!t1:example.test",
+          "kind": "group",
+          "hasSeal": false,
+          "official": false,
+          "favourite": true,
+          "muted": false,
+          "mentioned": false,
+          "unreadCount": 0,
+          "lastFromOther": false,
+          "minutesSinceActivity": 5001,
+          "messagesPerWeek": 3,
+          "trustWarning": false
+        },
+        {
+          "id": "!t2:example.test",
+          "kind": "group",
+          "hasSeal": false,
+          "official": false,
+          "favourite": true,
+          "muted": false,
+          "mentioned": false,
+          "unreadCount": 0,
+          "lastFromOther": false,
+          "minutesSinceActivity": 5002,
+          "messagesPerWeek": 3,
+          "trustWarning": false
+        },
+        {
+          "id": "!t3:example.test",
+          "kind": "group",
+          "hasSeal": false,
+          "official": false,
+          "favourite": true,
+          "muted": false,
+          "mentioned": false,
+          "unreadCount": 0,
+          "lastFromOther": false,
+          "minutesSinceActivity": 5003,
+          "messagesPerWeek": 3,
+          "trustWarning": false
+        },
+        {
+          "id": "!t4:example.test",
+          "kind": "group",
+          "hasSeal": false,
+          "official": false,
+          "favourite": true,
+          "muted": false,
+          "mentioned": false,
+          "unreadCount": 0,
+          "lastFromOther": false,
+          "minutesSinceActivity": 5004,
+          "messagesPerWeek": 3,
+          "trustWarning": false
+        },
+        {
+          "id": "!t5:example.test",
+          "kind": "group",
+          "hasSeal": false,
+          "official": false,
+          "favourite": true,
+          "muted": false,
+          "mentioned": false,
+          "unreadCount": 0,
+          "lastFromOther": false,
+          "minutesSinceActivity": 5005,
+          "messagesPerWeek": 3,
+          "trustWarning": false
+        },
+        {
+          "id": "!t6:example.test",
+          "kind": "group",
+          "hasSeal": false,
+          "official": false,
+          "favourite": true,
+          "muted": false,
+          "mentioned": false,
+          "unreadCount": 0,
+          "lastFromOther": false,
+          "minutesSinceActivity": 5006,
+          "messagesPerWeek": 3,
+          "trustWarning": false
+        },
+        {
+          "id": "!t7:example.test",
+          "kind": "group",
+          "hasSeal": false,
+          "official": false,
+          "favourite": true,
+          "muted": false,
+          "mentioned": false,
+          "unreadCount": 0,
+          "lastFromOther": false,
+          "minutesSinceActivity": 5007,
+          "messagesPerWeek": 3,
+          "trustWarning": false
+        },
+        {
+          "id": "!t8:example.test",
+          "kind": "group",
+          "hasSeal": false,
+          "official": false,
+          "favourite": true,
+          "muted": false,
+          "mentioned": false,
+          "unreadCount": 0,
+          "lastFromOther": false,
+          "minutesSinceActivity": 5008,
+          "messagesPerWeek": 3,
+          "trustWarning": false
+        },
+        {
+          "id": "!t9:example.test",
+          "kind": "group",
+          "hasSeal": false,
+          "official": false,
+          "favourite": true,
+          "muted": false,
+          "mentioned": false,
+          "unreadCount": 0,
+          "lastFromOther": false,
+          "minutesSinceActivity": 5009,
+          "messagesPerWeek": 3,
+          "trustWarning": false
+        },
+        {
+          "id": "!t10:example.test",
+          "kind": "group",
+          "hasSeal": false,
+          "official": false,
+          "favourite": true,
+          "muted": false,
+          "mentioned": false,
+          "unreadCount": 0,
+          "lastFromOther": false,
+          "minutesSinceActivity": 5010,
+          "messagesPerWeek": 3,
+          "trustWarning": false
+        },
+        {
+          "id": "!t11:example.test",
+          "kind": "group",
+          "hasSeal": false,
+          "official": false,
+          "favourite": true,
+          "muted": false,
+          "mentioned": false,
+          "unreadCount": 0,
+          "lastFromOther": false,
+          "minutesSinceActivity": 5011,
+          "messagesPerWeek": 3,
+          "trustWarning": false
+        },
+        {
+          "id": "!t12:example.test",
+          "kind": "group",
+          "hasSeal": false,
+          "official": false,
+          "favourite": true,
+          "muted": false,
+          "mentioned": false,
+          "unreadCount": 0,
+          "lastFromOther": false,
+          "minutesSinceActivity": 5012,
+          "messagesPerWeek": 3,
+          "trustWarning": false
+        },
+        {
+          "id": "!t13:example.test",
+          "kind": "group",
+          "hasSeal": false,
+          "official": false,
+          "favourite": true,
+          "muted": false,
+          "mentioned": false,
+          "unreadCount": 0,
+          "lastFromOther": false,
+          "minutesSinceActivity": 5013,
+          "messagesPerWeek": 3,
+          "trustWarning": false
+        },
+        {
+          "id": "!t14:example.test",
+          "kind": "group",
+          "hasSeal": false,
+          "official": false,
+          "favourite": true,
+          "muted": false,
+          "mentioned": false,
+          "unreadCount": 0,
+          "lastFromOther": false,
+          "minutesSinceActivity": 5014,
+          "messagesPerWeek": 3,
+          "trustWarning": false
+        }
+      ],
+      "expected": [
+        {
+          "id": "!t0:example.test",
+          "score": 0.16,
+          "tier": 3
+        },
+        {
+          "id": "!t1:example.test",
+          "score": 0.16,
+          "tier": 3
+        },
+        {
+          "id": "!t2:example.test",
+          "score": 0.16,
+          "tier": 3
+        },
+        {
+          "id": "!t3:example.test",
+          "score": 0.16,
+          "tier": 3
+        },
+        {
+          "id": "!t4:example.test",
+          "score": 0.16,
+          "tier": 3
+        },
+        {
+          "id": "!t5:example.test",
+          "score": 0.16,
+          "tier": 3
+        },
+        {
+          "id": "!t6:example.test",
+          "score": 0.16,
+          "tier": 3
+        },
+        {
+          "id": "!t7:example.test",
+          "score": 0.16,
+          "tier": 3
+        },
+        {
+          "id": "!t8:example.test",
+          "score": 0.16,
+          "tier": 3
+        },
+        {
+          "id": "!t9:example.test",
+          "score": 0.16,
+          "tier": 3
+        },
+        {
+          "id": "!t10:example.test",
+          "score": 0.16,
+          "tier": 3
+        },
+        {
+          "id": "!t11:example.test",
+          "score": 0.16,
+          "tier": 3
+        },
+        {
+          "id": "!t12:example.test",
+          "score": 0.16,
+          "tier": 3
+        },
+        {
+          "id": "!t13:example.test",
+          "score": 0.16,
+          "tier": 3
+        },
+        {
+          "id": "!t14:example.test",
+          "score": 0.16,
+          "tier": 3
+        }
+      ]
+    },
+    {
+      "name": "tier 4 holds 12 chats, the rest have no tile",
+      "input": [
+        {
+          "id": "!q00:example.test",
+          "kind": "person",
+          "hasSeal": false,
+          "official": false,
+          "favourite": false,
+          "muted": false,
+          "mentioned": false,
+          "unreadCount": 0,
+          "lastFromOther": false,
+          "minutesSinceActivity": 20000,
+          "messagesPerWeek": 0,
+          "trustWarning": false
+        },
+        {
+          "id": "!q01:example.test",
+          "kind": "person",
+          "hasSeal": false,
+          "official": false,
+          "favourite": false,
+          "muted": false,
+          "mentioned": false,
+          "unreadCount": 0,
+          "lastFromOther": false,
+          "minutesSinceActivity": 20001,
+          "messagesPerWeek": 0,
+          "trustWarning": false
+        },
+        {
+          "id": "!q02:example.test",
+          "kind": "person",
+          "hasSeal": false,
+          "official": false,
+          "favourite": false,
+          "muted": false,
+          "mentioned": false,
+          "unreadCount": 0,
+          "lastFromOther": false,
+          "minutesSinceActivity": 20002,
+          "messagesPerWeek": 0,
+          "trustWarning": false
+        },
+        {
+          "id": "!q03:example.test",
+          "kind": "person",
+          "hasSeal": false,
+          "official": false,
+          "favourite": false,
+          "muted": false,
+          "mentioned": false,
+          "unreadCount": 0,
+          "lastFromOther": false,
+          "minutesSinceActivity": 20003,
+          "messagesPerWeek": 0,
+          "trustWarning": false
+        },
+        {
+          "id": "!q04:example.test",
+          "kind": "person",
+          "hasSeal": false,
+          "official": false,
+          "favourite": false,
+          "muted": false,
+          "mentioned": false,
+          "unreadCount": 0,
+          "lastFromOther": false,
+          "minutesSinceActivity": 20004,
+          "messagesPerWeek": 0,
+          "trustWarning": false
+        },
+        {
+          "id": "!q05:example.test",
+          "kind": "person",
+          "hasSeal": false,
+          "official": false,
+          "favourite": false,
+          "muted": false,
+          "mentioned": false,
+          "unreadCount": 0,
+          "lastFromOther": false,
+          "minutesSinceActivity": 20005,
+          "messagesPerWeek": 0,
+          "trustWarning": false
+        },
+        {
+          "id": "!q06:example.test",
+          "kind": "person",
+          "hasSeal": false,
+          "official": false,
+          "favourite": false,
+          "muted": false,
+          "mentioned": false,
+          "unreadCount": 0,
+          "lastFromOther": false,
+          "minutesSinceActivity": 20006,
+          "messagesPerWeek": 0,
+          "trustWarning": false
+        },
+        {
+          "id": "!q07:example.test",
+          "kind": "person",
+          "hasSeal": false,
+          "official": false,
+          "favourite": false,
+          "muted": false,
+          "mentioned": false,
+          "unreadCount": 0,
+          "lastFromOther": false,
+          "minutesSinceActivity": 20007,
+          "messagesPerWeek": 0,
+          "trustWarning": false
+        },
+        {
+          "id": "!q08:example.test",
+          "kind": "person",
+          "hasSeal": false,
+          "official": false,
+          "favourite": false,
+          "muted": false,
+          "mentioned": false,
+          "unreadCount": 0,
+          "lastFromOther": false,
+          "minutesSinceActivity": 20008,
+          "messagesPerWeek": 0,
+          "trustWarning": false
+        },
+        {
+          "id": "!q09:example.test",
+          "kind": "person",
+          "hasSeal": false,
+          "official": false,
+          "favourite": false,
+          "muted": false,
+          "mentioned": false,
+          "unreadCount": 0,
+          "lastFromOther": false,
+          "minutesSinceActivity": 20009,
+          "messagesPerWeek": 0,
+          "trustWarning": false
+        },
+        {
+          "id": "!q10:example.test",
+          "kind": "person",
+          "hasSeal": false,
+          "official": false,
+          "favourite": false,
+          "muted": false,
+          "mentioned": false,
+          "unreadCount": 0,
+          "lastFromOther": false,
+          "minutesSinceActivity": 20010,
+          "messagesPerWeek": 0,
+          "trustWarning": false
+        },
+        {
+          "id": "!q11:example.test",
+          "kind": "person",
+          "hasSeal": false,
+          "official": false,
+          "favourite": false,
+          "muted": false,
+          "mentioned": false,
+          "unreadCount": 0,
+          "lastFromOther": false,
+          "minutesSinceActivity": 20011,
+          "messagesPerWeek": 0,
+          "trustWarning": false
+        },
+        {
+          "id": "!q12:example.test",
+          "kind": "person",
+          "hasSeal": false,
+          "official": false,
+          "favourite": false,
+          "muted": false,
+          "mentioned": false,
+          "unreadCount": 0,
+          "lastFromOther": false,
+          "minutesSinceActivity": 20012,
+          "messagesPerWeek": 0,
+          "trustWarning": false
+        },
+        {
+          "id": "!q13:example.test",
+          "kind": "person",
+          "hasSeal": false,
+          "official": false,
+          "favourite": false,
+          "muted": false,
+          "mentioned": false,
+          "unreadCount": 0,
+          "lastFromOther": false,
+          "minutesSinceActivity": 20013,
+          "messagesPerWeek": 0,
+          "trustWarning": false
+        }
+      ],
+      "expected": [
+        {
+          "id": "!q00:example.test",
+          "score": 0.0,
+          "tier": 4
+        },
+        {
+          "id": "!q01:example.test",
+          "score": 0.0,
+          "tier": 4
+        },
+        {
+          "id": "!q02:example.test",
+          "score": 0.0,
+          "tier": 4
+        },
+        {
+          "id": "!q03:example.test",
+          "score": 0.0,
+          "tier": 4
+        },
+        {
+          "id": "!q04:example.test",
+          "score": 0.0,
+          "tier": 4
+        },
+        {
+          "id": "!q05:example.test",
+          "score": 0.0,
+          "tier": 4
+        },
+        {
+          "id": "!q06:example.test",
+          "score": 0.0,
+          "tier": 4
+        },
+        {
+          "id": "!q07:example.test",
+          "score": 0.0,
+          "tier": 4
+        },
+        {
+          "id": "!q08:example.test",
+          "score": 0.0,
+          "tier": 4
+        },
+        {
+          "id": "!q09:example.test",
+          "score": 0.0,
+          "tier": 4
+        },
+        {
+          "id": "!q10:example.test",
+          "score": 0.0,
+          "tier": 4
+        },
+        {
+          "id": "!q11:example.test",
+          "score": 0.0,
+          "tier": 4
+        },
+        {
+          "id": "!q12:example.test",
+          "score": 0.0,
+          "tier": null
+        },
+        {
+          "id": "!q13:example.test",
+          "score": 0.0,
+          "tier": null
+        }
+      ]
+    },
+    {
+      "name": "tie: same score, the newer activity first",
+      "input": [
+        {
+          "id": "!b:example.test",
+          "kind": "person",
+          "hasSeal": false,
+          "official": false,
+          "favourite": true,
+          "muted": false,
+          "mentioned": false,
+          "unreadCount": 0,
+          "lastFromOther": false,
+          "minutesSinceActivity": 30000,
+          "messagesPerWeek": 0,
+          "trustWarning": false
+        },
+        {
+          "id": "!a:example.test",
+          "kind": "person",
+          "hasSeal": false,
+          "official": false,
+          "favourite": true,
+          "muted": false,
+          "mentioned": false,
+          "unreadCount": 0,
+          "lastFromOther": false,
+          "minutesSinceActivity": 20000,
+          "messagesPerWeek": 0,
+          "trustWarning": false
+        }
+      ],
+      "expected": [
+        {
+          "id": "!a:example.test",
+          "score": 0.1,
+          "tier": 4
+        },
+        {
+          "id": "!b:example.test",
+          "score": 0.1,
+          "tier": 4
+        }
+      ]
+    },
+    {
+      "name": "tie: same score and time, room ID order",
+      "input": [
+        {
+          "id": "!b:example.test",
+          "kind": "person",
+          "hasSeal": false,
+          "official": false,
+          "favourite": true,
+          "muted": false,
+          "mentioned": false,
+          "unreadCount": 0,
+          "lastFromOther": false,
+          "minutesSinceActivity": 30000,
+          "messagesPerWeek": 0,
+          "trustWarning": false
+        },
+        {
+          "id": "!a:example.test",
+          "kind": "person",
+          "hasSeal": false,
+          "official": false,
+          "favourite": true,
+          "muted": false,
+          "mentioned": false,
+          "unreadCount": 0,
+          "lastFromOther": false,
+          "minutesSinceActivity": 30000,
+          "messagesPerWeek": 0,
+          "trustWarning": false
+        },
+        {
+          "id": "!C:example.test",
+          "kind": "person",
+          "hasSeal": false,
+          "official": false,
+          "favourite": true,
+          "muted": false,
+          "mentioned": false,
+          "unreadCount": 0,
+          "lastFromOther": false,
+          "minutesSinceActivity": 30000,
+          "messagesPerWeek": 0,
+          "trustWarning": false
+        }
+      ],
+      "expected": [
+        {
+          "id": "!C:example.test",
+          "score": 0.1,
+          "tier": 4
+        },
+        {
+          "id": "!a:example.test",
+          "score": 0.1,
+          "tier": 4
+        },
+        {
+          "id": "!b:example.test",
+          "score": 0.1,
+          "tier": 4
+        }
+      ]
+    },
+    {
+      "name": "tie: unknown time goes last",
+      "input": [
+        {
+          "id": "!a:example.test",
+          "kind": "person",
+          "hasSeal": false,
+          "official": false,
+          "favourite": true,
+          "muted": false,
+          "mentioned": false,
+          "unreadCount": 0,
+          "lastFromOther": false,
+          "minutesSinceActivity": null,
+          "messagesPerWeek": 0,
+          "trustWarning": false
+        },
+        {
+          "id": "!b:example.test",
+          "kind": "person",
+          "hasSeal": false,
+          "official": false,
+          "favourite": true,
+          "muted": false,
+          "mentioned": false,
+          "unreadCount": 0,
+          "lastFromOther": false,
+          "minutesSinceActivity": 50000,
+          "messagesPerWeek": 0,
+          "trustWarning": false
+        }
+      ],
+      "expected": [
+        {
+          "id": "!b:example.test",
+          "score": 0.1,
+          "tier": 4
+        },
+        {
+          "id": "!a:example.test",
+          "score": 0.1,
+          "tier": 4
+        }
+      ]
+    },
+    {
+      "name": "mixed list",
+      "input": [
+        {
+          "id": "!quiet:example.test",
+          "kind": "person",
+          "hasSeal": false,
+          "official": false,
+          "favourite": false,
+          "muted": false,
+          "mentioned": false,
+          "unreadCount": 0,
+          "lastFromOther": false,
+          "minutesSinceActivity": 9000,
+          "messagesPerWeek": 0,
+          "trustWarning": false
+        },
+        {
+          "id": "!muted:example.test",
+          "kind": "group",
+          "hasSeal": false,
+          "official": false,
+          "favourite": false,
+          "muted": true,
+          "mentioned": false,
+          "unreadCount": 50,
+          "lastFromOther": false,
+          "minutesSinceActivity": 1,
+          "messagesPerWeek": 0,
+          "trustWarning": false
+        },
+        {
+          "id": "!mention:example.test",
+          "kind": "group",
+          "hasSeal": false,
+          "official": false,
+          "favourite": false,
+          "muted": true,
+          "mentioned": true,
+          "unreadCount": 50,
+          "lastFromOther": false,
+          "minutesSinceActivity": 1,
+          "messagesPerWeek": 8,
+          "trustWarning": false
+        },
+        {
+          "id": "!friend:example.test",
+          "kind": "person",
+          "hasSeal": false,
+          "official": false,
+          "favourite": true,
+          "muted": false,
+          "mentioned": false,
+          "unreadCount": 1,
+          "lastFromOther": false,
+          "minutesSinceActivity": 4,
+          "messagesPerWeek": 30,
+          "trustWarning": false
+        },
+        {
+          "id": "!shop:example.test",
+          "kind": "company",
+          "hasSeal": false,
+          "official": false,
+          "favourite": false,
+          "muted": false,
+          "mentioned": false,
+          "unreadCount": 2,
+          "lastFromOther": false,
+          "minutesSinceActivity": 4,
+          "messagesPerWeek": 0,
+          "trustWarning": false
+        },
+        {
+          "id": "!bipe:example.test",
+          "kind": "person",
+          "hasSeal": false,
+          "official": true,
+          "favourite": false,
+          "muted": false,
+          "mentioned": false,
+          "unreadCount": 1,
+          "lastFromOther": false,
+          "minutesSinceActivity": 0,
+          "messagesPerWeek": 0,
+          "trustWarning": false
+        }
+      ],
+      "expected": [
+        {
+          "id": "!friend:example.test",
+          "score": 0.61,
+          "tier": 1
+        },
+        {
+          "id": "!mention:example.test",
+          "score": 0.55,
+          "tier": 2
+        },
+        {
+          "id": "!shop:example.test",
+          "score": 0.24,
+          "tier": 3
+        },
+        {
+          "id": "!bipe:example.test",
+          "score": 0.14,
+          "tier": 3
+        },
+        {
+          "id": "!muted:example.test",
+          "score": 0.08,
+          "tier": 4
+        },
+        {
+          "id": "!quiet:example.test",
+          "score": 0.0,
+          "tier": 4
+        }
+      ]
+    },
+    {
+      "name": "no chats",
+      "input": [],
+      "expected": []
+    }
+  ]
+}

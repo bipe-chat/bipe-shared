@@ -9,7 +9,7 @@ import { mkdirSync, readFileSync, rmSync, writeFileSync } from "node:fs";
 import { join } from "node:path";
 
 /** Reference rules that run in a browser as they are. registries.mjs is handled apart. */
-const PURE_LIBS = ["trust.mjs", "agenda-templates.mjs", "gen-settings.mjs", "gen-onboarding.mjs", "gen-haptics.mjs", "pix.mjs", "cvm.mjs", "notice.mjs", "govbr.mjs"];
+const PURE_LIBS = ["trust.mjs", "agenda-templates.mjs", "gen-settings.mjs", "gen-onboarding.mjs", "gen-haptics.mjs", "pix.mjs", "cvm.mjs", "notice.mjs", "govbr.mjs", "home-score.mjs"];
 
 /** registries.mjs without `loadRegistries` and its node:fs and node:path imports. Fails when the file moved. */
 export function browserRegistries(source) {

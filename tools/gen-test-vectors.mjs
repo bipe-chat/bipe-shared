@@ -10,6 +10,7 @@ import { noticeLinkClickable } from "./lib/notice.mjs";
 import { govbrIncoming, govbrResult } from "./lib/govbr.mjs";
 import { b64url as reportB64, deriveKeyPair as hpkeKeyPair, encryptMedia, envelopeError, open as hpkeOpen, openReport, sealReport, verifyMedia, REPORT_INFO } from "./lib/reports.mjs";
 import { canonicalJson, checkMoved, matrixKey, movedEnvelope, moveError, sentAfterMove, signAs, signedBytes } from "./lib/moves.mjs";
+import { homePlan } from "./lib/home-score.mjs";
 import { loadSchedulingVectors, writeSchedulingApiFixture } from "./lib/scheduling-vectors.mjs";
 import { forwardChatLimit, forwardCount, forwardLine, forwardedContent, voiceSource, assistantReaders, assistantSendAllowed, assistantSender, draftFromEvent, photoDistance, photoHash, photoMatches, profileFactLines, relationshipNameWarning, stickerEmojiKey, stickerMatches, stickerQueryTags, stickerSearchFold, newestDmRooms, clearedChatHidden, bringPeopleReminder, chatListPrompt, clearedChatKeepsEvent, clearedChatMarker, clearedChatsWithClear, compareAppVersions, extractInviteCode, handleProblem, isBipeUserID, socialHandleClean, socialHandleProblem, socialUrl, handleSuggestions, pinReminderNext, pinProblem, remoteBannerState, normalizeCnpj, normalizePhone, displayPhone, handleSkeleton, loadRegistries, normalize, scamMatchIDs, scamWarningKind, trustFacts } from "./lib/registries.mjs";
 
@@ -822,6 +823,19 @@ write("sticker-search.json", {
 
 const archiveVectors = JSON.parse(readFileSync(join(root, "fixtures/chat-archive.json"), "utf8"));
 write("chat-archive.json", archiveVectors);
+
+// --- Mural home score (ADR 0246) -----------------------------------------
+// The expected values in the fixture are written apart from the reference, which must agree with them.
+const homeVectors = JSON.parse(readFileSync(join(root, "fixtures/home-score.json"), "utf8"));
+for (const c of homeVectors.score) {
+  const [tile] = homePlan([c.input], reg.homeScore);
+  if (tile.score !== c.expected.score || tile.tier !== c.expected.tier || tile.reason !== c.expected.reason) throw new Error(`home-score: ${c.name}: got ${JSON.stringify(tile)}`);
+}
+for (const c of homeVectors.plan) {
+  const got = homePlan(c.input, reg.homeScore).map((t) => ({ id: t.id, score: t.score, tier: t.tier }));
+  if (JSON.stringify(got) !== JSON.stringify(c.expected)) throw new Error(`home-score: ${c.name}: got ${JSON.stringify(got)}`);
+}
+write("home-score.json", homeVectors);
 
 // --- Photo match (ADR 0049) ---------------------------------------------
 // Fixed 9 x 8 grayscale grids from a seeded generator. Platforms hash the grid and compare the pair; decoding and

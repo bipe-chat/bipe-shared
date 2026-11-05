@@ -1443,9 +1443,9 @@
         "status": "n/a",
         "reason": "No web chat (ADR 0004); the site shows a demo at most"
       },
-      "server": "planned",
+      "server": { "status": "n/a", "reason": "ADR 0254: the phone decides after decryption, so Synapse needs no change" },
       "issue": 97,
-      "note": "Inert until Synapse pushes encrypted events (#118)",
+      "note": "ADR 0254: plain group messages are silent. Without the Apple filtering entitlement iOS cannot drop them, so they can stay in the list (bipe#1079)",
       "fork": true
     },
     {

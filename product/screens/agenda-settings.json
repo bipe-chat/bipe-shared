@@ -52,6 +52,37 @@
     },
     "editSetup": {
       "effect": "Opens agenda-setup at the hours step."
+    },
+    "getFeed": {
+      "params": {
+        "agendaId": {
+          "type": "string",
+          "description": "The agenda."
+        }
+      },
+      "effect": "POST /v1/me/business/agenda/agendas/{id}/feed, then the share sheet with the URL. It shows once, and a new one revokes the old."
+    },
+    "addBusyImport": {
+      "params": {
+        "agendaId": {
+          "type": "string",
+          "description": "The agenda."
+        },
+        "url": {
+          "type": "string",
+          "description": "A secret https ICS address."
+        }
+      },
+      "effect": "POST .../busy-imports. A refused address shows bipe_agenda_busy_invalid."
+    },
+    "removeBusyImport": {
+      "params": {
+        "importId": {
+          "type": "string",
+          "description": "The import."
+        }
+      },
+      "effect": "DELETE .../busy-imports/{id}, with its busy blocks."
     }
   },
   "strings": [
@@ -72,13 +103,23 @@
     "bipe_agenda_setup_hours",
     "bipe_agenda_setup_people",
     "bipe_agenda_error_save",
-    "bipe_app_save"
+    "bipe_app_save",
+    "bipe_agenda_calendar_section",
+    "bipe_agenda_feed_get",
+    "bipe_agenda_feed_footer",
+    "bipe_agenda_feed_first_name",
+    "bipe_agenda_busy_add",
+    "bipe_agenda_busy_url",
+    "bipe_agenda_busy_footer",
+    "bipe_agenda_busy_failing",
+    "bipe_agenda_busy_invalid",
+    "bipe_agenda_busy_remove"
   ],
   "sdk": [],
   "parity": [
     "agenda"
   ],
   "notes": [
-    "Reminder times and the owner's morning summary wait for push reminders (bipe-chat/bipe#320). The ICS feed and busy import wait for bipe-chat/bipe#319."
+    "The ICS feed and the busy import are per agenda (ADR 0101, docs/scheduling.md levels A and B). The owner shares the secret feed URL from the share sheet; it shows once."
   ]
 }

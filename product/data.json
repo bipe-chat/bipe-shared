@@ -522,13 +522,13 @@
       ],
       "pt": {
         "name": "Datas de troca de nome e foto",
-        "what": "Quando cada conta trocou o nome ou a foto, só a data. O servidor guarda um resumo do nome e da foto atuais para notar a troca, nunca o nome antigo nem a imagem.",
+        "what": "Quando cada conta trocou o nome ou a foto, ou quando o número dela passou para outra conta ou veio de outra conta, só a data. O servidor guarda um resumo do nome e da foto atuais para notar a troca, nunca o nome antigo nem a imagem.",
         "why": "Mostrar \"Foto alterada há 1 dia\" e \"Conta criada há 3 dias\" para quem recebe um pedido ou abre um perfil. Conta nova com foto nova é um sinal comum de golpe.",
         "retention": "30 dias para as datas. O resumo fica enquanto a conta existe."
       },
       "en": {
         "name": "Name and photo change dates",
-        "what": "When each account changed its name or photo, the date only. The server keeps a digest of the current name and photo to notice a change, never the old name or the image.",
+        "what": "When each account changed its name or photo, or when its number moved to or from another account, the date only. The server keeps a digest of the current name and photo to notice a change, never the old name or the image.",
         "why": "To show \"Photo changed 1 day ago\" and \"Account created 3 days ago\" to people who get a request or open a profile. A new account with a new photo is a common scam sign.",
         "retention": "30 days for the dates. The digest stays while the account exists."
       }
@@ -917,6 +917,25 @@
         "what": "The times you book with a business in Bipe: the service, who serves you, the day, the time, the status and your account. For a walk-in the business adds, only the name it typed. What you write about the booking stays in the chat, not in the booking.",
         "why": "To keep the time for you and for the business and to show the card in the chat. The business decides about its own schedule; Bipe keeps the data for it.",
         "retention": "2 years after the date of the booking. If you delete your account, the business keeps only the name, the service and the time until then."
+      }
+    },
+    {
+      "id": "agenda-external-calendars",
+      "basis": "contract",
+      "places": [
+        "server"
+      ],
+      "pt": {
+        "name": "Calendários externos da agenda",
+        "what": "O endereço secreto do calendário que o negócio colou, e o início e o fim de cada compromisso. Nunca títulos nem descrições. O link de assinatura fica guardado só como hash.",
+        "why": "Não oferecer um horário em que quem atende está ocupado, e mostrar os agendamentos no calendário do negócio.",
+        "retention": "Até o negócio remover o calendário, ou o link. Se o negócio ligar o nome do cliente, o primeiro nome sai para o serviço de calendário dele."
+      },
+      "en": {
+        "name": "External calendars of an agenda",
+        "what": "The secret calendar address the business pasted, and the start and end of each event. Never titles or descriptions. The subscription link is kept only as a hash.",
+        "why": "To not offer a time when the person is busy, and to show bookings in the business's calendar.",
+        "retention": "Until the business removes the calendar or the link. If the business turns on the customer's name, the first name goes to its calendar service."
       }
     },
     {

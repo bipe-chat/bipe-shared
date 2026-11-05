@@ -3305,7 +3305,7 @@
       },
       "small": {
         "heading": "Até 3 atendentes e 1.000 clientes no Bipe?",
-        "body": "Você não precisa do formulário. Baixe o app e crie a conta em Você > Sua conta > Criar conta da empresa. Até 3 atendentes e 1.000 clientes ativos no Bipe, é de graça, com o mesmo selo de quem paga. Dá para criar sem CNPJ.",
+        "body": "Você não precisa do formulário. Baixe o app e crie a conta em Você > Adicionar conta > Conta de trabalho. Até 3 atendentes e 1.000 clientes ativos no Bipe, é de graça, com o mesmo selo de quem paga. Dá para criar sem CNPJ.",
         "button": "Baixar o app"
       },
       "audiencesHeading": "Para cada tipo de organização"
@@ -4047,7 +4047,7 @@
       ],
       "pt": {
         "title": "Para sua empresa",
-        "line": "Uma conta da empresa no mesmo celular, para atender clientes com selo de CNPJ, agenda, catálogo e fila virtual."
+        "line": "Uma conta de trabalho no mesmo celular, para atender clientes com selo de CNPJ, agenda, catálogo e fila virtual."
       },
       "en": {
         "title": "For your business",

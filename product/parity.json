@@ -4208,7 +4208,7 @@
       "issue": 92
     },
     {
-      "area": "Criar conta da empresa",
+      "area": "Criar conta de trabalho",
       "ios": "Company option in Nova conta on a phone with App Attest",
       "android": "Company option in Nova conta hidden",
       "reason": "A company account needs an attested device (ADR 0043, ADR 0087); Play Integrity not built on Android (#92)",

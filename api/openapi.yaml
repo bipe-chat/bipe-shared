@@ -876,7 +876,10 @@ paths:
       description: >
         The server sends a link to confirm the address (emailVerifyLinkHours). The current
         verified address stays in use until the new one is confirmed. 503 email_unavailable when
-        outgoing email is off. 409 email_taken when another account uses the address.
+        outgoing email is off. 409 email_taken when another account uses the address. When the
+        account has a PIN, pin must be that PIN: a session alone cannot change the address that
+        can reset the PIN. It is checked like /v1/me/pin/check (403 pin_wrong with tries_left,
+        403 pin_blocked); a missing pin is 400 bad_request reason pin.
       security: [{ matrix: [] }]
       requestBody:
         required: true
@@ -888,20 +891,34 @@ paths:
               properties:
                 email: { type: string, format: email, maxLength: 254 }
                 lang: { type: string, enum: [pt, en], default: pt, description: "Language of the emails Bipe sends to this address." }
+                pin: { type: string, maxLength: 64, description: "The current PIN. Required when the account has one." }
       responses:
         "202": { description: Link sent }
         "400": { $ref: "#/components/responses/Error" }
         "401": { $ref: "#/components/responses/Error" }
+        "403": { $ref: "#/components/responses/Error" }
         "409": { $ref: "#/components/responses/Error" }
         "429": { $ref: "#/components/responses/Error" }
         "503": { $ref: "#/components/responses/Error" }
     delete:
       summary: Remove the caller's recovery email (verified and pending)
-      description: The server sends a notice to the removed verified address.
+      description: >
+        The server sends a notice to the removed verified address. When the account has a PIN, pin
+        must be that PIN, checked as in PUT. An account with no PIN can send no body.
       security: [{ matrix: [] }]
+      requestBody:
+        required: false
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                pin: { type: string, maxLength: 64, description: "The current PIN. Required when the account has one." }
       responses:
         "204": { description: Removed }
+        "400": { $ref: "#/components/responses/Error" }
         "401": { $ref: "#/components/responses/Error" }
+        "403": { $ref: "#/components/responses/Error" }
   /v1/email/verify:
     post:
       summary: Confirm a recovery email with the token from the link

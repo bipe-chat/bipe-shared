@@ -966,13 +966,13 @@
       "pt": {
         "name": "Empresas que você parou de receber",
         "what": "A sua conta e a conta da empresa, quando você toca em Parar de receber, e a data.",
-        "why": "Impedir que essa empresa comece uma conversa com você.",
+        "why": "Impedir que essa empresa escreva para você por conta própria.",
         "retention": "Até você tocar em Voltar a receber ou apagar a conta."
       },
       "en": {
         "name": "Businesses you stopped",
         "what": "Your account and the business's account, when you tap Stop receiving, and the date.",
-        "why": "To keep that business from starting a chat with you.",
+        "why": "To keep that business from writing to you on its own.",
         "retention": "Until you tap Receive again or delete your account."
       }
     },

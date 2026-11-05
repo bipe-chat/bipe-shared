@@ -151,7 +151,7 @@ jobs:
             git -C "$repo" push -q origin "HEAD:refs/heads/${BRANCH}"
             echo "${repo}: pushed ${BRANCH}"
             # A pull request on branch B with a base other than main (a stacked pull request) carries the
-            # regen commit into that base, not into main: bipe-ios#92 and bipe-android#82 did so.
+            # regen commit into that base, not into main: PRs on both old forks did so.
             stacked=$(gh pr list -R "bipe-chat/${repo}" --head "$BRANCH" --state open \
               --json number,baseRefName --jq '.[] | select(.baseRefName != "main") | "#\(.number) (base \(.baseRefName))"')
             [ -z "$stacked" ] || echo "::warning::${repo} ${stacked}: not based on main, so the generated files miss main. Retarget it to main."
@@ -294,7 +294,7 @@ jobs:
             filter='.[] | select(.isDraft | not) | .number'
             [ "$repo" = bipe ] && filter='.[] | select(.title | startswith("Regenerate from bipe-shared")) | .number'
             # Only pull requests based on main. A stacked pull request would merge into its base branch,
-            # and main would miss the change (bipe-ios#92, bipe-android#82 on 21 Oct 2026).
+            # and main would miss the change (PRs on both old forks, 21 Oct 2026).
             numbers=$(GH_TOKEN="$TOKEN" gh pr list -R "bipe-chat/${repo}" --head "$BRANCH" --base main --state open \
               --json number,title,isDraft --jq "$filter")
             stacked=$(GH_TOKEN="$TOKEN" gh pr list -R "bipe-chat/${repo}" --head "$BRANCH" --state open \

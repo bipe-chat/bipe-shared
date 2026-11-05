@@ -87,7 +87,7 @@ Escolha um nome de usuário e passe só o @. O link bipe.chat/@você e o QR code
 
 PARA SUA EMPRESA
 
-Tenha a conta da empresa no mesmo celular e troque entre ela e a sua na aba Você. O cliente marca horário pela agenda, vê os preços no catálogo, faz pedidos e pede orçamento na conversa. Um QR code na porta coloca o cliente na fila virtual, e o Bipe avisa quando chega a vez. Com o selo de CNPJ, o cliente vê o nome que está na Receita. A agenda é gratuita.
+Tenha a conta de trabalho no mesmo celular e troque entre ela e a sua na aba Você. O cliente marca horário pela agenda, vê os preços no catálogo, faz pedidos e pede orçamento na conversa. Um QR code na porta coloca o cliente na fila virtual, e o Bipe avisa quando chega a vez. Com o selo de CNPJ, o cliente vê o nome que está na Receita. A agenda é gratuita.
 
 E MAIS
 
@@ -215,7 +215,7 @@ Escolha um nome de usuário e passe só o @. O link bipe.chat/@você e o QR code
 
 PARA SUA EMPRESA
 
-Tenha a conta da empresa no mesmo celular e troque entre ela e a sua na aba Você. O cliente marca horário pela agenda, vê os preços no catálogo, faz pedidos e pede orçamento na conversa. Um QR code na porta coloca o cliente na fila virtual, e o Bipe avisa quando chega a vez. Com o selo de CNPJ, o cliente vê o nome que está na Receita. A agenda é gratuita.
+Tenha a conta de trabalho no mesmo celular e troque entre ela e a sua na aba Você. O cliente marca horário pela agenda, vê os preços no catálogo, faz pedidos e pede orçamento na conversa. Um QR code na porta coloca o cliente na fila virtual, e o Bipe avisa quando chega a vez. Com o selo de CNPJ, o cliente vê o nome que está na Receita. A agenda é gratuita.
 
 E MAIS
 

@@ -5,7 +5,7 @@
   "pt": {
     "nav": "LGPD",
     "title": "Seus dados no Bipe (LGPD)",
-    "meta": "Bipe, versão de testes. Atualizada em 31 de outubro de 2026.",
+    "meta": "Bipe, versão de testes. Atualizada em 5 de novembro de 2026.",
     "lede": "Cada dado que o Bipe guarda, para quê, com qual base da LGPD, por quanto tempo e onde fica. A página é gerada do mesmo registro que a equipe usa para cuidar dos dados.",
     "policy": "O texto corrido está na [política de privacidade](/privacidade/).",
     "itemsTitle": "O que a gente guarda",
@@ -44,7 +44,7 @@
   "en": {
     "nav": "LGPD",
     "title": "Your data on Bipe (LGPD)",
-    "meta": "Bipe, test version. Updated 31 October 2026.",
+    "meta": "Bipe, test version. Updated 5 November 2026.",
     "lede": "Every piece of data Bipe keeps, what it is for, its LGPD legal basis, how long we keep it and where it lives. The page is built from the same record the team uses to manage the data. The Portuguese version is the reference text.",
     "policy": "The plain-language text is in the [privacy policy](/en/privacy/).",
     "itemsTitle": "What we keep",
@@ -693,15 +693,15 @@
       ],
       "pt": {
         "name": "Registros de conexão",
-        "what": "Endereço IP, data e hora de cada conexão.",
+        "what": "Endereço IP, porta de origem, data e hora de cada conexão. O servidor também guarda, por conta e aparelho, os IPs usados e a última vez de cada um.",
         "why": "O Marco Civil da Internet (artigo 15) obriga a guardar estes registros.",
-        "retention": "6 meses."
+        "retention": "6 meses, criptografados depois da primeira hora. O último acesso de cada aparelho fica enquanto ele estiver conectado."
       },
       "en": {
         "name": "Connection logs",
-        "what": "IP address, date and time of each connection.",
+        "what": "IP address, source port, date and time of each connection. The server also keeps, per account and device, the IP addresses used and the last time of each.",
         "why": "Brazil's Marco Civil da Internet (article 15) requires us to keep these logs.",
-        "retention": "6 months."
+        "retention": "6 months, encrypted after the first hour. The last access of each device stays while the device is connected."
       }
     },
     {

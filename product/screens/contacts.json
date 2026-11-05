@@ -6,6 +6,7 @@
   "types": {
     "ContactMatch": {
       "person": { "type": "Person", "description": "displayName is the name saved in the address book." },
+      "numberMovedAge": { "type": "string", "optional": true, "description": "The age of moved_at from POST /v1/contacts/lookup (bipe-chat/bipe#161): bipe_contacts_number_moved. The row then shows the account's own name, and the address-book name and entry are not attached to this account." },
       "joinedWithInvite": { "type": "bool", "description": "The person joined with the user's invite (GET /v1/me/invite-connections): bipe_contacts_joined_with_invite." }
     }
   },
@@ -45,6 +46,7 @@
     "bipe_contacts_none",
     "bipe_contacts_invite",
     "bipe_contacts_joined_with_invite",
+    "bipe_contacts_number_moved",
     "bipe_contacts_pending_invites",
     "bipe_app_contacts_loading",
     "bipe_invites_chat",

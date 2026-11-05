@@ -1687,6 +1687,7 @@ paths:
                       properties:
                         phone: { type: string, description: "The matched number in E.164, as normalised by the server." }
                         user_id: { type: string }
+                        moved_at: { type: string, format: date-time, description: "When this account got the number from another account (bipe#161). Only in the last windowDays of registries/profile-facts.json." }
         "401": { $ref: "#/components/responses/Error" }
         "429": { $ref: "#/components/responses/Error" }
   /v1/me/phone:
@@ -7505,6 +7506,8 @@ components:
         created_at: { type: string, format: date-time, description: "Account creation time. Absent when Synapse does not answer." }
         name_changes: { type: array, items: { type: string, format: date-time }, description: "Display-name changes in the window, oldest first." }
         photo_changes: { type: array, items: { type: string, format: date-time }, description: "Photo changes in the window, oldest first." }
+        number_moved_out: { type: array, items: { type: string, format: date-time }, description: "When this account's number went to another account, in the window (bipe#161)." }
+        number_moved_in: { type: array, items: { type: string, format: date-time }, description: "When this account got a number from another account, in the window (bipe#161)." }
     TheftMark:
       type: object
       required: [user_id, stolen_at, marked_by]

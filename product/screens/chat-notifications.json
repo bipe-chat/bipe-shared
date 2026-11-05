@@ -57,14 +57,13 @@
     "NotificationSettings.setRoomNotificationMode",
     "NotificationSettings.restoreDefaultRoomNotificationMode",
     "NotificationSettings.unmuteRoom",
-    "NotificationSettings.canHomeserverPushEncryptedEventToDevice",
     "RoomNotificationMode",
     "RoomInfo.isDm"
   ],
   "parity": ["group-types", "dm-notify-modes"],
   "notes": [
     "Quiet is mentions and keywords plus the account override rule chat.bipe.poll_start (event type *.poll.start), so a new poll notifies in a quiet group (groups.md, #97). BipeQuietGroups sets that rule and the group default once per account (libraries/bipe groups/BipeQuietGroups.kt). This screen never writes the poll rule.",
-    "Quiet in an encrypted group needs the server to push encrypted events (NotificationSettings.canHomeserverPushEncryptedEventToDevice, Synapse msc4028). Without it, mentions-only silences the group. While the answer is false, the group shows only all and mute, and a group whose rule is already mentions-only shows as quiet with no footer. Parity note: inert until Synapse pushes encrypted events (#118).",
+    "Quiet in an encrypted group (ADR 0254, bipe-chat/bipe#1079): the server cannot read a mention, so it must push every message. A room rule of mentions-only stops the push, so a mention never arrives. So in an encrypted group quiet means no room rule: the encrypted default rule stays on all messages, and the plain default rule decides on the phone after decryption. The default of a group is the plain default rule. RoomNotificationSettings.isDefault true shows that default; false shows the room rule. A group with an older mentions-only room rule restores the default at appear. all sets a room rule with sound. When the account default for groups is all, an encrypted group offers only all and mute, because one group cannot be quiet with no rule.",
     "DM (ADR 0141): only all and mute. A DM with mentions-only from before keeps that server rule and shows bipe_app_notify_mentions_legacy as the current option until the user picks another. Then that row goes away.",
     "Words: Silenciar and Todas as mensagens come from ADR 0141. The row in group-details shows the title of the current option.",
     "The account defaults per chat kind (groups, DMs) are in the notifications settings spec (bipe-chat/bipe#565), not here."

@@ -2,7 +2,7 @@
 // Usage: node tools/gen.mjs [--app <dir>] [--api <dir>]
 //   Default app output: ../bipe-app (ios/BipeKit, android/libraries/bipe and web/src/bipe/generated), when that folder exists
 //   Default API output: ../bipe-api/src/generated, when ../bipe-api exists
-// The Element X forks (bipe-ios, bipe-android) are archived and get no output (ADR 0155).
+// The old Element X forks are archived and get no output (ADR 0155).
 import { copyFileSync, existsSync, mkdirSync, readdirSync, rmSync, writeFileSync } from "node:fs";
 import { dirname, join, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
@@ -839,7 +839,7 @@ const androidString = (v) => {
 };
 
 // `locale` tells Android lint the language of the file: values/ holds pt-BR, so its spell check must not
-// read it as English ("Eles" failed the Typos check in bipe-android#103).
+// read it as English ("Eles" failed the Typos check in a PR on the old Android fork).
 const androidStrings = (strings, comment, locale) =>
   `<?xml version="1.0" encoding="utf-8"?>\n<!-- ${HEADER.trim().replace(/^\/\/ /gm, "").replace(/\n/g, " ")} -->\n<!-- ${comment} -->\n<resources xmlns:tools="http://schemas.android.com/tools" tools:locale="${locale}">\n` +
   Object.entries(strings).map(([k, v]) => {

@@ -3411,9 +3411,26 @@
     {
       "id": "mural-home",
       "name": "Mural: an alternative home with tiles sized by a score on the phone, fixed rules only (ADR 0246, step 1)",
-      "ios": "planned",
-      "android": "planned",
-      "web": "planned",
+      "ios": {
+        "status": "built",
+        "evidence": [
+          "bipe-app/ios/Bipe/ChatList/MuralModel.swift",
+          "bipe-app/ios/Bipe/ChatList/MuralView.swift"
+        ]
+      },
+      "android": {
+        "status": "built",
+        "evidence": [
+          "bipe-app/android/app/src/main/kotlin/chat/bipe/app/chatlist/Mural.kt"
+        ]
+      },
+      "web": {
+        "status": "built",
+        "evidence": [
+          "bipe-app/web/src/Mural.tsx",
+          "bipe-app/web/src/mural-plan.ts"
+        ]
+      },
       "server": {
         "status": "n/a",
         "reason": "The device computes the score. No score or signal reaches a server (ADR 0246)"

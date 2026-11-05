@@ -1711,13 +1711,40 @@ paths:
                   confirm_by: { type: string, format: date-time, description: "After this date the number stops being discoverable until confirmed again." }
                   number: { type: [string, "null"], description: "The caller's own linked number in E.164. null when not linked, or for a link made before the server stored numbers (ADR 0191)." }
                   discoverable_by_phone: { type: boolean }
+                  move:
+                    type: object
+                    description: >
+                      A move of a number between accounts (bipe#469). Absent when there is none. out: another
+                      account proved the caller's number. in: the caller proved a number held by another account.
+                      Never names the other account. A blocked move shows for direction in only, for
+                      moveBlockedRetryDays.
+                    required: [id, direction, state]
+                    properties:
+                      id: { type: string }
+                      direction: { type: string, enum: [out, in] }
+                      state: { type: string, enum: [waiting, blocked] }
+                      ends: { type: string, format: date-time, description: "When a waiting move ends. Absent for blocked." }
         "401": { $ref: "#/components/responses/Error" }
     delete:
       summary: Unlink the caller's phone number
+      description: >
+        With a waiting move out, the number goes to the new account at once (bipe#469). A waiting move in is
+        withdrawn.
       security: [{ matrix: [] }]
       responses:
         "204": { description: Unlinked }
         "401": { $ref: "#/components/responses/Error" }
+  /v1/me/phone/moves/{id}/block:
+    post:
+      summary: The holder keeps the number and ends the move (bipe#469)
+      description: Only the holder of a waiting move. Any other case answers 404 not_found.
+      security: [{ matrix: [] }]
+      parameters:
+        - { name: id, in: path, required: true, schema: { type: string } }
+      responses:
+        "204": { description: Blocked }
+        "401": { $ref: "#/components/responses/Error" }
+        "404": { $ref: "#/components/responses/Error" }
   /v1/me/discovery:
     get:
       summary: Who can find the caller

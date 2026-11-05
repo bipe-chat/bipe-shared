@@ -47,6 +47,7 @@
     "bipe_group_privacy_title",
     "bipe_group_link_title",
     "bipe_app_group_details_title",
+    "bipe_dm_details_title",
     "bipe_app_group_details_people",
     "bipe_app_group_name",
     "bipe_app_group_description",
@@ -87,6 +88,7 @@
     "Media and files (bipe-chat/bipe#672): a row bipe_gallery_title in the members section opens chat-media-gallery for the group.",
     "Polls (bipe-chat/bipe#669): a row bipe_poll_history opens poll-history for the group.",
     "Privacy (bipe-chat/bipe#772): a row bipe_group_privacy_title opens group-privacy, for members who can change the join rule or remove people (RoomPowerLevels.canOwnUserKick: a moderator, bipe-chat/bipe#733). A moderator sees the settings read only and answers the requests to join. It shows the number of requests to join when there are some.",
-    "Group link (ADR 0184, bipe-chat/bipe#744): a row bipe_group_link_title under the privacy row opens group-link."
+    "Group link (ADR 0184, bipe-chat/bipe#744): a row bipe_group_link_title under the privacy row opens group-link.",
+    "Notes (ADR 0053, mz, 5 November 2026): the self-chat is a room with one person, so it is no group on this screen. The title is bipe_dm_details_title and the header shows the photo and the name, without the people count. Its only row is bipe_gallery_title on the apps; the web has no such row. It has no description, no editing, no people, no add people, no privacy, no group link, no polls, no notifications, no report and no leave. The room is the one that account data chat.bipe.self_chat names. The rows wait for that read, and a failed read shows the normal group screen. Default chosen: editing goes too, because Você shows a fixed title for Notes. mz can overrule."
   ]
 }

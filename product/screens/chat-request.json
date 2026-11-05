@@ -110,7 +110,9 @@
     "bipe_profile_fact_photo_once",
     "bipe_profile_fact_photo_times",
     "bipe_profile_fact_name_once",
-    "bipe_profile_fact_name_times"
+    "bipe_profile_fact_name_times",
+    "bipe_profile_fact_number_out",
+    "bipe_profile_fact_number_in"
   ],
   "sdk": [
     "Room.inviter",

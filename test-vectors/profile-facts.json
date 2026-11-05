@@ -192,6 +192,87 @@
         "lines": [],
         "notice": false
       }
+    },
+    {
+      "name": "number moved to another account",
+      "facts": {
+        "name_changes": [],
+        "photo_changes": [],
+        "number_moved_out": [
+          "2026-10-24T12:00:00.000Z"
+        ]
+      },
+      "expected": {
+        "lines": [
+          {
+            "fact": "numberOut",
+            "at": "2026-10-24T12:00:00.000Z"
+          }
+        ],
+        "notice": false,
+        "numberNotice": "out"
+      }
+    },
+    {
+      "name": "number came from another account",
+      "facts": {
+        "name_changes": [],
+        "photo_changes": [],
+        "number_moved_in": [
+          "2026-10-20T12:00:00.000Z"
+        ]
+      },
+      "expected": {
+        "lines": [
+          {
+            "fact": "numberIn",
+            "at": "2026-10-20T12:00:00.000Z"
+          }
+        ],
+        "notice": false,
+        "numberNotice": "in"
+      }
+    },
+    {
+      "name": "both moves: the newest gives the notice",
+      "facts": {
+        "name_changes": [],
+        "photo_changes": [],
+        "number_moved_out": [
+          "2026-10-20T12:00:00.000Z"
+        ],
+        "number_moved_in": [
+          "2026-10-22T12:00:00.000Z"
+        ]
+      },
+      "expected": {
+        "lines": [
+          {
+            "fact": "numberOut",
+            "at": "2026-10-20T12:00:00.000Z"
+          },
+          {
+            "fact": "numberIn",
+            "at": "2026-10-22T12:00:00.000Z"
+          }
+        ],
+        "notice": false,
+        "numberNotice": "in"
+      }
+    },
+    {
+      "name": "a move older than 30 days is gone",
+      "facts": {
+        "name_changes": [],
+        "photo_changes": [],
+        "number_moved_in": [
+          "2026-09-20T12:00:00.000Z"
+        ]
+      },
+      "expected": {
+        "lines": [],
+        "notice": false
+      }
     }
   ]
 }

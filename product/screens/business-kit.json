@@ -1,0 +1,59 @@
+{
+  "id": "business-kit",
+  "title": "Promotion kit of a work account",
+  "flow": "business",
+  "summary": "Trabalho → Kit para divulgar, on a company account (ADR 0082, bipe-chat/bipe#258). A button for the company's site, a QR code and ready lines, all to https://bipe.chat/@<handle>, for the company's own channels.",
+  "types": {},
+  "state": {
+    "handle": {
+      "type": "string",
+      "optional": true,
+      "description": "GET /v1/me/handle. None: bipe_public_profile_needs_handle and nothing else."
+    }
+  },
+  "actions": {
+    "copyCode": {
+      "effect": "Copies bipe_business_kit_button_code with the link and bipe_business_kit_button_label. Shows bipe_app_copied."
+    },
+    "sharePng": {
+      "effect": "Shares the QR code as a PNG, dark modules on white with a quiet zone of 4 modules. The web saves the file where the browser cannot share it."
+    },
+    "shareSvg": {
+      "effect": "Shares the QR code as an SVG, with the same modules and quiet zone."
+    },
+    "copyLine": {
+      "effect": "Copies one ready line with the link. Shows bipe_app_copied."
+    }
+  },
+  "strings": [
+    "bipe_business_kit_title",
+    "bipe_business_kit_intro",
+    "bipe_business_kit_button_header",
+    "bipe_business_kit_button_label",
+    "bipe_business_kit_button_code",
+    "bipe_business_kit_button_footer",
+    "bipe_business_kit_copy_code",
+    "bipe_business_kit_qr_header",
+    "bipe_business_kit_qr_footer",
+    "bipe_business_kit_share_png",
+    "bipe_business_kit_share_svg",
+    "bipe_business_kit_lines_header",
+    "bipe_business_kit_line_site",
+    "bipe_business_kit_line_email",
+    "bipe_business_kit_line_receipt",
+    "bipe_business_kit_rule",
+    "bipe_public_profile_needs_handle",
+    "bipe_app_copied",
+    "bipe_app_copy"
+  ],
+  "sdk": [],
+  "parity": [
+    "business-kit"
+  ],
+  "notes": [
+    "No link goes inside another platform's chat (ADR 0082): the kit gives no share action to a chat, only code, files and lines to copy, and bipe_business_kit_rule says so.",
+    "The button is a plain link with an inline style. It needs no script, so it works on any site. The issue said HTML or JS: plain HTML is enough.",
+    "bipe_business_kit_button_code is one string, so all clients give the same code. It uses single quotes because Android resources drop double quotes.",
+    "The kit needs no API: the handle is the only data. Nothing is stored and nothing is logged."
+  ]
+}

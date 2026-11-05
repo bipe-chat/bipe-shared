@@ -2889,6 +2889,33 @@
       "issue": 485
     },
     {
+      "id": "business-kit",
+      "name": "A work account gets a button for its site, a QR code (PNG and SVG) and ready lines for its own channels (ADR 0082, bipe#258)",
+      "ios": {
+        "status": "built",
+        "evidence": [
+          "bipe-app/ios/Bipe/Business/BusinessKitView.swift"
+        ]
+      },
+      "android": {
+        "status": "built",
+        "evidence": [
+          "bipe-app/android/app/src/main/kotlin/chat/bipe/app/business/BusinessKitScreen.kt"
+        ]
+      },
+      "web": {
+        "status": "built",
+        "evidence": [
+          "bipe-app/web/src/work/BusinessKit.tsx"
+        ]
+      },
+      "server": {
+        "status": "n/a",
+        "reason": "The kit needs only the account's handle"
+      },
+      "issue": 258
+    },
+    {
       "id": "brand-marks-manage",
       "name": "A reseller accepts, refuses and removes a brand's mark; a verified brand grants and ends marks (ADR 0162, bipe#486)",
       "ios": {

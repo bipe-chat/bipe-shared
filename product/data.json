@@ -958,6 +958,25 @@
       }
     },
     {
+      "id": "work-account-people",
+      "basis": "contract",
+      "places": [
+        "server"
+      ],
+      "pt": {
+        "name": "Quem atende por uma conta de trabalho",
+        "what": "O nome que a pessoa responsável digitou para cada pessoa, o papel dela, os códigos dos aparelhos dessa pessoa e um registro de quando alguém entrou ou saiu. O Bipe não liga esse nome a uma conta pessoal e não registra quem mandou cada mensagem.",
+        "why": "Saber quem pode mudar o quê na conta e encerrar os aparelhos de quem sai.",
+        "retention": "Até a pessoa sair ou a conta de trabalho ser apagada. O registro de entradas e saídas fica enquanto a conta existir."
+      },
+      "en": {
+        "name": "Who answers for a work account",
+        "what": "The name the person in charge typed for each person, their role, the codes of their devices, and a log of when someone joined or left. Bipe does not link that name to a personal account and does not record who sent each message.",
+        "why": "To know who can change what on the account, and to end the devices of someone who leaves.",
+        "retention": "Until the person leaves or the work account is deleted. The log of joins and leaves stays while the account exists."
+      }
+    },
+    {
       "id": "business-stops",
       "basis": "consent",
       "places": [

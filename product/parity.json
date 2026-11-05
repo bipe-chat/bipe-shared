@@ -4158,7 +4158,12 @@
       "ios": "planned",
       "android": "planned",
       "web": "planned",
-      "server": "planned"
+      "server": {
+        "status": "built",
+        "evidence": [
+          "bipe-api/src/business-seats.ts"
+        ]
+      }
     },
     {
       "id": "loja-web",

@@ -705,7 +705,8 @@ paths:
                   type: string
                   description: >
                     On a company account with kind computer: the seat the web session belongs to (ADR 0251
-                    point 14). Without it, the seat of the caller's device.
+                    point 14). Without it, the seat of the caller's device. With kind phone: the phone joins
+                    this seat by the claim. Without it, an owner device's approval opens the owner window.
       responses:
         "200":
           description: Done

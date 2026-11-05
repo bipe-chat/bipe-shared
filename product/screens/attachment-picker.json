@@ -41,6 +41,7 @@
     "The system pickers need no full library access: the iOS photo picker and the Android photo picker give only the chosen items. The permission problem shows only when the platform asks for access and the user said no.",
     "Contacts as vCard are out of scope.",
     "Order of rows: photos and videos, camera, file, location, sticker, poll.",
-    "The menu is anchored to the + button (iOS Menu, Android DropdownMenu), not a bottom sheet."
+    "The menu is anchored to the + button (iOS Menu, Android DropdownMenu), not a bottom sheet.",
+    "Notes (ADR 0053, mz, 5 November 2026): in the self-chat the rows are photos and videos, camera and file. No location, sticker or poll. Default chosen: mz asked for a shorter composer and did not name the rows. mz can overrule."
   ]
 }

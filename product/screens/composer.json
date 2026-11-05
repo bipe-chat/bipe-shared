@@ -90,6 +90,7 @@
     "Replies and edits use this field with their bars (message-reply, message-edit, bipe-chat/bipe#559). The scam check runs only on received messages, never on the user's own text.",
     "Sticker strip (ADR 0205): text after trimming is one emoji (stickerEmojiKey gives a key of stickerEmoji) or one word with no space that stickerQueryTags maps to a tag. Same search as sticker-picker, on the phone only. Not while replying or editing, and not with mentions in text.",
     "MZ decision 2 Nov 2026 (bipe#958): the composer sits at the bottom of the screen and floats over the chat background and the scrolling messages. The attach button, the input and the send or record button are separate shapes: two 44 pt circles and a capsule between them. iOS 26 and later draw them in Liquid Glass (glassEffect, interactive); iOS 18 to 25 use the material blur; Android draws a raised surface with a hairline and a soft shadow. Send keeps the accent fill. The reply, edit and @ suggestion panel floats above the input in the same style. The bars that replace the composer (no permission, recording, blocked, left, selection, room upgrade) stay solid.",
-    "Hardware keyboard (bipe-chat/bipe#832): Enter sends when the send action is open, Shift+Enter makes a new line. The on-screen keyboard's return key keeps making a new line."
+    "Hardware keyboard (bipe-chat/bipe#832): Enter sends when the send action is open, Shift+Enter makes a new line. The on-screen keyboard's return key keeps making a new line.",
+    "Notes (ADR 0053, mz, 5 November 2026): in the self-chat the composer has no sticker button, and the + menu is attachment-picker with its Notes rows. Text and the record button stay. The web has text, photos and videos, and a file, as in any chat."
   ]
 }

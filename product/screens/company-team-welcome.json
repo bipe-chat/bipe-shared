@@ -1,0 +1,33 @@
+{
+  "id": "company-team-welcome",
+  "title": "You answer for this account",
+  "flow": "business",
+  "summary": "One screen on the person's phone after they join. It says what customers see and what the people on the account share (bipe-chat/bipe#1053).",
+  "state": {
+    "accountName": {
+      "type": "string",
+      "description": "The account's name."
+    }
+  },
+  "actions": {
+    "ok": {
+      "effect": "Opens the account's Conversas. Shows once per phone and account."
+    }
+  },
+  "strings": [
+    "bipe_team_welcome_title",
+    "bipe_team_welcome_body",
+    "bipe_team_shared_title",
+    "bipe_team_shared_chats",
+    "bipe_team_shared_read",
+    "bipe_team_shared_changes",
+    "bipe_team_welcome_ok"
+  ],
+  "sdk": [],
+  "parity": [
+    "work-account-people"
+  ],
+  "notes": [
+    "Company accounts on the phone keep rule 2 of ADR 0138: the person's personal identity never shows to customers."
+  ]
+}

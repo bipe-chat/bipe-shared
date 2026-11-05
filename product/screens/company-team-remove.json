@@ -1,0 +1,43 @@
+{
+  "id": "company-team-remove",
+  "title": "Remove a person",
+  "flow": "business",
+  "summary": "The Responsável removes a person from the account (ADR 0251 points 16 to 18). The person's personal account does not change.",
+  "state": {
+    "name": {
+      "type": "string",
+      "description": "The person's name."
+    },
+    "phase": {
+      "type": "enum",
+      "values": [
+        "confirm",
+        "removing",
+        "failed"
+      ],
+      "description": "failed shows bipe_team_error."
+    }
+  },
+  "actions": {
+    "confirm": {
+      "effect": "DELETE /v1/me/business/seats/{seatId}, then closes. The SeatList then has backup_rotation_pending, and the owner's phone rotates the key backup in the background (bipe-chat/bipe#1057)."
+    },
+    "cancel": {
+      "effect": "Closes."
+    }
+  },
+  "strings": [
+    "bipe_team_remove_title",
+    "bipe_team_remove_body",
+    "bipe_team_remove_confirm",
+    "bipe_team_error",
+    "bipe_app_cancel"
+  ],
+  "sdk": [],
+  "parity": [
+    "work-account-people"
+  ],
+  "notes": [
+    "The text says what stays on that phone. Bipe cannot take back what a device already decrypted."
+  ]
+}

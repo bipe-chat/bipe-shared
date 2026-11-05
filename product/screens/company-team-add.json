@@ -1,0 +1,74 @@
+{
+  "id": "company-team-add",
+  "title": "Call one more person",
+  "flow": "business",
+  "summary": "The Responsável adds a named person, on the phone, with both phones in one place (ADR 0251). The Responsável shows the code and the person scans it. The Responsável never scans a code from someone else.",
+  "state": {
+    "phase": {
+      "type": "enum",
+      "values": [
+        "name",
+        "warning",
+        "code",
+        "done",
+        "failed"
+      ],
+      "description": "name: types the name. warning: reads bipe_team_add_warning. code: link-phone-show with this screen's strings. done: the person shows in the list. failed: see error."
+    },
+    "name": {
+      "type": "string",
+      "description": "The person's name, 1 to 60 characters."
+    },
+    "seat": {
+      "type": "string",
+      "optional": true,
+      "description": "Seat.id of the waiting seat."
+    }
+  },
+  "actions": {
+    "continue": {
+      "effect": "From name to warning. Calls nothing."
+    },
+    "open": {
+      "effect": "From warning: POST /v1/me/business/seats with the name. seat_limit shows bipe_team_add_limit. Then runs link-phone-show open: GrantLoginWithQrCodeHandler.generate, the check code and the biometric check of link-phone-approve."
+    },
+    "progress": {
+      "effect": "When the grant is done: GET /v1/me/business/seats until the seat is active, up to window_expires_at, then done."
+    },
+    "expired": {
+      "effect": "The window ended: shows bipe_team_add_expired and DELETE /v1/me/business/seats/{seatId}."
+    },
+    "cancel": {
+      "effect": "Before the grant is done: cancels the grant and DELETE /v1/me/business/seats/{seatId}."
+    }
+  },
+  "strings": [
+    "bipe_team_add",
+    "bipe_team_add_name",
+    "bipe_team_add_warning",
+    "bipe_team_add_continue",
+    "bipe_team_add_code_title",
+    "bipe_team_add_code_body",
+    "bipe_team_add_code_never_share",
+    "bipe_team_add_limit",
+    "bipe_team_add_done",
+    "bipe_team_add_expired",
+    "bipe_team_error",
+    "bipe_app_cancel"
+  ],
+  "sdk": [
+    "Client.newGrantLoginWithQrCodeHandler",
+    "GrantLoginWithQrCodeHandler.generate",
+    "GrantGeneratedQrLoginProgressListener.onUpdate",
+    "CheckCodeSender.send"
+  ],
+  "parity": [
+    "work-account-people"
+  ],
+  "notes": [
+    "No role picker: one owner per account, so every person added is an attendant (ADR 0251 point 22).",
+    "The flow starts only from Quem atende. bipe_device_approval_never_for_others stays on device-verification and link-phone-approve (ADR 0251 point 5).",
+    "The grant sends the full secrets bundle before bipe-api sees the attestation (bipe-chat/bipe#1053). A phone that fails the check stays a device with no person.",
+    "Copy code is off in this flow: the person must see the code in person."
+  ]
+}

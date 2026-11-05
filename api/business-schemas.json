@@ -1193,7 +1193,12 @@
             "tool_needs_catalog",
             "tool_not_live",
             "web_off",
-            "shop_token_invalid"
+            "shop_token_invalid",
+            "owner_only",
+            "seat_limit",
+            "seat_window_open",
+            "seat_window_closed",
+            "attestation_invalid"
           ]
         },
         "reason": {
@@ -2584,6 +2589,171 @@
       "properties": {
         "stopped": {
           "type": "boolean"
+        }
+      }
+    },
+    "SeatRole": {
+      "description": "owner shows as Responsável, attendant as Atendente (ADR 0252 point 6). One owner per account (ADR 0251 point 22).",
+      "type": "string",
+      "enum": [
+        "owner",
+        "attendant"
+      ]
+    },
+    "SeatDevice": {
+      "description": "A device of the account. display_name: from MAS when it has one.",
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "device_id",
+        "kind",
+        "added_at"
+      ],
+      "properties": {
+        "device_id": {
+          "type": "string"
+        },
+        "kind": {
+          "type": "string",
+          "enum": [
+            "phone",
+            "web"
+          ]
+        },
+        "display_name": {
+          "type": "string"
+        },
+        "added_at": {
+          "type": "string",
+          "format": "date-time"
+        }
+      }
+    },
+    "Seat": {
+      "description": "A person who answers for the account. Stays only in bipe-api, with no link to a personal account (ADR 0251 point 6). window_expires_at: a device can join this seat until then. devices: empty for a caller that is not the owner.",
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "name",
+        "role",
+        "status",
+        "devices"
+      ],
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "name": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 60
+        },
+        "role": {
+          "$ref": "#/$defs/SeatRole"
+        },
+        "status": {
+          "type": "string",
+          "enum": [
+            "waiting",
+            "active"
+          ]
+        },
+        "devices": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/SeatDevice"
+          }
+        },
+        "window_expires_at": {
+          "type": "string",
+          "format": "date-time"
+        }
+      }
+    },
+    "SeatMe": {
+      "description": "The caller's device. role none: a device with no person, which has no owner rights (ADR 0251 points 11 and 13).",
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "role"
+      ],
+      "properties": {
+        "seat_id": {
+          "type": "string"
+        },
+        "name": {
+          "type": "string"
+        },
+        "role": {
+          "type": "string",
+          "enum": [
+            "owner",
+            "attendant",
+            "none"
+          ]
+        }
+      }
+    },
+    "SeatList": {
+      "description": "Quem atende. unassigned_devices is empty for a caller that is not the owner. backup_rotation_pending: the owner's phone must rotate the key backup (ADR 0251 points 17 and 19).",
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "me",
+        "seats",
+        "unassigned_devices",
+        "max_people",
+        "backup_rotation_pending"
+      ],
+      "properties": {
+        "me": {
+          "$ref": "#/$defs/SeatMe"
+        },
+        "seats": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/Seat"
+          }
+        },
+        "unassigned_devices": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/SeatDevice"
+          }
+        },
+        "max_people": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "backup_rotation_pending": {
+          "type": "boolean"
+        }
+      }
+    },
+    "SeatCreate": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "name"
+      ],
+      "properties": {
+        "name": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 60
+        }
+      }
+    },
+    "SeatDeviceAssign": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "seat_id"
+      ],
+      "properties": {
+        "seat_id": {
+          "type": "string"
         }
       }
     }

@@ -1,0 +1,161 @@
+{
+  "id": "company-team",
+  "title": "Who answers",
+  "flow": "business",
+  "summary": "Quem atende: the people who answer for a work account (ADR 0251, ADR 0252). One row in the Trabalho tab opens it, with a live summary. One person is a complete state, never an unfinished one.",
+  "types": {
+    "Person": {
+      "id": {
+        "type": "string",
+        "description": "Seat.id."
+      },
+      "name": {
+        "type": "string",
+        "description": "The name the Responsável typed."
+      },
+      "role": {
+        "type": "enum",
+        "values": [
+          "owner",
+          "attendant"
+        ],
+        "description": "bipe_team_role_owner or bipe_team_role_attendant."
+      },
+      "waiting": {
+        "type": "bool",
+        "description": "status waiting: shows bipe_team_waiting."
+      },
+      "devices": {
+        "type": "list",
+        "of": {
+          "type": "string",
+          "description": "bipe_team_device_phone or bipe_team_device_web, with display_name when it has one."
+        },
+        "description": "Empty for a caller that is not the owner."
+      }
+    }
+  },
+  "state": {
+    "me": {
+      "type": "enum",
+      "values": [
+        "owner",
+        "attendant",
+        "none"
+      ],
+      "description": "SeatList.me.role of this device."
+    },
+    "people": {
+      "type": "list",
+      "of": {
+        "type": "Person",
+        "description": "One person."
+      },
+      "description": "GET /v1/me/business/seats."
+    },
+    "unassigned": {
+      "type": "list",
+      "of": {
+        "type": "string",
+        "description": "A device with no person."
+      },
+      "description": "Owner only."
+    },
+    "accountName": {
+      "type": "string",
+      "description": "The account's name, for bipe_team_alone_body."
+    },
+    "maxPeople": {
+      "type": "int",
+      "description": "SeatList.max_people. At the cap, add shows bipe_team_add_limit and is off."
+    }
+  },
+  "actions": {
+    "load": {
+      "effect": "GET /v1/me/business/seats. Runs when the screen opens and when the app comes to the front. Also feeds the summary of the Trabalho row and the role that hides owner actions on every screen."
+    },
+    "addPerson": {
+      "effect": "Owner on the phone: opens company-team-add. Off behind flag:workAccountPeople until phase 2."
+    },
+    "addOwnPhone": {
+      "effect": "Owner on the phone: POST /v1/me/business/seats/{seatId}/window for the owner seat, then link-phone-show. The new phone calls POST /v1/me/business/seats/claim after it signs in."
+    },
+    "openPerson": {
+      "effect": "Owner: shows the person's devices, rename (PATCH /v1/me/business/seats/{seatId}) and remove (company-team-remove). The owner row has no remove. Others: no action.",
+      "params": {
+        "id": {
+          "type": "string",
+          "description": "The seat."
+        }
+      }
+    },
+    "assignDevice": {
+      "effect": "Owner: picks a person, then PUT /v1/me/business/seats/devices/{deviceId}.",
+      "params": {
+        "deviceId": {
+          "type": "string",
+          "description": "The device."
+        },
+        "seatId": {
+          "type": "string",
+          "description": "The person."
+        }
+      }
+    },
+    "removeDevice": {
+      "effect": "Owner: DELETE /v1/me/business/seats/devices/{deviceId}.",
+      "params": {
+        "deviceId": {
+          "type": "string",
+          "description": "The device."
+        }
+      }
+    },
+    "leave": {
+      "effect": "Attendant, from this screen and from Você: confirms with bipe_team_leave_body, then POST /v1/me/business/seats/leave. The account leaves this phone's switcher. The personal account does not change."
+    }
+  },
+  "strings": [
+    "bipe_team_title",
+    "bipe_team_row_alone",
+    "bipe_team_row_people",
+    "bipe_team_alone_body",
+    "bipe_team_role_owner",
+    "bipe_team_role_attendant",
+    "bipe_team_you",
+    "bipe_team_you_here",
+    "bipe_team_waiting",
+    "bipe_team_device_phone",
+    "bipe_team_device_web",
+    "bipe_team_unassigned_title",
+    "bipe_team_unassigned_body",
+    "bipe_team_device_assign",
+    "bipe_team_device_remove",
+    "bipe_team_add_own",
+    "bipe_team_add",
+    "bipe_team_add_limit",
+    "bipe_team_leave",
+    "bipe_team_leave_body",
+    "bipe_team_leave_confirm",
+    "bipe_team_removed",
+    "bipe_team_owner_only",
+    "bipe_team_shared_title",
+    "bipe_team_shared_chats",
+    "bipe_team_shared_read",
+    "bipe_team_shared_changes",
+    "bipe_team_error",
+    "bipe_web_work_phone_only"
+  ],
+  "sdk": [],
+  "parity": [
+    "work-account-people"
+  ],
+  "notes": [
+    "The Trabalho row: bipe_team_row_alone with one person, bipe_team_row_people with more. A failed read shows no summary and still opens the screen.",
+    "Attendant: read only, with bipe_team_you_here on their own row and the shared section. The same role also hides Próximo passo in Trabalho and in Você: Sua conta, and profile, seal, CNPJ and domain edits (docs/work-accounts.md IA table).",
+    "A device with role none has no owner actions and sees the list read only.",
+    "Web: the same list read only, with bipe_web_work_phone_only in place of every action (ADR 0226 point 6). An attendant leaves from the phone.",
+    "A 401 on any call after a removal: the phone shows bipe_team_removed and drops the account from the switcher.",
+    "bipe-api refuses owner actions by the device of the token (403 owner_only, ADR 0251 point 11). bipe_team_owner_only is the text for that error."
+  ]
+}

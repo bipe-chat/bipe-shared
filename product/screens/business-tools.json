@@ -63,6 +63,9 @@
     },
     "openBrandMarks": {
       "effect": "Opens brand-marks (ADR 0162)."
+    },
+    "openTeam": {
+      "effect": "From the Quem atende row: opens company-team. The row shows the summary of company-team load."
     }
   },
   "strings": [
@@ -103,7 +106,10 @@
     "bipe_work_suggest_quotes_for_on_request",
     "bipe_work_suggest_agenda_for_services",
     "bipe_work_suggest_orders_for_products",
-    "bipe_work_suggest_dismiss"
+    "bipe_work_suggest_dismiss",
+    "bipe_team_title",
+    "bipe_team_row_alone",
+    "bipe_team_row_people"
   ],
   "sdk": [],
   "parity": [
@@ -111,7 +117,8 @@
     "catalog",
     "orders",
     "quotes",
-    "queue"
+    "queue",
+    "work-account-people"
   ],
   "types": {
     "Tool": {

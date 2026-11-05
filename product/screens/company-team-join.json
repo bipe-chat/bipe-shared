@@ -1,0 +1,60 @@
+{
+  "id": "company-team-join",
+  "title": "Answer for a work account",
+  "flow": "business",
+  "summary": "The person's side of company-team-add: a phone joins a work account by scanning the Responsável's code. The person needs no personal account and no invite, because this path creates no account.",
+  "state": {
+    "phase": {
+      "type": "enum",
+      "values": [
+        "scan",
+        "checkCode",
+        "joining",
+        "failed"
+      ],
+      "description": "scan: the camera. checkCode: the 2-digit number. joining: secrets sync, then the claim. failed: see error."
+    },
+    "checkCode": {
+      "type": "string",
+      "optional": true,
+      "description": "The 2-digit number from the login progress."
+    }
+  },
+  "actions": {
+    "open": {
+      "effect": "From account-new or account-start, row bipe_team_join_row: opens the camera, as recovery-old-phone does."
+    },
+    "scanned": {
+      "effect": "Runs the QR login of recovery-old-phone. Stores no hidden password, recovery token or PIN for this account."
+    },
+    "claim": {
+      "effect": "After sign-in: a new attestation challenge, then POST /v1/me/business/seats/claim. Success opens company-team-welcome. attestation_invalid shows bipe_team_join_attest_failed and signs this account out of the phone. seat_window_closed shows bipe_team_add_expired and signs it out."
+    },
+    "cancel": {
+      "effect": "Closes. Before sign-in nothing changed."
+    }
+  },
+  "strings": [
+    "bipe_team_join_row",
+    "bipe_team_join_row_body",
+    "bipe_team_join_scan_title",
+    "bipe_team_join_scan_body",
+    "bipe_team_join_check_title",
+    "bipe_team_join_check_body",
+    "bipe_team_join_attest_failed",
+    "bipe_team_add_expired",
+    "bipe_app_cancel"
+  ],
+  "sdk": [
+    "QrCodeData.fromBytes",
+    "Client.newLoginWithQrCodeHandler"
+  ],
+  "parity": [
+    "work-account-people"
+  ],
+  "notes": [
+    "This phone has no hidden password, so it cannot approve a device or a web session (link-computer-scan needsPin does not apply; the row does not show).",
+    "The account's type is company, so it does not count against the personal cap.",
+    "bipe_account_new_existing keeps its meaning: an account the person made."
+  ]
+}

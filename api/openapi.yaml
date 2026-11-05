@@ -701,6 +701,11 @@ paths:
                   description: >
                     computer when the phone approved a web sign-in (link-computer), phone when it approved
                     a new phone (link-phone). Without it the server records nothing.
+                seat_id:
+                  type: string
+                  description: >
+                    On a company account with kind computer: the seat the web session belongs to (ADR 0251
+                    point 14). Without it, the seat of the caller's device.
       responses:
         "200":
           description: Done
@@ -4779,6 +4784,298 @@ paths:
                 $ref: "#/components/schemas/WorkSetup"
         default:
           $ref: "#/components/responses/BusinessToolError"
+  /v1/me/business/seats:
+    get:
+      summary: "Read who answers for the account"
+      operationId: "getV1MeBusinessSeats"
+      tags:
+        - "Agenda"
+      security:
+        -
+          matrix: []
+      description: "Only a device of this company account may call this route. An attendant or a device with no person gets names and roles only, with no device lists."
+      responses:
+        "200":
+          description: "Success"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/SeatList"
+        default:
+          $ref: "#/components/responses/BusinessToolError"
+    post:
+      summary: "Add a person and open the window for their phone"
+      operationId: "postV1MeBusinessSeats"
+      tags:
+        - "Agenda"
+      security:
+        -
+          matrix: []
+      description: "Only an owner device of this company account may call this route, else 403 owner_only. Creates a waiting attendant and opens a window of workAccountSeatWindowMinutes. 409 seat_window_open while another window is open, 409 seat_limit at max_people."
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/SeatCreate"
+      responses:
+        "200":
+          description: "Success"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Seat"
+        default:
+          $ref: "#/components/responses/BusinessToolError"
+  /v1/me/business/seats/claim:
+    post:
+      summary: "Join the seat whose window is open"
+      operationId: "postV1MeBusinessSeatsClaim"
+      tags:
+        - "Agenda"
+      security:
+        -
+          matrix: []
+      description: "The device of the token joins the seat with the open window, then the window closes. The phone calls this right after the QR sign-in. 400 attestation_invalid when the phone is not attested (ADR 0043), 409 seat_window_closed when no window is open. The device stays with no person after a failure and has no owner rights."
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [attestation]
+              properties:
+                attestation: { $ref: "#/components/schemas/Attestation" }
+      responses:
+        "200":
+          description: "Success"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/SeatList"
+        default:
+          $ref: "#/components/responses/BusinessToolError"
+  /v1/me/business/seats/leave:
+    post:
+      summary: "Leave the account from this phone"
+      operationId: "postV1MeBusinessSeatsLeave"
+      tags:
+        - "Agenda"
+      security:
+        -
+          matrix: []
+      description: "An attendant device only, else 403 owner_only. Ends every session of the seat, including web sessions, and sets backup_rotation_pending."
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/EmptyBusinessRequest"
+      responses:
+        "200":
+          description: "Success"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/SeatList"
+        default:
+          $ref: "#/components/responses/BusinessToolError"
+  /v1/me/business/seats/backup-rotated:
+    post:
+      summary: "Report that the key backup rotated"
+      operationId: "postV1MeBusinessSeatsBackupRotated"
+      tags:
+        - "Agenda"
+      security:
+        -
+          matrix: []
+      description: "Only an owner device of this company account may call this route, else 403 owner_only. Clears backup_rotation_pending."
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/EmptyBusinessRequest"
+      responses:
+        "200":
+          description: "Success"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/SeatList"
+        default:
+          $ref: "#/components/responses/BusinessToolError"
+  /v1/me/business/seats/{seatId}:
+    patch:
+      summary: "Rename a person"
+      operationId: "patchV1MeBusinessSeatsSeatId"
+      tags:
+        - "Agenda"
+      security:
+        -
+          matrix: []
+      description: "Only an owner device of this company account may call this route, else 403 owner_only."
+      parameters:
+        -
+          name: "seatId"
+          in: "path"
+          required: true
+          schema:
+            type: "string"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/SeatCreate"
+      responses:
+        "200":
+          description: "Success"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Seat"
+        default:
+          $ref: "#/components/responses/BusinessToolError"
+    delete:
+      summary: "Remove a person"
+      operationId: "deleteV1MeBusinessSeatsSeatId"
+      tags:
+        - "Agenda"
+      security:
+        -
+          matrix: []
+      description: "Only an owner device of this company account may call this route, else 403 owner_only. Ends every session of the seat, including web sessions, and sets backup_rotation_pending. The owner seat cannot be removed: 400 bad_request."
+      parameters:
+        -
+          name: "seatId"
+          in: "path"
+          required: true
+          schema:
+            type: "string"
+      responses:
+        "200":
+          description: "Success"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/SeatList"
+        default:
+          $ref: "#/components/responses/BusinessToolError"
+  /v1/me/business/seats/{seatId}/window:
+    post:
+      summary: "Open the window for another phone of the owner"
+      operationId: "postV1MeBusinessSeatsSeatIdWindow"
+      tags:
+        - "Agenda"
+      security:
+        -
+          matrix: []
+      description: "Only an owner device of this company account may call this route, else 403 owner_only. Only for the owner's own seat in this slice. link-phone-show calls it too, so that a new phone of the owner joins the owner seat. 409 seat_window_open while another window is open."
+      parameters:
+        -
+          name: "seatId"
+          in: "path"
+          required: true
+          schema:
+            type: "string"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/EmptyBusinessRequest"
+      responses:
+        "200":
+          description: "Success"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Seat"
+        default:
+          $ref: "#/components/responses/BusinessToolError"
+  /v1/me/business/seats/devices/{deviceId}:
+    put:
+      summary: "Say whose device this is"
+      operationId: "putV1MeBusinessSeatsDevicesDeviceId"
+      tags:
+        - "Agenda"
+      security:
+        -
+          matrix: []
+      description: "Only an owner device of this company account may call this route, else 403 owner_only. Moves a device with no person to a seat."
+      parameters:
+        -
+          name: "deviceId"
+          in: "path"
+          required: true
+          schema:
+            type: "string"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/SeatDeviceAssign"
+      responses:
+        "200":
+          description: "Success"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/SeatList"
+        default:
+          $ref: "#/components/responses/BusinessToolError"
+    delete:
+      summary: "Remove one device"
+      operationId: "deleteV1MeBusinessSeatsDevicesDeviceId"
+      tags:
+        - "Agenda"
+      security:
+        -
+          matrix: []
+      description: "Only an owner device of this company account may call this route, else 403 owner_only. Ends its session and sets backup_rotation_pending."
+      parameters:
+        -
+          name: "deviceId"
+          in: "path"
+          required: true
+          schema:
+            type: "string"
+      responses:
+        "200":
+          description: "Success"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/SeatList"
+        default:
+          $ref: "#/components/responses/BusinessToolError"
+  /v1/me/business/setup/second-seat-skip:
+    post:
+      summary: "Record that only the owner answers"
+      operationId: "postV1MeBusinessSetupSecondSeatSkip"
+      tags:
+        - "Agenda"
+      security:
+        -
+          matrix: []
+      description: "Only an owner device of this company account may call this route, else 403 owner_only. The second_seat step counts as done (ADR 0252)."
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/EmptyBusinessRequest"
+      responses:
+        "200":
+          description: "Success"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/WorkSetup"
+        default:
+          $ref: "#/components/responses/BusinessToolError"
   /v1/me/business/suggestions:
     get:
       summary: "Read the suggestions from records"
@@ -7960,6 +8257,20 @@ components:
       $ref: "./business-schemas.json#/$defs/WorkSuggestion"
     WorkSuggestions:
       $ref: "./business-schemas.json#/$defs/WorkSuggestions"
+    SeatRole:
+      $ref: "./business-schemas.json#/$defs/SeatRole"
+    SeatDevice:
+      $ref: "./business-schemas.json#/$defs/SeatDevice"
+    Seat:
+      $ref: "./business-schemas.json#/$defs/Seat"
+    SeatMe:
+      $ref: "./business-schemas.json#/$defs/SeatMe"
+    SeatList:
+      $ref: "./business-schemas.json#/$defs/SeatList"
+    SeatCreate:
+      $ref: "./business-schemas.json#/$defs/SeatCreate"
+    SeatDeviceAssign:
+      $ref: "./business-schemas.json#/$defs/SeatDeviceAssign"
     BusinessToday:
       $ref: "./business-schemas.json#/$defs/BusinessToday"
     BookingStatus:

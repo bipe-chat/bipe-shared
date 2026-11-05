@@ -1443,7 +1443,10 @@
         "status": "n/a",
         "reason": "No web chat (ADR 0004); the site shows a demo at most"
       },
-      "server": { "status": "n/a", "reason": "ADR 0254: the phone decides after decryption, so Synapse needs no change" },
+      "server": {
+        "status": "n/a",
+        "reason": "ADR 0254: the phone decides after decryption, so Synapse needs no change"
+      },
       "issue": 97,
       "note": "ADR 0254: plain group messages are silent. Without the Apple filtering entitlement iOS cannot drop them, so they can stay in the list (bipe#1079)",
       "fork": true
@@ -4121,6 +4124,14 @@
           "bipe-api/src/business-tools.ts"
         ]
       }
+    },
+    {
+      "id": "work-account-people",
+      "name": "Quem atende: people on a work account, roles, remove, leave (ADR 0251, ADR 0252)",
+      "ios": "planned",
+      "android": "planned",
+      "web": "planned",
+      "server": "planned"
     },
     {
       "id": "loja-web",

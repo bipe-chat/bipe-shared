@@ -34,13 +34,16 @@
       "effect": "GET /v1/me/business/setup."
     },
     "openStep": {
-      "effect": "profile opens the profile edit screen, link opens the link and QR code screen and calls POST /v1/me/business/setup/link-opened, catalog opens catalog-owner, first_tool opens the owner screen of the tool, seal opens the CNPJ flow on the phone, second_seat opens the seats screen on the phone.",
+      "effect": "profile opens the profile edit screen, link opens the link and QR code screen and calls POST /v1/me/business/setup/link-opened, catalog opens catalog-owner, first_tool opens the owner screen of the tool, seal opens the CNPJ flow on the phone, second_seat opens company-team on the phone.",
       "params": {
         "id": {
           "type": "string",
           "description": "The step."
         }
       }
+    },
+    "skipSecondSeat": {
+      "effect": "From the second_seat row: POST /v1/me/business/setup/second-seat-skip. The step counts as done. One person is a complete state (ADR 0252)."
     }
   },
   "strings": [
@@ -58,7 +61,8 @@
     "bipe_work_step_seal",
     "bipe_work_step_seal_body",
     "bipe_work_step_second_seat",
-    "bipe_work_step_second_seat_body"
+    "bipe_work_step_second_seat_body",
+    "bipe_work_step_second_seat_skip"
   ],
   "sdk": [],
   "parity": [

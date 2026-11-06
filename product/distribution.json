@@ -37,8 +37,8 @@
         "id": "app",
         "url": "https://github.com/bipe-chat/bipe-app",
         "public": true,
-        "pt": "App para iPhone e Android",
-        "en": "iPhone and Android app"
+        "pt": "App para iPhone, Android e Mac",
+        "en": "iPhone, Android and Mac app"
       },
       {
         "id": "shared",
@@ -344,5 +344,33 @@
         "url": "https://www.reddit.com/r/bipe/"
       }
     ]
+  },
+  "macos": {
+    "status": "available",
+    "channel": "preview",
+    "url": "https://github.com/bipe-chat/bipe-app/releases/download/mac-preview/Bipe-Mac.zip",
+    "minOS": "macOS 15",
+    "architectures": [
+      "arm64",
+      "x86_64"
+    ],
+    "pt": {
+      "label": "Baixar para Mac",
+      "note": "Versão de testes para Apple silicon e Intel. Vincule uma conta pelo Bipe no celular. A versão para Mac ainda não tem todos os recursos.",
+      "steps": [
+        "Abra o arquivo ZIP e mova o Bipe para Aplicativos.",
+        "Abra o Bipe e leia o QR com o Bipe no celular."
+      ],
+      "signing": "Esta versão ainda não tem a autenticação da Apple. Se o macOS bloquear a abertura, confira o app em Ajustes do Sistema > Privacidade e Segurança."
+    },
+    "en": {
+      "label": "Download for Mac",
+      "note": "Preview for Apple silicon and Intel. Link an account from Bipe on your phone. The Mac version does not have every feature yet.",
+      "steps": [
+        "Open the ZIP file and move Bipe to Applications.",
+        "Open Bipe and scan the QR code with Bipe on your phone."
+      ],
+      "signing": "This preview is not notarized by Apple. If macOS blocks it from opening, review the app in System Settings > Privacy & Security."
+    }
   }
 }

@@ -81,6 +81,7 @@ test("generated Swift and Kotlin hold every semantic token", () => {
   assert.match(swift, /elseif canImport\(AppKit\)/);
   assert.match(swift, /NSColor\(name: nil\)/);
   assert.match(swift, /accessibilityHighContrastDarkAqua/);
+  assert.match(swift, /NSWorkspace.shared.accessibilityDisplayShouldIncreaseContrast/);
 });
 
 test("the Mac icon has every Retina slot and transparent outside corners", () => {

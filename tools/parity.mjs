@@ -14,6 +14,7 @@ import { existsSync, readFileSync } from "node:fs";
 import { dirname, join, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
 import { checkApps, forkGaps } from "./lib/parity-apps.mjs";
+import { checkDesktop } from "./lib/parity-desktop.mjs";
 
 const root = join(dirname(fileURLToPath(import.meta.url)), "..");
 const args = process.argv.slice(2);
@@ -28,8 +29,8 @@ const checkIssues = args.includes("--issues");
 const SURFACES = { web: ["bipe-web", "bipe-app"], server: ["bipe-api", "bipe-infra"] };
 // Web evidence in bipe-app is the web client only (ADR 0216, ADR 0226), never the phone apps.
 const WEB_CLIENT = "bipe-app/web/";
-const ALL = ["ios", "android", "web", "server"];
-const LABEL = { ios: "iOS", android: "Android", web: "Web", server: "Server" };
+const ALL = ["ios", "android", "macos", "windows", "web", "server"];
+const LABEL = { ios: "iOS", android: "Android", macos: "macOS", windows: "Windows", web: "Web", server: "Server" };
 const STATUSES = ["planned", "built", "testing", "policy", "n/a"];
 const SHIPPED = new Set(["built", "testing"]);
 const KINDS = ["idiom", "gap", "undecided"];
@@ -95,6 +96,9 @@ for (const item of ledger.items ?? []) {
 const newCheck = checkApps(ledger.items, (repo, path) => (existsSync(repoPath(repo)) ? existsInRepo(repo, path) : null));
 problems.push(...newCheck.problems);
 for (const repo of newCheck.unchecked) missingRepos.add(repo);
+const desktopCheck = checkDesktop(ledger.items, (repo, path) => (existsSync(repoPath(repo)) ? existsInRepo(repo, path) : null));
+problems.push(...desktopCheck.problems);
+for (const repo of desktopCheck.unchecked) missingRepos.add(repo);
 for (const repo of missingRepos) warnings.push(`${repo}: not found in ${reposDir}, its evidence was not checked`);
 
 const areas = new Set();
@@ -114,7 +118,7 @@ for (const f of product.features) {
 }
 
 // 2b. A gap row names an open issue (M2 exit test, docs/MILESTONES.md). A closed issue closes no gap.
-const gapRows = [...newCheck.issueRefs];
+const gapRows = [...newCheck.issueRefs, ...desktopCheck.issueRefs];
 if (checkIssues) {
   const numbers = [...new Set(gapRows.map((r) => r.issue).filter(Number.isInteger))];
   const state = new Map();
@@ -198,7 +202,7 @@ const shipped = (item, s) => SHIPPED.has(status(item, s));
 const ref = (n) => (n ? `#${n}` : "");
 const age = (item) => (since[item.id] ? `${since[item.id]} (${days(since[item.id])} d)` : "");
 const row = (item) => `| ${item.name} | ${ALL.map((s) => status(item, s)).join(" | ")} | ${ref(item.issue)} | ${age(item)} |`;
-const head = ["| Item | iOS | Android | Web | Server | Issue | Since |", "|---|---|---|---|---|---|---|"];
+const head = [`| Item | ${ALL.map(s => LABEL[s]).join(" | ")} | Issue | Since |`, `|${Array(ALL.length + 3).fill("---").join("|")}|`];
 
 const codeGaps = ledger.items.filter((i) => shipped(i, "ios") !== shipped(i, "android"));
 const releaseGaps = ledger.items.filter((i) => shipped(i, "ios") && shipped(i, "android") && status(i, "ios") !== status(i, "android"));
@@ -213,6 +217,10 @@ const count = (s, st) => ledger.items.filter((i) => status(i, s) === st).length;
 lines.push("| Surface | testing | built | planned | n/a | policy |", "|---|---|---|---|---|---|");
 for (const s of ALL) lines.push(`| ${LABEL[s]} | ${["testing", "built", "planned", "n/a", "policy"].map((st) => count(s, st)).join(" | ")} |`);
 lines.push("");
+const desktopGaps = ledger.items.filter(item => ["macos", "windows"].some(s => status(item, s) === "planned"));
+lines.push(`## Desktop capabilities still planned (${desktopGaps.length})`, "");
+lines.push("Mac work comes first (#1018); Windows follows (#1019). A partial screen does not make a capability complete.", "");
+lines.push(...(desktopGaps.length ? ["| Item | macOS | Windows |", "|---|---|---|", ...desktopGaps.map(item => `| ${item.name} | ${["macos", "windows"].map(s => `${status(item, s)}${entry(item, s).issue ? ` (#${entry(item, s).issue})` : ""}`).join(" | ")} |`)] : ["None."]), "");
 lines.push(`## Code gaps: one app has it, the other does not (${codeGaps.length})`, "");
 lines.push(...(codeGaps.length ? [...head, ...codeGaps.map(row)] : ["None."]), "");
 lines.push(`## Release gaps: both apps have the code, only one is in a tester build (${releaseGaps.length})`, "");

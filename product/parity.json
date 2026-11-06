@@ -1,5 +1,5 @@
 {
-  "$comment": "Parity ledger (ADR 0092). One item per capability that can differ between surfaces, with a status on ios and android (Bipe's app, bipe-app), web (bipe-web) and server (bipe-api, bipe-infra): planned, built (merged, not in a tester build), testing (in a tester build), policy, or n/a with a reason. built and testing need evidence: paths that start with bipe-app/ios/ or bipe-app/android/ (merged code, never a spec), bipe-web/, bipe-api/ or bipe-infra/. fork: true marks an item that the archived Element X fork app ships (ADR 0155): until bipe-app replaces it in the stores, such an item is built or testing on ios and android, or planned with the open issue that builds it (issue), or n/a with a reason and the ADR that excludes it (adr), or n/a with a reason and fork: false when the fork app does not ship it on that platform. This is the one status per feature: product.json features have none, bipe-web and gen-product-doc.mjs read it by id. When iOS and Android differ, issue names the open issue that closes the gap (--issues checks that it is open). differences: deliberate behaviour differences between the apps; kind idiom, gap or undecided (gap and undecided need an issue). Check: node tools/parity.mjs. Report: --report.",
+  "$comment": "Parity ledger (ADR 0092). One item per capability that can differ between surfaces, with a status on ios and android (Bipe's app, bipe-app), web (bipe-web) and server (bipe-api, bipe-infra): planned, built (merged, not in a tester build), testing (in a tester build), policy, or n/a with a reason. built and testing need evidence: paths that start with bipe-app/ios/ or bipe-app/android/ (merged code, never a spec), bipe-web/, bipe-api/ or bipe-infra/. fork: true marks an item that the archived Element X fork app ships (ADR 0155): until bipe-app replaces it in the stores, such an item is built or testing on ios and android, or planned with the open issue that builds it (issue), or n/a with a reason and the ADR that excludes it (adr), or n/a with a reason and fork: false when the fork app does not ship it on that platform. This is the one status per feature: product.json features have none, bipe-web and gen-product-doc.mjs read it by id. When iOS and Android differ, issue names the open issue that closes the gap (--issues checks that it is open). differences: deliberate behaviour differences between the apps; kind idiom, gap or undecided (gap and undecided need an issue). Check: node tools/parity.mjs. Report: --report. Desktop surfaces (ADR 0266): macos and windows. Each planned desktop capability names #1018 or #1019; desktop entries remain planned until its whole applicable capability has evidence. Phone-authorized actions keep the existing policy. The initial desktop baseline requires an applicability audit; it is not a claim that phone-only OS integrations can run unchanged.",
   "version": 1,
   "items": [
     {
@@ -27,7 +27,15 @@
         "status": "n/a",
         "reason": "Runs on the device only"
       },
-      "fork": true
+      "fork": true,
+      "macos": {
+        "status": "planned",
+        "issue": 1018
+      },
+      "windows": {
+        "status": "planned",
+        "issue": 1019
+      }
     },
     {
       "id": "requests",
@@ -58,7 +66,15 @@
           "bipe-infra/compose/synapse-modules/bipe_messaging.py"
         ]
       },
-      "fork": true
+      "fork": true,
+      "macos": {
+        "status": "planned",
+        "issue": 1018
+      },
+      "windows": {
+        "status": "planned",
+        "issue": 1019
+      }
     },
     {
       "id": "money-pause",
@@ -84,6 +100,14 @@
       "server": {
         "status": "n/a",
         "reason": "Runs on the device only"
+      },
+      "macos": {
+        "status": "planned",
+        "issue": 1018
+      },
+      "windows": {
+        "status": "planned",
+        "issue": 1019
       }
     },
     {
@@ -113,7 +137,15 @@
           "bipe-api/src/signup.ts"
         ]
       },
-      "fork": true
+      "fork": true,
+      "macos": {
+        "status": "planned",
+        "issue": 1018
+      },
+      "windows": {
+        "status": "planned",
+        "issue": 1019
+      }
     },
     {
       "id": "first-run",
@@ -144,7 +176,15 @@
         ]
       },
       "issue": 415,
-      "fork": true
+      "fork": true,
+      "macos": {
+        "status": "planned",
+        "issue": 1018
+      },
+      "windows": {
+        "status": "planned",
+        "issue": 1019
+      }
     },
     {
       "id": "phone-account",
@@ -173,7 +213,15 @@
           "bipe-api/src/accounts.ts"
         ]
       },
-      "fork": true
+      "fork": true,
+      "macos": {
+        "status": "planned",
+        "issue": 1018
+      },
+      "windows": {
+        "status": "planned",
+        "issue": 1019
+      }
     },
     {
       "id": "new-phone",
@@ -210,7 +258,15 @@
         ]
       },
       "note": "Token, PIN, QR and e-mail recovery are merged on both apps; guardians and CPF recovery are not",
-      "fork": true
+      "fork": true,
+      "macos": {
+        "status": "planned",
+        "issue": 1018
+      },
+      "windows": {
+        "status": "planned",
+        "issue": 1019
+      }
     },
     {
       "id": "transfer-safe-recovery",
@@ -242,7 +298,15 @@
         ]
       },
       "issue": 531,
-      "note": "bipe/docs/team-transfer-recovery.md: iOS moves its keychain items into the app-group group; both apps show the recovery reminder and the add-e-mail screen; the server records the moves and counts the share"
+      "note": "bipe/docs/team-transfer-recovery.md: iOS moves its keychain items into the app-group group; both apps show the recovery reminder and the add-e-mail screen; the server records the moves and counts the share",
+      "macos": {
+        "status": "planned",
+        "issue": 1018
+      },
+      "windows": {
+        "status": "planned",
+        "issue": 1019
+      }
     },
     {
       "id": "web-sign-in",
@@ -272,7 +336,20 @@
         ]
       },
       "issue": 391,
-      "fork": true
+      "fork": true,
+      "macos": {
+        "status": "testing",
+        "evidence": [
+          "bipe-app/macos/BipeMac/MacAccount.swift",
+          "bipe-app/macos/BipeMac/MacQRCode.swift",
+          "bipe-app/macos/Tests/MacSpikeTests.swift"
+        ],
+        "note": "MZ confirmed real phone linking on 6 November 2026; no phone update."
+      },
+      "windows": {
+        "status": "planned",
+        "issue": 1019
+      }
     },
     {
       "id": "verified-badge",
@@ -297,7 +374,15 @@
       },
       "server": "planned",
       "note": "The apps show the seal for a valid pix or govbr badge. No issuer signs those levels in production yet (bipe#17, bipe#543), so server stays planned and no person has a seal today",
-      "issue": 543
+      "issue": 543,
+      "macos": {
+        "status": "planned",
+        "issue": 1018
+      },
+      "windows": {
+        "status": "planned",
+        "issue": 1019
+      }
     },
     {
       "id": "trust-facts",
@@ -324,7 +409,15 @@
         "status": "n/a",
         "reason": "Runs on the device; the rules are registries/trust-facts.json"
       },
-      "issue": 227
+      "issue": 227,
+      "macos": {
+        "status": "planned",
+        "issue": 1018
+      },
+      "windows": {
+        "status": "planned",
+        "issue": 1019
+      }
     },
     {
       "id": "govbr-verify",
@@ -353,7 +446,15 @@
           "bipe-api/src/govbr.ts"
         ]
       },
-      "note": "Behind the build flag govbrEnabled (iOS AppConfig.govbrEnabled, Android BuildConfig.BIPE_GOVBR): debug builds of the tester ID set only, off in Release and store builds until bipe#542 and the legal review bipe#17 close"
+      "note": "Behind the build flag govbrEnabled (iOS AppConfig.govbrEnabled, Android BuildConfig.BIPE_GOVBR): debug builds of the tester ID set only, off in Release and store builds until bipe#542 and the legal review bipe#17 close",
+      "macos": {
+        "status": "planned",
+        "issue": 1018
+      },
+      "windows": {
+        "status": "planned",
+        "issue": 1019
+      }
     },
     {
       "id": "cnpj-badge",
@@ -388,7 +489,15 @@
         ]
       },
       "issue": 252,
-      "fork": true
+      "fork": true,
+      "macos": {
+        "status": "planned",
+        "issue": 1018
+      },
+      "windows": {
+        "status": "planned",
+        "issue": 1019
+      }
     },
     {
       "id": "cvm-line",
@@ -418,7 +527,15 @@
           "bipe-api/src/badges.ts"
         ]
       },
-      "issue": 238
+      "issue": 238,
+      "macos": {
+        "status": "planned",
+        "issue": 1018
+      },
+      "windows": {
+        "status": "planned",
+        "issue": 1019
+      }
     },
     {
       "id": "cnpj-claim",
@@ -448,7 +565,15 @@
           "bipe-api/src/ecnpj.ts"
         ]
       },
-      "issue": 249
+      "issue": 249,
+      "macos": {
+        "status": "planned",
+        "issue": 1018
+      },
+      "windows": {
+        "status": "planned",
+        "issue": 1019
+      }
     },
     {
       "id": "official-notice",
@@ -472,7 +597,15 @@
         "reason": "No web chat (ADR 0004); the site shows a demo at most"
       },
       "server": "planned",
-      "issue": 245
+      "issue": 245,
+      "macos": {
+        "status": "planned",
+        "issue": 1018
+      },
+      "windows": {
+        "status": "planned",
+        "issue": 1019
+      }
     },
     {
       "id": "reserved-names",
@@ -500,7 +633,15 @@
           "bipe-api/src/handles.ts"
         ]
       },
-      "fork": true
+      "fork": true,
+      "macos": {
+        "status": "planned",
+        "issue": 1018
+      },
+      "windows": {
+        "status": "planned",
+        "issue": 1019
+      }
     },
     {
       "id": "official-badge",
@@ -527,7 +668,15 @@
         "status": "n/a",
         "reason": "Client behaviour; the account list is registries/official-accounts.json"
       },
-      "issue": 384
+      "issue": 384,
+      "macos": {
+        "status": "planned",
+        "issue": 1018
+      },
+      "windows": {
+        "status": "planned",
+        "issue": 1019
+      }
     },
     {
       "id": "news-room",
@@ -557,7 +706,15 @@
           "bipe-api/src/matrix-bot.ts"
         ]
       },
-      "issue": 387
+      "issue": 387,
+      "macos": {
+        "status": "planned",
+        "issue": 1018
+      },
+      "windows": {
+        "status": "planned",
+        "issue": 1019
+      }
     },
     {
       "id": "lookalikes",
@@ -588,7 +745,15 @@
           "bipe-api/src/registry.ts"
         ]
       },
-      "note": "NameNormalizer runs on both apps for reserved names and link hosts; no lookalike warning on user names"
+      "note": "NameNormalizer runs on both apps for reserved names and link hosts; no lookalike warning on user names",
+      "macos": {
+        "status": "planned",
+        "issue": 1018
+      },
+      "windows": {
+        "status": "planned",
+        "issue": 1019
+      }
     },
     {
       "id": "bot-mark",
@@ -599,7 +764,15 @@
         "status": "n/a",
         "reason": "No web chat (ADR 0004); the site shows a demo at most"
       },
-      "server": "planned"
+      "server": "planned",
+      "macos": {
+        "status": "planned",
+        "issue": 1018
+      },
+      "windows": {
+        "status": "planned",
+        "issue": 1019
+      }
     },
     {
       "id": "family-check",
@@ -613,6 +786,14 @@
       "server": {
         "status": "n/a",
         "reason": "Runs on the device only"
+      },
+      "macos": {
+        "status": "planned",
+        "issue": 1018
+      },
+      "windows": {
+        "status": "planned",
+        "issue": 1019
       }
     },
     {
@@ -642,7 +823,15 @@
           "bipe-api/src/work-hours.ts"
         ]
       },
-      "issue": 511
+      "issue": 511,
+      "macos": {
+        "status": "planned",
+        "issue": 1018
+      },
+      "windows": {
+        "status": "planned",
+        "issue": 1019
+      }
     },
     {
       "id": "work-side-focus",
@@ -668,7 +857,15 @@
         "status": "n/a",
         "reason": "A phone setting: the server is not involved"
       },
-      "issue": 512
+      "issue": 512,
+      "macos": {
+        "status": "planned",
+        "issue": 1018
+      },
+      "windows": {
+        "status": "planned",
+        "issue": 1019
+      }
     },
     {
       "id": "handles",
@@ -695,7 +892,15 @@
           "bipe-api/src/handles.ts"
         ]
       },
-      "fork": true
+      "fork": true,
+      "macos": {
+        "status": "planned",
+        "issue": 1018
+      },
+      "windows": {
+        "status": "planned",
+        "issue": 1019
+      }
     },
     {
       "id": "profile-links",
@@ -726,7 +931,15 @@
           "bipe-infra/compose/site/.well-known/assetlinks.json"
         ]
       },
-      "fork": true
+      "fork": true,
+      "macos": {
+        "status": "planned",
+        "issue": 1018
+      },
+      "windows": {
+        "status": "planned",
+        "issue": 1019
+      }
     },
     {
       "id": "profile-link-routing",
@@ -760,7 +973,15 @@
         ]
       },
       "issue": 299,
-      "fork": true
+      "fork": true,
+      "macos": {
+        "status": "planned",
+        "issue": 1018
+      },
+      "windows": {
+        "status": "planned",
+        "issue": 1019
+      }
     },
     {
       "id": "public-profile",
@@ -791,7 +1012,15 @@
           "bipe-api/src/profiles.ts"
         ]
       },
-      "fork": true
+      "fork": true,
+      "macos": {
+        "status": "planned",
+        "issue": 1018
+      },
+      "windows": {
+        "status": "planned",
+        "issue": 1019
+      }
     },
     {
       "id": "profile-socials",
@@ -801,7 +1030,15 @@
       "web": "planned",
       "server": "planned",
       "issue": 993,
-      "note": "ADR 0228. The rule and vectors are in bipe-shared (socialHandleProblem, test-vectors/social-handles.json)"
+      "note": "ADR 0228. The rule and vectors are in bipe-shared (socialHandleProblem, test-vectors/social-handles.json)",
+      "macos": {
+        "status": "planned",
+        "issue": 1018
+      },
+      "windows": {
+        "status": "planned",
+        "issue": 1019
+      }
     },
     {
       "id": "invites",
@@ -833,7 +1070,15 @@
           "bipe-api/src/invites.ts"
         ]
       },
-      "fork": true
+      "fork": true,
+      "macos": {
+        "status": "planned",
+        "issue": 1018
+      },
+      "windows": {
+        "status": "planned",
+        "issue": 1019
+      }
     },
     {
       "id": "invite-note",
@@ -864,7 +1109,15 @@
         "reason": "The inviter's phone sends the note end-to-end encrypted; the server never receives it (ADR 0136)"
       },
       "issue": 458,
-      "fork": true
+      "fork": true,
+      "macos": {
+        "status": "planned",
+        "issue": 1018
+      },
+      "windows": {
+        "status": "planned",
+        "issue": 1019
+      }
     },
     {
       "id": "invite-qr",
@@ -891,7 +1144,15 @@
         "status": "n/a",
         "reason": "Drawn on the device"
       },
-      "fork": true
+      "fork": true,
+      "macos": {
+        "status": "planned",
+        "issue": 1018
+      },
+      "windows": {
+        "status": "planned",
+        "issue": 1019
+      }
     },
     {
       "id": "bring-people",
@@ -919,6 +1180,14 @@
         "evidence": [
           "bipe-api/src/growth.ts"
         ]
+      },
+      "macos": {
+        "status": "planned",
+        "issue": 1018
+      },
+      "windows": {
+        "status": "planned",
+        "issue": 1019
       }
     },
     {
@@ -948,7 +1217,15 @@
           "bipe-api/src/invites.ts"
         ]
       },
-      "fork": true
+      "fork": true,
+      "macos": {
+        "status": "planned",
+        "issue": 1018
+      },
+      "windows": {
+        "status": "planned",
+        "issue": 1019
+      }
     },
     {
       "id": "deferred-invite",
@@ -977,7 +1254,15 @@
         "status": "n/a",
         "reason": "Clipboard and install referrer are on the device"
       },
-      "issue": 599
+      "issue": 599,
+      "macos": {
+        "status": "planned",
+        "issue": 1018
+      },
+      "windows": {
+        "status": "planned",
+        "issue": 1019
+      }
     },
     {
       "id": "phone-discovery",
@@ -1009,7 +1294,15 @@
         ]
       },
       "issue": 162,
-      "fork": true
+      "fork": true,
+      "macos": {
+        "status": "planned",
+        "issue": 1018
+      },
+      "windows": {
+        "status": "planned",
+        "issue": 1019
+      }
     },
     {
       "id": "own-number",
@@ -1037,6 +1330,14 @@
         "evidence": [
           "bipe-api/src/phones.ts"
         ]
+      },
+      "macos": {
+        "status": "planned",
+        "issue": 1018
+      },
+      "windows": {
+        "status": "planned",
+        "issue": 1019
       }
     },
     {
@@ -1063,6 +1364,14 @@
       "server": {
         "status": "n/a",
         "reason": "The number comes from the address book on the phone; the server sends no number"
+      },
+      "macos": {
+        "status": "planned",
+        "issue": 1018
+      },
+      "windows": {
+        "status": "planned",
+        "issue": 1019
       }
     },
     {
@@ -1094,7 +1403,15 @@
           "bipe-infra/compose/templates/synapse-bipe.yaml"
         ]
       },
-      "fork": true
+      "fork": true,
+      "macos": {
+        "status": "planned",
+        "issue": 1018
+      },
+      "windows": {
+        "status": "planned",
+        "issue": 1019
+      }
     },
     {
       "id": "e2ee-only-rooms",
@@ -1126,7 +1443,15 @@
         ]
       },
       "issue": 78,
-      "fork": true
+      "fork": true,
+      "macos": {
+        "status": "planned",
+        "issue": 1018
+      },
+      "windows": {
+        "status": "planned",
+        "issue": 1019
+      }
     },
     {
       "id": "attestation",
@@ -1157,7 +1482,15 @@
         ]
       },
       "issue": 606,
-      "fork": true
+      "fork": true,
+      "macos": {
+        "status": "planned",
+        "issue": 1018
+      },
+      "windows": {
+        "status": "planned",
+        "issue": 1019
+      }
     },
     {
       "id": "no-ads",
@@ -1165,7 +1498,15 @@
       "ios": "policy",
       "android": "policy",
       "web": "policy",
-      "server": "policy"
+      "server": "policy",
+      "macos": {
+        "status": "planned",
+        "issue": 1018
+      },
+      "windows": {
+        "status": "planned",
+        "issue": 1019
+      }
     },
     {
       "id": "free",
@@ -1173,7 +1514,15 @@
       "ios": "policy",
       "android": "policy",
       "web": "policy",
-      "server": "policy"
+      "server": "policy",
+      "macos": {
+        "status": "planned",
+        "issue": 1018
+      },
+      "windows": {
+        "status": "planned",
+        "issue": 1019
+      }
     },
     {
       "id": "brazil-servers",
@@ -1181,7 +1530,15 @@
       "ios": "policy",
       "android": "policy",
       "web": "policy",
-      "server": "policy"
+      "server": "policy",
+      "macos": {
+        "status": "planned",
+        "issue": 1018
+      },
+      "windows": {
+        "status": "planned",
+        "issue": 1019
+      }
     },
     {
       "id": "open-source",
@@ -1189,7 +1546,15 @@
       "ios": "policy",
       "android": "policy",
       "web": "policy",
-      "server": "policy"
+      "server": "policy",
+      "macos": {
+        "status": "planned",
+        "issue": 1018
+      },
+      "windows": {
+        "status": "planned",
+        "issue": 1019
+      }
     },
     {
       "id": "pix-cards",
@@ -1203,6 +1568,14 @@
       "server": {
         "status": "n/a",
         "reason": "Plain Matrix events; no Bipe server code"
+      },
+      "macos": {
+        "status": "planned",
+        "issue": 1018
+      },
+      "windows": {
+        "status": "planned",
+        "issue": 1019
       }
     },
     {
@@ -1215,7 +1588,15 @@
         "reason": "No web chat (ADR 0004); the site shows a demo at most"
       },
       "server": "planned",
-      "issue": 261
+      "issue": 261,
+      "macos": {
+        "status": "planned",
+        "issue": 1018
+      },
+      "windows": {
+        "status": "planned",
+        "issue": 1019
+      }
     },
     {
       "id": "agenda",
@@ -1249,6 +1630,14 @@
           "bipe-api/src/agenda.ts",
           "bipe-api/src/scheduling.ts"
         ]
+      },
+      "macos": {
+        "status": "planned",
+        "issue": 1018
+      },
+      "windows": {
+        "status": "planned",
+        "issue": 1019
       }
     },
     {
@@ -1278,6 +1667,14 @@
         "evidence": [
           "bipe-api/src/catalog.ts"
         ]
+      },
+      "macos": {
+        "status": "planned",
+        "issue": 1018
+      },
+      "windows": {
+        "status": "planned",
+        "issue": 1019
       }
     },
     {
@@ -1307,6 +1704,14 @@
         "evidence": [
           "bipe-api/src/orders.ts"
         ]
+      },
+      "macos": {
+        "status": "planned",
+        "issue": 1018
+      },
+      "windows": {
+        "status": "planned",
+        "issue": 1019
       }
     },
     {
@@ -1336,6 +1741,14 @@
         "evidence": [
           "bipe-api/src/quotes.ts"
         ]
+      },
+      "macos": {
+        "status": "planned",
+        "issue": 1018
+      },
+      "windows": {
+        "status": "planned",
+        "issue": 1019
       }
     },
     {
@@ -1365,6 +1778,14 @@
         "evidence": [
           "bipe-api/src/queue.ts"
         ]
+      },
+      "macos": {
+        "status": "planned",
+        "issue": 1018
+      },
+      "windows": {
+        "status": "planned",
+        "issue": 1019
       }
     },
     {
@@ -1397,7 +1818,15 @@
         "reason": "Runs on the device only"
       },
       "issue": 294,
-      "fork": true
+      "fork": true,
+      "macos": {
+        "status": "planned",
+        "issue": 1018
+      },
+      "windows": {
+        "status": "planned",
+        "issue": 1019
+      }
     },
     {
       "id": "stickers",
@@ -1422,7 +1851,15 @@
         "status": "n/a",
         "reason": "Plain Matrix events; no Bipe server code"
       },
-      "fork": true
+      "fork": true,
+      "macos": {
+        "status": "planned",
+        "issue": 1018
+      },
+      "windows": {
+        "status": "planned",
+        "issue": 1019
+      }
     },
     {
       "id": "group-types",
@@ -1449,7 +1886,15 @@
       },
       "issue": 97,
       "note": "ADR 0254: plain group messages are silent. Without the Apple filtering entitlement iOS cannot drop them, so they can stay in the list (bipe#1079)",
-      "fork": true
+      "fork": true,
+      "macos": {
+        "status": "planned",
+        "issue": 1018
+      },
+      "windows": {
+        "status": "planned",
+        "issue": 1019
+      }
     },
     {
       "id": "group-roles",
@@ -1475,6 +1920,14 @@
       "server": {
         "status": "n/a",
         "reason": "Plain Matrix power levels; no Bipe server code"
+      },
+      "macos": {
+        "status": "planned",
+        "issue": 1018
+      },
+      "windows": {
+        "status": "planned",
+        "issue": 1019
       }
     },
     {
@@ -1499,7 +1952,15 @@
         "status": "n/a",
         "reason": "Plain Matrix events; no Bipe server code"
       },
-      "fork": true
+      "fork": true,
+      "macos": {
+        "status": "planned",
+        "issue": 1018
+      },
+      "windows": {
+        "status": "planned",
+        "issue": 1019
+      }
     },
     {
       "id": "question-card",
@@ -1524,7 +1985,15 @@
         "status": "n/a",
         "reason": "Plain Matrix events; no Bipe server code"
       },
-      "issue": 244
+      "issue": 244,
+      "macos": {
+        "status": "planned",
+        "issue": 1018
+      },
+      "windows": {
+        "status": "planned",
+        "issue": 1019
+      }
     },
     {
       "id": "communities",
@@ -1535,7 +2004,15 @@
         "status": "n/a",
         "reason": "No web chat (ADR 0004); the site shows a demo at most"
       },
-      "server": "planned"
+      "server": "planned",
+      "macos": {
+        "status": "planned",
+        "issue": 1018
+      },
+      "windows": {
+        "status": "planned",
+        "issue": 1019
+      }
     },
     {
       "id": "verified-groups",
@@ -1546,7 +2023,15 @@
         "status": "n/a",
         "reason": "No web chat (ADR 0004); the site shows a demo at most"
       },
-      "server": "planned"
+      "server": "planned",
+      "macos": {
+        "status": "planned",
+        "issue": 1018
+      },
+      "windows": {
+        "status": "planned",
+        "issue": 1019
+      }
     },
     {
       "id": "voice-transcript-display",
@@ -1571,7 +2056,15 @@
         "status": "n/a",
         "reason": "Runs on the device only"
       },
-      "fork": true
+      "fork": true,
+      "macos": {
+        "status": "planned",
+        "issue": 1018
+      },
+      "windows": {
+        "status": "planned",
+        "issue": 1019
+      }
     },
     {
       "id": "voice-transcript-send",
@@ -1597,7 +2090,15 @@
         "reason": "Runs on the device only"
       },
       "issue": 80,
-      "fork": true
+      "fork": true,
+      "macos": {
+        "status": "planned",
+        "issue": 1018
+      },
+      "windows": {
+        "status": "planned",
+        "issue": 1019
+      }
     },
     {
       "id": "app-lock",
@@ -1624,7 +2125,15 @@
         "status": "n/a",
         "reason": "Runs on the device only"
       },
-      "fork": true
+      "fork": true,
+      "macos": {
+        "status": "planned",
+        "issue": 1018
+      },
+      "windows": {
+        "status": "planned",
+        "issue": 1019
+      }
     },
     {
       "id": "multi-account",
@@ -1655,7 +2164,20 @@
         "status": "n/a",
         "reason": "No server change (ADR 0086)"
       },
-      "issue": 265
+      "issue": 265,
+      "macos": {
+        "status": "built",
+        "evidence": [
+          "bipe-app/macos/BipeMac/MacWorkspace.swift",
+          "bipe-app/macos/BipeMac/MacSessionVault.swift",
+          "bipe-app/macos/BipeMac/MacAccountView.swift"
+        ],
+        "note": "Link and switch existing personal/company accounts; new-account creation stays on the phone."
+      },
+      "windows": {
+        "status": "planned",
+        "issue": 1019
+      }
     },
     {
       "id": "theft-protection",
@@ -1686,7 +2208,15 @@
           "bipe-api/src/theft.ts"
         ]
       },
-      "issue": 600
+      "issue": 600,
+      "macos": {
+        "status": "planned",
+        "issue": 1018
+      },
+      "windows": {
+        "status": "planned",
+        "issue": 1019
+      }
     },
     {
       "id": "os-theft-protection",
@@ -1713,7 +2243,15 @@
         "status": "n/a",
         "reason": "The phone keeps the prompt state; no server change"
       },
-      "issue": 125
+      "issue": 125,
+      "macos": {
+        "status": "planned",
+        "issue": 1018
+      },
+      "windows": {
+        "status": "planned",
+        "issue": 1019
+      }
     },
     {
       "id": "handle-change-notice",
@@ -1743,7 +2281,15 @@
         ]
       },
       "issue": 166,
-      "fork": true
+      "fork": true,
+      "macos": {
+        "status": "planned",
+        "issue": 1018
+      },
+      "windows": {
+        "status": "planned",
+        "issue": 1019
+      }
     },
     {
       "id": "profile-change-facts",
@@ -1772,7 +2318,15 @@
           "bipe-api/src/profile-facts.ts"
         ]
       },
-      "issue": 598
+      "issue": 598,
+      "macos": {
+        "status": "planned",
+        "issue": 1018
+      },
+      "windows": {
+        "status": "planned",
+        "issue": 1019
+      }
     },
     {
       "id": "photo-match",
@@ -1799,7 +2353,15 @@
         "status": "n/a",
         "reason": "Runs on the device only"
       },
-      "issue": 143
+      "issue": 143,
+      "macos": {
+        "status": "planned",
+        "issue": 1018
+      },
+      "windows": {
+        "status": "planned",
+        "issue": 1019
+      }
     },
     {
       "id": "business-chats",
@@ -1811,7 +2373,15 @@
         "reason": "No web chat (ADR 0004); the site shows a demo at most"
       },
       "server": "planned",
-      "issue": 115
+      "issue": 115,
+      "macos": {
+        "status": "planned",
+        "issue": 1018
+      },
+      "windows": {
+        "status": "planned",
+        "issue": 1019
+      }
     },
     {
       "id": "onboarding-welcome",
@@ -1836,7 +2406,15 @@
         "status": "n/a",
         "reason": "No server part"
       },
-      "fork": true
+      "fork": true,
+      "macos": {
+        "status": "planned",
+        "issue": 1018
+      },
+      "windows": {
+        "status": "planned",
+        "issue": 1019
+      }
     },
     {
       "id": "onboarding-two-step-signup",
@@ -1864,7 +2442,15 @@
         ]
       },
       "issue": 196,
-      "fork": true
+      "fork": true,
+      "macos": {
+        "status": "planned",
+        "issue": 1018
+      },
+      "windows": {
+        "status": "planned",
+        "issue": 1019
+      }
     },
     {
       "id": "signup-terms-clickwrap",
@@ -1891,7 +2477,15 @@
           "bipe-api/src/terms.ts"
         ]
       },
-      "fork": true
+      "fork": true,
+      "macos": {
+        "status": "planned",
+        "issue": 1018
+      },
+      "windows": {
+        "status": "planned",
+        "issue": 1019
+      }
     },
     {
       "id": "age-signal",
@@ -1921,7 +2515,15 @@
           "bipe-api/src/age.ts"
         ]
       },
-      "issue": 994
+      "issue": 994,
+      "macos": {
+        "status": "planned",
+        "issue": 1018
+      },
+      "windows": {
+        "status": "planned",
+        "issue": 1019
+      }
     },
     {
       "id": "terms-reaccept",
@@ -1949,7 +2551,15 @@
         ]
       },
       "issue": 366,
-      "fork": true
+      "fork": true,
+      "macos": {
+        "status": "planned",
+        "issue": 1018
+      },
+      "windows": {
+        "status": "planned",
+        "issue": 1019
+      }
     },
     {
       "id": "onboarding-no-element-crypto",
@@ -1970,7 +2580,15 @@
         "status": "n/a",
         "reason": "No server part"
       },
-      "issue": 201
+      "issue": 201,
+      "macos": {
+        "status": "planned",
+        "issue": 1018
+      },
+      "windows": {
+        "status": "planned",
+        "issue": 1019
+      }
     },
     {
       "id": "help-links",
@@ -1996,7 +2614,15 @@
         "reason": "No server part"
       },
       "issue": 205,
-      "fork": true
+      "fork": true,
+      "macos": {
+        "status": "planned",
+        "issue": 1018
+      },
+      "windows": {
+        "status": "planned",
+        "issue": 1019
+      }
     },
     {
       "id": "app-icon",
@@ -2023,7 +2649,19 @@
       },
       "issue": 25,
       "note": "Placeholder on both until the final artwork",
-      "fork": true
+      "fork": true,
+      "macos": {
+        "status": "testing",
+        "evidence": [
+          "bipe-app/macos/project.yml",
+          "bipe-app/macos/BipeMac/MacDesign.swift"
+        ],
+        "note": "Installed Mac preview uses the shared Bipe mark and tokens."
+      },
+      "windows": {
+        "status": "planned",
+        "issue": 1019
+      }
     },
     {
       "id": "waitlist",
@@ -2047,6 +2685,14 @@
         "evidence": [
           "bipe-api/src/waitlist.ts"
         ]
+      },
+      "macos": {
+        "status": "planned",
+        "issue": 1018
+      },
+      "windows": {
+        "status": "planned",
+        "issue": 1019
       }
     },
     {
@@ -2072,7 +2718,15 @@
         "status": "n/a",
         "reason": "Not an app build"
       },
-      "fork": true
+      "fork": true,
+      "macos": {
+        "status": "planned",
+        "issue": 1018
+      },
+      "windows": {
+        "status": "planned",
+        "issue": 1019
+      }
     },
     {
       "id": "settings-structure",
@@ -2099,7 +2753,15 @@
         "reason": "App screens; the order comes from registries/settings.json"
       },
       "issue": 358,
-      "fork": true
+      "fork": true,
+      "macos": {
+        "status": "planned",
+        "issue": 1018
+      },
+      "windows": {
+        "status": "planned",
+        "issue": 1019
+      }
     },
     {
       "id": "who-can-message",
@@ -2127,7 +2789,15 @@
         ]
       },
       "issue": 359,
-      "fork": true
+      "fork": true,
+      "macos": {
+        "status": "planned",
+        "issue": 1018
+      },
+      "windows": {
+        "status": "planned",
+        "issue": 1019
+      }
     },
     {
       "id": "account-deletion",
@@ -2157,7 +2827,15 @@
           "bipe-api/src/synapse-admin.ts"
         ]
       },
-      "issue": 528
+      "issue": 528,
+      "macos": {
+        "status": "planned",
+        "issue": 1018
+      },
+      "windows": {
+        "status": "planned",
+        "issue": 1019
+      }
     },
     {
       "id": "data-export",
@@ -2185,7 +2863,15 @@
         ]
       },
       "issue": 364,
-      "fork": true
+      "fork": true,
+      "macos": {
+        "status": "planned",
+        "issue": 1018
+      },
+      "windows": {
+        "status": "planned",
+        "issue": 1019
+      }
     },
     {
       "id": "problem-reports",
@@ -2214,7 +2900,15 @@
         ]
       },
       "issue": 367,
-      "fork": true
+      "fork": true,
+      "macos": {
+        "status": "planned",
+        "issue": 1018
+      },
+      "windows": {
+        "status": "planned",
+        "issue": 1019
+      }
     },
     {
       "id": "support-dm",
@@ -2241,7 +2935,15 @@
           "bipe-api/src/support.ts"
         ]
       },
-      "fork": true
+      "fork": true,
+      "macos": {
+        "status": "planned",
+        "issue": 1018
+      },
+      "windows": {
+        "status": "planned",
+        "issue": 1019
+      }
     },
     {
       "id": "app-update",
@@ -2264,6 +2966,14 @@
       "server": {
         "status": "n/a",
         "reason": "bipe-infra apk-pull already serves latest.json and the APK"
+      },
+      "macos": {
+        "status": "planned",
+        "issue": 1018
+      },
+      "windows": {
+        "status": "planned",
+        "issue": 1019
       }
     },
     {
@@ -2296,7 +3006,15 @@
         ]
       },
       "issue": 386,
-      "fork": true
+      "fork": true,
+      "macos": {
+        "status": "planned",
+        "issue": 1018
+      },
+      "windows": {
+        "status": "planned",
+        "issue": 1019
+      }
     },
     {
       "id": "haptics",
@@ -2321,7 +3039,15 @@
         "status": "n/a",
         "reason": "Runs on the device only"
       },
-      "fork": true
+      "fork": true,
+      "macos": {
+        "status": "planned",
+        "issue": 1018
+      },
+      "windows": {
+        "status": "planned",
+        "issue": 1019
+      }
     },
     {
       "id": "dm-delete",
@@ -2350,7 +3076,15 @@
         "reason": "Matrix account data; no Bipe server code"
       },
       "issue": 464,
-      "fork": true
+      "fork": true,
+      "macos": {
+        "status": "planned",
+        "issue": 1018
+      },
+      "windows": {
+        "status": "planned",
+        "issue": 1019
+      }
     },
     {
       "id": "dm-one-row",
@@ -2375,7 +3109,15 @@
         "status": "n/a",
         "reason": "Client behaviour; no Bipe server code"
       },
-      "issue": 535
+      "issue": 535,
+      "macos": {
+        "status": "planned",
+        "issue": 1018
+      },
+      "windows": {
+        "status": "planned",
+        "issue": 1019
+      }
     },
     {
       "id": "dm-name-photo",
@@ -2402,7 +3144,15 @@
         "status": "n/a",
         "reason": "Client behaviour; no Bipe server code"
       },
-      "issue": 523
+      "issue": 523,
+      "macos": {
+        "status": "planned",
+        "issue": 1018
+      },
+      "windows": {
+        "status": "planned",
+        "issue": 1019
+      }
     },
     {
       "id": "dm-power-levels",
@@ -2427,7 +3177,15 @@
         "status": "n/a",
         "reason": "Client behaviour; no Bipe server code"
       },
-      "issue": 532
+      "issue": 532,
+      "macos": {
+        "status": "planned",
+        "issue": 1018
+      },
+      "windows": {
+        "status": "planned",
+        "issue": 1019
+      }
     },
     {
       "id": "dm-block-bar",
@@ -2452,7 +3210,15 @@
         "status": "n/a",
         "reason": "Client behaviour; no Bipe server code"
       },
-      "issue": 536
+      "issue": 536,
+      "macos": {
+        "status": "planned",
+        "issue": 1018
+      },
+      "windows": {
+        "status": "planned",
+        "issue": 1019
+      }
     },
     {
       "id": "dm-left-bar",
@@ -2479,7 +3245,15 @@
         "status": "n/a",
         "reason": "Client behaviour; no Bipe server code"
       },
-      "issue": 533
+      "issue": 533,
+      "macos": {
+        "status": "planned",
+        "issue": 1018
+      },
+      "windows": {
+        "status": "planned",
+        "issue": 1019
+      }
     },
     {
       "id": "dm-notify-modes",
@@ -2506,7 +3280,15 @@
         "status": "n/a",
         "reason": "Client behaviour; no Bipe server code"
       },
-      "issue": 534
+      "issue": 534,
+      "macos": {
+        "status": "planned",
+        "issue": 1018
+      },
+      "windows": {
+        "status": "planned",
+        "issue": 1019
+      }
     },
     {
       "id": "dm-no-room-features",
@@ -2536,7 +3318,15 @@
         "status": "n/a",
         "reason": "Client behaviour; no Bipe server code"
       },
-      "issue": 525
+      "issue": 525,
+      "macos": {
+        "status": "planned",
+        "issue": 1018
+      },
+      "windows": {
+        "status": "planned",
+        "issue": 1019
+      }
     },
     {
       "id": "dm-ticks",
@@ -2563,7 +3353,15 @@
         "status": "n/a",
         "reason": "Client behaviour; no Bipe server code"
       },
-      "issue": 537
+      "issue": 537,
+      "macos": {
+        "status": "planned",
+        "issue": 1018
+      },
+      "windows": {
+        "status": "planned",
+        "issue": 1019
+      }
     },
     {
       "id": "dm-delivered-tick",
@@ -2591,6 +3389,14 @@
       "server": {
         "status": "n/a",
         "reason": "Client behaviour; no Bipe server code"
+      },
+      "macos": {
+        "status": "planned",
+        "issue": 1018
+      },
+      "windows": {
+        "status": "planned",
+        "issue": 1019
       }
     },
     {
@@ -2617,6 +3423,14 @@
       "server": {
         "status": "n/a",
         "reason": "Client behaviour; no Bipe server code"
+      },
+      "macos": {
+        "status": "planned",
+        "issue": 1018
+      },
+      "windows": {
+        "status": "planned",
+        "issue": 1019
       }
     },
     {
@@ -2643,6 +3457,14 @@
       "server": {
         "status": "n/a",
         "reason": "Runs on the device only"
+      },
+      "macos": {
+        "status": "planned",
+        "issue": 1018
+      },
+      "windows": {
+        "status": "planned",
+        "issue": 1019
       }
     },
     {
@@ -2669,6 +3491,14 @@
       "server": {
         "status": "n/a",
         "reason": "Runs on the device only"
+      },
+      "macos": {
+        "status": "planned",
+        "issue": 1018
+      },
+      "windows": {
+        "status": "planned",
+        "issue": 1019
       }
     },
     {
@@ -2695,6 +3525,14 @@
       "server": {
         "status": "n/a",
         "reason": "Runs on the device only"
+      },
+      "macos": {
+        "status": "planned",
+        "issue": 1018
+      },
+      "windows": {
+        "status": "planned",
+        "issue": 1019
       }
     },
     {
@@ -2721,6 +3559,14 @@
       "server": {
         "status": "n/a",
         "reason": "Runs on the device only"
+      },
+      "macos": {
+        "status": "planned",
+        "issue": 1018
+      },
+      "windows": {
+        "status": "planned",
+        "issue": 1019
       }
     },
     {
@@ -2747,6 +3593,14 @@
       "server": {
         "status": "n/a",
         "reason": "Runs on the device only"
+      },
+      "macos": {
+        "status": "planned",
+        "issue": 1018
+      },
+      "windows": {
+        "status": "planned",
+        "issue": 1019
       }
     },
     {
@@ -2774,7 +3628,15 @@
         "status": "n/a",
         "reason": "Runs on the device only; the description travels in the encrypted event"
       },
-      "issue": 501
+      "issue": 501,
+      "macos": {
+        "status": "planned",
+        "issue": 1018
+      },
+      "windows": {
+        "status": "planned",
+        "issue": 1019
+      }
     },
     {
       "id": "hide-media",
@@ -2804,7 +3666,15 @@
         "reason": "Runs on the device; the setting is standard Matrix account data"
       },
       "issue": 827,
-      "fork": true
+      "fork": true,
+      "macos": {
+        "status": "planned",
+        "issue": 1018
+      },
+      "windows": {
+        "status": "planned",
+        "issue": 1019
+      }
     },
     {
       "id": "storage-use",
@@ -2832,7 +3702,15 @@
         "reason": "Runs on the device only"
       },
       "issue": 826,
-      "fork": true
+      "fork": true,
+      "macos": {
+        "status": "planned",
+        "issue": 1018
+      },
+      "windows": {
+        "status": "planned",
+        "issue": 1019
+      }
     },
     {
       "id": "data-use",
@@ -2859,7 +3737,15 @@
         "status": "n/a",
         "reason": "Runs on the device only"
       },
-      "issue": 242
+      "issue": 242,
+      "macos": {
+        "status": "planned",
+        "issue": 1018
+      },
+      "windows": {
+        "status": "planned",
+        "issue": 1019
+      }
     },
     {
       "id": "brand-mark",
@@ -2889,7 +3775,15 @@
           "bipe-api/src/badges.ts"
         ]
       },
-      "issue": 485
+      "issue": 485,
+      "macos": {
+        "status": "planned",
+        "issue": 1018
+      },
+      "windows": {
+        "status": "planned",
+        "issue": 1019
+      }
     },
     {
       "id": "business-kit",
@@ -2916,7 +3810,15 @@
         "status": "n/a",
         "reason": "The kit needs only the account's handle"
       },
-      "issue": 258
+      "issue": 258,
+      "macos": {
+        "status": "planned",
+        "issue": 1018
+      },
+      "windows": {
+        "status": "planned",
+        "issue": 1019
+      }
     },
     {
       "id": "brand-marks-manage",
@@ -2945,7 +3847,15 @@
           "bipe-api/src/brand-marks.ts"
         ]
       },
-      "issue": 486
+      "issue": 486,
+      "macos": {
+        "status": "planned",
+        "issue": 1018
+      },
+      "windows": {
+        "status": "planned",
+        "issue": 1019
+      }
     },
     {
       "id": "voice-transcript-receive",
@@ -2970,7 +3880,15 @@
         "status": "n/a",
         "reason": "Runs on the device only; no audio leaves the phone"
       },
-      "issue": 500
+      "issue": 500,
+      "macos": {
+        "status": "planned",
+        "issue": 1018
+      },
+      "windows": {
+        "status": "planned",
+        "issue": 1019
+      }
     },
     {
       "id": "timeline-notice-emote",
@@ -2996,7 +3914,15 @@
         "reason": "Plain Matrix events; no Bipe server code"
       },
       "issue": 659,
-      "fork": true
+      "fork": true,
+      "macos": {
+        "status": "planned",
+        "issue": 1018
+      },
+      "windows": {
+        "status": "planned",
+        "issue": 1019
+      }
     },
     {
       "id": "timeline-links-formatting",
@@ -3024,7 +3950,15 @@
         "reason": "Plain Matrix events; no Bipe server code"
       },
       "issue": 660,
-      "fork": true
+      "fork": true,
+      "macos": {
+        "status": "planned",
+        "issue": 1018
+      },
+      "windows": {
+        "status": "planned",
+        "issue": 1019
+      }
     },
     {
       "id": "group-state-lines",
@@ -3052,7 +3986,15 @@
         "reason": "Plain Matrix events; no Bipe server code"
       },
       "issue": 661,
-      "fork": true
+      "fork": true,
+      "macos": {
+        "status": "planned",
+        "issue": 1018
+      },
+      "windows": {
+        "status": "planned",
+        "issue": 1019
+      }
     },
     {
       "id": "archive-sync",
@@ -3080,7 +4022,15 @@
         "reason": "Plain Matrix events; no Bipe server code"
       },
       "issue": 662,
-      "fork": true
+      "fork": true,
+      "macos": {
+        "status": "planned",
+        "issue": 1018
+      },
+      "windows": {
+        "status": "planned",
+        "issue": 1019
+      }
     },
     {
       "id": "matrix-links",
@@ -3106,7 +4056,15 @@
         "reason": "Plain Matrix events; no Bipe server code"
       },
       "issue": 663,
-      "fork": true
+      "fork": true,
+      "macos": {
+        "status": "planned",
+        "issue": 1018
+      },
+      "windows": {
+        "status": "planned",
+        "issue": 1019
+      }
     },
     {
       "id": "message-forward",
@@ -3134,7 +4092,15 @@
         "reason": "Plain Matrix events; no Bipe server code"
       },
       "issue": 664,
-      "fork": true
+      "fork": true,
+      "macos": {
+        "status": "planned",
+        "issue": 1018
+      },
+      "windows": {
+        "status": "planned",
+        "issue": 1019
+      }
     },
     {
       "id": "message-pins",
@@ -3163,7 +4129,15 @@
         "reason": "Plain Matrix events; no Bipe server code"
       },
       "issue": 665,
-      "fork": true
+      "fork": true,
+      "macos": {
+        "status": "planned",
+        "issue": 1018
+      },
+      "windows": {
+        "status": "planned",
+        "issue": 1019
+      }
     },
     {
       "id": "message-link-copy",
@@ -3191,7 +4165,15 @@
         "reason": "Plain Matrix events; no Bipe server code"
       },
       "issue": 666,
-      "fork": true
+      "fork": true,
+      "macos": {
+        "status": "planned",
+        "issue": 1018
+      },
+      "windows": {
+        "status": "planned",
+        "issue": 1019
+      }
     },
     {
       "id": "threads",
@@ -3218,7 +4200,15 @@
         "reason": "Plain Matrix events; no Bipe server code"
       },
       "issue": 667,
-      "fork": true
+      "fork": true,
+      "macos": {
+        "status": "planned",
+        "issue": 1018
+      },
+      "windows": {
+        "status": "planned",
+        "issue": 1019
+      }
     },
     {
       "id": "media-captions-edit",
@@ -3244,7 +4234,15 @@
         "reason": "Plain Matrix events; no Bipe server code"
       },
       "issue": 668,
-      "fork": true
+      "fork": true,
+      "macos": {
+        "status": "planned",
+        "issue": 1018
+      },
+      "windows": {
+        "status": "planned",
+        "issue": 1019
+      }
     },
     {
       "id": "polls-edit-history",
@@ -3272,7 +4270,15 @@
         "reason": "Plain Matrix events; no Bipe server code"
       },
       "issue": 669,
-      "fork": true
+      "fork": true,
+      "macos": {
+        "status": "planned",
+        "issue": 1018
+      },
+      "windows": {
+        "status": "planned",
+        "issue": 1019
+      }
     },
     {
       "id": "year-recap",
@@ -3297,7 +4303,15 @@
         "status": "n/a",
         "reason": "Computed on the phone only (ADR 0223)"
       },
-      "issue": 973
+      "issue": 973,
+      "macos": {
+        "status": "planned",
+        "issue": 1018
+      },
+      "windows": {
+        "status": "planned",
+        "issue": 1019
+      }
     },
     {
       "id": "sticker-save-received",
@@ -3325,7 +4339,15 @@
         "reason": "Plain Matrix events; no Bipe server code"
       },
       "issue": 670,
-      "fork": true
+      "fork": true,
+      "macos": {
+        "status": "planned",
+        "issue": 1018
+      },
+      "windows": {
+        "status": "planned",
+        "issue": 1019
+      }
     },
     {
       "id": "sticker-pack-share",
@@ -3354,7 +4376,15 @@
         "status": "n/a",
         "reason": "Plain Matrix rooms and account data; no Bipe server code"
       },
-      "issue": 842
+      "issue": 842,
+      "macos": {
+        "status": "planned",
+        "issue": 1018
+      },
+      "windows": {
+        "status": "planned",
+        "issue": 1019
+      }
     },
     {
       "id": "message-search",
@@ -3380,7 +4410,15 @@
         "reason": "Plain Matrix events; no Bipe server code"
       },
       "issue": 671,
-      "fork": true
+      "fork": true,
+      "macos": {
+        "status": "planned",
+        "issue": 1018
+      },
+      "windows": {
+        "status": "planned",
+        "issue": 1019
+      }
     },
     {
       "id": "chat-media-gallery",
@@ -3406,7 +4444,15 @@
         "reason": "Plain Matrix events; no Bipe server code"
       },
       "issue": 672,
-      "fork": true
+      "fork": true,
+      "macos": {
+        "status": "planned",
+        "issue": 1018
+      },
+      "windows": {
+        "status": "planned",
+        "issue": 1019
+      }
     },
     {
       "id": "chat-favourites-filters",
@@ -3436,7 +4482,15 @@
         "reason": "Plain Matrix events; no Bipe server code"
       },
       "issue": 673,
-      "fork": true
+      "fork": true,
+      "macos": {
+        "status": "planned",
+        "issue": 1018
+      },
+      "windows": {
+        "status": "planned",
+        "issue": 1019
+      }
     },
     {
       "id": "mural-home",
@@ -3465,7 +4519,15 @@
         "status": "n/a",
         "reason": "The device computes the score. No score or signal reaches a server (ADR 0246)"
       },
-      "issue": 1044
+      "issue": 1044,
+      "macos": {
+        "status": "planned",
+        "issue": 1018
+      },
+      "windows": {
+        "status": "planned",
+        "issue": 1019
+      }
     },
     {
       "id": "group-report",
@@ -3493,7 +4555,15 @@
         "reason": "Plain Matrix events; no Bipe server code"
       },
       "issue": 674,
-      "fork": true
+      "fork": true,
+      "macos": {
+        "status": "planned",
+        "issue": 1018
+      },
+      "windows": {
+        "status": "planned",
+        "issue": 1019
+      }
     },
     {
       "id": "group-unban",
@@ -3525,7 +4595,15 @@
         "reason": "Plain Matrix events; no Bipe server code"
       },
       "issue": 675,
-      "fork": true
+      "fork": true,
+      "macos": {
+        "status": "planned",
+        "issue": 1018
+      },
+      "windows": {
+        "status": "planned",
+        "issue": 1019
+      }
     },
     {
       "id": "settings-rows-wired",
@@ -3553,7 +4631,15 @@
         "reason": "Plain Matrix events; no Bipe server code"
       },
       "issue": 676,
-      "fork": true
+      "fork": true,
+      "macos": {
+        "status": "planned",
+        "issue": 1018
+      },
+      "windows": {
+        "status": "planned",
+        "issue": 1019
+      }
     },
     {
       "id": "phone-discoverable-switch",
@@ -3583,7 +4669,15 @@
         ]
       },
       "issue": 677,
-      "fork": true
+      "fork": true,
+      "macos": {
+        "status": "planned",
+        "issue": 1018
+      },
+      "windows": {
+        "status": "planned",
+        "issue": 1019
+      }
     },
     {
       "id": "group-missed-summary",
@@ -3605,7 +4699,15 @@
         "reason": "Plain Matrix events; no Bipe server code"
       },
       "issue": 98,
-      "fork": true
+      "fork": true,
+      "macos": {
+        "status": "planned",
+        "issue": 1018
+      },
+      "windows": {
+        "status": "planned",
+        "issue": 1019
+      }
     },
     {
       "id": "location-sharing",
@@ -3632,7 +4734,15 @@
         "status": "n/a",
         "reason": "Plain Matrix events; no Bipe server code"
       },
-      "fork": true
+      "fork": true,
+      "macos": {
+        "status": "planned",
+        "issue": 1018
+      },
+      "windows": {
+        "status": "planned",
+        "issue": 1019
+      }
     },
     {
       "id": "live-location",
@@ -3659,7 +4769,15 @@
         "status": "n/a",
         "reason": "Plain Matrix events; no Bipe server code"
       },
-      "fork": true
+      "fork": true,
+      "macos": {
+        "status": "planned",
+        "issue": 1018
+      },
+      "windows": {
+        "status": "planned",
+        "issue": 1019
+      }
     },
     {
       "id": "ambiguous-names",
@@ -3688,7 +4806,15 @@
         "status": "n/a",
         "reason": "Display names and handles come from Matrix and the existing handle lookup; no server change"
       },
-      "fork": true
+      "fork": true,
+      "macos": {
+        "status": "planned",
+        "issue": 1018
+      },
+      "windows": {
+        "status": "planned",
+        "issue": 1019
+      }
     },
     {
       "id": "jump-to-date",
@@ -3715,7 +4841,15 @@
         "status": "n/a",
         "reason": "Synapse serves the Matrix timestamp_to_event route; no Bipe server code"
       },
-      "fork": true
+      "fork": true,
+      "macos": {
+        "status": "planned",
+        "issue": 1018
+      },
+      "windows": {
+        "status": "planned",
+        "issue": 1019
+      }
     },
     {
       "id": "share-to-chat",
@@ -3745,7 +4879,15 @@
         "reason": "Plain Matrix events; no Bipe server code"
       },
       "issue": 769,
-      "fork": true
+      "fork": true,
+      "macos": {
+        "status": "planned",
+        "issue": 1018
+      },
+      "windows": {
+        "status": "planned",
+        "issue": 1019
+      }
     },
     {
       "id": "identity-change-warning",
@@ -3771,7 +4913,15 @@
         "reason": "Plain Matrix events; no Bipe server code"
       },
       "issue": 770,
-      "fork": true
+      "fork": true,
+      "macos": {
+        "status": "planned",
+        "issue": 1018
+      },
+      "windows": {
+        "status": "planned",
+        "issue": 1019
+      }
     },
     {
       "id": "notification-sender-photo",
@@ -3798,7 +4948,15 @@
         "reason": "Plain Matrix events; no Bipe server code"
       },
       "issue": 771,
-      "fork": true
+      "fork": true,
+      "macos": {
+        "status": "planned",
+        "issue": 1018
+      },
+      "windows": {
+        "status": "planned",
+        "issue": 1019
+      }
     },
     {
       "id": "group-privacy-settings",
@@ -3824,7 +4982,15 @@
         "reason": "Plain Matrix events; no Bipe server code"
       },
       "issue": 772,
-      "fork": true
+      "fork": true,
+      "macos": {
+        "status": "planned",
+        "issue": 1018
+      },
+      "windows": {
+        "status": "planned",
+        "issue": 1019
+      }
     },
     {
       "id": "group-link",
@@ -3853,7 +5019,15 @@
           "bipe-api/src/group-links.ts"
         ]
       },
-      "issue": 744
+      "issue": 744,
+      "macos": {
+        "status": "planned",
+        "issue": 1018
+      },
+      "windows": {
+        "status": "planned",
+        "issue": 1019
+      }
     },
     {
       "id": "archived-groups",
@@ -3879,7 +5053,15 @@
         "reason": "Plain Matrix events; no Bipe server code"
       },
       "issue": 773,
-      "fork": true
+      "fork": true,
+      "macos": {
+        "status": "planned",
+        "issue": 1018
+      },
+      "windows": {
+        "status": "planned",
+        "issue": 1019
+      }
     },
     {
       "id": "notification-checkup",
@@ -3904,7 +5086,15 @@
         "reason": "Device feature; no Bipe server code"
       },
       "issue": 823,
-      "fork": true
+      "fork": true,
+      "macos": {
+        "status": "planned",
+        "issue": 1018
+      },
+      "windows": {
+        "status": "planned",
+        "issue": 1019
+      }
     },
     {
       "id": "voice-playback-speed",
@@ -3932,7 +5122,15 @@
         "reason": "Playback on the device; no Bipe server code"
       },
       "issue": 824,
-      "fork": true
+      "fork": true,
+      "macos": {
+        "status": "planned",
+        "issue": 1018
+      },
+      "windows": {
+        "status": "planned",
+        "issue": 1019
+      }
     },
     {
       "id": "calls",
@@ -3964,7 +5162,15 @@
         ]
       },
       "issue": 765,
-      "fork": true
+      "fork": true,
+      "macos": {
+        "status": "planned",
+        "issue": 1018
+      },
+      "windows": {
+        "status": "planned",
+        "issue": 1019
+      }
     },
     {
       "id": "accessibility-settings",
@@ -3990,6 +5196,14 @@
       "server": {
         "status": "n/a",
         "reason": "Reads the phone's settings; no server state"
+      },
+      "macos": {
+        "status": "planned",
+        "issue": 1018
+      },
+      "windows": {
+        "status": "planned",
+        "issue": 1019
       }
     },
     {
@@ -4017,7 +5231,15 @@
         "status": "n/a",
         "reason": "Kept on the phone; no server state"
       },
-      "issue": 811
+      "issue": 811,
+      "macos": {
+        "status": "planned",
+        "issue": 1018
+      },
+      "windows": {
+        "status": "planned",
+        "issue": 1019
+      }
     },
     {
       "id": "room-keys-cross-signed",
@@ -4042,7 +5264,15 @@
         "status": "n/a",
         "reason": "The client distributes room keys; the server cannot choose recipient trust"
       },
-      "issue": 774
+      "issue": 774,
+      "macos": {
+        "status": "planned",
+        "issue": 1018
+      },
+      "windows": {
+        "status": "planned",
+        "issue": 1019
+      }
     },
     {
       "id": "assistant-drafts",
@@ -4069,7 +5299,15 @@
         "status": "n/a",
         "reason": "Plain Matrix events in a private room; no Bipe server code"
       },
-      "issue": 866
+      "issue": 866,
+      "macos": {
+        "status": "planned",
+        "issue": 1018
+      },
+      "windows": {
+        "status": "planned",
+        "issue": 1019
+      }
     },
     {
       "id": "assistant-members",
@@ -4092,7 +5330,15 @@
           "bipe-api/src/assistants.ts"
         ]
       },
-      "issue": 867
+      "issue": 867,
+      "macos": {
+        "status": "planned",
+        "issue": 1018
+      },
+      "windows": {
+        "status": "planned",
+        "issue": 1019
+      }
     },
     {
       "id": "join-pushes",
@@ -4122,7 +5368,15 @@
           "bipe-api/src/device-push.ts"
         ]
       },
-      "issue": 967
+      "issue": 967,
+      "macos": {
+        "status": "planned",
+        "issue": 1018
+      },
+      "windows": {
+        "status": "planned",
+        "issue": 1019
+      }
     },
     {
       "id": "work-setup",
@@ -4150,6 +5404,15 @@
         "evidence": [
           "bipe-api/src/business-tools.ts"
         ]
+      },
+      "macos": {
+        "status": "planned",
+        "issue": 1018,
+        "note": "Read-only Work overview: today counts, tool states, catalog and people. Setup and operational editors remain planned."
+      },
+      "windows": {
+        "status": "planned",
+        "issue": 1019
       }
     },
     {
@@ -4163,6 +5426,14 @@
         "evidence": [
           "bipe-api/src/business-seats.ts"
         ]
+      },
+      "macos": {
+        "status": "planned",
+        "issue": 1018
+      },
+      "windows": {
+        "status": "planned",
+        "issue": 1019
       }
     },
     {
@@ -4191,6 +5462,14 @@
         "evidence": [
           "bipe-api/src/shop-web.ts"
         ]
+      },
+      "macos": {
+        "status": "planned",
+        "issue": 1018
+      },
+      "windows": {
+        "status": "planned",
+        "issue": 1019
       }
     },
     {
@@ -4217,6 +5496,14 @@
         "evidence": [
           "bipe-api/src/business-stops.ts"
         ]
+      },
+      "macos": {
+        "status": "planned",
+        "issue": 1018
+      },
+      "windows": {
+        "status": "planned",
+        "issue": 1019
       }
     }
   ],

@@ -16,7 +16,7 @@ const dist = JSON.parse(readFileSync(join(root, "product/distribution.json"), "u
 const ledger = JSON.parse(readFileSync(join(root, "product/parity.json"), "utf8"));
 
 const STATUSES = ["testing", "built", "planned", "policy"];
-const SURFACES = ["ios", "android", "web", "server"];
+const SURFACES = ["ios", "android", "macos", "windows", "web", "server"];
 const fail = (m) => { throw new Error(`product validation failed: ${m}`); };
 if (product.version !== 1 || dist.version !== 1) fail("version must be 1");
 const ht = product.headlineTest;
@@ -457,8 +457,8 @@ const lines = [
   "",
   "Status per surface comes from `bipe-shared/product/parity.json` (ADR 0092).",
   "",
-  "| Feature | Area | iOS | Android | Web | Server | Milestone | What it does |",
-  "|---|---|---|---|---|---|---|---|",
+  "| Feature | Area | iOS | Android | macOS | Windows | Web | Server | Milestone | What it does |",
+  "|---|---|---|---|---|---|---|---|---|---|",
   ...product.features.map((f) => `| ${f.en.name} (\`${f.id}\`) | ${f.area} | ${SURFACES.map((s) => label[status(f.id)[s]]).join(" | ")} | ${f.milestone ?? "none"} | ${f.en.body} |`),
   "",
   "## ICPs",
@@ -546,6 +546,7 @@ const lines = [
   "",
   `- iOS: ${dist.ios.status}, ${dist.ios.channel}, ${dist.ios.url ?? "no link"}, ${dist.ios.minOS}.`,
   `- Android: ${dist.android.status}. ${dist.android.en.note}`,
+  `- macOS: ${dist.macos.status}, ${dist.macos.channel}, ${dist.macos.url}, ${dist.macos.minOS}. ${dist.macos.en.note}`,
   `- Contact: ${dist.contact}.`,
   "",
   "## Source code",

@@ -139,6 +139,7 @@
     "Three roles in the UI (bipe-chat/bipe#733). Admin changes roles and group settings and notifies everyone with @room. Moderador removes and bans members, deletes other people's messages and pins messages. Membro posts, reacts and replies. No numbers and no custom levels. A creator (room version 12) shows as admin and has no role actions. Nobody changes their own role, so a group always keeps its admins. Under the lists, a section bipe_app_group_roles_title says what each role does: bipe_app_group_role_admin_body, bipe_app_group_role_moderator_body, bipe_app_group_role_member_body. It shows for everyone, so a member knows who to ask.",
     "Remove and ban are destructive: the confirm button uses the destructive style. A failed call shows bipe_app_group_member_error and changes nothing on the screen.",
     "Slow mode and reports to group admins need server work (#74).",
-    "Only for a group (RoomInfo.isDm false, ADR 0141). A DM has no member list."
+    "Only for a group (RoomInfo.isDm false, ADR 0141). A DM has no member list.",
+    "An official account shows the Bipe badge after its name (bipe_badge_official, as in person-profile). The groups account also shows bipe_groups_service_about under its name, so every member can read what the account does."
   ]
 }

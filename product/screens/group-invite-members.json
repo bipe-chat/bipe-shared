@@ -82,6 +82,7 @@
     "Statuses member and invited come from the group's members (MembershipState join and invite).",
     "A refused invite is a server error from the who-can-message module (Synapse, ADR 0038). Show bipe_app_group_invite_refused with the person's name. Never say which setting the person chose.",
     "A DM cannot gain people from this screen (ADR 0141). To make a group with the other person of a DM, the DM details open group-create with that person picked.",
-    "Display names follow Person.displayName. Trust marks (badges, the business seal) on the rows come with the people specs (bipe-chat/bipe#567)."
+    "Display names follow Person.displayName. Trust marks (badges, the business seal) on the rows come with the people specs (bipe-chat/bipe#567).",
+    "Official accounts (registries/official-accounts.json) never show here, in contacts or as handleMatch. The groups account joins a group only when an admin makes a group link (security.md rule 17)."
   ]
 }

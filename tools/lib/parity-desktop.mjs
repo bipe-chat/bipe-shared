@@ -35,3 +35,28 @@ export function checkDesktop(items, exists) {
   }
   return { problems, unchecked: [...unchecked], issueRefs };
 }
+
+export function checkDesktopPlan(plan, items) {
+  const problems = [];
+  if (plan?.version !== 1 || plan?.sequence !== "mac-first" || !Number.isInteger(plan?.adr)
+      || !Number.isInteger(plan?.macosTracker) || !Number.isInteger(plan?.windowsTracker)) {
+    return ["desktop-plan.json: version, accepted ADR, trackers and mac-first sequence required"];
+  }
+  const capabilities = new Map(items.map(item => [item.id, item]));
+  const seen = new Set();
+  const waves = new Set();
+  for (const wave of plan.waves ?? []) {
+    if (!wave.id || waves.has(wave.id) || !wave.title || !Number.isInteger(wave.issue) || !wave.capabilities?.length) {
+      problems.push(`desktop wave ${wave.id}: unique id, title, issue and capabilities required`);
+    }
+    waves.add(wave.id);
+    for (const id of wave.capabilities ?? []) {
+      if (!capabilities.has(id) || seen.has(id)) problems.push(`desktop plan: unknown or duplicate capability ${id}`);
+      seen.add(id);
+      const item = capabilities.get(id);
+      if (item?.macos?.status === "planned" && item.macos.issue !== wave.issue) problems.push(`${id}: Mac gap must name wave issue #${wave.issue}`);
+    }
+  }
+  for (const id of capabilities.keys()) if (!seen.has(id)) problems.push(`desktop plan: capability ${id} has no wave`);
+  return problems;
+}

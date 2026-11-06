@@ -14,7 +14,7 @@ import { existsSync, readFileSync } from "node:fs";
 import { dirname, join, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
 import { checkApps, forkGaps } from "./lib/parity-apps.mjs";
-import { checkDesktop } from "./lib/parity-desktop.mjs";
+import { checkDesktop, checkDesktopPlan } from "./lib/parity-desktop.mjs";
 
 const root = join(dirname(fileURLToPath(import.meta.url)), "..");
 const args = process.argv.slice(2);
@@ -98,6 +98,7 @@ problems.push(...newCheck.problems);
 for (const repo of newCheck.unchecked) missingRepos.add(repo);
 const desktopCheck = checkDesktop(ledger.items, (repo, path) => (existsSync(repoPath(repo)) ? existsInRepo(repo, path) : null));
 problems.push(...desktopCheck.problems);
+problems.push(...checkDesktopPlan(JSON.parse(readRepo("bipe-shared", "product/desktop-plan.json") ?? "null"), ledger.items));
 for (const repo of desktopCheck.unchecked) missingRepos.add(repo);
 for (const repo of missingRepos) warnings.push(`${repo}: not found in ${reposDir}, its evidence was not checked`);
 

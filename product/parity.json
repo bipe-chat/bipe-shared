@@ -30,7 +30,7 @@
       "fork": true,
       "macos": {
         "status": "planned",
-        "issue": 1018
+        "issue": 1165
       },
       "windows": {
         "status": "planned",
@@ -69,7 +69,7 @@
       "fork": true,
       "macos": {
         "status": "planned",
-        "issue": 1018
+        "issue": 1162
       },
       "windows": {
         "status": "planned",
@@ -103,7 +103,7 @@
       },
       "macos": {
         "status": "planned",
-        "issue": 1018
+        "issue": 1165
       },
       "windows": {
         "status": "planned",
@@ -140,7 +140,7 @@
       "fork": true,
       "macos": {
         "status": "planned",
-        "issue": 1018
+        "issue": 1165
       },
       "windows": {
         "status": "planned",
@@ -179,7 +179,7 @@
       "fork": true,
       "macos": {
         "status": "planned",
-        "issue": 1018
+        "issue": 1165
       },
       "windows": {
         "status": "planned",
@@ -216,7 +216,7 @@
       "fork": true,
       "macos": {
         "status": "planned",
-        "issue": 1018
+        "issue": 1165
       },
       "windows": {
         "status": "planned",
@@ -261,7 +261,7 @@
       "fork": true,
       "macos": {
         "status": "planned",
-        "issue": 1018
+        "issue": 1165
       },
       "windows": {
         "status": "planned",
@@ -301,7 +301,7 @@
       "note": "bipe/docs/team-transfer-recovery.md: iOS moves its keychain items into the app-group group; both apps show the recovery reminder and the add-e-mail screen; the server records the moves and counts the share",
       "macos": {
         "status": "planned",
-        "issue": 1018
+        "issue": 1165
       },
       "windows": {
         "status": "planned",
@@ -377,7 +377,7 @@
       "issue": 543,
       "macos": {
         "status": "planned",
-        "issue": 1018
+        "issue": 1165
       },
       "windows": {
         "status": "planned",
@@ -412,7 +412,7 @@
       "issue": 227,
       "macos": {
         "status": "planned",
-        "issue": 1018
+        "issue": 1165
       },
       "windows": {
         "status": "planned",
@@ -449,7 +449,7 @@
       "note": "Behind the build flag govbrEnabled (iOS AppConfig.govbrEnabled, Android BuildConfig.BIPE_GOVBR): debug builds of the tester ID set only, off in Release and store builds until bipe#542 and the legal review bipe#17 close",
       "macos": {
         "status": "planned",
-        "issue": 1018
+        "issue": 1165
       },
       "windows": {
         "status": "planned",
@@ -492,7 +492,7 @@
       "fork": true,
       "macos": {
         "status": "planned",
-        "issue": 1018
+        "issue": 1166
       },
       "windows": {
         "status": "planned",
@@ -530,7 +530,7 @@
       "issue": 238,
       "macos": {
         "status": "planned",
-        "issue": 1018
+        "issue": 1166
       },
       "windows": {
         "status": "planned",
@@ -568,7 +568,7 @@
       "issue": 249,
       "macos": {
         "status": "planned",
-        "issue": 1018
+        "issue": 1166
       },
       "windows": {
         "status": "planned",
@@ -600,7 +600,7 @@
       "issue": 245,
       "macos": {
         "status": "planned",
-        "issue": 1018
+        "issue": 1165
       },
       "windows": {
         "status": "planned",
@@ -636,7 +636,7 @@
       "fork": true,
       "macos": {
         "status": "planned",
-        "issue": 1018
+        "issue": 1165
       },
       "windows": {
         "status": "planned",
@@ -671,7 +671,7 @@
       "issue": 384,
       "macos": {
         "status": "planned",
-        "issue": 1018
+        "issue": 1165
       },
       "windows": {
         "status": "planned",
@@ -709,7 +709,7 @@
       "issue": 387,
       "macos": {
         "status": "planned",
-        "issue": 1018
+        "issue": 1162
       },
       "windows": {
         "status": "planned",
@@ -748,7 +748,7 @@
       "note": "NameNormalizer runs on both apps for reserved names and link hosts; no lookalike warning on user names",
       "macos": {
         "status": "planned",
-        "issue": 1018
+        "issue": 1165
       },
       "windows": {
         "status": "planned",
@@ -767,7 +767,7 @@
       "server": "planned",
       "macos": {
         "status": "planned",
-        "issue": 1018
+        "issue": 1165
       },
       "windows": {
         "status": "planned",
@@ -789,7 +789,7 @@
       },
       "macos": {
         "status": "planned",
-        "issue": 1018
+        "issue": 1165
       },
       "windows": {
         "status": "planned",
@@ -826,7 +826,7 @@
       "issue": 511,
       "macos": {
         "status": "planned",
-        "issue": 1018
+        "issue": 1167
       },
       "windows": {
         "status": "planned",
@@ -860,7 +860,7 @@
       "issue": 512,
       "macos": {
         "status": "planned",
-        "issue": 1018
+        "issue": 1167
       },
       "windows": {
         "status": "planned",
@@ -895,7 +895,7 @@
       "fork": true,
       "macos": {
         "status": "planned",
-        "issue": 1018
+        "issue": 1165
       },
       "windows": {
         "status": "planned",
@@ -934,7 +934,7 @@
       "fork": true,
       "macos": {
         "status": "planned",
-        "issue": 1018
+        "issue": 1165
       },
       "windows": {
         "status": "planned",
@@ -976,7 +976,7 @@
       "fork": true,
       "macos": {
         "status": "planned",
-        "issue": 1018
+        "issue": 1165
       },
       "windows": {
         "status": "planned",
@@ -1015,7 +1015,7 @@
       "fork": true,
       "macos": {
         "status": "planned",
-        "issue": 1018
+        "issue": 1165
       },
       "windows": {
         "status": "planned",
@@ -1033,7 +1033,7 @@
       "note": "ADR 0228. The rule and vectors are in bipe-shared (socialHandleProblem, test-vectors/social-handles.json)",
       "macos": {
         "status": "planned",
-        "issue": 1018
+        "issue": 1165
       },
       "windows": {
         "status": "planned",
@@ -1073,7 +1073,7 @@
       "fork": true,
       "macos": {
         "status": "planned",
-        "issue": 1018
+        "issue": 1165
       },
       "windows": {
         "status": "planned",
@@ -1112,7 +1112,7 @@
       "fork": true,
       "macos": {
         "status": "planned",
-        "issue": 1018
+        "issue": 1165
       },
       "windows": {
         "status": "planned",
@@ -1147,7 +1147,7 @@
       "fork": true,
       "macos": {
         "status": "planned",
-        "issue": 1018
+        "issue": 1165
       },
       "windows": {
         "status": "planned",
@@ -1183,7 +1183,7 @@
       },
       "macos": {
         "status": "planned",
-        "issue": 1018
+        "issue": 1165
       },
       "windows": {
         "status": "planned",
@@ -1220,7 +1220,7 @@
       "fork": true,
       "macos": {
         "status": "planned",
-        "issue": 1018
+        "issue": 1165
       },
       "windows": {
         "status": "planned",
@@ -1257,7 +1257,7 @@
       "issue": 599,
       "macos": {
         "status": "planned",
-        "issue": 1018
+        "issue": 1165
       },
       "windows": {
         "status": "planned",
@@ -1297,7 +1297,7 @@
       "fork": true,
       "macos": {
         "status": "planned",
-        "issue": 1018
+        "issue": 1165
       },
       "windows": {
         "status": "planned",
@@ -1333,7 +1333,7 @@
       },
       "macos": {
         "status": "planned",
-        "issue": 1018
+        "issue": 1165
       },
       "windows": {
         "status": "planned",
@@ -1367,7 +1367,7 @@
       },
       "macos": {
         "status": "planned",
-        "issue": 1018
+        "issue": 1165
       },
       "windows": {
         "status": "planned",
@@ -1406,7 +1406,7 @@
       "fork": true,
       "macos": {
         "status": "planned",
-        "issue": 1018
+        "issue": 1161
       },
       "windows": {
         "status": "planned",
@@ -1446,7 +1446,7 @@
       "fork": true,
       "macos": {
         "status": "planned",
-        "issue": 1018
+        "issue": 1161
       },
       "windows": {
         "status": "planned",
@@ -1485,7 +1485,7 @@
       "fork": true,
       "macos": {
         "status": "planned",
-        "issue": 1018
+        "issue": 1165
       },
       "windows": {
         "status": "planned",
@@ -1501,7 +1501,7 @@
       "server": "policy",
       "macos": {
         "status": "planned",
-        "issue": 1018
+        "issue": 1161
       },
       "windows": {
         "status": "planned",
@@ -1517,7 +1517,7 @@
       "server": "policy",
       "macos": {
         "status": "planned",
-        "issue": 1018
+        "issue": 1161
       },
       "windows": {
         "status": "planned",
@@ -1533,7 +1533,7 @@
       "server": "policy",
       "macos": {
         "status": "planned",
-        "issue": 1018
+        "issue": 1161
       },
       "windows": {
         "status": "planned",
@@ -1549,7 +1549,7 @@
       "server": "policy",
       "macos": {
         "status": "planned",
-        "issue": 1018
+        "issue": 1161
       },
       "windows": {
         "status": "planned",
@@ -1571,7 +1571,7 @@
       },
       "macos": {
         "status": "planned",
-        "issue": 1018
+        "issue": 1165
       },
       "windows": {
         "status": "planned",
@@ -1591,7 +1591,7 @@
       "issue": 261,
       "macos": {
         "status": "planned",
-        "issue": 1018
+        "issue": 1166
       },
       "windows": {
         "status": "planned",
@@ -1633,7 +1633,7 @@
       },
       "macos": {
         "status": "planned",
-        "issue": 1018
+        "issue": 1166
       },
       "windows": {
         "status": "planned",
@@ -1670,7 +1670,7 @@
       },
       "macos": {
         "status": "planned",
-        "issue": 1018
+        "issue": 1166
       },
       "windows": {
         "status": "planned",
@@ -1707,7 +1707,7 @@
       },
       "macos": {
         "status": "planned",
-        "issue": 1018
+        "issue": 1166
       },
       "windows": {
         "status": "planned",
@@ -1744,7 +1744,7 @@
       },
       "macos": {
         "status": "planned",
-        "issue": 1018
+        "issue": 1166
       },
       "windows": {
         "status": "planned",
@@ -1781,7 +1781,7 @@
       },
       "macos": {
         "status": "planned",
-        "issue": 1018
+        "issue": 1166
       },
       "windows": {
         "status": "planned",
@@ -1821,7 +1821,7 @@
       "fork": true,
       "macos": {
         "status": "planned",
-        "issue": 1018
+        "issue": 1165
       },
       "windows": {
         "status": "planned",
@@ -1854,7 +1854,7 @@
       "fork": true,
       "macos": {
         "status": "planned",
-        "issue": 1018
+        "issue": 1164
       },
       "windows": {
         "status": "planned",
@@ -1889,7 +1889,7 @@
       "fork": true,
       "macos": {
         "status": "planned",
-        "issue": 1018
+        "issue": 1163
       },
       "windows": {
         "status": "planned",
@@ -1923,7 +1923,7 @@
       },
       "macos": {
         "status": "planned",
-        "issue": 1018
+        "issue": 1163
       },
       "windows": {
         "status": "planned",
@@ -1955,7 +1955,7 @@
       "fork": true,
       "macos": {
         "status": "planned",
-        "issue": 1018
+        "issue": 1163
       },
       "windows": {
         "status": "planned",
@@ -1988,7 +1988,7 @@
       "issue": 244,
       "macos": {
         "status": "planned",
-        "issue": 1018
+        "issue": 1163
       },
       "windows": {
         "status": "planned",
@@ -2007,7 +2007,7 @@
       "server": "planned",
       "macos": {
         "status": "planned",
-        "issue": 1018
+        "issue": 1163
       },
       "windows": {
         "status": "planned",
@@ -2026,7 +2026,7 @@
       "server": "planned",
       "macos": {
         "status": "planned",
-        "issue": 1018
+        "issue": 1163
       },
       "windows": {
         "status": "planned",
@@ -2059,7 +2059,7 @@
       "fork": true,
       "macos": {
         "status": "planned",
-        "issue": 1018
+        "issue": 1164
       },
       "windows": {
         "status": "planned",
@@ -2093,7 +2093,7 @@
       "fork": true,
       "macos": {
         "status": "planned",
-        "issue": 1018
+        "issue": 1164
       },
       "windows": {
         "status": "planned",
@@ -2128,7 +2128,7 @@
       "fork": true,
       "macos": {
         "status": "planned",
-        "issue": 1018
+        "issue": 1161
       },
       "windows": {
         "status": "planned",
@@ -2211,7 +2211,7 @@
       "issue": 600,
       "macos": {
         "status": "planned",
-        "issue": 1018
+        "issue": 1165
       },
       "windows": {
         "status": "planned",
@@ -2246,7 +2246,7 @@
       "issue": 125,
       "macos": {
         "status": "planned",
-        "issue": 1018
+        "issue": 1165
       },
       "windows": {
         "status": "planned",
@@ -2284,7 +2284,7 @@
       "fork": true,
       "macos": {
         "status": "planned",
-        "issue": 1018
+        "issue": 1165
       },
       "windows": {
         "status": "planned",
@@ -2321,7 +2321,7 @@
       "issue": 598,
       "macos": {
         "status": "planned",
-        "issue": 1018
+        "issue": 1165
       },
       "windows": {
         "status": "planned",
@@ -2356,7 +2356,7 @@
       "issue": 143,
       "macos": {
         "status": "planned",
-        "issue": 1018
+        "issue": 1165
       },
       "windows": {
         "status": "planned",
@@ -2376,7 +2376,7 @@
       "issue": 115,
       "macos": {
         "status": "planned",
-        "issue": 1018
+        "issue": 1166
       },
       "windows": {
         "status": "planned",
@@ -2409,7 +2409,7 @@
       "fork": true,
       "macos": {
         "status": "planned",
-        "issue": 1018
+        "issue": 1165
       },
       "windows": {
         "status": "planned",
@@ -2445,7 +2445,7 @@
       "fork": true,
       "macos": {
         "status": "planned",
-        "issue": 1018
+        "issue": 1165
       },
       "windows": {
         "status": "planned",
@@ -2480,7 +2480,7 @@
       "fork": true,
       "macos": {
         "status": "planned",
-        "issue": 1018
+        "issue": 1165
       },
       "windows": {
         "status": "planned",
@@ -2518,7 +2518,7 @@
       "issue": 994,
       "macos": {
         "status": "planned",
-        "issue": 1018
+        "issue": 1165
       },
       "windows": {
         "status": "planned",
@@ -2554,7 +2554,7 @@
       "fork": true,
       "macos": {
         "status": "planned",
-        "issue": 1018
+        "issue": 1165
       },
       "windows": {
         "status": "planned",
@@ -2583,7 +2583,7 @@
       "issue": 201,
       "macos": {
         "status": "planned",
-        "issue": 1018
+        "issue": 1161
       },
       "windows": {
         "status": "planned",
@@ -2617,7 +2617,7 @@
       "fork": true,
       "macos": {
         "status": "planned",
-        "issue": 1018
+        "issue": 1165
       },
       "windows": {
         "status": "planned",
@@ -2688,7 +2688,7 @@
       },
       "macos": {
         "status": "planned",
-        "issue": 1018
+        "issue": 1165
       },
       "windows": {
         "status": "planned",
@@ -2721,7 +2721,7 @@
       "fork": true,
       "macos": {
         "status": "planned",
-        "issue": 1018
+        "issue": 1161
       },
       "windows": {
         "status": "planned",
@@ -2756,7 +2756,7 @@
       "fork": true,
       "macos": {
         "status": "planned",
-        "issue": 1018
+        "issue": 1161
       },
       "windows": {
         "status": "planned",
@@ -2792,7 +2792,7 @@
       "fork": true,
       "macos": {
         "status": "planned",
-        "issue": 1018
+        "issue": 1165
       },
       "windows": {
         "status": "planned",
@@ -2830,7 +2830,7 @@
       "issue": 528,
       "macos": {
         "status": "planned",
-        "issue": 1018
+        "issue": 1165
       },
       "windows": {
         "status": "planned",
@@ -2866,7 +2866,7 @@
       "fork": true,
       "macos": {
         "status": "planned",
-        "issue": 1018
+        "issue": 1165
       },
       "windows": {
         "status": "planned",
@@ -2903,7 +2903,7 @@
       "fork": true,
       "macos": {
         "status": "planned",
-        "issue": 1018
+        "issue": 1165
       },
       "windows": {
         "status": "planned",
@@ -2938,7 +2938,7 @@
       "fork": true,
       "macos": {
         "status": "planned",
-        "issue": 1018
+        "issue": 1165
       },
       "windows": {
         "status": "planned",
@@ -2969,7 +2969,7 @@
       },
       "macos": {
         "status": "planned",
-        "issue": 1018
+        "issue": 1161
       },
       "windows": {
         "status": "planned",
@@ -3009,7 +3009,7 @@
       "fork": true,
       "macos": {
         "status": "planned",
-        "issue": 1018
+        "issue": 1165
       },
       "windows": {
         "status": "planned",
@@ -3042,7 +3042,7 @@
       "fork": true,
       "macos": {
         "status": "planned",
-        "issue": 1018
+        "issue": 1161
       },
       "windows": {
         "status": "planned",
@@ -3079,7 +3079,7 @@
       "fork": true,
       "macos": {
         "status": "planned",
-        "issue": 1018
+        "issue": 1162
       },
       "windows": {
         "status": "planned",
@@ -3112,7 +3112,7 @@
       "issue": 535,
       "macos": {
         "status": "planned",
-        "issue": 1018
+        "issue": 1162
       },
       "windows": {
         "status": "planned",
@@ -3147,7 +3147,7 @@
       "issue": 523,
       "macos": {
         "status": "planned",
-        "issue": 1018
+        "issue": 1162
       },
       "windows": {
         "status": "planned",
@@ -3180,7 +3180,7 @@
       "issue": 532,
       "macos": {
         "status": "planned",
-        "issue": 1018
+        "issue": 1162
       },
       "windows": {
         "status": "planned",
@@ -3213,7 +3213,7 @@
       "issue": 536,
       "macos": {
         "status": "planned",
-        "issue": 1018
+        "issue": 1162
       },
       "windows": {
         "status": "planned",
@@ -3248,7 +3248,7 @@
       "issue": 533,
       "macos": {
         "status": "planned",
-        "issue": 1018
+        "issue": 1162
       },
       "windows": {
         "status": "planned",
@@ -3283,7 +3283,7 @@
       "issue": 534,
       "macos": {
         "status": "planned",
-        "issue": 1018
+        "issue": 1162
       },
       "windows": {
         "status": "planned",
@@ -3321,7 +3321,7 @@
       "issue": 525,
       "macos": {
         "status": "planned",
-        "issue": 1018
+        "issue": 1162
       },
       "windows": {
         "status": "planned",
@@ -3356,7 +3356,7 @@
       "issue": 537,
       "macos": {
         "status": "planned",
-        "issue": 1018
+        "issue": 1162
       },
       "windows": {
         "status": "planned",
@@ -3392,7 +3392,7 @@
       },
       "macos": {
         "status": "planned",
-        "issue": 1018
+        "issue": 1162
       },
       "windows": {
         "status": "planned",
@@ -3426,7 +3426,7 @@
       },
       "macos": {
         "status": "planned",
-        "issue": 1018
+        "issue": 1162
       },
       "windows": {
         "status": "planned",
@@ -3460,7 +3460,7 @@
       },
       "macos": {
         "status": "planned",
-        "issue": 1018
+        "issue": 1161
       },
       "windows": {
         "status": "planned",
@@ -3494,7 +3494,7 @@
       },
       "macos": {
         "status": "planned",
-        "issue": 1018
+        "issue": 1161
       },
       "windows": {
         "status": "planned",
@@ -3528,7 +3528,7 @@
       },
       "macos": {
         "status": "planned",
-        "issue": 1018
+        "issue": 1161
       },
       "windows": {
         "status": "planned",
@@ -3562,7 +3562,7 @@
       },
       "macos": {
         "status": "planned",
-        "issue": 1018
+        "issue": 1161
       },
       "windows": {
         "status": "planned",
@@ -3596,7 +3596,7 @@
       },
       "macos": {
         "status": "planned",
-        "issue": 1018
+        "issue": 1161
       },
       "windows": {
         "status": "planned",
@@ -3631,7 +3631,7 @@
       "issue": 501,
       "macos": {
         "status": "planned",
-        "issue": 1018
+        "issue": 1164
       },
       "windows": {
         "status": "planned",
@@ -3669,7 +3669,7 @@
       "fork": true,
       "macos": {
         "status": "planned",
-        "issue": 1018
+        "issue": 1164
       },
       "windows": {
         "status": "planned",
@@ -3705,7 +3705,7 @@
       "fork": true,
       "macos": {
         "status": "planned",
-        "issue": 1018
+        "issue": 1164
       },
       "windows": {
         "status": "planned",
@@ -3740,7 +3740,7 @@
       "issue": 242,
       "macos": {
         "status": "planned",
-        "issue": 1018
+        "issue": 1164
       },
       "windows": {
         "status": "planned",
@@ -3778,7 +3778,7 @@
       "issue": 485,
       "macos": {
         "status": "planned",
-        "issue": 1018
+        "issue": 1166
       },
       "windows": {
         "status": "planned",
@@ -3813,7 +3813,7 @@
       "issue": 258,
       "macos": {
         "status": "planned",
-        "issue": 1018
+        "issue": 1166
       },
       "windows": {
         "status": "planned",
@@ -3850,7 +3850,7 @@
       "issue": 486,
       "macos": {
         "status": "planned",
-        "issue": 1018
+        "issue": 1166
       },
       "windows": {
         "status": "planned",
@@ -3883,7 +3883,7 @@
       "issue": 500,
       "macos": {
         "status": "planned",
-        "issue": 1018
+        "issue": 1164
       },
       "windows": {
         "status": "planned",
@@ -3917,7 +3917,7 @@
       "fork": true,
       "macos": {
         "status": "planned",
-        "issue": 1018
+        "issue": 1162
       },
       "windows": {
         "status": "planned",
@@ -3953,7 +3953,7 @@
       "fork": true,
       "macos": {
         "status": "planned",
-        "issue": 1018
+        "issue": 1162
       },
       "windows": {
         "status": "planned",
@@ -3989,7 +3989,7 @@
       "fork": true,
       "macos": {
         "status": "planned",
-        "issue": 1018
+        "issue": 1163
       },
       "windows": {
         "status": "planned",
@@ -4025,7 +4025,7 @@
       "fork": true,
       "macos": {
         "status": "planned",
-        "issue": 1018
+        "issue": 1162
       },
       "windows": {
         "status": "planned",
@@ -4059,7 +4059,7 @@
       "fork": true,
       "macos": {
         "status": "planned",
-        "issue": 1018
+        "issue": 1162
       },
       "windows": {
         "status": "planned",
@@ -4095,7 +4095,7 @@
       "fork": true,
       "macos": {
         "status": "planned",
-        "issue": 1018
+        "issue": 1162
       },
       "windows": {
         "status": "planned",
@@ -4132,7 +4132,7 @@
       "fork": true,
       "macos": {
         "status": "planned",
-        "issue": 1018
+        "issue": 1162
       },
       "windows": {
         "status": "planned",
@@ -4168,7 +4168,7 @@
       "fork": true,
       "macos": {
         "status": "planned",
-        "issue": 1018
+        "issue": 1162
       },
       "windows": {
         "status": "planned",
@@ -4203,7 +4203,7 @@
       "fork": true,
       "macos": {
         "status": "planned",
-        "issue": 1018
+        "issue": 1163
       },
       "windows": {
         "status": "planned",
@@ -4237,7 +4237,7 @@
       "fork": true,
       "macos": {
         "status": "planned",
-        "issue": 1018
+        "issue": 1164
       },
       "windows": {
         "status": "planned",
@@ -4273,7 +4273,7 @@
       "fork": true,
       "macos": {
         "status": "planned",
-        "issue": 1018
+        "issue": 1163
       },
       "windows": {
         "status": "planned",
@@ -4306,7 +4306,7 @@
       "issue": 973,
       "macos": {
         "status": "planned",
-        "issue": 1018
+        "issue": 1162
       },
       "windows": {
         "status": "planned",
@@ -4342,7 +4342,7 @@
       "fork": true,
       "macos": {
         "status": "planned",
-        "issue": 1018
+        "issue": 1164
       },
       "windows": {
         "status": "planned",
@@ -4379,7 +4379,7 @@
       "issue": 842,
       "macos": {
         "status": "planned",
-        "issue": 1018
+        "issue": 1164
       },
       "windows": {
         "status": "planned",
@@ -4413,7 +4413,7 @@
       "fork": true,
       "macos": {
         "status": "planned",
-        "issue": 1018
+        "issue": 1162
       },
       "windows": {
         "status": "planned",
@@ -4447,7 +4447,7 @@
       "fork": true,
       "macos": {
         "status": "planned",
-        "issue": 1018
+        "issue": 1164
       },
       "windows": {
         "status": "planned",
@@ -4485,7 +4485,7 @@
       "fork": true,
       "macos": {
         "status": "planned",
-        "issue": 1018
+        "issue": 1162
       },
       "windows": {
         "status": "planned",
@@ -4522,7 +4522,7 @@
       "issue": 1044,
       "macos": {
         "status": "planned",
-        "issue": 1018
+        "issue": 1162
       },
       "windows": {
         "status": "planned",
@@ -4558,7 +4558,7 @@
       "fork": true,
       "macos": {
         "status": "planned",
-        "issue": 1018
+        "issue": 1163
       },
       "windows": {
         "status": "planned",
@@ -4598,7 +4598,7 @@
       "fork": true,
       "macos": {
         "status": "planned",
-        "issue": 1018
+        "issue": 1163
       },
       "windows": {
         "status": "planned",
@@ -4634,7 +4634,7 @@
       "fork": true,
       "macos": {
         "status": "planned",
-        "issue": 1018
+        "issue": 1161
       },
       "windows": {
         "status": "planned",
@@ -4672,7 +4672,7 @@
       "fork": true,
       "macos": {
         "status": "planned",
-        "issue": 1018
+        "issue": 1165
       },
       "windows": {
         "status": "planned",
@@ -4702,7 +4702,7 @@
       "fork": true,
       "macos": {
         "status": "planned",
-        "issue": 1018
+        "issue": 1163
       },
       "windows": {
         "status": "planned",
@@ -4737,7 +4737,7 @@
       "fork": true,
       "macos": {
         "status": "planned",
-        "issue": 1018
+        "issue": 1164
       },
       "windows": {
         "status": "planned",
@@ -4772,7 +4772,7 @@
       "fork": true,
       "macos": {
         "status": "planned",
-        "issue": 1018
+        "issue": 1164
       },
       "windows": {
         "status": "planned",
@@ -4809,7 +4809,7 @@
       "fork": true,
       "macos": {
         "status": "planned",
-        "issue": 1018
+        "issue": 1162
       },
       "windows": {
         "status": "planned",
@@ -4844,7 +4844,7 @@
       "fork": true,
       "macos": {
         "status": "planned",
-        "issue": 1018
+        "issue": 1162
       },
       "windows": {
         "status": "planned",
@@ -4882,7 +4882,7 @@
       "fork": true,
       "macos": {
         "status": "planned",
-        "issue": 1018
+        "issue": 1164
       },
       "windows": {
         "status": "planned",
@@ -4916,7 +4916,7 @@
       "fork": true,
       "macos": {
         "status": "planned",
-        "issue": 1018
+        "issue": 1165
       },
       "windows": {
         "status": "planned",
@@ -4951,7 +4951,7 @@
       "fork": true,
       "macos": {
         "status": "planned",
-        "issue": 1018
+        "issue": 1167
       },
       "windows": {
         "status": "planned",
@@ -4985,7 +4985,7 @@
       "fork": true,
       "macos": {
         "status": "planned",
-        "issue": 1018
+        "issue": 1163
       },
       "windows": {
         "status": "planned",
@@ -5022,7 +5022,7 @@
       "issue": 744,
       "macos": {
         "status": "planned",
-        "issue": 1018
+        "issue": 1163
       },
       "windows": {
         "status": "planned",
@@ -5056,7 +5056,7 @@
       "fork": true,
       "macos": {
         "status": "planned",
-        "issue": 1018
+        "issue": 1163
       },
       "windows": {
         "status": "planned",
@@ -5089,7 +5089,7 @@
       "fork": true,
       "macos": {
         "status": "planned",
-        "issue": 1018
+        "issue": 1167
       },
       "windows": {
         "status": "planned",
@@ -5125,7 +5125,7 @@
       "fork": true,
       "macos": {
         "status": "planned",
-        "issue": 1018
+        "issue": 1164
       },
       "windows": {
         "status": "planned",
@@ -5165,7 +5165,7 @@
       "fork": true,
       "macos": {
         "status": "planned",
-        "issue": 1018
+        "issue": 1167
       },
       "windows": {
         "status": "planned",
@@ -5199,7 +5199,7 @@
       },
       "macos": {
         "status": "planned",
-        "issue": 1018
+        "issue": 1161
       },
       "windows": {
         "status": "planned",
@@ -5234,7 +5234,7 @@
       "issue": 811,
       "macos": {
         "status": "planned",
-        "issue": 1018
+        "issue": 1161
       },
       "windows": {
         "status": "planned",
@@ -5267,7 +5267,7 @@
       "issue": 774,
       "macos": {
         "status": "planned",
-        "issue": 1018
+        "issue": 1161
       },
       "windows": {
         "status": "planned",
@@ -5302,7 +5302,7 @@
       "issue": 866,
       "macos": {
         "status": "planned",
-        "issue": 1018
+        "issue": 1162
       },
       "windows": {
         "status": "planned",
@@ -5333,7 +5333,7 @@
       "issue": 867,
       "macos": {
         "status": "planned",
-        "issue": 1018
+        "issue": 1163
       },
       "windows": {
         "status": "planned",
@@ -5371,7 +5371,7 @@
       "issue": 967,
       "macos": {
         "status": "planned",
-        "issue": 1018
+        "issue": 1167
       },
       "windows": {
         "status": "planned",
@@ -5407,7 +5407,7 @@
       },
       "macos": {
         "status": "planned",
-        "issue": 1018,
+        "issue": 1166,
         "note": "Read-only Work overview: today counts, tool states, catalog and people. Setup and operational editors remain planned."
       },
       "windows": {
@@ -5429,7 +5429,7 @@
       },
       "macos": {
         "status": "planned",
-        "issue": 1018
+        "issue": 1166
       },
       "windows": {
         "status": "planned",
@@ -5465,7 +5465,7 @@
       },
       "macos": {
         "status": "planned",
-        "issue": 1018
+        "issue": 1166
       },
       "windows": {
         "status": "planned",
@@ -5499,7 +5499,7 @@
       },
       "macos": {
         "status": "planned",
-        "issue": 1018
+        "issue": 1166
       },
       "windows": {
         "status": "planned",

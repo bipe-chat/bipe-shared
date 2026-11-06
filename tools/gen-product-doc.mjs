@@ -14,6 +14,7 @@ const out = resolve(outIndex >= 0 ? args[outIndex + 1] : join(root, "../bipe/doc
 const product = JSON.parse(readFileSync(join(root, "product/product.json"), "utf8"));
 const dist = JSON.parse(readFileSync(join(root, "product/distribution.json"), "utf8"));
 const ledger = JSON.parse(readFileSync(join(root, "product/parity.json"), "utf8"));
+const desktopPlan = JSON.parse(readFileSync(join(root, "product/desktop-plan.json"), "utf8"));
 
 const STATUSES = ["testing", "built", "planned", "policy"];
 const SURFACES = ["ios", "android", "macos", "windows", "web", "server"];
@@ -460,6 +461,14 @@ const lines = [
   "| Feature | Area | iOS | Android | macOS | Windows | Web | Server | Milestone | What it does |",
   "|---|---|---|---|---|---|---|---|---|---|",
   ...product.features.map((f) => `| ${f.en.name} (\`${f.id}\`) | ${f.area} | ${SURFACES.map((s) => label[status(f.id)[s]]).join(" | ")} | ${f.milestone ?? "none"} | ${f.en.body} |`),
+  "",
+  "## Desktop parity plan",
+  "",
+  `Mac first: #${desktopPlan.macosTracker} (ADR ${desktopPlan.adr}). Windows follows the Mac evidence: #${desktopPlan.windowsTracker}. Status stays in parity.json; the plan assigns every capability to a Mac wave. Partial screens do not complete a capability.`,
+  "",
+  "| Wave | Issue | Capabilities |",
+  "|---|---|---|",
+  ...desktopPlan.waves.map(wave => `| ${wave.title} | #${wave.issue} | ${wave.capabilities.length} |`),
   "",
   "## ICPs",
   "",

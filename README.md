@@ -10,6 +10,7 @@ Single source of truth for Bipe logic that iOS, Android, the API and the website
 | `api/openapi.yaml` | Bipe API contract, including Agenda, Catálogo, Fila virtual, Orçamento and Pedidos routes |
 | `api/business-schemas.json` | JSON Schema 2020-12 definitions referenced by OpenAPI and used to generate API TypeScript types |
 | `docs/badge-attestation.md` | Signed badge format and verification order |
+| `docs/attestation-verifier-conformance.md` | Proposed verifier conformance baseline, distinct verification contexts and gates before an optional Rust experiment |
 | `docs/trust-facts.md` | Independent trust facts, adapter inputs, invalidation and generated platform rules |
 | `test-vectors/` | Shared cases: badges, normalisation, scam detection, scam warnings, handles (generated), invite codes and scheduling (hand-written). Scheduling currently runs on the API only. |
 | `fixtures/trust-facts.json` | Hand-authored expected outcomes checked before trust vectors are generated |

@@ -2,7 +2,7 @@ import assert from "node:assert/strict";
 import { test } from "node:test";
 import { contrast, hexToOklch, loadTokens, solveRamps, STEPS } from "../design/ramps/ramp.mjs";
 import { inflateSync } from "node:zlib";
-import { iconPng, parsePath, zlibFixed } from "./lib/gen-app-icons.mjs";
+import { generateAppIcons, iconPng, parsePath, zlibFixed } from "./lib/gen-app-icons.mjs";
 import { appIconColors, appThemes, generateColors, resolveThemes, resolveTokens, VARIANTS } from "./lib/gen-tokens.mjs";
 
 const tokens = loadTokens();
@@ -78,6 +78,29 @@ test("generated Swift and Kotlin hold every semantic token", () => {
     assert.match(kotlin, new RegExp(`val ${set}: BipeColors`));
   }
   assert.equal((kotlin.match(/^    trustVerifiedInk = Color\(0xFF[0-9A-F]{6}\),$/gm) ?? []).length, 4);
+  assert.match(swift, /elseif canImport\(AppKit\)/);
+  assert.match(swift, /NSColor\(name: nil\)/);
+  assert.match(swift, /accessibilityHighContrastDarkAqua/);
+  assert.match(swift, /NSWorkspace.shared.accessibilityDisplayShouldIncreaseContrast/);
+});
+
+test("the Mac icon has every Retina slot and transparent outside corners", () => {
+  const files = generateAppIcons(tokens, { xmlHeader: "" }).ios;
+  const set = JSON.parse(files['AppIcons.xcassets/AppIcon.appiconset/Contents.json']);
+  assert.equal(set.images.filter((image) => image.idiom === 'mac').length, 10);
+  for (const image of set.images) assert.ok(files[`AppIcons.xcassets/AppIcon.appiconset/${image.filename}`]);
+  const png = files['AppIcons.xcassets/AppIcon.appiconset/mac-32.png'];
+  const chunks = {};
+  for (let offset = 8; offset < png.length;) {
+    const len = new DataView(png.buffer, png.byteOffset + offset).getUint32(0);
+    chunks[Buffer.from(png.slice(offset + 4, offset + 8)).toString()] = png.slice(offset + 8, offset + 8 + len);
+    offset += 12 + len;
+  }
+  const raw = inflateSync(chunks.IDAT);
+  assert.equal(chunks.tRNS[raw[1]], 0);
+  const centre = raw[16 * 33 + 17];
+  assert.equal(chunks.tRNS[centre], 255);
+  assert.deepEqual([...chunks.PLTE.slice(centre * 3, centre * 3 + 3)], [255, 255, 255]);
 });
 
 test("generated CSS holds the background, every ramp step and every semantic token in each mode", () => {

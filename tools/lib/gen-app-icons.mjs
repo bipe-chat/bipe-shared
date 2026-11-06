@@ -193,18 +193,35 @@ function chunk(type, data) {
 const rgb = (hex) => [1, 3, 5].map((k) => parseInt(hex.slice(k, k + 2), 16));
 
 // An opaque, full-bleed square PNG: the mark in markColour (white) on the background. iOS rounds the corners itself.
-export function iconPng(mark, background, size = IOS_ICON_SIZE) {
+export function iconPng(mark, background, size = IOS_ICON_SIZE, { mac = false } = {}) {
   const { path, viewBox, scale, offset } = mark;
   const unit = size / viewBox;
   const polygons = parsePath(path).map((poly) => poly.map(([x, y]) => [(offset + x * scale) * unit, (offset + y * scale) * unit]));
-  const cover = rasterise(polygons, size);
+  const cover = rasterise(mac ? polygons.map((poly) => poly.map(([x, y]) => [size * 0.08 + x * 0.84, size * 0.08 + y * 0.84])) : polygons, size);
   const bg = rgb(background);
   // Palette index = coverage in 256 levels; only the levels in use get an entry, in order.
-  const levels = Uint8Array.from(cover, (c) => Math.round(Math.min(1, c) * 255));
+  let plate;
+  if (mac) {
+    const inset = size * 0.08, width = size * 0.84, radius = size * 0.19;
+    const points = [];
+    for (const [cx, cy, start] of [[inset + width - radius, inset + radius, -Math.PI / 2],
+      [inset + width - radius, inset + width - radius, 0], [inset + radius, inset + width - radius, Math.PI / 2],
+      [inset + radius, inset + radius, Math.PI]]) {
+      for (let step = 0; step <= 32; step++) {
+        const angle = start + step * Math.PI / 64;
+        points.push([cx + radius * Math.cos(angle), cy + radius * Math.sin(angle)]);
+      }
+    }
+    plate = rasterise([points], size);
+  }
+  const levels = Uint8Array.from(cover, (c, i) => mac
+    ? plate[i] < 1 ? Math.round(plate[i] * 127) : 128 + Math.round(Math.min(1, c) * 127)
+    : Math.round(Math.min(1, c) * 255));
   const used = [...new Set(levels)].sort((p, q) => p - q);
   const index = new Map(used.map((level, k) => [level, k]));
   const fg = rgb(mark.markColour);
-  const plte = used.flatMap((level) => bg.map((c, k) => Math.round(c + ((fg[k] - c) * level) / 255)));
+  const plte = used.flatMap((level) => bg.map((c, k) => Math.round(c + ((fg[k] - c) * (mac ? Math.max(0, level - 128) / 127 : level / 255)))));
+  const alpha = mac ? chunk("tRNS", used.map((level) => level < 128 ? Math.round(level * 255 / 127) : 255)) : [];
   const raw = new Uint8Array(size * (size + 1));
   for (let row = 0; row < size; row++) {
     raw[row * (size + 1)] = 0; // filter: none
@@ -213,7 +230,7 @@ export function iconPng(mark, background, size = IOS_ICON_SIZE) {
   const ihdr = [(size >>> 24) & 0xff, (size >>> 16) & 0xff, (size >>> 8) & 0xff, size & 0xff,
     (size >>> 24) & 0xff, (size >>> 16) & 0xff, (size >>> 8) & 0xff, size & 0xff, 8, 3, 0, 0, 0];
   return Uint8Array.from([0x89, 0x50, 0x4e, 0x47, 0x0d, 0x0a, 0x1a, 0x0a,
-    ...chunk("IHDR", ihdr), ...chunk("PLTE", plte), ...chunk("IDAT", zlibFixed(raw)), ...chunk("IEND", [])]);
+    ...chunk("IHDR", ihdr), ...chunk("PLTE", plte), ...alpha, ...chunk("IDAT", zlibFixed(raw)), ...chunk("IEND", [])]);
 }
 
 // Files for bipe-app. Paths are relative to ios/BipeKit/Sources/BipeKit/Generated and android/libraries/bipe/src/main.
@@ -225,11 +242,18 @@ export function generateAppIcons(tokens = loadTokens(), { xmlHeader }) {
   const ios = { "AppIcons.xcassets/Contents.json": json({ info: { author: "bipe-shared tools/gen.mjs", version: 1 } }) };
   for (const { palette, background } of icons) {
     const set = `AppIcons.xcassets/${iosIconName(palette)}.appiconset`;
+    const macImages = palette === tokens.appThemes.default
+      ? [16, 32, 128, 256, 512].flatMap((size) => [1, 2].map((scale) => ({
+        filename: `mac-${size * scale}.png`, idiom: "mac", size: `${size}x${size}`, scale: `${scale}x`,
+      }))) : [];
     ios[`${set}/Contents.json`] = json({
-      images: [{ filename: "icon.png", idiom: "universal", platform: "ios", size: `${IOS_ICON_SIZE}x${IOS_ICON_SIZE}` }],
+      images: [{ filename: "icon.png", idiom: "universal", platform: "ios", size: `${IOS_ICON_SIZE}x${IOS_ICON_SIZE}` }, ...macImages],
       info: { author: "bipe-shared tools/gen.mjs", version: 1 },
     });
     ios[`${set}/icon.png`] = iconPng(mark, background);
+    for (const size of new Set(macImages.map((image) => Number(image.size.split("x")[0]) * Number(image.scale[0])))) {
+      ios[`${set}/mac-${size}.png`] = iconPng(mark, background, size, { mac: true });
+    }
   }
   // The adaptive icon canvas is 108 dp; the mark stays inside the 66 dp safe zone (androidScale of the 64-unit mark).
   const shift = (108 - mark.viewBox * mark.androidScale) / 2;

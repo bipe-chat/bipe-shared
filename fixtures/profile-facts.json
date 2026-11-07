@@ -1,5 +1,5 @@
 {
-  "$comment": "Hand-written cases for profileFactLines (ADR 0049, registries/profile-facts.json). tools/gen-test-vectors.mjs checks each expected outcome against the reference implementation and writes test-vectors/profile-facts.json.",
+  "$comment": "Hand-written cases for profileFactLines (ADR 0049, registries/profile-facts.json). tools/gen-test-vectors.mjs checks each expected outcome against the reference implementation and writes test-vectors/profile-facts.json. profile_vectors: the same rule with alwaysCreated, for person-profile (ADR 0275 point 13).",
   "now": "2026-10-25T12:00:00.000Z",
   "vectors": [
     {
@@ -271,6 +271,77 @@
       },
       "expected": {
         "lines": [],
+        "notice": false
+      }
+    }
+  ],
+  "profile_vectors": [
+    {
+      "name": "old account, no change: the profile keeps the age",
+      "facts": {
+        "created_at": "2025-01-01T00:00:00.000Z",
+        "name_changes": [],
+        "photo_changes": []
+      },
+      "expected": {
+        "lines": [
+          {
+            "fact": "created",
+            "at": "2025-01-01T00:00:00.000Z"
+          }
+        ],
+        "notice": false
+      }
+    },
+    {
+      "name": "new account: the same line",
+      "facts": {
+        "created_at": "2026-10-22T09:00:00.000Z",
+        "name_changes": [],
+        "photo_changes": []
+      },
+      "expected": {
+        "lines": [
+          {
+            "fact": "created",
+            "at": "2026-10-22T09:00:00.000Z"
+          }
+        ],
+        "notice": false
+      }
+    },
+    {
+      "name": "no creation time: no age",
+      "facts": {
+        "name_changes": [],
+        "photo_changes": []
+      },
+      "expected": {
+        "lines": [],
+        "notice": false
+      }
+    },
+    {
+      "name": "old account with a change: age first",
+      "facts": {
+        "created_at": "2025-01-01T00:00:00.000Z",
+        "name_changes": [],
+        "photo_changes": [
+          "2026-10-24T12:00:00.000Z"
+        ]
+      },
+      "expected": {
+        "lines": [
+          {
+            "fact": "created",
+            "at": "2025-01-01T00:00:00.000Z"
+          },
+          {
+            "fact": "photo",
+            "count": 1,
+            "at": "2026-10-24T12:00:00.000Z"
+          }
+        ],
         "notice": false
       }
     }

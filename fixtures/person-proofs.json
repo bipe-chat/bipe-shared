@@ -1,0 +1,173 @@
+{
+  "$comment": "Hand-written cases for personProofs (ADR 0275, registries/schemes.json). tools/gen-test-vectors.mjs checks each expected outcome against the reference implementation and writes test-vectors/person-proofs.json. Payloads here already passed the badge check; only the fields that the rule reads are present. The first proof draws the compact seal.",
+  "vectors": [
+    {
+      "name": "pix only",
+      "payloads": [
+        {
+          "lvl": "pix"
+        }
+      ],
+      "expected": [
+        {
+          "scheme": "br.pix",
+          "assurance": "bank",
+          "mark": "regular"
+        }
+      ]
+    },
+    {
+      "name": "govbr only",
+      "payloads": [
+        {
+          "lvl": "govbr"
+        }
+      ],
+      "expected": [
+        {
+          "scheme": "br.govbr",
+          "assurance": "state",
+          "mark": "fill"
+        }
+      ]
+    },
+    {
+      "name": "both, pix first in the answer: strongest first",
+      "payloads": [
+        {
+          "lvl": "pix"
+        },
+        {
+          "lvl": "govbr"
+        }
+      ],
+      "expected": [
+        {
+          "scheme": "br.govbr",
+          "assurance": "state",
+          "mark": "fill"
+        },
+        {
+          "scheme": "br.pix",
+          "assurance": "bank",
+          "mark": "regular"
+        }
+      ]
+    },
+    {
+      "name": "same scheme twice: one proof",
+      "payloads": [
+        {
+          "lvl": "pix"
+        },
+        {
+          "lvl": "pix"
+        }
+      ],
+      "expected": [
+        {
+          "scheme": "br.pix",
+          "assurance": "bank",
+          "mark": "regular"
+        }
+      ]
+    },
+    {
+      "name": "the scheme form of an alias",
+      "payloads": [
+        {
+          "lvl": "person",
+          "scheme": "br.govbr"
+        }
+      ],
+      "expected": [
+        {
+          "scheme": "br.govbr",
+          "assurance": "state",
+          "mark": "fill"
+        }
+      ]
+    },
+    {
+      "name": "alias and scheme form together: one proof",
+      "payloads": [
+        {
+          "lvl": "govbr"
+        },
+        {
+          "lvl": "person",
+          "scheme": "br.govbr"
+        }
+      ],
+      "expected": [
+        {
+          "scheme": "br.govbr",
+          "assurance": "state",
+          "mark": "fill"
+        }
+      ]
+    },
+    {
+      "name": "unknown scheme: no level",
+      "payloads": [
+        {
+          "lvl": "person",
+          "scheme": "zz.test"
+        }
+      ],
+      "expected": []
+    },
+    {
+      "name": "unknown level: no level",
+      "payloads": [
+        {
+          "lvl": "foo"
+        }
+      ],
+      "expected": []
+    },
+    {
+      "name": "a company is no person proof",
+      "payloads": [
+        {
+          "lvl": "cnpj"
+        }
+      ],
+      "expected": []
+    },
+    {
+      "name": "an org scheme under lvl person: no level",
+      "payloads": [
+        {
+          "lvl": "person",
+          "scheme": "br.cnpj"
+        }
+      ],
+      "expected": []
+    },
+    {
+      "name": "unknown beside a good one: the good one stays",
+      "payloads": [
+        {
+          "lvl": "person",
+          "scheme": "zz.test"
+        },
+        {
+          "lvl": "pix"
+        }
+      ],
+      "expected": [
+        {
+          "scheme": "br.pix",
+          "assurance": "bank",
+          "mark": "regular"
+        }
+      ]
+    },
+    {
+      "name": "nothing",
+      "payloads": [],
+      "expected": []
+    }
+  ]
+}

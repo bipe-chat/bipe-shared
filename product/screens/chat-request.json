@@ -96,7 +96,7 @@
     "bipe_banner_unverified_title",
     "bipe_banner_unverified_body",
     "bipe_banner_external",
-    "bipe_badge_verified_name",
+    "bipe_badge_verified_name_via",
     "bipe_warning_name_mismatch",
     "bipe_app_cancel",
     "bipe_error_generic",
@@ -127,7 +127,7 @@
     "family-check", "lookalikes", "photo-match", "profile-change-facts"],
   "notes": [
     "No message text before accept: a Matrix invite carries no messages. The screen shows the person, not their first message.",
-    "Trust block, in order: the verified name (bipe_badge_verified_name) or, for an unverified account, bipe_banner_unverified_title, bipe_banner_unverified_body with accountAge, and bipe_request_unverified_body. An external account shows bipe_banner_external. Move, do not rewrite: BipeKit BipeTrustProfile.swift, BadgeVerifier.swift, NameNormalizer.swift; libraries/bipe BipeTrustProfile.kt, BadgeVerifier.kt, NameNormalizer.kt.",
+    "Trust block, in order: the verified name, with the scheme of the strongest proof (bipe_badge_verified_name_via) or, for an unverified account, bipe_banner_unverified_title, bipe_banner_unverified_body with accountAge, and bipe_request_unverified_body. An external account shows bipe_banner_external. Move, do not rewrite: BipeKit BipeTrustProfile.swift, BadgeVerifier.swift, NameNormalizer.swift; libraries/bipe BipeTrustProfile.kt, BadgeVerifier.kt, NameNormalizer.kt.",
     "nameMismatch (ADR 0018): a differing full saved name uses the danger treatment. A family label or one-word nickname uses caution and asks once. The shared registry relationship-names.json supplies the policy. The comparison runs locally against contact matches already obtained with permission; opening a request sends no address book. Keep names in memory per account and hide this check when contact access is revoked. Store only a digest of the account, inviter, saved label and authenticated verified name with the answer.",
     "The handle shows as @handle under the name when bipe-api resolves one (BipeHandleResolver).",
     "Photo: hidden when bipe_privacy_requests_hide_photos is on (chat-requests).",

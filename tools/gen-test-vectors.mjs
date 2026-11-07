@@ -14,7 +14,7 @@ import { b64url as reportB64, deriveKeyPair as hpkeKeyPair, encryptMedia, envelo
 import { canonicalJson, checkMoved, matrixKey, movedEnvelope, moveError, sentAfterMove, signAs, signedBytes } from "./lib/moves.mjs";
 import { homePlan } from "./lib/home-score.mjs";
 import { loadSchedulingVectors, writeSchedulingApiFixture } from "./lib/scheduling-vectors.mjs";
-import { forwardChatLimit, forwardCount, forwardLine, forwardedContent, voiceSource, assistantReaders, assistantSendAllowed, assistantSender, draftFromEvent, photoDistance, photoHash, photoMatches, profileFactLines, relationshipNameWarning, stickerEmojiKey, stickerMatches, stickerQueryTags, stickerSearchFold, newestDmRooms, clearedChatHidden, bringPeopleReminder, chatListPrompt, clearedChatKeepsEvent, clearedChatMarker, clearedChatsWithClear, compareAppVersions, extractInviteCode, handleProblem, isBipeUserID, socialHandleClean, socialHandleProblem, socialUrl, handleSuggestions, pinReminderNext, pinProblem, remoteBannerState, badgeClass, badgeSchemeError, normalizeCnpj, normalizePhone, displayPhone, handleSkeleton, loadRegistries, normalize, scamMatchIDs, scamWarningKind, trustFacts } from "./lib/registries.mjs";
+import { forwardChatLimit, forwardCount, forwardLine, forwardedContent, voiceSource, assistantReaders, assistantSendAllowed, assistantSender, draftFromEvent, photoDistance, photoHash, photoMatches, personProofs, profileFactLines, relationshipNameWarning, stickerEmojiKey, stickerMatches, stickerQueryTags, stickerSearchFold, newestDmRooms, clearedChatHidden, bringPeopleReminder, chatListPrompt, clearedChatKeepsEvent, clearedChatMarker, clearedChatsWithClear, compareAppVersions, extractInviteCode, handleProblem, isBipeUserID, socialHandleClean, socialHandleProblem, socialUrl, handleSuggestions, pinReminderNext, pinProblem, remoteBannerState, badgeClass, badgeSchemeError, normalizeCnpj, normalizePhone, displayPhone, handleSkeleton, loadRegistries, normalize, scamMatchIDs, scamWarningKind, trustFacts } from "./lib/registries.mjs";
 
 const root = join(dirname(fileURLToPath(import.meta.url)), "..");
 const reg = loadRegistries(root);
@@ -49,7 +49,20 @@ for (const vector of profileFactVectors.vectors) {
     throw new Error(`profile-facts: expected outcome differs for ${vector.name}`);
   }
 }
+for (const vector of profileFactVectors.profile_vectors) {
+  if (JSON.stringify(profileFactLines(vector.facts, Date.parse(profileFactVectors.now), reg, { alwaysCreated: true })) !== JSON.stringify(vector.expected)) {
+    throw new Error(`profile-facts: expected outcome differs for ${vector.name}`);
+  }
+}
 write("profile-facts.json", profileFactVectors);
+
+const personProofVectors = JSON.parse(readFileSync(join(root, "fixtures/person-proofs.json"), "utf8"));
+for (const vector of personProofVectors.vectors) {
+  if (JSON.stringify(personProofs(vector.payloads, reg)) !== JSON.stringify(vector.expected)) {
+    throw new Error(`person-proofs: expected outcome differs for ${vector.name}`);
+  }
+}
+write("person-proofs.json", personProofVectors);
 
 // --- Badges ---------------------------------------------------------------
 

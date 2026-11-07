@@ -40,7 +40,8 @@
         "type": "enum",
         "values": [
           "none",
-          "person",
+          "personBank",
+          "personState",
           "company",
           "personSuspended",
           "companySuspended"
@@ -226,7 +227,7 @@
     "bipe_chat_favourites_reorder_done",
     "bipe_chat_favourite_move_earlier",
     "bipe_chat_favourite_move_later",
-    "bipe_badge_verified",
+    "bipe_badge_verified_via",
     "bipe_badge_company",
     "bipe_badge_suspended",
     "bipe_badge_company_suspended",

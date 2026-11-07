@@ -162,6 +162,151 @@
       "expect": "malformed"
     },
     {
+      "name": "time range: exp at the maximum",
+      "envelope": {
+        "v": 1,
+        "kid": "test-only-2026-10",
+        "payload": "eyJzdWIiOiJAYW5hOmJpcGUubmV0LmJyIiwibHZsIjoicGl4IiwibmFtZSI6IkFuYSBTb3V6YSIsIm1zayI6ImRHVnpkQzFqY205emN5MXphV2R1YVc1bkxXMWhjM1JsY2kxclpYa3RNREUiLCJpYXQiOjE3OTE3MTY0MDAsImV4cCI6MjUzNDAyMzAwNzk5fQ",
+        "sig": "sUCB7aDUMyG86mRyA4WFO0FyFwMCdOdH2GspiNtuiYlh9rJq7xcDm8eyO9hN64odo3aCeu9Xc3fYjvI9uRdIAQ"
+      },
+      "sender": "@ana:bipe.net.br",
+      "senderMasterKey": "dGVzdC1jcm9zcy1zaWduaW5nLW1hc3Rlci1rZXktMDE",
+      "expect": "valid"
+    },
+    {
+      "name": "time range: exp above the maximum",
+      "envelope": {
+        "v": 1,
+        "kid": "test-only-2026-10",
+        "payload": "eyJzdWIiOiJAYW5hOmJpcGUubmV0LmJyIiwibHZsIjoicGl4IiwibmFtZSI6IkFuYSBTb3V6YSIsIm1zayI6ImRHVnpkQzFqY205emN5MXphV2R1YVc1bkxXMWhjM1JsY2kxclpYa3RNREUiLCJpYXQiOjE3OTE3MTY0MDAsImV4cCI6MjUzNDAyMzAwODAwfQ",
+        "sig": "7SBuZLI_kiRd7LPVe46rev4MK9K-3ZhXd7wMwANsgVaO7w0OZHq_T97kOQNrSs4keDUyja3p_2fbkIngBa8JDA"
+      },
+      "sender": "@ana:bipe.net.br",
+      "senderMasterKey": "dGVzdC1jcm9zcy1zaWduaW5nLW1hc3Rlci1rZXktMDE",
+      "expect": "malformed"
+    },
+    {
+      "name": "time range: negative iat",
+      "envelope": {
+        "v": 1,
+        "kid": "test-only-2026-10",
+        "payload": "eyJzdWIiOiJAYW5hOmJpcGUubmV0LmJyIiwibHZsIjoicGl4IiwibmFtZSI6IkFuYSBTb3V6YSIsIm1zayI6ImRHVnpkQzFqY205emN5MXphV2R1YVc1bkxXMWhjM1JsY2kxclpYa3RNREUiLCJpYXQiOi0xLCJleHAiOjE3OTQzMTIwMDB9",
+        "sig": "G1AlL8szpcAs3WrFOqAjv__0ep9SYPyXk2cxPIFSMDrB4-5Cp92Y1lbzwTR6vT7Q63ITurDqPK4jHoLqQQ3YAQ"
+      },
+      "sender": "@ana:bipe.net.br",
+      "senderMasterKey": "dGVzdC1jcm9zcy1zaWduaW5nLW1hc3Rlci1rZXktMDE",
+      "expect": "malformed"
+    },
+    {
+      "name": "time range: iat overflows milliseconds",
+      "envelope": {
+        "v": 1,
+        "kid": "test-only-2026-10",
+        "payload": "eyJzdWIiOiJAYW5hOmJpcGUubmV0LmJyIiwibHZsIjoicGl4IiwibmFtZSI6IkFuYSBTb3V6YSIsIm1zayI6ImRHVnpkQzFqY205emN5MXphV2R1YVc1bkxXMWhjM1JsY2kxclpYa3RNREUiLCJpYXQiOjkyMjMzNzIwMzY4NTQ3NzYsImV4cCI6MTc5NDMxMjAwMH0",
+        "sig": "tqedpSoNtMUpsiJ59GICoRGJiDhCo2gmLWh6U8MiCLtetQt1_PaquGAIpXcwUyzwNQXVvw0DOfCckRp0a-0hBA"
+      },
+      "sender": "@ana:bipe.net.br",
+      "senderMasterKey": "dGVzdC1jcm9zcy1zaWduaW5nLW1hc3Rlci1rZXktMDE",
+      "expect": "malformed"
+    },
+    {
+      "name": "time range: exp overflows milliseconds",
+      "envelope": {
+        "v": 1,
+        "kid": "test-only-2026-10",
+        "payload": "eyJzdWIiOiJAYW5hOmJpcGUubmV0LmJyIiwibHZsIjoicGl4IiwibmFtZSI6IkFuYSBTb3V6YSIsIm1zayI6ImRHVnpkQzFqY205emN5MXphV2R1YVc1bkxXMWhjM1JsY2kxclpYa3RNREUiLCJpYXQiOjE3OTE3MTY0MDAsImV4cCI6OTIyMzM3MjAzNjg1NDc3Nn0",
+        "sig": "6OPTPndiCU7GXzftppgUlF4NDdirxaX6opVSDgfVIXPjMpplVik_GDFlyB_9TwI_sermipY9vC1jPza0qFuTDA"
+      },
+      "sender": "@ana:bipe.net.br",
+      "senderMasterKey": "dGVzdC1jcm9zcy1zaWduaW5nLW1hc3Rlci1rZXktMDE",
+      "expect": "malformed"
+    },
+    {
+      "name": "time range: exp above 64 bits",
+      "envelope": {
+        "v": 1,
+        "kid": "test-only-2026-10",
+        "payload": "eyJzdWIiOiJAYW5hOmJpcGUubmV0LmJyIiwibHZsIjoicGl4IiwibmFtZSI6IkFuYSBTb3V6YSIsIm1zayI6ImRHVnpkQzFqY205emN5MXphV2R1YVc1bkxXMWhjM1JsY2kxclpYa3RNREUiLCJpYXQiOjE3OTE3MTY0MDAsImV4cCI6OTk5OTk5OTk5OTk5OTk5OTk5OTl9",
+        "sig": "ye7IykNDfRsYBDDACyI6wuCm03VPGWsACoJNajK5-UU0V-bZJyJ8fPc5znnPPLsuD45ChhRziUJmw004vVZhDg"
+      },
+      "sender": "@ana:bipe.net.br",
+      "senderMasterKey": "dGVzdC1jcm9zcy1zaWduaW5nLW1hc3Rlci1rZXktMDE",
+      "expect": "malformed"
+    },
+    {
+      "name": "iat as a string",
+      "envelope": {
+        "v": 1,
+        "kid": "test-only-2026-10",
+        "payload": "eyJzdWIiOiJAYW5hOmJpcGUubmV0LmJyIiwibHZsIjoicGl4IiwibmFtZSI6IkFuYSBTb3V6YSIsIm1zayI6ImRHVnpkQzFqY205emN5MXphV2R1YVc1bkxXMWhjM1JsY2kxclpYa3RNREUiLCJpYXQiOiIxNzkxNzE2NDAwIiwiZXhwIjoxNzk0MzEyMDAwfQ",
+        "sig": "bO2kMGPAa25fvLMycuq9N1g8whUKPg2W7reNFIi16u7N4BjtvKx4zpIZn-mTXVP28LZYHMA3FBWgwUNB9jPODQ"
+      },
+      "sender": "@ana:bipe.net.br",
+      "senderMasterKey": "dGVzdC1jcm9zcy1zaWduaW5nLW1hc3Rlci1rZXktMDE",
+      "expect": "malformed"
+    },
+    {
+      "name": "payload is not UTF-8",
+      "envelope": {
+        "v": 1,
+        "kid": "test-only-2026-10",
+        "payload": "e_99",
+        "sig": "vDKsYu_3smVXgFHYi6FsszWxqygtif_1Epvkpi0NkJfjU4PSkElF26l5zqpzkWxLzBrCcMRLNG4_7AX0rOXJCQ"
+      },
+      "sender": "@ana:bipe.net.br",
+      "senderMasterKey": "dGVzdC1jcm9zcy1zaWduaW5nLW1hc3Rlci1rZXktMDE",
+      "expect": "malformed"
+    },
+    {
+      "name": "payload with base64 padding",
+      "envelope": {
+        "v": 1,
+        "kid": "test-only-2026-10",
+        "payload": "eyJzdWIiOiJAYW5hOmJpcGUubmV0LmJyIiwibHZsIjoicGl4IiwibmFtZSI6IkFuYSBTb3V6YSIsIm1zayI6ImRHVnpkQzFqY205emN5MXphV2R1YVc1bkxXMWhjM1JsY2kxclpYa3RNREUiLCJpYXQiOjE3OTE3MTY0MDAsImV4cCI6MTc5NDMxMjAwMH0=",
+        "sig": "vsmwPt-OGeFZYAg8ofZAnBpmZ4TlyWkQxn7-J7qDt0S86lz9J-3jdEMIt7B6tDvd6HvQbQsUoexiwNJtEzVeDw"
+      },
+      "sender": "@ana:bipe.net.br",
+      "senderMasterKey": "dGVzdC1jcm9zcy1zaWduaW5nLW1hc3Rlci1rZXktMDE",
+      "expect": "malformed"
+    },
+    {
+      "name": "signature in the standard base64 alphabet",
+      "envelope": {
+        "v": 1,
+        "kid": "test-only-2026-10",
+        "payload": "eyJzdWIiOiJAYW5hOmJpcGUubmV0LmJyIiwibHZsIjoicGl4IiwibmFtZSI6IkFuYSBTb3V6YSIsIm1zayI6ImRHVnpkQzFqY205emN5MXphV2R1YVc1bkxXMWhjM1JsY2kxclpYa3RNREUiLCJpYXQiOjE3OTE3MTY0MDAsImV4cCI6MTc5NDMxMjAwMH0",
+        "sig": "vsmwPt+OGeFZYAg8ofZAnBpmZ4TlyWkQxn7+J7qDt0S86lz9J+3jdEMIt7B6tDvd6HvQbQsUoexiwNJtEzVeDw"
+      },
+      "sender": "@ana:bipe.net.br",
+      "senderMasterKey": "dGVzdC1jcm9zcy1zaWduaW5nLW1hc3Rlci1rZXktMDE",
+      "expect": "malformed"
+    },
+    {
+      "name": "signature too short",
+      "envelope": {
+        "v": 1,
+        "kid": "test-only-2026-10",
+        "payload": "eyJzdWIiOiJAYW5hOmJpcGUubmV0LmJyIiwibHZsIjoicGl4IiwibmFtZSI6IkFuYSBTb3V6YSIsIm1zayI6ImRHVnpkQzFqY205emN5MXphV2R1YVc1bkxXMWhjM1JsY2kxclpYa3RNREUiLCJpYXQiOjE3OTE3MTY0MDAsImV4cCI6MTc5NDMxMjAwMH0",
+        "sig": "vsmwPt-OGeFZYAg8ofZAnBpmZ4TlyWkQxn7-J7qD"
+      },
+      "sender": "@ana:bipe.net.br",
+      "senderMasterKey": "dGVzdC1jcm9zcy1zaWduaW5nLW1hc3Rlci1rZXktMDE",
+      "expect": "invalid_signature"
+    },
+    {
+      "name": "unknown fields are ignored",
+      "envelope": {
+        "v": 1,
+        "kid": "test-only-2026-10",
+        "payload": "eyJzdWIiOiJAYW5hOmJpcGUubmV0LmJyIiwibHZsIjoicGl4IiwibmFtZSI6IkFuYSBTb3V6YSIsIm1zayI6ImRHVnpkQzFqY205emN5MXphV2R1YVc1bkxXMWhjM1JsY2kxclpYa3RNREUiLCJpYXQiOjE3OTE3MTY0MDAsImV4cCI6MTc5NDMxMjAwMCwibGF0ZXIiOnsiYSI6MX19",
+        "sig": "vpR6NVJjaqlNRBygH-mAXtCetOjFdrI4aR9FYTqEPsfJkTCYNMSHtuE7rnf2WgfJuY19KWspv4ts6Qaz8_q3DQ",
+        "later": true
+      },
+      "sender": "@ana:bipe.net.br",
+      "senderMasterKey": "dGVzdC1jcm9zcy1zaWduaW5nLW1hc3Rlci1rZXktMDE",
+      "expect": "valid"
+    },
+    {
       "name": "govbr: valid",
       "envelope": {
         "v": 1,

@@ -2166,13 +2166,13 @@
       },
       "issue": 265,
       "macos": {
-        "status": "built",
+        "status": "testing",
         "evidence": [
           "bipe-app/macos/BipeMac/MacWorkspace.swift",
           "bipe-app/macos/BipeMac/MacSessionVault.swift",
           "bipe-app/macos/BipeMac/MacAccountView.swift"
         ],
-        "note": "Link and switch existing personal/company accounts; new-account creation stays on the phone."
+        "note": "In Mac preview build 525: link and switch existing personal/company accounts; account creation stays on the phone. Multi-account device acceptance remains in #1161."
       },
       "windows": {
         "status": "planned",
@@ -3630,8 +3630,14 @@
       },
       "issue": 501,
       "macos": {
-        "status": "planned",
-        "issue": 1164
+        "status": "built",
+        "evidence": [
+          "bipe-app/macos/BipeMac/MacImageComposer.swift",
+          "bipe-app/macos/BipeMac/MacMessagePayload.swift",
+          "bipe-app/macos/BipeMac/MacPhotoView.swift",
+          "bipe-app/macos/BipeMac/MacTimeline.swift"
+        ],
+        "note": "Encrypted photo descriptions in upload and native viewer/VoiceOver. Cross-device acceptance remains in #1164."
       },
       "windows": {
         "status": "planned",
@@ -3669,7 +3675,8 @@
       "fork": true,
       "macos": {
         "status": "planned",
-        "issue": 1164
+        "issue": 1164,
+        "note": "Photo previews follow account m.media_preview_config and wait for a tap when hidden. Video/invite-avatar handling and the settings editor remain in #1164; capability stays planned."
       },
       "windows": {
         "status": "planned",
@@ -3916,8 +3923,12 @@
       "issue": 659,
       "fork": true,
       "macos": {
-        "status": "planned",
-        "issue": 1162
+        "status": "built",
+        "evidence": [
+          "bipe-app/macos/BipeMac/MacMessagePayload.swift",
+          "bipe-app/macos/BipeMac/MacDesign.swift"
+        ],
+        "note": "Native notice/emote rows; original body remains available for copying and safety checks."
       },
       "windows": {
         "status": "planned",
@@ -3953,7 +3964,8 @@
       "fork": true,
       "macos": {
         "status": "planned",
-        "issue": 1162
+        "issue": 1162,
+        "note": "Native safe links, mention styling, received formatting and money-pause safety are implemented. Bipe/Matrix profile and invite routing still needs native destinations in #1162; capability stays planned."
       },
       "windows": {
         "status": "planned",

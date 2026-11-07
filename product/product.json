@@ -2530,7 +2530,7 @@
       "sections": [
         {
           "heading": "Quem sustenta",
-          "body": "Quem usa para conversar nunca paga. A proposta é que organizações ajudem a sustentar o serviço e empresas paguem pelo atendimento a clientes. O modelo está em estudo."
+          "body": "Quem usa para conversar nunca paga. Empresas e instituições pagam pelo atendimento a clientes. A empresa que quiser também paga por quem escolheu receber as ofertas dela. O Bipe planeja um financiamento coletivo, para quem quiser apoiar. O apoio é voluntário e não compra selo nem voto. Os valores são uma proposta até o fim do piloto."
         },
         {
           "heading": "De quem é o Bipe",
@@ -2544,7 +2544,7 @@
       "sections": [
         {
           "heading": "Who funds it",
-          "body": "People never pay to chat. The proposal is for organisations to help fund the service and for businesses to pay for customer service. The model is still being studied."
+          "body": "People never pay to chat. Companies and institutions pay for customer service. A company can also pay for people who chose to receive its offers. Bipe plans a crowdfunding campaign for people who want to support it. Support is voluntary and buys no seal and no vote. The amounts are a proposal until the pilot ends."
         },
         {
           "heading": "Who owns Bipe",
@@ -2666,9 +2666,10 @@
           "heading": "Como o Bipe se pagaria",
           "points": [
             "Quem usa o Bipe para conversar nunca paga.",
-            "A empresa paga um valor mensal fixo por CNPJ verificado, com um atendente incluído, e um valor por atendente a mais.",
+            "A empresa paga pelos clientes que falam com ela no Bipe e pelos atendentes a mais. Até 3 atendentes e 1.000 clientes ativos, é de graça.",
             "No Bipe não tem preço por mensagem.",
-            "O Bipe não vende anúncio. A empresa paga pela estrutura, e a conversa fica limpa."
+            "O Bipe não vende anúncio: nenhuma empresa paga para aparecer para quem não pediu. A empresa pode pagar por quem escolheu receber as ofertas dela.",
+            "O Bipe planeja um financiamento coletivo, para quem quiser apoiar. O apoio é voluntário e não compra selo nem voto."
           ]
         },
         {
@@ -2683,7 +2684,7 @@
         {
           "heading": "O que ainda está em aberto",
           "points": [
-            "O valor da mensalidade e do atendente a mais.",
+            "Os valores por cliente ativo e por atendente a mais, que são uma proposta até o fim do piloto.",
             "Quais empresas entram primeiro no piloto.",
             "A caixa de entrada e a API ainda não estão no ar."
           ]
@@ -2777,9 +2778,10 @@
           "heading": "How Bipe would pay for itself",
           "points": [
             "People who use Bipe to chat never pay.",
-            "A company pays a flat monthly fee per verified CNPJ, with one agent included, and a fee for each extra agent.",
+            "A company pays for the customers who talk with it on Bipe and for extra agents. Up to 3 agents and 1,000 active customers, it is free.",
             "Bipe has no price per message.",
-            "Bipe sells no ads. Companies pay for the infrastructure, and chats stay clean."
+            "Bipe sells no ads: no company can pay to appear in front of someone who did not ask. A company can pay for people who chose to receive its offers.",
+            "Bipe plans a crowdfunding campaign for people who want to support it. Support is voluntary and buys no seal and no vote."
           ]
         },
         {
@@ -2794,7 +2796,7 @@
         {
           "heading": "What is still open",
           "points": [
-            "The monthly fee and the fee per extra agent.",
+            "The amounts per active customer and per extra agent, which are a proposal until the pilot ends.",
             "Which companies join the pilot first.",
             "The inbox and the API are not live yet."
           ]
@@ -2845,7 +2847,8 @@
           "Preço fixo em reais, por mês ou por ano. Nenhum plano cobra por mensagem.",
           "O selo não está à venda. Dinheiro não compra selo, nível de verificação, análise mais rápida nem o nome de outra organização. O plano paga serviço: atendentes, suporte, monitoramento e condições de contrato.",
           "Quem usa o Bipe para conversar nunca paga.",
-          "Nenhuma empresa paga para aparecer para quem não pediu."
+          "Nenhuma empresa paga para aparecer para quem não pediu.",
+          "O Bipe planeja um financiamento coletivo, para quem quiser apoiar. O apoio é voluntário e não compra selo nem voto."
         ]
       },
       "why": {
@@ -3015,7 +3018,8 @@
           "A fixed price in reais, per month or per year. No plan charges per message.",
           "The seal is not for sale. Money does not buy a seal, a verification level, a faster review or another organisation's name. A plan pays for service: agents, support, monitoring and contract terms.",
           "People who use Bipe to chat never pay.",
-          "No company can pay to appear in front of someone who did not ask."
+          "No company can pay to appear in front of someone who did not ask.",
+          "Bipe plans a crowdfunding campaign for people who want to support it. Support is voluntary and buys no seal and no vote."
         ]
       },
       "why": {

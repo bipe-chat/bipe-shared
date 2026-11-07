@@ -384,9 +384,28 @@
     {
       "id": "public-verification-level",
       "name": "How a name was checked: two seal marks, the person-seal sheet and the list of facts (ADR 0275)",
-      "ios": { "status": "planned", "issue": 1236 },
-      "android": { "status": "planned", "issue": 1236 },
-      "web": { "status": "planned", "issue": 1237 },
+      "ios": {
+        "status": "built",
+        "evidence": [
+          "bipe-app/ios/Bipe/Common/SealMark.swift",
+          "bipe-app/ios/Bipe/People/PersonSealSheet.swift",
+          "bipe-app/ios/BipeKit/Sources/BipeKit/BipePersonProofs.swift"
+        ]
+      },
+      "android": {
+        "status": "built",
+        "evidence": [
+          "bipe-app/android/app/src/main/kotlin/chat/bipe/app/common/SealMark.kt",
+          "bipe-app/android/libraries/bipe/src/main/kotlin/chat/bipe/shared/company/BipePersonProofs.kt"
+        ]
+      },
+      "web": {
+        "status": "built",
+        "evidence": [
+          "bipe-web/src/sim/LinkPages.tsx",
+          "bipe-web/src/badge.ts"
+        ]
+      },
       "server": { "status": "built", "evidence": ["bipe-api/src/badges.ts"] },
       "macos": { "status": "planned", "issue": 1165 },
       "windows": { "status": "planned", "issue": 1019 }
@@ -716,7 +735,8 @@
       "issue": 387,
       "macos": {
         "status": "planned",
-        "issue": 1162
+        "issue": 1162,
+        "note": "The news switch is in Notifications on the Mac. The rest of the capability stays open."
       },
       "windows": {
         "status": "planned",
@@ -2763,7 +2783,8 @@
       "fork": true,
       "macos": {
         "status": "planned",
-        "issue": 1161
+        "issue": 1161,
+        "note": "The You tab lists all five root groups and each opens its own screen. Rows that need the phone or a missing Mac capability stay out, as listed in spec settings-group and notification-settings."
       },
       "windows": {
         "status": "planned",
@@ -5398,7 +5419,8 @@
       "issue": 967,
       "macos": {
         "status": "planned",
-        "issue": 1167
+        "issue": 1167,
+        "note": "The join switches are in Notifications on the Mac, as account settings. The Mac gets no pushes yet."
       },
       "windows": {
         "status": "planned",

@@ -224,6 +224,9 @@
     "bipe_settings_notifications_off",
     "bipe_notifications_enable",
     "bipe_notifications_permission_body",
+    "bipe_mac_notifications_off",
+    "bipe_mac_notifications_enable",
+    "bipe_mac_notifications_permission_body",
     "bipe_notifications_notify_about",
     "bipe_notifications_chats",
     "bipe_notifications_groups",
@@ -298,6 +301,7 @@
     "News (ADR 0117): the news account (@bipe, registries/official-accounts.json) keeps one read-only room per user. Leaving that room, from the chat or with this switch, stops news; the switch turns it on again with a new room. The switch is the last row of the group, below the sound. Novidades items of importance normal are m.notice (no push by the default rule .m.rule.suppress_notices); important items are m.text. The news room is a named room, not a DM (bipe#809, spec chat-list notes).",
     "Per account (bipe-chat/bipe#511): the modes are push rules of the account and live on the server; sound and preview are kept per account on this phone, under the account's Matrix ID. With two accounts on the phone, the footer bipe_notifications_account_footer names the account. Mute of a whole account is chatsMode and groupsMode off.",
     "Android only (bipe#823): a row bipe_app_notification_checkup_title under the phoneEnabled card, above the first section, opens notification-checkup. iOS has no such row.",
-    "Join pushes (bipe-chat/bipe#967): the two switches are a section of their own above the news switch, with the footer bipe_notifications_joins_footer. They are account settings on the server (GET and PUT /v1/me/notification-prefs), not push rules: bipe-api reads them before it sends inviteJoined or groupLinkJoined (spec notification-service), so they apply on every device of the account. appear reads them with the push rules."
+    "Join pushes (bipe-chat/bipe#967): the two switches are a section of their own above the news switch, with the footer bipe_notifications_joins_footer. They are account settings on the server (GET and PUT /v1/me/notification-prefs), not push rules: bipe-api reads them before it sends inviteJoined or groupLinkJoined (spec notification-service), so they apply on every device of the account. appear reads them with the push rules.",
+    "Mac (ADR 0266): phoneEnabled is the system permission of the Mac, with no pusher. The card uses bipe_mac_notifications_off, bipe_mac_notifications_permission_body and bipe_mac_notifications_enable, and the button asks once, then opens System Settings. The modes, whole group, invites, join prefs and news rows are the same account settings as on the phones. The footer bipe_notifications_account_footer sits under Notify about. Sound, preview and work hours stay off the Mac until its notifications read them (bipe-chat/bipe#1167)."
   ]
 }

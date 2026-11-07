@@ -7,7 +7,7 @@ The shared core publishes two lists that decide who counts as Bipe:
 
 Both lists use one signature envelope, one verification order and one distribution path. The associação signs both, as part of the shared core ([ADR 0175](https://github.com/bipe-chat/bipe/blob/main/docs/adr/0175-shared-core-stays-central.md)). The threats are bipe `docs/security.md` "Attacks on the allowlist" (A-1 to A-7) and O1.
 
-Written 26 October 2026. Status: format, sources, signing tool and bipe-api routes are built. No list is signed yet, because the signer key does not exist. Test vectors: `test-vectors/signed-lists.json` (lists) and `test-vectors/badge-issuers.json` (badges with an issuer ID). No app, server or bipe-api code reads them yet.
+Written 26 October 2026. Status: format, sources, signing tool and bipe-api routes are built. Version 1 of each list is signed (7 November 2026). The homeserver job, a scheduled re-sign and the app verifier are not built. Test vectors: `test-vectors/signed-lists.json` (lists) and `test-vectors/badge-issuers.json` (badges with an issuer ID). No app, server or bipe-api code reads them yet.
 
 ## Terms
 

@@ -2,7 +2,7 @@
 // stay in its Keychain and never reach a repo, a log or another machine.
 //   node tools/sign-list.mjs init               makes any missing key, writes the public keys into registries/
 //   node tools/sign-list.mjs sign <typ> [days]  writes signed/<typ>/<next version>.json (default 14 days)
-import { execFileSync } from "node:child_process";
+import { execFileSync, spawnSync } from "node:child_process";
 import { createPrivateKey, randomBytes, sign } from "node:crypto";
 import { readFileSync, writeFileSync } from "node:fs";
 import { dirname, join } from "node:path";
@@ -28,7 +28,9 @@ const [command, typ, days = "14"] = process.argv.slice(2);
 if (command === "init") {
   for (const service of Object.values(KEYS)) {
     if (seedOf(service)) continue;
-    execFileSync("security", ["add-generic-password", "-s", service, "-a", ACCOUNT, "-w", randomBytes(32).toString("base64url")], { stdio: "ignore" });
+    // security -i reads the value on stdin, so the key is never in a process list or in the text of an error.
+    const added = spawnSync("security", ["-i"], { input: `add-generic-password -a ${ACCOUNT} -s ${service} -w "${randomBytes(32).toString("base64url")}"\n`, stdio: ["pipe", "ignore", "ignore"] });
+    if (added.status !== 0) throw new Error(`security could not add ${service}: is the Keychain locked?`);
     if (!seedOf(service)) throw new Error(`could not read ${service} back from the Keychain`);
   }
   const x25519 = (service) => Buffer.from(deriveKeyPair(seedOf(service)).pk).toString("base64url");

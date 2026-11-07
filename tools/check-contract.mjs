@@ -60,7 +60,7 @@ const ENUMS = {
 
 // Schemas the apps do not model, with the reason.
 const NOT_IN_APPS = {
-  BadgeProofs: "bipe-chat/bipe#1236: the apps add this model with the proof lines",
+  BadgeProofs: "deliberate: the apps read the raw signed envelopes in `badges` and verify each one (ADR 0275)",
   // The app verifier waits for the Rust core spike (bipe-chat/bipe#1172, ADR 0267).
   SignedListEnvelope: "bipe-chat/bipe#645",
   ...Object.fromEntries([

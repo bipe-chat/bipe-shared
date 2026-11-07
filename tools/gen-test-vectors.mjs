@@ -72,6 +72,12 @@ function envelope(payload, key = testKey, { v = 1, kid = KID } = {}) {
 }
 
 const valid = envelope(basePayload);
+// Signs bytes as they are, for payloads that JSON.stringify cannot write.
+const rawEnvelope = (bytes) => ({ v: 1, kid: KID, payload: b64url(bytes), sig: b64url(sign(null, bytes, testKey)) });
+const standardAlphabet = (text) => text.replaceAll("-", "+").replaceAll("_", "/");
+if (standardAlphabet(valid.sig) === valid.sig) throw new Error("badges: the valid signature has no URL-only character");
+const MAX_TIME = 253402300799; // docs/badge-attestation.md "Parser rules"
+const OVER_LONG_MILLIS = 9223372036854776; // Times 1000 this overflows a signed 64-bit integer.
 const tampered = { ...valid, payload: b64url(Buffer.from(JSON.stringify({ ...basePayload, name: "Ana Souza Lima" }), "utf8")) };
 const context = { sender: basePayload.sub, senderMasterKey: MASTER_KEY };
 const personWithout = (key) => (({ [key]: _, ...rest }) => rest)(basePayload);
@@ -142,6 +148,18 @@ write("badges.json", {
     { name: "sender master key unknown", envelope: valid, ...context, senderMasterKey: null, expect: "master_key_mismatch" },
     { name: "device-bound instead of msk", envelope: envelope({ ...personWithout("msk"), dev: "dGVzdC1kZXZpY2Uta2V5LWZpbmdlcnByaW50" }), ...context, expect: "malformed" },
     { name: "empty msk", envelope: envelope({ ...basePayload, msk: "" }), ...context, expect: "malformed" },
+    { name: "time range: exp at the maximum", envelope: envelope({ ...basePayload, exp: MAX_TIME }), ...context, expect: "valid" },
+    { name: "time range: exp above the maximum", envelope: envelope({ ...basePayload, exp: MAX_TIME + 1 }), ...context, expect: "malformed" },
+    { name: "time range: negative iat", envelope: envelope({ ...basePayload, iat: -1 }), ...context, expect: "malformed" },
+    { name: "time range: iat overflows milliseconds", envelope: envelope({ ...basePayload, iat: OVER_LONG_MILLIS }), ...context, expect: "malformed" },
+    { name: "time range: exp overflows milliseconds", envelope: envelope({ ...basePayload, exp: OVER_LONG_MILLIS }), ...context, expect: "malformed" },
+    { name: "time range: exp above 64 bits", envelope: rawEnvelope(Buffer.from(JSON.stringify({ ...basePayload, exp: 0 }).replace('"exp":0', '"exp":99999999999999999999'), "utf8")), ...context, expect: "malformed" },
+    { name: "iat as a string", envelope: envelope({ ...basePayload, iat: String(basePayload.iat) }), ...context, expect: "malformed" },
+    { name: "payload is not UTF-8", envelope: rawEnvelope(Buffer.from([0x7b, 0xff, 0x7d])), ...context, expect: "malformed" },
+    { name: "payload with base64 padding", envelope: { ...valid, payload: `${valid.payload}=` }, ...context, expect: "malformed" },
+    { name: "signature in the standard base64 alphabet", envelope: { ...valid, sig: standardAlphabet(valid.sig) }, ...context, expect: "malformed" },
+    { name: "signature too short", envelope: { ...valid, sig: valid.sig.slice(0, 40) }, ...context, expect: "invalid_signature" },
+    { name: "unknown fields are ignored", envelope: { ...envelope({ ...basePayload, later: { a: 1 } }), later: true }, ...context, expect: "valid" },
     { name: "govbr: valid", envelope: envelope({ ...basePayload, lvl: "govbr" }), ...context, expect: "valid" },
     { name: "unknown level", envelope: envelope({ ...basePayload, lvl: "gold" }), ...context, expect: "malformed" },
     { name: "cnpj: valid", envelope: envelope(cnpjPayload), ...cnpjContext, expect: "valid" },
@@ -314,6 +332,8 @@ write("signed-lists.json", {
     { name: "operators: 2 of 3, one bad signature does not count", typ: "operators", signerSet: "two-of-three", envelope: listEnvelope(operatorsPayload, [["a", listKeys.a], ["b", otherKey]]), stored: null, expect: "invalid_signature" },
     { name: "operators: 2 of 3, a bad signature beside two good ones", typ: "operators", signerSet: "two-of-three", envelope: listEnvelope(operatorsPayload, [["a", listKeys.a], ["b", otherKey], ["c", listKeys.c]]), stored: null, expect: "valid", lookups: opsLookups },
     { name: "operators: 2 of 3, an unknown signer is ignored", typ: "operators", signerSet: "two-of-three", envelope: listEnvelope(operatorsPayload, [["a", listKeys.a], ["list-new-2027-01", otherKey], ["b", listKeys.b]]), stored: null, expect: "valid", lookups: opsLookups },
+    { name: "operators: expires out of range", typ: "operators", signerSet: "one-key", envelope: listEnvelope({ ...operatorsPayload, expires: MAX_TIME + 1 }), stored: null, expect: "malformed" },
+    { name: "operators: version out of range", typ: "operators", signerSet: "one-key", envelope: listEnvelope({ ...operatorsPayload, version: Number.MAX_SAFE_INTEGER + 1 }), stored: null, expect: "malformed" },
     { name: "issuers: valid", typ: "issuers", signerSet: "one-key", envelope: listEnvelope(issuersPayload), stored: null, expect: "valid" },
     { name: "issuers: expired", typ: "issuers", signerSet: "one-key", envelope: listEnvelope({ ...issuersPayload, expires: NOW - 1 }), stored: null, expect: "expired" },
     { name: "issuers: rolled back", typ: "issuers", signerSet: "one-key", envelope: listEnvelope({ ...issuersPayload, version: 1 }), stored: storedOps(issuersPayload), expect: "rolled_back" },

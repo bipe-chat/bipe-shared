@@ -42,9 +42,9 @@ Written 26 October 2026. Status: specified, not built. Test vectors: `test-vecto
 | Field | Type | Meaning |
 |---|---|---|
 | `typ` | `"operators"` \| `"issuers"` | List type |
-| `version` | integer, 1 or more | Goes up by at least 1 for each new signed list of this type. Never reused |
-| `issued` | integer | Signed at, Unix seconds. Information only; verifiers do not check it |
-| `expires` | integer | Unix seconds. A list is not accepted at or after this time |
+| `version` | integer, 1 to 9007199254740991 | Goes up by at least 1 for each new signed list of this type. Never reused |
+| `issued` | integer, 0 to 253402300799 | Signed at, Unix seconds. Information only; verifiers do not check it |
+| `expires` | integer, 0 to 253402300799 | Unix seconds. A list is not accepted at or after this time |
 
 Dates of accreditation and removal are `YYYY-MM-DD` (Brasília calendar date). Machine times are Unix seconds, as in badges.
 
@@ -155,6 +155,7 @@ The rule: a list is signed when at least `threshold` **different** `kid`s from `
 - A `kid` not in the signer set is ignored. A new signer can sign before every app knows its key.
 - A signature from a known `kid` that does not verify does not count. It does not reject the list by itself.
 - The same `kid` twice counts once.
+- One public key has only one `kid` in a signer set. The tool that builds the signer set fails otherwise, so a count of `kid`s is a count of keys.
 
 Both scheme families of #638 fit this interface without a format change:
 
@@ -240,7 +241,8 @@ The device stores the envelope bytes as received, not a parsed copy, so the byte
 
 - `signerSets`: named signer sets (one key, threshold 1; three keys, threshold 2).
 - Each vector: `typ` (expected list type), `signerSet`, `envelope`, `stored` (`null` or `{version, payload}`), `expect` (`valid` or an error of the verification order), and for a valid operator list, `lookups` (server name to `valid`, `removed` or `unknown`).
-- Cases: valid, expired, rolled back, same version with other bytes, bad signature, unknown signer, wrong type, removed server, duplicate server name, threshold met and not met, duplicate signer.
+- Cases: valid, expired, rolled back, same version with other bytes, bad signature, unknown signer, wrong type, removed server, duplicate server name, threshold met and not met, duplicate signer, `expires` and `version` out of range.
+- No bipe-app consumer reads this file yet (7 November 2026); bipe-chat/bipe#645 adds it.
 
 `test-vectors/badge-issuers.json` holds badges with an issuer ID (see `docs/badge-attestation.md` "Issuer").
 

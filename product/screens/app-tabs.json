@@ -2,7 +2,7 @@
   "id": "app-tabs",
   "title": "Tab bar",
   "flow": "home",
-  "summary": "The app's root after account-start: the tab bar Conversas · Grupos · Você plus search (ADR 0053). A company account has Conversas · Trabalho · Você plus search: Trabalho takes the place of Grupos, and Conversas holds its groups too. The Você tab is the only account switcher: a double tap switches to the next account, a long press opens account-switcher (ADR 0135).",
+  "summary": "The app's root after account-start: the tab bar Conversas · Grupos · Você plus search (ADR 0053). A company account has Conversas · Trabalho · Você plus search: Trabalho takes the place of Grupos, and Conversas holds its groups too. An account with Mural on (ADR 0246) has Conversas · Você plus search: Conversas holds its groups, and no Grupos tab shows. A group never shows in Conversas while the account has a Grupos tab. The Você tab is the only account switcher: a double tap switches to the next account, a long press opens account-switcher (ADR 0135).",
   "types": {
     "AccountSummary": {
       "userId": {
@@ -52,7 +52,7 @@
         "voce",
         "search"
       ],
-      "description": "The visible tab. search is a tab on iOS (search tab role) and a top-bar action on Android (ADR 0053). trabalho shows only for a company account, in place of grupos (business-tools)."
+      "description": "The visible tab. search is a tab on iOS (search tab role) and a top-bar action on Android (ADR 0053). trabalho shows only for a company account, in place of grupos (business-tools). grupos does not show for an account with Mural on (spec chat-list, ADR 0246)."
     },
     "accounts": {
       "type": "list",
@@ -135,6 +135,7 @@
     "Each account has its own SDK client and session store, keyed by user ID (ADR 0086). Only the current account's sync runs in front; the others sync in the background for the badge and the dot.",
     "The tab bar shows the same on iPhone and as a rail on iPad (ADR 0135 point 6).",
     "Company account: Trabalho (bipe_tab_work) replaces Grupos in the same place, and there is no separate Agenda tab (agenda-owner opens from Trabalho). Trabalho shows business-tools; each tool opens its owner screen inside the tab. Conversas shows DMs and groups together, with the group invites under the Pedidos row, and a notification for a group opens Conversas. On Android, search is the trailing action of the Conversas top bar only. When the current account changes from company to personal on Trabalho, or from personal to company on Grupos, Conversas shows.",
+    "Mural on (ADR 0246, MZ decision 7 Nov 2026): no Grupos tab. Conversas shows DMs and groups, with the group invites under the Pedidos row, and a notification for a group opens Conversas. On Android, search is the trailing action of the Conversas top bar. When Mural turns on, or the current account changes to one with Mural on, while Grupos shows, Conversas shows. The Mac app has no Mural and keeps its Grupos segment.",
     "Status comes later and is not in this spec.",
     "Accessibility (bipe#577, ADR 0135): a hold is not available to VoiceOver and TalkBack users, and Você has no account rows. The Você tab item carries the accessibility action bipe_a11y_switch_account (VoiceOver custom action, TalkBack custom action), which opens account-switcher like longPressVoce. Show it only when the phone has two or more accounts.",
     "MZ decision 2 Nov 2026 (bipe#958): an open chat or thread (chat-timeline) hides the tab bar. It comes back when the chat closes.",

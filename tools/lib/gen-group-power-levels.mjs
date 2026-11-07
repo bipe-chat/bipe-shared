@@ -24,6 +24,10 @@ public enum BipeGroupPowerLevels {
     public static let ban: Int64 = ${pl.ban}
     public static let redact: Int64 = ${pl.redact}
     public static let notificationsRoom: Int64 = ${pl.notifications.room}
+    /// The room state event of a publication-only group (bipe ADR 0280): content enabled exactly true turns it on.
+    public static let publicationOnlyEvent = ${quote(pl.publicationOnly.stateEvent)}
+    /// Below this level a member of a publication-only group sends only thread replies, edits, reactions and redactions.
+    public static let publicationOnlyMinPostLevel: Int64 = ${pl.publicationOnly.minPostLevel}
     public static let events: [String: Int64] = [
 ${events}
     ]
@@ -52,6 +56,10 @@ object BipeGroupPowerLevels {
     const val BAN: Long = ${pl.ban}L
     const val REDACT: Long = ${pl.redact}L
     const val NOTIFICATIONS_ROOM: Long = ${pl.notifications.room}L
+    /** The room state event of a publication-only group (bipe ADR 0280): content enabled exactly true turns it on. */
+    const val PUBLICATION_ONLY_EVENT: String = ${quote(pl.publicationOnly.stateEvent)}
+    /** Below this level a member of a publication-only group sends only thread replies, edits, reactions and redactions. */
+    const val PUBLICATION_ONLY_MIN_POST_LEVEL: Long = ${pl.publicationOnly.minPostLevel}L
     val EVENTS: Map<String, Long> = mapOf(
 ${events}
     )

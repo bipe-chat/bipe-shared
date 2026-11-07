@@ -4273,6 +4273,42 @@
       }
     },
     {
+      "id": "group-publication-only",
+      "name": "Publication-only group: admins and moderators post, members comment in threads (ADR 0280, bipe#1263)",
+      "ios": {
+        "status": "built",
+        "evidence": [
+          "bipe-app/ios/Bipe/Groups/GroupPrivacy.swift",
+          "bipe-app/ios/Bipe/Timeline/ChatTimelineModel.swift"
+        ]
+      },
+      "android": {
+        "status": "built",
+        "evidence": [
+          "bipe-app/android/app/src/main/kotlin/chat/bipe/app/groups/GroupPrivacy.kt",
+          "bipe-app/android/app/src/main/kotlin/chat/bipe/app/timeline/ChatTimelineModel.kt"
+        ]
+      },
+      "web": {
+        "status": "planned"
+      },
+      "server": {
+        "status": "built",
+        "evidence": [
+          "bipe-infra/compose/synapse-modules/bipe_messaging.py"
+        ]
+      },
+      "issue": 1263,
+      "macos": {
+        "status": "planned",
+        "issue": 1163
+      },
+      "windows": {
+        "status": "planned",
+        "issue": 1019
+      }
+    },
+    {
       "id": "threads",
       "name": "Threads in groups: reply in thread, thread view, thread list (bipe#667)",
       "ios": {

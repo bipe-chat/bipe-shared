@@ -99,7 +99,7 @@ Entry fields:
 | `signup` | `valid` | `"open"` \| `"invite"` \| `"closed"` | Whether the operator takes new users |
 | `report_keys` | `valid` | object, not empty | `kid` to raw X25519 public key, base64url without padding. Reports about this operator's users are sealed to one of these keys (`docs/report-envelope.md`, bipe-chat/bipe#697) |
 
-The region record (ADR 0197, bipe-chat/bipe#815): `region` is the region of this list. `regions` lists the other regions. Each has `id`, `name`, `core_api` and `floor` (`e2ee` or `none`). A region with floor `none` runs alone and is not federated (`federatedRegions` in `tools/lib/signed-lists.mjs`). A region's servers and issuers are in the issuer registry, so this list does not repeat them.
+The region record (ADR 0197, ADR 0276, bipe-chat/bipe#815): `region` is the region of this list. `regions` lists the other regions. Each has `id`, `name`, `core_api` and `floor` (`e2ee` or `none`). A region with floor `none` runs alone and is not federated (`federatedRegions` in `tools/lib/signed-lists.mjs`). A region's servers and issuers are in the issuer registry, so this list does not repeat them.
 
 The payload also has `appeal_keys` (object, not empty, same form): the associação's keys for appeals and abuse across operators. A `kid` of `report_keys` or `appeal_keys` is unique in the whole list.
 
@@ -189,7 +189,7 @@ Both scheme families of #638 fit this interface without a format change:
 
 The two list types can have different signer sets. Until #638 decides, both use the same set.
 
-**Interim (until #638):** one associação key signs both lists, threshold 1. The registry comment of the signer set must say so (#645 step 4). This interim key gives no protection against A-2: one person with the key can change the list. Where the interim key lives is an open question (see "Open questions").
+**Interim (until #638):** one associação key signs both lists, threshold 1. The registry comment of the signer set must say so (#645 step 4). This interim key gives no protection against A-2: one person with the key can change the list. The private key is in the mini4p Keychain (bipe ADR 0276).
 
 **Signer set rotation:** the signer set ships in the app build and in the server jobs. A new signer set needs an app release. A signed rotation statement inside the list (the old set signs the new set) is a later step for #638.
 
@@ -220,7 +220,7 @@ The device stores the envelope bytes as received, not a parsed copy, so the byte
 - `init` makes any missing key and writes the public keys into `registries/list-signers.json` and `registries/operators.json`.
 - `sign <operators|issuers> [days]` builds the payload from its sources, signs it, checks it with `tools/lib/signed-lists.mjs` and writes `signed/<typ>/<version>.json`.
 
-`tools/gen.mjs` fails when a committed version fails the verification order or the chain, or when the newest version does not match its sources. It copies `signed/` to bipe-api. No scheduled re-sign exists yet.
+`tools/gen.mjs` fails when a committed version fails the verification order or the chain, or when the newest version does not match its sources. It copies `signed/` to bipe-api. No scheduled re-sign exists yet (bipe-chat/bipe#1242).
 
 ## Distribution
 
@@ -228,8 +228,8 @@ The device stores the envelope bytes as received, not a parsed copy, so the byte
 
 - `GET https://api.bipe.net.br/v1/operators` and `GET https://api.bipe.net.br/v1/issuers`: 200 with the newest envelope. No auth. `Cache-Control: public, max-age=300`. bipe-api in role `core` serves them (#645 step 2). The OpenAPI entry is part of that bipe-api step, not of this spec.
 - `GET /v1/operators/versions/{version}` and `GET /v1/issuers/versions/{version}`: every version ever signed. This is the public log of A-2: anyone can check that each change was signed and when.
-- The core serves the lists. The core does not sign them. The signers sign offline and upload the envelope.
-- The signed envelopes are also committed to this repo (public), one file per version. Proposal for the #645 build step: `registries/operators.json` and `registries/issuers.json` hold the unsigned payload source, `registries/list-signers.json` holds the signer sets, and `signed/operators/<version>.json` and `signed/issuers/<version>.json` hold the envelopes. `tools/gen.mjs` puts the newest envelope and the signer sets into the generated Swift and Kotlin, as the bundled list.
+- The core serves the lists. The core does not sign them (bipe ADR 0276). The signer signs on mini4p and commits the envelope to this repo. `tools/gen.mjs` copies it to bipe-api.
+- The signed envelopes are also committed to this repo (public), one file per version. `registries/operators.json` and `registries/issuers.json` hold the unsigned payload source, `registries/list-signers.json` holds the signer sets, and `signed/operators/<version>.json` and `signed/issuers/<version>.json` hold the envelopes. Not built: the bundled list in the apps waits for bipe-chat/bipe#1172.
 
 ### Apps (bipe-app iOS and Android, web chat)
 
@@ -284,9 +284,8 @@ The device stores the envelope bytes as received, not a parsed copy, so the byte
 
 ## Open questions
 
-- Interim key custody (until #638): an offline key held by an associação officer, or the cluster secret pattern of `bipe-badge-key`. A key in the core cluster lets a core compromise sign lists. Default in this spec: offline, the core only serves.
 - Stale list on a device: count only `bipe.net.br` (the A-3 proposal, the default here), or keep the stale list.
-- Re-sign cadence: every 7 days with 14-day expiry is the default here. With a threshold across member organisations, each re-sign needs signers from two organisations every week.
+- Re-sign cadence: bipe ADR 0276 sets every 7 days with 14-day expiry, and bipe-chat/bipe#1242 builds the job. With a threshold across member organisations, each re-sign needs signers from two organisations every week.
 - Who delivers attestations of an issuer other than `bipe` to the apps: the issuer through the core (`GET /v1/badges`), or the issuer's own endpoint. Not decided; the format works for both.
 - A-6 suspension by one signer: not in v1.
 - Core outage: the apps fetch only from the core (A-3). If the core is down for longer than `expires` allows, the stale rule counts only `bipe.net.br`, so users of every other operator show as unverified. Default: accept this for v1. The envelopes are also in the public repo, so a second source is possible later.

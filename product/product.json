@@ -1579,6 +1579,47 @@
       }
     },
     {
+      "id": "work-account-people",
+      "area": "chat",
+      "icon": "headset",
+      "milestone": "Work side: one speaker",
+      "slug": {
+        "pt": "quem-atende",
+        "en": "who-answers"
+      },
+      "figures": [
+        "quem-atende"
+      ],
+      "pt": {
+        "name": "Quem atende",
+        "body": "Uma conta de trabalho serve para uma pessoa ou para várias. Os clientes sempre veem o nome do seu trabalho, não quem está respondendo.",
+        "points": [
+          "O nome de cada pessoa fica nos servidores do Bipe, no Brasil, e não aparece para os clientes.",
+          "Quem atende fica na aba Trabalho. No começo mostra Só você, e a conta já está completa assim.",
+          "Para chamar alguém, fiquem lado a lado: a pessoa aponta a câmera para o código no seu celular.",
+          "Quem atende vê as mesmas conversas, as antigas e as novas, e responde como a conta. Chame só pessoas em quem você confia.",
+          "Quando alguém lê, silencia ou apaga uma conversa, isso muda para todo mundo.",
+          "CNPJ, selo, domínios e os jeitos de voltar ficam só com a pessoa responsável.",
+          "Uma conta pode ter até 5 pessoas por enquanto.",
+          "Quando alguém sai, os aparelhos dessa pessoa saem da conta na hora. O que já estava no celular dela pode continuar lá."
+        ]
+      },
+      "en": {
+        "name": "Who answers",
+        "body": "A work account works for one person or for several. Customers always see the name of your work, not who is answering.",
+        "points": [
+          "Each person's name stays on Bipe's servers in Brazil, and customers do not see it.",
+          "Who answers is in the Trabalho tab. It starts with Only you, and the account is complete that way.",
+          "To call someone, stand side by side: they point their camera at the code on your phone.",
+          "Everyone who answers sees the same chats, old and new, and answers as the account. Call only people you trust.",
+          "When someone reads, mutes or clears a chat, it changes for everyone.",
+          "CNPJ, seal, domains and the ways back stay with the person in charge.",
+          "An account can have up to 5 people for now.",
+          "When someone leaves, their devices leave the account at once. What was already on their phone can stay there."
+        ]
+      }
+    },
+    {
       "id": "pix-check",
       "area": "payments",
       "icon": "pix-check",

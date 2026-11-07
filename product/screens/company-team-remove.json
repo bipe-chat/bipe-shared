@@ -20,7 +20,7 @@
   },
   "actions": {
     "confirm": {
-      "effect": "DELETE /v1/me/business/seats/{seatId}, then closes. The SeatList then has backup_rotation_pending, and the owner's phone rotates the key backup in the background (bipe-chat/bipe#1057)."
+      "effect": "DELETE /v1/me/business/seats/{seatId}, then closes. The key backup does not rotate (ADR 0277)."
     },
     "cancel": {
       "effect": "Closes."

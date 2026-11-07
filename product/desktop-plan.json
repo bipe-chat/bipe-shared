@@ -90,6 +90,7 @@
         "verified-groups",
         "group-state-lines",
         "threads",
+        "group-publication-only",
         "polls-edit-history",
         "group-report",
         "group-unban",

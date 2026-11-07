@@ -59,6 +59,7 @@
   "notes": [
     "The main timeline of a group uses focus live with hideThreadedEvents true, so thread replies no longer show flat. A DM keeps hideThreadedEvents false: threads from other clients still show, as plain messages.",
     "In the thread view the message menu has no bipe_thread_reply_action, and the bars of chat-timeline (call, pins, identity, theft) do not show.",
-    "The list of a group's threads is spec thread-list."
+    "The list of a group's threads is spec thread-list.",
+    "In a publication-only group (group-privacy publicationOnly) a member comments here. The thread view keeps its composer, and the main timeline closes it (composer publicationClosed)."
   ]
 }

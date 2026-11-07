@@ -111,13 +111,21 @@ A user ID is a Bipe user when its server part (the text after the first `:`) equ
   "version": 1,
   "issued": 1791716400,
   "expires": 1792926000,
+  "schemes": [
+    { "id": "br.govbr", "country": "BR", "class": "person", "assurance": "state", "alias": "govbr", "names": { "pt-BR": "gov.br", "en": "gov.br" } }
+  ],
+  "regions": [
+    { "id": "br", "servers": ["bipe.net.br"], "schemes": ["br.govbr"] }
+  ],
   "issuers": [
     {
       "id": "bipe",
       "name": "Bipe",
       "status": "valid",
       "accredited": "2026-10-26",
+      "region": "br",
       "levels": ["pix", "govbr", "institution", "cnpj", "brand-mark"],
+      "schemes": ["br.pix", "br.govbr", "br.cnpj"],
       "keys": { "prod-2026-10": "9j3_slBroZbxa3B6Tdgcm_U-O_LIdrNFXzDgY8oLwxE" }
     }
   ]
@@ -134,9 +142,20 @@ Entry fields:
 | `accredited` | all | date | The day the associação accredited the issuer |
 | `removed` | `removed` | date | The day the accreditation ended |
 | `levels` | `valid` | list of `lvl` values, not empty | The badge levels this issuer may sign (`docs/badge-attestation.md`). A bank that checks a person cannot sign a `cnpj` or `institution` badge |
+| `region` | `valid` | string | The `id` of one item of `regions`. The issuer seals only accounts of this region (ADR 0197) |
+| `schemes` | `valid` | list of scheme IDs, not empty | The schemes this issuer may sign. Each is in the `schemes` of its region. Each older level in `levels` needs the scheme with that `alias`. `person` needs a scheme of class `person`, and `org` a scheme of class `org` |
 | `keys` | `valid` | object, not empty | `kid` to raw Ed25519 public key, base64url without padding, as in `registries/badge-keys.json`. A `kid` is unique in the whole registry |
 
 A `removed` entry keeps only `id`, `name`, `status`, `accredited` and `removed`. The issuer `bipe` is the associação's own verification service. Its keys are the keys of `registries/badge-keys.json`.
+
+Top-level fields:
+
+| Field | Type | Meaning |
+|---|---|---|
+| `schemes` | list | Every scheme of every region, in the form of `registries/schemes.json`. `id` is unique. The labels come from here, so a new country needs no app release |
+| `regions` | list | `id`, `servers` and `schemes` of every federated region. A server or a scheme is in one region only. A user ID gives its region through `servers` |
+
+**One registry for the whole federation (ADR 0272).** All regions use one issuer registry. Each region's core serves the same envelope bytes, so a device of any region gets the issuers, schemes and regions of every other. Bipe Brasil signs it as the umbrella (ADR 0197 decision 3). The operator list stays per region. bipe-chat/bipe#815 must take the servers of a foreign region from `regions` here, and must not keep a second list of them. Minimum assurance (ADR 0272 decision 10) has no field yet, because its method is not designed. A later field is safe: verifiers ignore unknown fields.
 
 Why `levels` is in the format: the task list for #637 names ID, name, keys, dates and status. Without `levels`, any issuer could sign any level, and one weak issuer could mint company and institution seals. MZ can overrule this.
 
@@ -175,7 +194,7 @@ Inputs: the envelope bytes, the expected list type, the signer set for that type
 1. The envelope parses, and `v` equals 1, else `unsupported_version`.
 2. The threshold rule holds for the signer set, else `invalid_signature`.
 3. The payload parses. `typ` equals the expected list type, else `wrong_type`.
-4. All fields are present and well formed for their `status`. `server_name` (operators) or `id` and every `kid` (issuers) are unique. An unknown `status` is malformed. Else `malformed`.
+4. All fields are present and well formed for their `status`. `server_name` (operators) or `id` and every `kid` (issuers) are unique. For issuers: the rules of `region`, `schemes` and `regions` in "Issuer registry payload" hold. An unknown `status` is malformed. Else `malformed`.
 5. `now < expires`, else `expired`.
 6. Against the stored list:
    - `version` below the stored version: `rolled_back`.

@@ -26,7 +26,7 @@ Fields for every level:
 | Field | Type | Meaning |
 |---|---|---|
 | `sub` | string | Matrix user ID, e.g. `@ana:bipe.net.br` |
-| `lvl` | `"pix"` \| `"govbr"` \| `"institution"` \| `"cnpj"` \| `"brand-mark"` | Verification level |
+| `lvl` | `"pix"` \| `"govbr"` \| `"institution"` \| `"cnpj"` \| `"brand-mark"` \| `"person"` \| `"org"` | Verification level |
 | `name` | string | Verified name. For `cnpj`: the trade name when the registry has one, else the legal name. For `brand-mark`: the brand's name, as `name` of the brand's own `cnpj` badge |
 | `iat` | integer | Issued at, Unix seconds |
 | `exp` | integer | Expires at, Unix seconds |
@@ -82,6 +82,26 @@ Brand mark fields (`lvl: "brand-mark"`, ADR 0162, bipe-chat/bipe#483). A verifie
 
 A brand mark never carries `legal_name`, `method` or `cvm`: those belong to the brand's own seal, and no seal moves to the reseller (ADR 0108 point 3).
 
+Scheme fields (`lvl: "person"` and `lvl: "org"`, ADR 0272). A scheme is one proof rail or registry in one country (`registries/schemes.json`). These two levels work in every country. A Brazilian badge keeps its older level: `pix`, `govbr` and `cnpj` are aliases of `br.pix`, `br.govbr` and `br.cnpj`, and no signed badge changes.
+
+| Field | Levels | Type | Meaning |
+|---|---|---|---|
+| `country` | both | string, `^[A-Z]{2}$` | ISO 3166-1 alpha-2 country of the scheme |
+| `scheme` | both | string, `^[a-z]{2}\.[a-z0-9-]{1,30}$` | The scheme ID |
+| `assurance` | both | string | The assurance of the scheme: `bank` or `state` for a person, `registry+control` for a company |
+| `org_id` | `org` | string, 1 to 128 characters | The company's number in its registry. Verifiers treat it as opaque. Only the issuer checks its format |
+| `legal_name` | `org`, optional | string, not empty | The registered legal name |
+| `ext` | both, optional | object | National facts, with keys in the form `<country>.<fact>`, for example `br.cvm`. A verifier shows only a fact that it knows. A missing or badly formed value changes nothing in the verdict. A national fact is never a portable claim |
+
+```json
+{ "sub": "@bakkerij:bipe.exemplo.nl", "lvl": "org", "country": "NL", "scheme": "nl.kvk", "assurance": "registry+control",
+  "org_id": "12345678", "name": "Bakkerij Exemplo", "legal_name": "Bakkerij Exemplo B.V.", "msk": "…", "iss": "bipe-nl-exemplo", "iat": 0, "exp": 0 }
+```
+
+A `person` badge carries no national number. The dedupe key of a scheme stays with its issuer and never crosses a border (ADR 0272).
+
+Feature gates read the class, not the level name: `person` or `org`, with its assurance and country (`badgeClass` in `tools/lib/registries.mjs`, cases `classes` in `test-vectors/badge-issuers.json`). `institution` and `brand-mark` have no class. A gate tied to Brazilian law stays on the Brazilian scheme. A verifier from before ADR 0272 shows no seal for these levels: an unknown `kid` for a foreign issuer, `malformed` for issuer `bipe` (cases `verifierWithoutSchemes`). So `v` stays 1.
+
 Life: `exp - iat` is `lifeDays` in `registries/badge-keys.json` (7 days). A revoked claim or a leaked key stops working within that time without a revocation list (ADR 0123).
 
 ## Issuer
@@ -90,25 +110,29 @@ ADR 0170 lets several accredited issuers sign badges (bipe-chat/bipe#637). The i
 
 - The **trusted issuers** of a device are the `valid` entries of its current issuer registry. Before the device has a valid registry, the trusted issuers are only `bipe`, with the keys of `registries/badge-keys.json` and every level. After that, the registry alone counts.
 - Backward compatibility: a badge without `iss` is a badge from `bipe`, exactly as before. Every badge signed before this change stays valid. An app that does not know `iss` looks up `kid` in `badge-keys.json` only, so it rejects a badge from another issuer as `unknown_kid` (fail closed). bipe-api does not write `iss` for issuer `bipe` until every supported app version knows the field. The bipe-app verifiers ignore unknown envelope and payload fields (read 7 November 2026; `test-vectors/badges.json` case "unknown fields are ignored").
+- Region: an issuer belongs to one region, and it seals only accounts of that region (ADR 0197 decision 8). A device of any region trusts the issuers of every region, so a Brazilian app shows a Dutch seal on a Dutch account, with the issuer and country named (ADR 0272). It never implies that the seal equals a Brazilian one.
+- Before the device has a valid registry, issuer `bipe` has region `br`, and the schemes and servers come from `registries/schemes.json` and `registries/regions.json`.
 - The app shows the issuer `name` from the registry in the profile and in the seal sheet (#637 step 4, per platform).
 - Life: for an issuer other than `bipe`, `exp - iat` must not be more than `lifeDays` days. Without this, an issuer could sign a badge that no revocation reaches.
 - Test vectors: `test-vectors/badge-issuers.json`. All badges in `test-vectors/badges.json` have no `iss`. No bipe-app consumer reads `badge-issuers.json` yet (7 November 2026); bipe-chat/bipe#637 adds it.
 
 ## Verification order
 
-Inputs: the envelope, the sender's user ID, the sender's cross-signing master key from the Matrix SDK (or none when the app does not know it), and the trusted issuers.
+Inputs: the envelope, the sender's user ID, the sender's cross-signing master key from the Matrix SDK (or none when the app does not know it), and the trusted issuers, with the schemes and regions of the same registry.
 
 1. `v` equals 1, else `unsupported_version`.
 2. The issuer (envelope `iss`, absent means `bipe`) is a trusted issuer, else `unknown_issuer`.
 3. `kid` is a key of that issuer, else `unknown_kid`.
 4. Ed25519 signature over the decoded payload bytes is valid, else `invalid_signature`.
-5. Payload parses and all required fields for its `lvl` are present and well formed, else `malformed`. An unknown `lvl` is `malformed`. Every level needs a non-empty `msk`. `iat` and `exp` are in the time range of "Parser rules". For `cnpj`: `cnpj` matches `^[0-9A-Z]{12}[0-9]{2}$`, `legal_name` and `msk` are not empty, `method` is one of the three values, `checked_month` matches `^[0-9]{4}-(0[1-9]|1[0-2])$`. For `institution`: `cnpj` matches the same pattern, `msk` is not empty, and `domains`, when present, is a list of strings that each match `^[a-z0-9-]+(\.[a-z0-9-]+)+$`. For `brand-mark`: `mark`, `brand`, `name` and `msk` are not empty, `cnpj` matches the `cnpj` pattern, and `label` is in `registries/brand-marks.json`.
+5. Payload parses and all required fields for its `lvl` are present and well formed, else `malformed`. An unknown `lvl` is `malformed`. Every level needs a non-empty `msk`. `iat` and `exp` are in the time range of "Parser rules". For `cnpj`: `cnpj` matches `^[0-9A-Z]{12}[0-9]{2}$`, `legal_name` and `msk` are not empty, `method` is one of the three values, `checked_month` matches `^[0-9]{4}-(0[1-9]|1[0-2])$`. For `institution`: `cnpj` matches the same pattern, `msk` is not empty, and `domains`, when present, is a list of strings that each match `^[a-z0-9-]+(\.[a-z0-9-]+)+$`. For `brand-mark`: `mark`, `brand`, `name` and `msk` are not empty, `cnpj` matches the `cnpj` pattern, and `label` is in `registries/brand-marks.json`. For `person` and `org`: `name`, `msk` and `assurance` are not empty, `country` and `scheme` match their patterns. For `org`: `org_id` has 1 to 128 characters, and `legal_name`, when present, is not empty.
 6. Payload `iss` (absent means `bipe`) equals the envelope issuer, else `issuer_mismatch`.
 7. `lvl` is in the issuer's `levels`, else `level_not_allowed`. Issuer `bipe` before a registry exists: every level.
-8. For an issuer other than `bipe`: `exp - iat <= lifeDays * 86400`, else `life_too_long`.
-9. `iat <= now < exp`, else `expired` (or `not_yet_valid`).
-10. `sub` equals the sender's user ID, else `subject_mismatch`.
-11. Binding: `msk` equals the sender's master key, else `master_key_mismatch`. No known master key is also `master_key_mismatch`. A mismatch means the account reset its cryptographic identity: the badge is suspended until the server signs a new one (security rule 4).
+8. For `person` and `org`: `scheme` is in the registry's schemes, else `unknown_scheme`. `scheme` is in the issuer's `schemes`, else `scheme_not_allowed`. `lvl`, `country` and `assurance` equal the `class`, `country` and `assurance` of the scheme, else `scheme_mismatch`.
+9. For an issuer other than `bipe`: `exp - iat <= lifeDays * 86400`, else `life_too_long`.
+10. `iat <= now < exp`, else `expired` (or `not_yet_valid`).
+11. `sub` equals the sender's user ID, else `subject_mismatch`.
+12. The region that holds the server of `sub` equals the issuer's `region`, else `region_mismatch`. A server in no region is also `region_mismatch`.
+13. Binding: `msk` equals the sender's master key, else `master_key_mismatch`. No known master key is also `master_key_mismatch`. A mismatch means the account reset its cryptographic identity: the badge is suspended until the server signs a new one (security rule 4).
 
 Fail closed: any other error means no badge.
 

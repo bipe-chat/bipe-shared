@@ -12,7 +12,7 @@ import { b64url as reportB64, deriveKeyPair as hpkeKeyPair, encryptMedia, envelo
 import { canonicalJson, checkMoved, matrixKey, movedEnvelope, moveError, sentAfterMove, signAs, signedBytes } from "./lib/moves.mjs";
 import { homePlan } from "./lib/home-score.mjs";
 import { loadSchedulingVectors, writeSchedulingApiFixture } from "./lib/scheduling-vectors.mjs";
-import { forwardChatLimit, forwardCount, forwardLine, forwardedContent, voiceSource, assistantReaders, assistantSendAllowed, assistantSender, draftFromEvent, photoDistance, photoHash, photoMatches, profileFactLines, relationshipNameWarning, stickerEmojiKey, stickerMatches, stickerQueryTags, stickerSearchFold, newestDmRooms, clearedChatHidden, bringPeopleReminder, chatListPrompt, clearedChatKeepsEvent, clearedChatMarker, clearedChatsWithClear, compareAppVersions, extractInviteCode, handleProblem, isBipeUserID, socialHandleClean, socialHandleProblem, socialUrl, handleSuggestions, pinReminderNext, pinProblem, remoteBannerState, normalizeCnpj, normalizePhone, displayPhone, handleSkeleton, loadRegistries, normalize, scamMatchIDs, scamWarningKind, trustFacts } from "./lib/registries.mjs";
+import { forwardChatLimit, forwardCount, forwardLine, forwardedContent, voiceSource, assistantReaders, assistantSendAllowed, assistantSender, draftFromEvent, photoDistance, photoHash, photoMatches, profileFactLines, relationshipNameWarning, stickerEmojiKey, stickerMatches, stickerQueryTags, stickerSearchFold, newestDmRooms, clearedChatHidden, bringPeopleReminder, chatListPrompt, clearedChatKeepsEvent, clearedChatMarker, clearedChatsWithClear, compareAppVersions, extractInviteCode, handleProblem, isBipeUserID, socialHandleClean, socialHandleProblem, socialUrl, handleSuggestions, pinReminderNext, pinProblem, remoteBannerState, badgeClass, badgeSchemeError, normalizeCnpj, normalizePhone, displayPhone, handleSkeleton, loadRegistries, normalize, scamMatchIDs, scamWarningKind, trustFacts } from "./lib/registries.mjs";
 
 const root = join(dirname(fileURLToPath(import.meta.url)), "..");
 const reg = loadRegistries(root);
@@ -282,14 +282,28 @@ const operatorsPayload = {
     { server_name: "antigo.exemplo.br", name: "Cooperativa Antiga", status: "removed", joined: "2026-11-02", removed: "2027-01-15" },
   ],
 };
+// Schemes of the regions in this test registry: Brazil from registries/schemes.json, and a test Dutch region (ADR 0272).
+const nlSchemes = [
+  { id: "nl.itsme", country: "NL", class: "person", assurance: "bank", names: { "pt-BR": "itsme", en: "itsme" } },
+  { id: "nl.kvk", country: "NL", class: "org", assurance: "registry+control", names: { "pt-BR": "KVK", en: "KVK" } },
+];
+const NL_KID = "test-only-nl-2026-11";
+const nlKey = keyFromSeed("22".repeat(32));
+const brSchemeIds = reg.schemes.schemes.map((s) => s.id);
 const issuersPayload = {
   typ: "issuers",
   version: 2,
   issued: LIST_ISSUED,
   expires: LIST_EXPIRES,
+  schemes: [...reg.schemes.schemes, ...nlSchemes],
+  regions: [
+    { id: "br", servers: ["bipe.net.br", "coop.exemplo.br"], schemes: brSchemeIds },
+    { id: "nl", servers: ["bipe.exemplo.nl"], schemes: nlSchemes.map((s) => s.id) },
+  ],
   issuers: [
-    { id: "bipe", name: "Bipe", status: "valid", accredited: "2026-10-26", levels: ["pix", "govbr", "institution", "cnpj", "brand-mark"], keys: publicKeys },
-    { id: "banco-exemplo", name: "Banco Exemplo", status: "valid", accredited: "2026-11-10", levels: ["govbr"], keys: { "test-only-banco-2026-11": rawPublicKey(keyFromSeed("21".repeat(32))) } },
+    { id: "bipe", name: "Bipe", status: "valid", accredited: "2026-10-26", region: "br", levels: ["pix", "govbr", "institution", "cnpj", "brand-mark"], schemes: brSchemeIds, keys: publicKeys },
+    { id: "banco-exemplo", name: "Banco Exemplo", status: "valid", accredited: "2026-11-10", region: "br", levels: ["govbr"], schemes: ["br.govbr"], keys: { "test-only-banco-2026-11": rawPublicKey(keyFromSeed("21".repeat(32))) } },
+    { id: "bipe-nl-exemplo", name: "Bipe Holanda Exemplo", status: "valid", accredited: "2026-11-10", region: "nl", levels: ["person", "org"], schemes: ["nl.itsme", "nl.kvk"], keys: { [NL_KID]: rawPublicKey(nlKey) } },
     { id: "cartorio-antigo", name: "Cartório Antigo", status: "removed", accredited: "2026-11-10", removed: "2027-02-01" },
   ],
 };
@@ -341,6 +355,14 @@ write("signed-lists.json", {
     { name: "issuers: an operator list is not an issuer registry", typ: "issuers", signerSet: "one-key", envelope: goodOps, stored: null, expect: "wrong_type" },
     { name: "issuers: a kid in two issuers", typ: "issuers", signerSet: "one-key", envelope: listEnvelope({ ...issuersPayload, issuers: [issuersPayload.issuers[0], { ...issuersPayload.issuers[1], keys: publicKeys }] }), stored: null, expect: "malformed" },
     { name: "issuers: unknown level", typ: "issuers", signerSet: "one-key", envelope: listEnvelope({ ...issuersPayload, issuers: [{ ...issuersPayload.issuers[1], levels: ["gold"] }] }), stored: null, expect: "malformed" },
+    { name: "issuers: issuer without region", typ: "issuers", signerSet: "one-key", envelope: listEnvelope({ ...issuersPayload, issuers: [(({ region: _, ...rest }) => rest)(issuersPayload.issuers[1])] }), stored: null, expect: "malformed" },
+    { name: "issuers: issuer in an unknown region", typ: "issuers", signerSet: "one-key", envelope: listEnvelope({ ...issuersPayload, issuers: [{ ...issuersPayload.issuers[1], region: "xx" }] }), stored: null, expect: "malformed" },
+    { name: "issuers: scheme of another region", typ: "issuers", signerSet: "one-key", envelope: listEnvelope({ ...issuersPayload, issuers: [{ ...issuersPayload.issuers[1], schemes: ["br.govbr", "nl.kvk"] }] }), stored: null, expect: "malformed" },
+    { name: "issuers: level without its scheme", typ: "issuers", signerSet: "one-key", envelope: listEnvelope({ ...issuersPayload, issuers: [{ ...issuersPayload.issuers[1], schemes: ["br.pix"] }] }), stored: null, expect: "malformed" },
+    { name: "issuers: person level without a scheme of that class", typ: "issuers", signerSet: "one-key", envelope: listEnvelope({ ...issuersPayload, issuers: [{ ...issuersPayload.issuers[2], levels: ["person"], schemes: ["nl.kvk"] }] }), stored: null, expect: "malformed" },
+    { name: "issuers: unknown scheme in a region", typ: "issuers", signerSet: "one-key", envelope: listEnvelope({ ...issuersPayload, regions: [{ ...issuersPayload.regions[0], schemes: ["br.nada"] }, issuersPayload.regions[1]] }), stored: null, expect: "malformed" },
+    { name: "issuers: server in two regions", typ: "issuers", signerSet: "one-key", envelope: listEnvelope({ ...issuersPayload, regions: [issuersPayload.regions[0], { ...issuersPayload.regions[1], servers: ["bipe.net.br"] }] }), stored: null, expect: "malformed" },
+    { name: "issuers: scheme in two regions", typ: "issuers", signerSet: "one-key", envelope: listEnvelope({ ...issuersPayload, regions: [issuersPayload.regions[0], { ...issuersPayload.regions[1], schemes: ["br.pix"] }] }), stored: null, expect: "malformed" },
     { name: "issuers: bad issuer id", typ: "issuers", signerSet: "one-key", envelope: listEnvelope({ ...issuersPayload, issuers: [{ ...issuersPayload.issuers[1], id: "Banco Exemplo" }] }), stored: null, expect: "malformed" },
   ],
 });
@@ -353,11 +375,58 @@ const bancoPayload = { ...basePayload, lvl: "govbr", iss: "banco-exemplo", iat: 
 const issuerEnvelope = (payload, key, { iss, kid }) => ({ ...envelope(payload, key, { kid }), ...(iss === undefined ? {} : { iss }) });
 const bancoValid = issuerEnvelope(bancoPayload, bancoKey, { iss: "banco-exemplo", kid: BANCO_KID });
 const bipeIssuerPayload = { ...basePayload, exp: NOW - 3600 + reg.badgeKeys.lifeDays * 86400 };
+// ADR 0272: a Dutch company and a Dutch person, signed by the test Dutch issuer.
+const nlTimes = { iat: NOW - 3600, exp: NOW - 3600 + reg.badgeKeys.lifeDays * 86400 };
+const nlOrgPayload = { sub: "@bakkerij:bipe.exemplo.nl", lvl: "org", country: "NL", scheme: "nl.kvk", assurance: "registry+control", org_id: "12345678", name: "Bakkerij Exemplo", legal_name: "Bakkerij Exemplo B.V.", ext: { "nl.fact": "a national fact, not a portable claim" }, msk: MASTER_KEY, iss: "bipe-nl-exemplo", ...nlTimes };
+const nlPersonPayload = { sub: "@anna:bipe.exemplo.nl", lvl: "person", country: "NL", scheme: "nl.itsme", assurance: "bank", name: "Anna de Vries", msk: MASTER_KEY, iss: "bipe-nl-exemplo", ...nlTimes };
+const nlEnvelope = (payload) => issuerEnvelope(payload, nlKey, { iss: "bipe-nl-exemplo", kid: NL_KID });
+const withoutField = (payload, field) => Object.fromEntries(Object.entries(payload).filter(([k]) => k !== field));
+const schemeVectors = [
+  ["company in the Netherlands", nlOrgPayload, "valid"],
+  ["person in the Netherlands", nlPersonPayload, "valid"],
+  ["unknown fields and ext do not change the verdict", { ...nlOrgPayload, ext: "not an object", later: 1 }, "valid"],
+  ["org without org_id", withoutField(nlOrgPayload, "org_id"), "malformed"],
+  ["org with an empty legal_name", { ...nlOrgPayload, legal_name: "" }, "malformed"],
+  ["org_id over 128 characters", { ...nlOrgPayload, org_id: "1".repeat(129) }, "malformed"],
+  ["person without scheme", withoutField(nlPersonPayload, "scheme"), "malformed"],
+  ["bad country", { ...nlOrgPayload, country: "nl" }, "malformed"],
+  ["empty assurance", { ...nlOrgPayload, assurance: "" }, "malformed"],
+  ["unknown scheme", { ...nlOrgPayload, scheme: "nl.nada" }, "unknown_scheme"],
+  ["scheme the issuer does not hold", { ...nlOrgPayload, scheme: "br.cnpj", country: "BR" }, "scheme_not_allowed"],
+  ["country differs from the scheme", { ...nlOrgPayload, country: "BE" }, "scheme_mismatch"],
+  ["assurance differs from the scheme", { ...nlPersonPayload, assurance: "state" }, "scheme_mismatch"],
+  ["class differs from the scheme", { ...nlPersonPayload, lvl: "org", org_id: "12345678" }, "scheme_mismatch"],
+  ["issuer of another region seals a Brazilian account", { ...nlOrgPayload, sub: "@padaria:bipe.net.br" }, "region_mismatch"],
+  ["server in no region", { ...nlOrgPayload, sub: "@padaria:outro.exemplo" }, "region_mismatch"],
+];
+const nlIssuer = issuersPayload.issuers[2];
+const schemeCases = schemeVectors.map(([name, payload, expect]) => {
+  const reference = badgeSchemeError(payload, payload.sub, nlIssuer, issuersPayload.schemes, issuersPayload.regions) ?? "valid";
+  if (reference !== expect) throw new Error(`badge-issuers: ${name}: reference says ${reference}, vector says ${expect}`);
+  return { name: `scheme: ${name}`, envelope: nlEnvelope(payload), sender: payload.sub, senderMasterKey: MASTER_KEY, expect };
+});
+const levelClasses = [
+  ["pix", basePayload],
+  ["govbr", { ...basePayload, lvl: "govbr" }],
+  ["cnpj", { ...basePayload, lvl: "cnpj" }],
+  ["org", nlOrgPayload],
+  ["person", nlPersonPayload],
+  ["institution, not portable", { ...basePayload, lvl: "institution" }],
+  ["brand-mark, not portable", { ...basePayload, lvl: "brand-mark" }],
+].map(([name, p]) => ({ name, lvl: p.lvl, ...(p.scheme ? { scheme: p.scheme } : {}), expect: badgeClass(p, issuersPayload.schemes) }));
 write("badge-issuers.json", {
-  $comment: "Generated by tools/gen-test-vectors.mjs. TEST-ONLY keys (badge seed 01..01, issuer seed 21..21), never in a release build. Verify with the order in docs/badge-attestation.md, with trustedIssuers as the device's issuer registry. A badge without iss is from issuer bipe. lifeDays is registries/badge-keys.json lifeDays.",
+  $comment: "Generated by tools/gen-test-vectors.mjs. TEST-ONLY keys (badge seed 01..01, issuer seed 21..21), never in a release build. Verify with the order in docs/badge-attestation.md, with trustedIssuers, schemes and regions as the device's issuer registry. classes: what a level proves for a feature gate, reference badgeClass in tools/lib/registries.mjs (ADR 0272). verifierWithoutSchemes: the answer of a verifier from before ADR 0272. A badge without iss is from issuer bipe. lifeDays is registries/badge-keys.json lifeDays.",
   now: NOW,
   lifeDays: reg.badgeKeys.lifeDays,
   trustedIssuers: issuersPayload.issuers,
+  schemes: issuersPayload.schemes,
+  regions: issuersPayload.regions,
+  classes: levelClasses,
+  // A verifier from before ADR 0272: it reads only badge-keys.json and has no person or org level. It shows no seal.
+  verifierWithoutSchemes: [
+    { name: "foreign issuer: its kid is not trusted", envelope: nlEnvelope(nlOrgPayload), sender: nlOrgPayload.sub, senderMasterKey: MASTER_KEY, expect: "unknown_kid" },
+    { name: "issuer bipe with the new level: unknown level", envelope: envelope({ ...nlOrgPayload, iss: undefined }), sender: nlOrgPayload.sub, senderMasterKey: MASTER_KEY, expect: "malformed" },
+  ],
   vectors: [
     { name: "no iss: issuer bipe, as before", envelope: envelope(bipeIssuerPayload), ...context, expect: "valid" },
     { name: "iss bipe in envelope and payload", envelope: issuerEnvelope({ ...bipeIssuerPayload, iss: "bipe" }, testKey, { iss: "bipe", kid: KID }), ...context, expect: "valid" },
@@ -373,6 +442,8 @@ write("badge-issuers.json", {
     { name: "other issuer: life over lifeDays", envelope: issuerEnvelope({ ...bancoPayload, exp: NOW + 30 * 86400 }, bancoKey, { iss: "banco-exemplo", kid: BANCO_KID }), ...context, expect: "life_too_long" },
     { name: "other issuer: expired", envelope: issuerEnvelope({ ...bancoPayload, iat: NOW - 8 * 86400, exp: NOW - 86400 }, bancoKey, { iss: "banco-exemplo", kid: BANCO_KID }), ...context, expect: "expired" },
     { name: "other issuer: subject mismatch", envelope: bancoValid, ...context, sender: "@mallory:bipe.net.br", expect: "subject_mismatch" },
+    { name: "other issuer: account of another region", envelope: issuerEnvelope({ ...bancoPayload, sub: "@anna:bipe.exemplo.nl" }, bancoKey, { iss: "banco-exemplo", kid: BANCO_KID }), sender: "@anna:bipe.exemplo.nl", senderMasterKey: MASTER_KEY, expect: "region_mismatch" },
+    ...schemeCases,
   ],
 });
 

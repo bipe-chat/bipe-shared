@@ -60,6 +60,8 @@ const ENUMS = {
 
 // Schemas the apps do not model, with the reason.
 const NOT_IN_APPS = {
+  // The app verifier waits for the Rust core spike (bipe-chat/bipe#1172, ADR 0267).
+  SignedListEnvelope: "bipe-chat/bipe#645",
   ...Object.fromEntries([
     "BusinessToolError", "EmptyBusinessRequest", "PixChargeLink",
     "Queue", "QueueJoin", "QueuePlace", "QueuePlaceStatus", "QueuePolicy", "QueuePosition", "QueueWaitRange", "OwnerQueuePlace",

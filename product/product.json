@@ -2581,12 +2581,12 @@
     }
   },
   "business": {
-    "$comment": "The /empresas/ page. Source: bipe/docs/business-track.md and bipe/docs/business-messaging.md (issue #93). Everything here is a proposal: nothing is for sale. Keep that visible on the page. Decided: ADR 0035 (the business decrypts), ADR 0036 (own-domain links), ADR 0037 (categories, not published here), ADR 0069 (the inbox, keys with the company), ADR 0070 (flat fee per CNPJ plus agent seats; amounts open), ADR 0080 (Pix charge cards for verified companies, planned), ADR 0081 (structured questions), ADR 0082 (the inbox carries the Bipe channel only; Bipe's API is its own design; claim no compatibility with another platform's API).",
+    "$comment": "The /empresas/ page. Source: bipe/docs/business-track.md and bipe/docs/business-messaging.md (issue #93). The page says what is not live yet. Keep that visible (MZ, 7 November 2026). Decided: ADR 0035 (the business decrypts), ADR 0036 (own-domain links), ADR 0037 (categories, not published here), ADR 0069 (the inbox, keys with the company), ADR 0070 (flat fee per CNPJ plus agent seats; amounts open), ADR 0080 (Pix charge cards for verified companies, planned), ADR 0081 (structured questions), ADR 0082 (the inbox carries the Bipe channel only; Bipe's API is its own design; claim no compatibility with another platform's API).",
     "pt": {
       "nav": "Empresas",
       "title": "Atenda seus clientes com a identidade da empresa à vista.",
-      "lede": "O Bipe é gratuito para as pessoas e se paga com empresas. Os dados e os servidores ficam no Brasil. A proposta inclui selo de CNPJ verificado, reserva de alguns nomes e uma caixa de entrada para a equipe. O selo mostra a prova de controle da empresa; não garante uma oferta nem impede uma conta invadida. Esta página explica a proposta. Ela ainda está em estudo, e nada aqui está à venda.",
-      "label": "Proposta em estudo",
+      "lede": "O Bipe é gratuito para as pessoas e se paga com empresas. Os dados e os servidores ficam no Brasil. O Bipe para empresas inclui selo de CNPJ verificado, reserva de alguns nomes e uma caixa de entrada para a equipe. O selo mostra a prova de controle da empresa; não garante uma oferta nem impede uma conta invadida. A caixa de entrada, a API e o selo de CNPJ ainda não estão no ar.",
+      "label": "Ainda não está no ar",
       "sections": [
         {
           "heading": "Por que sua empresa estaria aqui",
@@ -2663,7 +2663,7 @@
           ]
         },
         {
-          "heading": "Como o Bipe se pagaria",
+          "heading": "Como o Bipe se paga",
           "points": [
             "Quem usa o Bipe para conversar nunca paga.",
             "A empresa paga pelos clientes que falam com ela no Bipe e pelos atendentes a mais. Até 3 atendentes e 1.000 clientes ativos, é de graça.",
@@ -2692,13 +2692,13 @@
       ],
       "cta": "Quer testar no piloto? Conte como vocês falam com os clientes hoje.",
       "ctaSubject": "Bipe para empresas",
-      "figureCaption": "Ilustração com dados de exemplo. A proposta ainda está em estudo."
+      "figureCaption": "Ilustração com dados de exemplo. O serviço ainda não está no ar."
     },
     "en": {
       "nav": "Business",
       "title": "Serve customers with your business identity in view.",
-      "lede": "Bipe is free for people and pays for itself through companies. Data and servers stay in Brazil. The proposal includes a verified CNPJ seal, reservations for some names and an inbox for the team. The seal shows proof of control of the business; it does not guarantee an offer or prevent account takeover. This page explains the proposal. It is still under study, and nothing here is for sale.",
-      "label": "Proposal under study",
+      "lede": "Bipe is free for people and pays for itself through companies. Data and servers stay in Brazil. Bipe for companies includes a verified CNPJ seal, reservations for some names and an inbox for the team. The seal shows proof of control of the business; it does not guarantee an offer or prevent account takeover. The inbox, the API and the CNPJ seal are not live yet.",
+      "label": "Not live yet",
       "sections": [
         {
           "heading": "Why your company would be here",
@@ -2775,7 +2775,7 @@
           ]
         },
         {
-          "heading": "How Bipe would pay for itself",
+          "heading": "How Bipe pays for itself",
           "points": [
             "People who use Bipe to chat never pay.",
             "A company pays for the customers who talk with it on Bipe and for extra agents. Up to 3 agents and 1,000 active customers, it is free.",
@@ -2804,7 +2804,7 @@
       ],
       "cta": "Want to test it in the pilot? Tell us how you talk to customers today.",
       "ctaSubject": "Bipe for business",
-      "figureCaption": "Illustration with sample data. The proposal is still under study."
+      "figureCaption": "Illustration with sample data. The service is not live yet."
     }
   },
   "pricing": {
@@ -3288,7 +3288,7 @@
       "nav": "Para organizações",
       "label": "Para organizações",
       "title": "Fale com seus clientes no Bipe, com os dados no Brasil.",
-      "lede": "Os dados e os servidores do Bipe ficam no Brasil, sob a lei brasileira. Empresas, instituições, associações e órgãos públicos falam com o cliente com o nome verificado pelo CNPJ. O Bipe para organizações ainda está em estudo. Conte para a gente como vocês falam com os clientes hoje e quanto isso custa.",
+      "lede": "Os dados e os servidores do Bipe ficam no Brasil, sob a lei brasileira. Empresas, instituições, associações e órgãos públicos falam com o cliente com o nome verificado pelo CNPJ. O Bipe para organizações ainda não está no ar. Conte para a gente como vocês falam com os clientes hoje e quanto isso custa.",
       "why": {
         "heading": "Por que o Bipe",
         "points": [
@@ -3396,7 +3396,7 @@
       "nav": "For organisations",
       "label": "For organisations",
       "title": "Talk to your customers on Bipe, with the data in Brazil.",
-      "lede": "Bipe's data and servers stay in Brazil, under Brazilian law. Companies, institutions, associations and public bodies talk to their customers under a name verified by CNPJ. Bipe for organisations is still being studied. Tell us how you talk to your customers today and what it costs.",
+      "lede": "Bipe's data and servers stay in Brazil, under Brazilian law. Companies, institutions, associations and public bodies talk to their customers under a name verified by CNPJ. Bipe for organisations is not live yet. Tell us how you talk to your customers today and what it costs.",
       "why": {
         "heading": "Why Bipe",
         "points": [
@@ -3544,7 +3544,7 @@
         "name": "Órgãos públicos",
         "title": "Bipe para órgãos públicos",
         "headline": "O cidadão sabe que a mensagem é mesmo do órgão.",
-        "lede": "Os dados e os servidores do Bipe ficam no Brasil, sob a lei brasileira. Prefeituras, secretarias e autarquias falam com o cidadão com o nome verificado pelo CNPJ, e o nome do órgão fica reservado para a conta dele. O Bipe para organizações ainda está em estudo, e o piloto é gratuito.",
+        "lede": "Os dados e os servidores do Bipe ficam no Brasil, sob a lei brasileira. Prefeituras, secretarias e autarquias falam com o cidadão com o nome verificado pelo CNPJ, e o nome do órgão fica reservado para a conta dele. O Bipe para organizações ainda não está no ar, e o piloto é gratuito.",
         "note": "Cada recurso mostra em que ponto está. Abra o recurso para ver o status no iPhone e no Android.",
         "sections": [
           {
@@ -3636,7 +3636,7 @@
         "name": "Instituições e associações",
         "title": "Bipe para instituições e associações",
         "headline": "Avisos para todos, com o nome da instituição à vista.",
-        "lede": "Os dados e os servidores do Bipe ficam no Brasil, sob a lei brasileira. Escolas, igrejas, cooperativas e ONGs falam com membros e famílias com o nome verificado pelo CNPJ. Quem copia o nome e a foto da instituição não ganha o selo. O Bipe para organizações ainda está em estudo. No piloto, a instituição paga metade do preço do plano, e esse valor vira crédito no primeiro ano.",
+        "lede": "Os dados e os servidores do Bipe ficam no Brasil, sob a lei brasileira. Escolas, igrejas, cooperativas e ONGs falam com membros e famílias com o nome verificado pelo CNPJ. Quem copia o nome e a foto da instituição não ganha o selo. O Bipe para organizações ainda não está no ar. No piloto, a instituição paga metade do preço do plano, e esse valor vira crédito no primeiro ano.",
         "note": "Cada recurso mostra em que ponto está. Abra o recurso para ver o status no iPhone e no Android.",
         "sections": [
           {
@@ -3727,7 +3727,7 @@
         "name": "Bancos e fintechs",
         "title": "Bipe para bancos e fintechs",
         "headline": "O falso atendente não consegue usar o nome do seu banco.",
-        "lede": "Os dados e os servidores do Bipe ficam no Brasil, sob a lei brasileira. No Bipe, o nome do banco fica reservado para a conta com o CNPJ verificado, e o cliente vê o selo em toda conversa. O Bipe para organizações ainda está em estudo. No piloto, o banco paga metade do preço do plano, e esse valor vira crédito no primeiro ano.",
+        "lede": "Os dados e os servidores do Bipe ficam no Brasil, sob a lei brasileira. No Bipe, o nome do banco fica reservado para a conta com o CNPJ verificado, e o cliente vê o selo em toda conversa. O Bipe para organizações ainda não está no ar. No piloto, o banco paga metade do preço do plano, e esse valor vira crédito no primeiro ano.",
         "note": "Cada recurso mostra em que ponto está. Abra o recurso para ver o status no iPhone e no Android.",
         "sections": [
           {
@@ -3806,7 +3806,7 @@
         "name": "Parceiros de tecnologia",
         "title": "Bipe para parceiros de tecnologia",
         "headline": "Um padrão aberto e uma API para ligar o Bipe aos seus sistemas.",
-        "lede": "Os dados e os servidores do Bipe ficam no Brasil, sob a lei brasileira. O Bipe usa o Matrix, um protocolo aberto, e o código é aberto. Plataformas de atendimento, integradores e quem revende tecnologia podem levar o Bipe aos clientes deles. A API do Bipe para empresas ainda está em estudo.",
+        "lede": "Os dados e os servidores do Bipe ficam no Brasil, sob a lei brasileira. O Bipe usa o Matrix, um protocolo aberto, e o código é aberto. Plataformas de atendimento, integradores e quem revende tecnologia podem levar o Bipe aos clientes deles. A API do Bipe para empresas ainda não está no ar.",
         "note": "Cada recurso mostra em que ponto está. Abra o recurso para ver o status no iPhone e no Android.",
         "sections": [
           {

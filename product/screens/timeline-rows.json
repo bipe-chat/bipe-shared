@@ -256,6 +256,7 @@
     "Handle-change rows are local lines from bipe-api, not Matrix events (handle-change-line, ADR 0066).",
     "Read receipts are always public (ADR 0050): the client never sends ReceiptType.ReadPrivate.",
     "Same names in groups (bipe#825): a sender line shows the @ after the name when another member of the room shows the same name. Same means EventTimelineItem.senderProfile displayNameAmbiguous, or the same name after NameNormalizer (registries homoglyphs, security rule 8) among the known members, so a look-alike \"Mãe\" counts. A Bipe user shows \"Maria @maria1\" once the handle resolves and the name alone before; a user of another server shows the name alone; never the Matrix ID (README, People names). DMs and own messages never show it. No new string: the name and the @ are joined with a space.",
-    "Sender line of a group row: after the name and the role, BipeCompanySeals.mark of the sender (person-profile notes). No mark on own messages or in a DM."
+    "Sender line of a group row: after the name and the role, BipeCompanySeals.mark of the sender (person-profile notes). No mark on own messages or in a DM.",
+    "Who shows a sender line (MZ, 7 November 2026): every message and deleted row from another member, on iOS, Android, web and Mac. Only the one other person of a DM goes without a name. The DM test is RoomInfo.isDm, as in the chat list, never RoomInfo.isDirect: a room flagged direct with more than two active members is a group. A room with isDm true can hold messages from people who left, so a sender other than the room hero shows the name, and so does every sender when the SDK reports no hero. An undecryptable row also shows the name in a DM."
   ]
 }

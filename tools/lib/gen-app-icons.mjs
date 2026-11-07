@@ -235,6 +235,72 @@ export function iconPng(mark, background, size = IOS_ICON_SIZE, { mac = false } 
 
 // Files for bipe-app. Paths are relative to ios/BipeKit/Sources/BipeKit/Generated and android/libraries/bipe/src/main.
 // The app manifest has one launcher activity-alias per palette with icon @mipmap/bipe_app_icon_<palette>.
+// The system launch screen of Android (spec account-start). Below Android 12 a window background with no ring;
+// from Android 12 the splash screen draws the ring. setSplashScreenTheme picks the palette from Android 13.
+function launchResources(tokens, icons, xmlHeader) {
+  const { diameter, stroke, arc, turnMs } = tokens.appThemes.launch;
+  const parent = "@android:style/Theme.Material.Light.NoActionBar";
+  const styleName = (palette) => `Theme.Bipe.Launch.${palette[0].toUpperCase()}${palette.slice(1)}`;
+  const themes = (items) => `<?xml version="1.0" encoding="utf-8"?>
+${xmlHeader}
+<resources>
+    <style name="Theme.Bipe.Launch" parent="${parent}">
+        <item name="android:windowBackground">@color/bipe_app_icon_${tokens.appThemes.default}</item>
+        <item name="android:windowLightStatusBar">false</item>
+${items(tokens.appThemes.default)}
+    </style>
+${icons.map(({ palette }) => `    <style name="${styleName(palette)}" parent="Theme.Bipe.Launch">
+        <item name="android:windowBackground">@color/bipe_app_icon_${palette}</item>
+${items(palette)}
+    </style>`).join("\n")}
+</resources>
+`;
+  // A 288 dp canvas, the size of the splash icon, so one unit is one dp.
+  const canvas = 288;
+  return {
+    "res/values/bipe_launch.xml": themes(() => "").replace(/\n\s*\n/g, "\n"),
+    "res/values-v31/bipe_launch.xml": themes((palette) => `        <item name="android:windowSplashScreenBackground">@color/bipe_app_icon_${palette}</item>
+        <item name="android:windowSplashScreenAnimatedIcon">@drawable/bipe_launch_ring</item>
+        <item name="android:windowSplashScreenAnimationDuration">1000</item>`),
+    "res/drawable/bipe_launch_ring.xml": `<?xml version="1.0" encoding="utf-8"?>
+${xmlHeader}
+<animated-vector xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:aapt="http://schemas.android.com/aapt">
+    <aapt:attr name="android:drawable">
+        <vector
+            android:width="${canvas}dp"
+            android:height="${canvas}dp"
+            android:viewportWidth="${canvas}"
+            android:viewportHeight="${canvas}">
+            <group
+                android:name="ring"
+                android:pivotX="${canvas / 2}"
+                android:pivotY="${canvas / 2}">
+                <path
+                    android:pathData="M${canvas / 2},${canvas / 2 - (diameter - stroke) / 2}a${(diameter - stroke) / 2},${(diameter - stroke) / 2} 0 1,1 0,${diameter - stroke}a${(diameter - stroke) / 2},${(diameter - stroke) / 2} 0 1,1 0,-${diameter - stroke}"
+                    android:strokeColor="${tokens.appThemes.icon.markColour}"
+                    android:strokeWidth="${stroke}"
+                    android:strokeLineCap="round"
+                    android:trimPathEnd="${arc}" />
+            </group>
+        </vector>
+    </aapt:attr>
+    <target android:name="ring">
+        <aapt:attr name="android:animation">
+            <objectAnimator
+                android:duration="${turnMs}"
+                android:interpolator="@android:interpolator/linear"
+                android:propertyName="rotation"
+                android:repeatCount="infinite"
+                android:valueFrom="0"
+                android:valueTo="360" />
+        </aapt:attr>
+    </target>
+</animated-vector>
+`,
+  };
+}
+
 export function generateAppIcons(tokens = loadTokens(), { xmlHeader }) {
   const mark = tokens.appThemes.icon;
   const icons = appIconColors(tokens);
@@ -262,6 +328,16 @@ export function generateAppIcons(tokens = loadTokens(), { xmlHeader }) {
       ios[`${set}/mac-${size}.png`] = iconPng(mark, background, size, { mac: true });
     }
   }
+  // The system launch screen of iOS is one colour from the Info.plist, so it stays the default palette.
+  const launchHex = icons.find(({ palette }) => palette === tokens.appThemes.default).background;
+  const channel = (at) => `0x${launchHex.slice(at, at + 2).toUpperCase()}`;
+  ios["AppIcons.xcassets/LaunchBackground.colorset/Contents.json"] = json({
+    colors: [{
+      idiom: "universal",
+      color: { "color-space": "srgb", components: { red: channel(1), green: channel(3), blue: channel(5), alpha: "1.000" } },
+    }],
+    info: { author: "bipe-shared tools/gen.mjs", version: 1 },
+  });
   // The adaptive icon canvas is 108 dp; the mark stays inside the 66 dp safe zone (androidScale of the 64-unit mark).
   const shift = (108 - mark.viewBox * mark.androidScale) / 2;
   const android = Object.fromEntries(icons.map(({ palette }) => [`res/mipmap-anydpi-v26/bipe_app_icon_${palette}.xml`, `<?xml version="1.0" encoding="utf-8"?>
@@ -298,5 +374,6 @@ ${xmlHeader}
 </vector>
 `,
   });
+  Object.assign(android, launchResources(tokens, icons, xmlHeader));
   return { ios, android };
 }

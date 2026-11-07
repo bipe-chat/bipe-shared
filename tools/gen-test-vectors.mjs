@@ -7,6 +7,7 @@ import { fileURLToPath } from "node:url";
 import { buildBrCode, crc16, pixCheck, pixMarkLines, pixTxid } from "./lib/pix.mjs";
 import { cvmLines } from "./lib/cvm.mjs";
 import { noticeLinkClickable } from "./lib/notice.mjs";
+import { reactionKeyText } from "./lib/reactions.mjs";
 import { govbrIncoming, govbrResult } from "./lib/govbr.mjs";
 import { b64url as reportB64, deriveKeyPair as hpkeKeyPair, encryptMedia, envelopeError, open as hpkeOpen, openReport, sealReport, verifyMedia, REPORT_INFO } from "./lib/reports.mjs";
 import { canonicalJson, checkMoved, matrixKey, movedEnvelope, moveError, sentAfterMove, signAs, signedBytes } from "./lib/moves.mjs";
@@ -25,6 +26,13 @@ if (apiVectors) writeSchedulingApiFixture(root, apiVectors);
 else loadSchedulingVectors(root);
 mkdirSync(out, { recursive: true });
 const write = (name, data) => writeFileSync(join(out, name), JSON.stringify(data, null, 2) + "\n");
+
+write('message-reactions.json', {
+  quickKeys: reg.messageReactions.quickKeys,
+  displayKeyMaxGraphemes: reg.messageReactions.displayKeyMaxGraphemes,
+  cases: ['', 'plain', ...['👨‍👩‍👧‍👦', '👍🏽', '🇧🇷', '❤️', '1️⃣'].flatMap(key => [key.repeat(16), key.repeat(17)])]
+    .map(input => ({ input, expected: reactionKeyText(input, reg.messageReactions) })),
+});
 
 const trustVectors = JSON.parse(readFileSync(join(root, "fixtures/trust-facts.json"), "utf8"));
 for (const vector of trustVectors.vectors) {

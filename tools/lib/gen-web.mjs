@@ -7,9 +7,10 @@
 //   lib/*.mjs        the reference rules, copied; registries.mjs without its Node loader
 import { mkdirSync, readFileSync, rmSync, writeFileSync } from "node:fs";
 import { join } from "node:path";
+import { appearanceModule, fruitModule } from "./gen-appearance.mjs";
 
 /** Reference rules that run in a browser as they are. registries.mjs is handled apart. */
-const PURE_LIBS = ["trust.mjs", "agenda-templates.mjs", "gen-settings.mjs", "gen-onboarding.mjs", "gen-haptics.mjs", "pix.mjs", "cvm.mjs", "notice.mjs", "govbr.mjs", "home-score.mjs"];
+const PURE_LIBS = ["trust.mjs", "agenda-templates.mjs", "gen-settings.mjs", "gen-onboarding.mjs", "gen-haptics.mjs", "pix.mjs", "cvm.mjs", "notice.mjs", "govbr.mjs", "home-score.mjs", "reactions.mjs"];
 
 /** registries.mjs without `loadRegistries` and its node:fs and node:path imports. Fails when the file moved. */
 export function browserRegistries(source) {
@@ -76,6 +77,9 @@ export function writeWeb(dir, { root, reg, screens, css, businessApi, license, h
   mkdirSync(join(dir, "lib"), { recursive: true });
   write("registries.json", `${JSON.stringify(reg, null, 1)}\n`);
   write("strings.ts", stringsModule(js, reg.strings.strings, reg.stringsEn.strings));
+  const themeHeader = js.replace("bipe-shared/registries and bipe-shared/strings", "bipe-shared/design/tokens.json and design/chat-fruits.mjs");
+  write("appearance.ts", appearanceModule(JSON.parse(readFileSync(join(root, "design/tokens.json"), "utf8")), themeHeader));
+  write("chat-fruits.ts", fruitModule(themeHeader));
   write("screens.ts", screensModule(js.replace("bipe-shared/registries and bipe-shared/strings", "bipe-shared/product/screens"), screens));
   write("business-api.ts", `${license.replace(/^(?=.)/gm, "// ")}${businessApi}`);
   write("tokens.css", `${block.replace("bipe-shared/registries and bipe-shared/strings", "bipe-shared/design/tokens.json")}\n${css}`);

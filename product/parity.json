@@ -5171,7 +5171,7 @@
       },
       "web": {
         "status": "planned",
-        "issue": 762
+        "issue": 1173
       },
       "server": {
         "status": "built",
@@ -5251,8 +5251,11 @@
       },
       "issue": 811,
       "macos": {
-        "status": "planned",
-        "issue": 1161
+        "status": "built",
+        "evidence": [
+          "bipe-app/macos/BipeMac/MacAppearance.swift"
+        ],
+        "note": "Same six palettes and four backgrounds, labels/order/defaults generated. Running Dock icon follows the palette; signed Finder bundle icon stays the default macOS icon."
       },
       "windows": {
         "status": "planned",
@@ -5522,6 +5525,544 @@
       "windows": {
         "status": "planned",
         "issue": 1019
+      }
+    },
+    {
+      "id": "message-text",
+      "name": "Text messages",
+      "ios": {
+        "status": "built",
+        "evidence": [
+          "bipe-app/ios/Bipe/Timeline/ChatTimelineModel.swift"
+        ]
+      },
+      "android": {
+        "status": "built",
+        "evidence": [
+          "bipe-app/android/app/src/main/kotlin/chat/bipe/app/timeline/ChatTimelineModel.kt"
+        ]
+      },
+      "web": {
+        "status": "built",
+        "evidence": [
+          "bipe-app/web/src/Timeline.tsx"
+        ]
+      },
+      "server": {
+        "status": "n/a",
+        "reason": "Client interaction over existing encrypted Matrix transport; no separate server UI"
+      },
+      "macos": {
+        "status": "built",
+        "evidence": [
+          "bipe-app/macos/BipeMac/MacTimeline.swift",
+          "bipe-app/macos/BipeMac/BipeMacApp.swift"
+        ]
+      },
+      "windows": {
+        "status": "planned",
+        "issue": 1019
+      }
+    },
+    {
+      "id": "message-reply",
+      "name": "Replies and quoted-message navigation",
+      "ios": {
+        "status": "built",
+        "evidence": [
+          "bipe-app/ios/Bipe/Timeline/ChatTimelineModel.swift"
+        ]
+      },
+      "android": {
+        "status": "built",
+        "evidence": [
+          "bipe-app/android/app/src/main/kotlin/chat/bipe/app/timeline/ChatTimelineModel.kt"
+        ]
+      },
+      "web": {
+        "status": "built",
+        "evidence": [
+          "bipe-app/web/src/Timeline.tsx"
+        ]
+      },
+      "server": {
+        "status": "n/a",
+        "reason": "Client interaction over existing encrypted Matrix transport; no separate server UI"
+      },
+      "macos": {
+        "status": "planned",
+        "issue": 1162,
+        "note": "Sends reply relations and restores reply drafts; quoted original rendering/navigation remain missing."
+      },
+      "windows": {
+        "status": "planned",
+        "issue": 1019
+      }
+    },
+    {
+      "id": "message-edit",
+      "name": "Edit sent messages",
+      "ios": {
+        "status": "built",
+        "evidence": [
+          "bipe-app/ios/Bipe/Timeline/ChatTimelineModel.swift"
+        ]
+      },
+      "android": {
+        "status": "built",
+        "evidence": [
+          "bipe-app/android/app/src/main/kotlin/chat/bipe/app/timeline/ChatTimelineModel.kt"
+        ]
+      },
+      "web": {
+        "status": "built",
+        "evidence": [
+          "bipe-app/web/src/Timeline.tsx"
+        ]
+      },
+      "server": {
+        "status": "n/a",
+        "reason": "Client interaction over existing encrypted Matrix transport; no separate server UI"
+      },
+      "macos": {
+        "status": "planned",
+        "issue": 1162
+      },
+      "windows": {
+        "status": "planned",
+        "issue": 1019
+      }
+    },
+    {
+      "id": "message-delete",
+      "name": "Delete sent messages",
+      "ios": {
+        "status": "built",
+        "evidence": [
+          "bipe-app/ios/Bipe/Timeline/ChatTimelineModel.swift"
+        ]
+      },
+      "android": {
+        "status": "built",
+        "evidence": [
+          "bipe-app/android/app/src/main/kotlin/chat/bipe/app/timeline/ChatTimelineModel.kt"
+        ]
+      },
+      "web": {
+        "status": "built",
+        "evidence": [
+          "bipe-app/web/src/Timeline.tsx"
+        ]
+      },
+      "server": {
+        "status": "n/a",
+        "reason": "Client interaction over existing encrypted Matrix transport; no separate server UI"
+      },
+      "macos": {
+        "status": "planned",
+        "issue": 1162
+      },
+      "windows": {
+        "status": "planned",
+        "issue": 1019
+      }
+    },
+    {
+      "id": "message-reactions",
+      "name": "Reactions, emoji choices and who reacted",
+      "ios": {
+        "status": "built",
+        "evidence": [
+          "bipe-app/ios/Bipe/Timeline/ChatTimelineModel.swift"
+        ]
+      },
+      "android": {
+        "status": "built",
+        "evidence": [
+          "bipe-app/android/app/src/main/kotlin/chat/bipe/app/timeline/ChatTimelineModel.kt"
+        ]
+      },
+      "web": {
+        "status": "built",
+        "evidence": [
+          "bipe-app/web/src/Timeline.tsx"
+        ]
+      },
+      "server": {
+        "status": "n/a",
+        "reason": "Client interaction over existing encrypted Matrix transport; no separate server UI"
+      },
+      "macos": {
+        "status": "built",
+        "evidence": [
+          "bipe-app/macos/BipeMac/MacReactions.swift",
+          "bipe-app/macos/BipeMac/MacTimeline.swift"
+        ]
+      },
+      "windows": {
+        "status": "planned",
+        "issue": 1019
+      }
+    },
+    {
+      "id": "typing-indicator",
+      "name": "Typing indicators and privacy",
+      "ios": {
+        "status": "built",
+        "evidence": [
+          "bipe-app/ios/Bipe/Timeline/ChatTimelineModel.swift"
+        ]
+      },
+      "android": {
+        "status": "built",
+        "evidence": [
+          "bipe-app/android/app/src/main/kotlin/chat/bipe/app/timeline/ChatTimelineModel.kt"
+        ]
+      },
+      "web": {
+        "status": "built",
+        "evidence": [
+          "bipe-app/web/src/Timeline.tsx"
+        ]
+      },
+      "server": {
+        "status": "n/a",
+        "reason": "Client interaction over existing encrypted Matrix transport; no separate server UI"
+      },
+      "macos": {
+        "status": "planned",
+        "issue": 1162
+      },
+      "windows": {
+        "status": "planned",
+        "issue": 1019
+      }
+    },
+    {
+      "id": "message-send-retry",
+      "name": "Queued sends, retry and cancellation",
+      "ios": {
+        "status": "built",
+        "evidence": [
+          "bipe-app/ios/Bipe/Timeline/ChatTimelineModel.swift"
+        ]
+      },
+      "android": {
+        "status": "built",
+        "evidence": [
+          "bipe-app/android/app/src/main/kotlin/chat/bipe/app/timeline/ChatTimelineModel.kt"
+        ]
+      },
+      "web": {
+        "status": "built",
+        "evidence": [
+          "bipe-app/web/src/Timeline.tsx"
+        ]
+      },
+      "server": {
+        "status": "n/a",
+        "reason": "Client interaction over existing encrypted Matrix transport; no separate server UI"
+      },
+      "macos": {
+        "status": "planned",
+        "issue": 1162
+      },
+      "windows": {
+        "status": "planned",
+        "issue": 1019
+      }
+    },
+    {
+      "id": "media-images",
+      "name": "Image messages: send, view and save",
+      "ios": {
+        "status": "built",
+        "evidence": [
+          "bipe-app/ios/Bipe/Media/Upload/UploadPreviewModel.swift",
+          "bipe-app/ios/Bipe/Media/TimelineMediaRow.swift"
+        ]
+      },
+      "android": {
+        "status": "built",
+        "evidence": [
+          "bipe-app/android/app/src/main/kotlin/chat/bipe/app/media/upload/UploadPreviewModel.kt",
+          "bipe-app/android/app/src/main/kotlin/chat/bipe/app/media/TimelineMediaRow.kt"
+        ]
+      },
+      "web": {
+        "status": "built",
+        "evidence": [
+          "bipe-app/web/src/Attach.tsx",
+          "bipe-app/web/src/TimelineMedia.tsx"
+        ]
+      },
+      "server": {
+        "status": "n/a",
+        "reason": "Client interaction over existing encrypted Matrix transport; no separate server UI"
+      },
+      "macos": {
+        "status": "built",
+        "evidence": [
+          "bipe-app/macos/BipeMac/MacMedia.swift",
+          "bipe-app/macos/BipeMac/MacPhotoView.swift",
+          "bipe-app/macos/BipeMac/MacTimeline.swift"
+        ]
+      },
+      "windows": {
+        "status": "planned",
+        "issue": 1019
+      }
+    },
+    {
+      "id": "media-videos",
+      "name": "Video messages: send, play and save",
+      "ios": {
+        "status": "built",
+        "evidence": [
+          "bipe-app/ios/Bipe/Media/Upload/UploadPreviewModel.swift",
+          "bipe-app/ios/Bipe/Media/TimelineMediaRow.swift"
+        ]
+      },
+      "android": {
+        "status": "built",
+        "evidence": [
+          "bipe-app/android/app/src/main/kotlin/chat/bipe/app/media/upload/UploadPreviewModel.kt",
+          "bipe-app/android/app/src/main/kotlin/chat/bipe/app/media/TimelineMediaRow.kt"
+        ]
+      },
+      "web": {
+        "status": "built",
+        "evidence": [
+          "bipe-app/web/src/Attach.tsx",
+          "bipe-app/web/src/TimelineMedia.tsx"
+        ]
+      },
+      "server": {
+        "status": "n/a",
+        "reason": "Client interaction over existing encrypted Matrix transport; no separate server UI"
+      },
+      "macos": {
+        "status": "planned",
+        "issue": 1164
+      },
+      "windows": {
+        "status": "planned",
+        "issue": 1019
+      }
+    },
+    {
+      "id": "media-files",
+      "name": "File messages: send, open and save",
+      "ios": {
+        "status": "built",
+        "evidence": [
+          "bipe-app/ios/Bipe/Media/Upload/UploadPreviewModel.swift",
+          "bipe-app/ios/Bipe/Media/TimelineMediaRow.swift"
+        ]
+      },
+      "android": {
+        "status": "built",
+        "evidence": [
+          "bipe-app/android/app/src/main/kotlin/chat/bipe/app/media/upload/UploadPreviewModel.kt",
+          "bipe-app/android/app/src/main/kotlin/chat/bipe/app/media/TimelineMediaRow.kt"
+        ]
+      },
+      "web": {
+        "status": "built",
+        "evidence": [
+          "bipe-app/web/src/Attach.tsx",
+          "bipe-app/web/src/TimelineMedia.tsx"
+        ]
+      },
+      "server": {
+        "status": "n/a",
+        "reason": "Client interaction over existing encrypted Matrix transport; no separate server UI"
+      },
+      "macos": {
+        "status": "planned",
+        "issue": 1164
+      },
+      "windows": {
+        "status": "planned",
+        "issue": 1019
+      }
+    },
+    {
+      "id": "media-voice",
+      "name": "Voice messages: record, send and play",
+      "ios": {
+        "status": "built",
+        "evidence": [
+          "bipe-app/ios/Bipe/Media/Voice/VoiceRecordingModel.swift",
+          "bipe-app/ios/Bipe/Media/VoiceMessageRow.swift"
+        ]
+      },
+      "android": {
+        "status": "built",
+        "evidence": [
+          "bipe-app/android/app/src/main/kotlin/chat/bipe/app/media/voice/VoiceRecordingModel.kt",
+          "bipe-app/android/app/src/main/kotlin/chat/bipe/app/media/VoiceMessageRow.kt"
+        ]
+      },
+      "web": {
+        "status": "planned",
+        "issue": 906,
+        "note": "Receives and plays audio in TimelineMedia.tsx; recording and sending are missing. Partial support is not full parity."
+      },
+      "server": {
+        "status": "n/a",
+        "reason": "Client interaction over existing encrypted Matrix transport; no separate server UI"
+      },
+      "macos": {
+        "status": "planned",
+        "issue": 1164
+      },
+      "windows": {
+        "status": "planned",
+        "issue": 1019
+      }
+    },
+    {
+      "id": "calls-audio",
+      "name": "Encrypted audio calls",
+      "ios": {
+        "status": "built",
+        "evidence": [
+          "bipe-app/ios/Bipe/Calls/CallSession.swift",
+          "bipe-app/ios/Bipe/Calls/CallView.swift"
+        ]
+      },
+      "android": {
+        "status": "built",
+        "evidence": [
+          "bipe-app/android/app/src/main/kotlin/chat/bipe/app/calls/CallSession.kt",
+          "bipe-app/android/app/src/main/kotlin/chat/bipe/app/calls/CallScreen.kt"
+        ]
+      },
+      "web": {
+        "status": "planned",
+        "issue": 1173,
+        "note": "Closed #762 covered the retired stock web client, not the own web client."
+      },
+      "server": {
+        "status": "built",
+        "evidence": [
+          "bipe-infra/compose/docker-compose.yml"
+        ]
+      },
+      "macos": {
+        "status": "planned",
+        "issue": 1167
+      },
+      "windows": {
+        "status": "planned",
+        "issue": 1019
+      }
+    },
+    {
+      "id": "calls-video",
+      "name": "Encrypted video calls",
+      "ios": {
+        "status": "built",
+        "evidence": [
+          "bipe-app/ios/Bipe/Calls/CallSession.swift",
+          "bipe-app/ios/Bipe/Calls/CallView.swift"
+        ]
+      },
+      "android": {
+        "status": "built",
+        "evidence": [
+          "bipe-app/android/app/src/main/kotlin/chat/bipe/app/calls/CallSession.kt",
+          "bipe-app/android/app/src/main/kotlin/chat/bipe/app/calls/CallScreen.kt"
+        ]
+      },
+      "web": {
+        "status": "planned",
+        "issue": 1173,
+        "note": "Closed #762 covered the retired stock web client, not the own web client."
+      },
+      "server": {
+        "status": "built",
+        "evidence": [
+          "bipe-infra/compose/docker-compose.yml"
+        ]
+      },
+      "macos": {
+        "status": "planned",
+        "issue": 1167
+      },
+      "windows": {
+        "status": "planned",
+        "issue": 1019
+      }
+    },
+    {
+      "id": "calls-group",
+      "name": "Encrypted group calls and participant lifecycle",
+      "ios": {
+        "status": "built",
+        "evidence": [
+          "bipe-app/ios/Bipe/Calls/CallSession.swift",
+          "bipe-app/ios/Bipe/Calls/CallView.swift"
+        ]
+      },
+      "android": {
+        "status": "built",
+        "evidence": [
+          "bipe-app/android/app/src/main/kotlin/chat/bipe/app/calls/CallSession.kt",
+          "bipe-app/android/app/src/main/kotlin/chat/bipe/app/calls/CallScreen.kt"
+        ]
+      },
+      "web": {
+        "status": "planned",
+        "issue": 1173,
+        "note": "Closed #762 covered the retired stock web client, not the own web client."
+      },
+      "server": {
+        "status": "built",
+        "evidence": [
+          "bipe-infra/compose/docker-compose.yml"
+        ]
+      },
+      "macos": {
+        "status": "planned",
+        "issue": 1167
+      },
+      "windows": {
+        "status": "planned",
+        "issue": 1019
+      }
+    },
+    {
+      "id": "screen-sharing",
+      "name": "Screen sharing: send and receive",
+      "ios": {
+        "status": "planned",
+        "issue": 1174,
+        "note": "Deferred by ADR 0186; no own-client sender/receiver controls found in source review."
+      },
+      "android": {
+        "status": "planned",
+        "issue": 1174,
+        "note": "Deferred by ADR 0186; no own-client sender/receiver controls found in source review."
+      },
+      "web": {
+        "status": "planned",
+        "issue": 1174
+      },
+      "server": {
+        "status": "n/a",
+        "reason": "Client interaction over existing encrypted Matrix transport; no separate server UI"
+      },
+      "macos": {
+        "status": "planned",
+        "issue": 1167,
+        "note": "Track sending and receiving separately; shared follow-up #1174."
+      },
+      "windows": {
+        "status": "planned",
+        "issue": 1019,
+        "note": "After Mac evidence; shared follow-up #1174."
       }
     }
   ],

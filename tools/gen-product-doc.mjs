@@ -5,6 +5,7 @@
 import { readdirSync, readFileSync, writeFileSync } from "node:fs";
 import { dirname, join, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
+import { checkClientAssessment, assessmentMarkdown } from './lib/client-assessment.mjs';
 
 const root = join(dirname(fileURLToPath(import.meta.url)), "..");
 const args = process.argv.slice(2);
@@ -15,6 +16,9 @@ const product = JSON.parse(readFileSync(join(root, "product/product.json"), "utf
 const dist = JSON.parse(readFileSync(join(root, "product/distribution.json"), "utf8"));
 const ledger = JSON.parse(readFileSync(join(root, "product/parity.json"), "utf8"));
 const desktopPlan = JSON.parse(readFileSync(join(root, "product/desktop-plan.json"), "utf8"));
+const assessment = JSON.parse(readFileSync(join(root, "product/client-assessment.json"), "utf8"));
+const assessmentProblems = checkClientAssessment(assessment, ledger.items);
+if (assessmentProblems.length) throw new Error(assessmentProblems.join('\n'));
 
 const STATUSES = ["testing", "built", "planned", "policy"];
 const SURFACES = ["ios", "android", "macos", "windows", "web", "server"];
@@ -472,6 +476,7 @@ const lines = [
   "|---|---|---|",
   ...desktopPlan.waves.map(wave => `| ${wave.title} | #${wave.issue} | ${wave.capabilities.length} |`),
   "",
+  ...assessmentMarkdown(assessment, ledger, desktopPlan),
   "## ICPs",
   "",
   "Order of audiences: [icps.md](icps.md) ([ADR 0060](adr/0060-icp-ladder-by-success-chance.md)). A step becomes current only by a new ADR. Gate: the features that must be in a tester build on the step's platforms.",

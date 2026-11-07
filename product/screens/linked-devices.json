@@ -44,6 +44,7 @@
     "retry": { "effect": "From failed: runs appear again." }
   },
   "strings": [
+    "bipe_mac_linked_devices_footer",
     "bipe_linked_devices_title",
     "bipe_linked_devices_link_computer",
     "bipe_linked_devices_footer",
@@ -69,6 +70,7 @@
     "The private web view, the host rule and the one-time form fill are the same as link-computer-approve. The sign-out flow has no warning and no cooldown, but has the biometric check before the hidden password is read.",
     "A web device is unattested (ADR 0043). This list shows no badge for any device.",
     "bipe_linked_devices_title and the row in Sua conta come from registries/settings.json (account, devices, linkedDevices). This phone shows as the thisDevice info row there, not in this list.",
-    "Signing out this phone is sign-out, not this screen."
+    "Signing out this phone is sign-out, not this screen.",
+    "Mac (ADR 0266): a read-only list with the footer bipe_mac_linked_devices_footer. Signing a device out needs the hidden password and the owner check, which only the phone has. Linking a computer starts on the computer."
   ]
 }

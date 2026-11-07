@@ -91,6 +91,7 @@
     "Haptics (parity haptics): the settings screens play only the uses in registries/haptics.json: tap for copy (the device ID), success for pin_set and app_unlock, error for pin_wrong, through the generated BipeHaptics. A new use needs a line in the registry first. The app never calls a platform feedback API directly, and has no haptics row: the system setting wins (design/haptics.md rule 6, ADR 0134).",
     "Notifications has screen element in the registry; in Bipe's own client it is the notifications settings spec of bipe-chat/bipe#565, not this screen.",
     "A company account with an owner on this phone (account-switcher notes, bipe-chat/bipe#444) shows bipe_account_company_owner with the owner's name at the top of the account group. Only on this phone.",
-    "Every row of kind link, choice, action or switch has a handler on each platform where it shows: bipe-app tools/settings-rows.mjs checks it in CI (bipe-chat/bipe#676)."
+    "Every row of kind link, choice, action or switch has a handler on each platform where it shows: bipe-app tools/settings-rows.mjs checks it in CI (bipe-chat/bipe#676).",
+    "Mac (ADR 0266): a row shows only when the Mac can do what it says. Account shows waysBackStatus, email, linkedAccounts and recoveryKey as read-only values with the footer bipe_mac_account_change_on_phone, because those changes need the phone (ADR 0266 rule 6). linkedDevices opens a read-only list. signOut opens sign-out. Not on the Mac for now: theftProtection, the pin section, linkPhone, oldMessages and delete (bipe-chat/bipe#1165). Privacy adds messaging as a picker."
   ]
 }

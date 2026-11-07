@@ -20,7 +20,10 @@
 #            their default branch. It waits for feature pull requests too: for bipe-shared#60 and #61 it
 #            skipped them (title filter), checked the default branches before the strings landed and
 #            failed. Branch B alone is not enough: it misses the regen output of changes that merged
-#            after B was cut (81ed044 failed so). After 30 minutes it checks branch B instead.
+#            after B was cut (81ed044 failed so). After 30 minutes it skips Drift and Parity with a
+#            warning: the sibling main is not ready, so the check says nothing. The next push or the
+#            daily run checks it. A newer push to main cancels this job: it compares an old commit with
+#            sibling main branches that already carry newer output (7 Nov 2026: 11 red main runs).
 name: Checks
 
 on:
@@ -48,6 +51,11 @@ jobs:
   regen:
     if: github.event_name == 'pull_request' && github.event.pull_request.head.repo.full_name == github.repository
     runs-on: ubuntu-latest
+    # Two pushes close together: the older run pushed first and the newer one failed non-fast-forward
+    # (factory/667-thread-list, 7 Nov 2026). Only the newest run writes to the sibling branches.
+    concurrency:
+      group: regen-${{ github.head_ref || github.run_id }}
+      cancel-in-progress: true
     steps:
       - uses: actions/checkout@v4
         with:
@@ -110,6 +118,17 @@ jobs:
             git -C "$repo" -c user.name="bipe-shared regen" -c user.email="regen@bipe.chat" commit -q --no-edit
             echo "${repo}: merged main into ${BRANCH} (generated conflicts took main)"
           }
+          # Another writer can push to branch B after the clone (an agent's feature commit, web-ledger-audit
+          # on bipe, 7 Nov 2026). Merge its work and push again. A conflict takes this run's generated output.
+          push_branch() {
+            repo=$1
+            for _ in 1 2 3; do
+              git -C "$repo" push -q origin "HEAD:refs/heads/${BRANCH}" && return 0
+              git -C "$repo" -c user.name="bipe-shared regen" -c user.email="regen@bipe.chat" \
+                pull -q --no-rebase --no-edit -X ours origin "$BRANCH"
+            done
+            git -C "$repo" push -q origin "HEAD:refs/heads/${BRANCH}"
+          }
           repos=""
           for repo in bipe bipe-api bipe-app; do
             url="https://x-access-token:${TOKEN}@github.com/bipe-chat/${repo}.git"
@@ -148,7 +167,7 @@ jobs:
               echo "${repo}: up to date"
               continue
             fi
-            git -C "$repo" push -q origin "HEAD:refs/heads/${BRANCH}"
+            push_branch "$repo"
             echo "${repo}: pushed ${BRANCH}"
             # A pull request on branch B with a base other than main (a stacked pull request) carries the
             # regen commit into that base, not into main: PRs on both old forks did so.
@@ -175,6 +194,11 @@ jobs:
     needs: [regen, land]
     if: ${{ !failure() && !cancelled() }}
     runs-on: ubuntu-latest
+    # A separate group per event: a push must not cancel the daily run, and the daily run must not
+    # cancel a push that waits for its sibling pull requests.
+    concurrency:
+      group: lockstep-${{ github.event_name }}-${{ github.head_ref || github.ref }}
+      cancel-in-progress: true
     permissions:
       contents: read
       pull-requests: read
@@ -218,7 +242,11 @@ jobs:
               echo "waiting for${open}"
               sleep 30
             done
-            [ -z "$BRANCH" ] || echo "::warning::sibling regen pull requests for ${BRANCH} are still open: checking ${BRANCH}."
+            if [ -n "$BRANCH" ]; then
+              echo "::warning::sibling pull requests for ${BRANCH} are still open after 30 minutes: Drift and Parity are skipped. The next push or the daily run checks them."
+              echo "SIBLINGS_PENDING=1" >> "$GITHUB_ENV"
+              BRANCH=""
+            fi
           fi
           for repo in bipe bipe-api bipe-web bipe-infra bipe-app; do
             url="https://x-access-token:${TOKEN}@github.com/bipe-chat/${repo}.git"
@@ -256,9 +284,11 @@ jobs:
           fi
           node bipe-shared/tools/check-removed.mjs --main bipe-app-main --branch bipe-app
       - name: Drift
+        if: env.SIBLINGS_PENDING != '1'
         run: node bipe-shared/tools/check-drift.mjs --against head --repos "$GITHUB_WORKSPACE"
       # --issues: every iOS/Android gap names an open issue on bipe-chat/bipe (M2 exit test, bipe#300).
       - name: Parity
+        if: env.SIBLINGS_PENDING != '1'
         env:
           GH_TOKEN: ${{ secrets.BIPE_REPOS_TOKEN }}
         run: node bipe-shared/tools/parity.mjs --against head --repos "$GITHUB_WORKSPACE" --issues

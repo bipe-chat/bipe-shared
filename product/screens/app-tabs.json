@@ -106,9 +106,26 @@
         }
       },
       "effect": "Makes that account current: its sync runs in front, the tabs show its chats, and the choice is saved for the next start (account-start)."
+    },
+    "homeQuickAction": {
+      "params": {
+        "action": {
+          "type": "enum",
+          "values": [
+            "newChat",
+            "search",
+            "myQrCode",
+            "switchAccount"
+          ],
+          "description": "The item chosen in the long-press menu of the app icon."
+        }
+      },
+      "effect": "newChat opens the contacts screen. search shows the search tab. myQrCode opens profile-link with the QR code shown. switchAccount opens account-switcher. The action runs after account-start and behind app-lock. With no account on the phone, the menu has no Bipe items and the action does nothing."
     }
   },
   "strings": [
+    "bipe_action_start_chat",
+    "bipe_profile_qr_title",
     "bipe_tab_chats",
     "bipe_tab_groups",
     "bipe_tab_work",
@@ -126,7 +143,8 @@
   ],
   "parity": [
     "settings-structure",
-    "agenda"
+    "agenda",
+    "home-quick-actions"
   ],
   "notes": [
     "MZ decision 25 Oct 2026 (bipe#577): Buscar is the last tab, apart from Conversas, Grupos (Agenda) and Você. iOS 27 draws it apart only with Tab(role: .prominent); iOS 18 to 26 use the search role (Tab(role: .search)), which they draw apart at the trailing end of the tab bar. Android keeps the Material idiom: the bottom bar has only the main destinations and search is the trailing action of the top bar of Conversas and Grupos.",
@@ -139,6 +157,7 @@
     "Status comes later and is not in this spec.",
     "Accessibility (bipe#577, ADR 0135): a hold is not available to VoiceOver and TalkBack users, and Você has no account rows. The Você tab item carries the accessibility action bipe_a11y_switch_account (VoiceOver custom action, TalkBack custom action), which opens account-switcher like longPressVoce. Show it only when the phone has two or more accounts.",
     "MZ decision 2 Nov 2026 (bipe#958): an open chat or thread (chat-timeline) hides the tab bar. It comes back when the chat closes.",
-    "Mac desktop (bipe#1018, native window toolbar in bipe-app#500): use a native segmented Picker in the window toolbar for Conversas, Grupos or Trabalho, and Você, in that order, with the same account-type and attention rules. Counts follow the segment titles because the native segmented control has no badge. Keep the desktop account avatar at the upper left, as in the own web client toolbar; click opens the account switcher anchored there. The menu has photos, names, handles, unread dots, the current check and the add-account action. No separate account footer or extra navigation sidebar. Keep separate navigation state for each mode. Desktop chats keep the room list alongside the timeline; the phone-only rule that hides the bar in a chat does not hide desktop navigation. Share the iOS/web type scale, colors, avatar rules and list hierarchy; native controls may follow macOS placement and keyboard behavior."
+    "Mac desktop (bipe#1018, native window toolbar in bipe-app#500): use a native segmented Picker in the window toolbar for Conversas, Grupos or Trabalho, and Você, in that order, with the same account-type and attention rules. Counts follow the segment titles because the native segmented control has no badge. Keep the desktop account avatar at the upper left, as in the own web client toolbar; click opens the account switcher anchored there. The menu has photos, names, handles, unread dots, the current check and the add-account action. No separate account footer or extra navigation sidebar. Keep separate navigation state for each mode. Desktop chats keep the room list alongside the timeline; the phone-only rule that hides the bar in a chat does not hide desktop navigation. Share the iOS/web type scale, colors, avatar rules and list hierarchy; native controls may follow macOS placement and keyboard behavior.",
+    "Home screen quick actions (bipe-chat/bipe#1241): new chat, search, my QR code and, only with a second account on the phone, switch account. Switch account also opens account-switcher from outside the Você tab. The items are dynamic on both platforms, so no item shows with no account on the phone. iOS shows the current account as the subtitle of switch account (the @handle, else the display name). Android shortcuts have no subtitle. On Android the items rank above the share shortcuts. Camera is not an action: the camera exists only in the attachment picker of a chat."
   ]
 }

@@ -2801,7 +2801,8 @@
           "Os dados e os servidores ficam no Brasil, sob a lei brasileira.",
           "Preço fixo em reais, por mês ou por ano. Nenhum plano cobra por mensagem.",
           "O selo não está à venda. Dinheiro não compra selo, nível de verificação, análise mais rápida nem o nome de outra organização. O plano paga serviço: atendentes, suporte, monitoramento e condições de contrato.",
-          "Quem usa o Bipe para conversar nunca paga."
+          "Quem usa o Bipe para conversar nunca paga.",
+          "Nenhuma empresa paga para aparecer para quem não pediu."
         ]
       },
       "why": {
@@ -2811,6 +2812,19 @@
           "Esse nome vale mais quanto mais gente pode ser enganada em nome da empresa. O número de mensagens não muda esse valor.",
           "O preço fixo ajuda a empresa a planejar os custos de atendimento.",
           "Instituições e órgãos públicos compram com orçamento anual e precisam de um preço fixo."
+        ]
+      },
+      "offers": {
+        "heading": "Ofertas: quem pediu recebe",
+        "lede": "É opcional. O Bipe não vende anúncio: nenhuma empresa paga para aparecer para quem não pediu. A empresa paga por quem escolheu receber as ofertas dela. Ainda não está no ar, e fica fora do piloto.",
+        "price": "R$ 0,40 por seguidor",
+        "billing": "Por mês. Os primeiros 1.000 são grátis. Fica fora do teto dos clientes ativos, e a empresa manda até 4 ofertas por mês.",
+        "points": [
+          "A pessoa segue as ofertas num botão próprio. Uma conversa, um pedido ou um agendamento nunca liga isso.",
+          "As ofertas ficam numa área separada das conversas, sem notificação até a pessoa ligar.",
+          "Um toque para de seguir, e a empresa deixa de pagar por essa pessoa.",
+          "Só para contas com selo de CNPJ. Não vale para política, aposta nem crédito.",
+          "O Bipe não usa dados de ninguém para escolher quem vê a oferta."
         ]
       },
       "tiersHeading": "Como o preço funciona",
@@ -2957,7 +2971,8 @@
           "Data and servers stay in Brazil, under Brazilian law.",
           "A fixed price in reais, per month or per year. No plan charges per message.",
           "The seal is not for sale. Money does not buy a seal, a verification level, a faster review or another organisation's name. A plan pays for service: agents, support, monitoring and contract terms.",
-          "People who use Bipe to chat never pay."
+          "People who use Bipe to chat never pay.",
+          "No company can pay to appear in front of someone who did not ask."
         ]
       },
       "why": {
@@ -2967,6 +2982,19 @@
           "That name is worth more the more people could be fooled in the company's name. The number of messages does not change that.",
           "A fixed price helps businesses plan their customer service costs.",
           "Institutions and public bodies buy with a yearly budget and need a fixed price."
+        ]
+      },
+      "offers": {
+        "heading": "Offers: only for people who asked",
+        "lede": "This is optional. Bipe sells no ads: no company can pay to appear in front of someone who did not ask. A company pays for people who chose to receive its offers. It is not live yet, and it stays out of the pilot.",
+        "price": "R$ 0.40 per follower",
+        "billing": "Per month. The first 1,000 are free. It sits outside the active-customer cap, and a company sends up to 4 offers a month.",
+        "points": [
+          "A person follows offers with a separate button. A chat, an order or a booking never turns it on.",
+          "Offers stay in an area apart from chats, with no notifications until the person turns them on.",
+          "One tap stops following, and the company stops paying for that person.",
+          "Only for accounts with a CNPJ seal. Politics, gambling and credit are not allowed.",
+          "Bipe uses nobody's data to choose who sees an offer."
         ]
       },
       "tiersHeading": "How the price works",
@@ -3133,6 +3161,13 @@
         "chargedUpTo": 20
       },
       "halfFactor": 0.5,
+      "offers": {
+        "$comment": "ADR 0270 (Proposed). Optional and outside customers.capYearly. free: followers at no charge. monthlyPerFollower: BRL. sendsPerMonth: the send limit.",
+        "adr": "0270",
+        "free": 1000,
+        "monthlyPerFollower": 0.4,
+        "sendsPerMonth": 4
+      },
       "annualMonths": 10,
       "table": [
         1000,

@@ -22,6 +22,7 @@ import { generateHomeScore } from "./lib/gen-home-score.mjs";
 import { generateDmSelection } from "./lib/gen-dm-selection.mjs";
 import { generateDmPowerLevels } from "./lib/gen-dm-power-levels.mjs";
 import { generateGroupPowerLevels } from "./lib/gen-group-power-levels.mjs";
+import { generateReactions } from "./lib/reactions.mjs";
 import { generateMessageFormatting } from "./lib/gen-message-formatting.mjs";
 import { generateRelationshipNames } from "./lib/gen-relationship-names.mjs";
 import { generateStoreCaptures, loadStoreCaptures, STORE_CAPTURES_PATH } from "./lib/store-captures.mjs";
@@ -441,6 +442,7 @@ function writeSwift(out, { post = (text) => text } = {}) {
   write("BipeChatArchive.swift", generateChatArchive("swift", HEADER, reg.chatArchive));
   write("BipeHomeScore.swift", generateHomeScore(reg.homeScore, "swift", HEADER, swiftString));
   write("BipeDmSelection.swift", generateDmSelection(reg.dmSelection, "swift", HEADER));
+  write("BipeReactions.swift", generateReactions(reg.messageReactions, "swift", HEADER, swiftString));
   write("BipeMessageFormatting.swift", generateMessageFormatting(reg.messageFormatting, "swift", HEADER, swiftString));
   write("BipeRelationshipNames.swift", generateRelationshipNames(reg.relationshipNames, "swift", HEADER));
   write("BipeAgendaTemplates.swift", generateAgendaTemplates(reg, "swift", HEADER));
@@ -867,6 +869,7 @@ function writeKotlin(out, { packageName = KOTLIN_PACKAGE, post = (text) => text 
   write("BipeChatArchive.kt", generateChatArchive("kotlin", KOTLIN_HEADER, reg.chatArchive));
   write("BipeHomeScore.kt", generateHomeScore(reg.homeScore, "kotlin", KOTLIN_HEADER, kotlinString));
   write("BipeDmSelection.kt", generateDmSelection(reg.dmSelection, "kotlin", KOTLIN_HEADER));
+  write("BipeReactions.kt", generateReactions(reg.messageReactions, "kotlin", KOTLIN_HEADER, kotlinString));
   write("BipeMessageFormatting.kt", generateMessageFormatting(reg.messageFormatting, "kotlin", KOTLIN_HEADER, kotlinString));
   write("BipeRelationshipNames.kt", generateRelationshipNames(reg.relationshipNames, "kotlin", KOTLIN_HEADER, packageName));
   write("BipeAgendaTemplates.kt", generateAgendaTemplates(reg, "kotlin", KOTLIN_HEADER));

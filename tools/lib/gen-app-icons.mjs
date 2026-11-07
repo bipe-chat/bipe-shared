@@ -251,6 +251,13 @@ export function generateAppIcons(tokens = loadTokens(), { xmlHeader }) {
       info: { author: "bipe-shared tools/gen.mjs", version: 1 },
     });
     ios[`${set}/icon.png`] = iconPng(mark, background);
+    // Runtime Dock icon / palette preview; signed bundle resources stay unchanged when a user picks a colour.
+    const dock = `AppIcons.xcassets/BipePalette-${palette}.imageset`;
+    ios[`${dock}/Contents.json`] = json({
+      images: [{ filename: "icon.png", idiom: "universal", scale: "1x" }],
+      info: { author: "bipe-shared tools/gen.mjs", version: 1 },
+    });
+    ios[`${dock}/icon.png`] = iconPng(mark, background, 512, { mac: true });
     for (const size of new Set(macImages.map((image) => Number(image.size.split("x")[0]) * Number(image.scale[0])))) {
       ios[`${set}/mac-${size}.png`] = iconPng(mark, background, size, { mac: true });
     }

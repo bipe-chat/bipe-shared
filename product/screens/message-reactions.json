@@ -66,10 +66,10 @@
     "EventOrTransactionId",
     "Room.memberDisplayName"
   ],
-  "parity": [],
+  "parity": ["message-reactions"],
   "notes": [
-    "Quick reactions in message-actions: the 6 keys in this order: thumbs up, red heart, face with tears of joy, open mouth, crying face, folded hands. Then bipe_app_message_action_more_reactions opens the picker.",
-    "A reaction key is shown as sent. Keys longer than one grapheme are shown in full up to 16 characters, then cut.",
+    "Quick reaction choices, order and display limit come from registries/message-reactions.json, generated for Swift, Kotlin and web. More reactions opens the platform picker.",
+    "Display the full key up to displayKeyMaxGraphemes extended grapheme clusters, then append an ellipsis. Joined emoji, skin tones and flags remain whole. Always toggle the original full key.",
     "bipe_app_reaction_label is the accessibility label of a pill: key, then the count already formatted.",
     "Undecryptable, deleted and unsent own messages take no reactions. A failed own reaction goes away and sets error.",
     "Reactions work the same in a DM and a group."

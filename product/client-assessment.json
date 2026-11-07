@@ -1,0 +1,104 @@
+{
+  "version": 1,
+  "reviewedOn": "2026-11-07",
+  "$comment": "Implementation status and evidence stay in parity.json. This file defines assessment coverage and records actual acceptance separately. The generated matrix includes every ledger item through desktop-plan.json, including the whole personal/work suite. SDK availability or CI compilation is not a device pass. Old web exclusions require review against the own web client.",
+  "clients": [
+    "ios",
+    "android",
+    "web",
+    "macos",
+    "windows"
+  ],
+  "requiredCapabilities": [
+    "message-text",
+    "message-reply",
+    "message-edit",
+    "message-delete",
+    "message-reactions",
+    "typing-indicator",
+    "message-send-retry",
+    "media-images",
+    "media-videos",
+    "media-files",
+    "media-voice",
+    "calls-audio",
+    "calls-video",
+    "calls-group",
+    "screen-sharing"
+  ],
+  "scenarios": [
+    {
+      "id": "messages",
+      "capabilities": [
+        "message-text",
+        "message-reply",
+        "message-edit",
+        "message-delete",
+        "message-reactions",
+        "typing-indicator",
+        "message-send-retry"
+      ],
+      "checks": [
+        "Exchange encrypted messages in both directions between clients in a DM and a group.",
+        "Reply and navigate to the original; edit and delete an own sent message; check permissions and remote updates.",
+        "Add/remove each quick reaction and an emoji from the picker; check counts, own selection, sender names and long joined emoji.",
+        "Check typing privacy and timeout. Disconnect/reconnect; cancel and retry an actual failed send without duplication."
+      ]
+    },
+    {
+      "id": "attachments",
+      "capabilities": [
+        "media-images",
+        "media-videos",
+        "media-files",
+        "media-voice"
+      ],
+      "checks": [
+        "Send, receive, view/play and save each media kind in both directions, including encrypted media and a caption.",
+        "Check image animation, video sound, file name/type, voice recording/playback, cancellation, failure/retry and permission denial.",
+        "Confirm a video message does not count as a video call, and voice playback does not count as voice recording."
+      ]
+    },
+    {
+      "id": "calls",
+      "capabilities": [
+        "calls",
+        "calls-audio",
+        "calls-video",
+        "calls-group"
+      ],
+      "checks": [
+        "Start and answer audio and video calls in both directions; join/leave a group call and check participant/key changes.",
+        "Decline, time out and miss a call; check the timeline and incoming attention while foreground, background, locked, asleep, window closed and after quit. Record unsupported states explicitly.",
+        "Mute/unmute, camera on/off, switch microphone, speaker, camera and Bluetooth devices; test denied/revoked permissions.",
+        "Reconnect after network loss, wake and blocked UDP; verify E2EE and Bipe SFU/TURN routing.",
+        "Use personal and work accounts; switching accounts cannot leak a call, permission or notification."
+      ]
+    },
+    {
+      "id": "screen-sharing",
+      "capabilities": [
+        "screen-sharing"
+      ],
+      "checks": [
+        "Test sender and receiver support separately, with exact OS capture permissions.",
+        "Choose a screen/window/app, start/stop and revoke permission; check remote visibility, source closure, reconnect and E2EE."
+      ]
+    },
+    {
+      "id": "shared-surfaces",
+      "capabilities": [
+        "app-colors",
+        "chat-favourites-filters",
+        "multi-account",
+        "dm-name-photo"
+      ],
+      "checks": [
+        "Compare palette/background labels, order, defaults and selected state on every client; restart and check persistence, dark mode and high contrast.",
+        "Compare the three modes, account-switcher position, unread indicators, favourite ordering and group/DM avatars.",
+        "Test personal and work accounts, switching, relaunch, phone offline and remote revocation."
+      ]
+    }
+  ],
+  "acceptanceRecords": []
+}

@@ -67,7 +67,14 @@
         "mural-home",
         "ambiguous-names",
         "jump-to-date",
-        "assistant-drafts"
+        "assistant-drafts",
+        "message-text",
+        "message-reply",
+        "message-edit",
+        "message-delete",
+        "message-reactions",
+        "typing-indicator",
+        "message-send-retry"
       ],
       "issue": 1162
     },
@@ -113,7 +120,11 @@
         "location-sharing",
         "live-location",
         "share-to-chat",
-        "voice-playback-speed"
+        "voice-playback-speed",
+        "media-images",
+        "media-videos",
+        "media-files",
+        "media-voice"
       ],
       "issue": 1164
     },
@@ -210,7 +221,11 @@
         "notification-sender-photo",
         "notification-checkup",
         "calls",
-        "join-pushes"
+        "join-pushes",
+        "calls-audio",
+        "calls-video",
+        "calls-group",
+        "screen-sharing"
       ],
       "issue": 1167
     }

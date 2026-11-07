@@ -176,6 +176,13 @@ ${paletteCases.join("\n")}
     /// The palette of a new install.
     public static let standard: BipePalette = .${tokens.appThemes.default}
 
+    /// Localized label generated from the palette catalogue.
+    public var title: String {
+        switch self {
+${themes.palettes.map(p => `        case .${p}: BipeStrings.colors${pascal(p)}`).join("\n")}
+        }
+    }
+
     /// Background of the app icon (a white mark on it), as 0xRRGGBB.
     public var iconBackground: UInt32 {
         switch self {
@@ -256,6 +263,13 @@ ${chat.options.map((o) => `    case ${o}`).join("\n")}
 
     /// The option of a new install.
     public static let standard: BipeChatBackground = .${chat.default}
+
+    /// Localized label generated from the background catalogue.
+    public var title: String {
+        switch self {
+${chat.options.map(o => `        case .${o}: BipeStrings.chatsBackground${pascal(o)}`).join("\n")}
+        }
+    }
 
     /// A colour of the composition: one of the themed chat tokens.
     public enum Tone: Sendable {
@@ -362,6 +376,11 @@ enum class BipePalette(val id: String, val iconBackground: Color) {
 ${paletteEntries.join("\n")}
     ;
 
+    val titleRes: Int
+        get() = when (this) {
+${themes.palettes.map(p => `            ${p.toUpperCase()} -> chat.bipe.shared.R.string.bipe_colors_${p}`).join("\n")}
+        }
+
     companion object {
         /** The palette of a new install. */
         val DEFAULT: BipePalette = ${tokens.appThemes.default.toUpperCase()}
@@ -394,6 +413,11 @@ ${branches.join("\n")}
 enum class BipeChatBackground(val id: String) {
 ${chat.options.map((o) => `    ${o.toUpperCase()}("${o}"),`).join("\n")}
     ;
+
+    val titleRes: Int
+        get() = when (this) {
+${chat.options.map(o => `            ${o.toUpperCase()} -> chat.bipe.shared.R.string.bipe_chats_background_${o}`).join("\n")}
+        }
 
     /** A colour of the composition: one of the themed chat tokens. */
     enum class Tone {

@@ -29,7 +29,7 @@
       "type": "list",
       "description": "ThreadListService.items, in the order the service gives.",
       "of": {
-        "type": "PollSummary"
+        "type": "ThreadRow"
       }
     },
     "isLoading": {

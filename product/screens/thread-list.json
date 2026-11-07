@@ -27,7 +27,10 @@
   "state": {
     "threads": {
       "type": "list",
-      "description": "ThreadListService.items, in the order the service gives."
+      "description": "ThreadListService.items, in the order the service gives.",
+      "of": {
+        "type": "PollSummary"
+      }
     },
     "isLoading": {
       "type": "bool",

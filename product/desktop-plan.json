@@ -226,7 +226,8 @@
         "calls-audio",
         "calls-video",
         "calls-group",
-        "screen-sharing"
+        "screen-sharing",
+        "home-quick-actions"
       ],
       "issue": 1167
     }

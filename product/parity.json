@@ -6181,6 +6181,40 @@
         "issue": 1019,
         "note": "After Mac evidence; shared follow-up #1174."
       }
+    },
+    {
+      "id": "home-quick-actions",
+      "name": "Home screen quick actions on the app icon (bipe#1241)",
+      "ios": {
+        "status": "built",
+        "evidence": [
+          "bipe-app/ios/Bipe/Tabs/HomeQuickActions.swift"
+        ]
+      },
+      "android": {
+        "status": "built",
+        "evidence": [
+          "bipe-app/android/app/src/main/kotlin/chat/bipe/app/tabs/HomeQuickActions.kt"
+        ]
+      },
+      "web": {
+        "status": "n/a",
+        "reason": "No app icon menu on the web"
+      },
+      "server": {
+        "status": "n/a",
+        "reason": "App entry points; no server code"
+      },
+      "issue": 1241,
+      "macos": {
+        "status": "planned",
+        "issue": 1167,
+        "note": "The Dock menu is the Mac surface."
+      },
+      "windows": {
+        "status": "planned",
+        "issue": 1019
+      }
     }
   ],
   "differences": [
@@ -6342,6 +6376,13 @@
       "ios": "Notification warning pattern",
       "android": "One long-press pulse",
       "reason": "Android has no warning haptic constant (ADR 0134)",
+      "kind": "idiom"
+    },
+    {
+      "area": "Quick action subtitle",
+      "ios": "Switch account shows the current account as subtitle",
+      "android": "No subtitle",
+      "reason": "Android shortcuts have no subtitle field",
       "kind": "idiom"
     }
   ]

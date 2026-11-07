@@ -3,6 +3,7 @@
 //   Default app output: ../bipe-app (ios/BipeKit, android/libraries/bipe and web/src/bipe/generated), when that folder exists
 //   Default API output: ../bipe-api/src/generated, when ../bipe-api exists
 // The old Element X forks are archived and get no output (ADR 0155).
+import { checkSignedLists } from "./lib/list-sources.mjs";
 import { copyFileSync, existsSync, mkdirSync, readdirSync, rmSync, writeFileSync } from "node:fs";
 import { dirname, join, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
@@ -995,6 +996,13 @@ const apiOut = resolve(apiIndex >= 0 ? args[apiIndex + 1] : join(root, "../bipe-
 if (existsSync(resolve(apiOut, "../.."))) {
   for (const dir of ["registries", "strings", "lib"]) mkdirSync(join(apiOut, dir), { recursive: true });
   for (const f of readdirSync(join(root, "registries"))) copyFileSync(join(root, "registries", f), join(apiOut, "registries", f));
+  // Signed lists (bipe-chat/bipe#645): bipe-api serves these envelopes and every older version.
+  checkSignedLists(root);
+  for (const typ of ["operators", "issuers"]) {
+    if (!existsSync(join(root, "signed", typ))) continue;
+    mkdirSync(join(apiOut, "signed", typ), { recursive: true });
+    for (const f of readdirSync(join(root, "signed", typ))) copyFileSync(join(root, "signed", typ, f), join(apiOut, "signed", typ, f));
+  }
   for (const f of ["pt-BR.json", "en.json"]) copyFileSync(join(root, "strings", f), join(apiOut, "strings", f));
   copyFileSync(join(root, "tools/lib/registries.mjs"), join(apiOut, "lib/registries.mjs"));
   copyFileSync(join(root, "tools/lib/trust.mjs"), join(apiOut, "lib/trust.mjs"));

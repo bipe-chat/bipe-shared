@@ -387,6 +387,54 @@ paths:
           content:
             application/json:
               schema: { $ref: "#/components/schemas/SignupConfig" }
+  /v1/operators:
+    get:
+      summary: The newest signed operator list (bipe-chat/bipe#645)
+      x-summary-pt: "Lista assinada de operadoras da Bipe"
+      security: []
+      description: >
+        No auth. The envelope of docs/signed-lists.md. Verify it with the order in that doc before use. 404 until the
+        first list is signed. Cache-Control max-age 300. 120 per IP per minute.
+      responses:
+        "200": { description: The envelope, content: { application/json: { schema: { $ref: "#/components/schemas/SignedListEnvelope" } } } }
+        "404": { $ref: "#/components/responses/Error" }
+        "429": { $ref: "#/components/responses/Error" }
+  /v1/operators/versions/{version}:
+    get:
+      summary: One signed version of the operator list, the public log
+      x-summary-pt: "Versão antiga da lista de operadoras"
+      security: []
+      description: No auth. Every version ever signed. Each version never changes.
+      parameters:
+        - { name: version, in: path, required: true, schema: { type: integer, minimum: 1 } }
+      responses:
+        "200": { description: The envelope, content: { application/json: { schema: { $ref: "#/components/schemas/SignedListEnvelope" } } } }
+        "404": { $ref: "#/components/responses/Error" }
+        "429": { $ref: "#/components/responses/Error" }
+  /v1/issuers:
+    get:
+      summary: The newest signed issuer registry (bipe-chat/bipe#637, ADR 0272)
+      x-summary-pt: "Lista assinada de emissores de selos"
+      security: []
+      description: >
+        No auth. The envelope of docs/signed-lists.md, one registry for the whole federation. Verify it with the order
+        in that doc before use. 404 until the first registry is signed. Cache-Control max-age 300. 120 per IP per minute.
+      responses:
+        "200": { description: The envelope, content: { application/json: { schema: { $ref: "#/components/schemas/SignedListEnvelope" } } } }
+        "404": { $ref: "#/components/responses/Error" }
+        "429": { $ref: "#/components/responses/Error" }
+  /v1/issuers/versions/{version}:
+    get:
+      summary: One signed version of the issuer registry, the public log
+      x-summary-pt: "Versão antiga da lista de emissores"
+      security: []
+      description: No auth. Every version ever signed. Each version never changes.
+      parameters:
+        - { name: version, in: path, required: true, schema: { type: integer, minimum: 1 } }
+      responses:
+        "200": { description: The envelope, content: { application/json: { schema: { $ref: "#/components/schemas/SignedListEnvelope" } } } }
+        "404": { $ref: "#/components/responses/Error" }
+        "429": { $ref: "#/components/responses/Error" }
   /v1/banner:
     get:
       summary: The remote critical banner (ADR 0117, bipe#386)
@@ -7185,6 +7233,20 @@ components:
         signup_key: { type: string, pattern: "^[A-Za-z0-9_-]{43}$", description: "Device-first only, recommended: 32 random bytes as base64url, made by the app before the first try and kept on this device until the credentials are stored. Same key again: the same account (ADR 0094). Ignored in legacy mode." }
         terms_version: { type: string, pattern: "^\\d{4}-\\d{2}-\\d{2}$", description: "ADR 0113: the legalVersion the person accepted with the checkbox. Must be the current one." }
         account_type: { type: string, enum: [personal, company], description: "ADR 0087: company makes a company account (owner case). It needs a valid attestation (ADR 0043) and device-first mode. Default personal." }
+    SignedListEnvelope:
+      type: object
+      required: [v, payload, sigs]
+      properties:
+        v: { type: integer, enum: [1] }
+        payload: { type: string, description: "base64url without padding: the UTF-8 JSON payload bytes" }
+        sigs:
+          type: array
+          items:
+            type: object
+            required: [kid, sig]
+            properties:
+              kid: { type: string }
+              sig: { type: string, description: "base64url without padding: Ed25519 over the payload bytes" }
     RemoteBanner:
       type: object
       required: [id, title, text, link, expires_at]

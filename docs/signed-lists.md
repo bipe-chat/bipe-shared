@@ -7,7 +7,7 @@ The shared core publishes two lists that decide who counts as Bipe:
 
 Both lists use one signature envelope, one verification order and one distribution path. The associação signs both, as part of the shared core ([ADR 0175](https://github.com/bipe-chat/bipe/blob/main/docs/adr/0175-shared-core-stays-central.md)). The threats are bipe `docs/security.md` "Attacks on the allowlist" (A-1 to A-7) and O1.
 
-Written 26 October 2026. Status: specified, not built. Test vectors: `test-vectors/signed-lists.json` (lists) and `test-vectors/badge-issuers.json` (badges with an issuer ID). No app, server or bipe-api code reads them yet.
+Written 26 October 2026. Status: format, sources, signing tool and bipe-api routes are built. No list is signed yet, because the signer key does not exist. Test vectors: `test-vectors/signed-lists.json` (lists) and `test-vectors/badge-issuers.json` (badges with an issuer ID). No app, server or bipe-api code reads them yet.
 
 ## Terms
 
@@ -45,6 +45,7 @@ Written 26 October 2026. Status: specified, not built. Test vectors: `test-vecto
 | `version` | integer, 1 to 9007199254740991 | Goes up by at least 1 for each new signed list of this type. Never reused |
 | `issued` | integer, 0 to 253402300799 | Signed at, Unix seconds. Information only; verifiers do not check it |
 | `expires` | integer, 0 to 253402300799 | Unix seconds. A list is not accepted at or after this time |
+| `prev` | string or `null` | `null` in version 1. Else the SHA-256 of the exact payload bytes of the previous signed version of this type, base64url without padding. So anyone with the public log can check that the versions form one history. It covers the payload and not the envelope, because a threshold signer can add a signature later with no change to the history |
 
 Dates of accreditation and removal are `YYYY-MM-DD` (Brasília calendar date). Machine times are Unix seconds, as in badges.
 
@@ -56,6 +57,9 @@ Dates of accreditation and removal are `YYYY-MM-DD` (Brasília calendar date). M
   "version": 3,
   "issued": 1791716400,
   "expires": 1792926000,
+  "prev": "<base64url SHA-256 of the previous payload>",
+  "region": { "id": "br", "name": "Brasil", "core_api": "https://api.bipe.net.br", "floor": "e2ee" },
+  "regions": [],
   "appeal_keys": { "appeal-2026-10": "<base64url X25519 public key>" },
   "operators": [
     {
@@ -94,6 +98,8 @@ Entry fields:
 | `push_egress` | `valid` | list of strings, not empty | IPv4 and IPv6 CIDR blocks that the operator's homeserver sends push from. The core edge allows `/_matrix/push/v1/notify` only from these (federated-operators.md "Push") |
 | `signup` | `valid` | `"open"` \| `"invite"` \| `"closed"` | Whether the operator takes new users |
 | `report_keys` | `valid` | object, not empty | `kid` to raw X25519 public key, base64url without padding. Reports about this operator's users are sealed to one of these keys (`docs/report-envelope.md`, bipe-chat/bipe#697) |
+
+The region record (ADR 0197, bipe-chat/bipe#815): `region` is the region of this list. `regions` lists the other regions. Each has `id`, `name`, `core_api` and `floor` (`e2ee` or `none`). A region with floor `none` runs alone and is not federated (`federatedRegions` in `tools/lib/signed-lists.mjs`). A region's servers and issuers are in the issuer registry, so this list does not repeat them.
 
 The payload also has `appeal_keys` (object, not empty, same form): the associação's keys for appeals and abuse across operators. A `kid` of `report_keys` or `appeal_keys` is unique in the whole list.
 
@@ -200,11 +206,21 @@ Inputs: the envelope bytes, the expected list type, the signer set for that type
    - `version` below the stored version: `rolled_back`.
    - `version` equal to the stored version and payload bytes not equal: `rolled_back`.
    - `version` equal and bytes equal: `valid`, no change.
-   - `version` above: `valid`. The new list replaces the stored list.
+   - `version` exactly 1 above the stored version and `prev` not equal to the hash of the stored payload: `broken_chain`.
+   - `version` above: `valid`. The new list replaces the stored list. A device that skipped versions cannot check the chain. The public log can.
 
 Fail closed: any other error means the verifier keeps the stored list. A rejected list never changes the stored list.
 
 The device stores the envelope bytes as received, not a parsed copy, so the bytes of step 6 are exact.
+
+## Signing
+
+`tools/sign-list.mjs` runs on mini4p. The private keys stay in its Keychain (services `bipe-list-signer`, `bipe-report-operator`, `bipe-report-appeal`).
+
+- `init` makes any missing key and writes the public keys into `registries/list-signers.json` and `registries/operators.json`.
+- `sign <operators|issuers> [days]` builds the payload from its sources, signs it, checks it with `tools/lib/signed-lists.mjs` and writes `signed/<typ>/<version>.json`.
+
+`tools/gen.mjs` fails when a committed version fails the verification order or the chain, or when the newest version does not match its sources. It copies `signed/` to bipe-api. No scheduled re-sign exists yet.
 
 ## Distribution
 
@@ -256,11 +272,12 @@ The device stores the envelope bytes as received, not a parsed copy, so the byte
 
 ## Test vectors
 
-`test-vectors/signed-lists.json` (generated by `tools/gen-test-vectors.mjs`, TEST-ONLY keys from fixed seeds):
+`test-vectors/signed-lists.json` (generated by `tools/gen-test-vectors.mjs`, TEST-ONLY keys from fixed seeds). The generator fails when a case disagrees with the reference `tools/lib/signed-lists.mjs`:
 
 - `signerSets`: named signer sets (one key, threshold 1; three keys, threshold 2).
 - Each vector: `typ` (expected list type), `signerSet`, `envelope`, `stored` (`null` or `{version, payload}`), `expect` (`valid` or an error of the verification order), and for a valid operator list, `lookups` (server name to `valid`, `removed` or `unknown`).
-- Cases: valid, expired, rolled back, same version with other bytes, bad signature, unknown signer, wrong type, removed server, duplicate server name, threshold met and not met, duplicate signer, `expires` and `version` out of range.
+- `federated`: for a valid operator list, the regions that federate.
+- Cases: valid, expired, rolled back, broken chain, region record, same version with other bytes, bad signature, unknown signer, wrong type, removed server, duplicate server name, threshold met and not met, duplicate signer, `expires` and `version` out of range.
 - No bipe-app consumer reads this file yet (7 November 2026); bipe-chat/bipe#645 adds it.
 
 `test-vectors/badge-issuers.json` holds badges with an issuer ID (see `docs/badge-attestation.md` "Issuer").
@@ -272,6 +289,8 @@ The device stores the envelope bytes as received, not a parsed copy, so the byte
 - Re-sign cadence: every 7 days with 14-day expiry is the default here. With a threshold across member organisations, each re-sign needs signers from two organisations every week.
 - Who delivers attestations of an issuer other than `bipe` to the apps: the issuer through the core (`GET /v1/badges`), or the issuer's own endpoint. Not decided; the format works for both.
 - A-6 suspension by one signer: not in v1.
+- Core outage: the apps fetch only from the core (A-3). If the core is down for longer than `expires` allows, the stale rule counts only `bipe.net.br`, so users of every other operator show as unverified. Default: accept this for v1. The envelopes are also in the public repo, so a second source is possible later.
+- Outside reader: signers can show two lists with a higher version to two groups of devices, and no device sees this. A party outside the associação must read the log and publish what it saw.
 
 ## Sources
 

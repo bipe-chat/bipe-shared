@@ -294,6 +294,9 @@ ${reg.workHours.defaultDays.map((d) => `        (day: ${d.day}, ranges: [${d.ran
     public static let requestRoomsEventType = ${swiftString(reg.requestRooms.eventType)}
     public static let requestRoomsMax = ${reg.requestRooms.max}
 
+    /// Settings that follow the account (registries/synced-settings.json): the global account data event.
+    public static let syncedSettingsEventType = ${swiftString(reg.syncedSettings.eventType)}
+
     /// Image descriptions (bipe-chat/bipe#501; registries/image-descriptions.json): the m.image content field and its length limit.
     public static let imageDescriptionField = ${swiftString(reg.imageDescriptions.field)}
     public static let imageDescriptionMaxLength = ${reg.imageDescriptions.maxLength}
@@ -724,6 +727,9 @@ ${reg.workHours.defaultDays.map((d) => `        ${d.day} to listOf(${d.ranges.ma
     /** Chats accepted from chat-requests (spec timeline-media fromStranger; registries/request-rooms.json): the global account data event with the room IDs. */
     const val REQUEST_ROOMS_EVENT_TYPE = ${kotlinString(reg.requestRooms.eventType)}
     const val REQUEST_ROOMS_MAX = ${reg.requestRooms.max}
+
+    /** Settings that follow the account (registries/synced-settings.json): the global account data event. */
+    const val SYNCED_SETTINGS_EVENT_TYPE = ${kotlinString(reg.syncedSettings.eventType)}
 
     /** Image descriptions (bipe-chat/bipe#501; registries/image-descriptions.json): the m.image content field and its length limit. */
     const val IMAGE_DESCRIPTION_FIELD = ${kotlinString(reg.imageDescriptions.field)}

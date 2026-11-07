@@ -1015,6 +1015,7 @@ if (existsSync(resolve(apiOut, "../.."))) {
   copyFileSync(join(root, "tools/lib/gen-settings.mjs"), join(apiOut, "lib/gen-settings.mjs"));
   copyFileSync(join(root, "tools/lib/gen-onboarding.mjs"), join(apiOut, "lib/gen-onboarding.mjs"));
   copyFileSync(join(root, "tools/lib/gen-haptics.mjs"), join(apiOut, "lib/gen-haptics.mjs"));
+  copyFileSync(join(root, "tools/lib/reactions.mjs"), join(apiOut, "lib/reactions.mjs"));
   // Sealed reports (bipe-chat/bipe#697): the reference open and checks, and the wire types.
   copyFileSync(join(root, "tools/lib/reports.mjs"), join(apiOut, "lib/reports.mjs"));
   writeFileSync(join(apiOut, "reports.ts"), generateApiTypes(loadBusinessSchemas(root, "api/report-schemas.json"), "api/report-schemas.json"));

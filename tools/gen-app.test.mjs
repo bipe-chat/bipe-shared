@@ -1,10 +1,10 @@
 import assert from "node:assert/strict";
 import { test } from "node:test";
 import { execFileSync } from "node:child_process";
-import { mkdtempSync, readFileSync, readdirSync, rmSync, statSync } from "node:fs";
+import { mkdirSync, mkdtempSync, readFileSync, readdirSync, rmSync, statSync } from "node:fs";
 import { tmpdir } from "node:os";
 import { dirname, join } from "node:path";
-import { fileURLToPath } from "node:url";
+import { fileURLToPath, pathToFileURL } from "node:url";
 
 const root = join(dirname(fileURLToPath(import.meta.url)), "..");
 const walk = (dir) => readdirSync(dir).flatMap((name) => {
@@ -31,6 +31,23 @@ test("gen.mjs --app writes clean bipe-app output", () => {
       else if (file.endsWith(".kt")) assert.match(text, /^package chat\.bipe\.shared\.generated$/m, file);
     }
     assert.match(readFileSync(join(out("app"), "ios/BipeKit/Sources/BipeKit/Generated/BipeScreen.swift"), "utf8"), /case accountStart = "account-start"/);
+  } finally {
+    rmSync(tmp, { recursive: true, force: true });
+  }
+});
+
+// Load the emitted module tree, rather than only checking its text, to catch missing transitive helpers.
+test("generated API registries load and validate with their packaged dependencies", async () => {
+  const tmp = mkdtempSync(join(tmpdir(), "bipe-gen-api-"));
+  try {
+    const api = join(tmp, "api/src/generated");
+    mkdirSync(join(tmp, "api"), { recursive: true });
+    execFileSync(process.execPath, [join(root, "tools/gen.mjs"), "--app", join(tmp, "app"), "--api", api], { stdio: "pipe" });
+    const { loadRegistries } = await import(pathToFileURL(join(api, "lib/registries.mjs")).href);
+    const emitted = loadRegistries(api);
+    const source = JSON.parse(readFileSync(join(root, "registries/message-reactions.json"), "utf8"));
+    assert.deepEqual(emitted.messageReactions, source);
+    assert.ok(emitted.settings.groups.length > 0);
   } finally {
     rmSync(tmp, { recursive: true, force: true });
   }

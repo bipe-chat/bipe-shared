@@ -3147,7 +3147,8 @@
       "issue": 523,
       "macos": {
         "status": "planned",
-        "issue": 1162
+        "issue": 1162,
+        "note": "List, favourites and timeline header now use the peer photo and shared name rule; group photos/member clusters are also implemented. Other native identity destinations/notifications and real-account checks remain in #1162/#1165/#1167."
       },
       "windows": {
         "status": "planned",
@@ -4496,8 +4497,13 @@
       "issue": 673,
       "fork": true,
       "macos": {
-        "status": "planned",
-        "issue": 1162
+        "status": "built",
+        "evidence": [
+          "bipe-app/macos/BipeMac/MacRoomList.swift",
+          "bipe-app/macos/BipeMac/MacConversationsView.swift",
+          "bipe-app/ios/BipeKit/Sources/BipeKit/BipeFavouritesOrder.swift"
+        ],
+        "note": "Synced tag-filtered stream, three-column grid, stable account-data order, per-scope drag/accessible reordering, no duplicate rows or Unread chip. Cross-device acceptance remains in #1162."
       },
       "windows": {
         "status": "planned",

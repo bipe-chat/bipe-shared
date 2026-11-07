@@ -2581,7 +2581,7 @@
     }
   },
   "business": {
-    "$comment": "The /empresas/ page. Source: bipe/docs/business-track.md and bipe/docs/business-messaging.md (issue #93). The page says what is not live yet. Keep that visible (MZ, 7 November 2026: drop "em estudo"). Decided: ADR 0035 (the business decrypts), ADR 0036 (own-domain links), ADR 0037 (categories, not published here), ADR 0069 (the inbox, keys with the company), ADR 0070 (flat fee per CNPJ plus agent seats; amounts open), ADR 0080 (Pix charge cards for verified companies, planned), ADR 0081 (structured questions), ADR 0082 (the inbox carries the Bipe channel only; Bipe's API is its own design; claim no compatibility with another platform's API).",
+    "$comment": "The /empresas/ page. Source: bipe/docs/business-track.md and bipe/docs/business-messaging.md (issue #93). The page says what is not live yet. Keep that visible (MZ, 7 November 2026). Decided: ADR 0035 (the business decrypts), ADR 0036 (own-domain links), ADR 0037 (categories, not published here), ADR 0069 (the inbox, keys with the company), ADR 0070 (flat fee per CNPJ plus agent seats; amounts open), ADR 0080 (Pix charge cards for verified companies, planned), ADR 0081 (structured questions), ADR 0082 (the inbox carries the Bipe channel only; Bipe's API is its own design; claim no compatibility with another platform's API).",
     "pt": {
       "nav": "Empresas",
       "title": "Atenda seus clientes com a identidade da empresa à vista.",

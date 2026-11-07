@@ -36,7 +36,18 @@
         "type": "bool",
         "description": "true for a DM."
       },
-      "sealMark": {"type": "enum", "values": ["none", "person", "company", "personSuspended", "companySuspended"], "optional": true, "description": "DM only: BipeCompanySeals.mark of the other person (person-profile notes), after the name. Absent in a group."},
+      "sealMark": {
+        "type": "enum",
+        "values": [
+          "none",
+          "person",
+          "company",
+          "personSuspended",
+          "companySuspended"
+        ],
+        "optional": true,
+        "description": "DM only: BipeCompanySeals.mark of the other person (person-profile notes), after the name. Absent in a group."
+      },
       "isOfficial": {
         "type": "bool",
         "description": "A DM whose other person's full user ID is in registries/official-accounts.json: the row shows the Bipe badge after the name (bipe_badge_official, label bipe_badge_official_a11y). Never from a name or a handle."
@@ -284,6 +295,7 @@
     "Mural tiles (ADR 0246). Tier 1: full width, avatar and name, then messages. The first tile shows the last 3 messages (BipeHomeScore firstTileMessages), the draft if there is one, and a reply field with bipe_chats_message_placeholder that sends with replyFromTile. The second tile shows the last message. Tier 2: half width, avatar, name, reason and one bubble with the last message. Tier 3: one third of the width, avatar, first word of the name, two lines of text. Tier 4: avatar only, in rows that wrap, under the heading bipe_chat_mural_no_news. A person or company name follows README People names. Step 1 shows real messages only, with no gist and no reason from a model. Tap on a tile opens chat-timeline; long press opens chat-row-actions. A tap on the reply field does not open the chat.",
     "Mural grid rules (ADR 0246): the tier sets the tile and nothing else sets it. The last row of a tier stretches, so the grid has no hole. bipe_chat_mural_view_list ends the screen and opens the plain list. Avatar shape, seal and member cluster follow the rules of this spec at every size. Tiles meet the touch target rule (44 pt, 48 dp), Dynamic Type and font scaling. Screen readers read tiles in plan order, with name, reason and unread count (bipe_app_chat_list_unread). The reason already says the mention, so a tile does not add bipe_a11y_mention. Web difference: the web client cannot verify a seal, so hasSeal is false and a sealed company scores as a company without a seal there. A tile does not move during a touch or a scroll: new text and badges show in place, and new tiers and positions apply when the screen is at rest.",
     "Mural improvements (MZ, 5 Nov 2026): this spec is the rule for Mural, not the prototype (branch prototype/home-mural, fixture data). To adopt something from the prototype, change this spec first, then the code. A layout problem (tile content, spacing, grid) changes the Mural notes of this spec, then iOS, Android and web in one PR. An order problem (a chat too large or too small) changes registries/home-score.json and test-vectors/home-score.json only, never one platform, and the PR states the case that caused the change, with no message text. Each note from a device test is one small issue, with a screenshot and the prototype's version of the same screen, and it is not part of steps 2 and 3 of ADR 0246.",
-    "Mural model (ADR 0246): steps 2 and 3 are not built. No model runs, and privacy.json and data.json list none. registries/home-score.json keeps the model weights, marked unused-step-1, and the function reads them only when a caller passes model fields. No caller passes them in step 1."
+    "Mural model (ADR 0246): steps 2 and 3 are not built. No model runs, and privacy.json and data.json list none. registries/home-score.json keeps the model weights, marked unused-step-1, and the function reads them only when a caller passes model fields. No caller passes them in step 1.",
+    "Mac desktop (MZ, 7 November 2026, bipe#1018): apply the own web/iOS row hierarchy: 48 pt avatar, 12 pt gap, headline name and caption date, then subheadline preview and unread/mention/mute indicators. Use the same account-avatar control at the upper left, title and search field. Favourites keep the three-column avatar grid, sync and stable order described above; a member cluster and a real group photo follow the same rules in the list, favourites and timeline header. Do not add an Unread chip or a second favourites representation. The Mac body uses the shared 17 pt iOS/web scale with rounded type and accessibility scaling, instead of the smaller macOS default."
   ]
 }

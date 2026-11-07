@@ -57,7 +57,7 @@
     },
     "readReceiptsEnabled": {
       "type": "bool",
-      "description": "The Privacidade switch readReceipts (registries/settings.json), kept on the phone, on by default (ADR 0222). Off: DMs send ReceiptType.ReadPrivate and hide the read tick of others. Groups ignore it."
+      "description": "The Privacidade switch readReceipts (registries/settings.json), stored in the account (registries/synced-settings.json), on by default (ADR 0222). Off: DMs send ReceiptType.ReadPrivate and hide the read tick of others. Groups ignore it."
     },
     "sheetReaders": {
       "type": "list",

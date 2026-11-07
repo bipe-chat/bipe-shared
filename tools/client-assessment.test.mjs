@@ -19,7 +19,9 @@ test('the matrix covers every personal/work capability and keeps all core call/m
     assert.ok(checkClientAssessment(changed, ledger.items).length, id);
   }
   assert.ok(text.includes('Not recorded'));
-  assert.ok(staleWebExclusion(ledger.items.find(item => item.id === 'scam-alerts')));
+  // The web column was re-audited against the web client: the retired web scope stays out of the ledger.
+  assert.ok(staleWebExclusion({ web: { status: 'n/a', reason: 'No web chat (ADR 0004)' } }));
+  assert.deepEqual(ledger.items.filter(staleWebExclusion).map(item => item.id), []);
 });
 
 test('compilation or an unversioned claim cannot pass as device acceptance', () => {

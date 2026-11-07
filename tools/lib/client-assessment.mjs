@@ -55,7 +55,6 @@ export function assessmentMarkdown(assessment, ledger, plan) {
     `Source review: ${assessment.reviewedOn}. All ${ledger.items.length} ledger capabilities are included, covering personal and work features. Status and code evidence remain in parity.json; this matrix does not create another implementation status.`, '',
     'Built means app integration exists. Tester build means it is in a tester artifact. Neither means a cross-client device test passed. SDK APIs, a successful build, and video-file playback do not prove calls work. Video messages, voice messages, audio calls, video calls, group calls and screen sharing are separate capabilities.', '',
     'Device acceptance records live in client-assessment.json. Missing records mean **not recorded**, including phone-offline use, reconnect, revocation, permissions and incoming calls in background/locked/asleep/quit states. A source review cannot mark these passed.', '',
-    'Old web exclusions marked **Review required** refer to the retired web scope. They do not establish that the own web client supports or excludes that feature. Audit them in #475/#797 before claiming full web parity.', '',
   ];
   for (const wave of plan.waves) {
     lines.push(`### ${wave.title} (#${wave.issue})`, '',

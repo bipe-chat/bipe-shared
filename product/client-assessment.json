@@ -1,7 +1,7 @@
 {
   "version": 1,
   "reviewedOn": "2026-11-07",
-  "$comment": "Implementation status and evidence stay in parity.json. This file defines assessment coverage and records actual acceptance separately. The generated matrix includes every ledger item through desktop-plan.json, including the whole personal/work suite. SDK availability or CI compilation is not a device pass. Old web exclusions require review against the own web client.",
+  "$comment": "Implementation status and evidence stay in parity.json. This file defines assessment coverage and records actual acceptance separately. The generated matrix includes every ledger item through desktop-plan.json, including the whole personal/work suite. SDK availability or CI compilation is not a device pass.",
   "clients": [
     "ios",
     "android",

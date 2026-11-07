@@ -20,8 +20,11 @@
         ]
       },
       "web": {
-        "status": "n/a",
-        "reason": "No web chat (ADR 0004); the site shows a demo at most"
+        "status": "built",
+        "evidence": [
+          "bipe-app/web/src/ScamWarning.tsx",
+          "bipe-app/web/src/TimelineRows.tsx"
+        ]
       },
       "server": {
         "status": "n/a",
@@ -56,8 +59,12 @@
         ]
       },
       "web": {
-        "status": "n/a",
-        "reason": "No web chat (ADR 0004); the site shows a demo at most"
+        "status": "built",
+        "evidence": [
+          "bipe-app/web/src/Requests.tsx",
+          "bipe-app/web/src/chat-model.ts",
+          "bipe-app/web/src/Chats.tsx"
+        ]
       },
       "server": {
         "status": "built",
@@ -91,8 +98,11 @@
         ]
       },
       "web": {
-        "status": "n/a",
-        "reason": "No web chat (ADR 0004); the site shows a demo at most"
+        "status": "built",
+        "evidence": [
+          "bipe-app/web/src/ScamWarning.tsx",
+          "bipe-app/web/src/TimelineRows.tsx"
+        ]
       },
       "server": {
         "status": "n/a",
@@ -323,8 +333,10 @@
         ]
       },
       "web": {
-        "status": "n/a",
-        "reason": "Stock Element Web at chat.bipe.net.br shows the QR code (ADR 0116); the Bipe welcome page has one button to it (bipe#472)"
+        "status": "built",
+        "evidence": [
+          "bipe-app/web/src/QrLogin.tsx"
+        ]
       },
       "server": {
         "status": "built",
@@ -366,8 +378,8 @@
         ]
       },
       "web": {
-        "status": "n/a",
-        "reason": "No web chat (ADR 0004); the site shows a demo at most"
+        "status": "planned",
+        "note": "no seal shows: Trust.tsx says matrix-sdk-ffi does not export the master key the seal check needs"
       },
       "server": "planned",
       "note": "The apps show the seal for a valid pix or govbr badge. No issuer signs those levels in production yet (bipe#17, bipe#543), so server stays planned and no person has a seal today",
@@ -428,8 +440,8 @@
         ]
       },
       "web": {
-        "status": "n/a",
-        "reason": "No web chat (ADR 0004); the site shows a demo at most"
+        "status": "planned",
+        "note": "only profile facts show; identity proof, personal confirmation and identity changes are not read"
       },
       "server": {
         "status": "n/a",
@@ -543,8 +555,8 @@
         ]
       },
       "web": {
-        "status": "n/a",
-        "reason": "No web chat (ADR 0004); the site shows a demo at most"
+        "status": "planned",
+        "note": "no CVM line and no stop-order card; the generated cvm rule is not used"
       },
       "server": {
         "status": "built",
@@ -619,8 +631,8 @@
         ]
       },
       "web": {
-        "status": "n/a",
-        "reason": "No web chat (ADR 0004); the site shows a demo at most"
+        "status": "planned",
+        "note": "no official notice card; the generated notice rule is not used"
       },
       "server": "planned",
       "issue": 245,
@@ -649,8 +661,8 @@
         ]
       },
       "web": {
-        "status": "n/a",
-        "reason": "No web chat (ADR 0004); the site shows a demo at most"
+        "status": "planned",
+        "note": "no handle picker on the web, so the reserved-name rule never shows"
       },
       "server": {
         "status": "built",
@@ -687,8 +699,12 @@
         ]
       },
       "web": {
-        "status": "n/a",
-        "reason": "No web chat (ADR 0004); the site shows a demo at most"
+        "status": "built",
+        "evidence": [
+          "bipe-app/web/src/registries.ts",
+          "bipe-app/web/src/ui/List.tsx",
+          "bipe-app/web/src/ui/ChatOfficialBadge.tsx"
+        ]
       },
       "server": {
         "status": "n/a",
@@ -722,8 +738,8 @@
         ]
       },
       "web": {
-        "status": "n/a",
-        "reason": "No web chat (ADR 0004); the site shows a demo at most"
+        "status": "planned",
+        "note": "the room gets its badge, but the Settings switch to get news again is missing"
       },
       "server": {
         "status": "built",
@@ -763,8 +779,8 @@
         ]
       },
       "web": {
-        "status": "n/a",
-        "reason": "No web chat (ADR 0004); the site shows a demo at most"
+        "status": "planned",
+        "note": "the request check for a copied contact name exists; the seal look-alike check on the own name in profile edit is missing"
       },
       "server": {
         "status": "built",
@@ -788,8 +804,8 @@
       "ios": "planned",
       "android": "planned",
       "web": {
-        "status": "n/a",
-        "reason": "No web chat (ADR 0004); the site shows a demo at most"
+        "status": "planned",
+        "note": "no bot mark; the phones and the server also have none"
       },
       "server": "planned",
       "macos": {
@@ -807,8 +823,8 @@
       "ios": "planned",
       "android": "planned",
       "web": {
-        "status": "n/a",
-        "reason": "No web chat (ADR 0004); the site shows a demo at most"
+        "status": "planned",
+        "note": "not built; the phones also have none"
       },
       "server": {
         "status": "n/a",
@@ -841,8 +857,8 @@
         ]
       },
       "web": {
-        "status": "n/a",
-        "reason": "No web chat (ADR 0004); notifications are a phone feature"
+        "status": "planned",
+        "note": "the hours can be edited, but desktop notifications do not stay silent outside them"
       },
       "server": {
         "status": "built",
@@ -878,7 +894,7 @@
       },
       "web": {
         "status": "n/a",
-        "reason": "No web chat (ADR 0004); notifications are a phone feature"
+        "reason": "A web page cannot register with or read the operating system's Focus modes"
       },
       "server": {
         "status": "n/a",
@@ -910,8 +926,8 @@
         ]
       },
       "web": {
-        "status": "n/a",
-        "reason": "No web chat (ADR 0004); the site shows a demo at most"
+        "status": "planned",
+        "note": "shows and looks up @handles, but cannot pick or change the own handle"
       },
       "server": {
         "status": "built",
@@ -1128,8 +1144,8 @@
         "note": "Merged native code; phone acceptance and tester-build evidence remain separate."
       },
       "web": {
-        "status": "n/a",
-        "reason": "No web chat (ADR 0004)"
+        "status": "planned",
+        "note": "no invite flow, so no inviter note and no join toast"
       },
       "server": {
         "status": "n/a",
@@ -1199,8 +1215,8 @@
         ]
       },
       "web": {
-        "status": "n/a",
-        "reason": "No web chat (ADR 0004); the site shows a demo at most"
+        "status": "planned",
+        "note": "no named invites and no weekly reminder"
       },
       "server": {
         "status": "built",
@@ -1236,7 +1252,7 @@
       },
       "web": {
         "status": "n/a",
-        "reason": "No web chat (ADR 0004)"
+        "reason": "Sign-up runs only on the phone; a browser signs in by QR code to an account that already exists, so it never reaches the end of sign-up"
       },
       "server": {
         "status": "built",
@@ -1312,7 +1328,7 @@
       },
       "web": {
         "status": "n/a",
-        "reason": "No web chat (ADR 0004); the site shows a demo at most"
+        "reason": "Browsers give a page no read access to the address book, and contact matching needs the whole list"
       },
       "server": {
         "status": "built",
@@ -1349,8 +1365,8 @@
         ]
       },
       "web": {
-        "status": "n/a",
-        "reason": "No web chat (ADR 0004); the site shows a demo at most"
+        "status": "planned",
+        "note": "the Privacidade number row is not on the web"
       },
       "server": {
         "status": "built",
@@ -1386,7 +1402,7 @@
       },
       "web": {
         "status": "n/a",
-        "reason": "No web chat (ADR 0004); the site shows a demo at most"
+        "reason": "The number comes from the device address book, and browsers give a page no read access to it"
       },
       "server": {
         "status": "n/a",
@@ -1421,8 +1437,12 @@
         ]
       },
       "web": {
-        "status": "n/a",
-        "reason": "No web chat (ADR 0004); the site shows a demo at most"
+        "status": "built",
+        "evidence": [
+          "bipe-app/web/src/sdk.ts",
+          "bipe-app/web/src/Encryption.tsx",
+          "bipe-app/web/src/NewChat.tsx"
+        ]
       },
       "server": {
         "status": "built",
@@ -1460,8 +1480,11 @@
         ]
       },
       "web": {
-        "status": "n/a",
-        "reason": "No web chat (ADR 0004); the site shows a demo at most"
+        "status": "built",
+        "evidence": [
+          "bipe-app/web/src/NewChat.tsx",
+          "bipe-app/web/src/notes.ts"
+        ]
       },
       "server": {
         "status": "built",
@@ -1589,8 +1612,8 @@
       "ios": "planned",
       "android": "planned",
       "web": {
-        "status": "n/a",
-        "reason": "No web chat (ADR 0004); the site shows a demo at most"
+        "status": "planned",
+        "note": "no Pix request card; the phones also have none"
       },
       "server": {
         "status": "n/a",
@@ -1612,7 +1635,7 @@
       "android": "planned",
       "web": {
         "status": "n/a",
-        "reason": "No web chat (ADR 0004); the site shows a demo at most"
+        "reason": "Sending a Pix charge needs an attested device, and a browser cannot give device attestation"
       },
       "server": "planned",
       "issue": 261,
@@ -1871,8 +1894,8 @@
         ]
       },
       "web": {
-        "status": "n/a",
-        "reason": "No web chat (ADR 0004); the site shows a demo at most"
+        "status": "planned",
+        "note": "received stickers show, but there is no picker, no send and no packs"
       },
       "server": {
         "status": "n/a",
@@ -1904,8 +1927,8 @@
         ]
       },
       "web": {
-        "status": "n/a",
-        "reason": "No web chat (ADR 0004); the site shows a demo at most"
+        "status": "planned",
+        "note": "groups notify on mentions, but the web does not honour the poll rule, so a new poll stays silent in a quiet group"
       },
       "server": {
         "status": "n/a",
@@ -1941,8 +1964,8 @@
         ]
       },
       "web": {
-        "status": "n/a",
-        "reason": "No web chat (ADR 0004); the site shows a demo at most"
+        "status": "planned",
+        "note": "only Admin can be set and marked in the member list; Moderador shows only as a sender badge and cannot be assigned"
       },
       "server": {
         "status": "n/a",
@@ -2005,8 +2028,8 @@
         ]
       },
       "web": {
-        "status": "n/a",
-        "reason": "No web chat (ADR 0004); the site shows a demo at most"
+        "status": "planned",
+        "note": "polls draw as a plain poll card; the company question card is missing"
       },
       "server": {
         "status": "n/a",
@@ -2028,8 +2051,8 @@
       "ios": "planned",
       "android": "planned",
       "web": {
-        "status": "n/a",
-        "reason": "No web chat (ADR 0004); the site shows a demo at most"
+        "status": "planned",
+        "note": "not built; spaces stay hidden and the phones have none"
       },
       "server": "planned",
       "macos": {
@@ -2047,8 +2070,8 @@
       "ios": "planned",
       "android": "planned",
       "web": {
-        "status": "n/a",
-        "reason": "No web chat (ADR 0004); the site shows a demo at most"
+        "status": "planned",
+        "note": "not built; the phones also have none"
       },
       "server": "planned",
       "macos": {
@@ -2076,8 +2099,8 @@
         ]
       },
       "web": {
-        "status": "n/a",
-        "reason": "No web chat (ADR 0004); the site shows a demo at most"
+        "status": "planned",
+        "note": "the transcript shows, but the scam check runs on text messages only"
       },
       "server": {
         "status": "n/a",
@@ -2109,8 +2132,8 @@
         ]
       },
       "web": {
-        "status": "n/a",
-        "reason": "No web chat (ADR 0004); the site shows a demo at most"
+        "status": "planned",
+        "note": "the web has no voice recording or sending"
       },
       "server": {
         "status": "n/a",
@@ -2145,8 +2168,8 @@
         ]
       },
       "web": {
-        "status": "n/a",
-        "reason": "No web chat (ADR 0004); the site shows a demo at most"
+        "status": "planned",
+        "note": "no lock on the page and no PIN check"
       },
       "server": {
         "status": "n/a",
@@ -2184,8 +2207,12 @@
         ]
       },
       "web": {
-        "status": "n/a",
-        "reason": "No web chat (ADR 0004); the site shows a demo at most"
+        "status": "built",
+        "evidence": [
+          "bipe-app/web/src/AccountSwitcher.tsx",
+          "bipe-app/web/src/session-store.ts",
+          "bipe-app/web/src/sdk.ts"
+        ]
       },
       "server": {
         "status": "n/a",
@@ -2226,8 +2253,8 @@
         ]
       },
       "web": {
-        "status": "n/a",
-        "reason": "No web chat (ADR 0004); the site shows a demo at most"
+        "status": "planned",
+        "note": "no guardians and no theft mark"
       },
       "server": {
         "status": "built",
@@ -2264,7 +2291,7 @@
       },
       "web": {
         "status": "n/a",
-        "reason": "No web chat (ADR 0004); the setting is on the phone"
+        "reason": "A web page cannot read or open the phone operating system's theft protection setting"
       },
       "server": {
         "status": "n/a",
@@ -2298,8 +2325,8 @@
         ]
       },
       "web": {
-        "status": "n/a",
-        "reason": "No web chat (ADR 0004); the site shows a demo at most"
+        "status": "planned",
+        "note": "no handle change line in chats"
       },
       "server": {
         "status": "built",
@@ -2336,8 +2363,12 @@
         ]
       },
       "web": {
-        "status": "n/a",
-        "reason": "No web chat (ADR 0004); the site shows a demo at most"
+        "status": "built",
+        "evidence": [
+          "bipe-app/web/src/Trust.tsx",
+          "bipe-app/web/src/ChatInfo.tsx",
+          "bipe-app/web/src/Requests.tsx"
+        ]
       },
       "server": {
         "status": "built",
@@ -2373,8 +2404,8 @@
         ]
       },
       "web": {
-        "status": "n/a",
-        "reason": "No web chat (ADR 0004); the site shows a demo at most"
+        "status": "planned",
+        "note": "no check of a stranger's photo against contacts"
       },
       "server": {
         "status": "n/a",
@@ -2396,8 +2427,8 @@
       "ios": "planned",
       "android": "planned",
       "web": {
-        "status": "n/a",
-        "reason": "No web chat (ADR 0004); the site shows a demo at most"
+        "status": "planned",
+        "note": "the company tools bar exists in a DM, but the ledger item stays open: phones and server are also planned"
       },
       "server": "planned",
       "issue": 115,
@@ -2633,8 +2664,10 @@
         ]
       },
       "web": {
-        "status": "n/a",
-        "reason": "No web chat (ADR 0004); the site shows a demo at most"
+        "status": "built",
+        "evidence": [
+          "bipe-app/web/src/Settings.tsx"
+        ]
       },
       "server": {
         "status": "n/a",
@@ -2772,8 +2805,11 @@
         ]
       },
       "web": {
-        "status": "n/a",
-        "reason": "No web chat (ADR 0004); the site shows a demo at most"
+        "status": "built",
+        "evidence": [
+          "bipe-app/web/src/Settings.tsx",
+          "bipe-app/web/src/registries.ts"
+        ]
       },
       "server": {
         "status": "n/a",
@@ -2807,8 +2843,8 @@
         ]
       },
       "web": {
-        "status": "n/a",
-        "reason": "No web chat (ADR 0004); the site shows a demo at most"
+        "status": "planned",
+        "note": "the Privacidade messaging choice is not on the web"
       },
       "server": {
         "status": "built",
@@ -2917,8 +2953,8 @@
         ]
       },
       "web": {
-        "status": "n/a",
-        "reason": "No web chat (ADR 0004)"
+        "status": "planned",
+        "note": "the Reportar problema action is not on the web"
       },
       "server": {
         "status": "built",
@@ -2954,8 +2990,8 @@
         ]
       },
       "web": {
-        "status": "n/a",
-        "reason": "Mobile only (ADR 0004)"
+        "status": "planned",
+        "note": "the support action is not on the web"
       },
       "server": {
         "status": "built",
@@ -3024,8 +3060,8 @@
         "note": "Merged native code; phone acceptance and tester-build evidence remain separate."
       },
       "web": {
-        "status": "n/a",
-        "reason": "No chat list on the web (ADR 0004)"
+        "status": "planned",
+        "note": "no remote banner above the chat list"
       },
       "server": {
         "status": "built",
@@ -3130,8 +3166,8 @@
         ]
       },
       "web": {
-        "status": "n/a",
-        "reason": "Stock Element Web cannot do this by config; accepted gap until after launch (ADR 0141, bipe#477)"
+        "status": "planned",
+        "note": "only new DMs reuse the newest room; the chat list does not reduce a person's rooms to one row"
       },
       "server": {
         "status": "n/a",
@@ -3162,8 +3198,10 @@
         ]
       },
       "web": {
-        "status": "n/a",
-        "reason": "Stock Element Web cannot do this by config; accepted gap until after launch (ADR 0141, bipe#477)"
+        "status": "built",
+        "evidence": [
+          "bipe-app/web/src/room-face.ts"
+        ]
       },
       "server": {
         "status": "n/a",
@@ -3196,8 +3234,10 @@
         ]
       },
       "web": {
-        "status": "n/a",
-        "reason": "Stock Element Web cannot do this by config; accepted gap until after launch (ADR 0141, bipe#477)"
+        "status": "built",
+        "evidence": [
+          "bipe-app/web/src/NewChat.tsx"
+        ]
       },
       "server": {
         "status": "n/a",
@@ -3229,8 +3269,11 @@
         ]
       },
       "web": {
-        "status": "n/a",
-        "reason": "Stock Element Web cannot do this by config; accepted gap until after launch (ADR 0141, bipe#477)"
+        "status": "built",
+        "evidence": [
+          "bipe-app/web/src/Timeline.tsx",
+          "bipe-app/web/src/ChatActions.tsx"
+        ]
       },
       "server": {
         "status": "n/a",
@@ -3264,8 +3307,8 @@
         ]
       },
       "web": {
-        "status": "n/a",
-        "reason": "Stock Element Web cannot do this by config; accepted gap until after launch (ADR 0141, bipe#477)"
+        "status": "planned",
+        "note": "no left-the-chat bar and no invite again"
       },
       "server": {
         "status": "n/a",
@@ -3299,8 +3342,11 @@
         ]
       },
       "web": {
-        "status": "n/a",
-        "reason": "Stock Element Web cannot do this by config; accepted gap until after launch (ADR 0141, bipe#477)"
+        "status": "built",
+        "evidence": [
+          "bipe-app/web/src/ChatActions.tsx",
+          "bipe-app/web/src/chat-actions.ts"
+        ]
       },
       "server": {
         "status": "n/a",
@@ -3372,8 +3418,11 @@
         ]
       },
       "web": {
-        "status": "n/a",
-        "reason": "Stock Element Web cannot do this by config; accepted gap until after launch (ADR 0141, bipe#477)"
+        "status": "built",
+        "evidence": [
+          "bipe-app/web/src/TimelineRows.tsx",
+          "bipe-app/web/src/Timeline.tsx"
+        ]
       },
       "server": {
         "status": "n/a",
@@ -3409,8 +3458,8 @@
         ]
       },
       "web": {
-        "status": "n/a",
-        "reason": "Stock Element Web cannot do this by config; accepted gap until after launch (ADR 0141, bipe#477)"
+        "status": "planned",
+        "note": "no device ack is sent or read, so no delivered tick"
       },
       "server": {
         "status": "n/a",
@@ -3443,8 +3492,12 @@
         ]
       },
       "web": {
-        "status": "n/a",
-        "reason": "Stock Element Web keeps its own read receipt setting; config only (bipe#477)"
+        "status": "built",
+        "evidence": [
+          "bipe-app/web/src/Settings.tsx",
+          "bipe-app/web/src/Timeline.tsx",
+          "bipe-app/web/src/settings-sync.ts"
+        ]
       },
       "server": {
         "status": "n/a",
@@ -3647,8 +3700,8 @@
         ]
       },
       "web": {
-        "status": "n/a",
-        "reason": "No web chat (ADR 0004); the site shows a demo at most"
+        "status": "planned",
+        "note": "images have only a generic label; the description is neither read nor written"
       },
       "server": {
         "status": "n/a",
@@ -3690,8 +3743,8 @@
         ]
       },
       "web": {
-        "status": "n/a",
-        "reason": "No web chat (ADR 0004); the site shows a demo at most"
+        "status": "planned",
+        "note": "no hide-media setting; only request avatars stay hidden"
       },
       "server": {
         "status": "n/a",
@@ -3727,8 +3780,8 @@
         ]
       },
       "web": {
-        "status": "n/a",
-        "reason": "No web chat (ADR 0004); the site shows a demo at most"
+        "status": "planned",
+        "note": "no storage screen and no way to clear the media cache"
       },
       "server": {
         "status": "n/a",
@@ -3763,8 +3816,8 @@
         ]
       },
       "web": {
-        "status": "n/a",
-        "reason": "No web chat (ADR 0004); the site shows a demo at most"
+        "status": "planned",
+        "note": "no data budget and no data saver"
       },
       "server": {
         "status": "n/a",
@@ -3798,8 +3851,8 @@
         ]
       },
       "web": {
-        "status": "n/a",
-        "reason": "No web chat (ADR 0004); the site shows a demo at most"
+        "status": "planned",
+        "note": "marks list only in the owner's read-only Trabalho screen, not next to a reseller's name"
       },
       "server": {
         "status": "built",
@@ -3907,7 +3960,7 @@
       },
       "web": {
         "status": "n/a",
-        "reason": "No web chat (ADR 0004); the site shows a demo at most"
+        "reason": "Browsers have no on-device speech recognition, and the Web Speech API can send audio to the browser vendor, which breaks end-to-end encryption"
       },
       "server": {
         "status": "n/a",
@@ -3939,8 +3992,8 @@
         ]
       },
       "web": {
-        "status": "n/a",
-        "reason": "No web chat (ADR 0004); the site shows a demo at most"
+        "status": "planned",
+        "note": "both draw as plain text; no notice or emote style and no sender name on an emote"
       },
       "server": {
         "status": "n/a",
@@ -3979,8 +4032,8 @@
         ]
       },
       "web": {
-        "status": "n/a",
-        "reason": "No web chat (ADR 0004); the site shows a demo at most"
+        "status": "planned",
+        "note": "links and mention pills work, but received formatting is dropped"
       },
       "server": {
         "status": "n/a",
@@ -4016,8 +4069,8 @@
         ]
       },
       "web": {
-        "status": "n/a",
-        "reason": "No web chat (ADR 0004); the site shows a demo at most"
+        "status": "planned",
+        "note": "state and membership events have no timeline row"
       },
       "server": {
         "status": "n/a",
@@ -4052,8 +4105,11 @@
         ]
       },
       "web": {
-        "status": "n/a",
-        "reason": "No web chat (ADR 0004); the site shows a demo at most"
+        "status": "built",
+        "evidence": [
+          "bipe-app/web/src/archive.ts",
+          "bipe-app/web/src/Chats.tsx"
+        ]
       },
       "server": {
         "status": "n/a",
@@ -4086,8 +4142,8 @@
         ]
       },
       "web": {
-        "status": "n/a",
-        "reason": "No web chat (ADR 0004); the site shows a demo at most"
+        "status": "planned",
+        "note": "only links to the web client open in place; matrix.to, matrix: and join by room link are missing"
       },
       "server": {
         "status": "n/a",
@@ -4122,8 +4178,11 @@
         ]
       },
       "web": {
-        "status": "n/a",
-        "reason": "No web chat (ADR 0004); the site shows a demo at most"
+        "status": "built",
+        "evidence": [
+          "bipe-app/web/src/MessageSheets.tsx",
+          "bipe-app/web/src/TimelineRows.tsx"
+        ]
       },
       "server": {
         "status": "n/a",
@@ -4195,8 +4254,8 @@
         ]
       },
       "web": {
-        "status": "n/a",
-        "reason": "No web chat (ADR 0004); the site shows a demo at most"
+        "status": "planned",
+        "note": "copies a web client link that the code says serves the same account only, not a link for group members"
       },
       "server": {
         "status": "n/a",
@@ -4266,8 +4325,8 @@
         ]
       },
       "web": {
-        "status": "n/a",
-        "reason": "No web chat (ADR 0004); the site shows a demo at most"
+        "status": "planned",
+        "note": "captions can be copied, but not added, edited or removed after sending"
       },
       "server": {
         "status": "n/a",
@@ -4302,8 +4361,8 @@
         ]
       },
       "web": {
-        "status": "n/a",
-        "reason": "No web chat (ADR 0004); the site shows a demo at most"
+        "status": "planned",
+        "note": "polls can be voted and ended only; no create, no edit, no history"
       },
       "server": {
         "status": "n/a",
@@ -4336,8 +4395,8 @@
         ]
       },
       "web": {
-        "status": "n/a",
-        "reason": "No web chat (ADR 0004)"
+        "status": "planned",
+        "note": "the Suas estatísticas row and screen are not on the web"
       },
       "server": {
         "status": "n/a",
@@ -4371,8 +4430,8 @@
         ]
       },
       "web": {
-        "status": "n/a",
-        "reason": "No web chat (ADR 0004); the site shows a demo at most"
+        "status": "planned",
+        "note": "no save action on a received sticker"
       },
       "server": {
         "status": "n/a",
@@ -4442,8 +4501,8 @@
         ]
       },
       "web": {
-        "status": "n/a",
-        "reason": "No web chat (ADR 0004); the site shows a demo at most"
+        "status": "planned",
+        "note": "search in one chat works; across chats only names match, because the wasm bindings have no search service"
       },
       "server": {
         "status": "n/a",
@@ -4476,8 +4535,8 @@
         ]
       },
       "web": {
-        "status": "n/a",
-        "reason": "No web chat (ADR 0004); the site shows a demo at most"
+        "status": "planned",
+        "note": "no media and files gallery in chat details"
       },
       "server": {
         "status": "n/a",
@@ -4592,8 +4651,12 @@
         ]
       },
       "web": {
-        "status": "n/a",
-        "reason": "No web chat (ADR 0004); the site shows a demo at most"
+        "status": "built",
+        "evidence": [
+          "bipe-app/web/src/ChatInfo.tsx",
+          "bipe-app/web/src/ChatActions.tsx",
+          "bipe-app/web/src/chat-actions.ts"
+        ]
       },
       "server": {
         "status": "n/a",
@@ -4632,8 +4695,8 @@
         ]
       },
       "web": {
-        "status": "n/a",
-        "reason": "No web chat (ADR 0004); the site shows a demo at most"
+        "status": "planned",
+        "note": "members can be removed, but there is no ban, banned list or unban"
       },
       "server": {
         "status": "n/a",
@@ -4668,8 +4731,8 @@
         ]
       },
       "web": {
-        "status": "n/a",
-        "reason": "No web chat (ADR 0004); the site shows a demo at most"
+        "status": "planned",
+        "note": "the web shows only the rows it can serve; media quality, live location and others are absent"
       },
       "server": {
         "status": "n/a",
@@ -4704,8 +4767,8 @@
         ]
       },
       "web": {
-        "status": "n/a",
-        "reason": "No web chat (ADR 0004); the site shows a demo at most"
+        "status": "planned",
+        "note": "the discovery switch is not on the web"
       },
       "server": {
         "status": "built",
@@ -4736,8 +4799,8 @@
         "issue": 98
       },
       "web": {
-        "status": "n/a",
-        "reason": "No web chat (ADR 0004); the site shows a demo at most"
+        "status": "planned",
+        "note": "not built; the phones also have none"
       },
       "server": {
         "status": "n/a",
@@ -4772,8 +4835,8 @@
         ]
       },
       "web": {
-        "status": "n/a",
-        "reason": "No web chat (ADR 0004); the site shows a demo at most"
+        "status": "planned",
+        "note": "received locations show, but the web cannot send one"
       },
       "server": {
         "status": "n/a",
@@ -4807,8 +4870,8 @@
         ]
       },
       "web": {
-        "status": "n/a",
-        "reason": "No web chat (ADR 0004); the site shows a demo at most"
+        "status": "planned",
+        "note": "no live location send, display or stop"
       },
       "server": {
         "status": "n/a",
@@ -4844,8 +4907,8 @@
         ]
       },
       "web": {
-        "status": "n/a",
-        "reason": "No web chat (ADR 0004); chat.bipe.net.br is stock Element Web"
+        "status": "planned",
+        "note": "the @ shows in the timeline only; member list, @ suggestions and read-by list lack it"
       },
       "server": {
         "status": "n/a",
@@ -4879,8 +4942,11 @@
         ]
       },
       "web": {
-        "status": "n/a",
-        "reason": "No web chat (ADR 0004); chat.bipe.net.br is stock Element Web"
+        "status": "built",
+        "evidence": [
+          "bipe-app/web/src/ChatSearch.tsx",
+          "bipe-app/web/src/Timeline.tsx"
+        ]
       },
       "server": {
         "status": "n/a",
@@ -4916,8 +4982,8 @@
         ]
       },
       "web": {
-        "status": "n/a",
-        "reason": "No web chat (ADR 0004); the site shows a demo at most"
+        "status": "planned",
+        "note": "no web app manifest with a share target; only paste, drop and the file picker work"
       },
       "server": {
         "status": "n/a",
@@ -4950,8 +5016,8 @@
         ]
       },
       "web": {
-        "status": "n/a",
-        "reason": "No web chat (ADR 0004); the site shows a demo at most"
+        "status": "planned",
+        "note": "no warning when a contact's crypto identity changes"
       },
       "server": {
         "status": "n/a",
@@ -4985,8 +5051,8 @@
         ]
       },
       "web": {
-        "status": "n/a",
-        "reason": "No web chat (ADR 0004); the site shows a demo at most"
+        "status": "planned",
+        "note": "desktop notifications set no icon, so the sender photo is missing"
       },
       "server": {
         "status": "n/a",
@@ -5019,8 +5085,8 @@
         ]
       },
       "web": {
-        "status": "n/a",
-        "reason": "No web chat (ADR 0004); the site shows a demo at most"
+        "status": "planned",
+        "note": "no join, history or address settings; group details edit only name, description and photo"
       },
       "server": {
         "status": "n/a",
@@ -5090,8 +5156,8 @@
         ]
       },
       "web": {
-        "status": "n/a",
-        "reason": "No web chat (ADR 0004); the site shows a demo at most"
+        "status": "planned",
+        "note": "the list deduplicates versions, but the timeline has no pointer from an upgraded group to its new group"
       },
       "server": {
         "status": "n/a",
@@ -5124,7 +5190,7 @@
       },
       "web": {
         "status": "n/a",
-        "reason": "No web chat (ADR 0004); the site shows a demo at most"
+        "reason": "Battery optimisation and notification channels are Android settings that a web page cannot read or change"
       },
       "server": {
         "status": "n/a",
@@ -5159,8 +5225,10 @@
         ]
       },
       "web": {
-        "status": "n/a",
-        "reason": "No web chat (ADR 0004); the site shows a demo at most"
+        "status": "built",
+        "evidence": [
+          "bipe-app/web/src/TimelineMedia.tsx"
+        ]
       },
       "server": {
         "status": "n/a",
@@ -5269,8 +5337,12 @@
         ]
       },
       "web": {
-        "status": "n/a",
-        "reason": "Web chat is stock Element Web (config only); the site keeps açaí"
+        "status": "built",
+        "evidence": [
+          "bipe-app/web/src/Settings.tsx",
+          "bipe-app/web/src/appearance.ts",
+          "bipe-app/web/src/settings-sync.ts"
+        ]
       },
       "server": {
         "status": "n/a",
@@ -5340,8 +5412,8 @@
         ]
       },
       "web": {
-        "status": "n/a",
-        "reason": "No web chat (ADR 0004); the site shows a demo at most"
+        "status": "planned",
+        "note": "no assistant draft flow and no assistant switch"
       },
       "server": {
         "status": "n/a",
@@ -5406,8 +5478,8 @@
         ]
       },
       "web": {
-        "status": "n/a",
-        "reason": "No web chat (ADR 0004); notifications are a phone feature"
+        "status": "planned",
+        "note": "the web has no push service worker and no setting for join notifications"
       },
       "server": {
         "status": "built",

@@ -1,0 +1,80 @@
+{
+  "id": "thread-list",
+  "title": "Threads of a group",
+  "flow": "groups",
+  "summary": "The threads of a group, as the server lists them (bipe-chat/bipe#667). Opens from group-details. Groups only (ADR 0141).",
+  "types": {
+    "ThreadRow": {
+      "rootEventId": {
+        "type": "string",
+        "description": "The root event."
+      },
+      "sender": {
+        "type": "string",
+        "description": "Display name of the root's sender."
+      },
+      "preview": {
+        "type": "string",
+        "optional": true,
+        "description": "Body of the root when it is a text message. The device decrypts it. Hidden when absent."
+      },
+      "replies": {
+        "type": "int",
+        "description": "bipe_thread_replies with ThreadListItem.numReplies."
+      }
+    }
+  },
+  "state": {
+    "threads": {
+      "type": "list",
+      "description": "ThreadListService.items, in the order the service gives.",
+      "of": {
+        "type": "ThreadRow"
+      }
+    },
+    "isLoading": {
+      "type": "bool",
+      "description": "A first page is loading."
+    },
+    "reachedEnd": {
+      "type": "bool",
+      "description": "A page added no thread."
+    }
+  },
+  "actions": {
+    "appear": {
+      "effect": "Room.threadListService, then ThreadListService.paginate, then read ThreadListService.items."
+    },
+    "loadMore": {
+      "effect": "At the last row: paginate again, unless reachedEnd. A failed page changes nothing."
+    },
+    "openThread": {
+      "params": {
+        "rootEventId": {
+          "type": "string",
+          "description": "The root."
+        }
+      },
+      "effect": "Opens the thread view of spec threads for that root."
+    }
+  },
+  "strings": [
+    "bipe_thread_list_title",
+    "bipe_thread_list_empty",
+    "bipe_thread_replies"
+  ],
+  "sdk": [
+    "Room.threadListService",
+    "ThreadListService.paginate",
+    "ThreadListService.items",
+    "ThreadListItem.numReplies",
+    "ThreadListItem.rootEvent"
+  ],
+  "parity": [
+    "threads"
+  ],
+  "notes": [
+    "Empty and not loading: bipe_thread_list_empty.",
+    "The list reads a snapshot after each page. A thread that starts while the screen is open shows the next time it opens."
+  ]
+}

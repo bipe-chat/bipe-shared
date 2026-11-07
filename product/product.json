@@ -1581,7 +1581,7 @@
     {
       "id": "work-account-people",
       "area": "chat",
-      "icon": "group",
+      "icon": "headset",
       "milestone": "Work side: one speaker",
       "slug": {
         "pt": "quem-atende",

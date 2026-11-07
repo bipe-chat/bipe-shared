@@ -75,6 +75,29 @@ paths:
           content:
             application/json:
               schema: { $ref: "#/components/schemas/BadgeGone" }
+  /v1/badges/{userId}/proofs:
+    get:
+      summary: Every proof of an account (ADR 0275)
+      x-summary-pt: "Selos assinados de uma conta"
+      security: []
+      description: >
+        Public, no auth, like GET /v1/badges/{userId}. One badge envelope per valid proof, strongest first
+        (registries/schemes.json personAssurance). The first envelope is the one GET /v1/badges/{userId} answers. A
+        verified company has its cnpj badge only. A theft mark, a revoke or no proof gives an empty list. Apps verify
+        each envelope locally and drop the ones that fail. Cached 300 s.
+      parameters:
+        - name: userId
+          in: path
+          required: true
+          schema: { type: string }
+          description: Matrix user ID.
+      responses:
+        "200":
+          description: The proofs
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/BadgeProofs" }
+        "429": { $ref: "#/components/responses/Error" }
   /v1/brand-marks/{userId}:
     get:
       summary: The signed brand marks of an account (ADR 0162)
@@ -7927,6 +7950,10 @@ components:
         badge:
           $ref: "#/components/schemas/BadgeEnvelope"
           description: The same envelope as GET /v1/badges/{userId}. Absent when that call would not answer 200.
+        proofs:
+          type: array
+          items: { $ref: "#/components/schemas/BadgeEnvelope" }
+          description: The same envelopes as GET /v1/badges/{userId}/proofs, because this answer has no Matrix ID to call it with (ADR 0275 point 16). Present when badge is present.
     MyProfile:
       type: object
       required: [enabled, name, bio, has_photo]
@@ -8154,6 +8181,14 @@ components:
             not_active and not_found: a registry scan found the CNPJ no longer active or missing.
             staff: staff revoked the claim. revoked: any other end of the verification.
             stolen: a theft mark is on (ADR 0044); the badge comes back when the mark is cleared.
+    BadgeProofs:
+      type: object
+      required: [badges]
+      properties:
+        badges:
+          type: array
+          items: { $ref: "#/components/schemas/BadgeEnvelope" }
+          description: "Envelopes, strongest first (ADR 0275). Empty after a theft mark or a revoke."
     BrandMarks:
       type: object
       required: [marks]

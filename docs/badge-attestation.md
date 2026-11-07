@@ -38,6 +38,10 @@ Binding. Every badge binds to the account (ADR 0239):
 |---|---|---|
 | `msk` | every level | The account's cross-signing master key (Matrix unpadded base64), as the homeserver has it when the server signs. The master key signs every device of the account, so the badge shows on any of its devices. A company or institution account has several devices (ADR 0087, bipe#270). The Matrix SDK gives no sending device per event (bipe-chat/bipe#245, bipe-chat/bipe#596), so a device-bound badge cannot show on a message |
 
+A `pix` or `govbr` badge carries the master key of the verification (ADR 0239). A reset does not move it to the new key: the verifier answers `master_key_mismatch` until the person verifies again.
+
+One account can have one person badge per scheme (ADR 0275). `GET /v1/badges/{userId}/proofs` answers all of them, strongest first, and `GET /v1/badges/{userId}` answers the strongest.
+
 A badge with `dev` and no `msk` is `malformed` on every level. The verifier ignores `dev` when `msk` is present. `dev` was the device binding of `pix` and `govbr` before ADR 0239; no such badge was issued.
 
 Company fields (`lvl: "cnpj"`, a verified company, ADR 0042):

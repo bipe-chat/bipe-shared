@@ -60,6 +60,7 @@ const ENUMS = {
 
 // Schemas the apps do not model, with the reason.
 const NOT_IN_APPS = {
+  BadgeProofs: "bipe-chat/bipe#1236: the apps add this model with the proof lines",
   // The app verifier waits for the Rust core spike (bipe-chat/bipe#1172, ADR 0267).
   SignedListEnvelope: "bipe-chat/bipe#645",
   ...Object.fromEntries([
@@ -157,6 +158,8 @@ const GAPS = {
   // server adds does not break the decode.
   "android:SignupRequest.password": "deliberate: device-first sign-up sends no password (ADR 0057)",
   "android:SignupRequest.handle": "deliberate: the handle is set after sign-up (ADR 0057)",
+  "ios:PublicProfile.proofs": "deliberate: the apps read GET /v1/badges/{userId}/proofs; only the web page has no Matrix ID (ADR 0275)",
+  "android:PublicProfile.proofs": "deliberate: the apps read GET /v1/badges/{userId}/proofs; only the web page has no Matrix ID (ADR 0275)",
   "android:InviteStatus": "deliberate: Android keeps status as a String, so a new status does not break the decode",
 };
 

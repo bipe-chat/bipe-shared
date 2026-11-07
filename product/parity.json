@@ -390,7 +390,7 @@
       "ios": { "status": "planned", "issue": 1236 },
       "android": { "status": "planned", "issue": 1236 },
       "web": { "status": "planned", "issue": 1237 },
-      "server": { "status": "planned", "issue": 1239 },
+      "server": { "status": "built", "evidence": ["bipe-api/src/badges.ts"] },
       "macos": { "status": "planned", "issue": 1165 },
       "windows": { "status": "planned", "issue": 1019 }
     },

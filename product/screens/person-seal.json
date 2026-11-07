@@ -1,0 +1,71 @@
+{
+  "id": "person-seal",
+  "title": "Person seal",
+  "flow": "people",
+  "summary": "A sheet that says how a person's name was checked: the verified name, the scheme, the month of the check and the end of validity. It says what the seal does not promise (ADR 0275).",
+  "state": {
+    "userId": {
+      "type": "string",
+      "description": "The person."
+    },
+    "mark": {
+      "type": "enum",
+      "values": [
+        "regular",
+        "fill"
+      ],
+      "description": "sealCheck regular for assurance bank, sealCheck fill for assurance state, at 40 pt, above the label."
+    },
+    "label": {
+      "type": "string",
+      "description": "bipe_badge_verified_via with the scheme name."
+    },
+    "verifiedName": {
+      "type": "string",
+      "description": "BadgePayload.name, under bipe_badge_verified."
+    },
+    "schemeName": {
+      "type": "string",
+      "description": "The name of the scheme in registries/schemes.json for the locale, under bipe_person_seal_scheme."
+    },
+    "checkedAt": {
+      "type": "date",
+      "description": "The month and year of BadgePayload.iat, under bipe_person_seal_checked. Never the day."
+    },
+    "validUntil": {
+      "type": "date",
+      "description": "The month and year of BadgePayload.exp, under bipe_person_seal_valid_until."
+    }
+  },
+  "actions": {
+    "close": {
+      "effect": "Closes the sheet."
+    }
+  },
+  "strings": [
+    "bipe_badge_verified_via",
+    "bipe_badge_verified",
+    "bipe_person_seal_scheme",
+    "bipe_person_seal_checked",
+    "bipe_person_seal_valid_until",
+    "bipe_person_seal_body",
+    "bipe_app_close"
+  ],
+  "sdk": [
+    "Client.encryption",
+    "Encryption.userIdentity",
+    "UserIdentity"
+  ],
+  "parity": [
+    "public-verification-level"
+  ],
+  "notes": [
+    "Layout, in order (approved by MZ, 7 November 2026): mark at 40 pt, label, verified name, scheme, month of the check, end of validity, bipe_person_seal_body.",
+    "Opens from the seal next to the name and from a proof line in person-profile, and from the seal in the chat-timeline header of a DM. The seal opens the strongest proof, a proof line opens that proof. chat-list and the sender line of a group row do not open it. An amber seal does not open it.",
+    "Only from a badge that verifies on this device (ADR 0275 point 2, security rule 2). When the badge no longer verifies while the sheet is open, the sheet closes. An unknown scheme has no sheet (fail closed).",
+    "Never shown: the CPF, the bank, the date of birth, documents, the email address, the carteirinha number, a ladder step, a percentage or missing steps (ADR 0275 points 5, 6 and 8).",
+    "The words stay about the name, never confiável, confiança or nível (ADR 0275 point 7). bipe_person_seal_body is the honest limit: a mule can pass Pix and gov.br (security rule 3).",
+    "Foreign seals (ADR 0272 point 7) need the issuer and the country on this sheet. registries/schemes.json has Brazilian person schemes only, so no foreign seal reaches this sheet today. A scheme of another country adds those two rows before it ships.",
+    "No issuer signs pix or govbr badges in production yet (bipe-chat/bipe#17, bipe-chat/bipe#543). Test with test badges."
+  ]
+}

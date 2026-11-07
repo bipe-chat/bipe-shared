@@ -44,7 +44,7 @@
   },
   "state": {
     "roomName": { "type": "string", "description": "The chat name for the title." },
-    "peerSealMark": {"type": "enum", "values": ["none", "person", "company", "personSuspended", "companySuspended"], "optional": true, "description": "DM only: BipeCompanySeals.mark of the other person (person-profile notes), after the name in the header. Absent in a group."},
+    "peerSealMark": {"type": "enum", "values": ["none", "personBank", "personState", "company", "personSuspended", "companySuspended"], "optional": true, "description": "DM only: BipeCompanySeals.mark of the other person (person-profile notes), after the name in the header. Absent in a group."},
     "isOfficial": { "type": "bool", "description": "DM only: the other person's full user ID is in registries/official-accounts.json. The header shows the Bipe badge after the name (bipe_badge_official, label bipe_badge_official_a11y), as in chat-list." },
     "messages": {
       "type": "list",
@@ -133,7 +133,7 @@
     "bipe_unarchive_action",
     "bipe_settings_notifications",
     "bipe_gallery_title",
-    "bipe_badge_verified",
+    "bipe_badge_verified_via",
     "bipe_badge_company",
     "bipe_badge_suspended",
     "bipe_badge_company_suspended",
@@ -179,6 +179,6 @@
     "Profile change notice (ADR 0049, bipe-chat/bipe#598): in a joined 1:1 chat the app reads POST /v1/profile-facts for the other person when the chat opens, at most once an hour. The notice is a fact, not a block: it never hides a message, and a failed call shows nothing. Not in groups and not for requests (chat-request shows the facts lines).",
     "Theft mark (ADR 0044, bipe-chat/bipe#600): the app asks POST /v1/theft-marks for the other person of a 1:1 chat when the chat opens and at most every checkMinutes (registries/theft-protection.json). It verifies each statement with the badge keys (test-vectors/theft-marks.json). A failed call or an invalid statement shows nothing. Group chats do not check marks in this version.",
     "Upgraded groups (bipe-chat/bipe#773, Matrix room upgrades: m.room.tombstone and the m.room.create predecessor): when RoomInfo.successorRoom is set, a bar bipe_room_upgrade_replaced with the button bipe_room_upgrade_go takes the place of the composer; the button joins the successor (Client.joinRoomByIdOrAlias, via the server of the old room ID when it has one) and opens it. A failure shows bipe_error_generic. When RoomInfo.predecessorRoom is set, a line bipe_room_upgrade_continues (%1$s the old group's name, else bipe_group_common_no_room_name) above the timeline opens the old group. The chat list shows only the newest version of a group the person is in (DeduplicateVersions in chat-list). Default chosen: the copy says the group was replaced, never archived, so it does not read like the chat archive (Arquivo, bipe-chat/bipe#662). mz can overrule.",
-    "Seal in a chat (bipe-chat/bipe#596): the DM header shows peerSealMark. The sender line of a group row shows the mark of the sender after the name (timeline-rows). The mark comes from the signed badge only, never from a name, a room state or a profile field. Suspended here has no timeline notice: the security-change notice needs a device history that the SDK does not give (bipe-chat/bipe#33)."
+    "Seal in a chat (bipe-chat/bipe#596, ADR 0275): the DM header shows peerSealMark. A tap on a person seal in the header opens person-seal for the strongest proof; an amber seal opens nothing. The sender line of a group row shows the mark of the sender after the name (timeline-rows). The mark comes from the signed badge only, never from a name, a room state or a profile field. Suspended here has no timeline notice: the security-change notice needs a device history that the SDK does not give (bipe-chat/bipe#33)."
   ]
 }

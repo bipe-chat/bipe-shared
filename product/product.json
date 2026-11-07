@@ -2599,7 +2599,8 @@
             "Mil mensagens ou um milhão, o valor é o mesmo. Nenhum plano cobra por mensagem.",
             "Até 3 atendentes e 1.000 clientes ativos no Bipe, é de graça.",
             "Depois, R$ 1,00 por cliente ativo por ano e R$ 69 por atendente a mais por mês, em reais.",
-            "No piloto, a empresa paga metade, e esse valor vira crédito no primeiro ano."
+            "No piloto, a empresa paga metade, e esse valor vira crédito no primeiro ano.",
+            "Ofertas é opcional e cobra à parte, por seguidor. Só recebe quem escolheu seguir. Ainda não está no ar."
           ]
         },
         {
@@ -2709,7 +2710,8 @@
             "A thousand messages or a million, the amount is the same. No plan charges per message.",
             "Up to 3 agents and 1,000 active customers on Bipe, it is free.",
             "Then R$ 1.00 per active customer per year and R$ 69 per extra agent per month, in reais.",
-            "In the pilot, a company pays half, and that amount becomes credit in the first year."
+            "In the pilot, a company pays half, and that amount becomes credit in the first year.",
+            "Offers are optional and charged apart, per follower. Only people who chose to follow receive them. This is not live yet."
           ]
         },
         {
@@ -3162,7 +3164,7 @@
       },
       "halfFactor": 0.5,
       "offers": {
-        "$comment": "ADR 0270 (Proposed). Optional and outside customers.capYearly. free: followers at no charge. monthlyPerFollower: BRL. sendsPerMonth: the send limit.",
+        "$comment": "ADR 0270. Amounts are the proposal until the pilot ends (ADR 0075). Optional and outside customers.capYearly. free: followers at no charge. monthlyPerFollower: BRL. sendsPerMonth: the send limit.",
         "adr": "0270",
         "free": 1000,
         "monthlyPerFollower": 0.4,

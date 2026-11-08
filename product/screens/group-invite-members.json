@@ -14,6 +14,7 @@
     }
   },
   "state": {
+    "reachNotice": { "type": "string", "optional": true, "description": "Set once after an invite fails with M_LIMIT_EXCEEDED: the reach notice of spec person-profile, shown above the list. The person keeps status failed (bipe-chat/bipe#1299)." },
     "mode": {
       "type": "enum",
       "values": ["pick", "invite"],
@@ -49,6 +50,10 @@
     "cancel": { "effect": "Closes. pick mode keeps the people group-create had." }
   },
   "strings": [
+    "bipe_reach_limit_body",
+    "bipe_reach_limit_body_none",
+    "bipe_account_status_raise_verify",
+    "bipe_account_status_raise_wait",
     "bipe_app_group_add_people",
     "bipe_app_people_search",
     "bipe_app_people_contacts",
@@ -76,6 +81,7 @@
   ],
   "parity": ["group-types"],
   "notes": [
+    "Reach budget (bipe-chat/bipe#1299): an invite that fails with M_LIMIT_EXCEEDED reads GET /v1/me/reach once and sets reachNotice (spec person-profile notes). The person shows as failed and stays not invited.",
     "Contacts are the people the user already talks to: the other person of each DM (Client.getDmRoom answers which), the members of the user's groups, invite pairs (GET /v1/me/invite-connections, ADR 0034) and, when phone discovery is on, the address-book matches of POST /v1/contacts/lookup. This is the same set that the who-can-message setting counts as contacts (ADR 0038), so these invites are not refused. Bipe logic: BipeInvitePairs (libraries/bipe invites), BipeInviteToGroup (libraries/bipe groups) and BipeHandleResolver (BipeKit, libraries/bipe).",
     "No user directory search. Client.searchUsers is not used: Bipe finds people by exact @ only, with no directory and no search (bipe_start_chat_search_by_handle, ADR 0013). The @ in the row comes from POST /v1/handles/resolve.",
     "invite mode needs RoomPowerLevels.canOwnUserInvite. Without it, group-details and group-members hide the entry to this screen.",

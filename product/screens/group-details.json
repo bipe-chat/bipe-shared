@@ -21,6 +21,7 @@
     }
   },
   "actions": {
+    "openPhoto": { "effect": "A tap on the group photo in the header opens spec avatar-viewer. Only when there is a photo (bipe-chat/bipe#829)." },
     "appear": {
       "effect": "Reads Room.roomInfo, subscribes with Room.subscribeToRoomInfoUpdates, and reads the power levels and the notification mode."
     },
@@ -41,6 +42,7 @@
     "openGroupLink": { "effect": "Opens group-link, for members with a power level of 50 or more who can change power levels." }
   },
   "strings": [
+    "bipe_avatar_open",
     "bipe_app_report_group",
     "bipe_gallery_title",
     "bipe_poll_history",

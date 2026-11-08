@@ -2992,6 +2992,39 @@
       }
     },
     {
+      "id": "profile-photo-viewer",
+      "name": "Open a profile or group photo full screen",
+      "ios": {
+        "status": "built",
+        "evidence": [
+          "bipe-app/ios/Bipe/People/AvatarPhotoViewer.swift"
+        ]
+      },
+      "android": {
+        "status": "built",
+        "evidence": [
+          "bipe-app/android/app/src/main/kotlin/chat/bipe/app/people/AvatarPhotoViewer.kt"
+        ]
+      },
+      "web": {
+        "status": "planned",
+        "note": "the web client opens no photo full screen yet"
+      },
+      "server": {
+        "status": "n/a",
+        "reason": "The photo comes from the homeserver media repository; no Bipe API change"
+      },
+      "issue": 829,
+      "macos": {
+        "status": "planned",
+        "issue": 1165
+      },
+      "windows": {
+        "status": "planned",
+        "issue": 1019
+      }
+    },
+    {
       "id": "problem-reports",
       "name": "Report a problem to the Bipe team (files stay in Brazil)",
       "ios": {

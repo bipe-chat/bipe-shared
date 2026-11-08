@@ -51,6 +51,7 @@
     "profileFacts": {"type": "list", "of": {"type": "string", "description": "One formatted facts line."}, "description": "ADR 0049 facts of the person, in order (account age, photo, name), from POST /v1/profile-facts when the screen appears, with the account age at any age (ADR 0275 point 13). Empty when the call fails."}
   },
   "actions": {
+    "openPhoto": { "effect": "A tap on the person's photo in the header opens spec avatar-viewer. Only when there is a photo (bipe-chat/bipe#829)." },
     "appear": {
       "effect": "Client.getProfile for name and photo; POST /v1/handles/resolve for the @; GET /v1/accounts/{userId}/type; GET /v1/badges/{userId}, verified on the device, for the compact seal; GET /v1/badges/{userId}/proofs, each badge verified on the device, for proofs; GET /v1/profiles/{handle} for the bio; Client.getDmRoom; Client.ignoredUsers. The screen shows what it has and fills in the rest. With contacts permission: savedNumbers (see notes)."
     },
@@ -68,6 +69,7 @@
     "openSeal": { "effect": "isCompany with a company mark: opens company-seal. A person seal or a proof line: opens person-seal, for the strongest proof from the seal, for that proof from a line. An amber seal opens nothing." }
   },
   "strings": [
+    "bipe_avatar_open",
     "bipe_gallery_title",
     "bipe_dm_details_title",
     "bipe_app_person_message",

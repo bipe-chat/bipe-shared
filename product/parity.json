@@ -6075,8 +6075,16 @@
         "reason": "Client interaction over existing encrypted Matrix transport; no separate server UI"
       },
       "macos": {
-        "status": "planned",
-        "issue": 1164
+        "status": "testing",
+        "evidence": [
+          "bipe-app/macos/BipeMac/MacFiles.swift",
+          "bipe-app/macos/BipeMac/MacFileView.swift",
+          "bipe-app/macos/BipeMac/MacMedia.swift",
+          "bipe-app/macos/BipeMac/MacTimeline.swift",
+          "bipe-app/macos/BipeMac/MacMessagePayload.swift",
+          "bipe-app/macos/Tests/MacFileTests.swift"
+        ],
+        "note": "Mac tester artifact from bipe-app PR #533 passed universal Debug/Release and 53 native tests in CI run 42471880240. Picker/drop/paste sends support captions and replies; Quick Look, quarantined saves, visible extensions and temporary-file cleanup are implemented. Cross-client encrypted transfer acceptance remains in #1218."
       },
       "windows": {
         "status": "planned",

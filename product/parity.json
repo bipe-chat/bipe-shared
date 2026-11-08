@@ -6075,8 +6075,16 @@
         "reason": "Client interaction over existing encrypted Matrix transport; no separate server UI"
       },
       "macos": {
-        "status": "planned",
-        "issue": 1164
+        "status": "built",
+        "evidence": [
+          "bipe-app/macos/BipeMac/MacFiles.swift",
+          "bipe-app/macos/BipeMac/MacFileView.swift",
+          "bipe-app/macos/BipeMac/MacMedia.swift",
+          "bipe-app/macos/BipeMac/MacTimeline.swift",
+          "bipe-app/macos/BipeMac/MacMessagePayload.swift",
+          "bipe-app/macos/Tests/MacFileTests.swift"
+        ],
+        "note": "Mac supports picker/drop/paste file sends with captions and replies, native Quick Look, quarantined saves with visible extensions and temporary-file cleanup. Cross-client encrypted transfer acceptance remains in #1218."
       },
       "windows": {
         "status": "planned",

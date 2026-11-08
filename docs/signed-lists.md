@@ -7,7 +7,7 @@ The shared core publishes two lists that decide who counts as Bipe:
 
 Both lists use one signature envelope, one verification order and one distribution path. The associação signs both, as part of the shared core ([ADR 0175](https://github.com/bipe-chat/bipe/blob/main/docs/adr/0175-shared-core-stays-central.md)). The threats are bipe `docs/security.md` "Attacks on the allowlist" (A-1 to A-7) and O1.
 
-Written 26 October 2026. Status: format, sources, signing tool and bipe-api routes are built. Version 1 of each list is signed (7 November 2026). The homeserver job, a scheduled re-sign and the app verifier are not built. Test vectors: `test-vectors/signed-lists.json` (lists) and `test-vectors/badge-issuers.json` (badges with an issuer ID). No app, server or bipe-api code reads them yet.
+Written 26 October 2026. Status: format, sources, signing tool and bipe-api routes are built. Version 1 of each list is signed (7 November 2026). bipe-core verifies both lists (bipe-chat/bipe-app#535), and `tools/gen.mjs` bundles the newest envelopes and the signer set in the apps (`BipeRegistries.bundledOperatorList`, `bundledIssuerRegistry`, `listSignerKeys`). The homeserver job, a scheduled re-sign and the app fetch are not built. Test vectors: `test-vectors/signed-lists.json` (lists) and `test-vectors/badge-issuers.json` (badges with an issuer ID). No app, server or bipe-api code reads them yet.
 
 ## Terms
 
@@ -229,7 +229,7 @@ The device stores the envelope bytes as received, not a parsed copy, so the byte
 - `GET https://api.bipe.net.br/v1/operators` and `GET https://api.bipe.net.br/v1/issuers`: 200 with the newest envelope. No auth. `Cache-Control: public, max-age=300`. bipe-api in role `core` serves them (#645 step 2). The OpenAPI entry is part of that bipe-api step, not of this spec.
 - `GET /v1/operators/versions/{version}` and `GET /v1/issuers/versions/{version}`: every version ever signed. This is the public log of A-2: anyone can check that each change was signed and when.
 - The core serves the lists. The core does not sign them (bipe ADR 0276). The signer signs on mini4p and commits the envelope to this repo. `tools/gen.mjs` copies it to bipe-api.
-- The signed envelopes are also committed to this repo (public), one file per version. `registries/operators.json` and `registries/issuers.json` hold the unsigned payload source, `registries/list-signers.json` holds the signer sets, and `signed/operators/<version>.json` and `signed/issuers/<version>.json` hold the envelopes. Not built: the bundled list in the apps waits for bipe-chat/bipe#1172.
+- The signed envelopes are also committed to this repo (public), one file per version. `registries/operators.json` and `registries/issuers.json` hold the unsigned payload source, `registries/list-signers.json` holds the signer sets, and `signed/operators/<version>.json` and `signed/issuers/<version>.json` hold the envelopes. `tools/gen.mjs` writes the newest envelope of each type and the signer set into the generated `BipeRegistries` (Swift and Kotlin), so each app build bundles them.
 
 ### Apps (bipe-app iOS and Android, web chat)
 

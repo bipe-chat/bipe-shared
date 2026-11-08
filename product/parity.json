@@ -5680,11 +5680,35 @@
     {
       "id": "chat-assignment",
       "name": "Who has each customer chat of a work account, notes and names on replies inside the account (ADR 0284 phase A)",
-      "ios": "planned",
-      "android": "planned",
-      "web": "planned",
-      "server": "planned",
-      "issue": 1293,
+      "ios": {
+        "status": "built",
+        "evidence": [
+          "bipe-app/ios/Bipe/Business/WorkQueue.swift",
+          "bipe-app/ios/Bipe/Business/WorkChatBar.swift",
+          "bipe-app/ios/Bipe/Business/WorkNotes.swift"
+        ]
+      },
+      "android": {
+        "status": "built",
+        "evidence": [
+          "bipe-app/android/app/src/main/kotlin/chat/bipe/app/business/WorkQueue.kt",
+          "bipe-app/android/app/src/main/kotlin/chat/bipe/app/business/WorkChat.kt"
+        ]
+      },
+      "web": {
+        "status": "built",
+        "evidence": [
+          "bipe-app/web/src/work/chat-queue.ts",
+          "bipe-app/web/src/work/chat/WorkChatBar.tsx",
+          "bipe-app/web/src/work/work-notes.ts"
+        ]
+      },
+      "server": {
+        "status": "built",
+        "evidence": [
+          "bipe-api/src/business-chats.ts"
+        ]
+      },
       "macos": {
         "status": "planned",
         "issue": 1166

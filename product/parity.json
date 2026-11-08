@@ -2955,6 +2955,43 @@
       }
     },
     {
+      "id": "account-status",
+      "name": "Account status: first-contact limit and the reach notice",
+      "ios": {
+        "status": "built",
+        "evidence": [
+          "bipe-app/ios/Bipe/Settings/AccountStatusView.swift",
+          "bipe-app/ios/Bipe/People/PeopleService.swift"
+        ]
+      },
+      "android": {
+        "status": "built",
+        "evidence": [
+          "bipe-app/android/app/src/main/kotlin/chat/bipe/app/settings/AccountStatus.kt",
+          "bipe-app/android/app/src/main/kotlin/chat/bipe/app/people/PeopleService.kt"
+        ]
+      },
+      "web": {
+        "status": "planned",
+        "note": "the web client has no account status screen and no reach notice yet"
+      },
+      "server": {
+        "status": "built",
+        "evidence": [
+          "bipe-api/src/reach-tiers.ts"
+        ]
+      },
+      "issue": 846,
+      "macos": {
+        "status": "planned",
+        "issue": 1165
+      },
+      "windows": {
+        "status": "planned",
+        "issue": 1019
+      }
+    },
+    {
       "id": "problem-reports",
       "name": "Report a problem to the Bipe team (files stay in Brazil)",
       "ios": {

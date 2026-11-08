@@ -50,12 +50,17 @@
     "bipe_contacts_pending_invites",
     "bipe_app_contacts_loading",
     "bipe_invites_chat",
+    "bipe_reach_limit_body",
+    "bipe_reach_limit_body_none",
+    "bipe_account_status_raise_verify",
+    "bipe_account_status_raise_wait",
     "bipe_error_network",
     "bipe_error_rate_limited"
   ],
   "sdk": ["Client.getProfile", "Client.getDmRoom"],
   "parity": ["phone-discovery"],
   "notes": [
+    "Reach budget (bipe-chat/bipe#846): a new DM from a match row that fails with M_LIMIT_EXCEEDED shows the reach notice of spec person-profile.",
     "The numbers leave the phone only for the lookup. The server compares HMACs with linked numbers, returns only holders who allow discovery, and never stores the list (api/openapi.yaml /v1/contacts/lookup, bipe/docs/phone-link.md). The app keeps no copy of the numbers it sent.",
     "Limits: 500 numbers per request, a daily budget per account (lower for accounts younger than 7 days), 30 requests per hour. On 429, stop and show bipe_error_rate_limited. Check runs when the user opens the screen or pulls to refresh, not in the background.",
     "Normalisation: normalizePhone in tools/lib/registries.mjs is the reference; cases in test-vectors/phone-numbers.json. Bipe logic: BipePhoneNumber.normalize (BipeKit), BipePhoneNumber.kt and BipeAddressBook.kt (libraries/bipe contacts).",

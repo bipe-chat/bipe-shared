@@ -363,6 +363,8 @@ ${reg.workHours.defaultDays.map((d) => `        (day: ${d.day}, ranges: [${d.ran
     public static let workReplyByField = ${swiftString(reg.workNotes.replyByField)}
     public static let workReplyByBody = ${swiftString(reg.workNotes.replyByBody)}
     public static let workNoteBodyMaxLength = ${reg.workNotes.bodyMaxLength}
+    /// Localpart prefix of a member identity (bipe ADR 0284 point 1, registries/accounts.json).
+    public static let memberLocalpartPrefix = ${swiftString(reg.accounts.memberLocalpartPrefix)}
 
     /// Assistant sends (bipe ADR 0210, bipe-chat/bipe#439; registries/mcp-tools.json personalSend). Rules: test-vectors/assistant-send.json.
     public static let assistantSendAccountDataType = ${swiftString(reg.mcpTools.personalSend.accountDataType)}
@@ -812,6 +814,8 @@ ${reg.workHours.defaultDays.map((d) => `        ${d.day} to listOf(${d.ranges.ma
     const val WORK_REPLY_BY_FIELD = ${kotlinString(reg.workNotes.replyByField)}
     const val WORK_REPLY_BY_BODY = ${kotlinString(reg.workNotes.replyByBody)}
     const val WORK_NOTE_BODY_MAX_LENGTH = ${reg.workNotes.bodyMaxLength}
+    /** Localpart prefix of a member identity (bipe ADR 0284 point 1, registries/accounts.json). */
+    const val MEMBER_LOCALPART_PREFIX = ${kotlinString(reg.accounts.memberLocalpartPrefix)}
 
     /** Assistant sends (bipe ADR 0210, bipe-chat/bipe#439; registries/mcp-tools.json personalSend). Rules: test-vectors/assistant-send.json. */
     const val ASSISTANT_SEND_ACCOUNT_DATA_TYPE = ${kotlinString(reg.mcpTools.personalSend.accountDataType)}

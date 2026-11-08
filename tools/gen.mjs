@@ -360,7 +360,8 @@ ${reg.workHours.defaultDays.map((d) => `        (day: ${d.day}, ranges: [${d.ran
     public static let workNotesRoomType = ${swiftString(reg.workNotes.roomType)}
     public static let workNotesAccountDataType = ${swiftString(reg.workNotes.accountDataType)}
     public static let workNoteField = ${swiftString(reg.workNotes.noteField)}
-    public static let workReplyByType = ${swiftString(reg.workNotes.replyByType)}
+    public static let workReplyByField = ${swiftString(reg.workNotes.replyByField)}
+    public static let workReplyByBody = ${swiftString(reg.workNotes.replyByBody)}
     public static let workNoteBodyMaxLength = ${reg.workNotes.bodyMaxLength}
 
     /// Assistant sends (bipe ADR 0210, bipe-chat/bipe#439; registries/mcp-tools.json personalSend). Rules: test-vectors/assistant-send.json.
@@ -808,7 +809,8 @@ ${reg.workHours.defaultDays.map((d) => `        ${d.day} to listOf(${d.ranges.ma
     const val WORK_NOTES_ROOM_TYPE = ${kotlinString(reg.workNotes.roomType)}
     const val WORK_NOTES_ACCOUNT_DATA_TYPE = ${kotlinString(reg.workNotes.accountDataType)}
     const val WORK_NOTE_FIELD = ${kotlinString(reg.workNotes.noteField)}
-    const val WORK_REPLY_BY_TYPE = ${kotlinString(reg.workNotes.replyByType)}
+    const val WORK_REPLY_BY_FIELD = ${kotlinString(reg.workNotes.replyByField)}
+    const val WORK_REPLY_BY_BODY = ${kotlinString(reg.workNotes.replyByBody)}
     const val WORK_NOTE_BODY_MAX_LENGTH = ${reg.workNotes.bodyMaxLength}
 
     /** Assistant sends (bipe ADR 0210, bipe-chat/bipe#439; registries/mcp-tools.json personalSend). Rules: test-vectors/assistant-send.json. */

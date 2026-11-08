@@ -10,7 +10,7 @@
         "type": "string",
         "description": "Note text, its sender seat when known, and its time."
       },
-      "description": "Notes whose noteField room_id is this chat (workNoteFromEvent), oldest first."
+      "description": "Notes whose noteField room_id is this chat (workNoteFromEvent), oldest first. The author is the seat name when seatId is not null. Reply-by notices never show here."
     },
     "phase": {
       "type": "enum",
@@ -31,7 +31,7 @@
           "description": "The note, at most bodyMaxLength."
         }
       },
-      "effect": "Creates the notes room on first use (roomType, encrypted, only the account's own user, room ID in account data accountDataType), then sends an m.room.message with msgtype m.text, the body and noteField {room_id}."
+      "effect": "Creates the notes room on first use (roomType, encrypted, only the account's own user, room ID in account data accountDataType), then sends an m.room.message with msgtype m.text, the body and noteField {room_id, seat_id} with this device's seat."
     },
     "close": {
       "effect": "Closes the sheet."

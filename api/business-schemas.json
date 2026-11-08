@@ -1200,7 +1200,8 @@
             "seat_window_closed",
             "attestation_invalid",
             "seat_required",
-            "chat_taken"
+            "chat_taken",
+            "geral_exists"
           ]
         },
         "reason": {
@@ -2843,6 +2844,94 @@
         },
         "status": {
           "$ref": "#/$defs/ChatAssignmentStatus"
+        }
+      }
+    },
+    "WorkMember": {
+      "description": "A person's member identity on a work account (bipe ADR 0284 points 1 to 6). user_id is a Matrix ID with the memberLocalpartPrefix. name is the seat name.",
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "seat_id",
+        "user_id",
+        "name"
+      ],
+      "properties": {
+        "seat_id": {
+          "type": "string"
+        },
+        "user_id": {
+          "type": "string",
+          "pattern": "^@"
+        },
+        "name": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 60
+        }
+      }
+    },
+    "WorkMembers": {
+      "description": "The member identities of the account and its Geral room. me: the member identity of the caller's seat, or null when it has none yet. geral_room_id: null until a member's app makes Geral and claims it.",
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "members",
+        "me",
+        "geral_room_id"
+      ],
+      "properties": {
+        "members": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/WorkMember"
+          }
+        },
+        "me": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "geral_room_id": {
+          "type": [
+            "string",
+            "null"
+          ]
+        }
+      }
+    },
+    "WorkMemberSession": {
+      "description": "Sign-in for the caller's member identity. password is new on every call, works for one m.login.password sign-in, and the app never stores it (ADR 0284, ADR 0283). The Matrix device of that sign-in belongs to this device's person.",
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "user_id",
+        "password"
+      ],
+      "properties": {
+        "user_id": {
+          "type": "string",
+          "pattern": "^@"
+        },
+        "password": {
+          "type": "string",
+          "minLength": 32
+        }
+      }
+    },
+    "WorkGeral": {
+      "description": "The Geral room that a member's app made.",
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "room_id"
+      ],
+      "properties": {
+        "room_id": {
+          "type": "string",
+          "pattern": "^!",
+          "maxLength": 255
         }
       }
     }

@@ -30,6 +30,7 @@ import { generateRelationshipNames } from "./lib/gen-relationship-names.mjs";
 import { generateStoreCaptures, loadStoreCaptures, STORE_CAPTURES_PATH } from "./lib/store-captures.mjs";
 import { generateReports } from "./lib/gen-reports.mjs";
 import { writeWeb } from "./lib/gen-web.mjs";
+import { generateRustRegistries, RUST_REGISTRIES_PATH } from "./lib/gen-rust.mjs";
 
 const root = join(dirname(fileURLToPath(import.meta.url)), "..");
 const args = process.argv.slice(2);
@@ -982,6 +983,9 @@ if (appIndex >= 0 || existsSync(appOut)) {
   writeFileSync(join(swiftDir, "BipeColors.swift"), appPost(`${TOKENS_HEADER}\n${generateColors("swift")}`, "swift"));
   writeFileSync(join(kotlinMain, "kotlin", ...KOTLIN_PACKAGE.split("."), "BipeColors.kt"),
     appPost(`${KOTLIN_LICENSE}${TOKENS_HEADER}\n@file:Suppress("all", "ktlint")\n\npackage ${KOTLIN_PACKAGE}\n\n${generateColors("kotlin")}`, "kotlin"));
+  // bipe-core, the shared Rust core (ADR 0267, bipe-chat/bipe#1277): the registry data it reads.
+  mkdirSync(dirname(join(appOut, RUST_REGISTRIES_PATH)), { recursive: true });
+  writeFileSync(join(appOut, RUST_REGISTRIES_PATH), appPost(generateRustRegistries(reg, HEADER), "swift"));
   // The web client (bipe-chat/bipe#901, ADR 0216): data, strings, screen ids, tokens and the reference rules.
   writeWeb(join(appOut, "web/src/bipe/generated"), {
     root,

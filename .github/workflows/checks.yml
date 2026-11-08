@@ -80,7 +80,7 @@ jobs:
             case "$1" in
               bipe) echo "docs/product.md" ;;
               bipe-api) echo "src/generated test/fixtures" ;;
-              bipe-app) echo "ios/BipeKit/Sources/BipeKit/Generated ios/BipeKit/Sources/BipeKit/Resources android/libraries/bipe/src/main web/src/bipe/generated" ;;
+              bipe-app) echo "ios/BipeKit/Sources/BipeKit/Generated ios/BipeKit/Sources/BipeKit/Resources android/libraries/bipe/src/main web/src/bipe/generated core/crates/bipe-core/src/generated" ;;
             esac
           }
           # Branch B in a sibling falls behind its main while the bipe-shared pull request is open. Generated

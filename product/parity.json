@@ -3377,7 +3377,10 @@
       },
       "issue": 534,
       "macos": {
-        "status": "planned",
+        "status": "testing",
+        "evidence": [
+          "bipe-app/macos/BipeMac/MacNotifications.swift"
+        ],
         "issue": 1162
       },
       "windows": {
@@ -5120,7 +5123,11 @@
       "issue": 771,
       "fork": true,
       "macos": {
-        "status": "planned",
+        "status": "testing",
+        "evidence": [
+          "bipe-app/macos/BipeMac/MacNotifications.swift"
+        ],
+        "note": "DMs show the peer photo; group notifications show the group photo, not the sender",
         "issue": 1167
       },
       "windows": {

@@ -1198,7 +1198,9 @@
             "seat_limit",
             "seat_window_open",
             "seat_window_closed",
-            "attestation_invalid"
+            "attestation_invalid",
+            "seat_required",
+            "chat_taken"
           ]
         },
         "reason": {
@@ -2754,6 +2756,93 @@
       "properties": {
         "seat_id": {
           "type": "string"
+        }
+      }
+    },
+    "ChatAssignmentStatus": {
+      "description": "open: someone must answer. waiting: the account waits for the customer. solved: nothing to do (bipe ADR 0284 point 15).",
+      "type": "string",
+      "enum": [
+        "open",
+        "waiting",
+        "solved"
+      ]
+    },
+    "ChatAssignment": {
+      "description": "Who has a customer chat of a work account, and its status (bipe ADR 0284 points 14 to 17). No content and no customer text. A chat with no record is open and in the pool. assignee_seat_id null: the chat is in the pool.",
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "room_id",
+        "assignee_seat_id",
+        "status",
+        "opened_at",
+        "updated_at"
+      ],
+      "properties": {
+        "room_id": {
+          "type": "string",
+          "pattern": "^!",
+          "maxLength": 255
+        },
+        "assignee_seat_id": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "status": {
+          "$ref": "#/$defs/ChatAssignmentStatus"
+        },
+        "opened_at": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "updated_at": {
+          "type": "string",
+          "format": "date-time"
+        }
+      }
+    },
+    "ChatAssignmentList": {
+      "description": "The records of the account's customer chats.",
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "chats"
+      ],
+      "properties": {
+        "chats": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/ChatAssignment"
+          }
+        }
+      }
+    },
+    "ChatAssignmentUpdate": {
+      "description": "Take a chat (assignee_seat_id = my seat), give it to another seat, or put it back in the pool (null). expected_assignee_seat_id is the assignee the client last saw (null for the pool). When it is not the current one, the API answers 409 chat_taken and changes nothing. status is optional and keeps its value when absent.",
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "assignee_seat_id",
+        "expected_assignee_seat_id"
+      ],
+      "properties": {
+        "assignee_seat_id": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "expected_assignee_seat_id": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "status": {
+          "$ref": "#/$defs/ChatAssignmentStatus"
         }
       }
     }

@@ -1,0 +1,104 @@
+{
+  "id": "work-chat-bar",
+  "title": "Who has a customer chat",
+  "flow": "business",
+  "summary": "A line at the top of a customer chat of a work account with two or more people (bipe ADR 0284 points 15 to 17): who has the chat, its status, Pegar, Passar, Devolver and Notas. Customers see nothing of it.",
+  "state": {
+    "assignee": {
+      "type": "string",
+      "optional": true,
+      "description": "Seat ID of the assignee. Absent: the chat is in the pool."
+    },
+    "assigneeName": {
+      "type": "string",
+      "optional": true,
+      "description": "Name of that seat from the seat list."
+    },
+    "mySeat": {
+      "type": "string",
+      "description": "Seat ID of this device (SeatList.me)."
+    },
+    "status": {
+      "type": "enum",
+      "values": [
+        "open",
+        "waiting",
+        "solved"
+      ],
+      "description": "ChatAssignmentStatus. open when there is no record."
+    },
+    "phase": {
+      "type": "enum",
+      "values": [
+        "idle",
+        "updating",
+        "taken",
+        "failed"
+      ],
+      "description": "taken: another person has the chat, shows bipe_chat_taken_banner. failed shows bipe_chat_assign_error."
+    }
+  },
+  "actions": {
+    "take": {
+      "effect": "PUT /v1/me/business/chats/{roomId} with assignee_seat_id = mySeat and expected_assignee_seat_id = assignee. 409 chat_taken: reads the chats again and shows taken."
+    },
+    "give": {
+      "params": {
+        "seat": {
+          "type": "string",
+          "description": "Seat ID picked from the active seats, under bipe_chat_give_title."
+        }
+      },
+      "effect": "PUT with assignee_seat_id = seat and expected_assignee_seat_id = assignee."
+    },
+    "release": {
+      "effect": "PUT with assignee_seat_id null and expected_assignee_seat_id = assignee."
+    },
+    "setStatus": {
+      "params": {
+        "status": {
+          "type": "enum",
+          "values": [
+            "open",
+            "waiting",
+            "solved"
+          ],
+          "description": "The new status."
+        }
+      },
+      "effect": "PUT with the current assignee in both fields and the new status."
+    },
+    "reply": {
+      "effect": "Before the first send in a chat in the pool, take runs. In a chat another person has, the composer shows bipe_chat_taken_reply first. After each send, sends the reply-by event (registries/work-notes.json) to the notes room."
+    },
+    "openNotes": {
+      "effect": "Opens work-notes for this chat."
+    }
+  },
+  "strings": [
+    "bipe_chat_assignee_other",
+    "bipe_chat_assignee_me",
+    "bipe_chat_assignee_none",
+    "bipe_chat_take",
+    "bipe_chat_give",
+    "bipe_chat_give_title",
+    "bipe_chat_release",
+    "bipe_chat_status_open",
+    "bipe_chat_status_waiting",
+    "bipe_chat_status_solved",
+    "bipe_chat_taken_banner",
+    "bipe_chat_taken_reply",
+    "bipe_chat_assign_error",
+    "bipe_chat_notes",
+    "bipe_chat_reply_by"
+  ],
+  "sdk": [],
+  "parity": [
+    "chat-assignment"
+  ],
+  "notes": [
+    "Inside the account, a reply to the customer shows bipe_chat_reply_by with the seat name when a valid reply-by event names it (replyByFromEvent, test-vectors/work-notes.json). With none, the reply shows no name.",
+    "The record is a help to divide work, not a lock: a person can always reply after bipe_chat_taken_reply.",
+    "With one person, this line does not show."
+  ]
+}

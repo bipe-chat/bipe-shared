@@ -5140,6 +5140,58 @@ paths:
                 $ref: "#/components/schemas/SeatList"
         default:
           $ref: "#/components/responses/BusinessToolError"
+  /v1/me/business/chats:
+    get:
+      summary: "Read who has each customer chat"
+      operationId: "getV1MeBusinessChats"
+      tags:
+        - "Agenda"
+      security:
+        -
+          matrix: []
+      description: "A device of this work account that belongs to a person may call this route, else 403 seat_required. Returns every record of the account. A customer chat with no record is open and in the pool (bipe ADR 0284)."
+      responses:
+        "200":
+          description: "Success"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ChatAssignmentList"
+        default:
+          $ref: "#/components/responses/BusinessToolError"
+  /v1/me/business/chats/{roomId}:
+    put:
+      summary: "Take, give or put back a customer chat"
+      operationId: "putV1MeBusinessChatsRoomId"
+      tags:
+        - "Agenda"
+      security:
+        -
+          matrix: []
+      description: "A device of this work account that belongs to a person may call this route, else 403 seat_required. Creates the record when it does not exist. 409 chat_taken when expected_assignee_seat_id is not the current assignee: the client reads the chats again. 404 not_found when assignee_seat_id is not an active seat of the account. Any person may give a chat to any person (bipe ADR 0284 point 17)."
+      parameters:
+        -
+          name: "roomId"
+          in: "path"
+          required: true
+          schema:
+            type: "string"
+            pattern: "^!"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ChatAssignmentUpdate"
+      responses:
+        "200":
+          description: "Success"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ChatAssignment"
+        default:
+          $ref: "#/components/responses/BusinessToolError"
   /v1/me/business/setup/second-seat-skip:
     post:
       summary: "Record that only the owner answers"
@@ -8382,6 +8434,14 @@ components:
       $ref: "./business-schemas.json#/$defs/SeatMe"
     SeatList:
       $ref: "./business-schemas.json#/$defs/SeatList"
+    ChatAssignmentStatus:
+      $ref: "./business-schemas.json#/$defs/ChatAssignmentStatus"
+    ChatAssignment:
+      $ref: "./business-schemas.json#/$defs/ChatAssignment"
+    ChatAssignmentList:
+      $ref: "./business-schemas.json#/$defs/ChatAssignmentList"
+    ChatAssignmentUpdate:
+      $ref: "./business-schemas.json#/$defs/ChatAssignmentUpdate"
     SeatCreate:
       $ref: "./business-schemas.json#/$defs/SeatCreate"
     SeatDeviceAssign:

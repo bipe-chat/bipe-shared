@@ -977,6 +977,25 @@
       }
     },
     {
+      "id": "work-chat-assignment",
+      "basis": "contract",
+      "places": [
+        "server"
+      ],
+      "pt": {
+        "name": "Quem atende cada conversa de uma conta de trabalho",
+        "what": "Para cada conversa de um cliente com a conta de trabalho: o código da conversa, a pessoa que atende, a situação (aberta, esperando o cliente, resolvida) e quando ela abriu e mudou. Nunca o que alguém escreveu. As notas internas ficam numa conversa criptografada da conta, não no servidor do Bipe.",
+        "why": "Dividir as conversas entre quem atende, para ninguém responder em dobro e nenhum cliente ficar sem resposta.",
+        "retention": "Até a conta sair da conversa ou a conta de trabalho ser apagada."
+      },
+      "en": {
+        "name": "Who handles each chat of a work account",
+        "what": "For each chat between a customer and the work account: the chat's code, the person who handles it, the status (open, waiting for the customer, solved) and when it opened and changed. Never what anyone wrote. Internal notes stay in an encrypted room of the account, not on Bipe's server.",
+        "why": "To divide the chats between the people who answer, so that nobody replies twice and no customer goes without an answer.",
+        "retention": "Until the account leaves the chat or the work account is deleted."
+      }
+    },
+    {
       "id": "business-stops",
       "basis": "consent",
       "places": [

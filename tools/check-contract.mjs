@@ -110,6 +110,7 @@ const NOT_IN_APPS = {
   GrowthReport: "staff page on the site only (ADR 0098)",
   StaffSummary: "staff page on the site only (bipe#394)",
   AccountCount: "staff route only",
+  CapacityReport: "staff page on the site only (ADR 0285)",
   StaffMetrics: "staff page on the site only",
   StaffWindow: "staff page on the site only",
   ExperimentsReport: "staff page on the site only (bipe#368)",

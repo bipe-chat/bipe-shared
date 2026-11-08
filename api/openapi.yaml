@@ -3103,6 +3103,24 @@ paths:
               schema: { $ref: "#/components/schemas/AccountCount" }
         "401": { $ref: "#/components/responses/Error" }
         "404": { $ref: "#/components/responses/Error" }
+  /v1/admin/capacity:
+    get:
+      summary: Staff capacity of the node (ADR 0285, bipe#1315)
+      description: >
+        Only for users that MAS marks admin (ADR 0056); every other user gets 404 not_found. CORS allows PUBLIC_SITE_URL.
+        The last sample of the capacity probe and one row per Brazil day with the day's maxima. Machine numbers, and
+        accounts through the minimum cell (bipe#371). Accounts per GB of memory and per vCPU use the last day's maxima.
+      security: [{ matrix: [] }]
+      parameters:
+        - { name: days, in: query, required: false, schema: { type: integer, minimum: 7, maximum: 731, default: 90 } }
+      responses:
+        "200":
+          description: Report
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/CapacityReport" }
+        "401": { $ref: "#/components/responses/Error" }
+        "404": { $ref: "#/components/responses/Error" }
   /v1/admin/transfer-readiness:
     get:
       summary: Staff report of accounts ready for the App Store transfer (bipe#531)
@@ -7819,7 +7837,7 @@ components:
     StaffSummary:
       type: object
       description: Keys are the page keys in bipe-web src/admin/staff-pages.ts. A null page object means its source is off or failed.
-      required: [min_cell, crescimento, convites, visitas, experimentos, espera, empresas, denuncias, lgpd]
+      required: [min_cell, crescimento, convites, visitas, experimentos, espera, empresas, denuncias, lgpd, servidor]
       properties:
         min_cell: { type: integer, description: "Counts of people below this are null." }
         crescimento:
@@ -7867,6 +7885,67 @@ components:
           required: [over]
           properties:
             over: { type: integer, description: "Rows past their limit, over all items of /v1/admin/retention." }
+        servidor:
+          type: [object, "null"]
+          description: Null when no capacity sample came in the last 15 minutes (ADR 0285).
+          required: [memory_pct, disk_pct, ooms_7d]
+          properties:
+            memory_pct: { type: integer, description: "Node memory used, percent, last sample." }
+            disk_pct: { type: integer, description: "Highest of node disk and any volume, percent, last sample." }
+            ooms_7d: { type: integer, description: "OOM kills in the last 7 days." }
+    CapacityReport:
+      type: object
+      required: [min_cell, last, days, accounts_per_gb, accounts_per_vcpu]
+      properties:
+        min_cell: { type: integer }
+        last:
+          type: [object, "null"]
+          description: Null before the first sample.
+          required: [taken_at, accounts, cpu_pct, memory_pct, disk_pct, cpu_allocatable_m, memory_allocatable, fs_capacity, volumes, pods]
+          properties:
+            taken_at: { type: string, format: date-time }
+            accounts: { type: [integer, "null"] }
+            cpu_pct: { type: integer }
+            memory_pct: { type: integer }
+            disk_pct: { type: integer, description: "Node disk." }
+            cpu_allocatable_m: { type: integer, description: "Millicores." }
+            memory_allocatable: { type: integer, description: "Bytes." }
+            fs_capacity: { type: integer, description: "Bytes." }
+            volumes:
+              type: array
+              items:
+                type: object
+                required: [name, used, capacity, pct]
+                properties:
+                  name: { type: string, description: "namespace/claim." }
+                  used: { type: integer }
+                  capacity: { type: integer }
+                  pct: { type: integer }
+            pods:
+              type: array
+              description: The 10 pods with the most memory.
+              items:
+                type: object
+                required: [name, memory]
+                properties:
+                  name: { type: string }
+                  memory: { type: integer, description: "Bytes." }
+        days:
+          type: array
+          description: Oldest first.
+          items:
+            type: object
+            required: [day, accounts, cpu_pct, memory_pct, disk_pct, volume_pct, oom_kills]
+            properties:
+              day: { type: string, format: date }
+              accounts: { type: [integer, "null"], description: "Highest account count of the day." }
+              cpu_pct: { type: integer }
+              memory_pct: { type: integer }
+              disk_pct: { type: integer }
+              volume_pct: { type: integer }
+              oom_kills: { type: integer }
+        accounts_per_gb: { type: [number, "null"], description: "Accounts per GB of memory used at the last day's maximum." }
+        accounts_per_vcpu: { type: [number, "null"], description: "Accounts per vCPU used at the last day's maximum." }
     VisitCount:
       type: object
       required: [visitors, views]

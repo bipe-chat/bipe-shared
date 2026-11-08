@@ -60,6 +60,7 @@
     "The API keeps text, logs and screenshots on the server in Brazil for 90 days, and sends only the text and metadata to Starlings with a staff-only link. The bot posts bipe_support_report_received into the user's support room (support-open). product/data.json and product/privacy.json already list this.",
     "The multipart field names are the API contract (api/openapi.yaml /v1/bug-reports/submit). Do not add fields.",
     "Bipe logic: the forks send this form from Element's rageshake code, which the new client must not copy. Write the multipart request from the contract.",
-    "When account-start found legacy data of the earlier Bipe app on this phone (legacyKept, bipe-chat/bipe#603), includeLogs also sends legacy-data.json as one more compressed-log part: structure only, never a value (account-start notes). It is there also after the account came back, as long as the legacy data is on the phone."
+    "When account-start found legacy data of the earlier Bipe app on this phone (legacyKept, bipe-chat/bipe#603), includeLogs also sends legacy-data.json as one more compressed-log part: structure only, never a value (account-start notes). It is there also after the account came back, as long as the legacy data is on the phone.",
+    "includeLogs also sends utd.json (bipe-chat/bipe#1122): the counts of the unable-to-decrypt hook on this phone, per UtdCause, the late decryptions and the time of the last one. No event ID, room ID, sender or text. The count stays on the phone until a report sends it. The app sends no other UTD data and no telemetry."
   ]
 }

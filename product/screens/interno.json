@@ -1,0 +1,75 @@
+{
+  "id": "interno",
+  "title": "Interno",
+  "flow": "business",
+  "summary": "Chats between the people of a work account, on their member identities (bipe ADR 0284 phase B): Geral with everyone, and private direct chats. A row at the top of Conversas of a work account with two or more people opens it. Customers never see it.",
+  "state": {
+    "phase": {
+      "type": "enum",
+      "values": [
+        "setup",
+        "ready",
+        "failed"
+      ],
+      "description": "setup: the member session signs in (bipe_interno_setup). failed shows bipe_interno_error with a retry."
+    },
+    "rooms": {
+      "type": "list",
+      "of": {
+        "type": "string",
+        "description": "Geral first, then direct chats newest first."
+      },
+      "description": "Rooms of the member identity's session."
+    },
+    "people": {
+      "type": "list",
+      "of": {
+        "type": "string",
+        "description": "Member user ID and seat name pairs from GET /v1/me/business/members, without me."
+      },
+      "description": "The other people, for the new chat picker."
+    }
+  },
+  "actions": {
+    "open": {
+      "effect": "On first open on this device: POST /v1/me/business/members/session, then m.login.password with that user and password on the same homeserver, as a second SDK session under the work account row. The app forgets the password after the sign-in. The session sets up its own cross-signing when the identity has none, and gets no recovery key prompt (Default). Later opens reuse the session."
+    },
+    "ensureGeral": {
+      "effect": "When GET members has geral_room_id null and the account has two or more members: create a private, invite-only, encrypted room named with bipe_interno_geral, invite every member, then PUT /v1/me/business/members/geral. 409 geral_exists: leave the new room, join the claimed one. When Geral exists: invite each member that is not in it yet."
+    },
+    "newChat": {
+      "params": {
+        "userId": {
+          "type": "string",
+          "description": "A member user ID from people."
+        }
+      },
+      "effect": "Opens the direct chat with that member, or creates it: private, invite only, encrypted, is_direct. bipe_interno_private_hint shows at the top."
+    },
+    "openRoom": {
+      "effect": "Opens the room in the normal chat timeline of the member session."
+    }
+  },
+  "strings": [
+    "bipe_interno_title",
+    "bipe_interno_row_body",
+    "bipe_interno_geral",
+    "bipe_interno_geral_body",
+    "bipe_interno_new",
+    "bipe_interno_pick_title",
+    "bipe_interno_private_hint",
+    "bipe_interno_setup",
+    "bipe_interno_error",
+    "bipe_interno_empty"
+  ],
+  "sdk": [],
+  "parity": [
+    "work-interno"
+  ],
+  "notes": [
+    "The member session never shows in the account switcher and never counts against maxPersonalAccounts.",
+    "The homeserver refuses every invite between a member identity and any other user (bipe ADR 0284 point 8), so the app offers only members.",
+    "Push: the member session registers its own pusher, so Interno rings per person. The work account row's notification settings cover it.",
+    "When the person leaves Quem atende, bipe-api deactivates the member identity and the session ends."
+  ]
+}

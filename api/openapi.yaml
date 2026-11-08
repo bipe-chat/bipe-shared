@@ -5192,6 +5192,75 @@ paths:
                 $ref: "#/components/schemas/ChatAssignment"
         default:
           $ref: "#/components/responses/BusinessToolError"
+  /v1/me/business/members:
+    get:
+      summary: "Read the member identities of the account"
+      operationId: "getV1MeBusinessMembers"
+      tags:
+        - "Agenda"
+      security:
+        -
+          matrix: []
+      description: "A device of the work account (not a member identity) that belongs to a person, else 403 seat_required. Returns the member identities of the active seats, the caller's own and the Geral room (bipe ADR 0284)."
+      responses:
+        "200":
+          description: "Success"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/WorkMembers"
+        default:
+          $ref: "#/components/responses/BusinessToolError"
+  /v1/me/business/members/session:
+    post:
+      summary: "Sign in to my member identity"
+      operationId: "postV1MeBusinessMembersSession"
+      tags:
+        - "Agenda"
+      security:
+        -
+          matrix: []
+      description: "A device of the work account that belongs to a person, else 403 seat_required. Creates the member identity of the caller's seat when it has none (memberLocalpartPrefix, a random base32 part, the seat name as display name, no handle), sets a new random password and returns it once. The app signs in with m.login.password, then forgets the password. internal member_unavailable when MAS fails."
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/EmptyBusinessRequest"
+      responses:
+        "200":
+          description: "Success"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/WorkMemberSession"
+        default:
+          $ref: "#/components/responses/BusinessToolError"
+  /v1/me/business/members/geral:
+    put:
+      summary: "Claim the Geral room"
+      operationId: "putV1MeBusinessMembersGeral"
+      tags:
+        - "Agenda"
+      security:
+        -
+          matrix: []
+      description: "A device of the work account that belongs to a person, else 403 seat_required. The first claim wins. 409 geral_exists when the account already has a Geral room: the app leaves its own room and joins the one in GET /v1/me/business/members."
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/WorkGeral"
+      responses:
+        "200":
+          description: "Success"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/WorkMembers"
+        default:
+          $ref: "#/components/responses/BusinessToolError"
   /v1/me/business/setup/second-seat-skip:
     post:
       summary: "Record that only the owner answers"
@@ -8442,6 +8511,14 @@ components:
       $ref: "./business-schemas.json#/$defs/ChatAssignmentList"
     ChatAssignmentUpdate:
       $ref: "./business-schemas.json#/$defs/ChatAssignmentUpdate"
+    WorkMember:
+      $ref: "./business-schemas.json#/$defs/WorkMember"
+    WorkMembers:
+      $ref: "./business-schemas.json#/$defs/WorkMembers"
+    WorkMemberSession:
+      $ref: "./business-schemas.json#/$defs/WorkMemberSession"
+    WorkGeral:
+      $ref: "./business-schemas.json#/$defs/WorkGeral"
     SeatCreate:
       $ref: "./business-schemas.json#/$defs/SeatCreate"
     SeatDeviceAssign:

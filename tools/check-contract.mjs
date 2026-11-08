@@ -94,6 +94,9 @@ const NOT_IN_APPS = {
   ...Object.fromEntries([
     "ChatAssignmentStatus", "ChatAssignment", "ChatAssignmentList", "ChatAssignmentUpdate",
   ].map((name) => [name, "contract first (bipe#1291); app clients follow in bipe#1293"])),
+  ...Object.fromEntries([
+    "WorkMember", "WorkMembers", "WorkMemberSession", "WorkGeral",
+  ].map((name) => [name, "contract first (bipe#1294); app clients follow in bipe#1294"])),
   BusinessStop: "one boolean; the apps read it in a private type (bipe#1013)",
   DiscoverySettings: "one boolean; iOS sends it from a private request type in BipeAPIClient",
   ReachStatus: "contract first (bipe#851); the budget notice and \"Status da conta\" in the app follow in bipe#846",

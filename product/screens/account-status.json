@@ -1,0 +1,57 @@
+{
+  "id": "account-status",
+  "title": "Account status",
+  "flow": "settings",
+  "summary": "Shows the owner how many chats the account can start with people who do not know them, when one more frees up, and the step that raises the limit (security.md rule 11, bipe-chat/bipe#846). No score and no word for reputation.",
+  "state": {
+    "phase": {
+      "type": "enum",
+      "values": ["loading", "shown", "failed"],
+      "description": "loading: GET /v1/me/reach runs. shown: the reach state is known. failed: the read failed (bipe_error_generic)."
+    },
+    "tier": {
+      "type": "enum",
+      "values": ["unattested", "new", "normal", "verified", "company", "slowed"],
+      "optional": true,
+      "description": "ReachStatus.tier. Shown with bipe_account_status_tier_<tier>."
+    },
+    "budget": { "type": "int", "optional": true, "description": "ReachStatus.budget." },
+    "used": { "type": "int", "optional": true, "description": "ReachStatus.used." },
+    "resetsAt": { "type": "date", "optional": true, "description": "ReachStatus.resets_at. Absent when used is 0." },
+    "raiseBy": {
+      "type": "enum",
+      "values": ["verify", "wait"],
+      "optional": true,
+      "description": "ReachStatus.raise_by. Absent: no step the owner can take, and no line."
+    }
+  },
+  "actions": {
+    "appear": { "effect": "GET /v1/me/reach with the account token, retried once on 401. 200: shown. Anything else: failed." },
+    "retry": { "effect": "From failed: runs appear again." }
+  },
+  "strings": [
+    "bipe_account_status_title",
+    "bipe_account_status_footer",
+    "bipe_account_status_tier",
+    "bipe_account_status_tier_unattested",
+    "bipe_account_status_tier_new",
+    "bipe_account_status_tier_normal",
+    "bipe_account_status_tier_verified",
+    "bipe_account_status_tier_company",
+    "bipe_account_status_tier_slowed",
+    "bipe_account_status_used",
+    "bipe_account_status_resets",
+    "bipe_account_status_raise_verify",
+    "bipe_account_status_raise_wait",
+    "bipe_error_generic",
+    "bipe_app_retry"
+  ],
+  "sdk": [],
+  "parity": ["account-status"],
+  "notes": [
+    "Opens from the reachStatus row, first in Configurações › Conta (registries/settings.json).",
+    "bipe_account_status_used takes used and budget as platform-formatted numbers. bipe_account_status_resets takes resetsAt as a local date and time; no line when resetsAt is absent.",
+    "The budgets and thresholds are server configuration, not the contract (api/openapi.yaml /v1/me/reach). The screen shows the numbers the server sends and never computes them.",
+    "The Restricted state with an end date is not in ReachStatus yet; it comes with its own issue."
+  ]
+}

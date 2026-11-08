@@ -74,7 +74,13 @@
         ]
       },
       "fork": true,
-      "macos": {"status": "testing", "evidence": ["bipe-app/macos/BipeMac/MacChatRequests.swift"], "note": "In bipe-app#509: box, trust facts, accept, decline, block, report, request_rooms write. Group invite rows are in #1163, the who-can-message link in #1165. The Mac has no address book. Cross-device acceptance remains in #1221."},
+      "macos": {
+        "status": "testing",
+        "evidence": [
+          "bipe-app/macos/BipeMac/MacChatRequests.swift"
+        ],
+        "note": "In bipe-app#509: box, trust facts, accept, decline, block, report, request_rooms write. Group invite rows are in #1163, the who-can-message link in #1165. The Mac has no address book. Cross-device acceptance remains in #1221."
+      },
       "windows": {
         "status": "planned",
         "issue": 1019
@@ -418,9 +424,20 @@
           "bipe-web/src/badge.ts"
         ]
       },
-      "server": { "status": "built", "evidence": ["bipe-api/src/badges.ts"] },
-      "macos": { "status": "planned", "issue": 1165 },
-      "windows": { "status": "planned", "issue": 1019 }
+      "server": {
+        "status": "built",
+        "evidence": [
+          "bipe-api/src/badges.ts"
+        ]
+      },
+      "macos": {
+        "status": "planned",
+        "issue": 1165
+      },
+      "windows": {
+        "status": "planned",
+        "issue": 1019
+      }
     },
     {
       "id": "trust-facts",
@@ -3174,7 +3191,13 @@
         "reason": "Client behaviour; no Bipe server code"
       },
       "issue": 535,
-      "macos": {"status": "testing", "evidence": ["bipe-app/macos/BipeMac/MacRoomList.swift"], "note": "In bipe-app#509, the generated ADR 0141 rule. Cross-device acceptance remains in #1221."},
+      "macos": {
+        "status": "testing",
+        "evidence": [
+          "bipe-app/macos/BipeMac/MacRoomList.swift"
+        ],
+        "note": "In bipe-app#509, the generated ADR 0141 rule. Cross-device acceptance remains in #1221."
+      },
       "windows": {
         "status": "planned",
         "issue": 1019
@@ -5743,9 +5766,15 @@
         "reason": "Client interaction over existing encrypted Matrix transport; no separate server UI"
       },
       "macos": {
-        "status": "planned",
-        "issue": 1162,
-        "note": "Sends reply relations and restores reply drafts; quoted original rendering/navigation remain missing."
+        "status": "built",
+        "evidence": [
+          "bipe-app/macos/BipeMac/MacTimeline.swift",
+          "bipe-app/macos/BipeMac/MacDesign.swift",
+          "bipe-app/macos/BipeMac/MacReplyDetails.swift",
+          "bipe-app/macos/project.yml",
+          "bipe-app/macos/Tests/MacTimelineDetailsTests.swift"
+        ],
+        "note": "Mac quotes load original details and navigate through up to five history pages; edited marks and deleted placeholders share the Apple presentation. Native/device acceptance remains in #1217."
       },
       "windows": {
         "status": "planned",
@@ -5778,8 +5807,15 @@
         "reason": "Client interaction over existing encrypted Matrix transport; no separate server UI"
       },
       "macos": {
-        "status": "planned",
-        "issue": 1162
+        "status": "built",
+        "evidence": [
+          "bipe-app/macos/BipeMac/MacTimeline.swift",
+          "bipe-app/macos/BipeMac/MacDesign.swift",
+          "bipe-app/macos/BipeMac/MacReplyDetails.swift",
+          "bipe-app/macos/project.yml",
+          "bipe-app/macos/Tests/MacTimelineDetailsTests.swift"
+        ],
+        "note": "Mac quotes load original details and navigate through up to five history pages; edited marks and deleted placeholders share the Apple presentation. Native/device acceptance remains in #1217."
       },
       "windows": {
         "status": "planned",
@@ -5812,8 +5848,15 @@
         "reason": "Client interaction over existing encrypted Matrix transport; no separate server UI"
       },
       "macos": {
-        "status": "planned",
-        "issue": 1162
+        "status": "built",
+        "evidence": [
+          "bipe-app/macos/BipeMac/MacTimeline.swift",
+          "bipe-app/macos/BipeMac/MacDesign.swift",
+          "bipe-app/macos/BipeMac/MacReplyDetails.swift",
+          "bipe-app/macos/project.yml",
+          "bipe-app/macos/Tests/MacTimelineDetailsTests.swift"
+        ],
+        "note": "Mac quotes load original details and navigate through up to five history pages; edited marks and deleted placeholders share the Apple presentation. Native/device acceptance remains in #1217."
       },
       "windows": {
         "status": "planned",

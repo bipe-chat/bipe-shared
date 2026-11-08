@@ -5766,7 +5766,7 @@
         "reason": "Client interaction over existing encrypted Matrix transport; no separate server UI"
       },
       "macos": {
-        "status": "built",
+        "status": "testing",
         "evidence": [
           "bipe-app/macos/BipeMac/MacTimeline.swift",
           "bipe-app/macos/BipeMac/MacDesign.swift",
@@ -5774,7 +5774,7 @@
           "bipe-app/macos/project.yml",
           "bipe-app/macos/Tests/MacTimelineDetailsTests.swift"
         ],
-        "note": "Mac quotes load original details and navigate through up to five history pages; edited marks and deleted placeholders share the Apple presentation. Native/device acceptance remains in #1217."
+        "note": "Mac tester artifact from bipe-app PR #532 passed native Debug/Release builds and tests in CI run 42467741795. Quotes load original details and navigate through up to five history pages; edited marks and deleted placeholders share the Apple presentation. Cross-client device acceptance remains in #1217."
       },
       "windows": {
         "status": "planned",
@@ -5807,7 +5807,7 @@
         "reason": "Client interaction over existing encrypted Matrix transport; no separate server UI"
       },
       "macos": {
-        "status": "built",
+        "status": "testing",
         "evidence": [
           "bipe-app/macos/BipeMac/MacTimeline.swift",
           "bipe-app/macos/BipeMac/MacDesign.swift",
@@ -5815,7 +5815,7 @@
           "bipe-app/macos/project.yml",
           "bipe-app/macos/Tests/MacTimelineDetailsTests.swift"
         ],
-        "note": "Mac quotes load original details and navigate through up to five history pages; edited marks and deleted placeholders share the Apple presentation. Native/device acceptance remains in #1217."
+        "note": "Mac tester artifact from bipe-app PR #532 passed native Debug/Release builds and tests in CI run 42467741795. Quotes load original details and navigate through up to five history pages; edited marks and deleted placeholders share the Apple presentation. Cross-client device acceptance remains in #1217."
       },
       "windows": {
         "status": "planned",
@@ -5848,7 +5848,7 @@
         "reason": "Client interaction over existing encrypted Matrix transport; no separate server UI"
       },
       "macos": {
-        "status": "built",
+        "status": "testing",
         "evidence": [
           "bipe-app/macos/BipeMac/MacTimeline.swift",
           "bipe-app/macos/BipeMac/MacDesign.swift",
@@ -5856,7 +5856,7 @@
           "bipe-app/macos/project.yml",
           "bipe-app/macos/Tests/MacTimelineDetailsTests.swift"
         ],
-        "note": "Mac quotes load original details and navigate through up to five history pages; edited marks and deleted placeholders share the Apple presentation. Native/device acceptance remains in #1217."
+        "note": "Mac tester artifact from bipe-app PR #532 passed native Debug/Release builds and tests in CI run 42467741795. Quotes load original details and navigate through up to five history pages; edited marks and deleted placeholders share the Apple presentation. Cross-client device acceptance remains in #1217."
       },
       "windows": {
         "status": "planned",

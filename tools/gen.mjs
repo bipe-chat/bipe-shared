@@ -356,6 +356,12 @@ ${reg.workHours.defaultDays.map((d) => `        (day: ${d.day}, ranges: [${d.ran
     public static let draftField = ${swiftString(reg.drafts.field)}
     public static let draftBodyMaxLength = ${reg.drafts.bodyMaxLength}
     public static let draftClientMaxLength = ${reg.drafts.clientMaxLength}
+    /// Notes room of a work account (bipe ADR 0284, bipe-chat/bipe#1291; registries/work-notes.json). Rules: test-vectors/work-notes.json.
+    public static let workNotesRoomType = ${swiftString(reg.workNotes.roomType)}
+    public static let workNotesAccountDataType = ${swiftString(reg.workNotes.accountDataType)}
+    public static let workNoteField = ${swiftString(reg.workNotes.noteField)}
+    public static let workReplyByType = ${swiftString(reg.workNotes.replyByType)}
+    public static let workNoteBodyMaxLength = ${reg.workNotes.bodyMaxLength}
 
     /// Assistant sends (bipe ADR 0210, bipe-chat/bipe#439; registries/mcp-tools.json personalSend). Rules: test-vectors/assistant-send.json.
     public static let assistantSendAccountDataType = ${swiftString(reg.mcpTools.personalSend.accountDataType)}
@@ -798,6 +804,12 @@ ${reg.workHours.defaultDays.map((d) => `        ${d.day} to listOf(${d.ranges.ma
     const val DRAFT_FIELD = ${kotlinString(reg.drafts.field)}
     const val DRAFT_BODY_MAX_LENGTH = ${reg.drafts.bodyMaxLength}
     const val DRAFT_CLIENT_MAX_LENGTH = ${reg.drafts.clientMaxLength}
+    /** Notes room of a work account (bipe ADR 0284, bipe-chat/bipe#1291; registries/work-notes.json). Rules: test-vectors/work-notes.json. */
+    const val WORK_NOTES_ROOM_TYPE = ${kotlinString(reg.workNotes.roomType)}
+    const val WORK_NOTES_ACCOUNT_DATA_TYPE = ${kotlinString(reg.workNotes.accountDataType)}
+    const val WORK_NOTE_FIELD = ${kotlinString(reg.workNotes.noteField)}
+    const val WORK_REPLY_BY_TYPE = ${kotlinString(reg.workNotes.replyByType)}
+    const val WORK_NOTE_BODY_MAX_LENGTH = ${reg.workNotes.bodyMaxLength}
 
     /** Assistant sends (bipe ADR 0210, bipe-chat/bipe#439; registries/mcp-tools.json personalSend). Rules: test-vectors/assistant-send.json. */
     const val ASSISTANT_SEND_ACCOUNT_DATA_TYPE = ${kotlinString(reg.mcpTools.personalSend.accountDataType)}

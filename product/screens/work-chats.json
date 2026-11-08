@@ -1,0 +1,67 @@
+{
+  "id": "work-chats",
+  "title": "Conversas of a work account with people",
+  "flow": "business",
+  "summary": "Conversas of a work account with two or more people (bipe ADR 0284 phase A): filters Comigo, Sem ninguém and Todas, and who has each chat. With one person nothing changes.",
+  "state": {
+    "filter": {
+      "type": "enum",
+      "values": [
+        "mine",
+        "pool",
+        "all"
+      ],
+      "description": "mine: assignee_seat_id is my seat. pool: no record, or assignee_seat_id null. all: every chat. Default all."
+    },
+    "people": {
+      "type": "int",
+      "description": "Number of active seats from GET /v1/me/business/seats. The filters and assignee lines show only at 2 or more."
+    },
+    "assignees": {
+      "type": "list",
+      "of": {
+        "type": "string",
+        "description": "Room ID and seat name pairs from GET /v1/me/business/chats and the seat list."
+      },
+      "description": "Who has each chat, for the row line."
+    }
+  },
+  "actions": {
+    "load": {
+      "effect": "GET /v1/me/business/chats and GET /v1/me/business/seats when Conversas opens and when the app comes to the front."
+    },
+    "selectFilter": {
+      "params": {
+        "filter": {
+          "type": "enum",
+          "values": [
+            "mine",
+            "pool",
+            "all"
+          ],
+          "description": "The filter."
+        }
+      },
+      "effect": "Filters the chat list on the device. No call."
+    },
+    "openChat": {
+      "effect": "Opens the chat with work-chat-bar."
+    }
+  },
+  "strings": [
+    "bipe_chats_filter_mine",
+    "bipe_chats_filter_pool",
+    "bipe_chats_filter_all",
+    "bipe_chat_assignee_other",
+    "bipe_chat_assignee_me",
+    "bipe_chat_assignee_none"
+  ],
+  "sdk": [],
+  "parity": [
+    "chat-assignment"
+  ],
+  "notes": [
+    "Only customer chats of the work account have records. Anotações, the drafts room and the notes room never show in the filters.",
+    "A row shows bipe_chat_assignee_me, bipe_chat_assignee_other with the seat name, or nothing for the pool."
+  ]
+}

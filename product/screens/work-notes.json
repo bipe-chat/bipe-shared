@@ -1,0 +1,54 @@
+{
+  "id": "work-notes",
+  "title": "Internal notes on a customer chat",
+  "flow": "business",
+  "summary": "A sheet with the notes of one customer chat, from the notes room of the work account (bipe ADR 0284 point 18). Every person on the account reads them. The customer never does.",
+  "state": {
+    "notes": {
+      "type": "list",
+      "of": {
+        "type": "string",
+        "description": "Note text, its sender seat when known, and its time."
+      },
+      "description": "Notes whose noteField room_id is this chat (workNoteFromEvent), oldest first."
+    },
+    "phase": {
+      "type": "enum",
+      "values": [
+        "loading",
+        "ready",
+        "sending",
+        "failed"
+      ],
+      "description": "failed shows bipe_chat_notes_error."
+    }
+  },
+  "actions": {
+    "send": {
+      "params": {
+        "body": {
+          "type": "string",
+          "description": "The note, at most bodyMaxLength."
+        }
+      },
+      "effect": "Creates the notes room on first use (roomType, encrypted, only the account's own user, room ID in account data accountDataType), then sends an m.room.message with msgtype m.text, the body and noteField {room_id}."
+    },
+    "close": {
+      "effect": "Closes the sheet."
+    }
+  },
+  "strings": [
+    "bipe_chat_notes_title",
+    "bipe_chat_notes_hint",
+    "bipe_chat_notes_empty",
+    "bipe_chat_notes_placeholder",
+    "bipe_chat_notes_error"
+  ],
+  "sdk": [],
+  "parity": [
+    "chat-assignment"
+  ],
+  "notes": [
+    "The notes room is silent: it rings no phone (bipe ADR 0284 point 22)."
+  ]
+}

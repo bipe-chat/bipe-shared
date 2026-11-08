@@ -5641,6 +5641,23 @@
       }
     },
     {
+      "id": "chat-assignment",
+      "name": "Who has each customer chat of a work account, notes and names on replies inside the account (ADR 0284 phase A)",
+      "ios": "planned",
+      "android": "planned",
+      "web": "planned",
+      "server": "planned",
+      "issue": 1293,
+      "macos": {
+        "status": "planned",
+        "issue": 1166
+      },
+      "windows": {
+        "status": "planned",
+        "issue": 1019
+      }
+    },
+    {
       "id": "loja-web",
       "name": "Shop on the web: booking and orders with no account (ADR 0195)",
       "ios": {

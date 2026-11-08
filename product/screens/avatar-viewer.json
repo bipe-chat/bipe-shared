@@ -1,0 +1,26 @@
+{
+  "id": "avatar-viewer",
+  "title": "Profile photo viewer",
+  "flow": "people",
+  "summary": "Shows a person's or a group's photo full screen, with pinch and double-tap zoom, and closes (bipe-chat/bipe#829).",
+  "state": {
+    "name": { "type": "string", "description": "The person or group name, as the opening screen shows it. Spoken as the image label." },
+    "mxcUrl": { "type": "string", "optional": true, "description": "The Matrix avatar. Loaded as a large thumbnail (MediaLoader.thumbnail)." },
+    "publicPhotoUrl": { "type": "url", "optional": true, "description": "The public profile photo, when there is no Matrix avatar." },
+    "phase": { "type": "enum", "values": ["loading", "shown", "failed"], "description": "failed: no image loaded; the screen shows the name only." }
+  },
+  "actions": {
+    "zoom": { "effect": "Pinch or double tap: 1x to 4x." },
+    "close": { "effect": "The close button, or a swipe down on iOS and back on Android: back to the opening screen." }
+  },
+  "strings": [
+    "bipe_app_close"
+  ],
+  "sdk": ["Client.getMediaThumbnail"],
+  "parity": ["profile-photo-viewer"],
+  "notes": [
+    "Opens from spec person-profile and spec group-details (action openPhoto). The avatar there is a button labelled bipe_avatar_open.",
+    "No save and no share: the photo belongs to someone else (privacy). Your own photo changes in spec profile-edit, not here.",
+    "Black background in both themes, like spec media-viewer."
+  ]
+}

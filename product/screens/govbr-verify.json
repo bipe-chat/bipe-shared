@@ -51,6 +51,8 @@
     }
   },
   "strings": [
+    "bipe_govbr_step_sign_file",
+    "bipe_govbr_reason_wrong_document_file",
     "bipe_govbr_title",
     "bipe_govbr_intro",
     "bipe_govbr_guide_title",
@@ -97,6 +99,7 @@
     "The API has no answer for a gov.br account below silver: bipe_govbr_needs_level is a fixed line on the screen, not a result.",
     "The server makes the PDF and reads the name and the CPF from the signature. The app never makes a PDF, never shows a CPF and keeps no copy of the signed file after the upload.",
     "The flow lives in memory. When the app stops between the save and the share, the next PDF shows noOpenVerification; start makes a new challenge.",
-    "Web: none. Web has no trust ladder step."
+    "Web: none. Web has no trust ladder step.",
+    "File name (bipe-chat/bipe#998): the step text and the wrong_document reason name GovbrChallenge.fileName (bipe_<handle>_<code>.pdf) with bipe_govbr_step_sign_file and bipe_govbr_reason_wrong_document_file. The save dialog and the share sheet use the same name. registries/govbr.json fileName is the fallback when a challenge has none. bipe_govbr_step_sign and bipe_govbr_reason_wrong_document stay until no app build uses them."
   ]
 }

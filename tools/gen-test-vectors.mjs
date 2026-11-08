@@ -1124,6 +1124,8 @@ const workNote = (patch = {}, field = {}, content = {}) => ({
 });
 const noteCases = [
   ["a plain note", workNote()],
+  ["a note with its seat", workNote({}, { seat_id: "seat-bruno" })],
+  ["a note with a seat that left", workNote({}, { seat_id: "seat-carla" })],
   ["a message without the note field", { ...workNote(), content: { msgtype: "m.text", body: "oi" } }],
   ["a notice, not a text", workNote({}, {}, { msgtype: "m.notice" })],
   ["another sender", workNote({ sender: "@outro:bipe.net.br" })],
@@ -1134,17 +1136,19 @@ const noteCases = [
   ["a body at the limit", workNote({}, {}, { body: "a".repeat(reg.workNotes.bodyMaxLength) })],
   ["a body over the limit", workNote({}, {}, { body: "a".repeat(reg.workNotes.bodyMaxLength + 1) })],
 ];
-const replyBy = (patch = {}, content = {}) => ({
-  type: reg.workNotes.replyByType,
+const replyBy = (patch = {}, field = {}, content = {}) => ({
+  type: "m.room.message",
   sender: workCtx.ownUserId,
   ...patch,
-  content: { room_id: "!cliente:bipe.net.br", event_id: "$resposta", seat_id: "seat-ana", ...content },
+  content: { msgtype: "m.notice", body: reg.workNotes.replyByBody, ...content, [reg.workNotes.replyByField]: { room_id: "!cliente:bipe.net.br", event_id: "$resposta", seat_id: "seat-ana", ...field } },
 });
 const replyByCases = [
   ["a plain reply-by", replyBy()],
   ["another sender", replyBy({ sender: "@outro:bipe.net.br" })],
   ["a redacted reply-by", replyBy({ redacted: true })],
-  ["another event type", { ...replyBy(), type: "m.room.message" }],
+  ["another event type", { ...replyBy(), type: "chat.bipe.reply_by" }],
+  ["a text, not a notice", replyBy({}, {}, { msgtype: "m.text" })],
+  ["a notice without the field", { ...replyBy(), content: { msgtype: "m.notice", body: "oi" } }],
   ["a seat that left", replyBy({}, { seat_id: "seat-carla" })],
   ["an event ID without $", replyBy({}, { event_id: "resposta" })],
   ["a room ID without !", replyBy({}, { room_id: "cliente:bipe.net.br" })],

@@ -69,7 +69,7 @@
       "effect": "PUT with the current assignee in both fields and the new status."
     },
     "reply": {
-      "effect": "Before the first send in a chat in the pool, take runs. In a chat another person has, the composer shows bipe_chat_taken_reply first. After each send, sends the reply-by event (registries/work-notes.json) to the notes room."
+      "effect": "Before the first send in a chat in the pool, take runs. In a chat another person has, the composer shows bipe_chat_taken_reply first. After each send, sends the reply-by notice (an m.room.message with msgtype m.notice and replyByField, registries/work-notes.json) to the notes room."
     },
     "openNotes": {
       "effect": "Opens work-notes for this chat."

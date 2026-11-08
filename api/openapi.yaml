@@ -8390,7 +8390,14 @@ components:
       properties:
         verificationId: { type: string }
         pdf: { type: string, format: byte, description: "The challenge PDF, base64. About 2 KB." }
-        fileName: { type: string, const: "bipe-verificacao.pdf" }
+        fileName:
+          type: string
+          pattern: "^bipe_[a-z0-9._-]{1,64}_[A-Z0-9-]{3,16}\\.pdf$"
+          description: >
+            bipe_<handle>_<code>.pdf: the caller's @handle in lower case with every character outside a-z, 0-9, dot,
+            underscore and hyphen dropped, then the challenge code printed in the PDF (bipe-chat/bipe#998). An
+            account with no handle gets bipe_verificacao_<code>.pdf. Each attempt has its own name, so the person
+            can tell the files apart in the gov.br file picker.
         expiresAt: { type: string, format: date-time }
     VerificationStatus:
       type: object

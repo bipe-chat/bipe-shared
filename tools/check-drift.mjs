@@ -53,6 +53,13 @@ const TARGETS = [
     repoBase: "web/src/bipe",
     generatedOnly: ["generated"],
   },
+  // bipe-core, the shared Rust core (bipe-chat/bipe#1277).
+  {
+    repo: "bipe-app",
+    tmpBase: join(tmp, "app/core/crates/bipe-core/src"),
+    repoBase: "core/crates/bipe-core/src",
+    generatedOnly: ["generated"],
+  },
   // Store captures (bipe-chat/bipe#457): the sample data of the Android capture source.
   {
     repo: "bipe-app",

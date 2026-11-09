@@ -6239,7 +6239,7 @@
         "reason": "Client interaction over existing encrypted Matrix transport; no separate server UI"
       },
       "macos": {
-        "status": "built",
+        "status": "testing",
         "issue": 1219,
         "evidence": [
           "bipe-app/macos/BipeMac/MacVideo.swift",
@@ -6251,7 +6251,7 @@
           "bipe-app/macos/project.yml",
           "bipe-app/macos/Tests/MacVideoTests.swift"
         ],
-        "note": "Merged in bipe-app#568 as 200925257300f31cc5b8fc4ce895a17b78d514a3 after universal Mac Debug/Release, 77 native tests, all iOS configurations and policy checks passed on head30875867. Picker, Finder drop and paste retain video kind, caption and reply. Mac and iOS compile the same preparation, blurhash and duration formatting. Posters follow account and request rules without downloading the full movie. Native playback and quarantined saves use uncached SDK-decrypted leases; close, account reset, failure, cancellation and launch cleanup remove private temporary copies. Assets cannot follow references outside their file. Real encrypted Mac/iOS/Android transfer, sound, save and visual acceptance remain in #1219; gallery/share integrations remain #1164. Public tester evidence follows main CI42664967240."
+        "note": "Merged in bipe-app#568 as 200925257300f31cc5b8fc4ce895a17b78d514a3 after universal Mac Debug/Release, 77 native tests, all iOS configurations and policy checks passed on head30875867. Picker, Finder drop and paste retain video kind, caption and reply. Mac and iOS compile the same preparation, blurhash and duration formatting. Posters follow account and request rules without downloading the full movie. Native playback and quarantined saves use uncached SDK-decrypted leases; close, account reset, failure, cancellation and launch cleanup remove private temporary copies. Assets cannot follow references outside their file. Real encrypted Mac/iOS/Android transfer, sound, save and visual acceptance remain in #1219; gallery/share integrations remain #1164. Included in public Mac preview 1.0.1 (712), source 200925257300f31cc5b8fc4ce895a17b78d514a3. Main CI42664967240 passed universal Debug/Release, native tests and publication. Tester availability does not pass real-client acceptance."
       },
       "windows": {
         "status": "planned",

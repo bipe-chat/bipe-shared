@@ -420,6 +420,25 @@
       }
     },
     {
+      "id": "handle-move",
+      "basis": "contract",
+      "places": [
+        "server"
+      ],
+      "pt": {
+        "name": "Código para levar o @",
+        "what": "Um código de uso único, guardado só como hash, para levar o seu @ para uma conta de trabalho no mesmo celular.",
+        "why": "Mover o @ só quando as duas contas estão com você.",
+        "retention": "Até o código ser usado ou vencer em 10 minutos. Depois o Bipe apaga."
+      },
+      "en": {
+        "name": "Handle move code",
+        "what": "A one-time code, kept only as a hash, to move your handle to a work account on the same phone.",
+        "why": "To move the handle only when you hold both accounts.",
+        "retention": "Until the code is used or expires after 10 minutes. Then Bipe deletes it."
+      }
+    },
+    {
       "id": "public-profile",
       "basis": "consent",
       "places": [

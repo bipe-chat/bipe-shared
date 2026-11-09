@@ -63,6 +63,8 @@ const NOT_IN_APPS = {
   BadgeProofs: "deliberate: the apps read the raw signed envelopes in `badges` and verify each one (ADR 0275)",
   // The app verifier waits for the Rust core spike (bipe-chat/bipe#1172, ADR 0267).
   SignedListEnvelope: "bipe-chat/bipe#645",
+  // ADR 0287: the apps add the move in bipe-chat/bipe#1333.
+  HandleMoveCode: "bipe-chat/bipe#1333",
   ...Object.fromEntries([
     "BusinessToolError", "EmptyBusinessRequest", "PixChargeLink",
     "Queue", "QueueJoin", "QueuePlace", "QueuePlaceStatus", "QueuePolicy", "QueuePosition", "QueueWaitRange", "OwnerQueuePlace",

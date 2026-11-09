@@ -2242,6 +2242,56 @@ paths:
             application/json:
               schema: { $ref: "#/components/schemas/MyHandle" }
         "401": { $ref: "#/components/responses/Error" }
+  /v1/me/handle/move:
+    post:
+      summary: Start a handle move to a work account (ADR 0287)
+      description: >
+        The caller is a personal account with a handle. The API returns a one-time code that is valid
+        for 10 minutes and keeps only its hash. A new code replaces an unused one. The app on the same
+        phone then claims the code with the work account's session (POST /v1/me/handle/move/claim).
+        Errors: bad_request with message not_personal or no_handle.
+      security: [{ matrix: [] }]
+      responses:
+        "200":
+          description: Move code
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/HandleMoveCode" }
+        "400": { $ref: "#/components/responses/Error" }
+        "401": { $ref: "#/components/responses/Error" }
+        "429": { $ref: "#/components/responses/Error" }
+  /v1/me/handle/move/claim:
+    post:
+      summary: Claim a handle move with the work account (ADR 0287)
+      description: >
+        The caller is a work account with no handle. The code must be unused and less than 10 minutes
+        old, and both accounts must have a device on the same phone (PUT /v1/me/phone). In one
+        transaction the handle leaves the personal account and lands on the caller with no hold and no
+        cooldown, the handle history gets one row per account, and the public feed and its posts move
+        with the handle. The profile, the seal, chats and keys do not move. Errors: not_found for an
+        unknown, used or expired code; bad_request with message not_work_account, has_handle or
+        not_same_phone; handle_taken when the source no longer has the handle.
+      security: [{ matrix: [] }]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [code]
+              properties:
+                code: { type: string, minLength: 8, maxLength: 64 }
+      responses:
+        "200":
+          description: The caller's handle after the move
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/MyHandle" }
+        "400": { $ref: "#/components/responses/Error" }
+        "401": { $ref: "#/components/responses/Error" }
+        "404": { $ref: "#/components/responses/Error" }
+        "409": { $ref: "#/components/responses/Error" }
+        "429": { $ref: "#/components/responses/Error" }
   /v1/handle-changes:
     post:
       summary: Handle change history for Matrix IDs the caller shares rooms with (ADR 0066)
@@ -8332,6 +8382,12 @@ components:
         user_id: { type: string }
         handle: { type: string }
         changeable_at: { type: string, format: date-time, description: "Absent when a change is allowed now." }
+    HandleMoveCode:
+      type: object
+      required: [code, expires_at]
+      properties:
+        code: { type: string, description: "One-time code. The app passes it to the claim and never shows it." }
+        expires_at: { type: string, format: date-time }
     HandleChange:
       type: object
       required: [user_id, at]

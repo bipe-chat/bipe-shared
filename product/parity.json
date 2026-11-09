@@ -966,12 +966,18 @@
       "id": "handle-move",
       "name": "Move a handle from a personal account to a work account on the same phone (ADR 0287, bipe#1333)",
       "ios": {
-        "status": "planned",
-        "issue": 1333
+        "status": "built",
+        "evidence": [
+          "bipe-app/ios/Bipe/Handle/HandlePickView.swift",
+          "bipe-app/ios/BipeKit/Sources/BipeKit/BipeHandleMove.swift"
+        ]
       },
       "android": {
-        "status": "planned",
-        "issue": 1333
+        "status": "built",
+        "evidence": [
+          "bipe-app/android/app/src/main/kotlin/chat/bipe/app/handle/HandlePick.kt",
+          "bipe-app/android/libraries/bipe/src/main/kotlin/chat/bipe/shared/api/BipeApiHandleMove.kt"
+        ]
       },
       "web": {
         "status": "planned",

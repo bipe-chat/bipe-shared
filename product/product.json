@@ -2692,7 +2692,36 @@
       ],
       "cta": "Quer testar no piloto? Conte como vocês falam com os clientes hoje.",
       "ctaSubject": "Bipe para empresas",
-      "figureCaption": "Ilustração com dados de exemplo. O serviço ainda não está no ar."
+      "figureCaption": "Ilustração com dados de exemplo. O serviço ainda não está no ar.",
+      "accountModel": {
+        "heading": "Quem é quem numa conta de trabalho",
+        "intro": "A empresa tem uma conta própria no Bipe, separada da conta de cada pessoa. Várias pessoas atendem por ela, e o cliente fala sempre com a empresa.",
+        "you": "Você",
+        "terms": [
+          {
+            "name": "Pessoa",
+            "what": "Quem usa o Bipe. Uma pessoa pode ter mais de uma conta no mesmo celular."
+          },
+          {
+            "name": "Conta pessoal",
+            "what": "A sua conta, com o seu @. Só você lê as suas conversas."
+          },
+          {
+            "name": "Conta de trabalho",
+            "what": "A conta da empresa, com nome, @ e selo próprios. O cliente vê a empresa, nunca quem digitou."
+          },
+          {
+            "name": "Quem atende",
+            "what": "As pessoas que respondem pela empresa: um Responsável e os Atendentes. Um Atendente não precisa ter conta pessoal."
+          },
+          {
+            "name": "Interno",
+            "what": "Conversa só entre quem atende. O cliente não vê."
+          }
+        ],
+        "customerSees": "O cliente vê",
+        "caption": "Ilustração com dados de exemplo."
+      }
     },
     "en": {
       "nav": "Business",
@@ -2804,7 +2833,36 @@
       ],
       "cta": "Want to test it in the pilot? Tell us how you talk to customers today.",
       "ctaSubject": "Bipe for business",
-      "figureCaption": "Illustration with sample data. The service is not live yet."
+      "figureCaption": "Illustration with sample data. The service is not live yet.",
+      "accountModel": {
+        "heading": "Who is who in a work account",
+        "intro": "A company has its own Bipe account, apart from each person's account. Several people answer for it, and the customer always talks to the company.",
+        "you": "You",
+        "terms": [
+          {
+            "name": "Person",
+            "what": "Someone who uses Bipe. One person can hold more than one account on the same phone."
+          },
+          {
+            "name": "Personal account",
+            "what": "Your account, with your @handle. Only you read your chats."
+          },
+          {
+            "name": "Work account",
+            "what": "The company's account, with its own name, @handle and seal. The customer sees the company, never who typed."
+          },
+          {
+            "name": "Who answers",
+            "what": "The people who answer for the company: one Responsável and the Atendentes. An Atendente does not need a personal account."
+          },
+          {
+            "name": "Interno",
+            "what": "A chat only between the people who answer. The customer does not see it."
+          }
+        ],
+        "customerSees": "The customer sees",
+        "caption": "Illustration with sample data."
+      }
     }
   },
   "pricing": {

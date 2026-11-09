@@ -1014,6 +1014,7 @@
     "bipe_account_new_company": "Work account",
     "bipe_account_new_company_body": "You answer for your work, with or without a CNPJ. It stays outside the personal account limit.",
     "bipe_account_company_owner": "%1$s's work account",
+    "bipe_account_work_line": "Work account",
     "bipe_account_new_company_owner": "The work account stays with your account %1$s on this phone.",
     "bipe_account_new_existing": "Sign in to an existing account",
     "bipe_account_new_existing_body": "An account you made on another phone.",

@@ -1014,6 +1014,7 @@
     "bipe_account_new_company": "Conta de trabalho",
     "bipe_account_new_company_body": "Você responde pelo seu trabalho, com ou sem CNPJ. Ela fica fora do limite de contas pessoais.",
     "bipe_account_company_owner": "Conta de trabalho de %1$s",
+    "bipe_account_work_line": "Conta de trabalho",
     "bipe_account_new_company_owner": "A conta de trabalho fica junto com a sua conta %1$s neste celular.",
     "bipe_account_new_existing": "Entrar numa conta que já existe",
     "bipe_account_new_existing_body": "Uma conta que você criou em outro celular.",

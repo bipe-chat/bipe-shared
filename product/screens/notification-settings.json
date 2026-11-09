@@ -107,6 +107,9 @@
     "enablePhone": {
       "effect": "phoneEnabled false: asks the system permission when it was never asked, else opens the system settings of the app. On return, push-registration registers."
     },
+    "openSystemSettings": {
+      "effect": "phoneEnabled true: opens the notification settings of this app in the system settings. iOS: UIApplication.openNotificationSettingsURLString. Android: Settings.ACTION_APP_NOTIFICATION_SETTINGS with EXTRA_APP_PACKAGE."
+    },
     "setChatsMode": {
       "params": {
         "mode": {
@@ -254,6 +257,7 @@
     "bipe_notifications_account_footer",
     "bipe_notifications_preview",
     "bipe_notifications_preview_footer",
+    "bipe_notifications_open_system",
     "bipe_work_hours_title",
     "bipe_work_hours_open_now",
     "bipe_work_hours_closed_now",
@@ -290,6 +294,7 @@
   "notes": [
     "Opens from settings-root, key notifications (registries/settings.json, screen element in the forks). settings-root shows bipe_settings_notifications_on or bipe_settings_notifications_off from phoneEnabled.",
     "phoneEnabled false: a card at the top with bipe_settings_notifications_off, bipe_notifications_permission_body and the button bipe_notifications_enable. The rows below stay editable: they are account rules and apply on every device.",
+    "phoneEnabled true: the row bipe_notifications_open_system is the first row of the screen (Android: above the checkup row) and runs openSystemSettings. With phoneEnabled false the card button does that job, so the row is hidden. Mac: no row.",
     "Mode map: all is RoomNotificationMode AllMessages, mentions is MentionsAndKeywordsOnly, off is Mute. getDefaultRoomNotificationMode takes isEncrypted and isOneToOne. Chats: reads the encrypted value and writes both. Groups (ADR 0254): reads the plain value. all and off write both. mentions writes mentions-only on the plain rule and keeps the encrypted rule on all messages, because mentions-only there stops the push.",
     "Chats offers all and off only (ADR 0141). A user who set mentions for DMs before keeps that server rule; the row then shows bipe_app_notify_mentions_legacy until they change it.",
     "One name per mode on every screen: the groups row shows mentions as bipe_app_notify_quiet, the same label as the quiet mode of chat-notifications. all and off use bipe_app_notification_mode_all and bipe_app_notification_mode_off, the same text as bipe_app_notify_all and bipe_app_notify_mute.",

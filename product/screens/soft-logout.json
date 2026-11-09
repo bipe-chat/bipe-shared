@@ -26,6 +26,7 @@
   "strings": [
     "bipe_soft_logout_title",
     "bipe_soft_logout_body",
+    "bipe_pin_reason_soft_logout",
     "bipe_soft_logout_removed",
     "bipe_app_cancel"
   ],

@@ -1,0 +1,62 @@
+{
+  "id": "account-pin-check",
+  "title": "Bipe PIN check",
+  "flow": "settings",
+  "summary": "The pad that asks a signed-in phone for the Bipe PIN (the senha of pinLength numbers) before an action that needs it, checked by the server (ADR 0283 rules 10 to 14, bipe-chat/bipe#1349). Every caller gives one reason line. Every pad has bipe_pin_forgot, which shows only the ways out that the account has.",
+  "state": {
+    "title": { "type": "string", "description": "The caller's title, for example bipe_email_title." },
+    "reason": { "type": "string", "description": "The caller's reason line, one of bipe_pin_reason_* with pinLength. It names the secret as the Bipe PIN of pinLength numbers and says why the app asks now." },
+    "phase": {
+      "type": "enum",
+      "values": ["entering", "checking", "blocked", "forgot"],
+      "description": "entering: the pad. checking: the caller's check runs. blocked: the server answered pin_blocked; the pad shows bipe_pin_blocked_body and takes no digits. forgot: the ways-out sheet."
+    },
+    "error": { "type": "string", "optional": true, "description": "bipe_pin_wrong with tries left, bipe_pin_blocked_body, bipe_error_rate_limited, bipe_error_network or bipe_error_generic." },
+    "ways": {
+      "type": "string",
+      "description": "The ways out of the account, from GET /v1/me/account when the forgot sheet opens: email (a verified recovery email) or none. A linked Apple or Google account never resets the PIN (ADR 0096), so it is not a way out."
+    }
+  },
+  "actions": {
+    "type": {
+      "params": { "digit": { "type": "string", "description": "0 to 9." } },
+      "effect": "Adds the digit. At pinLength digits, runs the caller's check (POST /v1/me/pin/check, or the caller's own route that takes the PIN). Pass: closes the pad with success haptic. 403 pin_wrong: bipe_pin_wrong with tries_left. 403 pin_blocked: phase blocked. Other errors as listed in error."
+    },
+    "forgot": {
+      "effect": "Opens the forgot sheet, titled bipe_pin_forgot_title, and reads GET /v1/me/account. email: bipe_pin_forgot_email with the verified address and recoveryDelayHours.email. none: bipe_pin_forgot_none. The sheet never names a way the account does not have. While the read runs, the sheet shows a spinner; a failed read shows bipe_error_network or bipe_error_generic."
+    },
+    "closeForgot": { "effect": "Back to the pad, in the phase it had." },
+    "cancel": { "effect": "Closes the pad. The caller treats it as a cancel. Nothing is sent." }
+  },
+  "strings": [
+    "bipe_pin_forgot",
+    "bipe_pin_forgot_title",
+    "bipe_pin_forgot_email",
+    "bipe_pin_forgot_none",
+    "bipe_pin_reason_email_set",
+    "bipe_pin_reason_email_remove",
+    "bipe_pin_reason_link_computer",
+    "bipe_pin_reason_approve_device",
+    "bipe_pin_reason_recovery_key",
+    "bipe_pin_reason_change",
+    "bipe_pin_reason_guardians",
+    "bipe_pin_reason_delete",
+    "bipe_pin_reason_soft_logout",
+    "bipe_pin_wrong",
+    "bipe_pin_blocked_body",
+    "bipe_error_rate_limited",
+    "bipe_error_network",
+    "bipe_error_generic",
+    "bipe_app_cancel",
+    "bipe_app_close"
+  ],
+  "sdk": [],
+  "parity": ["phone-account"],
+  "notes": [
+    "ADR 0283 rule 10: the secret is always the Bipe PIN of pinLength numbers, never only 'senha', because people also have a phone code and email passwords.",
+    "Callers and their reason: recovery-email-add send (bipe_pin_reason_email_set), the email remove (bipe_pin_reason_email_remove), link-computer-approve (bipe_pin_reason_link_computer), device-verification and link-phone-approve (bipe_pin_reason_approve_device), recovery-key-save (bipe_pin_reason_recovery_key), pin-change (bipe_pin_reason_change), theft-protection addGuardian (bipe_pin_reason_guardians), account-delete enterPin (bipe_pin_reason_delete), soft-logout needsPin (bipe_pin_reason_soft_logout with the display name).",
+    "bipe_pin_blocked_body names no way out (rule 14). The forgot button under it shows the ways that exist.",
+    "A signed-in phone ignores a recovery link (account-start openLink), so the email way runs on another phone. Reset on the phone you hold (rule 13) is bipe-chat/bipe#1350.",
+    "The PIN goes to the server only and is never kept."
+  ]
+}

@@ -3,11 +3,18 @@
   "title": "Pick your @",
   "flow": "signup",
   "summary": "Lets the person pick or change their @ (username), with a live check that it is free. After sign-up it opens from the handle prompt card above the chat list; settings open the same screen later.",
+  "types": {
+    "MoveTarget": {
+      "userId": { "type": "string", "description": "The work account Matrix ID." },
+      "name": { "type": "string", "description": "Its display name." }
+    }
+  },
   "state": {
     "suggestions": { "type": "list", "of": { "type": "string", "description": "A free handle without @." }, "description": "Escolha seu @ (bipe-chat/bipe#200): for an account with no @, BipeHandle.suggestions(displayName) checked in order with GET /v1/handles/{handle}/available; the first handleSuggestionsShown that are free. Shown under the field while input is empty." },
     "currentHandle": { "type": "string", "optional": true, "description": "The @ the account has now, from GET /v1/me/handle. Absent for a new account." },
     "nextChangeAt": { "type": "date", "optional": true, "description": "From GET /v1/me/handle: before this time a change is refused (cooldown)." },
     "input": { "type": "string", "description": "The field, without @, after BipeHandle sanitising (lower case, allowed characters only)." },
+    "moveTargets": { "type": "list", "of": { "type": "MoveTarget", "description": "A work account on this phone." }, "description": "Action moveToWork (bipe ADR 0287): while this account is personal and has an @, the work accounts on this phone (the account switcher sessions) whose GET /v1/me/handle has no handle. Empty for a work account." },
     "status": {
       "type": "enum",
       "values": ["empty", "tooShort", "tooLong", "invalidCharacters", "checking", "available", "reserved", "taken", "unchanged"],
@@ -26,6 +33,10 @@
       "params": { "text": { "type": "string", "description": "The new field text." } },
       "effect": "Sanitises the text, sets input, and starts the local check and then the availability check."
     },
+    "moveToWork": {
+      "params": { "target": { "type": "string", "description": "The work account Matrix ID, from moveTargets." } },
+      "effect": "Shows bipe_handle_move_confirm_title and bipe_handle_move_confirm_body. On confirm: POST /v1/me/handle/move with this account's session, then POST /v1/me/handle/move/claim with the work account's session. On success the field empties, phase is saved and the screen shows bipe_handle_move_done, plus bipe_handle_move_add_admin with the linked group name when GET /v1/me/feed of the work account finds a feed. On failure: bipe_handle_move_failed. The app never shows the code."
+    },
     "save": {
       "effect": "Sends PUT /v1/me/handle. On 200 sets phase to saved, shows bipe_handle_saved and closes. Save is on only when status is available."
     },
@@ -37,6 +48,12 @@
     }
   },
   "strings": [
+    "bipe_handle_move_action",
+    "bipe_handle_move_confirm_title",
+    "bipe_handle_move_confirm_body",
+    "bipe_handle_move_done",
+    "bipe_handle_move_add_admin",
+    "bipe_handle_move_failed",
     "bipe_handle_suggestions",
     "bipe_handle_prompt_title",
     "bipe_handle_prompt_body",
@@ -70,6 +87,7 @@
     "Calls to bipe-api with auth send the Matrix access token from Client.session.",
     "During the cooldown the field is read-only and the footer shows bipe_handle_cooldown_until with nextChangeAt from the system date formatter.",
     "Bipe logic: BipeHandle.sanitize and localProblem, BipeHandleAvailabilityChecker, BipeAPIClient.setMyHandle and removeMyHandle (iOS); BipeHandle, BipeHandleAvailabilityChecker, BipeHandlePrompt, BipeApiClient.setMyHandle (Android).",
-    "The chat notices about a handle change (handle-change-notice) are not part of this screen."
+    "The chat notices about a handle change (handle-change-notice) are not part of this screen.",
+    "After a save, a remove or a move, the app tells the screens that show the @ (profile-edit, profile-link) to load it again (bipe-chat/bipe#1328)."
   ]
 }

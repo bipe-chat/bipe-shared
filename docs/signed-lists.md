@@ -220,7 +220,16 @@ The device stores the envelope bytes as received, not a parsed copy, so the byte
 - `init` makes any missing key and writes the public keys into `registries/list-signers.json` and `registries/operators.json`.
 - `sign <operators|issuers> [days]` builds the payload from its sources, signs it, checks it with `tools/lib/signed-lists.mjs` and writes `signed/<typ>/<version>.json`.
 
-`tools/gen.mjs` fails when a committed version fails the verification order or the chain, or when the newest version does not match its sources. It copies `signed/` to bipe-api. No scheduled re-sign exists yet (bipe-chat/bipe#1242).
+`tools/gen.mjs` fails when a committed version fails the verification order or the chain, or when the newest version does not match its sources. It copies `signed/` to bipe-api.
+
+The re-sign job (bipe-chat/bipe#1242) signs with no person at the Keychain:
+
+- launchd runs `scripts/resign-lists.sh` on mini4p every day at 10:00 and at load (`scripts/resign-lists.plist`, agent `chat.bipe.list-resign`), as the copy on `origin/main`. It runs in mz's GUI session, the only session that can read the login Keychain: an SSH session gets "User interaction is not allowed". Checked on 9 November 2026: a GUI agent reads `bipe-list-signer`, and the login Keychain has no lock timeout. The key never leaves the Keychain, and no password is in a file.
+- The job works in its own clone (`~/.local/state/bipe-list-resign/bipe-shared`), reset to `origin/main` on each run, with a lock so that one run goes at a time. `tools/resign-lists.mjs` does two steps:
+  - **Publish:** each version on `main` that the core does not serve yet goes to `POST /v1/{typ}`, oldest first. The core checks it with this verification order against its newest version and keeps it in its database, so a new version needs no bipe-api deploy.
+  - **Sign:** a list whose newest version is 7 days old gets its next version (14 days of life, so a week of margin). The job pushes `lists/resign-<date>` and opens a pull request with auto-merge. While such a pull request is open, it signs nothing, because `prev` comes from the newest version.
+- Alert: `.github/workflows/list-age.yml` runs `tools/check-list-age.mjs` every day on GitHub. It fails, and opens or comments on an issue on bipe-chat/bipe, when `main` has no version signed in the last 8 days, when the core serves a list that expires within 5 days, or when the core is more than 2 days behind `main`. It runs off the mini, so it also reports a mini that is off.
+- Limits: the job needs mz logged in at the mini's console. The mini restarts after a power loss (`autorestart`), but with no automatic login, so the job stops until mz logs in again. The alert covers this, with a week of margin before readers reject the list.
 
 ## Distribution
 
@@ -228,7 +237,7 @@ The device stores the envelope bytes as received, not a parsed copy, so the byte
 
 - `GET https://api.bipe.net.br/v1/operators` and `GET https://api.bipe.net.br/v1/issuers`: 200 with the newest envelope. No auth. `Cache-Control: public, max-age=300`. bipe-api in role `core` serves them (#645 step 2). The OpenAPI entry is part of that bipe-api step, not of this spec.
 - `GET /v1/operators/versions/{version}` and `GET /v1/issuers/versions/{version}`: every version ever signed. This is the public log of A-2: anyone can check that each change was signed and when.
-- The core serves the lists. The core does not sign them (bipe ADR 0276). The signer signs on mini4p and commits the envelope to this repo. `tools/gen.mjs` copies it to bipe-api.
+- The core serves the lists. The core does not sign them (bipe ADR 0276). The signer signs on mini4p and commits the envelope to this repo. `tools/gen.mjs` copies it to bipe-api, and the re-sign job sends it to `POST /v1/{typ}` (see "Signing"), so the core serves it before the next deploy.
 - The signed envelopes are also committed to this repo (public), one file per version. `registries/operators.json` and `registries/issuers.json` hold the unsigned payload source, `registries/list-signers.json` holds the signer sets, and `signed/operators/<version>.json` and `signed/issuers/<version>.json` hold the envelopes. `tools/gen.mjs` writes the newest envelope of each type and the signer set into the generated `BipeRegistries` (Swift and Kotlin), so each app build bundles them.
 
 ### Apps (bipe-app iOS and Android, web chat)

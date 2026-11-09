@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<!-- mini4p: ~/Library/LaunchAgents/chat.bipe.list-resign.plist (bipe-chat/bipe#1242). Runs scripts/resign-lists.sh as it
+     is on bipe-shared origin/main every day at 10:00 and at load. Install: cp this file there, then
+     launchctl bootstrap gui/$(id -u) <that path>. It runs in the GUI session, so it can read the login Keychain. -->
+<plist version="1.0"><dict>
+  <key>Label</key><string>chat.bipe.list-resign</string>
+  <key>ProgramArguments</key><array>
+    <string>/bin/sh</string><string>-c</string>
+    <string>d="$HOME/.local/state/bipe-list-resign/bipe-shared"; { [ -d "$d/.git" ] || git clone -q https://github.com/bipe-chat/bipe-shared.git "$d"; } &amp;&amp; cd "$d" &amp;&amp; git fetch -q origin main &amp;&amp; git show origin/main:scripts/resign-lists.sh &gt; "$HOME/Library/Caches/bipe-list-resign.sh" &amp;&amp; exec sh "$HOME/Library/Caches/bipe-list-resign.sh"</string>
+  </array>
+  <key>EnvironmentVariables</key><dict>
+    <key>PATH</key><string>/opt/homebrew/bin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin</string>
+  </dict>
+  <key>StartCalendarInterval</key><dict>
+    <key>Hour</key><integer>10</integer>
+    <key>Minute</key><integer>0</integer>
+  </dict>
+  <key>RunAtLoad</key><true/>
+  <key>StandardOutPath</key><string>/Users/mz/Library/Logs/bipe-list-resign.log</string>
+  <key>StandardErrorPath</key><string>/Users/mz/Library/Logs/bipe-list-resign.log</string>
+</dict></plist>

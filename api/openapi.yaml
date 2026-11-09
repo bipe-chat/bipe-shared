@@ -2487,6 +2487,131 @@ paths:
             image/jpeg: {}
         "404": { $ref: "#/components/responses/Error" }
         "429": { $ref: "#/components/responses/Error" }
+  /v1/feeds/{handle}:
+    get:
+      summary: Public feed of a handle (ADR 0280, bipe-chat/bipe#1177)
+      x-summary-pt: "Feed público de um @: nome, selo e publicações"
+      security: []
+      description: >
+        No auth. Sets no cookie. Rate-limited per IP. The same 404 for "no such handle", "profile off",
+        "no feed" and "feed off". Newest post first, at most 20 per page. A removed post is not in the list.
+        Never returns a Matrix ID or the name of the admin who posted: the page shows the handle owner.
+      parameters:
+        - { name: handle, in: path, required: true, schema: { type: string } }
+        - { name: before, in: query, required: false, schema: { type: string, format: date-time }, description: "next_before of the previous page." }
+      responses:
+        "200":
+          description: The feed
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/PublicFeed" }
+        "404": { $ref: "#/components/responses/Error" }
+        "429": { $ref: "#/components/responses/Error" }
+  /v1/feeds/{handle}/posts/{id}:
+    get:
+      summary: One post of a public feed
+      x-summary-pt: "Uma publicação de um feed público"
+      security: []
+      description: No auth. Same visibility as the feed. A removed post answers 404.
+      parameters:
+        - { name: handle, in: path, required: true, schema: { type: string } }
+        - { name: id, in: path, required: true, schema: { type: string, maxLength: 40 } }
+      responses:
+        "200":
+          description: The post
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/FeedPost" }
+        "404": { $ref: "#/components/responses/Error" }
+        "429": { $ref: "#/components/responses/Error" }
+  /v1/me/feed/posts:
+    post:
+      summary: Publish a plain copy of a group post to the linked feed (ADR 0280 point 7b)
+      security: [{ matrix: [] }]
+      description: >
+        The admin's app sends the post to the group, encrypted, and this plain copy to the feed service.
+        The caller must be an admin (power level 50 or more, or a room v12 creator) of the room linked to a feed
+        that is on. The server checks the room state through the Synapse admin API and reads no message.
+        Else 404 not_found, which does not say why. 30 per hour per account.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: { $ref: "#/components/schemas/FeedPostRequest" }
+      responses:
+        "201":
+          description: Published
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/FeedPost" }
+        "400": { $ref: "#/components/responses/Error" }
+        "401": { $ref: "#/components/responses/Error" }
+        "404": { $ref: "#/components/responses/Error" }
+        "429": { $ref: "#/components/responses/Error" }
+  /v1/me/feed/posts/{id}:
+    delete:
+      summary: Remove a post from the feed
+      security: [{ matrix: [] }]
+      description: The handle owner or any admin of the linked room. The post leaves the page and the cache at once. Else 404 not_found.
+      parameters:
+        - { name: id, in: path, required: true, schema: { type: string, maxLength: 40 } }
+      responses:
+        "204": { description: Removed }
+        "401": { $ref: "#/components/responses/Error" }
+        "404": { $ref: "#/components/responses/Error" }
+  /v1/web/feed/{handle}:
+    get:
+      summary: Feed page for https://bipe.chat/@{handle} (ADR 0280, bipe-chat/bipe#1177)
+      x-summary-pt: "Página do feed público em bipe.chat/@"
+      security: []
+      description: >
+        No auth. Server-rendered HTML with the plain text of the posts, no script and no cookie. The site edge sends
+        https://bipe.chat/@{handle} here and shows the static profile page when this answers 404. A feed in test
+        (Public Canal gate closed) is noindex. Rate-limited per IP.
+      parameters:
+        - { name: handle, in: path, required: true, schema: { type: string } }
+        - { name: before, in: query, required: false, schema: { type: string, format: date-time } }
+      responses:
+        "200":
+          description: The feed page
+          content:
+            text/html:
+              schema: { type: string }
+        "404": { $ref: "#/components/responses/Error" }
+        "429": { $ref: "#/components/responses/Error" }
+  /v1/web/feed/{handle}/p/{id}:
+    get:
+      summary: Page of one post, at the stable post URL https://bipe.chat/@{handle}/p/{id} (ADR 0281)
+      x-summary-pt: "Página de uma publicação, com endereço fixo"
+      security: []
+      description: No auth. Same rules as the feed page.
+      parameters:
+        - { name: handle, in: path, required: true, schema: { type: string } }
+        - { name: id, in: path, required: true, schema: { type: string, maxLength: 40 } }
+      responses:
+        "200":
+          description: The post page
+          content:
+            text/html:
+              schema: { type: string }
+        "404": { $ref: "#/components/responses/Error" }
+        "429": { $ref: "#/components/responses/Error" }
+  /v1/web/feed/{handle}/rss:
+    get:
+      summary: RSS 2.0 of a public feed, at https://bipe.chat/@{handle}/rss (ADR 0281 stage 1)
+      x-summary-pt: "RSS de um feed público"
+      security: []
+      description: No auth. The newest 20 posts. Same visibility as the feed.
+      parameters:
+        - { name: handle, in: path, required: true, schema: { type: string } }
+      responses:
+        "200":
+          description: RSS 2.0
+          content:
+            application/rss+xml:
+              schema: { type: string }
+        "404": { $ref: "#/components/responses/Error" }
+        "429": { $ref: "#/components/responses/Error" }
   /v1/me/profile:
     get:
       summary: The caller's public profile, published or not
@@ -8217,6 +8342,33 @@ components:
           type: array
           items: { $ref: "#/components/schemas/BadgeEnvelope" }
           description: The same envelopes as GET /v1/badges/{userId}/proofs, because this answer has no Matrix ID to call it with (ADR 0275 point 16). Present when badge is present.
+    PublicFeed:
+      type: object
+      required: [handle, name, posts]
+      properties:
+        handle: { type: string }
+        name: { type: string, description: "The handle owner's public profile name, never the admin who posted." }
+        photo_url: { type: string, description: "As in PublicProfile. Absent without a photo." }
+        badge:
+          $ref: "#/components/schemas/BadgeEnvelope"
+          description: As in PublicProfile.
+        posts:
+          type: array
+          items: { $ref: "#/components/schemas/FeedPost" }
+        next_before: { type: string, format: date-time, description: "Pass as before for the next page. Absent on the last page." }
+    FeedPost:
+      type: object
+      required: [id, text, created_at, url]
+      properties:
+        id: { type: string, description: "Stable id, lower-case letters and digits." }
+        text: { type: string, maxLength: 4000, description: "Plain text. Links are plain URLs in the text; the page shows each with its domain (ADR 0280 point 6)." }
+        created_at: { type: string, format: date-time }
+        url: { type: string, description: "Stable URL of the post: https://bipe.chat/@{handle}/p/{id} (ADR 0281)." }
+    FeedPostRequest:
+      type: object
+      required: [text]
+      properties:
+        text: { type: string, minLength: 1, maxLength: 4000, description: "Plain text of the group post. The server refuses a payment link (pix) and an empty text with 400 bad_request." }
     MyProfile:
       type: object
       required: [enabled, name, bio, has_photo]

@@ -544,7 +544,7 @@
     "bipe_pin_problem_repeated_digit": "Repeated digits are easy to guess. Pick another PIN.",
     "bipe_pin_problem_sequence": "Sequences are easy to guess. Pick another PIN.",
     "bipe_pin_problem_date": "This looks like a date, and dates are easy to guess. Pick another PIN.",
-    "bipe_pin_enter_title": "Enter your PIN",
+    "bipe_pin_enter_title": "Enter your Bipe PIN",
     "bipe_pin_wrong": "That PIN doesn't match. Attempts left: %1$s.",
     "bipe_pin_blocked_title": "PIN locked",
     "bipe_pin_blocked_body": "Your Bipe PIN locked after %1$s wrong tries.",

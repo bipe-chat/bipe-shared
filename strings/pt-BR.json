@@ -544,7 +544,7 @@
     "bipe_pin_problem_repeated_digit": "Número repetido é fácil de adivinhar. Escolha outra senha.",
     "bipe_pin_problem_sequence": "Sequência é fácil de adivinhar. Escolha outra senha.",
     "bipe_pin_problem_date": "Parece uma data, e data é fácil de adivinhar. Escolha outra senha.",
-    "bipe_pin_enter_title": "Digite sua senha",
+    "bipe_pin_enter_title": "Digite sua senha do Bipe",
     "bipe_pin_wrong": "A senha não confere. Tentativas que sobram: %1$s.",
     "bipe_pin_blocked_title": "Senha travada",
     "bipe_pin_blocked_body": "Sua senha do Bipe travou depois de %1$s tentativas erradas.",

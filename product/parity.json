@@ -4406,14 +4406,20 @@
     },
     {
       "id": "public-feed",
-      "name": "Public feed of a group at bipe.chat/@handle: page, post URLs, RSS (ADR 0280, ADR 0281, bipe#1177)",
+      "name": "Public feed of a group at bipe.chat/@handle: page, post URLs, RSS, the owner's switch and the plain copy of each group post (ADR 0280, ADR 0281, bipe#1177, bipe#1260)",
       "ios": {
-        "status": "planned",
-        "issue": 1260
+        "status": "built",
+        "evidence": [
+          "bipe-app/ios/Bipe/Groups/GroupPublicFeed.swift",
+          "bipe-app/ios/Bipe/Timeline/ChatTimelineModel.swift"
+        ]
       },
       "android": {
-        "status": "planned",
-        "issue": 1260
+        "status": "built",
+        "evidence": [
+          "bipe-app/android/app/src/main/kotlin/chat/bipe/app/groups/GroupPublicFeed.kt",
+          "bipe-app/android/app/src/main/kotlin/chat/bipe/app/timeline/ChatTimelineModel.kt"
+        ]
       },
       "web": {
         "status": "planned",

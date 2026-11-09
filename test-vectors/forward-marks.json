@@ -276,6 +276,25 @@
           "count": 2147483647
         }
       }
+    },
+    {
+      "name": "drops the public feed mark",
+      "content": {
+        "msgtype": "m.text",
+        "body": "oi",
+        "chat.bipe.feed_post": {
+          "id": "abc",
+          "url": "https://bipe.chat/@ana/p/abc"
+        }
+      },
+      "newContent": null,
+      "expected": {
+        "msgtype": "m.text",
+        "body": "oi",
+        "chat.bipe.forward": {
+          "count": 1
+        }
+      }
     }
   ],
   "source": [

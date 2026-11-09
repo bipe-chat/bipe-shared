@@ -118,7 +118,7 @@ ADR 0170 lets several accredited issuers sign badges (bipe-chat/bipe#637). The i
 - Before the device has a valid registry, issuer `bipe` has region `br`, and the schemes and servers come from `registries/schemes.json` and `registries/regions.json`.
 - The app shows the issuer `name` from the registry in the profile and in the seal sheet (#637 step 4, per platform).
 - Life: for an issuer other than `bipe`, `exp - iat` must not be more than `lifeDays` days. Without this, an issuer could sign a badge that no revocation reaches.
-- Test vectors: `test-vectors/badge-issuers.json`. All badges in `test-vectors/badges.json` have no `iss`. No bipe-app consumer reads `badge-issuers.json` yet (7 November 2026); bipe-chat/bipe#637 adds it.
+- Test vectors: `test-vectors/badge-issuers.json`. All badges in `test-vectors/badges.json` have no `iss`. bipe-app reads it since 9 November 2026: `BadgeVerifier` on iOS and Android checks through bipe-core `verifyIssuedBadge` against the current signed issuer registry (bipe-chat/bipe-app#574), and both `SharedVectorTests` run these cases. The app shows no `person` or `org` seal yet, so those levels are no seal there.
 
 ## Verification order
 

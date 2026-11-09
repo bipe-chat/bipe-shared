@@ -7,7 +7,7 @@ The shared core publishes two lists that decide who counts as Bipe:
 
 Both lists use one signature envelope, one verification order and one distribution path. The associação signs both, as part of the shared core ([ADR 0175](https://github.com/bipe-chat/bipe/blob/main/docs/adr/0175-shared-core-stays-central.md)). The threats are bipe `docs/security.md` "Attacks on the allowlist" (A-1 to A-7) and O1.
 
-Written 26 October 2026. Status: format, sources, signing tool and bipe-api routes are built. Version 1 of each list is signed (7 November 2026). bipe-core verifies both lists (bipe-chat/bipe-app#535), and `tools/gen.mjs` bundles the newest envelopes and the signer set in the apps (`BipeRegistries.bundledOperatorList`, `bundledIssuerRegistry`, `listSignerKeys`). The homeserver job, a scheduled re-sign and the app fetch are not built. Test vectors: `test-vectors/signed-lists.json` (lists) and `test-vectors/badge-issuers.json` (badges with an issuer ID). No app, server or bipe-api code reads them yet.
+Written 26 October 2026. Status: format, sources, signing tool and bipe-api routes are built. Version 1 of each list is signed (7 November 2026). bipe-core verifies both lists (bipe-chat/bipe-app#535), and `tools/gen.mjs` bundles the newest envelopes and the signer set in the apps (`BipeRegistries.bundledOperatorList`, `bundledIssuerRegistry`, `listSignerKeys`). The apps fetch and verify both lists (bipe-chat/bipe-app#560), and a daily job on mini4p re-signs them (bipe-chat/bipe#1242). The homeserver job is in review (bipe-chat/bipe-api#363, bipe-chat/bipe-infra#250, 9 November 2026). The web client does not read the lists (bipe-chat/bipe#651). Test vectors: `test-vectors/signed-lists.json` (lists) and `test-vectors/badge-issuers.json` (badges with an issuer ID).
 
 ## Terms
 
@@ -249,9 +249,9 @@ The re-sign job (bipe-chat/bipe#1242) signs with no person at the Keychain:
 
 ### Homeservers and the core edge
 
-- A job on each homeserver fetches `/v1/operators` every 10 minutes, verifies it with the same order and the same vectors, and renders Synapse `federation_domain_whitelist` from the `server_name`s of `valid` entries (#645 step 3, bipe-infra). Whether Synapse reloads that option without a restart is unverified (26 October 2026).
+- A job on each homeserver fetches `/v1/operators` every 10 minutes, verifies it with the same order and the same vectors, and renders Synapse `federation_domain_whitelist` from the `server_name`s of `valid` entries other than its own (#645 step 3: bipe-api `src/allowlist-job.ts`, bipe-infra `k8s/bipe/federation-allowlist.yaml`). Synapse reads config only at start, so the job restarts Synapse when the names change, and only then.
 - The core edge renders its allowlist for `/_matrix/push/v1/notify` from `push_egress` of `valid` entries, through the same verifier.
-- The job keeps the stored version on disk and rejects a lower version, like the apps.
+- The job keeps the stored envelope in a Kubernetes Secret, next to the rendered config, and rejects a lower version, like the apps. A rejected list fails the Job and changes nothing.
 - Key pinning: the list holds `signing_keys`. Whether Synapse can pin a remote server's keys is unverified (security.md A-4, #633). Until then, the list carries the keys and nothing enforces them on the server side.
 
 ## Expiry and rollback protection

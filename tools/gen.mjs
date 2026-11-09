@@ -315,6 +315,8 @@ ${reg.workHours.defaultDays.map((d) => `        (day: ${d.day}, ranges: [${d.ran
 
     /// Badge signing keys a release build trusts (ADR 0123; registries/badge-keys.json): kid to raw Ed25519 public key, base64url.
     public static let badgeKeys: [String: String] = ${Object.keys(reg.badgeKeys.keys).length ? swiftMap(reg.badgeKeys.keys) : "[:]"}
+    /// Badge life from iat to exp, in days (registries/badge-keys.json). A badge from an issuer other than bipe may not live longer (docs/badge-attestation.md step 9).
+    public static let badgeLifeDays = ${reg.badgeKeys.lifeDays}
 
     /// Cleared DMs (bipe-chat/bipe#464; registries/cleared-chats.json): the global account data event with the markers.
     public static let clearedChatsEventType = ${swiftString(reg.clearedChats.eventType)}
@@ -773,6 +775,9 @@ ${reg.workHours.defaultDays.map((d) => `        ${d.day} to listOf(${d.ranges.ma
 
     /** Badge signing keys a release build trusts (ADR 0123; registries/badge-keys.json): kid to raw Ed25519 public key, base64url. */
     val badgeKeys: Map<String, String> = ${kotlinList("mapOf", Object.entries(reg.badgeKeys.keys).map(([k, v]) => `${kotlinString(k)} to ${kotlinString(v)}`))}
+
+    /** Badge life from iat to exp, in days (registries/badge-keys.json). A badge from an issuer other than bipe may not live longer (docs/badge-attestation.md step 9). */
+    const val BADGE_LIFE_DAYS = ${reg.badgeKeys.lifeDays}
 
     /** Cleared DMs (bipe-chat/bipe#464; registries/cleared-chats.json): the global account data event with the markers. */
     const val CLEARED_CHATS_EVENT_TYPE = ${kotlinString(reg.clearedChats.eventType)}

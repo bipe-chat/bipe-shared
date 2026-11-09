@@ -36,6 +36,9 @@ test("gen.mjs --app writes clean bipe-app output", () => {
     assert.match(rust, /^\/\/ SPDX-License-Identifier: AGPL-3\.0-only\n\/\/ Additional permission: APP-STORE-PERMISSION\.md/);
     const labels = JSON.parse(readFileSync(join(root, "registries/brand-marks.json"), "utf8")).labels;
     assert.ok(rust.includes(`pub const BRAND_MARK_LABELS: [&str; ${labels.length}] = [${labels.map((l) => JSON.stringify(l)).join(", ")}];`));
+    const pixMarks = JSON.parse(readFileSync(join(root, "registries/pix-marks.json"), "utf8"));
+    assert.ok(rust.includes(`pub const PIX_MARK_REL_TYPE: &str = ${JSON.stringify(pixMarks.relType)};`));
+    assert.ok(rust.includes(`pub const PIX_TXID_MAX_LENGTH: usize = ${pixMarks.txidMaxLength};`));
   } finally {
     rmSync(tmp, { recursive: true, force: true });
   }

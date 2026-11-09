@@ -411,6 +411,27 @@ paths:
             application/json:
               schema: { $ref: "#/components/schemas/SignupConfig" }
   /v1/operators:
+    post:
+      summary: Publish a newer signed operator list (bipe-chat/bipe#1242)
+      x-summary-pt: "Publicar nova versão assinada da lista de operadoras"
+      security: []
+      description: >
+        No auth: only the list signers can make an envelope that passes. The core checks it with the order of
+        docs/signed-lists.md against its newest version (signers, type, expiry, no rollback, chain) and keeps it, so
+        a re-signed list needs no deploy. The same envelope again answers its version. A rejection is bad_request with
+        the code of the verification order as reason. Body at most 256 KB. 10 per IP per minute.
+      requestBody:
+        required: true
+        content: { application/json: { schema: { $ref: "#/components/schemas/SignedListEnvelope" } } }
+      responses:
+        "200":
+          description: The version the core now has
+          content:
+            application/json:
+              schema: { type: object, required: [version], properties: { version: { type: integer, minimum: 1 } } }
+        "400": { $ref: "#/components/responses/Error" }
+        "413": { $ref: "#/components/responses/Error" }
+        "429": { $ref: "#/components/responses/Error" }
     get:
       summary: The newest signed operator list (bipe-chat/bipe#645)
       x-summary-pt: "Lista assinada de operadoras da Bipe"
@@ -435,6 +456,27 @@ paths:
         "404": { $ref: "#/components/responses/Error" }
         "429": { $ref: "#/components/responses/Error" }
   /v1/issuers:
+    post:
+      summary: Publish a newer signed issuer registry (bipe-chat/bipe#1242)
+      x-summary-pt: "Publicar nova versão assinada da lista de emissores"
+      security: []
+      description: >
+        No auth: only the list signers can make an envelope that passes. The core checks it with the order of
+        docs/signed-lists.md against its newest version (signers, type, expiry, no rollback, chain) and keeps it, so
+        a re-signed list needs no deploy. The same envelope again answers its version. A rejection is bad_request with
+        the code of the verification order as reason. Body at most 256 KB. 10 per IP per minute.
+      requestBody:
+        required: true
+        content: { application/json: { schema: { $ref: "#/components/schemas/SignedListEnvelope" } } }
+      responses:
+        "200":
+          description: The version the core now has
+          content:
+            application/json:
+              schema: { type: object, required: [version], properties: { version: { type: integer, minimum: 1 } } }
+        "400": { $ref: "#/components/responses/Error" }
+        "413": { $ref: "#/components/responses/Error" }
+        "429": { $ref: "#/components/responses/Error" }
     get:
       summary: The newest signed issuer registry (bipe-chat/bipe#637, ADR 0272)
       x-summary-pt: "Lista assinada de emissores de selos"

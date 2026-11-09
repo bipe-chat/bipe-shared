@@ -1083,6 +1083,8 @@ if (existsSync(resolve(apiOut, "../.."))) {
   copyFileSync(join(root, "tools/lib/reactions.mjs"), join(apiOut, "lib/reactions.mjs"));
   // Sealed reports (bipe-chat/bipe#697): the reference open and checks, and the wire types.
   copyFileSync(join(root, "tools/lib/reports.mjs"), join(apiOut, "lib/reports.mjs"));
+  // Signed lists (bipe-chat/bipe#1242): POST /v1/{typ} checks a new version with the reference verifier.
+  copyFileSync(join(root, "tools/lib/signed-lists.mjs"), join(apiOut, "lib/signed-lists.mjs"));
   writeFileSync(join(apiOut, "reports.ts"), generateApiTypes(loadBusinessSchemas(root, "api/report-schemas.json"), "api/report-schemas.json"));
   writeFileSync(join(apiOut, "business-api.ts"), generateApiTypes(loadBusinessSchemas(root)));
   copyFileSync(join(root, "api/internal-research.d.ts"), join(apiOut, "internal-research.d.ts"));

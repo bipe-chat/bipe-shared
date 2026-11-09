@@ -29,6 +29,7 @@
     },
     "canSend": { "type": "bool", "description": "text is not blank after trimming. When false, the send button turns into the record button." },
     "canPost": { "type": "bool", "description": "RoomPowerLevels.canOwnUserSendMessage for m.room.message and the person is not blocked (block-person), and the composer is not closed by publicationClosed. false: the composer is off, with the reason bar instead." },
+    "feedHandle": { "type": "string", "description": "Empty when none. bipe-chat/bipe#1260, ADR 0280 point 7b. GET /v1/me/feed/rooms/{roomId} in a publication-only group on the main timeline, for an admin or moderator; empty otherwise or on any failure. Not empty: a line bipe_group_public_feed_composer above the field, and send posts a public copy first (action send)." },
     "publicationClosed": { "type": "bool", "description": "A publication-only group (group-privacy publicationOnly), the main timeline, and the user is below publicationOnly.minPostLevel of registries/group-power-levels.json (a creator is never below it). A thread view stays open. The message menu has no bipe_app_message_action_reply and no edit while true." },
     "stickerSuggestions": { "type": "list", "of": { "type": "StickerItem", "description": "One sticker." }, "description": "The sticker strip above the field (ADR 0205). When text is one emoji or one word (see notes) and the setting chats.stickerSuggestions is on: the stickers that stickerMatches text, favourites first, then recents, then pack order, at most 12. Empty hides the strip." }
   },
@@ -43,7 +44,7 @@
       "effect": "Replaces the @word with a pill and adds it to mentions."
     },
     "send": {
-      "effect": "messageEventContentFromMarkdown with the text, the pills written as matrix.to links to the user (https://matrix.to/#/@user:server), then withMentions (userIds of the pills, room true for the whole group), then Timeline.send. Clears text and mentions and runs Room.clearComposerDraft."
+      "effect": "messageEventContentFromMarkdown with the text, the pills written as matrix.to links to the user (https://matrix.to/#/@user:server), then withMentions (userIds of the pills, room true for the whole group), then Timeline.send. Clears text and mentions and runs Room.clearComposerDraft. With feedHandle and no reply, edit or thread (bipe-chat/bipe#1260): POST /v1/me/feed/posts with the plain text first; on failure keep the text and show bipe_group_public_feed_failed; on success Room.sendRaw m.room.message {msgtype m.text, body, publicationOnly.feedPostKey: {id, url}} (plain body, no formatting or pills), and when that send fails DELETE /v1/me/feed/posts/{id}. Deleting a message that carries feedPostKey also calls DELETE /v1/me/feed/posts/{id}; a failure there is silent."
     },
     "leave": { "effect": "When the chat closes or the app goes to the background: Room.saveComposerDraft with text (plain) when not blank, else Room.clearComposerDraft." },
     "openAttachments": { "effect": "Opens attachment-picker." },
@@ -62,6 +63,8 @@
     "bipe_app_chat_list_draft",
     "bipe_dm_no_permission_to_post",
     "bipe_group_publication_only_bar",
+    "bipe_group_public_feed_composer",
+    "bipe_group_public_feed_failed",
     "bipe_a11y_sticker_send",
     "bipe_sticker_suggestions_dismiss"
   ],

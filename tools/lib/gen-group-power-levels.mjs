@@ -28,6 +28,8 @@ public enum BipeGroupPowerLevels {
     public static let publicationOnlyEvent = ${quote(pl.publicationOnly.stateEvent)}
     /// Below this level a member of a publication-only group sends only thread replies, edits, reactions and redactions.
     public static let publicationOnlyMinPostLevel: Int64 = ${pl.publicationOnly.minPostLevel}
+    /// The content key of a group post that also went to the public feed (bipe-chat/bipe#1260): {id, url} of the feed post.
+    public static let feedPostKey = ${quote(pl.publicationOnly.feedPostKey)}
     public static let events: [String: Int64] = [
 ${events}
     ]
@@ -60,6 +62,8 @@ object BipeGroupPowerLevels {
     const val PUBLICATION_ONLY_EVENT: String = ${quote(pl.publicationOnly.stateEvent)}
     /** Below this level a member of a publication-only group sends only thread replies, edits, reactions and redactions. */
     const val PUBLICATION_ONLY_MIN_POST_LEVEL: Long = ${pl.publicationOnly.minPostLevel}L
+    /** The content key of a group post that also went to the public feed (bipe-chat/bipe#1260): {id, url} of the feed post. */
+    const val FEED_POST_KEY: String = ${quote(pl.publicationOnly.feedPostKey)}
     val EVENTS: Map<String, Long> = mapOf(
 ${events}
     )

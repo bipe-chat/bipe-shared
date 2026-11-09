@@ -153,8 +153,8 @@ const NOT_IN_APPS = {
     name, "linked Apple or Google recovery (ADR 0096) is built in bipe-app; not mapped here yet (bipe-chat/bipe#684)",
   ])),
   AccountDeletion: "account deletion (ADR 0140) is built in bipe-app; not mapped here yet (bipe-chat/bipe#684)",
-  ...Object.fromEntries(["PublicFeed", "FeedPost", "FeedPostRequest"].map((name) => [
-    name, "public feed (ADR 0280): the web page renders on the server; the apps read it with bipe-chat/bipe#1260 and #1178",
+  ...Object.fromEntries(["PublicFeed", "FeedPost", "FeedPostRequest", "MyFeed", "MyFeedRequest", "FeedRoom"].map((name) => [
+    name, "public feed (ADR 0280): the web page renders on the server; bipe-app decodes the few fields it needs in its own feed client (bipe-chat/bipe#1260), and reading feeds in the apps is #1178",
   ])),
 };
 

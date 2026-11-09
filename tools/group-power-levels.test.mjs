@@ -20,6 +20,7 @@ test("group power levels: Swift and Kotlin list every event", () => {
     const code = generateGroupPowerLevels(pl, lang, "", quote);
     for (const type of Object.keys(pl.events)) assert.ok(code.includes(quote(type)), `${lang} ${type}`);
     assert.ok(code.includes(quote(pl.publicationOnly.stateEvent)), `${lang} publication-only event`);
+    assert.ok(code.includes(quote(pl.publicationOnly.feedPostKey)), `${lang} feed post key`);
   }
 });
 

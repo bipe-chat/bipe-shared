@@ -1060,6 +1060,7 @@ const forwardCases = [
   ["edited text sends the new content", { msgtype: "m.text", body: "oi", [fk]: { count: 2 } }, { msgtype: "m.text", body: "olá" }],
   ["malformed mark starts again", { ...voiceContent, [fk]: { count: "9" } }, null],
   ["count at the maximum stays", { ...voiceContent, [fk]: { count: 2147483647 } }, null],
+  ["drops the public feed mark", { msgtype: "m.text", body: "oi", [reg.groupPowerLevels.publicationOnly.feedPostKey]: { id: "abc", url: "https://bipe.chat/@ana/p/abc" } }, null],
 ];
 const sourceCases = [];
 for (const isVoice of [true, false]) for (const count of [0, 1, reg.voiceMedia.forwardedManyTimes - 1, reg.voiceMedia.forwardedManyTimes, 40]) sourceCases.push({ isVoice, count });

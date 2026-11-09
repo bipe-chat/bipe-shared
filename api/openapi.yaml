@@ -2524,6 +2524,60 @@ paths:
               schema: { $ref: "#/components/schemas/FeedPost" }
         "404": { $ref: "#/components/responses/Error" }
         "429": { $ref: "#/components/responses/Error" }
+  /v1/me/feed:
+    get:
+      summary: The caller's own public feed (ADR 0280 point 7c, bipe-chat/bipe#1260)
+      security: [{ matrix: [] }]
+      description: >
+        The handle owner's feed: the linked group and whether it is on. 404 not_found when staff never linked one.
+        While the Public Canal gate is closed, only staff link a feed (CLI feed create), so nobody makes one from the app.
+      responses:
+        "200":
+          description: The feed
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/MyFeed" }
+        "401": { $ref: "#/components/responses/Error" }
+        "404": { $ref: "#/components/responses/Error" }
+    put:
+      summary: Turn the caller's public feed on or off
+      security: [{ matrix: [] }]
+      description: >
+        The handle owner only, and only a feed that staff linked. Off stops new posts and takes the page down; on
+        brings it back (ADR 0280 point 7c). Else 404 not_found.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: { $ref: "#/components/schemas/MyFeedRequest" }
+      responses:
+        "200":
+          description: The feed after the change
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/MyFeed" }
+        "400": { $ref: "#/components/responses/Error" }
+        "401": { $ref: "#/components/responses/Error" }
+        "404": { $ref: "#/components/responses/Error" }
+  /v1/me/feed/rooms/{roomId}:
+    get:
+      summary: The public feed a group posts to (bipe-chat/bipe#1260)
+      security: [{ matrix: [] }]
+      description: >
+        For the composer of a publication-only group. 200 only when the room is linked to a feed that is on and the
+        caller is joined with level 50 or more (a room v12 creator counts), checked in the room state through the
+        Synapse admin API. Else 404 not_found, which does not say why. The app then sends each top-level text post
+        of the caller to POST /v1/me/feed/posts first.
+      parameters:
+        - { name: roomId, in: path, required: true, schema: { type: string, maxLength: 255 } }
+      responses:
+        "200":
+          description: The feed of this group
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/FeedRoom" }
+        "401": { $ref: "#/components/responses/Error" }
+        "404": { $ref: "#/components/responses/Error" }
   /v1/me/feed/posts:
     post:
       summary: Publish a plain copy of a group post to the linked feed (ADR 0280 point 7b)
@@ -8342,6 +8396,25 @@ components:
           type: array
           items: { $ref: "#/components/schemas/BadgeEnvelope" }
           description: The same envelopes as GET /v1/badges/{userId}/proofs, because this answer has no Matrix ID to call it with (ADR 0275 point 16). Present when badge is present.
+    MyFeed:
+      type: object
+      required: [handle, room_id, enabled, url]
+      properties:
+        handle: { type: string }
+        room_id: { type: string, description: "The linked group." }
+        enabled: { type: boolean }
+        url: { type: string, description: "https://bipe.chat/@{handle}" }
+    MyFeedRequest:
+      type: object
+      required: [enabled]
+      properties:
+        enabled: { type: boolean }
+    FeedRoom:
+      type: object
+      required: [handle, url]
+      properties:
+        handle: { type: string, description: "The handle whose page shows this group's posts." }
+        url: { type: string, description: "https://bipe.chat/@{handle}" }
     PublicFeed:
       type: object
       required: [handle, name, posts]

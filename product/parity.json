@@ -3805,14 +3805,14 @@
       },
       "issue": 501,
       "macos": {
-        "status": "built",
+        "status": "testing",
         "evidence": [
           "bipe-app/macos/BipeMac/MacImageComposer.swift",
           "bipe-app/macos/BipeMac/MacMessagePayload.swift",
           "bipe-app/macos/BipeMac/MacPhotoView.swift",
           "bipe-app/macos/BipeMac/MacTimeline.swift"
         ],
-        "note": "Encrypted photo descriptions in upload and native viewer/VoiceOver. Cross-device acceptance remains in #1164."
+        "note": "Encrypted photo descriptions in upload and native viewer/VoiceOver. Cross-device acceptance remains in #1164. Included in public Mac preview 1.0.1 (684), source 0b81d7aa0b8be76388c7ed2ab058a81aa7dc5510, after universal Debug/Release, native tests and publication passed in CI run 42532749871. Tester availability does not pass cross-client device acceptance."
       },
       "windows": {
         "status": "planned",
@@ -4098,12 +4098,12 @@
       "issue": 659,
       "fork": true,
       "macos": {
-        "status": "built",
+        "status": "testing",
         "evidence": [
           "bipe-app/macos/BipeMac/MacMessagePayload.swift",
           "bipe-app/macos/BipeMac/MacDesign.swift"
         ],
-        "note": "Native notice/emote rows; original body remains available for copying and safety checks."
+        "note": "Native notice/emote rows; original body remains available for copying and safety checks. Included in public Mac preview 1.0.1 (684), source 0b81d7aa0b8be76388c7ed2ab058a81aa7dc5510, after universal Debug/Release, native tests and publication passed in CI run 42532749871. Tester availability does not pass cross-client device acceptance."
       },
       "windows": {
         "status": "planned",
@@ -4715,13 +4715,16 @@
       "issue": 673,
       "fork": true,
       "macos": {
-        "status": "built",
+        "status": "testing",
         "evidence": [
           "bipe-app/macos/BipeMac/MacRoomList.swift",
           "bipe-app/macos/BipeMac/MacConversationsView.swift",
-          "bipe-app/ios/BipeKit/Sources/BipeKit/BipeFavouritesOrder.swift"
+          "bipe-app/ios/BipeKit/Sources/BipeKit/BipeFavouritesOrder.swift",
+          "bipe-app/macos/BipeMac/MacSidebarSelection.swift",
+          "bipe-app/macos/Tests/MacSidebarSelectionTests.swift",
+          "bipe-app/macos/BipeMac/MacSidebarContextMenu.swift"
         ],
-        "note": "Synced tag-filtered stream, three-column grid, stable account-data order, per-scope drag/accessible reordering, no duplicate rows or Unread chip. Cross-device acceptance remains in #1162."
+        "note": "Synced tag-filtered stream, three-column grid, stable account-data order, per-scope drag/accessible reordering, no duplicate rows or Unread chip. Cross-device acceptance remains in #1162. Shared palette selection for favourites and conversation/request rows, with a native per-item context-menu target, shipped in bipe-app#561. Device visual/interaction acceptance remains in #1306. Included in public Mac preview 1.0.1 (684), source 0b81d7aa0b8be76388c7ed2ab058a81aa7dc5510, after universal Debug/Release, native tests and publication passed in CI run 42532749871. Tester availability does not pass cross-client device acceptance."
       },
       "windows": {
         "status": "planned",
@@ -5486,11 +5489,13 @@
       },
       "issue": 811,
       "macos": {
-        "status": "built",
+        "status": "testing",
         "evidence": [
-          "bipe-app/macos/BipeMac/MacAppearance.swift"
+          "bipe-app/macos/BipeMac/MacAppearance.swift",
+          "bipe-app/macos/BipeMac/MacSidebarSelection.swift",
+          "bipe-app/macos/Tests/MacSidebarSelectionTests.swift"
         ],
-        "note": "Same six palettes and four backgrounds, labels/order/defaults generated. Running Dock icon follows the palette; signed Finder bundle icon stays the default macOS icon."
+        "note": "Same six palettes and four backgrounds, labels/order/defaults generated. Running Dock icon follows the palette; signed Finder bundle icon stays the default macOS icon. Shared palette selection for favourites and conversation/request rows, with a native per-item context-menu target, shipped in bipe-app#561. Device visual/interaction acceptance remains in #1306. Included in public Mac preview 1.0.1 (684), source 0b81d7aa0b8be76388c7ed2ab058a81aa7dc5510, after universal Debug/Release, native tests and publication passed in CI run 42532749871. Tester availability does not pass cross-client device acceptance."
       },
       "windows": {
         "status": "planned",
@@ -5885,11 +5890,12 @@
         "reason": "Client interaction over existing encrypted Matrix transport; no separate server UI"
       },
       "macos": {
-        "status": "built",
+        "status": "testing",
         "evidence": [
           "bipe-app/macos/BipeMac/MacTimeline.swift",
           "bipe-app/macos/BipeMac/BipeMacApp.swift"
-        ]
+        ],
+        "note": "Included in public Mac preview 1.0.1 (684), source 0b81d7aa0b8be76388c7ed2ab058a81aa7dc5510, after universal Debug/Release, native tests and publication passed in CI run 42532749871. Tester availability does not pass cross-client device acceptance."
       },
       "windows": {
         "status": "planned",
@@ -6045,11 +6051,12 @@
         "reason": "Client interaction over existing encrypted Matrix transport; no separate server UI"
       },
       "macos": {
-        "status": "built",
+        "status": "testing",
         "evidence": [
           "bipe-app/macos/BipeMac/MacReactions.swift",
           "bipe-app/macos/BipeMac/MacTimeline.swift"
-        ]
+        ],
+        "note": "Included in public Mac preview 1.0.1 (684), source 0b81d7aa0b8be76388c7ed2ab058a81aa7dc5510, after universal Debug/Release, native tests and publication passed in CI run 42532749871. Tester availability does not pass cross-client device acceptance."
       },
       "windows": {
         "status": "planned",
@@ -6153,12 +6160,13 @@
         "reason": "Client interaction over existing encrypted Matrix transport; no separate server UI"
       },
       "macos": {
-        "status": "built",
+        "status": "testing",
         "evidence": [
           "bipe-app/macos/BipeMac/MacMedia.swift",
           "bipe-app/macos/BipeMac/MacPhotoView.swift",
           "bipe-app/macos/BipeMac/MacTimeline.swift"
-        ]
+        ],
+        "note": "Included in public Mac preview 1.0.1 (684), source 0b81d7aa0b8be76388c7ed2ab058a81aa7dc5510, after universal Debug/Release, native tests and publication passed in CI run 42532749871. Tester availability does not pass cross-client device acceptance."
       },
       "windows": {
         "status": "planned",

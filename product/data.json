@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "date": "2026-10-31",
+  "date": "2026-11-09",
   "encarregado": null,
   "pt": {
     "nav": "LGPD",
@@ -14,7 +14,8 @@
       "why": "Para quê",
       "basis": "Base legal",
       "retention": "Por quanto tempo",
-      "where": "Onde fica"
+      "where": "Onde fica",
+      "review": "Base legal proposta, em revisão."
     },
     "brazil": {
       "yes": "no Brasil",
@@ -53,7 +54,8 @@
       "why": "Why",
       "basis": "Legal basis",
       "retention": "How long",
-      "where": "Where it lives"
+      "where": "Where it lives",
+      "review": "Proposed legal basis, under review."
     },
     "brazil": {
       "yes": "in Brazil",
@@ -128,8 +130,8 @@
     {
       "id": "email-relay",
       "brazil": null,
-      "pt": "Serviço que entrega os e-mails do Bipe",
-      "en": "The service that delivers Bipe's emails"
+      "pt": "Locaweb, o serviço que entrega os e-mails do Bipe",
+      "en": "Locaweb, the service that delivers Bipe's emails"
     },
     {
       "id": "icloud-keychain",
@@ -142,12 +144,6 @@
       "brazil": null,
       "pt": "Block Store do Google, na sua conta Google (Android)",
       "en": "Google Block Store, in your Google account (Android)"
-    },
-    {
-      "id": "support-tool",
-      "brazil": null,
-      "pt": "Ferramenta da equipe do Bipe para ler e responder pedidos de ajuda. Recebe só texto, nunca arquivos",
-      "en": "The tool the Bipe team uses to read and answer help requests. It gets text only, never files"
     },
     {
       "id": "starlings",
@@ -166,6 +162,30 @@
       "brazil": false,
       "pt": "Google, quando você entra com a conta Google para vincular ou voltar à conta",
       "en": "Google, when you sign in with your Google account to link it or to get back in"
+    },
+    {
+      "id": "backups",
+      "brazil": true,
+      "pt": "Cópias de segurança cifradas, na Magalu Cloud no Brasil",
+      "en": "Encrypted backups, on Magalu Cloud in Brazil"
+    },
+    {
+      "id": "apple-attest",
+      "brazil": false,
+      "pt": "Apple, que confirma que o pedido vem do app Bipe num iPhone",
+      "en": "Apple, which confirms that a request comes from the Bipe app on an iPhone"
+    },
+    {
+      "id": "google-play",
+      "brazil": false,
+      "pt": "Google Play, de onde o app Android foi instalado",
+      "en": "Google Play, where the Android app was installed from"
+    },
+    {
+      "id": "ai-operators",
+      "brazil": null,
+      "pt": "Quem opera o assistente de IA que você colocou na conversa",
+      "en": "Whoever runs the AI assistant you added to the chat"
     }
   ],
   "items": [
@@ -503,15 +523,15 @@
       ],
       "pt": {
         "name": "Seu número",
-        "what": "O número que você ligou à conta. O servidor guarda o número cifrado e um código feito a partir dele para a busca de contatos. O servidor só mostra o número para você.",
-        "why": "Para quem já tem seu número salvo te achar no Bipe, se você deixar. E para você ver qual número está ligado à conta.",
-        "retention": "Até você desligar o número ou apagar a conta."
+        "what": "O número ligado à conta. Hoje só a equipe do Bipe liga um número, a seu pedido. O servidor guarda o número cifrado e um código feito a partir dele para a busca de contatos. O servidor só mostra o número para você.",
+        "why": "Para quem já tem seu número salvo te achar no Bipe, só se você ligar essa opção. Ela vem desligada. E para você ver qual número está ligado à conta.",
+        "retention": "Até você desligar o número ou apagar a conta. Um número que ninguém confirmou por 12 meses para de aparecer na busca e é apagado 30 dias depois."
       },
       "en": {
         "name": "Your number",
-        "what": "The number you linked to your account. The server stores the number encrypted, plus a code made from it for the contact lookup. The server shows the number only to you.",
-        "why": "So people who already saved your number can find you on Bipe, if you allow it. And so you can see which number is linked to your account.",
-        "retention": "Until you unlink the number or delete the account."
+        "what": "The number linked to your account. Today only the Bipe team links a number, when you ask. The server stores the number encrypted, plus a code made from it for the contact lookup. The server shows the number only to you.",
+        "why": "So people who already saved your number can find you on Bipe, only if you turn this on. It starts off. And so you can see which number is linked to your account.",
+        "retention": "Until you unlink the number or delete the account. A number nobody confirmed for 12 months stops showing in the lookup and is deleted 30 days later."
       }
     },
     {
@@ -600,13 +620,13 @@
         "name": "Convites",
         "what": "Quem convidou quem, e uma versão protegida de cada código de convite.",
         "why": "Durante os testes, só entra quem tem convite. O registro ajuda a achar contas falsas e abuso.",
-        "retention": "Ainda sem prazo definido."
+        "retention": "Um convite que ninguém usou é apagado 90 dias depois de vencer ou ser cancelado. Um convite usado fica enquanto a conta que ele trouxe existir. Quando quem convidou apaga a conta, o nome dessa pessoa sai do convite."
       },
       "en": {
         "name": "Invites",
         "what": "Who invited whom, and a protected form of each invite code.",
         "why": "During testing, only people with an invite can join. The record helps find fake accounts and abuse.",
-        "retention": "No time limit set yet."
+        "retention": "An invite nobody used is deleted 90 days after it expires or is revoked. A used invite stays while the account it brought in exists. When the inviter deletes their account, their name leaves the invite."
       }
     },
     {
@@ -884,18 +904,18 @@
       "basis": "contract",
       "places": [
         "server",
-        "support-tool"
+        "starlings"
       ],
       "pt": {
         "name": "Conversa com o Suporte Bipe",
         "what": "O que você escreve na conversa com o Suporte Bipe, seu ID no Bipe, seu nome de usuário e seu nome. Fotos e arquivos ficam só no servidor do Bipe.",
-        "why": "Responder você. O texto vai para a ferramenta de atendimento da equipe.",
+        "why": "Responder você. O texto vai para o Starlings, o sistema de trabalho da equipe.",
         "retention": "Enquanto a conversa existir. Antes disso, se você pedir."
       },
       "en": {
         "name": "Chat with Bipe Support",
         "what": "What you write in the chat with Bipe Support, your Bipe ID, your username and your name. Photos and files stay on the Bipe server only.",
-        "why": "To answer you. The text goes to the team's support tool.",
+        "why": "To answer you. The text goes to Starlings, the team's work system.",
         "retention": "While the chat exists. Earlier, if you ask."
       }
     },
@@ -923,18 +943,18 @@
       "basis": "consent",
       "places": [
         "server",
-        "support-tool"
+        "starlings"
       ],
       "pt": {
         "name": "Avisos de problema",
         "what": "O que você escreve em Avisar sobre um problema, a versão do app e do sistema do celular e, se você escolher, os registros técnicos do app e as capturas de tela.",
-        "why": "Entender o problema, corrigir e responder a você. A equipe lê o texto na ferramenta de suporte. Os registros e as capturas ficam só no servidor do Bipe.",
+        "why": "Entender o problema, corrigir e responder a você. A equipe lê o texto no Starlings. Os registros e as capturas ficam só no servidor do Bipe.",
         "retention": "90 dias no servidor do Bipe. Antes disso, se você pedir."
       },
       "en": {
         "name": "Problem reports",
         "what": "What you write in Report a problem, the app and phone system versions and, if you choose, the app's technical logs and the screenshots.",
-        "why": "To understand the problem, fix it and answer you. The team reads the text in the support tool. The logs and screenshots stay on the Bipe server only.",
+        "why": "To understand the problem, fix it and answer you. The team reads the text in Starlings. The logs and screenshots stay on the Bipe server only.",
         "retention": "90 days on the Bipe server. Earlier, if you ask."
       }
     },
@@ -1146,6 +1166,265 @@
         "what": "For people who open the proposal pages: the email you type. For each page and slide you open: the time, the page, the slide title, how long you stayed on it, the site you came from, the link's utm tags and the city estimated from your IP address. Bipe does not keep the IP.",
         "why": "To know which pages each visitor read and for how long. After each visit, the Bipe team gets a summary by email.",
         "retention": "Visits are kept for 365 days. The email stays until the team deletes it or you ask."
+      }
+    },
+    {
+      "id": "contact-lookup",
+      "basis": "legitimate-interest",
+      "places": [
+        "server"
+      ],
+      "review": true,
+      "pt": {
+        "name": "Busca de contatos",
+        "what": "Se você deixar o app ler seus contatos, ele manda os números da agenda para o servidor do Bipe, por conexão cifrada. Os nomes ficam no celular. O servidor transforma cada número num código, compara com os números ligados e não guarda a lista.",
+        "why": "Mostrar quais contatos seus já estão no Bipe e deixaram ser achados pelo número.",
+        "retention": "Nada fica guardado. O servidor só conta quantas buscas cada conta fez no dia, para limitar abuso."
+      },
+      "en": {
+        "name": "Contact lookup",
+        "what": "If you let the app read your contacts, it sends the address-book numbers to the Bipe server over an encrypted connection. Names stay on the phone. The server turns each number into a code, compares it with the linked numbers and does not keep the list.",
+        "why": "To show which of your contacts are on Bipe and allowed to be found by number.",
+        "retention": "Nothing is stored. The server only counts how many lookups each account made that day, to limit abuse."
+      }
+    },
+    {
+      "id": "cnpj-seal",
+      "basis": "legitimate-interest",
+      "places": [
+        "server"
+      ],
+      "review": true,
+      "pt": {
+        "name": "Selo de empresa",
+        "what": "O CNPJ que a conta de trabalho informou, a prova de domínio ou o certificado e-CNPJ, os dados públicos da empresa na Receita Federal (situação, nome, CNAE) e os registros públicos na CVM.",
+        "why": "Mostrar o selo de empresa só para quem prova que é a empresa, e tirar o selo quando a empresa fecha.",
+        "retention": "Enquanto a conta de trabalho existir. Depois que ela é apagada, o registro do selo fica 365 dias. O Bipe guarda no servidor só a versão mais nova dos arquivos públicos da Receita."
+      },
+      "en": {
+        "name": "Company seal",
+        "what": "The CNPJ the work account gave, the domain proof or the e-CNPJ certificate, the company's public data at Receita Federal (status, name, CNAE) and its public records at the CVM.",
+        "why": "To show the company seal only to whoever proves they are the company, and to remove the seal when the company closes.",
+        "retention": "While the work account exists. After it is deleted, the seal record stays 365 days. Bipe keeps only the newest release of Receita's public files on the server."
+      }
+    },
+    {
+      "id": "govbr-verification",
+      "basis": "legitimate-interest",
+      "places": [
+        "server"
+      ],
+      "review": true,
+      "pt": {
+        "name": "Verificação pelo gov.br",
+        "what": "O nome verificado e uma versão protegida do CPF, tirados do documento assinado no gov.br, o nível da verificação e a chave da conta. O documento assinado é lido na memória e não fica guardado.",
+        "why": "Mostrar o nome verificado e impedir que um mesmo CPF tenha várias contas verificadas.",
+        "retention": "Enquanto a conta existir. Depois que ela é apagada, a versão protegida do CPF fica 365 dias, para impedir que alguém escape de um bloqueio com uma conta nova."
+      },
+      "en": {
+        "name": "Verification with gov.br",
+        "what": "The verified name and a protected version of the CPF, taken from the document signed on gov.br, the verification level and the account key. The signed document is read in memory and is not stored.",
+        "why": "To show the verified name and to stop one CPF from having several verified accounts.",
+        "retention": "While the account exists. After it is deleted, the protected version of the CPF stays 365 days, to stop someone from getting around a block with a new account."
+      }
+    },
+    {
+      "id": "recoveries",
+      "basis": "contract",
+      "places": [
+        "server"
+      ],
+      "pt": {
+        "name": "Pedidos para voltar à conta",
+        "what": "Como você pediu para voltar à conta (código, e-mail, guardião, CPF, conta Apple ou Google), em que passo o pedido está e versões protegidas dos códigos.",
+        "why": "Te devolver a conta e esperar o prazo de segurança antes.",
+        "retention": "Enquanto a conta existir."
+      },
+      "en": {
+        "name": "Requests to get back into the account",
+        "what": "How you asked to get back in (code, email, guardian, CPF, Apple or Google account), which step the request is at and protected versions of the codes.",
+        "why": "To give you the account back, after the safety wait.",
+        "retention": "While the account exists."
+      }
+    },
+    {
+      "id": "attestation",
+      "basis": "legitimate-interest",
+      "places": [
+        "server",
+        "apple-attest"
+      ],
+      "review": true,
+      "pt": {
+        "name": "Prova de que o app é o Bipe",
+        "what": "No cadastro, o celular pede à Apple (iPhone) ou ao próprio sistema (Android) uma prova de que o pedido vem do app Bipe. O servidor confere a prova e guarda só se ela passou.",
+        "why": "Barrar contas criadas em massa por robôs.",
+        "retention": "Enquanto a conta existir. O desafio da prova dura 5 minutos na memória."
+      },
+      "en": {
+        "name": "Proof that the app is Bipe",
+        "what": "At sign-up, the phone asks Apple (iPhone) or its own system (Android) for proof that the request comes from the Bipe app. The server checks the proof and keeps only whether it passed.",
+        "why": "To stop accounts made in bulk by bots.",
+        "retention": "While the account exists. The proof's challenge lasts 5 minutes in memory."
+      }
+    },
+    {
+      "id": "signup-replay",
+      "basis": "contract",
+      "places": [
+        "server"
+      ],
+      "pt": {
+        "name": "Nova tentativa de cadastro",
+        "what": "Os dados de acesso de um cadastro novo, cifrados com uma chave que só o seu celular tem.",
+        "why": "Terminar o cadastro se a conexão cair no meio.",
+        "retention": "Até o celular ler a conta pela primeira vez, ou 7 dias."
+      },
+      "en": {
+        "name": "Sign-up retry",
+        "what": "The access data of a new sign-up, encrypted with a key only your phone has.",
+        "why": "To finish the sign-up if the connection drops in the middle.",
+        "retention": "Until the phone reads the account for the first time, or 7 days."
+      }
+    },
+    {
+      "id": "web-link-place",
+      "basis": "contract",
+      "places": [
+        "server"
+      ],
+      "pt": {
+        "name": "Lugar de quem pede para entrar",
+        "what": "Quando um computador pede para entrar na sua conta, o servidor acha a cidade aproximada pelo IP numa base guardada no próprio servidor, e guarda qual aparelho aprovou qual computador.",
+        "why": "Mostrar no celular de onde vem o pedido, para você não aprovar um golpe.",
+        "retention": "A cidade não fica guardada. O vínculo entre os aparelhos fica enquanto o computador estiver conectado."
+      },
+      "en": {
+        "name": "Place of a sign-in request",
+        "what": "When a computer asks to join your account, the server finds the approximate city from the IP in a database kept on the server itself, and stores which device approved which computer.",
+        "why": "To show on the phone where the request comes from, so you do not approve a scam.",
+        "retention": "The city is not stored. The link between the devices stays while the computer is connected."
+      }
+    },
+    {
+      "id": "calls",
+      "basis": "contract",
+      "places": [
+        "server"
+      ],
+      "review": true,
+      "pt": {
+        "name": "Chamadas",
+        "what": "Para levar o áudio e o vídeo, o servidor de chamadas do Bipe vê seu IP, seu ID e a conversa, e quando você entra e sai. O conteúdo da chamada é criptografado de ponta a ponta.",
+        "why": "Fazer as chamadas funcionarem, também em redes móveis fracas.",
+        "retention": "Durante a chamada. O prazo dos registros do servidor de chamadas ainda não foi confirmado."
+      },
+      "en": {
+        "name": "Calls",
+        "what": "To carry audio and video, Bipe's call server sees your IP, your ID and the chat, and when you join and leave. The call content is end-to-end encrypted.",
+        "why": "To make calls work, also on weak mobile networks.",
+        "retention": "During the call. The retention of the call server's logs is not yet confirmed."
+      }
+    },
+    {
+      "id": "abuse-reports",
+      "basis": "legitimate-interest",
+      "places": [
+        "server"
+      ],
+      "review": true,
+      "pt": {
+        "name": "Denúncias",
+        "what": "Quando você denuncia uma mensagem: a mensagem que você escolheu mandar, a conversa, o motivo e quem denunciou.",
+        "why": "Analisar golpes e abusos e agir contra a conta denunciada.",
+        "retention": "Ainda sem prazo definido."
+      },
+      "en": {
+        "name": "Reports",
+        "what": "When you report a message: the message you chose to send, the chat, the reason and who reported it.",
+        "why": "To look into scams and abuse and act against the reported account.",
+        "retention": "No time limit set yet."
+      }
+    },
+    {
+      "id": "ai-assistants",
+      "basis": "consent",
+      "places": [
+        "server",
+        "ai-operators"
+      ],
+      "review": true,
+      "pt": {
+        "name": "Assistentes de IA",
+        "what": "Quando você coloca um assistente de IA numa conversa: o assistente, quem o opera e onde roda o modelo (no Brasil, fora ou desconhecido). As mensagens dessa conversa chegam a quem opera o assistente.",
+        "why": "Deixar você usar o assistente que escolheu. O Bipe mostra onde ele roda antes de você aceitar.",
+        "retention": "Enquanto o assistente estiver na conversa. O que o operador guarda segue as regras dele."
+      },
+      "en": {
+        "name": "AI assistants",
+        "what": "When you add an AI assistant to a chat: the assistant, who runs it and where the model runs (in Brazil, outside or unknown). The messages in that chat reach whoever runs the assistant.",
+        "why": "To let you use the assistant you chose. Bipe shows where it runs before you accept.",
+        "retention": "While the assistant is in the chat. What the operator keeps follows its own rules."
+      }
+    },
+    {
+      "id": "backups",
+      "basis": "legitimate-interest",
+      "places": [
+        "backups"
+      ],
+      "review": true,
+      "pt": {
+        "name": "Cópias de segurança",
+        "what": "Cópias cifradas dos bancos de dados e dos arquivos do servidor.",
+        "why": "Trazer o serviço de volta depois de uma falha.",
+        "retention": "Até 37 dias. Uma conta ou um dado que você apagou fica nas cópias até elas vencerem. Se o Bipe usar uma cópia, ele apaga de novo o que foi apagado depois dela."
+      },
+      "en": {
+        "name": "Backups",
+        "what": "Encrypted copies of the server's databases and files.",
+        "why": "To bring the service back after a failure.",
+        "retention": "Up to 37 days. An account or data you deleted stays in the copies until they expire. If Bipe restores a copy, it deletes again what was deleted after it."
+      }
+    },
+    {
+      "id": "invite-from-store",
+      "basis": "legitimate-interest",
+      "places": [
+        "server",
+        "google-play"
+      ],
+      "review": true,
+      "pt": {
+        "name": "Convite pela loja",
+        "what": "No Android, o código do convite pode vir da Google Play, que guarda de qual link o app foi instalado. No iPhone, o app pode ler o código copiado do link do convite.",
+        "why": "Abrir o convite certo sem você digitar o código.",
+        "retention": "O código serve só para o cadastro. O resto segue o item Convites."
+      },
+      "en": {
+        "name": "Invite through the store",
+        "what": "On Android, the invite code can come from Google Play, which keeps which link the app was installed from. On iPhone, the app can read the code copied from the invite link.",
+        "why": "To open the right invite without you typing the code.",
+        "retention": "The code serves only for sign-up. The rest follows the Invites item."
+      }
+    },
+    {
+      "id": "beta-email-login",
+      "basis": "contract",
+      "places": [
+        "server"
+      ],
+      "pt": {
+        "name": "Entrada com e-mail (contas do teste antigo)",
+        "what": "Só para contas criadas no teste antigo: o e-mail e uma versão protegida da senha que você escolheu.",
+        "why": "Deixar essas contas entrarem até passarem para o acesso pelo celular.",
+        "retention": "Até a conta passar para o acesso pelo celular, ou ser apagada."
+      },
+      "en": {
+        "name": "Sign-in with email (old test accounts)",
+        "what": "Only for accounts made in the old test: the email and a protected version of the password you chose.",
+        "why": "To let those accounts sign in until they move to phone-based access.",
+        "retention": "Until the account moves to phone-based access, or is deleted."
       }
     }
   ],

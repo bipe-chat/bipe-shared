@@ -7794,7 +7794,7 @@ components:
       type: object
       required: [by_phone]
       properties:
-        by_phone: { type: boolean, description: "People who have the caller's number can find them. Default true." }
+        by_phone: { type: boolean, description: "People who have the caller's number can find them. Default false: opt-in (bipe#402)." }
     InvitePreview:
       type: object
       required: [valid]

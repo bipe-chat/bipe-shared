@@ -50,6 +50,10 @@
         {
           "server": "evilbipe.net.br",
           "expect": "unknown"
+        },
+        {
+          "server": "BIPE.NET.BR",
+          "expect": "unknown"
         }
       ],
       "federated": [
@@ -92,6 +96,10 @@
         {
           "server": "evilbipe.net.br",
           "expect": "unknown"
+        },
+        {
+          "server": "BIPE.NET.BR",
+          "expect": "unknown"
         }
       ]
     },
@@ -129,6 +137,10 @@
         },
         {
           "server": "evilbipe.net.br",
+          "expect": "unknown"
+        },
+        {
+          "server": "BIPE.NET.BR",
           "expect": "unknown"
         }
       ]
@@ -451,6 +463,10 @@
         {
           "server": "evilbipe.net.br",
           "expect": "unknown"
+        },
+        {
+          "server": "BIPE.NET.BR",
+          "expect": "unknown"
         }
       ]
     },
@@ -553,6 +569,10 @@
         {
           "server": "evilbipe.net.br",
           "expect": "unknown"
+        },
+        {
+          "server": "BIPE.NET.BR",
+          "expect": "unknown"
         }
       ]
     },
@@ -595,6 +615,10 @@
         },
         {
           "server": "evilbipe.net.br",
+          "expect": "unknown"
+        },
+        {
+          "server": "BIPE.NET.BR",
           "expect": "unknown"
         }
       ]
@@ -688,6 +712,10 @@
         {
           "server": "evilbipe.net.br",
           "expect": "unknown"
+        },
+        {
+          "server": "BIPE.NET.BR",
+          "expect": "unknown"
         }
       ]
     },
@@ -739,6 +767,10 @@
         },
         {
           "server": "evilbipe.net.br",
+          "expect": "unknown"
+        },
+        {
+          "server": "BIPE.NET.BR",
           "expect": "unknown"
         }
       ]

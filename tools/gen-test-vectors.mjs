@@ -344,6 +344,7 @@ const opsLookups = [
   { server: "coop.exemplo.br", expect: "valid" },
   { server: "antigo.exemplo.br", expect: "removed" },
   { server: "evilbipe.net.br", expect: "unknown" },
+  { server: "BIPE.NET.BR", expect: "unknown" },
 ];
 const goodOps = listEnvelope(operatorsPayload);
 const opsWithoutRemoved = { ...operatorsPayload, operators: operatorsPayload.operators.slice(0, 2) };

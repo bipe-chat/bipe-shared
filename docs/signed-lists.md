@@ -107,7 +107,7 @@ A `removed` entry keeps only `server_name`, `name`, `status`, `joined` and `remo
 
 ### Rule: who is a Bipe user
 
-A user ID is a Bipe user when its server part (the text after the first `:`) equals the `server_name` of a `valid` entry in the current list. Comparison is exact, after the host part is lower case. A `removed` name answers `removed`, a name not in the list answers `unknown`. Apps show a seal only for a Bipe user (federated-operators.md "Seal checks across operators").
+A user ID is a Bipe user when its server part (the text after the first `:`) equals the `server_name` of a `valid` entry in the current list. Comparison is exact and keeps case: the apps do not lower-case the server part, so `@ana:BIPE.NET.BR` is not a Bipe user (`test-vectors/bipe-servers.json`). Matrix servers send server names in lower case, and `server_name` in the list is lower case, so a server part with upper case is a look-alike. A `removed` name answers `removed`, a name not in the list answers `unknown`. Apps show a seal only for a Bipe user (federated-operators.md "Seal checks across operators").
 
 ## Issuer registry payload
 

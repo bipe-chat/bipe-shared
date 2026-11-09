@@ -5321,6 +5321,31 @@ paths:
                 $ref: "#/components/schemas/WorkMembers"
         default:
           $ref: "#/components/responses/BusinessToolError"
+  /v1/me/business/members/recovery:
+    put:
+      summary: "Store the recovery key of my member identity"
+      operationId: "putV1MeBusinessMembersRecovery"
+      tags:
+        - "Agenda"
+      security:
+        -
+          matrix: []
+      description: "A device of the work account that belongs to a person, else 403 seat_required. Stores the recovery key of the caller's member identity, encrypted at rest, and replaces an earlier one. 404 not_found when the seat has no member identity. POST .../members/session returns it to every later device of the same person, so the person's phone, computer and new installs open Interno with its history and no step by hand (bipe ADR 0284 point 34). The app sends it after enableRecovery on a verified member device."
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/WorkMemberRecovery"
+      responses:
+        "200":
+          description: "Success"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/WorkMemberRecovery"
+        default:
+          $ref: "#/components/responses/BusinessToolError"
   /v1/me/business/setup/second-seat-skip:
     post:
       summary: "Record that only the owner answers"
@@ -8647,6 +8672,8 @@ components:
       $ref: "./business-schemas.json#/$defs/WorkMemberSession"
     WorkGeral:
       $ref: "./business-schemas.json#/$defs/WorkGeral"
+    WorkMemberRecovery:
+      $ref: "./business-schemas.json#/$defs/WorkMemberRecovery"
     SeatCreate:
       $ref: "./business-schemas.json#/$defs/SeatCreate"
     SeatDeviceAssign:

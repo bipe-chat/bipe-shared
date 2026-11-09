@@ -32,7 +32,7 @@
   },
   "actions": {
     "open": {
-      "effect": "On first open on this device: POST /v1/me/business/members/session, then m.login.password with that user and password on the same homeserver, as a second SDK session under the work account row. The app forgets the password after the sign-in. The session sets up its own cross-signing when the identity has none, and gets no recovery key prompt (Default). Later opens reuse the session."
+      "effect": "On first open on this device: POST /v1/me/business/members/session, then m.login.password with that user and password on the same homeserver, as a second SDK session under the work account row. The app forgets the password after the sign-in. Then the keys, with no prompt (bipe ADR 0284 point 34): (1) the identity has no cross-signing: reset the identity, enableRecovery, PUT /v1/me/business/members/recovery with the key; (2) the session has recovery_key and this device is not verified: encryption.recover(recovery_key), so the device is verified and downloads the history from the key backup; (3) this device is verified and recovery is not enabled, or the session had no recovery_key: enableRecovery and PUT the key. A failure in these steps leaves the session open and retries on the next open. The app never stores, logs or shows the recovery key. Later opens reuse the session and run step 3 when it did not finish."
     },
     "ensureGeral": {
       "effect": "When GET members has geral_room_id null and the account has two or more members: create a private, invite-only, encrypted room named with bipe_interno_geral, invite every member, then PUT /v1/me/business/members/geral. 409 geral_exists: leave the new room, join the claimed one. When Geral exists: invite each member that is not in it yet."

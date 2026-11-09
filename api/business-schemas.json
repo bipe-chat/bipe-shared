@@ -2902,7 +2902,7 @@
       }
     },
     "WorkMemberSession": {
-      "description": "Sign-in for the caller's member identity. password is new on every call, works for one m.login.password sign-in, and the app never stores it (ADR 0284, ADR 0283). The Matrix device of that sign-in belongs to this device's person.",
+      "description": "Sign-in for the caller's member identity. password is new on every call, works for one m.login.password sign-in, and the app never stores it (ADR 0284, ADR 0283). The Matrix device of that sign-in belongs to this device's person. recovery_key is the member identity's recovery key when a device of this person stored one (PUT .../members/recovery): the app uses it with encryption.recover right after the sign-in, so the new device gets the history, and never stores it.",
       "type": "object",
       "additionalProperties": false,
       "required": [
@@ -2917,6 +2917,11 @@
         "password": {
           "type": "string",
           "minLength": 32
+        },
+        "recovery_key": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 256
         }
       }
     },
@@ -2932,6 +2937,21 @@
           "type": "string",
           "pattern": "^!",
           "maxLength": 255
+        }
+      }
+    },
+    "WorkMemberRecovery": {
+      "description": "The recovery key of the caller's member identity (matrix-sdk enableRecovery output). Never logged.",
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "recovery_key"
+      ],
+      "properties": {
+        "recovery_key": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 256
         }
       }
     }

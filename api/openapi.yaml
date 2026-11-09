@@ -5338,12 +5338,8 @@ paths:
             schema:
               $ref: "#/components/schemas/WorkMemberRecovery"
       responses:
-        "200":
-          description: "Success"
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/WorkMemberRecovery"
+        "204":
+          description: "Stored"
         default:
           $ref: "#/components/responses/BusinessToolError"
   /v1/me/business/setup/second-seat-skip:

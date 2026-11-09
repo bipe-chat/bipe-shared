@@ -1003,15 +1003,15 @@
       ],
       "pt": {
         "name": "Identidade de quem atende no Interno",
-        "what": "Para cada pessoa que atende por uma conta de trabalho: um código Matrix só para o Interno, o nome que a pessoa responsável digitou e a sala Geral da conta. As mensagens do Interno são criptografadas de ponta a ponta e o Bipe não consegue ler.",
+        "what": "Para cada pessoa que atende por uma conta de trabalho: um código Matrix só para o Interno, o nome que a pessoa responsável digitou, a sala Geral da conta e a chave de recuperação do Interno da pessoa, guardada criptografada. Com essa chave, o computador e os outros celulares da pessoa abrem o Interno sozinhos, com o histórico. As mensagens do Interno são criptografadas de ponta a ponta. Como o Bipe guarda a chave, o Bipe tem como abrir esse histórico. A pessoa responsável não tem.",
         "why": "Deixar as pessoas da conta conversarem entre si sem misturar com a conta pessoal nem com os clientes.",
-        "retention": "Até a pessoa sair da conta ou a conta de trabalho ser apagada. Então a identidade é desativada."
+        "retention": "Até a pessoa sair da conta ou a conta de trabalho ser apagada. Então a identidade é desativada e a chave de recuperação é apagada."
       },
       "en": {
         "name": "A person's identity in Interno",
-        "what": "For each person who answers for a work account: a Matrix code only for Interno, the name the person in charge typed, and the account's Geral room. Interno messages are end-to-end encrypted and Bipe cannot read them.",
+        "what": "For each person who answers for a work account: a Matrix code only for Interno, the name the person in charge typed, the account's Geral room, and the person's Interno recovery key, stored encrypted. With that key, the person's computer and other phones open Interno on their own, with the history. Interno messages are end-to-end encrypted. Because Bipe keeps the key, Bipe is able to open that history. The person in charge is not.",
         "why": "To let the people of the account talk to each other without mixing it with their personal account or with customers.",
-        "retention": "Until the person leaves the account or the work account is deleted. Then the identity is deactivated."
+        "retention": "Until the person leaves the account or the work account is deleted. Then the identity is deactivated and the recovery key is deleted."
       }
     },
     {

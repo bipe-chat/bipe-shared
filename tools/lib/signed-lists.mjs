@@ -157,7 +157,7 @@ export function verifySignedList(envelope, { typ, signerSet, now, stored = null 
 }
 
 /** The rule "who is a Bipe user": valid, removed or unknown, for a server name in a valid operator list. */
-export const operatorStatus = (payload, server) => payload.operators.find((o) => o.server_name === server.toLowerCase())?.status ?? "unknown";
+export const operatorStatus = (payload, server) => payload.operators.find((o) => o.server_name === server)?.status ?? "unknown";
 
 /** The ids of the regions that federate: the floor is e2ee. A region with floor none runs alone (ADR 0197). */
 export const federatedRegions = (payload) => [payload.region, ...payload.regions].filter((r) => r.floor === "e2ee").map((r) => r.id);

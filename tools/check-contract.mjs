@@ -153,6 +153,9 @@ const NOT_IN_APPS = {
     name, "linked Apple or Google recovery (ADR 0096) is built in bipe-app; not mapped here yet (bipe-chat/bipe#684)",
   ])),
   AccountDeletion: "account deletion (ADR 0140) is built in bipe-app; not mapped here yet (bipe-chat/bipe#684)",
+  ...Object.fromEntries(["PublicFeed", "FeedPost", "FeedPostRequest"].map((name) => [
+    name, "public feed (ADR 0280): the web page renders on the server; the apps read it with bipe-chat/bipe#1260 and #1178",
+  ])),
 };
 
 // Known gaps: "<platform>:<Schema>" or "<platform>:<Schema>.<field>" -> issue. Remove the entry when the gap closes.
@@ -351,7 +354,7 @@ for (const [ref, types] of Object.entries(ENUMS)) {
 
 // ADR 0138 rule 2 (bipe-chat/bipe#513): what anyone can read about another account never names who is behind it.
 // A company account must not lead to its owner's personal account, user ID, phone, CPF or e-mail.
-const PUBLIC_SCHEMAS = ["InvitePreview", "GroupLinkPreview", "PublicProfile", "BadgeEnvelope", "BadgeGone"];
+const PUBLIC_SCHEMAS = ["InvitePreview", "GroupLinkPreview", "PublicProfile", "BadgeEnvelope", "BadgeGone", "PublicFeed", "FeedPost"];
 const NOT_PUBLIC = /(^|_)(user_id|phone|cpf|owner|created_by|email)$/;
 for (const name of PUBLIC_SCHEMAS) {
   const spec = schemas[name];

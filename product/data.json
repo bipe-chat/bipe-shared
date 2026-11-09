@@ -439,6 +439,25 @@
       }
     },
     {
+      "id": "public-feed",
+      "basis": "consent",
+      "places": [
+        "server"
+      ],
+      "pt": {
+        "name": "Feed público",
+        "what": "O texto de cada publicação que um admin do grupo manda para o feed público do seu @, a conta que publicou e a data.",
+        "why": "Mostrar as publicações em bipe.chat/@ para quem abre o link, só quando o dono do @ liga o feed.",
+        "retention": "Até alguém apagar a publicação ou o feed. Uma publicação apagada sai da página na hora."
+      },
+      "en": {
+        "name": "Public feed",
+        "what": "The text of each post that a group admin sends to your @handle's public feed, the account that posted it and the date.",
+        "why": "To show the posts at bipe.chat/@handle to people who open the link, only while the handle owner keeps the feed on.",
+        "retention": "Until someone deletes the post or the feed. A deleted post leaves the page at once."
+      }
+    },
+    {
       "id": "phone-moves",
       "basis": "contract",
       "places": [

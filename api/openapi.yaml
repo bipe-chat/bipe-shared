@@ -785,6 +785,44 @@ paths:
         "403": { $ref: "#/components/responses/Error" }
         "409": { $ref: "#/components/responses/Error" }
         "429": { $ref: "#/components/responses/Error" }
+  /v1/me/pin/reset:
+    post:
+      summary: Start a reset of a forgotten PIN on a signed-in phone (ADR 0283 rule 13)
+      description: >
+        For a person who forgot the PIN and has no recovery email. The app runs the owner check
+        with biometrics first (security.md rule 14); a phone without biometrics does not call this
+        route and uses the recovery email (POST /v1/recovery/email). The new PIN must pass
+        pinProblem() (400 pin_weak, reason: a PinProblem id). The server makes a pin_reset recovery
+        with method device in state waiting, ready after recoveryDelayHours.email, and returns the
+        claim secret once. The phone collects it with POST /v1/recovery/{recoveryId}/claim after
+        ready_at, as on the email path; then the new PIN takes effect. Any signed-in device cancels
+        it with POST /v1/me/recoveries/{recoveryId}/cancel, and PUT /v1/me/pin cancels it too. The
+        other devices see it in GET /v1/me/account (purpose pin_reset, method email: older Android
+        builds fail on an unknown method) and get the push recovery_started; the recovery
+        email, when there is one, gets bipe_mail_notice_pin_reset_started. One waiting PIN reset per
+        account, by any method: 409 pin_reset_pending. 409 pin_not_set when the account has no PIN
+        (PUT /v1/me/pin sets the first PIN). Rate-limited per account (429). The new PIN is never
+        logged.
+      security: [{ matrix: [] }]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [new_pin]
+              properties:
+                new_pin: { type: string, maxLength: 64 }
+      responses:
+        "202":
+          description: The reset waits. Keep the claim secret on this phone.
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/RecoveryStarted" }
+        "400": { $ref: "#/components/responses/Error" }
+        "401": { $ref: "#/components/responses/Error" }
+        "409": { $ref: "#/components/responses/Error" }
+        "429": { $ref: "#/components/responses/Error" }
   /v1/web-link/finish:
     post:
       summary: End the MAS browser sessions that a web sign-in approval made (ADR 0118)
@@ -8546,7 +8584,7 @@ components:
       required: [id, method, purpose, state, created_at]
       properties:
         id: { type: string }
-        method: { type: string, enum: [token, email, guardian, cpf, apple, google], description: "guardian and cpf are not built yet. apple and google: a linked account (ADR 0096)." }
+        method: { type: string, enum: [token, email, guardian, cpf, apple, google], description: "guardian and cpf are not built yet. apple and google: a linked account (ADR 0096). A PIN reset that a signed-in phone started (POST /v1/me/pin/reset) shows as email: Android builds before bipe-chat/bipe#1350 fail on an unknown method." }
         purpose: { type: string, enum: [access, pin_reset] }
         state: { type: string, enum: [waiting, completed, cancelled, expired] }
         created_at: { type: string, format: date-time }
@@ -8703,7 +8741,7 @@ components:
       properties:
         error:
           type: string
-          enum: [bad_request, invite_invalid, invite_quota_exhausted, email_taken, handle_invalid, handle_taken, handle_cooldown, password_weak, attestation_invalid, profile_invalid, photo_invalid, unauthorized, not_found, rate_limited, internal, cnpj_invalid, cnpj_not_active, cnpj_taken, signature_invalid, pin_weak, pin_wrong, pin_blocked, pin_not_set, already_device_first, recovery_invalid, email_unavailable, terms_required, support_unavailable, link_taken, link_unavailable, brand_not_verified, brand_mark_limit, deletion_pending, keep_limit, group_link_no_access]
+          enum: [bad_request, invite_invalid, invite_quota_exhausted, email_taken, handle_invalid, handle_taken, handle_cooldown, password_weak, attestation_invalid, profile_invalid, photo_invalid, unauthorized, not_found, rate_limited, internal, cnpj_invalid, cnpj_not_active, cnpj_taken, signature_invalid, pin_weak, pin_wrong, pin_blocked, pin_not_set, already_device_first, recovery_invalid, email_unavailable, terms_required, support_unavailable, link_taken, link_unavailable, brand_not_verified, brand_mark_limit, deletion_pending, keep_limit, group_link_no_access, pin_reset_pending]
         reason: { type: string, description: "Detail, e.g. a HandleProblem or PinProblem id." }
         tries_left: { type: integer, description: "With pin_wrong: wrong PINs left before the PIN blocks." }
     BadgeEnvelope:

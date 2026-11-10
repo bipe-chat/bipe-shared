@@ -58,7 +58,8 @@ write("profile-facts.json", profileFactVectors);
 
 const personProofVectors = JSON.parse(readFileSync(join(root, "fixtures/person-proofs.json"), "utf8"));
 for (const vector of personProofVectors.vectors) {
-  if (JSON.stringify(personProofs(vector.payloads, reg)) !== JSON.stringify(vector.expected)) {
+  const schemes = { ...reg.schemes, schemes: [...reg.schemes.schemes, ...(vector.extraSchemes ?? [])] };
+  if (JSON.stringify(personProofs(vector.payloads, { ...reg, schemes })) !== JSON.stringify(vector.expected)) {
     throw new Error(`person-proofs: expected outcome differs for ${vector.name}`);
   }
 }

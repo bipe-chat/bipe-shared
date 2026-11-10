@@ -1,5 +1,5 @@
 {
-  "$comment": "Hand-written cases for personProofs (ADR 0275, registries/schemes.json). tools/gen-test-vectors.mjs checks each expected outcome against the reference implementation and writes test-vectors/person-proofs.json. Payloads here already passed the badge check; only the fields that the rule reads are present. The first proof draws the compact seal.",
+  "$comment": "Hand-written cases for personProofs (ADR 0275, registries/schemes.json). tools/gen-test-vectors.mjs checks each expected outcome against the reference implementation and writes test-vectors/person-proofs.json. Payloads here already passed the badge check; only the fields that the rule reads are present. The first proof draws the compact seal. extraSchemes: test-only schemes (country ZZ) added to registries/schemes.json for that vector. Brazilian proofs come first (ADR 0272 decision 7), then other countries', each group strongest first.",
   "vectors": [
     {
       "name": "pix only",
@@ -168,6 +168,162 @@
       "name": "nothing",
       "payloads": [],
       "expected": []
+    },
+    {
+      "name": "a foreign state proof after a Brazilian bank proof",
+      "extraSchemes": [
+        {
+          "id": "zz.state",
+          "country": "ZZ",
+          "class": "person",
+          "assurance": "state",
+          "names": {
+            "pt-BR": "Teste Estado",
+            "en": "Test State"
+          }
+        },
+        {
+          "id": "zz.bank",
+          "country": "ZZ",
+          "class": "person",
+          "assurance": "bank",
+          "names": {
+            "pt-BR": "Teste Banco",
+            "en": "Test Bank"
+          }
+        }
+      ],
+      "payloads": [
+        {
+          "lvl": "person",
+          "scheme": "zz.state"
+        },
+        {
+          "lvl": "pix"
+        }
+      ],
+      "expected": [
+        {
+          "scheme": "br.pix",
+          "assurance": "bank",
+          "mark": "regular"
+        },
+        {
+          "scheme": "zz.state",
+          "assurance": "state",
+          "mark": "fill"
+        }
+      ]
+    },
+    {
+      "name": "foreign proofs: strongest first",
+      "extraSchemes": [
+        {
+          "id": "zz.state",
+          "country": "ZZ",
+          "class": "person",
+          "assurance": "state",
+          "names": {
+            "pt-BR": "Teste Estado",
+            "en": "Test State"
+          }
+        },
+        {
+          "id": "zz.bank",
+          "country": "ZZ",
+          "class": "person",
+          "assurance": "bank",
+          "names": {
+            "pt-BR": "Teste Banco",
+            "en": "Test Bank"
+          }
+        }
+      ],
+      "payloads": [
+        {
+          "lvl": "person",
+          "scheme": "zz.bank"
+        },
+        {
+          "lvl": "person",
+          "scheme": "zz.state"
+        }
+      ],
+      "expected": [
+        {
+          "scheme": "zz.state",
+          "assurance": "state",
+          "mark": "fill"
+        },
+        {
+          "scheme": "zz.bank",
+          "assurance": "bank",
+          "mark": "regular"
+        }
+      ]
+    },
+    {
+      "name": "Brazil, then the foreign proofs, each strongest first",
+      "extraSchemes": [
+        {
+          "id": "zz.state",
+          "country": "ZZ",
+          "class": "person",
+          "assurance": "state",
+          "names": {
+            "pt-BR": "Teste Estado",
+            "en": "Test State"
+          }
+        },
+        {
+          "id": "zz.bank",
+          "country": "ZZ",
+          "class": "person",
+          "assurance": "bank",
+          "names": {
+            "pt-BR": "Teste Banco",
+            "en": "Test Bank"
+          }
+        }
+      ],
+      "payloads": [
+        {
+          "lvl": "person",
+          "scheme": "zz.bank"
+        },
+        {
+          "lvl": "pix"
+        },
+        {
+          "lvl": "person",
+          "scheme": "zz.state"
+        },
+        {
+          "lvl": "govbr"
+        }
+      ],
+      "expected": [
+        {
+          "scheme": "br.govbr",
+          "assurance": "state",
+          "mark": "fill"
+        },
+        {
+          "scheme": "br.pix",
+          "assurance": "bank",
+          "mark": "regular"
+        },
+        {
+          "scheme": "zz.state",
+          "assurance": "state",
+          "mark": "fill"
+        },
+        {
+          "scheme": "zz.bank",
+          "assurance": "bank",
+          "mark": "regular"
+        }
+      ]
     }
   ]
 }

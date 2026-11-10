@@ -1,7 +1,7 @@
 // Registry data for bipe-core, the shared Rust core of bipe-app (bipe ADR 0267, bipe-chat/bipe#1277).
 // gen.mjs writes it to bipe-app core/crates/bipe-core/src/generated/registries.rs.
 import { rustRegex } from "./rust-regex.mjs";
-import { hostHomoglyphs } from "./registries.mjs";
+import { HOME_COUNTRY, hostHomoglyphs } from "./registries.mjs";
 
 export const RUST_REGISTRIES_PATH = "core/crates/bipe-core/src/generated/registries.rs";
 
@@ -75,6 +75,8 @@ pub const PIX_TXID_MAX_LENGTH: usize = ${marks.txidMaxLength};
 ${scamSection(reg)}
 /// \`personAssurance\` of registries/schemes.json (ADR 0275): the person assurances, strongest first, and the seal
 /// mark of each. personProofs reads it; test-vectors/person-proofs.json checks it.
+/// HOME_COUNTRY of tools/lib/registries.mjs: personProofs puts the proofs of this country first (ADR 0272 decision 7).
+pub const HOME_COUNTRY: &str = ${rustString(HOME_COUNTRY)};
 pub const PERSON_ASSURANCE: &[(&str, &str)] = &[${reg.schemes.personAssurance.map((a) => `(${rustString(a.id)}, ${rustString(a.mark)})`).join(", ")}];
 `;
 }

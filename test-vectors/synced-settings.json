@@ -1,0 +1,152 @@
+{
+  "description": "syncedSettingsReconcile(server, local, pending, first) (bipe-chat/bipe#1161, registries/synced-settings.json): the account's settings after one device reads them.",
+  "cases": [
+    {
+      "name": "first read, empty server",
+      "server": {},
+      "local": {
+        "readReceipts": true,
+        "palette": "acai"
+      },
+      "pending": [],
+      "first": true,
+      "expected": {
+        "readReceipts": true,
+        "palette": "acai"
+      }
+    },
+    {
+      "name": "first read, server wins a shared key",
+      "server": {
+        "palette": "mar"
+      },
+      "local": {
+        "palette": "acai",
+        "mural": true
+      },
+      "pending": [],
+      "first": true,
+      "expected": {
+        "palette": "mar",
+        "mural": true
+      }
+    },
+    {
+      "name": "first read, read receipts off wins",
+      "server": {
+        "readReceipts": true
+      },
+      "local": {
+        "readReceipts": false
+      },
+      "pending": [],
+      "first": true,
+      "expected": {
+        "readReceipts": false
+      }
+    },
+    {
+      "name": "first read, read receipts on loses to server off",
+      "server": {
+        "readReceipts": false
+      },
+      "local": {
+        "readReceipts": true
+      },
+      "pending": [],
+      "first": true,
+      "expected": {
+        "readReceipts": false
+      }
+    },
+    {
+      "name": "later read, server wins",
+      "server": {
+        "palette": "mar",
+        "mural": false
+      },
+      "local": {
+        "palette": "acai",
+        "mural": true
+      },
+      "pending": [],
+      "first": false,
+      "expected": {
+        "palette": "mar",
+        "mural": false
+      }
+    },
+    {
+      "name": "later read, a pending change wins",
+      "server": {
+        "palette": "mar"
+      },
+      "local": {
+        "palette": "acai"
+      },
+      "pending": [
+        "palette"
+      ],
+      "first": false,
+      "expected": {
+        "palette": "acai"
+      }
+    },
+    {
+      "name": "pending key the device does not have",
+      "server": {
+        "palette": "mar"
+      },
+      "local": {},
+      "pending": [
+        "palette"
+      ],
+      "first": false,
+      "expected": {
+        "palette": "mar"
+      }
+    },
+    {
+      "name": "unknown server keys stay",
+      "server": {
+        "futureKey": {
+          "a": 1
+        },
+        "palette": "mar"
+      },
+      "local": {
+        "palette": "acai"
+      },
+      "pending": [],
+      "first": true,
+      "expected": {
+        "futureKey": {
+          "a": 1
+        },
+        "palette": "mar"
+      }
+    },
+    {
+      "name": "later read, read receipts off on device only",
+      "server": {
+        "readReceipts": true
+      },
+      "local": {
+        "readReceipts": false
+      },
+      "pending": [],
+      "first": false,
+      "expected": {
+        "readReceipts": true
+      }
+    },
+    {
+      "name": "nothing anywhere",
+      "server": {},
+      "local": {},
+      "pending": [],
+      "first": true,
+      "expected": {}
+    }
+  ]
+}

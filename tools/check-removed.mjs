@@ -51,7 +51,7 @@ function declared(path, text) {
     : path.endsWith(".kt") || path.endsWith(".kts")
       ? [/\b(?:val|var|fun|object|class|interface|typealias)\s+`?([A-Za-z_]\w*)/g]
       : path.endsWith(".rs")
-        ? [/\b(?:const|static|fn|struct|enum|type|mod|trait)\s+([A-Za-z_]\w*)/g]
+        ? [/\b(?:const|static|fn|struct|enum|type|mod|trait|let(?:\s+mut)?)\s+([A-Za-z_]\w*)/g]
       : path.endsWith(".xml")
         ? [/\bname="([A-Za-z_]\w*)"/g]
         : [/^"([A-Za-z_]\w*)"\s*=/gm];
@@ -86,7 +86,11 @@ const uses = new Map();
 for (const [path, text] of main.handWritten) {
   const lines = text.split("\n");
   lines.forEach((line, i) => {
-    for (const m of line.matchAll(/[A-Za-z_]\w*/g)) {
+    // A word in a comment is no use of a name: skip comment lines and the part after "//".
+    const trimmed = line.trimStart();
+    if (/^(\/\/|\/\*|\*)/.test(trimmed)) return;
+    const code = line.replace(/\s\/\/.*$/, "");
+    for (const m of code.matchAll(/[A-Za-z_]\w*/g)) {
       if (!removed.has(m[0])) continue;
       if (!uses.has(m[0])) uses.set(m[0], []);
       uses.get(m[0]).push(`${path}:${i + 1}`);

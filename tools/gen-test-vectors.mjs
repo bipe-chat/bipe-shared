@@ -14,7 +14,7 @@ import { b64url as reportB64, deriveKeyPair as hpkeKeyPair, encryptMedia, envelo
 import { canonicalJson, checkMoved, matrixKey, movedEnvelope, moveError, sentAfterMove, signAs, signedBytes } from "./lib/moves.mjs";
 import { homePlan } from "./lib/home-score.mjs";
 import { loadSchedulingVectors, writeSchedulingApiFixture } from "./lib/scheduling-vectors.mjs";
-import { forwardChatLimit, forwardCount, forwardLine, forwardedContent, voiceSource, assistantReaders, assistantSendAllowed, assistantSender, draftFromEvent, workNoteFromEvent, replyByFromEvent, photoDistance, photoHash, photoMatches, personProofs, profileFactLines, relationshipNameWarning, stickerEmojiKey, stickerMatches, stickerQueryTags, stickerSearchFold, newestDmRooms, clearedChatHidden, bringPeopleReminder, chatListPrompt, clearedChatKeepsEvent, clearedChatMarker, clearedChatsWithClear, compareAppVersions, extractInviteCode, handleProblem, isBipeUserID, socialHandleClean, socialHandleProblem, socialUrl, handleSuggestions, pinReminderNext, pinProblem, remoteBannerState, badgeClass, badgeSchemeError, normalizeCnpj, normalizePhone, displayPhone, handleSkeleton, loadRegistries, profileProblem, sealLookalike, contactCollision, normalize, scamMatchIDs, scamWarningKind, trustFacts } from "./lib/registries.mjs";
+import { forwardChatLimit, forwardCount, forwardLine, forwardedContent, voiceSource, assistantReaders, assistantSendAllowed, assistantSender, draftFromEvent, workNoteFromEvent, replyByFromEvent, photoDistance, photoHash, photoMatches, personProofs, profileFactLines, relationshipNameWarning, stickerEmojiKey, stickerMatches, stickerQueryTags, stickerSearchFold, newestDmRooms, clearedChatHidden, bringPeopleReminder, chatListPrompt, clearedChatKeepsEvent, clearedChatMarker, clearedChatsWithClear, compareAppVersions, extractInviteCode, handleProblem, isBipeUserID, socialHandleClean, socialHandleProblem, socialUrl, handleSuggestions, pinReminderNext, pinProblem, remoteBannerState, badgeClass, badgeSchemeError, normalizeCnpj, normalizePhone, displayPhone, handleSkeleton, loadRegistries, syncedSettingsReconcile, profileProblem, sealLookalike, contactCollision, normalize, scamMatchIDs, scamWarningKind, trustFacts } from "./lib/registries.mjs";
 
 const root = join(dirname(fileURLToPath(import.meta.url)), "..");
 const reg = loadRegistries(root);
@@ -841,6 +841,24 @@ write("profile-checks.json", {
   profiles: profileCases.map(({ name, bio }) => ({ name, bio, problem: profileProblem({ name, bio }, reg) })),
   seals: sealNames.map((name) => ({ name, seal: sealLookalike(name, reg) })),
   collisions: collisionCases.map(({ name, contacts }) => ({ name, contacts, collision: contactCollision(name, contacts, reg) })),
+});
+
+// Settings that follow the account (bipe-chat/bipe#1161, registries/synced-settings.json).
+const syncedCases = [
+  { name: "first read, empty server", server: {}, local: { readReceipts: true, palette: "acai" }, pending: [], first: true },
+  { name: "first read, server wins a shared key", server: { palette: "mar" }, local: { palette: "acai", mural: true }, pending: [], first: true },
+  { name: "first read, read receipts off wins", server: { readReceipts: true }, local: { readReceipts: false }, pending: [], first: true },
+  { name: "first read, read receipts on loses to server off", server: { readReceipts: false }, local: { readReceipts: true }, pending: [], first: true },
+  { name: "later read, server wins", server: { palette: "mar", mural: false }, local: { palette: "acai", mural: true }, pending: [], first: false },
+  { name: "later read, a pending change wins", server: { palette: "mar" }, local: { palette: "acai" }, pending: ["palette"], first: false },
+  { name: "pending key the device does not have", server: { palette: "mar" }, local: {}, pending: ["palette"], first: false },
+  { name: "unknown server keys stay", server: { futureKey: { a: 1 }, palette: "mar" }, local: { palette: "acai" }, pending: [], first: true },
+  { name: "later read, read receipts off on device only", server: { readReceipts: true }, local: { readReceipts: false }, pending: [], first: false },
+  { name: "nothing anywhere", server: {}, local: {}, pending: [], first: true },
+];
+write("synced-settings.json", {
+  description: "syncedSettingsReconcile(server, local, pending, first) (bipe-chat/bipe#1161, registries/synced-settings.json): the account's settings after one device reads them.",
+  cases: syncedCases.map(({ name, server, local, pending, first }) => ({ name, server, local, pending, first, expected: syncedSettingsReconcile(server, local, pending, first) })),
 });
 
 write("handle-suggestions.json", {

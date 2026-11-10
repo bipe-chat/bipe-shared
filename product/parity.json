@@ -6600,9 +6600,9 @@
     },
     {
       "area": "App lock",
-      "ios": "Off by default; switch in Sua conta. Element's lock screen, biometrics optional",
-      "android": "Off by default; switch in Sua conta. Element's lock screen, biometrics optional",
-      "reason": "Element X lock screen per platform",
+      "ios": "Off by default; switch in Sua conta. Bipe's lock screen, biometrics optional",
+      "android": "Off by default; switch in Sua conta. Bipe's lock screen, biometrics optional",
+      "reason": "Own lock screen per platform",
       "kind": "idiom"
     },
     {

@@ -26,6 +26,17 @@ function rustPattern(name, source) {
   try { return rustRegex(source).regex; } catch (e) { throw new Error(`gen-rust: ${name}: ${e.message}`); }
 }
 
+function factsSection(reg) {
+  const pf = reg.profileFacts;
+  return `
+/// registries/profile-facts.json (ADR 0049).
+pub const PROFILE_FACTS_WINDOW_DAYS: i64 = ${pf.windowDays};
+pub const PROFILE_FACTS_NEW_ACCOUNT_DAYS: i64 = ${pf.newAccountDays};
+pub const PROFILE_FACTS_NOTICE_PAIR_HOURS: i64 = ${pf.noticePairHours};
+pub const PROFILE_FACTS_NOTICE_DAYS: i64 = ${pf.noticeDays};
+`;
+}
+
 function identitySection(reg) {
   const h = reg.handles;
   const ph = reg.phones;
@@ -127,7 +138,7 @@ pub const PIX_MARKS: [&str; ${marks.marks.length}] = [${marks.marks.map(rustStri
 /// The core checks this format by hand (no regex crate); a test there fails when the pattern changes.
 pub const PIX_E2E_ID_PATTERN: &str = ${rustString(marks.e2eIdPattern)};
 pub const PIX_TXID_MAX_LENGTH: usize = ${marks.txidMaxLength};
-${scamSection(reg)}${identitySection(reg)}
+${scamSection(reg)}${identitySection(reg)}${factsSection(reg)}
 /// \`personAssurance\` of registries/schemes.json (ADR 0275): the person assurances, strongest first, and the seal
 /// mark of each. personProofs reads it; test-vectors/person-proofs.json checks it.
 /// HOME_COUNTRY of tools/lib/registries.mjs: personProofs puts the proofs of this country first (ADR 0272 decision 7).

@@ -21,6 +21,61 @@ const SCAM_LISTS = ["urgencyPhrases", "receiptKeywords", "pixKeyContextWords", "
   "pinRequestSecretWords", "pinRequestSupportWords", "warningKindPriority"];
 const constName = (camel) => camel.replace(/([A-Z])/g, "_$1").toUpperCase();
 
+// A registry regex in the Rust syntax (tools/lib/rust-regex.mjs). Group 1 is the JavaScript match.
+function rustPattern(name, source) {
+  try { return rustRegex(source).regex; } catch (e) { throw new Error(`gen-rust: ${name}: ${e.message}`); }
+}
+
+function identitySection(reg) {
+  const h = reg.handles;
+  const ph = reg.phones;
+  const p = reg.profiles;
+  const reserved = Object.entries(reg.reserved.categories).flatMap(([category, names]) => names.map((n) => [n, category]))
+    .sort(([a], [b]) => (a < b ? -1 : a > b ? 1 : 0));
+  return `
+/// registries/handles.json (docs/usernames.md). The core checks \`HANDLE_PATTERN\` by hand: it has a look-ahead inside
+/// its body. A core test fails when the pattern changes.
+pub const HANDLE_MIN_LENGTH: usize = ${h.minLength};
+pub const HANDLE_OWNER_MIN_LENGTH: usize = ${h.ownerMinLength};
+pub const HANDLE_MAX_LENGTH: usize = ${h.maxLength};
+pub const HANDLE_PATTERN: &str = ${rustString(h.pattern)};
+pub const HANDLE_SKELETON_STRIP: &str = ${rustString(rustPattern("handles.skeletonStrip", h.skeletonStrip))};
+pub const HANDLE_SUGGESTION_CANDIDATES: usize = ${h.suggestions.candidates};
+
+/// registries/reserved-name-owners.json \`handles\`: (handle, owner Matrix user ID), sorted by handle.
+pub const OWNED_HANDLES: &[(&str, &str)] = &[${Object.entries(reg.owners.handles).sort(([a], [b]) => (a < b ? -1 : 1)).map(([k, v]) => `(${rustString(k)}, ${rustString(v)})`).join(", ")}];
+
+/// registries/reserved-names.json: (normalised name, category), sorted by name.
+pub const RESERVED_NAMES: &[(&str, &str)] = &[${reserved.map(([n, c]) => `(${rustString(n)}, ${rustString(c)})`).join(", ")}];
+
+/// registries/invite-codes.json. Groups 2 to 4 are the three blocks.
+pub const INVITE_CODE_PATTERN: &str = ${rustString(rustPattern("inviteCodes.pattern", reg.inviteCodes.pattern))};
+pub const INVITE_CODE_MAX_INPUT_LENGTH: usize = ${reg.inviteCodes.maxInputLength};
+
+/// registries/phone-numbers.json.
+pub const PHONE_COUNTRY_CODE: &str = ${rustString(ph.countryCode)};
+pub const PHONE_AREA_CODES: &[&str] = ${rustStrings(ph.areaCodes)};
+pub const PHONE_MOBILE_LENGTH: usize = ${ph.mobileLength};
+pub const PHONE_MOBILE_PREFIX: &str = ${rustString(ph.mobilePrefix)};
+pub const PHONE_MAX_INPUT_LENGTH: usize = ${ph.maxInputLength};
+pub const PHONE_INTERNATIONAL_MIN_DIGITS: usize = ${ph.internationalMinDigits};
+pub const PHONE_INTERNATIONAL_MAX_DIGITS: usize = ${ph.internationalMaxDigits};
+/// (countryCode, prefix, pattern) in registry order: the first that fits wins.
+pub const PHONE_DISPLAY: &[(&str, &str, &str)] = &[${ph.display.map((d) => `(${rustString(d.countryCode)}, ${rustString(d.prefix)}, ${rustString(d.pattern)})`).join(", ")}];
+
+/// registries/profiles.json (ADR 0041, ADR 0228).
+pub const PROFILE_NAME_MAX_LENGTH: usize = ${p.nameMaxLength};
+pub const PROFILE_BIO_MAX_LENGTH: usize = ${p.bioMaxLength};
+pub const PROFILE_BIO_MAX_LINES: usize = ${p.bioMaxLines};
+pub const SEAL_LOOKALIKE_EMOJI: &[&str] = ${rustStrings(p.sealLookalikeEmoji)};
+/// (id, pattern in the Rust syntax, url with {handle}).
+pub const SOCIAL_PLATFORMS: &[(&str, &str, &str)] = &[${p.socials.map((x) => `(${rustString(x.id)}, ${rustString(rustPattern(`socials.${x.id}`, x.pattern))}, ${rustString(x.url)})`).join(", ")}];
+
+/// registries/relationship-names.json (ADR 0018).
+pub const RELATIONSHIP_FULL_NAME_MIN_WORDS: usize = ${reg.relationshipNames.fullNameMinimumWords};
+`;
+}
+
 function scamSection(reg) {
   const s = reg.scam;
   const patterns = SCAM_PATTERN_GROUPS.flatMap((group) => s[group].map((p) => {
@@ -72,7 +127,7 @@ pub const PIX_MARKS: [&str; ${marks.marks.length}] = [${marks.marks.map(rustStri
 /// The core checks this format by hand (no regex crate); a test there fails when the pattern changes.
 pub const PIX_E2E_ID_PATTERN: &str = ${rustString(marks.e2eIdPattern)};
 pub const PIX_TXID_MAX_LENGTH: usize = ${marks.txidMaxLength};
-${scamSection(reg)}
+${scamSection(reg)}${identitySection(reg)}
 /// \`personAssurance\` of registries/schemes.json (ADR 0275): the person assurances, strongest first, and the seal
 /// mark of each. personProofs reads it; test-vectors/person-proofs.json checks it.
 /// HOME_COUNTRY of tools/lib/registries.mjs: personProofs puts the proofs of this country first (ADR 0272 decision 7).

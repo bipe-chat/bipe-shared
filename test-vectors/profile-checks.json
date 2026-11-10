@@ -1,0 +1,199 @@
+{
+  "description": "profileProblem({name, bio}), sealLookalike(name) and contactCollision(name, contactNames) (ADR 0041, security rule 8, registries/profiles.json). problem is null when valid. seal is the first sealLookalikeEmoji entry in the name, or null. collision is the first contact name with the same normalize() result, or null.",
+  "profiles": [
+    {
+      "name": "Ana Souza",
+      "bio": "",
+      "problem": null
+    },
+    {
+      "name": "  Ana  ",
+      "bio": "  ",
+      "problem": null
+    },
+    {
+      "name": "",
+      "bio": "",
+      "problem": "name_empty"
+    },
+    {
+      "name": "   ",
+      "bio": "Oi",
+      "problem": "name_empty"
+    },
+    {
+      "name": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+      "bio": "",
+      "problem": null
+    },
+    {
+      "name": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+      "bio": "",
+      "problem": "name_too_long"
+    },
+    {
+      "name": "😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀",
+      "bio": "",
+      "problem": null
+    },
+    {
+      "name": "Itaú",
+      "bio": "",
+      "problem": "name_reserved"
+    },
+    {
+      "name": " ІТАÚ ",
+      "bio": "",
+      "problem": "name_reserved"
+    },
+    {
+      "name": "Ana",
+      "bio": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+      "problem": null
+    },
+    {
+      "name": "Ana",
+      "bio": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+      "problem": "bio_too_long"
+    },
+    {
+      "name": "Ana",
+      "bio": "x\nx\nx\nx",
+      "problem": null
+    },
+    {
+      "name": "Ana",
+      "bio": "x\nx\nx\nx\nx",
+      "problem": "bio_too_many_lines"
+    },
+    {
+      "name": "Ana",
+      "bio": "\n\nx\n\n",
+      "problem": null
+    },
+    {
+      "name": "﻿Ana　",
+      "bio": "",
+      "problem": null
+    }
+  ],
+  "seals": [
+    {
+      "name": "Ana Souza",
+      "seal": null
+    },
+    {
+      "name": "Ana ✅",
+      "seal": "✅"
+    },
+    {
+      "name": "Ana ✔️",
+      "seal": "✔"
+    },
+    {
+      "name": "Ana ✔︎",
+      "seal": "✔"
+    },
+    {
+      "name": "💜 Ana",
+      "seal": "💜"
+    },
+    {
+      "name": "Ana ☑",
+      "seal": "☑"
+    },
+    {
+      "name": "Ana 🔰",
+      "seal": "🔰"
+    },
+    {
+      "name": "Ana ✓",
+      "seal": "✓"
+    },
+    {
+      "name": "Ana 🟣🟪",
+      "seal": "🟣"
+    },
+    {
+      "name": "Ana ✨",
+      "seal": null
+    },
+    {
+      "name": "",
+      "seal": null
+    }
+  ],
+  "collisions": [
+    {
+      "name": "Mãe",
+      "contacts": [
+        "Mae",
+        "Pai"
+      ],
+      "collision": "Mae"
+    },
+    {
+      "name": "Mae",
+      "contacts": [
+        "Mãe"
+      ],
+      "collision": "Mãe"
+    },
+    {
+      "name": "Ana  Souza",
+      "contacts": [
+        "ana souza"
+      ],
+      "collision": "ana souza"
+    },
+    {
+      "name": "Аna",
+      "contacts": [
+        "Ana"
+      ],
+      "collision": "Ana"
+    },
+    {
+      "name": "B4nco",
+      "contacts": [
+        "Banco"
+      ],
+      "collision": "Banco"
+    },
+    {
+      "name": "Ana",
+      "contacts": [
+        "Ana Souza"
+      ],
+      "collision": null
+    },
+    {
+      "name": "",
+      "contacts": [
+        ""
+      ],
+      "collision": null
+    },
+    {
+      "name": "   ",
+      "contacts": [
+        "Ana"
+      ],
+      "collision": null
+    },
+    {
+      "name": "Ana",
+      "contacts": [],
+      "collision": null
+    },
+    {
+      "name": "Ana",
+      "contacts": [
+        "Bia",
+        "ANA",
+        "ana"
+      ],
+      "collision": "ANA"
+    }
+  ]
+}

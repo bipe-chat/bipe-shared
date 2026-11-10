@@ -4,7 +4,8 @@
 // their place and puts the JavaScript match in capture group 1:
 //   (?<![C])BODY(?![D])  ->  (?:^|[^C])(BODY)(?:[^D]|$)
 // The Rust crate prefers alternatives in the same order as a backtracking engine, so group 1 is the JavaScript
-// match. Anything outside the supported subset throws, so the registry validation fails closed.
+// match, so a capture group n of the JavaScript regex is group n + 1. Anything outside the supported subset throws, so
+// the registry validation fails closed.
 
 // JavaScript `\s`: WhiteSpace (with every Zs character) and LineTerminator (ECMA-262).
 const JS_SPACE_ITEMS = String.raw`\t\n\x0B\x0C\r \xA0\x{1680}\x{2000}-\x{200A}\x{2028}\x{2029}\x{202F}\x{205F}\x{3000}\x{FEFF}`;
@@ -43,6 +44,13 @@ function translateBody(body) {
       else if (e === "d") out += inClass ? "0-9" : "[0-9]";
       else if (RUST_META.has(e)) out += `\\${e}`;
       else if (e === "/") out += "/";
+      else if (e === "u" && /^[0-9a-fA-F]{4}$/.test(body.slice(i + 1, i + 5))) {
+        // One BMP character; a surrogate would be half of an astral character, which this subset does not allow.
+        const hex = body.slice(i + 1, i + 5);
+        if (/^d[89a-f]/i.test(hex)) throw new Error("surrogate escape");
+        out += `\\x{${hex}}`;
+        i += 4;
+      }
       else throw new Error(`unsupported escape \\${e}`);
       continue;
     }

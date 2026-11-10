@@ -220,7 +220,7 @@ The device stores the envelope bytes as received, not a parsed copy, so the byte
 - `init` makes any missing key and writes the public keys into `registries/list-signers.json` and `registries/operators.json`.
 - `sign <operators|issuers> [days]` builds the payload from its sources, signs it, checks it with `tools/lib/signed-lists.mjs` and writes `signed/<typ>/<version>.json`.
 
-`tools/gen.mjs` fails when a committed version fails the verification order or the chain, or when the newest version does not match its sources. It copies `signed/` to bipe-api.
+`refuseTestOnly` stops a build of a list with a test-only kid, scheme or region (bipe-chat/bipe#1195). `tools/gen.mjs` fails when a committed version fails the verification order or the chain, or when the newest version does not match its sources. It copies `signed/` to bipe-api.
 
 The re-sign job (bipe-chat/bipe#1242) signs with no person at the Keychain:
 

@@ -1,4 +1,4 @@
-# Scam matching and normalization in bipe-core
+# Scam matching, normalization and registry regexes in bipe-core
 
 bipe-core (bipe-app `core/`, ADR 0267) runs `normalize`, `scamMatchIDs`, `linkHosts` and `scamWarningKind` for iOS and Android. The reference is `tools/lib/registries.mjs`. The core must pass `test-vectors/normalization.json`, `scam-detection.json` and `scam-warnings.json`. This page gives the rules a port must keep.
 
@@ -23,7 +23,8 @@ The registry regexes are JavaScript regexes without flags. The Rust `regex` crat
 - No negated class in the body.
 - `.` only before `*` or `+`. One astral character is two JavaScript units, so a bounded count would differ.
 - Groups: `(...)`, `(?:...)` and `(?i:...)`. `(?i:...)` becomes `(?i-u:...)`, because Unicode case folding matches "ſ" for "s".
-- Escapes: `\s`, `\d` and escaped punctuation.
+- Escapes: `\s`, `\d`, `\uXXXX` (no surrogate) and escaped punctuation.
+- A capture group n of the JavaScript regex is group n + 1 in Rust, because group 1 holds the whole match.
 
 The translation is `(?<![C])BODY(?![D])` to `(?:^|[^C])(BODY)(?:[^D]|$)`. Each guard consumes one character. Capture group 1 is the JavaScript match. The `regex` crate selects among alternatives in the order of a backtracking engine, so group 1 is the same text that JavaScript returns.
 

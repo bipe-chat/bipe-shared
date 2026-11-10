@@ -15,16 +15,20 @@ test("JavaScript classes become explicit", () => {
   assert.equal(rustRegex("x.*y").regex, String.raw`(x[^\n\r\x{2028}\x{2029}]*y)`);
   assert.equal(rustRegex("(?i:pix)").regex, "((?i-u:pix))");
   assert.equal(rustRegex(String.raw`a\/b`).regex, "(a/b)");
+  assert.equal(rustRegex(String.raw`[ \u2010-\u2014]`).regex, String.raw`([ \x{2010}-\x{2014}])`);
 });
 
 test("constructs outside the subset fail", () => {
-  for (const bad of ["a(?=b)", "(?<!a)b", "(?<![^a])b", "a.b", "a.{3}", "[^a]", "\\bword", "(a)\\1", "é", "(?<x>a)", "[a"]) {
+  for (const bad of ["a(?=b)", "(?<!a)b", "(?<![^a])b", "a.b", "a.{3}", "[^a]", "\\bword", "(a)\\1", "é", "(?<x>a)", "[a", "\\ud83d"]) {
     assert.throws(() => rustRegex(bad), undefined, bad);
   }
 });
 
-test("every scam pattern translates", () => {
+test("every registry regex that reaches the core translates", () => {
   const reg = loadRegistries(new URL("..", import.meta.url).pathname);
+  assert.doesNotThrow(() => rustRegex(reg.inviteCodes.pattern));
+  assert.doesNotThrow(() => rustRegex(reg.handles.skeletonStrip));
+  for (const s of reg.profiles.socials) assert.doesNotThrow(() => rustRegex(s.pattern), s.id);
   for (const group of ["pixKeyPatterns", "pixCopyPastePatterns", "boletoPatterns", "linkPatterns"]) {
     for (const p of reg.scam[group]) assert.doesNotThrow(() => rustRegex(p.regex), `${group}.${p.id}`);
   }

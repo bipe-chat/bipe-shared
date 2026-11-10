@@ -14,7 +14,7 @@ import { b64url as reportB64, deriveKeyPair as hpkeKeyPair, encryptMedia, envelo
 import { canonicalJson, checkMoved, matrixKey, movedEnvelope, moveError, sentAfterMove, signAs, signedBytes } from "./lib/moves.mjs";
 import { homePlan } from "./lib/home-score.mjs";
 import { loadSchedulingVectors, writeSchedulingApiFixture } from "./lib/scheduling-vectors.mjs";
-import { forwardChatLimit, forwardCount, forwardLine, forwardedContent, voiceSource, assistantReaders, assistantSendAllowed, assistantSender, draftFromEvent, workNoteFromEvent, replyByFromEvent, photoDistance, photoHash, photoMatches, personProofs, profileFactLines, relationshipNameWarning, stickerEmojiKey, stickerMatches, stickerQueryTags, stickerSearchFold, newestDmRooms, clearedChatHidden, bringPeopleReminder, chatListPrompt, clearedChatKeepsEvent, clearedChatMarker, clearedChatsWithClear, compareAppVersions, extractInviteCode, handleProblem, isBipeUserID, socialHandleClean, socialHandleProblem, socialUrl, handleSuggestions, pinReminderNext, pinProblem, remoteBannerState, badgeClass, badgeSchemeError, normalizeCnpj, normalizePhone, displayPhone, handleSkeleton, loadRegistries, normalize, scamMatchIDs, scamWarningKind, trustFacts } from "./lib/registries.mjs";
+import { forwardChatLimit, forwardCount, forwardLine, forwardedContent, voiceSource, assistantReaders, assistantSendAllowed, assistantSender, draftFromEvent, workNoteFromEvent, replyByFromEvent, photoDistance, photoHash, photoMatches, personProofs, profileFactLines, relationshipNameWarning, stickerEmojiKey, stickerMatches, stickerQueryTags, stickerSearchFold, newestDmRooms, clearedChatHidden, bringPeopleReminder, chatListPrompt, clearedChatKeepsEvent, clearedChatMarker, clearedChatsWithClear, compareAppVersions, extractInviteCode, handleProblem, isBipeUserID, socialHandleClean, socialHandleProblem, socialUrl, handleSuggestions, pinReminderNext, pinProblem, remoteBannerState, badgeClass, badgeSchemeError, normalizeCnpj, normalizePhone, displayPhone, handleSkeleton, loadRegistries, profileProblem, sealLookalike, contactCollision, normalize, scamMatchIDs, scamWarningKind, trustFacts } from "./lib/registries.mjs";
 
 const root = join(dirname(fileURLToPath(import.meta.url)), "..");
 const reg = loadRegistries(root);
@@ -760,6 +760,44 @@ write("social-handles.json", {
     const problem = socialHandleProblem(platform, input, ownHandle, reg);
     return { platform, input, ownHandle, handle, problem, ...(problem === null && handle ? { url: socialUrl(platform, input, reg) } : {}) };
   }),
+});
+
+// Profile and name checks (security rule 8, ADR 0041): the core runs them for every client.
+const profileCases = [
+  { name: "Ana Souza", bio: "" },
+  { name: "  Ana  ", bio: "  " },
+  { name: "", bio: "" },
+  { name: "   ", bio: "Oi" },
+  { name: "a".repeat(reg.profiles.nameMaxLength), bio: "" },
+  { name: "a".repeat(reg.profiles.nameMaxLength + 1), bio: "" },
+  { name: "😀".repeat(reg.profiles.nameMaxLength), bio: "" },
+  { name: "Itaú", bio: "" },
+  { name: " ІТАÚ ", bio: "" },
+  { name: "Ana", bio: "b".repeat(reg.profiles.bioMaxLength) },
+  { name: "Ana", bio: "b".repeat(reg.profiles.bioMaxLength + 1) },
+  { name: "Ana", bio: Array(reg.profiles.bioMaxLines).fill("x").join("\n") },
+  { name: "Ana", bio: Array(reg.profiles.bioMaxLines + 1).fill("x").join("\n") },
+  { name: "Ana", bio: "\n\nx\n\n" },
+  { name: "\uFEFFAna\u3000", bio: "" },
+];
+const sealNames = ["Ana Souza", "Ana ✅", "Ana ✔️", "Ana ✔︎", "💜 Ana", "Ana ☑", "Ana 🔰", "Ana ✓", "Ana 🟣🟪", "Ana ✨", ""];
+const collisionCases = [
+  { name: "Mãe", contacts: ["Mae", "Pai"] },
+  { name: "Mae", contacts: ["Mãe"] },
+  { name: "Ana  Souza", contacts: ["ana souza"] },
+  { name: "Аna", contacts: ["Ana"] },
+  { name: "B4nco", contacts: ["Banco"] },
+  { name: "Ana", contacts: ["Ana Souza"] },
+  { name: "", contacts: [""] },
+  { name: "   ", contacts: ["Ana"] },
+  { name: "Ana", contacts: [] },
+  { name: "Ana", contacts: ["Bia", "ANA", "ana"] },
+];
+write("profile-checks.json", {
+  description: "profileProblem({name, bio}), sealLookalike(name) and contactCollision(name, contactNames) (ADR 0041, security rule 8, registries/profiles.json). problem is null when valid. seal is the first sealLookalikeEmoji entry in the name, or null. collision is the first contact name with the same normalize() result, or null.",
+  profiles: profileCases.map(({ name, bio }) => ({ name, bio, problem: profileProblem({ name, bio }, reg) })),
+  seals: sealNames.map((name) => ({ name, seal: sealLookalike(name, reg) })),
+  collisions: collisionCases.map(({ name, contacts }) => ({ name, contacts, collision: contactCollision(name, contacts, reg) })),
 });
 
 write("handle-suggestions.json", {

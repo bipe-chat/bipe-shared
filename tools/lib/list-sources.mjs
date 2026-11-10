@@ -23,12 +23,27 @@ export function buildListPayload(root, typ, common) {
   }
   const { issuers } = read(root, "registries/issuers.json");
   const badgeKeys = read(root, "registries/badge-keys.json").keys;
-  return {
+  const payload = {
     ...head,
     schemes: read(root, "registries/schemes.json").schemes,
     regions: read(root, "registries/regions.json").regions.map((r) => ({ id: r.id, servers: r.servers, schemes: r.schemes })),
     issuers: issuers.map((i) => (i.id === "bipe" ? { ...i, keys: badgeKeys } : i)),
   };
+  refuseTestOnly(payload);
+  return payload;
+}
+
+/**
+ * A signed list is what release builds trust, so nothing test-only may enter it (bipe-chat/bipe#1195): no `test-only-*`
+ * kid and no scheme or region of the test-only region zz. Fails closed when a source has one.
+ */
+export function refuseTestOnly(payload) {
+  for (const s of payload.schemes ?? []) if (s.id.startsWith("zz.") || s.country === "ZZ") throw new Error(`issuers: test-only scheme ${s.id}`);
+  for (const r of payload.regions ?? []) if (r.id === "zz") throw new Error("issuers: test-only region zz");
+  for (const i of payload.issuers ?? []) {
+    for (const kid of Object.keys(i.keys ?? {})) if (kid.startsWith("test-only-")) throw new Error(`issuers: ${i.id} has test-only key ${kid}`);
+    for (const id of i.schemes ?? []) if (id.startsWith("zz.")) throw new Error(`issuers: ${i.id} has test-only scheme ${id}`);
+  }
 }
 
 const versions = (root, typ) => {

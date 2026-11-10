@@ -1,7 +1,7 @@
 // Writes test-vectors/*.json. Every platform implementation must pass them.
 // Badge vectors use a TEST-ONLY Ed25519 key derived from a fixed seed.
 import { createHash, createPrivateKey, createPublicKey, sign } from "node:crypto";
-import { mkdirSync, readFileSync, writeFileSync } from "node:fs";
+import { mkdirSync, readdirSync, readFileSync, writeFileSync } from "node:fs";
 import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
 import { buildBrCode, crc16, pixCheck, pixMarkLines, pixTxid } from "./lib/pix.mjs";
@@ -318,6 +318,15 @@ const nlSchemes = [
   { id: "nl.itsme", country: "NL", class: "person", assurance: "bank", names: { "pt-BR": "itsme", en: "itsme" } },
   { id: "nl.kvk", country: "NL", class: "org", assurance: "registry+control", names: { "pt-BR": "KVK", en: "KVK" } },
 ];
+// ADR 0272, bipe-chat/bipe#1195: a test-only region zz with one person and one org scheme, so the vectors prove that
+// verification needs no Brazilian or Dutch fact. Country ZZ is a user-assigned ISO code. zz never appears in
+// registries/schemes.json (validateSchemes) or in a signed list (checkSignedLists), so a release build refuses it.
+const zzSchemes = [
+  { id: "zz.test-person", country: "ZZ", class: "person", assurance: "state", names: { "pt-BR": "Teste", en: "Test" } },
+  { id: "zz.test", country: "ZZ", class: "org", assurance: "registry+control", names: { "pt-BR": "Registro de teste", en: "Test registry" } },
+];
+const ZZ_KID = "test-only-zz-2026-11";
+const zzKey = keyFromSeed("23".repeat(32));
 const NL_KID = "test-only-nl-2026-11";
 const nlKey = keyFromSeed("22".repeat(32));
 const brSchemeIds = reg.schemes.schemes.map((s) => s.id);
@@ -327,16 +336,18 @@ const issuersPayload = {
   issued: LIST_ISSUED,
   expires: LIST_EXPIRES,
   prev: OTHER_PREV,
-  schemes: [...reg.schemes.schemes, ...nlSchemes],
+  schemes: [...reg.schemes.schemes, ...nlSchemes, ...zzSchemes],
   regions: [
     { id: "br", servers: ["bipe.net.br", "coop.exemplo.br"], schemes: brSchemeIds },
     { id: "nl", servers: ["bipe.exemplo.nl"], schemes: nlSchemes.map((s) => s.id) },
+    { id: "zz", servers: ["bipe.test"], schemes: zzSchemes.map((s) => s.id) },
   ],
   issuers: [
     { id: "bipe", name: "Bipe", status: "valid", accredited: "2026-10-26", region: "br", levels: ["pix", "govbr", "institution", "cnpj", "brand-mark"], schemes: brSchemeIds, keys: publicKeys },
     { id: "banco-exemplo", name: "Banco Exemplo", status: "valid", accredited: "2026-11-10", region: "br", levels: ["govbr"], schemes: ["br.govbr"], keys: { "test-only-banco-2026-11": rawPublicKey(keyFromSeed("21".repeat(32))) } },
     { id: "bipe-nl-exemplo", name: "Bipe Holanda Exemplo", status: "valid", accredited: "2026-11-10", region: "nl", levels: ["person", "org"], schemes: ["nl.itsme", "nl.kvk"], keys: { [NL_KID]: rawPublicKey(nlKey) } },
     { id: "cartorio-antigo", name: "Cartório Antigo", status: "removed", accredited: "2026-11-10", removed: "2027-02-01" },
+    { id: "zz-teste", name: "Emissor de Teste", status: "valid", accredited: "2026-11-10", region: "zz", levels: ["person", "org"], schemes: zzSchemes.map((s) => s.id), keys: { [ZZ_KID]: rawPublicKey(zzKey) } },
   ],
 };
 const storedOps = (payload) => ({ version: payload.version, payload: b64url(listPayloadBytes(payload)) });
@@ -452,6 +463,36 @@ const schemeVectors = [
   ["server in no region", { ...nlOrgPayload, sub: "@padaria:outro.exemplo" }, "region_mismatch"],
 ];
 const nlIssuer = issuersPayload.issuers[2];
+// zz (bipe-chat/bipe#1195): a person and a company of the test-only region. The release registry has no zz issuer, so a
+// release build answers unknown_issuer before it reads the scheme.
+const zzTimes = nlTimes;
+const zzOrgPayload = { sub: "@empresa:bipe.test", lvl: "org", country: "ZZ", scheme: "zz.test", assurance: "registry+control", org_id: "ZZ-0001", name: "Empresa de Teste", legal_name: "Empresa de Teste Ltda.", msk: MASTER_KEY, iss: "zz-teste", ...zzTimes };
+const zzPersonPayload = { sub: "@pessoa:bipe.test", lvl: "person", country: "ZZ", scheme: "zz.test-person", assurance: "state", name: "Pessoa de Teste", msk: MASTER_KEY, iss: "zz-teste", ...zzTimes };
+const zzEnvelope = (payload) => issuerEnvelope(payload, zzKey, { iss: "zz-teste", kid: ZZ_KID });
+const zzIssuer = issuersPayload.issuers.find((i) => i.id === "zz-teste");
+const zzCases = [
+  ["company in the test region", zzOrgPayload, "valid"],
+  ["person in the test region", zzPersonPayload, "valid"],
+  ["test issuer seals a Brazilian account", { ...zzOrgPayload, sub: "@padaria:bipe.net.br" }, "region_mismatch"],
+  ["test issuer signs a Brazilian scheme", { ...zzOrgPayload, scheme: "br.cnpj", country: "BR" }, "scheme_not_allowed"],
+].map(([name, payload, expect]) => {
+  const reference = badgeSchemeError(payload, payload.sub, zzIssuer, issuersPayload.schemes, issuersPayload.regions) ?? "valid";
+  if (reference !== expect) throw new Error(`badge-issuers: zz ${name}: reference says ${reference}, vector says ${expect}`);
+  return { name: `zz: ${name}`, envelope: zzEnvelope(payload), sender: payload.sub, senderMasterKey: MASTER_KEY, expect };
+});
+// The release registry: the newest signed issuer registry of this repo, which every app build bundles.
+const releaseIssuers = (() => {
+  const dir = join(root, "signed", "issuers");
+  const newest = readdirSync(dir).filter((f) => /^[1-9][0-9]*\.json$/.test(f)).map((f) => Number(f.slice(0, -5))).sort((a, b) => a - b).at(-1);
+  return JSON.parse(Buffer.from(JSON.parse(readFileSync(join(dir, `${newest}.json`), "utf8")).payload, "base64url").toString("utf8"));
+})();
+if (releaseIssuers.issuers.some((i) => i.id === "zz-teste") || releaseIssuers.schemes.some((s) => s.id.startsWith("zz."))) {
+  throw new Error("badge-issuers: the release issuer registry has a zz issuer or scheme");
+}
+const releaseRefuses = [
+  ["zz company", zzOrgPayload],
+  ["zz person", zzPersonPayload],
+].map(([name, payload]) => ({ name, envelope: zzEnvelope(payload), sender: payload.sub, senderMasterKey: MASTER_KEY, expect: "unknown_issuer" }));
 const schemeCases = schemeVectors.map(([name, payload, expect]) => {
   const reference = badgeSchemeError(payload, payload.sub, nlIssuer, issuersPayload.schemes, issuersPayload.regions) ?? "valid";
   if (reference !== expect) throw new Error(`badge-issuers: ${name}: reference says ${reference}, vector says ${expect}`);
@@ -467,7 +508,7 @@ const levelClasses = [
   ["brand-mark, not portable", { ...basePayload, lvl: "brand-mark" }],
 ].map(([name, p]) => ({ name, lvl: p.lvl, ...(p.scheme ? { scheme: p.scheme } : {}), expect: badgeClass(p, issuersPayload.schemes) }));
 write("badge-issuers.json", {
-  $comment: "Generated by tools/gen-test-vectors.mjs. TEST-ONLY keys (badge seed 01..01, issuer seed 21..21), never in a release build. Verify with the order in docs/badge-attestation.md, with trustedIssuers, schemes and regions as the device's issuer registry. classes: what a level proves for a feature gate, reference badgeClass in tools/lib/registries.mjs (ADR 0272). verifierWithoutSchemes: the answer of a verifier from before ADR 0272. A badge without iss is from issuer bipe. lifeDays is registries/badge-keys.json lifeDays.",
+  $comment: "Generated by tools/gen-test-vectors.mjs. TEST-ONLY keys (badge seed 01..01, issuer seeds 21..21, 22..22 and 23..23), never in a release build. zz is a test-only region (bipe-chat/bipe#1195). releaseRefuses: the zz badges against the newest signed issuer registry in signed/issuers, which every app build bundles; a release build must refuse them. Verify with the order in docs/badge-attestation.md, with trustedIssuers, schemes and regions as the device's issuer registry. classes: what a level proves for a feature gate, reference badgeClass in tools/lib/registries.mjs (ADR 0272). verifierWithoutSchemes: the answer of a verifier from before ADR 0272. A badge without iss is from issuer bipe. lifeDays is registries/badge-keys.json lifeDays.",
   now: NOW,
   lifeDays: reg.badgeKeys.lifeDays,
   trustedIssuers: issuersPayload.issuers,
@@ -496,7 +537,9 @@ write("badge-issuers.json", {
     { name: "other issuer: subject mismatch", envelope: bancoValid, ...context, sender: "@mallory:bipe.net.br", expect: "subject_mismatch" },
     { name: "other issuer: account of another region", envelope: issuerEnvelope({ ...bancoPayload, sub: "@anna:bipe.exemplo.nl" }, bancoKey, { iss: "banco-exemplo", kid: BANCO_KID }), sender: "@anna:bipe.exemplo.nl", senderMasterKey: MASTER_KEY, expect: "region_mismatch" },
     ...schemeCases,
+    ...zzCases,
   ],
+  releaseRefuses,
 });
 
 // --- CVM line in the company seal (ADR 0077, bipe#238) ----------------------

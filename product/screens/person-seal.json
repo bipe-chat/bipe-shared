@@ -26,11 +26,21 @@
     },
     "schemeName": {
       "type": "string",
-      "description": "The name of the scheme in registries/schemes.json for the locale, under bipe_person_seal_scheme."
+      "description": "The name of the scheme in registries/schemes.json for the locale, under bipe_person_seal_scheme. A scheme of another country takes its name from the schemes of the signed issuer registry (BipeSchemeNames); a scheme with no name gives no proof."
     },
     "checkedAt": {
       "type": "date",
       "description": "The month and year of BadgePayload.iat, under bipe_person_seal_checked. Never the day."
+    },
+    "issuer": {
+      "type": "string",
+      "optional": true,
+      "description": "Foreign scheme only (country not BR): the issuer name from the signed issuer registry, under bipe_badge_seal_issuer."
+    },
+    "country": {
+      "type": "string",
+      "optional": true,
+      "description": "Foreign scheme only: BadgePayload.country as a country name in the device language, under bipe_badge_seal_country. bipe_badge_foreign_body follows bipe_person_seal_body (ADR 0272 decision 7)."
     },
     "validUntil": {
       "type": "date",
@@ -49,6 +59,9 @@
     "bipe_person_seal_checked",
     "bipe_person_seal_valid_until",
     "bipe_person_seal_body",
+    "bipe_badge_seal_country",
+    "bipe_badge_seal_issuer",
+    "bipe_badge_foreign_body",
     "bipe_app_close"
   ],
   "sdk": [

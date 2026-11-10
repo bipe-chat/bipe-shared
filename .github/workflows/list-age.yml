@@ -21,6 +21,8 @@ jobs:
         with:
           node-version: 24
       - id: age
+        # bash by name gives pipefail: without it the step takes tee's exit code and never fails.
+        shell: bash
         run: node tools/check-list-age.mjs | tee "$RUNNER_TEMP/list-age.txt"
       - if: failure() && steps.age.outcome == 'failure'
         env:

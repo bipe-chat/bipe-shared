@@ -26,6 +26,39 @@ function rustPattern(name, source) {
   try { return rustRegex(source).regex; } catch (e) { throw new Error(`gen-rust: ${name}: ${e.message}`); }
 }
 
+function messageSection(reg) {
+  const vm = reg.voiceMedia;
+  const ps = reg.mcpTools.personalSend;
+  const rm = reg.mcpTools.readerMarker;
+  const d = reg.drafts;
+  const w = reg.workNotes;
+  return `
+/// registries/voice-media.json forward marks (bipe-chat/bipe#83, bipe-chat/bipe#933).
+pub const FORWARD_KEY: &str = ${rustString(vm.forwardKey)};
+pub const FORWARDED_MANY_TIMES: u32 = ${vm.forwardedManyTimes};
+pub const FORWARD_CHATS: u32 = ${vm.forwardChats};
+pub const FORWARD_CHATS_MANY_TIMES: u32 = ${vm.forwardChatsManyTimes};
+/// registries/group-power-levels.json publicationOnly.feedPostKey: a forward drops it (bipe-chat/bipe#1260).
+pub const FEED_POST_KEY: &str = ${rustString(reg.groupPowerLevels.publicationOnly.feedPostKey)};
+
+/// registries/mcp-tools.json personalSend and readerMarker (ADR 0130, ADR 0210).
+pub const ASSISTANT_MARKER_FIELD: &str = ${rustString(ps.markerField)};
+pub const ASSISTANT_CLIENT_MAX_LENGTH: usize = ${ps.clientMaxLength};
+pub const ASSISTANT_READER_EVENT_TYPE: &str = ${rustString(rm.eventType)};
+pub const ASSISTANT_READER_FIELD: &str = ${rustString(rm.field)};
+
+/// registries/drafts.json (ADR 0210).
+pub const DRAFT_FIELD: &str = ${rustString(d.field)};
+pub const DRAFT_BODY_MAX_LENGTH: usize = ${d.bodyMaxLength};
+pub const DRAFT_CLIENT_MAX_LENGTH: usize = ${d.clientMaxLength};
+
+/// registries/work-notes.json (ADR 0284).
+pub const WORK_NOTE_FIELD: &str = ${rustString(w.noteField)};
+pub const WORK_REPLY_BY_FIELD: &str = ${rustString(w.replyByField)};
+pub const WORK_NOTE_BODY_MAX_LENGTH: usize = ${w.bodyMaxLength};
+`;
+}
+
 function factsSection(reg) {
   const pf = reg.profileFacts;
   return `
@@ -138,7 +171,7 @@ pub const PIX_MARKS: [&str; ${marks.marks.length}] = [${marks.marks.map(rustStri
 /// The core checks this format by hand (no regex crate); a test there fails when the pattern changes.
 pub const PIX_E2E_ID_PATTERN: &str = ${rustString(marks.e2eIdPattern)};
 pub const PIX_TXID_MAX_LENGTH: usize = ${marks.txidMaxLength};
-${scamSection(reg)}${identitySection(reg)}${factsSection(reg)}
+${scamSection(reg)}${identitySection(reg)}${factsSection(reg)}${messageSection(reg)}
 /// \`personAssurance\` of registries/schemes.json (ADR 0275): the person assurances, strongest first, and the seal
 /// mark of each. personProofs reads it; test-vectors/person-proofs.json checks it.
 /// HOME_COUNTRY of tools/lib/registries.mjs: personProofs puts the proofs of this country first (ADR 0272 decision 7).

@@ -1036,6 +1036,13 @@ if (appIndex >= 0 || existsSync(appOut)) {
   writeWeb(join(appOut, "web/src/bipe/generated"), {
     root,
     reg,
+    // The same bundled lists and signer set as BipeRegistries (bipe-chat/bipe#1457).
+    signedLists: {
+      threshold: listSigners.threshold,
+      keys: listSigners.keys,
+      operators: bundledList("operators"),
+      issuers: bundledList("issuers"),
+    },
     screens: loadScreens(root).map(({ spec }) => spec),
     css: generateColors("css"),
     // The business tools contract, for the owner screens on the web (ADR 0226); bipe-api gets the same file.

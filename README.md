@@ -73,6 +73,8 @@ The store listing (bipe-chat/bipe#453). `product/appstore.md` holds the App Stor
 | iOS | bipe-app CI (`ios/BipeKit`) | `Tests/BipeKitTests/SharedVectorTests.swift` |
 | Android | bipe-app CI (`android/libraries/bipe`) | `src/test/kotlin/chat/bipe/shared/SharedVectorTest.kt` |
 | API scheduling | `pnpm test:scheduling` in `bipe-api` | `test/scheduling.test.mjs`, using the generated fixture snapshot |
+| Web client | bipe-app CI (`web/`) | `web/src/bipe/vectors.test.mjs` |
+| Rust core | bipe-app CI (`core/`) | `core/crates/bipe-core/tests/*.rs` |
 
 Both app suites read the JSON files here directly. `BIPE_SHARED=<path>` points them at another checkout.
 

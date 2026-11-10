@@ -1,5 +1,6 @@
 #!/bin/sh
-# Runs what the required CI checks run (checks.yml: trust-facts, lockstep), against the sibling clones on disk.
+# Runs the generator checks of the required CI checks (checks.yml: trust-facts, lockstep), against the sibling clones on disk.
+# It does not run check-removed.mjs or parity.mjs --issues; CI does.
 # The pre-push hook in .githooks calls it.
 # Usage: scripts/verify [--all]
 set -eu

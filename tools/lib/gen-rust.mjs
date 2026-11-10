@@ -26,6 +26,35 @@ function rustPattern(name, source) {
   try { return rustRegex(source).regex; } catch (e) { throw new Error(`gen-rust: ${name}: ${e.message}`); }
 }
 
+function smallRulesSection(reg) {
+  const o = reg.onboarding;
+  const st = reg.stickers;
+  const a = reg.accounts;
+  const pairs = (map) => `&[${Object.entries(map).map(([k, list]) => `(${rustString(k)}, ${rustStrings(list)})`).join(", ")}]`;
+  return `
+/// registries/onboarding.json (bipe-chat/bipe#202, bipe-chat/bipe#752, bipe-chat/bipe#894).
+pub const PIN_REMINDER_DAYS: &[u32] = &[${o.pinReminder.days.join(", ")}];
+pub const PIN_REMINDER_THEN_EVERY_DAYS: u32 = ${o.pinReminder.thenEveryDays};
+pub const BRING_PEOPLE_STOP_AFTER_DECLINES: u32 = ${o.bringPeople.stopAfterDeclines};
+pub const BRING_PEOPLE_FOLLOW_UP_EVERY_DAYS: i64 = ${o.bringPeople.followUpEveryDays};
+pub const BRING_PEOPLE_PENDING_AFTER_DAYS: i64 = ${o.bringPeople.pendingAfterDays};
+/// (key, tier) in queue order.
+pub const CHAT_LIST_PROMPTS: &[(&str, &str)] = &[${o.chatListPrompt.entries.map((e) => `(${rustString(e.key)}, ${rustString(e.tier)})`).join(", ")}];
+pub const PROMPT_SLOT_HOURS: i64 = ${o.promptSlot.hours};
+
+/// registries/stickers.json search (ADR 0205). Maps keep registry order.
+pub const STICKER_PREFIX_MIN_LENGTH: usize = ${st.prefixMinLength};
+pub const STICKER_TAGS: &[&str] = ${rustStrings(st.tags)};
+pub const STICKER_WORDS: &[(&str, &[&str])] = ${pairs(st.words)};
+pub const STICKER_EMOJI: &[(&str, &[&str])] = ${pairs(st.emoji)};
+
+/// registries/accounts.json PIN check (ADR 0057).
+pub const PIN_LENGTH: usize = ${a.pinLength};
+pub const PIN_DATE_YEAR_MIN: u32 = ${a.pinDateYearMin};
+pub const PIN_DATE_YEAR_MAX: u32 = ${a.pinDateYearMax};
+`;
+}
+
 function messageSection(reg) {
   const vm = reg.voiceMedia;
   const ps = reg.mcpTools.personalSend;
@@ -171,7 +200,7 @@ pub const PIX_MARKS: [&str; ${marks.marks.length}] = [${marks.marks.map(rustStri
 /// The core checks this format by hand (no regex crate); a test there fails when the pattern changes.
 pub const PIX_E2E_ID_PATTERN: &str = ${rustString(marks.e2eIdPattern)};
 pub const PIX_TXID_MAX_LENGTH: usize = ${marks.txidMaxLength};
-${scamSection(reg)}${identitySection(reg)}${factsSection(reg)}${messageSection(reg)}
+${scamSection(reg)}${identitySection(reg)}${factsSection(reg)}${messageSection(reg)}${smallRulesSection(reg)}
 /// \`personAssurance\` of registries/schemes.json (ADR 0275): the person assurances, strongest first, and the seal
 /// mark of each. personProofs reads it; test-vectors/person-proofs.json checks it.
 /// HOME_COUNTRY of tools/lib/registries.mjs: personProofs puts the proofs of this country first (ADR 0272 decision 7).

@@ -9,9 +9,10 @@ const fixtures = JSON.parse(readFileSync(new URL('../fixtures/relationship-names
 for (const vector of fixtures.vectors) test(vector.name, () => {
   assert.equal(relationshipNameWarning(vector.savedName, vector.verifiedName, vector.nicknameConfirmed, reg), vector.expected);
 });
-test('native generators use the target package and shared normaliser', () => {
+test('native wrappers call bipe-core in the target package', () => {
   const kotlin = generateRelationshipNames(reg.relationshipNames, 'kotlin', '', 'chat.bipe.shared.generated');
-  assert.match(kotlin, /import chat\.bipe\.shared\.NameNormalizer/);
+  assert.match(kotlin, /^package chat\.bipe\.shared\.generated$/m);
+  assert.match(kotlin, /import chat\.bipe\.core\.relationshipNameWarning/);
   assert.doesNotMatch(kotlin, /io\.element/);
-  assert.match(generateRelationshipNames(reg.relationshipNames, 'swift', ''), /NameNormalizer\.normalize/);
+  assert.match(generateRelationshipNames(reg.relationshipNames, 'swift', ''), /relationshipNameWarning\(savedName:/);
 });

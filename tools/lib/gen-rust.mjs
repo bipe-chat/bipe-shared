@@ -1,9 +1,60 @@
 // Registry data for bipe-core, the shared Rust core of bipe-app (bipe ADR 0267, bipe-chat/bipe#1277).
 // gen.mjs writes it to bipe-app core/crates/bipe-core/src/generated/registries.rs.
+import { rustRegex } from "./rust-regex.mjs";
+import { hostHomoglyphs } from "./registries.mjs";
+
 export const RUST_REGISTRIES_PATH = "core/crates/bipe-core/src/generated/registries.rs";
 
 // A Rust string literal. JSON escapes are valid Rust escapes, except \u{...}, which JSON does not emit for ASCII.
 const rustString = (s) => JSON.stringify(s).replace(/\\u([0-9a-fA-F]{4})/g, "\\u{$1}");
+const rustStrings = (list) => `&[${list.map(rustString).join(", ")}]`;
+// A homoglyph map as (character, folded) pairs sorted by code point, for a binary search.
+const rustFolds = (map) => `&[${Object.entries(map).sort(([a], [b]) => a.codePointAt(0) - b.codePointAt(0))
+  .map(([k, v]) => `('\\u{${k.codePointAt(0).toString(16)}}', ${rustString(v)})`).join(", ")}]`;
+
+// Same order as SCAM_PATTERN_GROUPS in registries.mjs: the order of scamMatchIDs.
+const SCAM_PATTERN_GROUPS = ["pixKeyPatterns", "pixCopyPastePatterns", "boletoPatterns", "linkPatterns"];
+const SCAM_LISTS = ["urgencyPhrases", "receiptKeywords", "pixKeyContextWords", "newNumberPhrases", "newAccountPhrases",
+  "deliveryParcelWords", "deliveryHoldWords", "deliveryFeeWords", "lookalikeBrandTokens", "lookalikeHostLabels",
+  "officialDomains", "appStoreDomains", "bankAlertSubjectWords", "bankAlertThreatWords", "extortionThreatPhrases",
+  "extortionDemandWords", "remoteAppInstallWords", "remoteAppNames", "remoteAppBankWords", "pinRequestAskPhrases",
+  "pinRequestSecretWords", "pinRequestSupportWords", "warningKindPriority"];
+const constName = (camel) => camel.replace(/([A-Z])/g, "_$1").toUpperCase();
+
+function scamSection(reg) {
+  const s = reg.scam;
+  const patterns = SCAM_PATTERN_GROUPS.flatMap((group) => s[group].map((p) => {
+    let rust;
+    try { rust = rustRegex(p.regex); } catch (e) { throw new Error(`gen-rust: ${group}.${p.id}: ${e.message}`); }
+    return `    ScamPattern { group: ${rustString(group)}, id: ${rustString(p.id)}, regex: ${rustString(rust.regex)}, guard_before: ${rust.guardBefore} },`;
+  }));
+  return `
+/// A registries/scam-patterns.json regex, translated by bipe-shared tools/lib/rust-regex.mjs (docs/scam-matching.md).
+/// Capture group 1 is the JavaScript match. With \`guard_before\`, the pattern consumes the character before it.
+pub struct ScamPattern {
+    pub group: &'static str,
+    pub id: &'static str,
+    pub regex: &'static str,
+    pub guard_before: bool,
+}
+
+/// Every pattern group in scamMatchIDs order.
+pub const SCAM_PATTERNS: &[ScamPattern] = &[
+${patterns.join("\n")}
+];
+
+${SCAM_LISTS.map((list) => `pub const SCAM_${constName(list)}: &[&str] = ${rustStrings(s[list])};`).join("\n")}
+
+/// registries/family-terms.json \`terms\`.
+pub const FAMILY_TERMS: &[&str] = ${rustStrings(reg.family.terms)};
+
+/// registries/homoglyphs.json, sorted by character. normalize() folds with it.
+pub const HOMOGLYPHS: &[(char, &str)] = ${rustFolds(reg.homoglyphs.map)};
+
+/// HOMOGLYPHS without the ASCII keys outside [0-9a-z] (hostHomoglyphs in registries.mjs). linkHosts folds with it.
+pub const HOST_HOMOGLYPHS: &[(char, &str)] = ${rustFolds(hostHomoglyphs(reg))};
+`;
+}
 
 export function generateRustRegistries(reg, header) {
   const labels = reg.brandMarks.labels;
@@ -21,5 +72,5 @@ pub const PIX_MARKS: [&str; ${marks.marks.length}] = [${marks.marks.map(rustStri
 /// The core checks this format by hand (no regex crate); a test there fails when the pattern changes.
 pub const PIX_E2E_ID_PATTERN: &str = ${rustString(marks.e2eIdPattern)};
 pub const PIX_TXID_MAX_LENGTH: usize = ${marks.txidMaxLength};
-`;
+${scamSection(reg)}`;
 }

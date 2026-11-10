@@ -72,5 +72,9 @@ pub const PIX_MARKS: [&str; ${marks.marks.length}] = [${marks.marks.map(rustStri
 /// The core checks this format by hand (no regex crate); a test there fails when the pattern changes.
 pub const PIX_E2E_ID_PATTERN: &str = ${rustString(marks.e2eIdPattern)};
 pub const PIX_TXID_MAX_LENGTH: usize = ${marks.txidMaxLength};
-${scamSection(reg)}`;
+${scamSection(reg)}
+/// \`personAssurance\` of registries/schemes.json (ADR 0275): the person assurances, strongest first, and the seal
+/// mark of each. personProofs reads it; test-vectors/person-proofs.json checks it.
+pub const PERSON_ASSURANCE: &[(&str, &str)] = &[${reg.schemes.personAssurance.map((a) => `(${rustString(a.id)}, ${rustString(a.mark)})`).join(", ")}];
+`;
 }

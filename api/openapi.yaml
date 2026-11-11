@@ -2738,6 +2738,33 @@ paths:
               schema: { type: string }
         "404": { $ref: "#/components/responses/Error" }
         "429": { $ref: "#/components/responses/Error" }
+  /v1/web/feed/{handle}/p/{id}/report:
+    post:
+      summary: Report a public feed post (bipe#1180)
+      x-summary-pt: "Denúncia de uma publicação de um feed público"
+      security: []
+      description: >
+        No auth. The report form on the post page posts here as application/x-www-form-urlencoded, so it works with no
+        script. The API stores the post, the reason and the time, never the reporter or the address, and alerts staff.
+        At most 10 reports per address per hour, counted in memory. The answer is 303 to the post URL with
+        ?denuncia=1, where the page says that the report came in. An unknown or removed post is 404.
+      parameters:
+        - { name: handle, in: path, required: true, schema: { type: string } }
+        - { name: id, in: path, required: true, schema: { type: string, maxLength: 40 } }
+      requestBody:
+        required: true
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              type: object
+              required: [reason]
+              properties:
+                reason: { $ref: "#/components/schemas/FeedReportReason" }
+      responses:
+        "303": { description: Back to the post page }
+        "400": { $ref: "#/components/responses/Error" }
+        "404": { $ref: "#/components/responses/Error" }
+        "429": { $ref: "#/components/responses/Error" }
   /v1/web/feed/{handle}/rss:
     get:
       summary: RSS 2.0 of a public feed, at https://bipe.chat/@{handle}/rss (ADR 0281 stage 1)
@@ -8523,6 +8550,10 @@ components:
           type: array
           items: { $ref: "#/components/schemas/FeedPost" }
         next_before: { type: string, format: date-time, description: "Pass as before for the next page. Absent on the last page." }
+    FeedReportReason:
+      type: string
+      enum: [scam, illegal, hate, privacy, other]
+      description: "scam: golpe ou fraude; illegal: crime; hate: ódio, ameaça ou assédio; privacy: dados ou imagens íntimas de alguém; other."
     FeedPost:
       type: object
       required: [id, text, created_at, url]

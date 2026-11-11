@@ -1,7 +1,7 @@
 {
   "$comment": "Scams in Brazil register: the page /golpes-no-brasil/ and /en/scams-in-brazil/. Research and conflicts: bipe/docs/scams-brazil.md. Source locators and the Banco Central data snapshot: product/scams-evidence.json. Every number in stats and charts has a source in sources, with a URL and a date. Never write a number that is not in a source. Bipe features in protect take their status from parity.json. Validated by tools/gen-product-doc.mjs.",
   "version": 1,
-  "date": "2026-10-18",
+  "date": "2026-11-11",
   "publishedDate": "2026-10-13",
   "sources": [
     { "id": "anuario2026", "name": "20º Anuário Brasileiro de Segurança Pública 2026", "publisher": "Fórum Brasileiro de Segurança Pública", "url": "https://forumseguranca.org.br/wp-content/uploads/2026/07/anuario-2026.pdf", "date": "2026-07", "kind": "primary" },
@@ -64,7 +64,8 @@
     { "id": "ceticPR22", "name": "Painel TIC 2025, indicador PR22: canais dos golpes", "publisher": "Cetic.br e NIC.br", "url": "https://cetic.br/pt/tics/painel/painel/privacidade3/PR22/", "date": "2026-08", "kind": "primary" },
     { "id": "gasaForum2026", "name": "Brazil Anti-Scam Forum 2026: key takeaways", "publisher": "Global Anti-Scam Alliance", "url": "https://gasa.org/knowledge-base/blog/brazil-anti-scam-forum-2026-key-takeaways-on-strengthening-scam-prevention-in-brazil", "date": "2026-09-15", "kind": "secondary" },
     { "id": "bcbMedData", "name": "Estatísticas do Pix: contestações e devoluções pelo MED", "publisher": "Banco Central do Brasil", "url": "https://dadosabertos.bcb.gov.br/dataset/pix", "date": "2026-10-18", "kind": "primary" },
-    { "id": "bcbMedFaq", "name": "O que é e como funciona o Mecanismo Especial de Devolução (MED)?", "publisher": "Banco Central do Brasil", "url": "https://www.bcb.gov.br/meubc/faqs/p/o-que-e-e-como-funciona-o-mecanismo-especial-de-devolucao-med", "date": "2026-09-18", "kind": "primary" }
+    { "id": "bcbMedFaq", "name": "O que é e como funciona o Mecanismo Especial de Devolução (MED)?", "publisher": "Banco Central do Brasil", "url": "https://www.bcb.gov.br/meubc/faqs/p/o-que-e-e-como-funciona-o-mecanismo-especial-de-devolucao-med", "date": "2026-09-18", "kind": "primary" },
+    { "id": "nordvpn2026", "name": "Os golpistas invadem o campo: um estudo sobre esportes, golpes e turismo no Brasil", "publisher": "NordVPN e Syno International", "url": "https://nordvpn.com/pt-br/blog/estudo-nordvpn-esportes-e-golpes-brasil/", "date": "2026-03-24", "kind": "company" }
   ],
   "hero": ["records2025", "lostMoney", "whatsappOrigin", "digitalLoss"],
   "stats": [
@@ -227,6 +228,31 @@
       "id": "whatsappOrigin", "source": "silverguard2025",
       "pt": {"value": "29,6%", "label": "dos golpes com Pix relatados à central SOS Golpe começaram no WhatsApp. WhatsApp, Instagram e Facebook somam 64,0%, segundo o estudo", "period": "12.197 denúncias; jan. a jun. 2025"},
       "en": {"value": "29.6%", "label": "of Pix scam reports to SOS Golpe started on WhatsApp. WhatsApp, Instagram and Facebook total 64.0%, according to the study", "period": "12,197 reports; Jan to Jun 2025"}
+    },
+    {
+      "id": "nordFakeCall", "source": "nordvpn2026",
+      "pt": {"value": "55%", "label": "dos 1.000 internautas de 18 a 64 anos ouvidos numa pesquisa encomendada pela NordVPN encontraram ligação falsa de banco ou de central de suporte, o golpe mais citado", "period": "2024 a 2025; pesquisa de nov. 2025"},
+      "en": {"value": "55%", "label": "of 1,000 internet users aged 18 to 64 in a survey commissioned by NordVPN came across a fake call from a bank or support line, the scam most often named", "period": "2024 to 2025; survey of Nov 2025"}
+    },
+    {
+      "id": "nordFakeJob", "source": "nordvpn2026",
+      "pt": {"value": "44%", "label": "dos 1.000 internautas de 18 a 64 anos ouvidos numa pesquisa encomendada pela NordVPN encontraram oferta falsa de emprego", "period": "2024 a 2025; pesquisa de nov. 2025"},
+      "en": {"value": "44%", "label": "of 1,000 internet users aged 18 to 64 in a survey commissioned by NordVPN came across a fake job offer", "period": "2024 to 2025; survey of Nov 2025"}
+    },
+    {
+      "id": "nordFakeOffer", "source": "nordvpn2026",
+      "pt": {"value": "53%", "label": "dos 1.000 internautas de 18 a 64 anos ouvidos numa pesquisa encomendada pela NordVPN encontraram oferta financeira falsa", "period": "2024 a 2025; pesquisa de nov. 2025"},
+      "en": {"value": "53%", "label": "of 1,000 internet users aged 18 to 64 in a survey commissioned by NordVPN came across a fake financial offer", "period": "2024 to 2025; survey of Nov 2025"}
+    },
+    {
+      "id": "nordFootball", "source": "nordvpn2026",
+      "pt": {"value": "34%", "label": "dos 1.000 internautas de 18 a 64 anos ouvidos numa pesquisa encomendada pela NordVPN encontraram golpe ligado a futebol, e 11% perderam dinheiro com ele, em geral de R$ 251 a R$ 500", "period": "2024 a 2025; pesquisa de nov. 2025"},
+      "en": {"value": "34%", "label": "of 1,000 internet users aged 18 to 64 in a survey commissioned by NordVPN came across a football-related scam, and 11% lost money to one, usually R$ 251 to R$ 500", "period": "2024 to 2025; survey of Nov 2025"}
+    },
+    {
+      "id": "nordFootballWhats", "source": "nordvpn2026",
+      "pt": {"value": "48%", "label": "de quem encontrou golpe ligado a futebol numa pesquisa encomendada pela NordVPN o viu no WhatsApp, e 51% no Instagram", "period": "2024 a 2025; pesquisa de nov. 2025"},
+      "en": {"value": "48%", "label": "of people who came across a football-related scam in a survey commissioned by NordVPN saw it on WhatsApp, and 51% on Instagram", "period": "2024 to 2025; survey of Nov 2025"}
     }
   ],
   "methodology": [
@@ -582,7 +608,8 @@
       "realScene": "banco-real",
       "stats": [
         "fakeCall",
-        "fakeCallAttempts"
+        "fakeCallAttempts",
+        "nordFakeCall"
       ],
       "describedBy": ["febFalsaCentral", "febContaInvadida", "glossario2025", "certCaiu", "bcbMedFaq"],
       "protect": [
@@ -1383,7 +1410,9 @@
         ]
       },
       "scene": "renda-extra",
-      "stats": [],
+      "stats": [
+        "nordFakeJob"
+      ],
       "describedBy": ["febTarefa", "glossario2025", "certCaiu", "bcbMedFaq"],
       "protect": [
         "requests",
@@ -1462,7 +1491,9 @@
         ]
       },
       "scene": "falso-suporte-bipe",
-      "stats": [],
+      "stats": [
+        "nordFakeCall"
+      ],
       "describedBy": ["glossario2025", "febWhatsapp", "certCaiu", "bcbMedFaq"],
       "protect": [
         "reserved-names",
@@ -2030,7 +2061,8 @@
         "investShare",
         "investAverage",
         "investLoss",
-        "cvmStopOrders"
+        "cvmStopOrders",
+        "nordFakeOffer"
       ],
       "describedBy": ["cvmIrregulares", "febInvestimento", "glossario2025", "certCaiu", "bcbMedFaq"],
       "protect": [
@@ -2094,7 +2126,10 @@
         ]
       },
       "scene": "aposta",
-      "stats": [],
+      "stats": [
+        "nordFootball",
+        "nordFootballWhats"
+      ],
       "describedBy": ["fazendaApostas", "certCaiu", "bcbMedFaq"],
       "protect": [
         "scam-alerts",

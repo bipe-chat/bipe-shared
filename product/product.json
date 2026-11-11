@@ -1405,7 +1405,7 @@
           "Para marcar, o cliente precisa de uma conta no Bipe.",
           "O horário marcado aparece num cartão na conversa com a empresa, com o serviço, a pessoa, o dia e a hora.",
           "Uma notificação lembra o cliente um dia antes e duas horas antes.",
-          "Se quiser, a equipe vê a agenda no calendário do Google, da Apple ou do Outlook. Esse calendário recebe o horário. O nome do cliente vai junto só se a empresa escolher."
+          "Se quiser, quem atende vê a agenda no calendário do Google, da Apple ou do Outlook. Esse calendário recebe o horário. O nome do cliente vai junto só se a empresa escolher."
         ]
       },
       "en": {
@@ -1418,7 +1418,7 @@
           "To book, the customer needs a Bipe account.",
           "Each booking shows as a card in the chat with the business, with the service, the person, the day and the time.",
           "A notification reminds the customer one day before and two hours before.",
-          "Staff who want to can see the agenda in their Google, Apple or Outlook calendar. That calendar gets the time. The customer's name goes too only if the business chooses."
+          "The people who answer can see the agenda in their Google, Apple or Outlook calendar if they want. That calendar gets the time. The customer's name goes too only if the business chooses."
         ]
       }
     },
@@ -2585,7 +2585,7 @@
     "pt": {
       "nav": "Empresas",
       "title": "Atenda seus clientes com a identidade da empresa à vista.",
-      "lede": "O Bipe é gratuito para as pessoas e se paga com empresas. Os dados e os servidores ficam no Brasil. O Bipe para empresas inclui selo de CNPJ verificado, reserva de alguns nomes e uma caixa de entrada para a equipe. O selo mostra a prova de controle da empresa; não garante uma oferta nem impede uma conta invadida. A caixa de entrada, a API e o selo de CNPJ ainda não estão no ar.",
+      "lede": "O Bipe é gratuito para as pessoas e se paga com empresas. Os dados e os servidores ficam no Brasil. O Bipe para empresas inclui selo de CNPJ verificado, reserva de alguns nomes e uma caixa de entrada para quem atende. O selo mostra a prova de controle da empresa; não garante uma oferta nem impede uma conta invadida. A caixa de entrada, a API e o selo de CNPJ ainda não estão no ar.",
       "label": "Ainda não está no ar",
       "sections": [
         {
@@ -2599,14 +2599,14 @@
           ]
         },
         {
-          "heading": "Uma caixa de entrada para a equipe toda",
+          "heading": "Uma caixa de entrada para quem atende",
           "points": [
-            "A equipe toda atende na mesma fila.",
+            "Todo mundo que atende usa a mesma fila.",
             "Atribua, transfira e assuma conversas. Cada conversa tem um responsável.",
             "Notas internas que o cliente não vê, respostas prontas e modelos aprovados.",
             "Perguntas com opções: o cliente toca na resposta, sem digitar 1 ou 2.",
-            "Para quem gerencia: equipes, filas, horário de atendimento, tempo de resposta e avaliação do cliente.",
-            "As conversas só abrem nos aparelhos da sua equipe. Nem o Bipe lê."
+            "Para quem gerencia: setores, filas, horário de atendimento, tempo de resposta e avaliação do cliente.",
+            "As conversas só abrem nos aparelhos de quem atende. Nem o Bipe lê."
           ]
         },
         {
@@ -2726,7 +2726,7 @@
     "en": {
       "nav": "Business",
       "title": "Serve customers with your business identity in view.",
-      "lede": "Bipe is free for people and pays for itself through companies. Data and servers stay in Brazil. Bipe for companies includes a verified CNPJ seal, reservations for some names and an inbox for the team. The seal shows proof of control of the business; it does not guarantee an offer or prevent account takeover. The inbox, the API and the CNPJ seal are not live yet.",
+      "lede": "Bipe is free for people and pays for itself through companies. Data and servers stay in Brazil. Bipe for companies includes a verified CNPJ seal, reservations for some names and an inbox for the people who answer. The seal shows proof of control of the business; it does not guarantee an offer or prevent account takeover. The inbox, the API and the CNPJ seal are not live yet.",
       "label": "Not live yet",
       "sections": [
         {
@@ -2740,14 +2740,14 @@
           ]
         },
         {
-          "heading": "One inbox for the whole team",
+          "heading": "One inbox for everyone who answers",
           "points": [
-            "The whole team answers in the same queue.",
+            "Everyone who answers works from the same queue.",
             "Assign, transfer and take chats. Each chat has one owner.",
             "Internal notes the customer never sees, saved replies and approved templates.",
             "Questions with options: the customer taps an answer instead of typing 1 or 2.",
-            "For managers: teams, queues, opening hours, response time and customer ratings.",
-            "Chats open only on your team's devices. Not even Bipe can read them."
+            "For managers: departments, queues, opening hours, response time and customer ratings.",
+            "Chats open only on the devices of the people who answer. Not even Bipe can read them."
           ]
         },
         {
@@ -2965,7 +2965,7 @@
           "who": "Quem atende os clientes na caixa de entrada.",
           "billing": "Os primeiros 3 são grátis. Do 4º ao 20º, R$ 69 por mês cada. Acima de 20, sem custo a mais.",
           "points": [
-            "A equipe toda atende na mesma fila.",
+            "Todo mundo que atende usa a mesma fila.",
             "Atribua, transfira e assuma conversas.",
             "Suporte com prazo de resposta em contrato."
           ]
@@ -3136,7 +3136,7 @@
           "who": "The people who answer customers in the inbox.",
           "billing": "The first 3 are free. From the 4th to the 20th, R$ 69 a month each. Above 20, nothing more.",
           "points": [
-            "The whole team answers from the same queue.",
+            "Everyone who answers works from the same queue.",
             "Assign, transfer and take over chats.",
             "Support with a response time in the contract."
           ]

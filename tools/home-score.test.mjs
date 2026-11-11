@@ -2,6 +2,7 @@ import assert from "node:assert/strict";
 import { readFileSync } from "node:fs";
 import { test } from "node:test";
 import { generateHomeScore } from "./lib/gen-home-score.mjs";
+import { generateRustRegistries } from "./lib/gen-rust.mjs";
 import { homePlan, homeScore, homeUnits } from "./lib/home-score.mjs";
 import { loadRegistries, validateHomeScore } from "./lib/registries.mjs";
 
@@ -64,13 +65,18 @@ function validateCopy(change) {
 }
 
 test("generated code carries the registry values", () => {
+  // The app wrappers call bipe-core (bipe-chat/bipe#1478) and keep the tier table.
   for (const [language, quote] of [["swift", JSON.stringify], ["kotlin", JSON.stringify]]) {
     const text = generateHomeScore(policy, language, "// header\n", quote);
     assert.match(text, /BipeHomeScore/);
     assert.match(text, /BipeHomeChat/);
-    assert.ok(text.includes(String(homeUnits(policy.weights.mention))));
-    assert.ok(text.includes(String(policy.unansweredMaxMinutes)));
+    assert.match(text, /homePlan\(/);
+    assert.ok(text.includes(String(Math.floor(policy.tiers[0].minScore * 100 + 0.5))));
   }
+  // The weights reach the core through gen-rust.mjs.
+  const rust = generateRustRegistries(loadRegistries(root), "// header\n");
+  assert.ok(rust.includes(`HOME_WEIGHT_MENTION: f64 = ${policy.weights.mention}`));
+  assert.ok(rust.includes(`HOME_UNANSWERED_MAX_MINUTES: i64 = ${policy.unansweredMaxMinutes}`));
 });
 
 test("the web gets the reference and the registry", () => {

@@ -184,6 +184,112 @@ pub const HOST_HOMOGLYPHS: &[(char, &str)] = ${rustFolds(hostHomoglyphs(reg))};
 `;
 }
 
+const snake = (camel) => camel.replace(/([A-Z])/g, "_$1").toLowerCase();
+
+// registries/trust-facts.json (ADR 0074) compiled to Rust, as gen-trust.mjs does for Swift and Kotlin before
+// bipe-chat/bipe#1478. The registry is validated by tools/lib/trust.mjs; reference evaluateTrustFacts.
+function trustSection(registry) {
+  const fields = Object.entries(registry.inputFields);
+  const rustType = { string: "Option<String>", boolean: "Option<bool>", time: "Option<f64>" };
+  const fieldType = Object.fromEntries(fields);
+  // Returns [code, kind]: kind is "bool" (a Rust bool), "field" (an Option of the field's type), "str", "boolLit" or "null".
+  const expr = (node) => {
+    if (node === null) return ["None", "null"];
+    if (typeof node === "string") return [rustString(node), "str"];
+    if (typeof node === "boolean") return [String(node), "boolLit"];
+    const [op, value] = Object.entries(node)[0];
+    if (op === "field") return [`input.${snake(value)}`, "field"];
+    if (op === "rule") return [snake(value), "bool"];
+    const cond = (n) => { const [c, k] = expr(n); if (k !== "bool") throw new Error(`gen-rust trust: ${op} needs a condition`); return c; };
+    if (op === "all" || op === "any") return [`(${value.map(cond).join(op === "all" ? " && " : " || ")})`, "bool"];
+    if (op === "not") return [`!(${cond(value)})`, "bool"];
+    if (op === "nonempty") return [`nonempty(&${expr(value)[0]})`, "bool"];
+    if (op === "validTime") return [`valid_time(${expr(value)[0]})`, "bool"];
+    if (op === "nullableTime") return [`nullable_time(${expr(value)[0]})`, "bool"];
+    if (op === "afterChange") return [`after_change(${expr(value[0])[0]}, ${expr(value[1])[0]})`, "bool"];
+    if (op === "atOrBefore") return [`at_or_before(${expr(value[0])[0]}, ${expr(value[1])[0]})`, "bool"];
+    if (op === "eq" || op === "neq") {
+      let [a, b] = value.map(expr);
+      if (a[1] !== "field") [a, b] = [b, a];
+      if (a[1] !== "field") throw new Error("gen-rust trust: a comparison needs a field");
+      const test = b[1] === "field" ? `${a[0]} == ${b[0]}`
+        : b[1] === "null" ? `${a[0]}.is_none()`
+        : b[1] === "str" ? `${a[0]}.as_deref() == Some(${b[0]})`
+        : `${a[0]} == Some(${b[0]})`;
+      return [op === "eq" ? `(${test})` : `!(${test})`, "bool"];
+    }
+    throw new Error(`gen-rust trust: unknown operator ${op}`);
+  };
+  const nullable = (name) => ["verifiedName", "warningKind"].includes(name);
+  const outValue = (name, node) => {
+    const [code, kind] = expr(node);
+    if (kind === "null") return "None";
+    if (kind === "str") return nullable(name) ? `Some(${code}.to_owned())` : `${code}.to_owned()`;
+    if (kind === "field" && fieldType[node.field] === "string") return nullable(name) ? `${code}.clone()` : `${code}.clone().unwrap_or_default()`;
+    throw new Error(`gen-rust trust: output ${name} must be a string`);
+  };
+  const outputs = Object.entries(registry.outputs).map(([name, output]) => {
+    const branches = output.choose.map((b, i) => `${i ? " else " : ""}if ${expr(b.when)[0]} {\n            ${outValue(name, b.value)}\n        }`).join("");
+    return `    let ${snake(name)} = ${branches} else {\n            ${outValue(name, output.else)}\n        };`;
+  }).join("\n");
+  return `
+/// registries/trust-facts.json (ADR 0074): the inputs of trust_facts. Times are Unix seconds.
+#[derive(Clone, Debug, Default, PartialEq, uniffi::Record)]
+pub struct TrustInput {
+${fields.map(([name, type]) => `    pub ${snake(name)}: ${rustType[type]},`).join("\n")}
+}
+
+/// The trust facts of one contact. Facts only; no trust score (ADR 0074).
+#[derive(Clone, Debug, PartialEq, Eq, uniffi::Record)]
+pub struct TrustFacts {
+${Object.keys(registry.outputs).map((name) => `    pub ${snake(name)}: ${nullable(name) ? "Option<String>" : "String"},`).join("\n")}
+}
+
+/// The rules of registries/trust-facts.json, compiled. Reference: evaluateTrustFacts in tools/lib/trust.mjs.
+#[allow(unused_parens, clippy::nonminimal_bool)]
+pub(crate) fn trust_rules(input: &TrustInput) -> TrustFacts {
+    fn nonempty(value: &Option<String>) -> bool { value.as_deref().is_some_and(|v| !v.is_empty()) }
+    fn valid_time(value: Option<f64>) -> bool { value.is_some_and(|v| v.is_finite() && v >= 0.0) }
+    fn nullable_time(value: Option<f64>) -> bool { value.is_none() || valid_time(value) }
+    fn after_change(proof: Option<f64>, change: Option<f64>) -> bool {
+        valid_time(proof) && (change.is_none() || (valid_time(change) && proof > change))
+    }
+    fn at_or_before(first: Option<f64>, second: Option<f64>) -> bool { valid_time(first) && valid_time(second) && first <= second }
+${Object.entries(registry.rules).map(([name, e]) => `    let ${snake(name)} = ${expr(e)[0]};`).join("\n")}
+${outputs}
+    TrustFacts { ${Object.keys(registry.outputs).map(snake).join(", ")} }
+}
+`;
+}
+
+// registries/home-score.json (ADR 0246). The formula is in home_score.rs; reference tools/lib/home-score.mjs.
+function homeScoreSection(h) {
+  const f = (n) => { const s = String(n); return /[.e]/.test(s) ? s : `${s}.0`; };
+  return `
+/// registries/home-score.json (ADR 0246): weights and limits of home_score.rs.
+pub const HOME_WEIGHT_MENTION: f64 = ${f(h.weights.mention)};
+pub const HOME_WEIGHT_UNREAD_DIRECT: f64 = ${f(h.weights.unreadDirect)};
+pub const HOME_WEIGHT_UNREAD_COMPANY_NO_SEAL: f64 = ${f(h.weights.unreadCompanyNoSeal)};
+pub const HOME_WEIGHT_UNANSWERED_DIRECT: f64 = ${f(h.weights.unansweredDirect)};
+pub const HOME_WEIGHT_FAVOURITE: f64 = ${f(h.weights.favourite)};
+pub const HOME_UNREAD_GROUP_MIN: f64 = ${f(h.unreadGroup.min)};
+pub const HOME_UNREAD_GROUP_MAX: f64 = ${f(h.unreadGroup.max)};
+pub const HOME_UNREAD_GROUP_LOG_SCALE: f64 = ${f(h.unreadGroup.logScale)};
+pub const HOME_TIE_MAX: f64 = ${f(h.tie.max)};
+pub const HOME_TIE_LOG_SCALE: f64 = ${f(h.tie.logScale)};
+pub const HOME_RECENCY_MAX: f64 = ${f(h.recency.max)};
+pub const HOME_RECENCY_DECAY_MINUTES: f64 = ${f(h.recency.decayMinutes)};
+pub const HOME_UNANSWERED_MAX_MINUTES: i64 = ${h.unansweredMaxMinutes};
+pub const HOME_MUTED_FACTOR: f64 = ${f(h.mutedFactor)};
+pub const HOME_OFFICIAL_CAP: f64 = ${f(h.officialCap)};
+/// (tier, minScore, maxChats) in registry order.
+pub const HOME_TIERS: &[(u32, f64, Option<u32>)] = &[${h.tiers.map((t) => `(${t.tier}, ${f(t.minScore)}, ${t.maxChats === null ? "None" : `Some(${t.maxChats})`})`).join(", ")}];
+pub const HOME_MODEL_ATTENTION: &[(&str, f64)] = &[${Object.entries(h.model.attention).map(([k, v]) => `(${rustString(k)}, ${f(v)})`).join(", ")}];
+pub const HOME_MODEL_DUE: f64 = ${f(h.model.due)};
+pub const HOME_MODEL_MAX_WEIGHT: f64 = ${f(h.model.maxWeight)};
+`;
+}
+
 export function generateRustRegistries(reg, header) {
   const labels = reg.brandMarks.labels;
   const marks = reg.pixMarks;
@@ -200,7 +306,7 @@ pub const PIX_MARKS: [&str; ${marks.marks.length}] = [${marks.marks.map(rustStri
 /// The core checks this format by hand (no regex crate); a test there fails when the pattern changes.
 pub const PIX_E2E_ID_PATTERN: &str = ${rustString(marks.e2eIdPattern)};
 pub const PIX_TXID_MAX_LENGTH: usize = ${marks.txidMaxLength};
-${scamSection(reg)}${identitySection(reg)}${factsSection(reg)}${messageSection(reg)}${smallRulesSection(reg)}
+${scamSection(reg)}${identitySection(reg)}${factsSection(reg)}${messageSection(reg)}${smallRulesSection(reg)}${trustSection(reg.trust)}${homeScoreSection(reg.homeScore)}
 /// \`personAssurance\` of registries/schemes.json (ADR 0275): the person assurances, strongest first, and the seal
 /// mark of each. personProofs reads it; test-vectors/person-proofs.json checks it.
 /// HOME_COUNTRY of tools/lib/registries.mjs: personProofs puts the proofs of this country first (ADR 0272 decision 7).

@@ -14,7 +14,7 @@ import { b64url as reportB64, deriveKeyPair as hpkeKeyPair, encryptMedia, envelo
 import { canonicalJson, checkMoved, matrixKey, movedEnvelope, moveError, sentAfterMove, signAs, signedBytes } from "./lib/moves.mjs";
 import { homePlan } from "./lib/home-score.mjs";
 import { loadSchedulingVectors, writeSchedulingApiFixture } from "./lib/scheduling-vectors.mjs";
-import { forwardChatLimit, forwardCount, forwardLine, forwardedContent, voiceSource, assistantReaders, assistantSendAllowed, assistantSender, draftFromEvent, workNoteFromEvent, replyByFromEvent, photoDistance, photoHash, photoMatches, personProofs, profileFactLines, relationshipNameWarning, stickerEmojiKey, stickerMatches, stickerQueryTags, stickerSearchFold, newestDmRooms, clearedChatHidden, bringPeopleReminder, chatListPrompt, clearedChatKeepsEvent, clearedChatMarker, clearedChatsWithClear, compareAppVersions, extractInviteCode, handleProblem, isBipeUserID, socialHandleClean, socialHandleProblem, socialUrl, handleSuggestions, pinReminderNext, pinProblem, remoteBannerState, badgeClass, badgeSchemeError, normalizeCnpj, normalizePhone, displayPhone, handleSkeleton, loadRegistries, syncedSettingsReconcile, profileProblem, sealLookalike, contactCollision, normalize, scamMatchIDs, scamWarningKind, trustFacts } from "./lib/registries.mjs";
+import { forwardChatLimit, forwardCount, forwardLine, forwardedContent, voiceSource, assistantReaders, assistantSendAllowed, assistantSender, draftFromEvent, deviceInfoFromEvent, deviceRows, userAgentInfo, workNoteFromEvent, replyByFromEvent, photoDistance, photoHash, photoMatches, personProofs, profileFactLines, relationshipNameWarning, stickerEmojiKey, stickerMatches, stickerQueryTags, stickerSearchFold, newestDmRooms, clearedChatHidden, bringPeopleReminder, chatListPrompt, clearedChatKeepsEvent, clearedChatMarker, clearedChatsWithClear, compareAppVersions, extractInviteCode, handleProblem, isBipeUserID, socialHandleClean, socialHandleProblem, socialUrl, handleSuggestions, pinReminderNext, pinProblem, remoteBannerState, badgeClass, badgeSchemeError, normalizeCnpj, normalizePhone, displayPhone, handleSkeleton, loadRegistries, syncedSettingsReconcile, profileProblem, sealLookalike, contactCollision, normalize, scamMatchIDs, scamWarningKind, trustFacts } from "./lib/registries.mjs";
 
 const root = join(dirname(fileURLToPath(import.meta.url)), "..");
 const reg = loadRegistries(root);
@@ -1262,6 +1262,83 @@ write("work-notes.json", {
   context: workCtx,
   notes: noteCases.map(([name, event]) => ({ name, event: workCopy(event), expected: workNoteFromEvent(workCopy(event), workCtx, reg) })),
   replyBy: replyByCases.map(([name, event]) => ({ name, event: workCopy(event), expected: replyByFromEvent(workCopy(event), workCtx, reg) })),
+});
+
+// Device kinds and device entries (bipe ADR 0291, bipe-chat/bipe#1479).
+const deviceCtx = { ownUserId: "@ana:bipe.net.br", senderDevice: "PHONE", senderVerified: true };
+const deviceEvent = (content = {}, patch = {}) => ({
+  type: reg.deviceKinds.eventType,
+  sender: "@ana:bipe.net.br",
+  origin_server_ts: 1762862400000,
+  content: { device_id: "PHONE", source: "self", kind: "phone", model: "Pixel 8", os: "Android 15", app: "Bipe 1.4.2 (812)", linked_at: 1762000000000, attested: true, ...content },
+  ...patch,
+});
+const deviceEventCases = [
+  ["a self entry", deviceEvent(), deviceCtx],
+  ["a self entry with only the kind", deviceEvent({ model: undefined, os: undefined, app: undefined, linked_at: undefined, attested: undefined }), deviceCtx],
+  ["an approval entry for a browser", deviceEvent({ device_id: "WEB", source: "approval", kind: "browser", model: undefined, app: "Chrome 131", os: "Windows", linked_by: "PHONE", attested: undefined }), deviceCtx],
+  ["a self entry for another device", deviceEvent({ device_id: "MAC" }), deviceCtx],
+  ["an approval entry for the sending device", deviceEvent({ source: "approval" }), deviceCtx],
+  ["an unknown source", deviceEvent({ source: "guess" }), deviceCtx],
+  ["kind unknown is never written", deviceEvent({ kind: "unknown" }), deviceCtx],
+  ["a kind that does not exist", deviceEvent({ kind: "tablet" }), deviceCtx],
+  ["an unverified sending device", deviceEvent(), { ...deviceCtx, senderVerified: false }],
+  ["another sender", deviceEvent({}, { sender: "@outro:bipe.net.br" }), deviceCtx],
+  ["a redacted entry", deviceEvent({}, { redacted: true }), deviceCtx],
+  ["another event type", deviceEvent({}, { type: "m.room.message" }), deviceCtx],
+  ["a model at the limit", deviceEvent({ model: "m".repeat(reg.deviceKinds.fieldMaxLength) }), deviceCtx],
+  ["a model over the limit", deviceEvent({ model: "m".repeat(reg.deviceKinds.fieldMaxLength + 1) }), deviceCtx],
+  ["a blank OS", deviceEvent({ os: "  " }), deviceCtx],
+  ["linked_at not an integer", deviceEvent({ linked_at: "ontem" }), deviceCtx],
+  ["attested not a boolean", deviceEvent({ attested: "yes" }), deviceCtx],
+  ["no device ID", deviceEvent({ device_id: "" }), deviceCtx],
+];
+const userAgentCases = [
+  ["the Android app", "Bipe/1.4.2 (Pixel 8; Android 15)"],
+  ["the iPhone app", "Bipe/1.4.2 (iPhone16,1; iOS 27.1)"],
+  ["the Mac app", "Bipe/1.0 (MacBookAir10,1; macOS 26.1)"],
+  ["the Windows app", "Bipe/1.0 (Surface Laptop 7; Windows 11)"],
+  ["Chrome on Windows", "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36"],
+  ["Edge on Windows", "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36 Edg/131.0.0.0"],
+  ["Safari on a Mac", "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/18.1 Safari/605.1.15"],
+  ["Firefox on Linux", "Mozilla/5.0 (X11; Linux x86_64; rv:132.0) Gecko/20100101 Firefox/132.0"],
+  ["Chrome on Android", "Mozilla/5.0 (Linux; Android 15; Pixel 8) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Mobile Safari/537.36"],
+  ["Safari on an iPhone", "Mozilla/5.0 (iPhone; CPU iPhone OS 18_1 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/18.1 Mobile/15E148 Safari/604.1"],
+  ["Chrome on a Chromebook", "Mozilla/5.0 (X11; CrOS x86_64 14541.0.0) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36"],
+  ["an unknown browser", "Mozilla/5.0 (compatible; Novo/1.0)"],
+  ["another program", "curl/8.7.1"],
+  ["an Element client", "Element/1.11.85 (iPhone15,2; iOS 18.1; Scale/3.00)"],
+  ["empty", ""],
+];
+const entryOf = (content, ctx = deviceCtx) => deviceInfoFromEvent(deviceEvent(content), ctx, reg).entry;
+const rowsInput = {
+  thisDeviceId: "PHONE",
+  devices: [
+    { device_id: "OLDWEB", display_name: "web.bipe.chat", last_seen_ts: 1761000000000, last_seen_ip: "200.100.1.1" },
+    { device_id: "MAC", display_name: "Bipe Mac", last_seen_ts: 1762800000000, last_seen_ip: "200.100.1.2" },
+    { device_id: "PHONE", display_name: "Pixel 8", last_seen_ts: 1762862400000, last_seen_ip: "200.100.1.3" },
+    { device_id: "WEB", last_seen_ts: 1762700000000, last_seen_ip: "200.100.1.4" },
+    { device_id: "MCP", display_name: "bipe-mcp", last_seen_ts: 1762850000000, last_seen_ip: "127.0.0.1" },
+    { device_id: "BRIDGE", last_seen_ts: 1762600000000 },
+    { device_id: "NOSEEN" },
+  ],
+  entries: [
+    entryOf({}),
+    entryOf({ device_id: "MAC", kind: "computer-app", model: "MacBook Air", os: "macOS 26.1", app: "Bipe 1.0 (40)", linked_by: "PHONE" }, { ...deviceCtx, senderDevice: "MAC" }),
+    entryOf({ device_id: "MAC", source: "approval", kind: "browser", model: undefined, app: "Safari 18", os: "macOS", linked_by: "PHONE" }),
+    entryOf({ device_id: "WEB", source: "approval", kind: "browser", model: undefined, app: "Chrome 131", os: "Windows", linked_by: "PHONE", attested: undefined }),
+    entryOf({ device_id: "MCP", kind: "assistant", model: undefined, os: "macOS 26.1", app: "bipe-mcp 0.3 · Claude Desktop", attested: false }, { ...deviceCtx, senderDevice: "MCP" }),
+    entryOf({ device_id: "BRIDGE", kind: "bridge", model: undefined, os: "Linux", app: "Beeper bridge 0.2", attested: false }, { ...deviceCtx, senderDevice: "BRIDGE" }),
+    entryOf({ device_id: "GONE", kind: "browser", source: "approval", model: undefined }),
+  ],
+};
+const warnReg = { ...reg, deviceKinds: { ...reg.deviceKinds, unknownWarning: true } };
+write("device-kinds.json", {
+  $comment: "Generated by tools/gen-test-vectors.mjs from registries/device-kinds.json (bipe ADR 0291). events: deviceInfoFromEvent(event, context); userAgents: userAgentInfo(userAgent); rows: deviceRows(input) with the registry as it is, rowsWithWarning with unknownWarning true. All in tools/lib/registries.mjs. The text fields are trimmed.",
+  events: deviceEventCases.map(([name, event, context]) => ({ name, event: JSON.parse(JSON.stringify(event)), context, expected: deviceInfoFromEvent(JSON.parse(JSON.stringify(event)), context, reg) })),
+  userAgents: userAgentCases.map(([name, userAgent]) => ({ name, userAgent, expected: userAgentInfo(userAgent, reg) })),
+  rows: { input: rowsInput, expected: deviceRows(rowsInput, reg) },
+  rowsWithWarning: { input: rowsInput, expected: deviceRows(rowsInput, warnReg) },
 });
 
 // Assistant sends (bipe ADR 0210 as corrected on 30 October 2026, bipe-chat/bipe#439): the switch and the label.

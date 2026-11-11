@@ -95,6 +95,30 @@ public struct SocialPlatform: Sendable, Equatable {
     public let url: String
 }
 
+/// A device kind (bipe ADR 0291, registries/device-kinds.json). section: devices or programs.
+public struct DeviceKind: Sendable, Equatable {
+    public let key: String
+    public let icon: String
+    public let label: String
+    public let section: String
+    public let leavesBrazil: Bool
+}
+
+/// A user-agent rule (bipe ADR 0291). app, model and os hold $1 to $9 for the pattern's groups; nil when the rule does not say. A browser rule takes app from deviceBrowsers and os from deviceSystems.
+public struct DeviceUserAgentRule: Sendable, Equatable {
+    public let pattern: String
+    public let kind: String
+    public let app: String?
+    public let model: String?
+    public let os: String?
+}
+
+/// A name rule for a browser or a system (bipe ADR 0291). name holds $1 to $9 for the pattern's groups. The first match wins.
+public struct DeviceNameRule: Sendable, Equatable {
+    public let pattern: String
+    public let name: String
+}
+
 public enum BipeRegistries {
     /// Normalised reserved display names and their category.
     public static let reservedNames: [String: ReservedNameCategory] = ${swiftArray(reserved)}
@@ -381,6 +405,14 @@ ${reg.workHours.defaultDays.map((d) => `        (day: ${d.day}, ranges: [${d.ran
     public static let workReplyByField = ${swiftString(reg.workNotes.replyByField)}
     public static let workReplyByBody = ${swiftString(reg.workNotes.replyByBody)}
     public static let workNoteBodyMaxLength = ${reg.workNotes.bodyMaxLength}
+    /// Device kinds and device entries (bipe ADR 0291, bipe-chat/bipe#1479; registries/device-kinds.json). Rules: test-vectors/device-kinds.json.
+    public static let deviceInfoEventType = ${swiftString(reg.deviceKinds.eventType)}
+    public static let deviceFieldMaxLength = ${reg.deviceKinds.fieldMaxLength}
+    public static let deviceUnknownWarning = ${reg.deviceKinds.unknownWarning}
+    public static let deviceKinds: [DeviceKind] = ${swiftArray(reg.deviceKinds.kinds.map((k) => `DeviceKind(key: ${swiftString(k.key)}, icon: ${swiftString(k.icon)}, label: ${swiftString(k.label)}, section: ${swiftString(k.section)}, leavesBrazil: ${k.leavesBrazil})`))}
+    public static let deviceUserAgents: [DeviceUserAgentRule] = ${swiftArray(reg.deviceKinds.userAgents.map((r) => `DeviceUserAgentRule(pattern: ${swiftString(r.pattern)}, kind: ${swiftString(r.kind)}, app: ${r.app === undefined ? "nil" : swiftString(r.app)}, model: ${r.model === undefined ? "nil" : swiftString(r.model)}, os: ${r.os === undefined ? "nil" : swiftString(r.os)})`))}
+    public static let deviceBrowsers: [DeviceNameRule] = ${swiftArray(reg.deviceKinds.browsers.map((r) => `DeviceNameRule(pattern: ${swiftString(r.pattern)}, name: ${swiftString(r.name)})`))}
+    public static let deviceSystems: [DeviceNameRule] = ${swiftArray(reg.deviceKinds.systems.map((r) => `DeviceNameRule(pattern: ${swiftString(r.pattern)}, name: ${swiftString(r.name)})`))}
     /// Localpart prefix of a member identity (bipe ADR 0284 point 1, registries/accounts.json).
     public static let memberLocalpartPrefix = ${swiftString(reg.accounts.memberLocalpartPrefix)}
 
@@ -543,6 +575,15 @@ data class PersonScheme(val id: String, val alias: String?, val assurance: Strin
 
 /** A network a public profile may link to (ADR 0228). [url] holds {handle} once. */
 data class SocialPlatform(val id: String, val name: String, val pattern: String, val url: String)
+
+/** A device kind (bipe ADR 0291, registries/device-kinds.json). [section] is devices or programs. */
+data class DeviceKind(val key: String, val icon: String, val label: String, val section: String, val leavesBrazil: Boolean)
+
+/** A user-agent rule (bipe ADR 0291). [app], [model] and [os] hold $1 to $9 for the pattern's groups; null when the rule does not say. A browser rule takes app from DEVICE_BROWSERS and os from DEVICE_SYSTEMS. */
+data class DeviceUserAgentRule(val pattern: String, val kind: String, val app: String?, val model: String?, val os: String?)
+
+/** A name rule for a browser or a system (bipe ADR 0291). [name] holds $1 to $9 for the pattern's groups. The first match wins. */
+data class DeviceNameRule(val pattern: String, val name: String)
 
 object BipeRegistries {
     /** Normalised reserved display names and their category. */
@@ -842,6 +883,14 @@ ${reg.workHours.defaultDays.map((d) => `        ${d.day} to listOf(${d.ranges.ma
     const val WORK_REPLY_BY_FIELD = ${kotlinString(reg.workNotes.replyByField)}
     const val WORK_REPLY_BY_BODY = ${kotlinString(reg.workNotes.replyByBody)}
     const val WORK_NOTE_BODY_MAX_LENGTH = ${reg.workNotes.bodyMaxLength}
+    /** Device kinds and device entries (bipe ADR 0291, bipe-chat/bipe#1479; registries/device-kinds.json). Rules: test-vectors/device-kinds.json. */
+    const val DEVICE_INFO_EVENT_TYPE = ${kotlinString(reg.deviceKinds.eventType)}
+    const val DEVICE_FIELD_MAX_LENGTH = ${reg.deviceKinds.fieldMaxLength}
+    const val DEVICE_UNKNOWN_WARNING = ${reg.deviceKinds.unknownWarning}
+    val DEVICE_KINDS: List<DeviceKind> = ${kotlinList("listOf", reg.deviceKinds.kinds.map((k) => `DeviceKind(${kotlinString(k.key)}, ${kotlinString(k.icon)}, ${kotlinString(k.label)}, ${kotlinString(k.section)}, ${k.leavesBrazil})`))}
+    val DEVICE_USER_AGENTS: List<DeviceUserAgentRule> = ${kotlinList("listOf", reg.deviceKinds.userAgents.map((r) => `DeviceUserAgentRule(${kotlinString(r.pattern)}, ${kotlinString(r.kind)}, ${r.app === undefined ? "null" : kotlinString(r.app)}, ${r.model === undefined ? "null" : kotlinString(r.model)}, ${r.os === undefined ? "null" : kotlinString(r.os)})`))}
+    val DEVICE_BROWSERS: List<DeviceNameRule> = ${kotlinList("listOf", reg.deviceKinds.browsers.map((r) => `DeviceNameRule(${kotlinString(r.pattern)}, ${kotlinString(r.name)})`))}
+    val DEVICE_SYSTEMS: List<DeviceNameRule> = ${kotlinList("listOf", reg.deviceKinds.systems.map((r) => `DeviceNameRule(${kotlinString(r.pattern)}, ${kotlinString(r.name)})`))}
     /** Localpart prefix of a member identity (bipe ADR 0284 point 1, registries/accounts.json). */
     const val MEMBER_LOCALPART_PREFIX = ${kotlinString(reg.accounts.memberLocalpartPrefix)}
 

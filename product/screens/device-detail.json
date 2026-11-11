@@ -1,0 +1,91 @@
+{
+  "id": "device-detail",
+  "title": "Device detail",
+  "flow": "devices",
+  "summary": "Everything Bipe knows about one device of the account, and, for an assistant or a bridge, what it reads and where its data goes (ADR 0291).",
+  "state": {
+    "row": {
+      "type": "DeviceRow",
+      "description": "The row from linked-devices."
+    },
+    "linkedAt": {
+      "type": "date",
+      "optional": true,
+      "description": "From the device entry, for bipe_device_detail_linked_at."
+    },
+    "linkedBy": {
+      "type": "string",
+      "optional": true,
+      "description": "The name of the approving device's row, for bipe_device_detail_linked_by."
+    },
+    "attested": {
+      "type": "bool",
+      "description": "bipe_device_detail_attested or bipe_device_detail_not_attested (ADR 0043)."
+    },
+    "ip": {
+      "type": "string",
+      "optional": true,
+      "description": "last_seen_ip, for bipe_device_detail_ip."
+    },
+    "assistantSend": {
+      "type": "bool",
+      "optional": true,
+      "description": "Only for kind assistant: the switch chat.bipe.assistant_send (ADR 0210), moved here from Privacidade with bipe-chat/bipe#1481."
+    },
+    "fullContentRooms": {
+      "type": "list",
+      "of": {
+        "type": "string",
+        "description": "A room name."
+      },
+      "description": "Only for kind assistant: the chats where it reads every member (the chat.bipe.assistant room state, ADR 0130)."
+    }
+  },
+  "actions": {
+    "copyId": {
+      "effect": "Copies the device ID and shows bipe_device_detail_id_copied."
+    },
+    "toggleAssistantSend": {
+      "params": {
+        "enabled": {
+          "type": "bool",
+          "description": "The new value."
+        }
+      },
+      "effect": "Writes chat.bipe.assistant_send, as the switch in Privacidade does today."
+    },
+    "signOut": {
+      "effect": "The same flow as askSignOut on linked-devices. Hidden for this device and on read-only platforms."
+    }
+  },
+  "strings": [
+    "bipe_device_detail_linked_at",
+    "bipe_device_detail_linked_by",
+    "bipe_device_detail_attested",
+    "bipe_device_detail_not_attested",
+    "bipe_device_detail_ip",
+    "bipe_device_detail_place",
+    "bipe_device_detail_id",
+    "bipe_device_detail_id_copied",
+    "bipe_devices_this_device",
+    "bipe_devices_this_device_hint",
+    "bipe_devices_in_brazil",
+    "bipe_devices_outside_brazil",
+    "bipe_devices_unknown_warning",
+    "bipe_privacy_assistant_send",
+    "bipe_privacy_assistant_send_footer",
+    "bipe_linked_devices_sign_out",
+    "bipe_linked_devices_last_used"
+  ],
+  "sdk": [
+    "Client.deviceId"
+  ],
+  "parity": [
+    "web-sign-in",
+    "settings-structure"
+  ],
+  "notes": [
+    "The device ID shows only here and on the long press on the version (ADR 0291).",
+    "A bridge's detail says that Beeper sees room names, members and timing outside Brazil (ADR 0128)."
+  ]
+}

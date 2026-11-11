@@ -2,46 +2,147 @@
   "id": "linked-devices",
   "title": "Linked devices",
   "flow": "devices",
-  "summary": "Lists the other devices of the account with their last use, starts Link a computer, and signs out one device after a biometric check, on the MAS page that ends that device's session (ADR 0116).",
+  "summary": "Lists every device of the account with its kind and details, this device first, starts Link a computer or browser, and signs out one device or all others after a biometric check, natively through bipe-api (ADR 0291). Until bipe-chat/bipe#1481 ships, the apps sign out on the MAS page (ADR 0116).",
   "types": {
-    "LinkedDevice": {
-      "deviceId": { "type": "string", "description": "The Matrix device ID. Never shown as text." },
-      "displayName": { "type": "string", "optional": true, "description": "The device name; bipe_linked_devices_unknown_name when empty." },
-      "lastUsed": { "type": "date", "optional": true, "description": "last_seen_ts, for bipe_linked_devices_last_used." }
+    "DeviceRow": {
+      "deviceId": {
+        "type": "string",
+        "description": "The Matrix device ID. Shown only on device-detail."
+      },
+      "isThis": {
+        "type": "bool",
+        "description": "This device. It is the first row, labelled bipe_devices_this_device, and has no sign-out."
+      },
+      "kind": {
+        "type": "enum",
+        "values": [
+          "phone",
+          "computerApp",
+          "browser",
+          "assistant",
+          "bridge",
+          "unknown"
+        ],
+        "description": "From deviceRows (registries/device-kinds.json): the device entry, else unknown. computerApp is the registry key computer-app."
+      },
+      "name": {
+        "type": "string",
+        "optional": true,
+        "description": "The entry's model, else its app, else the display name; bipe_linked_devices_unknown_name when none."
+      },
+      "os": {
+        "type": "string",
+        "optional": true,
+        "description": "For example Android 15, Windows."
+      },
+      "app": {
+        "type": "string",
+        "optional": true,
+        "description": "For example Bipe 1.4.2 (812), Chrome 131, bipe-mcp 0.3 · Claude Desktop."
+      },
+      "lastUsed": {
+        "type": "date",
+        "optional": true,
+        "description": "last_seen_ts, for bipe_linked_devices_last_used."
+      },
+      "place": {
+        "type": "string",
+        "optional": true,
+        "description": "From last_seen_ip through GET /v1/web-link/place (ADR 0118)."
+      },
+      "leavesBrazil": {
+        "type": "bool",
+        "description": "The row adds bipe_devices_outside_brazil."
+      },
+      "warning": {
+        "type": "bool",
+        "description": "An unknown device while unknownWarning is true: the row shows bipe_devices_unknown_warning."
+      }
     }
   },
   "state": {
     "phase": {
       "type": "enum",
-      "values": ["loading", "loaded", "failed"],
+      "values": [
+        "loading",
+        "loaded",
+        "failed"
+      ],
       "description": "loaded with an empty list shows bipe_linked_devices_empty."
     },
-    "devices": { "type": "list", "of": { "type": "LinkedDevice", "description": "One other device." }, "description": "The other devices of the account, newest use first. This phone is not in it." },
-    "signOutCandidate": { "type": "LinkedDevice", "optional": true, "description": "The device that the sign-out sheet asks about." },
+    "devices": {
+      "type": "list",
+      "of": {
+        "type": "DeviceRow",
+        "description": "One device in section devices (phone, computerApp, browser, unknown)."
+      },
+      "description": "Section bipe_devices_section_devices: this device first, then newest use first."
+    },
+    "programs": {
+      "type": "list",
+      "of": {
+        "type": "DeviceRow",
+        "description": "One assistant or bridge."
+      },
+      "description": "Section bipe_devices_section_programs; hidden when empty."
+    },
+    "signOutCandidate": {
+      "type": "DeviceRow",
+      "optional": true,
+      "description": "The device that the sign-out sheet asks about."
+    },
     "signOutPhase": {
       "type": "enum",
-      "values": ["idle", "confirmIdentity", "loading", "page", "failed"],
-      "description": "loading: the MAS page loads or the web view signs in. page: the MAS page that ends the session is in front."
+      "values": [
+        "idle",
+        "confirmIdentity",
+        "loading",
+        "failed"
+      ],
+      "description": "loading: DELETE /v1/me/devices/{deviceId} or POST /v1/me/devices/sign-out-others runs."
+    },
+    "readOnly": {
+      "type": "bool",
+      "description": "true on a computer or in a browser: no sign-out and no link actions; the footer is bipe_mac_linked_devices_footer."
     }
   },
   "actions": {
     "appear": {
-      "effect": "GET /_matrix/client/v3/devices with the access token. Drops this phone (Client.deviceId) and sorts by last use."
+      "effect": "GET /_matrix/client/v3/devices, reads the chat.bipe.device_info entries of the drafts room (deviceInfoFromEvent), and builds the rows with deviceRows (test-vectors/device-kinds.json). Fetches the place of each row."
+    },
+    "openDevice": {
+      "params": {
+        "deviceId": {
+          "type": "string",
+          "description": "The row."
+        }
+      },
+      "effect": "Opens device-detail."
     },
     "linkComputer": {
-      "effect": "Opens link-computer-scan."
+      "effect": "Opens link-computer-scan. The row is bipe_devices_link_computer_or_browser."
     },
     "askSignOut": {
-      "params": { "deviceId": { "type": "string", "description": "The device to sign out." } },
-      "effect": "Shows the sheet with bipe_linked_devices_sign_out_title (the device name) and bipe_linked_devices_sign_out_body."
+      "params": {
+        "deviceId": {
+          "type": "string",
+          "description": "The device to sign out. Never this device."
+        }
+      },
+      "effect": "Shows the sheet with bipe_linked_devices_sign_out_title (the device name) and bipe_linked_devices_sign_out_body. iOS: a swipe action; Android: the row menu."
     },
     "confirmSignOut": {
-      "effect": "Asks for the biometric check with bipe_linked_devices_sign_out_biometric. On a pass, opens the private web view of link-computer-approve on the MAS account page with action org.matrix.session_end and the device ID, and fills the MAS login form once with the hidden password. The user confirms on the MAS page."
+      "effect": "Asks for the biometric check with bipe_linked_devices_sign_out_biometric. On a pass, DELETE /v1/me/devices/{deviceId}, then reloads the list and shows bipe_app_linked_devices_signed_out."
     },
-    "pageClosed": {
-      "effect": "When the user leaves or closes the MAS page: clears the web view, POST /v1/web-link/finish, reloads the list. A device that is gone from the list shows bipe_app_linked_devices_signed_out."
+    "askSignOutOthers": {
+      "effect": "Shown when two or more other devices exist. Shows bipe_devices_sign_out_others_title and bipe_devices_sign_out_others_body."
     },
-    "retry": { "effect": "From failed: runs appear again." }
+    "confirmSignOutOthers": {
+      "effect": "Same biometric check, then POST /v1/me/devices/sign-out-others with this device ID, then reloads."
+    },
+    "retry": {
+      "effect": "From failed: runs appear again."
+    }
   },
   "strings": [
     "bipe_mac_linked_devices_footer",
@@ -61,16 +162,40 @@
     "bipe_app_linked_devices_signed_out",
     "bipe_app_retry",
     "bipe_app_cancel",
-    "bipe_app_close"
+    "bipe_app_close",
+    "bipe_devices_section_devices",
+    "bipe_devices_section_programs",
+    "bipe_devices_this_device",
+    "bipe_devices_link_computer_or_browser",
+    "bipe_devices_sign_out_others",
+    "bipe_devices_sign_out_others_title",
+    "bipe_devices_sign_out_others_body",
+    "bipe_devices_unknown_warning",
+    "bipe_devices_outside_brazil",
+    "bipe_device_kind_phone",
+    "bipe_device_kind_computer",
+    "bipe_device_kind_browser",
+    "bipe_device_kind_assistant",
+    "bipe_device_kind_bridge",
+    "bipe_device_kind_unknown"
   ],
-  "sdk": ["Client.deviceId", "Client.homeserver", "Client.session", "Client.accountUrl"],
-  "parity": ["web-sign-in", "settings-structure"],
+  "sdk": [
+    "Client.deviceId",
+    "Client.homeserver",
+    "Client.session",
+    "Client.accountUrl"
+  ],
+  "parity": [
+    "web-sign-in",
+    "settings-structure"
+  ],
   "notes": [
-    "The SDK has no device list in the FFI and Client.accountUrl returns nothing for an m.login.password session, so the app calls GET /_matrix/client/v3/devices (Matrix spec) and builds the MAS account URL from the auth metadata (MSC2965 account_management_uri, then action=org.matrix.session_end&device_id=<id>). Bipe logic: BipeMatrixAccountAPI.devices and authMetadata, BipeWebLink.sessionEndURL (BipeKit BipeWebLink.swift); BipeWebLinkSession.otherDevices, BipeWebApprovalController purpose SignOut (libraries/bipe weblink).",
-    "The private web view, the host rule and the one-time form fill are the same as link-computer-approve. The sign-out flow has no warning and no cooldown, but has the biometric check before the hidden password is read.",
-    "A web device is unattested (ADR 0043). This list shows no badge for any device.",
-    "bipe_linked_devices_title and the row in Sua conta come from registries/settings.json (account, devices, linkedDevices). This phone shows as the thisDevice info row there, not in this list.",
-    "Signing out this phone is sign-out, not this screen.",
-    "Mac (ADR 0266): a read-only list with the footer bipe_mac_linked_devices_footer. Signing a device out needs the hidden password and the owner check, which only the phone has. Linking a computer starts on the computer."
+    "ADR 0291: this screen moves into the root group Aparelhos e assistentes with bipe-chat/bipe#1481. The settings.json move lands with that app change: a new root group breaks the exhaustive switches over BipeSettingsGroup in bipe-app.",
+    "Kinds, icons, labels and sections: registries/device-kinds.json. The rules (deviceInfoFromEvent, userAgentInfo, deviceRows) are in tools/lib/registries.mjs; every platform passes test-vectors/device-kinds.json.",
+    "Each Bipe client writes its own entry (source self) on link and on each start; the phone that approves a new device writes an approval entry from the consent screen's user agent (userAgentInfo). Event shape: docs/drafts-room.md.",
+    "The SDK has no device list in the FFI, so the app calls GET /_matrix/client/v3/devices (Matrix spec).",
+    "Signing out this device is sign-out in Sua conta (bipe_devices_this_device_hint), not this screen.",
+    "Only a phone signs devices out: the API checks nothing about the caller's kind, the apps gate it. Mac, Windows and web show the list read-only (ADR 0266, ADR 0291).",
+    "Until bipe-chat/bipe#1481: the apps still sign out on the MAS page with the private web view of link-computer-approve, and bipe_linked_devices_sign_out_body still names that page."
   ]
 }

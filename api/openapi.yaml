@@ -893,6 +893,54 @@ paths:
                   signed_out: { type: integer, minimum: 0, description: Number of web devices signed out }
         "401": { $ref: "#/components/responses/Error" }
         "429": { $ref: "#/components/responses/Error" }
+  /v1/me/devices/{deviceId}:
+    delete:
+      summary: Sign out one other device of the account (ADR 0291, bipe-chat/bipe#1480)
+      description: >
+        The phone signs out one device from Aparelhos e assistentes, after the biometric check on the phone. The
+        server finishes, through the MAS admin API, every active MAS session of the account whose Matrix device is
+        deviceId, and forgets its web sign-in record. No web page opens. The caller's device comes from the access
+        token. 400 bad_request with reason own_device when deviceId is the caller's device (that is sign-out), and
+        with reason web_device when the caller is a web session that a phone approved: only a phone signs devices
+        out. On a company account only the owner's devices may call (403 owner_only). 404 not_found when no active
+        session has that device.
+      security: [{ matrix: [] }]
+      parameters:
+        - name: deviceId
+          in: path
+          required: true
+          schema: { type: string, minLength: 1, maxLength: 255, description: The Matrix device ID }
+      responses:
+        "204": { description: Signed out }
+        "400": { $ref: "#/components/responses/Error" }
+        "401": { $ref: "#/components/responses/Error" }
+        "403": { $ref: "#/components/responses/Error" }
+        "404": { $ref: "#/components/responses/Error" }
+        "429": { $ref: "#/components/responses/Error" }
+  /v1/me/devices/sign-out-others:
+    post:
+      summary: Sign out every other device of the account (ADR 0291, bipe-chat/bipe#1480)
+      description: >
+        "Desconectar todos os outros" on the phone, after the biometric check. The server finishes every active MAS
+        session of the account except the sessions of the caller's device (from the access token): other devices,
+        and MAS browser sessions that have no device. It forgets the account's web sign-in records of the devices
+        it signed out. 400 bad_request with reason web_device when the caller is a web session; 403 owner_only on a
+        company account when the caller is not the owner.
+      security: [{ matrix: [] }]
+      responses:
+        "200":
+          description: Done
+          content:
+            application/json:
+              schema:
+                type: object
+                required: [signed_out]
+                properties:
+                  signed_out: { type: integer, minimum: 0, description: Number of devices signed out. Browser sessions with no device are not counted. }
+        "400": { $ref: "#/components/responses/Error" }
+        "401": { $ref: "#/components/responses/Error" }
+        "403": { $ref: "#/components/responses/Error" }
+        "429": { $ref: "#/components/responses/Error" }
   /v1/web-link/place:
     get:
       summary: Approximate place of a browser IP, for the web sign-in approval screen (ADR 0118)

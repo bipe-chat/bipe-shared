@@ -1,14 +1,12 @@
 // Mural home score (ADR 0246, bipe-chat/bipe#1044): Swift and Kotlin output. The formula is in registries/home-score.json,
-// the reference is home-score.mjs, and test-vectors/home-score.json checks all of them.
-import { homeUnits } from "./home-score.mjs";
+// the reference is home-score.mjs, and test-vectors/home-score.json checks all of them. The score runs in bipe-core
+// (home_score.rs, bipe-chat/bipe#1478); these wrappers keep the app API and the layout constants.
 
-const dbl = (x) => (Number.isInteger(x) ? `${x}.0` : String(x));
 const percent = (x) => Math.floor(x * 100 + 0.5);
 
 export function generateHomeScore(policy, language, header, quote) {
-  const w = policy.weights;
-  const attention = Object.entries(policy.model.attention);
   return language === "swift" ? `${header}
+import BipeCore
 import Foundation
 
 public nonisolated enum BipeHomeChatKind: String, Sendable {
@@ -108,80 +106,45 @@ ${policy.tiers.map((t) => `        BipeHomeTierRule(tier: ${t.tier}, minPercent:
     public static let dueMaxLength = ${policy.model.dueMaxLength}
     public static let draftMaxLength = ${policy.model.draftMaxLength}
 
-    private static let modelAttentionUnits: [String: Int] = [${attention.map(([k, v]) => `${quote(k)}: ${homeUnits(v)}`).join(", ")}]
-
-    private static func units(_ value: Double) -> Int { Int(floor(value * 10000.0 + 0.5)) }
-
-    private static func modelUnits(_ chat: BipeHomeChat, unread: Int) -> Int {
-        if (chat.kind == .company && !chat.hasSeal) || chat.official || chat.trustWarning { return 0 }
-        var sum = 0
-        if let attention = chat.modelAttention, let weight = modelAttentionUnits[attention], attention != "none" || unread > 0 {
-            sum += weight
+    private static func core(_ chat: BipeHomeChat) -> HomeChat {
+        let kind: HomeChatKind = switch chat.kind {
+        case .person: .person
+        case .company: .company
+        case .group: .group
         }
-        if chat.modelDue { sum += ${homeUnits(policy.model.due)} }
-        return min(sum, ${homeUnits(policy.model.maxWeight)})
+        return HomeChat(
+            id: chat.id, kind: kind, hasSeal: chat.hasSeal, official: chat.official, favourite: chat.favourite,
+            muted: chat.muted, mentioned: chat.mentioned, unreadCount: Int64(chat.unreadCount),
+            lastFromOther: chat.lastFromOther, minutesSinceActivity: chat.minutesSinceActivity.map { Int64($0) },
+            messagesPerWeek: Int64(chat.messagesPerWeek), trustWarning: chat.trustWarning,
+            modelAttention: chat.modelAttention, modelDue: chat.modelDue
+        )
+    }
+
+    private static func reason(_ reason: HomeReason?) -> BipeHomeReason? {
+        reason.map { $0 == .mention ? .mention : .unanswered }
     }
 
     public static func score(_ chat: BipeHomeChat) -> BipeHomeScored {
-        let unread = max(chat.unreadCount, 0)
-        let minutes = chat.minutesSinceActivity.map { max($0, 0) }
-        let direct = chat.kind != .group
-        var sum = 0
-        if chat.mentioned { sum += ${homeUnits(w.mention)} }
-        if unread > 0 {
-            if direct {
-                sum += (chat.kind == .company && !chat.hasSeal) ? ${homeUnits(w.unreadCompanyNoSeal)} : ${homeUnits(w.unreadDirect)}
-            } else {
-                sum += min(${homeUnits(policy.unreadGroup.max)}, units(${dbl(policy.unreadGroup.min)} + ${dbl(policy.unreadGroup.logScale)} * log10(1.0 + Double(unread))))
-            }
-        }
-        var unanswered = false
-        if direct, unread == 0, chat.lastFromOther, let minutes, minutes < ${policy.unansweredMaxMinutes} {
-            unanswered = true
-            sum += ${homeUnits(w.unansweredDirect)}
-        }
-        if chat.favourite { sum += ${homeUnits(w.favourite)} }
-        sum += min(${homeUnits(policy.tie.max)}, units(${dbl(policy.tie.logScale)} * log2(1.0 + Double(max(chat.messagesPerWeek, 0)))))
-        if let minutes { sum += units(${dbl(policy.recency.max)} * exp(-Double(minutes) / ${dbl(policy.recency.decayMinutes)})) }
-        sum += modelUnits(chat, unread: unread)
-        if chat.muted && !chat.mentioned { sum = Int(floor(Double(sum) * ${dbl(policy.mutedFactor)} + 0.5)) }
-        if chat.official { sum = min(sum, ${homeUnits(policy.officialCap)}) }
-        sum = min(max(sum, 0), 10000)
-        return BipeHomeScored(scorePercent: (sum + 50) / 100, reason: chat.mentioned ? .mention : (unanswered ? .unanswered : nil))
+        let scored = homeScore(chat: core(chat))
+        return BipeHomeScored(scorePercent: Int(scored.scorePercent), reason: reason(scored.reason))
     }
 
     /// The tiles in screen order.
     public static func plan(_ chats: [BipeHomeChat]) -> [BipeHomeTile] {
-        let scored = chats.map { (chat: $0, result: score($0)) }
-        let ordered = scored.sorted { a, b in
-            if a.result.scorePercent != b.result.scorePercent { return a.result.scorePercent > b.result.scorePercent }
-            let am = a.chat.minutesSinceActivity.map { max($0, 0) } ?? Int.max
-            let bm = b.chat.minutesSinceActivity.map { max($0, 0) } ?? Int.max
-            if am != bm { return am < bm }
-            return a.chat.id < b.chat.id
+        homePlan(chats: chats.map(core)).map { tile in
+            BipeHomeTile(id: tile.id, scorePercent: Int(tile.scorePercent), tier: tile.tier.map { Int($0) }, reason: reason(tile.reason))
         }
-        var counts: [Int: Int] = [:]
-        var tiles: [BipeHomeTile] = []
-        tiles.reserveCapacity(ordered.count)
-        for item in ordered {
-            let rule = tiers.first { candidate in
-                guard item.result.scorePercent >= candidate.minPercent else { return false }
-                guard let limit = candidate.maxChats else { return true }
-                return counts[candidate.tier, default: 0] < limit
-            }
-            if let rule { counts[rule.tier, default: 0] += 1 }
-            tiles.append(BipeHomeTile(id: item.chat.id, scorePercent: item.result.scorePercent, tier: rule?.tier, reason: item.result.reason))
-        }
-        return tiles
     }
 }
 ` : language === "kotlin" ? `${header}
 package chat.bipe.shared.generated
 
-import kotlin.math.exp
-import kotlin.math.floor
-import kotlin.math.log10
-import kotlin.math.log2
+import chat.bipe.core.HomeChat
+import chat.bipe.core.HomeChatKind
+import chat.bipe.core.HomeReason
+import chat.bipe.core.homePlan
+import chat.bipe.core.homeScore
 
 enum class BipeHomeChatKind { PERSON, COMPANY, GROUP }
 
@@ -232,64 +195,38 @@ ${policy.tiers.map((t) => `        BipeHomeTierRule(${t.tier}, ${percent(t.minSc
     const val DUE_MAX_LENGTH = ${policy.model.dueMaxLength}
     const val DRAFT_MAX_LENGTH = ${policy.model.draftMaxLength}
 
-    private val modelAttentionUnits: Map<String, Int> = mapOf(${attention.map(([k, v]) => `${quote(k)} to ${homeUnits(v)}`).join(", ")})
+    private fun core(chat: BipeHomeChat) = HomeChat(
+        id = chat.id,
+        kind = when (chat.kind) {
+            BipeHomeChatKind.PERSON -> HomeChatKind.PERSON
+            BipeHomeChatKind.COMPANY -> HomeChatKind.COMPANY
+            BipeHomeChatKind.GROUP -> HomeChatKind.GROUP
+        },
+        hasSeal = chat.hasSeal,
+        official = chat.official,
+        favourite = chat.favourite,
+        muted = chat.muted,
+        mentioned = chat.mentioned,
+        unreadCount = chat.unreadCount.toLong(),
+        lastFromOther = chat.lastFromOther,
+        minutesSinceActivity = chat.minutesSinceActivity?.toLong(),
+        messagesPerWeek = chat.messagesPerWeek.toLong(),
+        trustWarning = chat.trustWarning,
+        modelAttention = chat.modelAttention,
+        modelDue = chat.modelDue,
+    )
 
-    private fun units(value: Double): Int = floor(value * 10000.0 + 0.5).toInt()
-
-    private fun modelUnits(chat: BipeHomeChat, unread: Int): Int {
-        if ((chat.kind == BipeHomeChatKind.COMPANY && !chat.hasSeal) || chat.official || chat.trustWarning) return 0
-        var sum = 0
-        val attention = chat.modelAttention
-        val weight = attention?.let { modelAttentionUnits[it] }
-        if (weight != null && (attention != "none" || unread > 0)) sum += weight
-        if (chat.modelDue) sum += ${homeUnits(policy.model.due)}
-        return minOf(sum, ${homeUnits(policy.model.maxWeight)})
+    private fun reason(reason: HomeReason?): BipeHomeReason? = when (reason) {
+        HomeReason.MENTION -> BipeHomeReason.MENTION
+        HomeReason.UNANSWERED -> BipeHomeReason.UNANSWERED
+        null -> null
     }
 
-    fun score(chat: BipeHomeChat): BipeHomeScored {
-        val unread = maxOf(chat.unreadCount, 0)
-        val minutes = chat.minutesSinceActivity?.let { maxOf(it, 0) }
-        val direct = chat.kind != BipeHomeChatKind.GROUP
-        var sum = 0
-        if (chat.mentioned) sum += ${homeUnits(w.mention)}
-        if (unread > 0) {
-            if (direct) {
-                sum += if (chat.kind == BipeHomeChatKind.COMPANY && !chat.hasSeal) ${homeUnits(w.unreadCompanyNoSeal)} else ${homeUnits(w.unreadDirect)}
-            } else {
-                sum += minOf(${homeUnits(policy.unreadGroup.max)}, units(${dbl(policy.unreadGroup.min)} + ${dbl(policy.unreadGroup.logScale)} * log10(1.0 + unread.toDouble())))
-            }
-        }
-        val unanswered = direct && unread == 0 && chat.lastFromOther && minutes != null && minutes < ${policy.unansweredMaxMinutes}
-        if (unanswered) sum += ${homeUnits(w.unansweredDirect)}
-        if (chat.favourite) sum += ${homeUnits(w.favourite)}
-        sum += minOf(${homeUnits(policy.tie.max)}, units(${dbl(policy.tie.logScale)} * log2(1.0 + maxOf(chat.messagesPerWeek, 0).toDouble())))
-        if (minutes != null) sum += units(${dbl(policy.recency.max)} * exp(-minutes.toDouble() / ${dbl(policy.recency.decayMinutes)}))
-        sum += modelUnits(chat, unread)
-        if (chat.muted && !chat.mentioned) sum = floor(sum.toDouble() * ${dbl(policy.mutedFactor)} + 0.5).toInt()
-        if (chat.official) sum = minOf(sum, ${homeUnits(policy.officialCap)})
-        sum = minOf(maxOf(sum, 0), 10000)
-        val reason = if (chat.mentioned) BipeHomeReason.MENTION else if (unanswered) BipeHomeReason.UNANSWERED else null
-        return BipeHomeScored((sum + 50) / 100, reason)
-    }
+    fun score(chat: BipeHomeChat): BipeHomeScored =
+        homeScore(core(chat)).let { BipeHomeScored(it.scorePercent, reason(it.reason)) }
 
-    /** The tiles in screen order. */
-    fun plan(chats: List<BipeHomeChat>): List<BipeHomeTile> {
-        val ordered = chats.map { it to score(it) }.sortedWith(Comparator { a, b ->
-            if (a.second.scorePercent != b.second.scorePercent) return@Comparator b.second.scorePercent.compareTo(a.second.scorePercent)
-            val am = a.first.minutesSinceActivity?.let { maxOf(it, 0) } ?: Int.MAX_VALUE
-            val bm = b.first.minutesSinceActivity?.let { maxOf(it, 0) } ?: Int.MAX_VALUE
-            if (am != bm) return@Comparator am.compareTo(bm)
-            a.first.id.compareTo(b.first.id)
-        })
-        val counts = mutableMapOf<Int, Int>()
-        return ordered.map { (chat, scored) ->
-            val rule = tiers.firstOrNull { candidate ->
-                scored.scorePercent >= candidate.minPercent && (candidate.maxChats == null || (counts[candidate.tier] ?: 0) < candidate.maxChats)
-            }
-            if (rule != null) counts[rule.tier] = (counts[rule.tier] ?: 0) + 1
-            BipeHomeTile(chat.id, scored.scorePercent, rule?.tier, scored.reason)
-        }
-    }
+    fun plan(chats: List<BipeHomeChat>): List<BipeHomeTile> =
+        homePlan(chats.map(::core)).map { BipeHomeTile(it.id, it.scorePercent, it.tier?.toInt(), reason(it.reason)) }
 }
 ` : null;
 }

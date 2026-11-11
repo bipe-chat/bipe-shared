@@ -88,6 +88,27 @@ pub const WORK_NOTE_BODY_MAX_LENGTH: usize = ${w.bodyMaxLength};
 `;
 }
 
+function deviceSection(reg) {
+  const d = reg.deviceKinds;
+  const opt = (v) => (v === undefined ? "None" : `Some(${rustString(v)})`);
+  const pattern = (where, src) => rustString(rustPattern(`device-kinds ${where}`, src));
+  return `
+/// registries/device-kinds.json (ADR 0291, bipe-chat/bipe#1479). Patterns are in the Rust syntax (rust-regex.mjs): a
+/// capture group n of the registry pattern is group n + 1 here, and $n in a template names registry group n.
+pub const DEVICE_INFO_FIELD: &str = ${rustString(d.field)};
+pub const DEVICE_INFO_MSGTYPE: &str = ${rustString(d.msgtype)};
+pub const DEVICE_FIELD_MAX_LENGTH: usize = ${d.fieldMaxLength};
+pub const DEVICE_UNKNOWN_WARNING: bool = ${d.unknownWarning};
+/// (key, icon, label, section, leaves Brazil) in registry order.
+pub const DEVICE_KINDS: &[(&str, &str, &str, &str, bool)] = &[${d.kinds.map((k) => `(${rustString(k.key)}, ${rustString(k.icon)}, ${rustString(k.label)}, ${rustString(k.section)}, ${k.leavesBrazil})`).join(", ")}];
+/// (pattern, kind, app, model, os) in registry order.
+pub const DEVICE_USER_AGENTS: &[(&str, &str, Option<&str>, Option<&str>, Option<&str>)] = &[${d.userAgents.map((r, i) => `(${pattern(`userAgents[${i}]`, r.pattern)}, ${rustString(r.kind)}, ${opt(r.app)}, ${opt(r.model)}, ${opt(r.os)})`).join(", ")}];
+/// (pattern, name template) in registry order.
+pub const DEVICE_BROWSERS: &[(&str, &str)] = &[${d.browsers.map((r, i) => `(${pattern(`browsers[${i}]`, r.pattern)}, ${rustString(r.name)})`).join(", ")}];
+pub const DEVICE_SYSTEMS: &[(&str, &str)] = &[${d.systems.map((r, i) => `(${pattern(`systems[${i}]`, r.pattern)}, ${rustString(r.name)})`).join(", ")}];
+`;
+}
+
 function factsSection(reg) {
   const pf = reg.profileFacts;
   return `
@@ -306,7 +327,7 @@ pub const PIX_MARKS: [&str; ${marks.marks.length}] = [${marks.marks.map(rustStri
 /// The core checks this format by hand (no regex crate); a test there fails when the pattern changes.
 pub const PIX_E2E_ID_PATTERN: &str = ${rustString(marks.e2eIdPattern)};
 pub const PIX_TXID_MAX_LENGTH: usize = ${marks.txidMaxLength};
-${scamSection(reg)}${identitySection(reg)}${factsSection(reg)}${messageSection(reg)}${smallRulesSection(reg)}${trustSection(reg.trust)}${homeScoreSection(reg.homeScore)}
+${scamSection(reg)}${identitySection(reg)}${factsSection(reg)}${messageSection(reg)}${deviceSection(reg)}${smallRulesSection(reg)}${trustSection(reg.trust)}${homeScoreSection(reg.homeScore)}
 /// \`personAssurance\` of registries/schemes.json (ADR 0275): the person assurances, strongest first, and the seal
 /// mark of each. personProofs reads it; test-vectors/person-proofs.json checks it.
 /// HOME_COUNTRY of tools/lib/registries.mjs: personProofs puts the proofs of this country first (ADR 0272 decision 7).

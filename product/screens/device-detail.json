@@ -30,7 +30,7 @@
     "assistantSend": {
       "type": "bool",
       "optional": true,
-      "description": "Only for kind assistant: the switch chat.bipe.assistant_send (ADR 0210), moved here from Privacidade with bipe-chat/bipe#1481."
+      "description": "Only for kind assistant: the switch chat.bipe.assistant_send (ADR 0210), the same value as the row assistantSend of the group's section assistants."
     },
     "fullContentRooms": {
       "type": "list",

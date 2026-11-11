@@ -406,7 +406,8 @@ ${reg.workHours.defaultDays.map((d) => `        (day: ${d.day}, ranges: [${d.ran
     public static let workReplyByBody = ${swiftString(reg.workNotes.replyByBody)}
     public static let workNoteBodyMaxLength = ${reg.workNotes.bodyMaxLength}
     /// Device kinds and device entries (bipe ADR 0291, bipe-chat/bipe#1479; registries/device-kinds.json). Rules: test-vectors/device-kinds.json.
-    public static let deviceInfoEventType = ${swiftString(reg.deviceKinds.eventType)}
+    public static let deviceInfoField = ${swiftString(reg.deviceKinds.field)}
+    public static let deviceInfoMsgtype = ${swiftString(reg.deviceKinds.msgtype)}
     public static let deviceFieldMaxLength = ${reg.deviceKinds.fieldMaxLength}
     public static let deviceUnknownWarning = ${reg.deviceKinds.unknownWarning}
     public static let deviceKinds: [DeviceKind] = ${swiftArray(reg.deviceKinds.kinds.map((k) => `DeviceKind(key: ${swiftString(k.key)}, icon: ${swiftString(k.icon)}, label: ${swiftString(k.label)}, section: ${swiftString(k.section)}, leavesBrazil: ${k.leavesBrazil})`))}
@@ -884,7 +885,8 @@ ${reg.workHours.defaultDays.map((d) => `        ${d.day} to listOf(${d.ranges.ma
     const val WORK_REPLY_BY_BODY = ${kotlinString(reg.workNotes.replyByBody)}
     const val WORK_NOTE_BODY_MAX_LENGTH = ${reg.workNotes.bodyMaxLength}
     /** Device kinds and device entries (bipe ADR 0291, bipe-chat/bipe#1479; registries/device-kinds.json). Rules: test-vectors/device-kinds.json. */
-    const val DEVICE_INFO_EVENT_TYPE = ${kotlinString(reg.deviceKinds.eventType)}
+    const val DEVICE_INFO_FIELD = ${kotlinString(reg.deviceKinds.field)}
+    const val DEVICE_INFO_MSGTYPE = ${kotlinString(reg.deviceKinds.msgtype)}
     const val DEVICE_FIELD_MAX_LENGTH = ${reg.deviceKinds.fieldMaxLength}
     const val DEVICE_UNKNOWN_WARNING = ${reg.deviceKinds.unknownWarning}
     val DEVICE_KINDS: List<DeviceKind> = ${kotlinList("listOf", reg.deviceKinds.kinds.map((k) => `DeviceKind(${kotlinString(k.key)}, ${kotlinString(k.icon)}, ${kotlinString(k.label)}, ${kotlinString(k.section)}, ${k.leavesBrazil})`))}

@@ -25,7 +25,7 @@
       "effect": "Reads GET /v1/signup/config and, when an invite is pending, GET /v1/invites/{code}. On Android it also reads the Play install referrer once (bipeinstallreferrer). Sets variant."
     },
     "openInviteLink": {
-      "params": { "url": { "type": "url", "description": "A bipe.chat/convite/<code> link the app was opened with." } },
+      "params": { "url": { "type": "url", "description": "A bipe.chat/convite/<code> or bipe.chat/g/<code> link the app was opened with or that pasteLink read." } },
       "effect": "Takes the code from the link, previews it and sets variant to invited. A link that is not an invite does nothing."
     },
     "primary": {
@@ -33,6 +33,9 @@
     },
     "learnMore": {
       "effect": "Opens the public site home page in the in-app browser (SFSafariViewController on iOS, Custom Tabs on Android): PUBLIC_SITE_URL plus registries/legal.json homePath, or enHomePath on an English device. The sign-up state stays as it was."
+    },
+    "pasteLink": {
+      "effect": "iOS only, shown while no invite is pending and UIPasteboard.detectPatterns finds probableWebURL (no paste prompt): the line bipe_onboarding_paste_link next to the system PasteButton. The pasted text runs openInviteLink with the first bipe.chat/convite/ or bipe.chat/g/ link in it. A group link code is also kept for group-link-open. Other text does nothing. The deferred link of iOS: the bipe.chat/g/ and bipe.chat/convite/ pages copy the link when the person taps the App Store button."
     },
     "haveAccount": {
       "effect": "Opens the way back into an existing account (recovery-start, bipe-chat/bipe#555)."
@@ -44,6 +47,7 @@
     "bipe_onboarding_join_with_invite",
     "bipe_onboarding_have_invite",
     "bipe_onboarding_have_account",
+    "bipe_onboarding_paste_link",
     "bipe_onboarding_learn_more",
     "bipe_signup_title"
   ],
@@ -52,7 +56,7 @@
   "notes": [
     "Each pair of invitePending and inviteRequired matches exactly one start variant in registries/onboarding.json. The generated onboarding code (gen.mjs) gives the title and buttons; the screen never hard-codes them.",
     "No points list: the welcome line and the title say what Bipe is. The scam check, Brazil and no-ads points belong to the store listing and the site (product/appstore.md), not to this screen. The bipe_onboarding_point_* strings stay for those surfaces.",
-    "Layout: a full-bleed açaí cover with the Bipe mark, the wordmark, the welcome line and the title; the cover also holds learnMore. The cover is not an inset card. Under it, the variant's primary button (filled) and its text buttons (haveAccount) as a tonal button of the same width. A tall window gives the cover all the height above the buttons; a wide window makes the cover the left half of the whole window, so the split meets the iPhone Duo fold. No paste row here: pasting an invite belongs to signup-invite-code.",
+    "Layout: a full-bleed açaí cover with the Bipe mark, the wordmark, the welcome line and the title; the cover also holds learnMore. The cover is not an inset card. Under it, the variant's primary button (filled) and its text buttons (haveAccount) as a tonal button of the same width. A tall window gives the cover all the height above the buttons; a wide window makes the cover the left half of the whole window, so the split meets the iPhone Duo fold. No paste row here: pasting a code belongs to signup-invite-code. The one exception is pasteLink on iOS, a text button under haveAccount that shows only while the clipboard holds a URL, because iOS has no install referrer.",
     "bipe_onboarding_invited_by takes the inviter's handle with @ in front. An invite without a handle, or not valid, shows the open or inviteOnly variant and keeps the code for signup-invite-code.",
     "The screen talks only to bipe-api (no auth). The Matrix client does not exist yet. Bipe logic: BipeAPIClient.signupConfig and invitePreview, BipeInviteLink (iOS); BipeApiClient, BipeStartScreenInfo (Android).",
     "account-start shows this screen when its phase is noAccount.",

@@ -17,7 +17,7 @@
       "effect": "Shows bipe_signup_device_success for a short moment (or until a tap), then runs continue."
     },
     "continue": {
-      "effect": "With inviterUserId: opens the DM with the inviter (an existing one, else a new encrypted DM that invites the inviter) in chat-timeline, with the inviter hint. Without: opens chat-list."
+      "effect": "With groupRoomId (a sign-up with a group link code, ADR 0184): Client.joinRoomById and opens the group. When that fails, or the sign-up answered no group_room_id, the kept group link code opens group-link-open after chat-list shows, so join runs again. Else with inviterUserId: opens the DM with the inviter (an existing one, else a new encrypted DM that invites the inviter) in chat-timeline, with the inviter hint. Without: opens chat-list."
     }
   },
   "strings": [

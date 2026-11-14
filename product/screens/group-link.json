@@ -8,9 +8,10 @@
     "phase": {
       "type": "enum",
       "values": ["loading", "none", "active", "working", "failed"],
-      "description": "loading: GET /v1/me/group-links?room_id runs. none: no active link; bipe_group_link_body, bipe_group_link_service_note and bipe_group_link_create. active: the link with its counts, bipe_group_link_share and bipe_group_link_revoke. working: create or revoke runs; the buttons are disabled. failed: bipe_error_network with bipe_app_retry, or bipe_group_link_error_access after a 404 or a 409."
+      "description": "loading: GET /v1/me/group-links?room_id runs. none: no active link; bipe_group_link_body, bipe_group_link_service_note and bipe_group_link_create. active: the link with its counts, bipe_group_link_share, bipe_group_link_copy, bipe_group_link_qr and bipe_group_link_revoke. working: create or revoke runs; the buttons are disabled. failed: bipe_error_network with bipe_app_retry, or bipe_group_link_error_access after a 404 or a 409."
     },
-    "link": { "type": "GroupLink", "optional": true, "description": "The newest active link (GET /v1/me/group-links)." },
+    "link": { "type": "GroupLink", "optional": true, "description": "This admin's newest active link (created_by), else the newest active link of another admin (GET /v1/me/group-links)." },
+    "showsQr": { "type": "bool", "description": "The QR code of the link shows, with bipe_group_link_qr_footer." },
     "code": { "type": "string", "optional": true, "description": "The code of link, when this phone kept it at creation (per room ID, in the app's own store). Never logged." },
     "signsUp": { "type": "bool", "description": "link.signs_up. true: bipe_group_link_signs_up with signups_left. false: bipe_group_link_existing_only." },
     "expires": { "type": "string", "description": "link.expires_at as a short date, in bipe_group_link_expires." },
@@ -31,6 +32,8 @@
       "effect": "When the service account (BipeOfficialAccounts groups) is not a joined or invited member: Room.inviteUserById. When its power level is below the invite level: Room.updatePowerLevelsForUsers with the invite level (RoomPowerLevels.values.invite). Then POST /v1/me/group-links. The code is kept for roomId and the share sheet opens at once with bipe_group_link_message (group name, link url). Phase active."
     },
     "share": { "effect": "With a kept code: the system share sheet with bipe_group_link_message. Without one: an alert with bipe_group_link_no_code and bipe_group_link_create." },
+    "copy": { "effect": "With a kept code: the link URL goes to the clipboard and the copied toast shows. Without one: the bipe_group_link_no_code alert, as share." },
+    "showQr": { "effect": "With a kept code: toggles showsQr; the QR code holds exactly the link URL, dark on light in both themes, drawn on the device. Without one: the bipe_group_link_no_code alert, as share." },
     "revoke": { "effect": "A confirm with bipe_group_link_revoke_body. DELETE /v1/me/group-links/{id}; the kept code goes. Phase none. The service account stays in the group: the admin removes it in group-members like any member." },
     "retry": { "effect": "Runs appear again." }
   },
@@ -42,6 +45,10 @@
     "bipe_group_link_service_note",
     "bipe_group_link_create",
     "bipe_group_link_share",
+    "bipe_group_link_copy",
+    "bipe_group_link_qr",
+    "bipe_group_link_qr_footer",
+    "bipe_app_copied",
     "bipe_group_link_revoke",
     "bipe_group_link_revoke_body",
     "bipe_group_link_expires",
@@ -60,6 +67,7 @@
     "bipe_group_link_message is the text a person sends (people voice, pra). It works without the link preview.",
     "Default chosen (bipe-chat/bipe#744): the screen does not name WhatsApp, because linguagem.md asks for neutral words about other apps (ADR 0129). The link works in any app. mz can overrule.",
     "Default chosen (bipe-chat/bipe#744): the code stays only on the phone that made it, because the server keeps only its hash, as for invites. Another admin or phone makes a new link. mz can overrule.",
+    "Mac (bipe-chat/bipe#1163): the row is a toolbar button on a group chat, for the same admins, and the screen is a sheet. The Mac keeps the code for the session only, so after a restart share, copy and showQr offer create. A bipe.chat/g/ link tapped in a Mac message opens group-link-open as a sheet.",
     "The service account has no E2EE device: it gets no room keys and reads no message (security.md). It shows in group-members with the Bipe badge (official account)."
   ]
 }

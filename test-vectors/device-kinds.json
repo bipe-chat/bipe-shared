@@ -4,23 +4,26 @@
     {
       "name": "a self entry",
       "event": {
-        "type": "chat.bipe.device_info",
+        "type": "m.room.message",
         "sender": "@ana:bipe.net.br",
         "origin_server_ts": 1762862400000,
         "content": {
-          "device_id": "PHONE",
-          "source": "self",
-          "kind": "phone",
-          "model": "Pixel 8",
-          "os": "Android 15",
-          "app": "Bipe 1.4.2 (812)",
-          "linked_at": 1762000000000,
-          "attested": true
+          "msgtype": "m.notice",
+          "body": "Pixel 8",
+          "chat.bipe.device_info": {
+            "device_id": "PHONE",
+            "source": "self",
+            "kind": "phone",
+            "model": "Pixel 8",
+            "os": "Android 15",
+            "app": "Bipe 1.4.2 (812)",
+            "linked_at": 1762000000000,
+            "attested": true
+          }
         }
       },
       "context": {
         "ownUserId": "@ana:bipe.net.br",
-        "senderDevice": "PHONE",
         "senderVerified": true
       },
       "expected": {
@@ -42,18 +45,21 @@
     {
       "name": "a self entry with only the kind",
       "event": {
-        "type": "chat.bipe.device_info",
+        "type": "m.room.message",
         "sender": "@ana:bipe.net.br",
         "origin_server_ts": 1762862400000,
         "content": {
-          "device_id": "PHONE",
-          "source": "self",
-          "kind": "phone"
+          "msgtype": "m.notice",
+          "body": "Pixel 8",
+          "chat.bipe.device_info": {
+            "device_id": "PHONE",
+            "source": "self",
+            "kind": "phone"
+          }
         }
       },
       "context": {
         "ownUserId": "@ana:bipe.net.br",
-        "senderDevice": "PHONE",
         "senderVerified": true
       },
       "expected": {
@@ -75,22 +81,25 @@
     {
       "name": "an approval entry for a browser",
       "event": {
-        "type": "chat.bipe.device_info",
+        "type": "m.room.message",
         "sender": "@ana:bipe.net.br",
         "origin_server_ts": 1762862400000,
         "content": {
-          "device_id": "WEB",
-          "source": "approval",
-          "kind": "browser",
-          "os": "Windows",
-          "app": "Chrome 131",
-          "linked_at": 1762000000000,
-          "linked_by": "PHONE"
+          "msgtype": "m.notice",
+          "body": "Pixel 8",
+          "chat.bipe.device_info": {
+            "device_id": "WEB",
+            "source": "approval",
+            "kind": "browser",
+            "os": "Windows",
+            "app": "Chrome 131",
+            "linked_at": 1762000000000,
+            "linked_by": "PHONE"
+          }
         }
       },
       "context": {
         "ownUserId": "@ana:bipe.net.br",
-        "senderDevice": "PHONE",
         "senderVerified": true
       },
       "expected": {
@@ -110,79 +119,28 @@
       }
     },
     {
-      "name": "a self entry for another device",
-      "event": {
-        "type": "chat.bipe.device_info",
-        "sender": "@ana:bipe.net.br",
-        "origin_server_ts": 1762862400000,
-        "content": {
-          "device_id": "MAC",
-          "source": "self",
-          "kind": "phone",
-          "model": "Pixel 8",
-          "os": "Android 15",
-          "app": "Bipe 1.4.2 (812)",
-          "linked_at": 1762000000000,
-          "attested": true
-        }
-      },
-      "context": {
-        "ownUserId": "@ana:bipe.net.br",
-        "senderDevice": "PHONE",
-        "senderVerified": true
-      },
-      "expected": {
-        "ok": false,
-        "reason": "self_other_device"
-      }
-    },
-    {
-      "name": "an approval entry for the sending device",
-      "event": {
-        "type": "chat.bipe.device_info",
-        "sender": "@ana:bipe.net.br",
-        "origin_server_ts": 1762862400000,
-        "content": {
-          "device_id": "PHONE",
-          "source": "approval",
-          "kind": "phone",
-          "model": "Pixel 8",
-          "os": "Android 15",
-          "app": "Bipe 1.4.2 (812)",
-          "linked_at": 1762000000000,
-          "attested": true
-        }
-      },
-      "context": {
-        "ownUserId": "@ana:bipe.net.br",
-        "senderDevice": "PHONE",
-        "senderVerified": true
-      },
-      "expected": {
-        "ok": false,
-        "reason": "approval_own_device"
-      }
-    },
-    {
       "name": "an unknown source",
       "event": {
-        "type": "chat.bipe.device_info",
+        "type": "m.room.message",
         "sender": "@ana:bipe.net.br",
         "origin_server_ts": 1762862400000,
         "content": {
-          "device_id": "PHONE",
-          "source": "guess",
-          "kind": "phone",
-          "model": "Pixel 8",
-          "os": "Android 15",
-          "app": "Bipe 1.4.2 (812)",
-          "linked_at": 1762000000000,
-          "attested": true
+          "msgtype": "m.notice",
+          "body": "Pixel 8",
+          "chat.bipe.device_info": {
+            "device_id": "PHONE",
+            "source": "guess",
+            "kind": "phone",
+            "model": "Pixel 8",
+            "os": "Android 15",
+            "app": "Bipe 1.4.2 (812)",
+            "linked_at": 1762000000000,
+            "attested": true
+          }
         }
       },
       "context": {
         "ownUserId": "@ana:bipe.net.br",
-        "senderDevice": "PHONE",
         "senderVerified": true
       },
       "expected": {
@@ -193,23 +151,26 @@
     {
       "name": "kind unknown is never written",
       "event": {
-        "type": "chat.bipe.device_info",
+        "type": "m.room.message",
         "sender": "@ana:bipe.net.br",
         "origin_server_ts": 1762862400000,
         "content": {
-          "device_id": "PHONE",
-          "source": "self",
-          "kind": "unknown",
-          "model": "Pixel 8",
-          "os": "Android 15",
-          "app": "Bipe 1.4.2 (812)",
-          "linked_at": 1762000000000,
-          "attested": true
+          "msgtype": "m.notice",
+          "body": "Pixel 8",
+          "chat.bipe.device_info": {
+            "device_id": "PHONE",
+            "source": "self",
+            "kind": "unknown",
+            "model": "Pixel 8",
+            "os": "Android 15",
+            "app": "Bipe 1.4.2 (812)",
+            "linked_at": 1762000000000,
+            "attested": true
+          }
         }
       },
       "context": {
         "ownUserId": "@ana:bipe.net.br",
-        "senderDevice": "PHONE",
         "senderVerified": true
       },
       "expected": {
@@ -220,23 +181,26 @@
     {
       "name": "a kind that does not exist",
       "event": {
-        "type": "chat.bipe.device_info",
+        "type": "m.room.message",
         "sender": "@ana:bipe.net.br",
         "origin_server_ts": 1762862400000,
         "content": {
-          "device_id": "PHONE",
-          "source": "self",
-          "kind": "tablet",
-          "model": "Pixel 8",
-          "os": "Android 15",
-          "app": "Bipe 1.4.2 (812)",
-          "linked_at": 1762000000000,
-          "attested": true
+          "msgtype": "m.notice",
+          "body": "Pixel 8",
+          "chat.bipe.device_info": {
+            "device_id": "PHONE",
+            "source": "self",
+            "kind": "tablet",
+            "model": "Pixel 8",
+            "os": "Android 15",
+            "app": "Bipe 1.4.2 (812)",
+            "linked_at": 1762000000000,
+            "attested": true
+          }
         }
       },
       "context": {
         "ownUserId": "@ana:bipe.net.br",
-        "senderDevice": "PHONE",
         "senderVerified": true
       },
       "expected": {
@@ -245,25 +209,28 @@
       }
     },
     {
-      "name": "an unverified sending device",
+      "name": "a shield on the event",
       "event": {
-        "type": "chat.bipe.device_info",
+        "type": "m.room.message",
         "sender": "@ana:bipe.net.br",
         "origin_server_ts": 1762862400000,
         "content": {
-          "device_id": "PHONE",
-          "source": "self",
-          "kind": "phone",
-          "model": "Pixel 8",
-          "os": "Android 15",
-          "app": "Bipe 1.4.2 (812)",
-          "linked_at": 1762000000000,
-          "attested": true
+          "msgtype": "m.notice",
+          "body": "Pixel 8",
+          "chat.bipe.device_info": {
+            "device_id": "PHONE",
+            "source": "self",
+            "kind": "phone",
+            "model": "Pixel 8",
+            "os": "Android 15",
+            "app": "Bipe 1.4.2 (812)",
+            "linked_at": 1762000000000,
+            "attested": true
+          }
         }
       },
       "context": {
         "ownUserId": "@ana:bipe.net.br",
-        "senderDevice": "PHONE",
         "senderVerified": false
       },
       "expected": {
@@ -274,23 +241,26 @@
     {
       "name": "another sender",
       "event": {
-        "type": "chat.bipe.device_info",
+        "type": "m.room.message",
         "sender": "@outro:bipe.net.br",
         "origin_server_ts": 1762862400000,
         "content": {
-          "device_id": "PHONE",
-          "source": "self",
-          "kind": "phone",
-          "model": "Pixel 8",
-          "os": "Android 15",
-          "app": "Bipe 1.4.2 (812)",
-          "linked_at": 1762000000000,
-          "attested": true
+          "msgtype": "m.notice",
+          "body": "Pixel 8",
+          "chat.bipe.device_info": {
+            "device_id": "PHONE",
+            "source": "self",
+            "kind": "phone",
+            "model": "Pixel 8",
+            "os": "Android 15",
+            "app": "Bipe 1.4.2 (812)",
+            "linked_at": 1762000000000,
+            "attested": true
+          }
         }
       },
       "context": {
         "ownUserId": "@ana:bipe.net.br",
-        "senderDevice": "PHONE",
         "senderVerified": true
       },
       "expected": {
@@ -301,24 +271,27 @@
     {
       "name": "a redacted entry",
       "event": {
-        "type": "chat.bipe.device_info",
+        "type": "m.room.message",
         "sender": "@ana:bipe.net.br",
         "origin_server_ts": 1762862400000,
         "content": {
-          "device_id": "PHONE",
-          "source": "self",
-          "kind": "phone",
-          "model": "Pixel 8",
-          "os": "Android 15",
-          "app": "Bipe 1.4.2 (812)",
-          "linked_at": 1762000000000,
-          "attested": true
+          "msgtype": "m.notice",
+          "body": "Pixel 8",
+          "chat.bipe.device_info": {
+            "device_id": "PHONE",
+            "source": "self",
+            "kind": "phone",
+            "model": "Pixel 8",
+            "os": "Android 15",
+            "app": "Bipe 1.4.2 (812)",
+            "linked_at": 1762000000000,
+            "attested": true
+          }
         },
         "redacted": true
       },
       "context": {
         "ownUserId": "@ana:bipe.net.br",
-        "senderDevice": "PHONE",
         "senderVerified": true
       },
       "expected": {
@@ -329,23 +302,26 @@
     {
       "name": "another event type",
       "event": {
-        "type": "m.room.message",
+        "type": "chat.bipe.device_info",
         "sender": "@ana:bipe.net.br",
         "origin_server_ts": 1762862400000,
         "content": {
-          "device_id": "PHONE",
-          "source": "self",
-          "kind": "phone",
-          "model": "Pixel 8",
-          "os": "Android 15",
-          "app": "Bipe 1.4.2 (812)",
-          "linked_at": 1762000000000,
-          "attested": true
+          "msgtype": "m.notice",
+          "body": "Pixel 8",
+          "chat.bipe.device_info": {
+            "device_id": "PHONE",
+            "source": "self",
+            "kind": "phone",
+            "model": "Pixel 8",
+            "os": "Android 15",
+            "app": "Bipe 1.4.2 (812)",
+            "linked_at": 1762000000000,
+            "attested": true
+          }
         }
       },
       "context": {
         "ownUserId": "@ana:bipe.net.br",
-        "senderDevice": "PHONE",
         "senderVerified": true
       },
       "expected": {
@@ -354,25 +330,78 @@
       }
     },
     {
-      "name": "a model at the limit",
+      "name": "a text, not a notice",
       "event": {
-        "type": "chat.bipe.device_info",
+        "type": "m.room.message",
         "sender": "@ana:bipe.net.br",
         "origin_server_ts": 1762862400000,
         "content": {
-          "device_id": "PHONE",
-          "source": "self",
-          "kind": "phone",
-          "model": "mmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmm",
-          "os": "Android 15",
-          "app": "Bipe 1.4.2 (812)",
-          "linked_at": 1762000000000,
-          "attested": true
+          "msgtype": "m.text",
+          "body": "Pixel 8",
+          "chat.bipe.device_info": {
+            "device_id": "PHONE",
+            "source": "self",
+            "kind": "phone",
+            "model": "Pixel 8",
+            "os": "Android 15",
+            "app": "Bipe 1.4.2 (812)",
+            "linked_at": 1762000000000,
+            "attested": true
+          }
         }
       },
       "context": {
         "ownUserId": "@ana:bipe.net.br",
-        "senderDevice": "PHONE",
+        "senderVerified": true
+      },
+      "expected": {
+        "ok": false,
+        "reason": "content"
+      }
+    },
+    {
+      "name": "a notice without the field",
+      "event": {
+        "type": "m.room.message",
+        "sender": "@ana:bipe.net.br",
+        "origin_server_ts": 1762862400000,
+        "content": {
+          "msgtype": "m.notice",
+          "body": "oi"
+        }
+      },
+      "context": {
+        "ownUserId": "@ana:bipe.net.br",
+        "senderVerified": true
+      },
+      "expected": {
+        "ok": false,
+        "reason": "field"
+      }
+    },
+    {
+      "name": "a model at the limit",
+      "event": {
+        "type": "m.room.message",
+        "sender": "@ana:bipe.net.br",
+        "origin_server_ts": 1762862400000,
+        "content": {
+          "msgtype": "m.notice",
+          "body": "Pixel 8",
+          "chat.bipe.device_info": {
+            "device_id": "PHONE",
+            "source": "self",
+            "kind": "phone",
+            "model": "mmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmm",
+            "os": "Android 15",
+            "app": "Bipe 1.4.2 (812)",
+            "linked_at": 1762000000000,
+            "attested": true
+          }
+        }
+      },
+      "context": {
+        "ownUserId": "@ana:bipe.net.br",
         "senderVerified": true
       },
       "expected": {
@@ -394,23 +423,26 @@
     {
       "name": "a model over the limit",
       "event": {
-        "type": "chat.bipe.device_info",
+        "type": "m.room.message",
         "sender": "@ana:bipe.net.br",
         "origin_server_ts": 1762862400000,
         "content": {
-          "device_id": "PHONE",
-          "source": "self",
-          "kind": "phone",
-          "model": "mmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmm",
-          "os": "Android 15",
-          "app": "Bipe 1.4.2 (812)",
-          "linked_at": 1762000000000,
-          "attested": true
+          "msgtype": "m.notice",
+          "body": "Pixel 8",
+          "chat.bipe.device_info": {
+            "device_id": "PHONE",
+            "source": "self",
+            "kind": "phone",
+            "model": "mmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmm",
+            "os": "Android 15",
+            "app": "Bipe 1.4.2 (812)",
+            "linked_at": 1762000000000,
+            "attested": true
+          }
         }
       },
       "context": {
         "ownUserId": "@ana:bipe.net.br",
-        "senderDevice": "PHONE",
         "senderVerified": true
       },
       "expected": {
@@ -421,23 +453,26 @@
     {
       "name": "a blank OS",
       "event": {
-        "type": "chat.bipe.device_info",
+        "type": "m.room.message",
         "sender": "@ana:bipe.net.br",
         "origin_server_ts": 1762862400000,
         "content": {
-          "device_id": "PHONE",
-          "source": "self",
-          "kind": "phone",
-          "model": "Pixel 8",
-          "os": "  ",
-          "app": "Bipe 1.4.2 (812)",
-          "linked_at": 1762000000000,
-          "attested": true
+          "msgtype": "m.notice",
+          "body": "Pixel 8",
+          "chat.bipe.device_info": {
+            "device_id": "PHONE",
+            "source": "self",
+            "kind": "phone",
+            "model": "Pixel 8",
+            "os": "  ",
+            "app": "Bipe 1.4.2 (812)",
+            "linked_at": 1762000000000,
+            "attested": true
+          }
         }
       },
       "context": {
         "ownUserId": "@ana:bipe.net.br",
-        "senderDevice": "PHONE",
         "senderVerified": true
       },
       "expected": {
@@ -448,23 +483,26 @@
     {
       "name": "linked_at not an integer",
       "event": {
-        "type": "chat.bipe.device_info",
+        "type": "m.room.message",
         "sender": "@ana:bipe.net.br",
         "origin_server_ts": 1762862400000,
         "content": {
-          "device_id": "PHONE",
-          "source": "self",
-          "kind": "phone",
-          "model": "Pixel 8",
-          "os": "Android 15",
-          "app": "Bipe 1.4.2 (812)",
-          "linked_at": "ontem",
-          "attested": true
+          "msgtype": "m.notice",
+          "body": "Pixel 8",
+          "chat.bipe.device_info": {
+            "device_id": "PHONE",
+            "source": "self",
+            "kind": "phone",
+            "model": "Pixel 8",
+            "os": "Android 15",
+            "app": "Bipe 1.4.2 (812)",
+            "linked_at": "ontem",
+            "attested": true
+          }
         }
       },
       "context": {
         "ownUserId": "@ana:bipe.net.br",
-        "senderDevice": "PHONE",
         "senderVerified": true
       },
       "expected": {
@@ -475,23 +513,26 @@
     {
       "name": "attested not a boolean",
       "event": {
-        "type": "chat.bipe.device_info",
+        "type": "m.room.message",
         "sender": "@ana:bipe.net.br",
         "origin_server_ts": 1762862400000,
         "content": {
-          "device_id": "PHONE",
-          "source": "self",
-          "kind": "phone",
-          "model": "Pixel 8",
-          "os": "Android 15",
-          "app": "Bipe 1.4.2 (812)",
-          "linked_at": 1762000000000,
-          "attested": "yes"
+          "msgtype": "m.notice",
+          "body": "Pixel 8",
+          "chat.bipe.device_info": {
+            "device_id": "PHONE",
+            "source": "self",
+            "kind": "phone",
+            "model": "Pixel 8",
+            "os": "Android 15",
+            "app": "Bipe 1.4.2 (812)",
+            "linked_at": 1762000000000,
+            "attested": "yes"
+          }
         }
       },
       "context": {
         "ownUserId": "@ana:bipe.net.br",
-        "senderDevice": "PHONE",
         "senderVerified": true
       },
       "expected": {
@@ -502,23 +543,26 @@
     {
       "name": "no device ID",
       "event": {
-        "type": "chat.bipe.device_info",
+        "type": "m.room.message",
         "sender": "@ana:bipe.net.br",
         "origin_server_ts": 1762862400000,
         "content": {
-          "device_id": "",
-          "source": "self",
-          "kind": "phone",
-          "model": "Pixel 8",
-          "os": "Android 15",
-          "app": "Bipe 1.4.2 (812)",
-          "linked_at": 1762000000000,
-          "attested": true
+          "msgtype": "m.notice",
+          "body": "Pixel 8",
+          "chat.bipe.device_info": {
+            "device_id": "",
+            "source": "self",
+            "kind": "phone",
+            "model": "Pixel 8",
+            "os": "Android 15",
+            "app": "Bipe 1.4.2 (812)",
+            "linked_at": 1762000000000,
+            "attested": true
+          }
         }
       },
       "context": {
         "ownUserId": "@ana:bipe.net.br",
-        "senderDevice": "PHONE",
         "senderVerified": true
       },
       "expected": {

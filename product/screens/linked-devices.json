@@ -2,7 +2,7 @@
   "id": "linked-devices",
   "title": "Linked devices",
   "flow": "devices",
-  "summary": "Lists every device of the account with its kind and details, this device first, starts Link a computer or browser, and signs out one device or all others after a biometric check, natively through bipe-api (ADR 0291). Until bipe-chat/bipe#1481 ships, the apps sign out on the MAS page (ADR 0116).",
+  "summary": "Lists every device of the account with its kind and details, this device first, starts Link a computer or browser, and signs out one device or all others after a biometric check, natively through bipe-api (ADR 0291).",
   "types": {
     "DeviceRow": {
       "deviceId": {
@@ -177,7 +177,11 @@
     "bipe_device_kind_browser",
     "bipe_device_kind_assistant",
     "bipe_device_kind_bridge",
-    "bipe_device_kind_unknown"
+    "bipe_device_kind_unknown",
+    "bipe_devices_summary",
+    "bipe_devices_summary_unknown",
+    "bipe_devices_section_assistants",
+    "bipe_devices_this_device_hint"
   ],
   "sdk": [
     "Client.deviceId",
@@ -190,12 +194,11 @@
     "settings-structure"
   ],
   "notes": [
-    "ADR 0291: this screen moves into the root group Aparelhos e assistentes with bipe-chat/bipe#1481. The settings.json move lands with that app change: a new root group breaks the exhaustive switches over BipeSettingsGroup in bipe-app.",
+    "ADR 0291: this list is the root group Aparelhos e assistentes (registries/settings.json group devices). The device rows come first in section devices, above the registry rows linkComputer, linkPhone and oldMessages. The section assistants (assistantSend, noAssistants) follows. The group row's subtitle is bipe_devices_summary, or bipe_devices_summary_unknown when counts.unknown is above 0.",
     "Kinds, icons, labels and sections: registries/device-kinds.json. The rules (deviceInfoFromEvent, userAgentInfo, deviceRows) are in tools/lib/registries.mjs; every platform passes test-vectors/device-kinds.json.",
-    "Each Bipe client writes its own entry (source self) on link and on each start; the phone that approves a new device writes an approval entry from the consent screen's user agent (userAgentInfo). Event shape: docs/drafts-room.md.",
+    "Each Bipe client writes its own entry (source self) on link, and on start when a field changed; the phone that approves a new device writes an approval entry from the consent screen's user agent (userAgentInfo). Entry shape: docs/drafts-room.md, an m.notice with the field chat.bipe.device_info.",
     "The SDK has no device list in the FFI, so the app calls GET /_matrix/client/v3/devices (Matrix spec).",
     "Signing out this device is sign-out in Sua conta (bipe_devices_this_device_hint), not this screen.",
-    "Only a phone signs devices out: the API checks nothing about the caller's kind, the apps gate it. Mac, Windows and web show the list read-only (ADR 0266, ADR 0291).",
-    "Until bipe-chat/bipe#1481: the apps still sign out on the MAS page with the private web view of link-computer-approve, and bipe_linked_devices_sign_out_body still names that page."
+    "Only a phone signs devices out: the API checks nothing about the caller's kind, the apps gate it. Mac, Windows and web show the list read-only (ADR 0266, ADR 0291)."
   ]
 }

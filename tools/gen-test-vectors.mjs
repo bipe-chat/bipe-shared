@@ -1265,27 +1265,32 @@ write("work-notes.json", {
 });
 
 // Device kinds and device entries (bipe ADR 0291, bipe-chat/bipe#1479).
-const deviceCtx = { ownUserId: "@ana:bipe.net.br", senderDevice: "PHONE", senderVerified: true };
-const deviceEvent = (content = {}, patch = {}) => ({
-  type: reg.deviceKinds.eventType,
+const deviceCtx = { ownUserId: "@ana:bipe.net.br", senderVerified: true };
+const deviceEvent = (info = {}, patch = {}, content = {}) => ({
+  type: "m.room.message",
   sender: "@ana:bipe.net.br",
   origin_server_ts: 1762862400000,
-  content: { device_id: "PHONE", source: "self", kind: "phone", model: "Pixel 8", os: "Android 15", app: "Bipe 1.4.2 (812)", linked_at: 1762000000000, attested: true, ...content },
+  content: {
+    msgtype: reg.deviceKinds.msgtype,
+    body: "Pixel 8",
+    [reg.deviceKinds.field]: { device_id: "PHONE", source: "self", kind: "phone", model: "Pixel 8", os: "Android 15", app: "Bipe 1.4.2 (812)", linked_at: 1762000000000, attested: true, ...info },
+    ...content,
+  },
   ...patch,
 });
 const deviceEventCases = [
   ["a self entry", deviceEvent(), deviceCtx],
   ["a self entry with only the kind", deviceEvent({ model: undefined, os: undefined, app: undefined, linked_at: undefined, attested: undefined }), deviceCtx],
   ["an approval entry for a browser", deviceEvent({ device_id: "WEB", source: "approval", kind: "browser", model: undefined, app: "Chrome 131", os: "Windows", linked_by: "PHONE", attested: undefined }), deviceCtx],
-  ["a self entry for another device", deviceEvent({ device_id: "MAC" }), deviceCtx],
-  ["an approval entry for the sending device", deviceEvent({ source: "approval" }), deviceCtx],
   ["an unknown source", deviceEvent({ source: "guess" }), deviceCtx],
   ["kind unknown is never written", deviceEvent({ kind: "unknown" }), deviceCtx],
   ["a kind that does not exist", deviceEvent({ kind: "tablet" }), deviceCtx],
-  ["an unverified sending device", deviceEvent(), { ...deviceCtx, senderVerified: false }],
+  ["a shield on the event", deviceEvent(), { ...deviceCtx, senderVerified: false }],
   ["another sender", deviceEvent({}, { sender: "@outro:bipe.net.br" }), deviceCtx],
   ["a redacted entry", deviceEvent({}, { redacted: true }), deviceCtx],
-  ["another event type", deviceEvent({}, { type: "m.room.message" }), deviceCtx],
+  ["another event type", deviceEvent({}, { type: "chat.bipe.device_info" }), deviceCtx],
+  ["a text, not a notice", deviceEvent({}, {}, { msgtype: "m.text" }), deviceCtx],
+  ["a notice without the field", { ...deviceEvent(), content: { msgtype: "m.notice", body: "oi" } }, deviceCtx],
   ["a model at the limit", deviceEvent({ model: "m".repeat(reg.deviceKinds.fieldMaxLength) }), deviceCtx],
   ["a model over the limit", deviceEvent({ model: "m".repeat(reg.deviceKinds.fieldMaxLength + 1) }), deviceCtx],
   ["a blank OS", deviceEvent({ os: "  " }), deviceCtx],
@@ -1310,7 +1315,7 @@ const userAgentCases = [
   ["an Element client", "Element/1.11.85 (iPhone15,2; iOS 18.1; Scale/3.00)"],
   ["empty", ""],
 ];
-const entryOf = (content, ctx = deviceCtx) => deviceInfoFromEvent(deviceEvent(content), ctx, reg).entry;
+const entryOf = (info) => deviceInfoFromEvent(JSON.parse(JSON.stringify(deviceEvent(info))), deviceCtx, reg).entry;
 const rowsInput = {
   thisDeviceId: "PHONE",
   devices: [
@@ -1324,11 +1329,11 @@ const rowsInput = {
   ],
   entries: [
     entryOf({}),
-    entryOf({ device_id: "MAC", kind: "computer-app", model: "MacBook Air", os: "macOS 26.1", app: "Bipe 1.0 (40)", linked_by: "PHONE" }, { ...deviceCtx, senderDevice: "MAC" }),
+    entryOf({ device_id: "MAC", kind: "computer-app", model: "MacBook Air", os: "macOS 26.1", app: "Bipe 1.0 (40)", linked_by: "PHONE" }),
     entryOf({ device_id: "MAC", source: "approval", kind: "browser", model: undefined, app: "Safari 18", os: "macOS", linked_by: "PHONE" }),
     entryOf({ device_id: "WEB", source: "approval", kind: "browser", model: undefined, app: "Chrome 131", os: "Windows", linked_by: "PHONE", attested: undefined }),
-    entryOf({ device_id: "MCP", kind: "assistant", model: undefined, os: "macOS 26.1", app: "bipe-mcp 0.3 · Claude Desktop", attested: false }, { ...deviceCtx, senderDevice: "MCP" }),
-    entryOf({ device_id: "BRIDGE", kind: "bridge", model: undefined, os: "Linux", app: "Beeper bridge 0.2", attested: false }, { ...deviceCtx, senderDevice: "BRIDGE" }),
+    entryOf({ device_id: "MCP", kind: "assistant", model: undefined, os: "macOS 26.1", app: "bipe-mcp 0.3 · Claude Desktop", attested: false }),
+    entryOf({ device_id: "BRIDGE", kind: "bridge", model: undefined, os: "Linux", app: "Beeper bridge 0.2", attested: false }),
     entryOf({ device_id: "GONE", kind: "browser", source: "approval", model: undefined }),
   ],
 };

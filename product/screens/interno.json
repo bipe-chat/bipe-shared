@@ -69,7 +69,7 @@
   "notes": [
     "The member session never shows in the account switcher and never counts against maxPersonalAccounts.",
     "The homeserver refuses every invite between a member identity and any other user (bipe ADR 0284 point 8), so the app offers only members.",
-    "Push: the member session registers its own pusher, so Interno rings per person. The work account row's notification settings cover it.",
+    "Push: the member session registers its own pusher (push-registration, append true, its own account route), so Interno rings per person, also when its work account is not open. The work account row's notification settings cover it.",
     "When the person leaves Quem atende, bipe-api deactivates the member identity and the session ends."
   ]
 }

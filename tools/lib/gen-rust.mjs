@@ -106,6 +106,8 @@ pub const DEVICE_USER_AGENTS: &[(&str, &str, Option<&str>, Option<&str>, Option<
 /// (pattern, name template) in registry order.
 pub const DEVICE_BROWSERS: &[(&str, &str)] = &[${d.browsers.map((r, i) => `(${pattern(`browsers[${i}]`, r.pattern)}, ${rustString(r.name)})`).join(", ")}];
 pub const DEVICE_SYSTEMS: &[(&str, &str)] = &[${d.systems.map((r, i) => `(${pattern(`systems[${i}]`, r.pattern)}, ${rustString(r.name)})`).join(", ")}];
+/// registries/apple-models.json (bipe-chat/bipe#1517): (iPhone identifier, product name), sorted by identifier.
+pub const APPLE_MODELS: &[(&str, &str)] = &[${Object.entries(reg.appleModels.models).sort(([a], [b]) => (a < b ? -1 : a > b ? 1 : 0)).map(([k, v]) => `(${rustString(k)}, ${rustString(v)})`).join(", ")}];
 `;
 }
 

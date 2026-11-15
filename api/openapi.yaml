@@ -1665,8 +1665,8 @@ paths:
         bipe_group_link_error_access. With the service account off (no token on the server): 500 internal,
         reason group_links_unavailable.
         A link from a caller with a badge (GET /v1/badges/{userId} answers a badge) signs people up past the
-        waitlist (signs_up true). Else it joins existing accounts only. The link works for 14 days, and signs up
-        at most 1024 people (ADR 0184; the room member limit until a group size ADR). A new link revokes the
+        waitlist (signs_up true). Else it joins existing accounts only. The link works for 30 days, and signs up
+        at most 256 people (ADR 0184, ADR 0253; registries/group-limits.json). A new link revokes the
         caller's earlier active link for the same group. The code is returned once and stored only as a SHA-256 hash.
       security: [{ matrix: [] }]
       requestBody:

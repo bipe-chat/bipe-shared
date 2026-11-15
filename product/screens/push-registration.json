@@ -2,9 +2,13 @@
   "id": "push-registration",
   "title": "Push registration",
   "flow": "notifications",
-  "summary": "Registers this phone for pushes with Bipe's push gateway (Sygnal) when the person allows notifications, keeps the registration current, and removes it at sign-out. No screen: it runs behind notifications-prompt (an entry of chat-list-prompt) and notification-settings.",
+  "summary": "Registers this phone for pushes with Bipe's push gateway (Sygnal) when the person allows notifications: one pusher for each session signed in on the phone (every account and every Interno member session), so a message to an account that is not open still shows a notification. Keeps the pushers current and removes an account's pusher when that account signs out. No screen: it runs behind notifications-prompt (an entry of chat-list-prompt) and notification-settings.",
   "types": {
     "PushRegistration": {
+      "userId": {
+        "type": "string",
+        "description": "The Matrix ID of the session that owns the pusher."
+      },
       "channel": {
         "type": "enum",
         "values": [
@@ -24,6 +28,10 @@
       "registeredAt": {
         "type": "date",
         "description": "When the homeserver accepted the pusher."
+      },
+      "accountRoute": {
+        "type": "string",
+        "description": "The random account route in the pusher default_payload (notification-service)."
       }
     }
   },
@@ -37,10 +45,13 @@
       ],
       "description": "The system notification permission of the app."
     },
-    "registration": {
-      "type": "PushRegistration",
-      "optional": true,
-      "description": "The pusher this phone set on the homeserver. Missing before the first registration and after sign-out."
+    "registrations": {
+      "type": "list",
+      "of": {
+        "type": "PushRegistration",
+        "description": "One pusher, at most one per userId."
+      },
+      "description": "The pushers this phone set on the homeserver. Empty before the first registration and after the last account signs out."
     }
   },
   "actions": {
@@ -51,13 +62,28 @@
           "description": "The new system token."
         }
       },
-      "effect": "When permission is allowed and the token or the app language differs from registration, sets the HTTP pusher on the homeserver (see notes) and stores registration."
+      "effect": "When permission is allowed, sets the HTTP pusher (see notes) for every session on the phone whose registration differs in token, app ID, language or route, or that this app process has not set yet. Stores each registration. When an account's token changed, deletes its pusher with the old token."
     },
     "appBecameActive": {
       "effect": "Reads the system permission. allowed without registration: asks the system for a token. denied with registration: keeps the pusher (the system drops the pushes) so notifications come back when the person allows them again."
     },
     "signOut": {
-      "effect": "Deletes the pusher of this phone on the homeserver before the session ends. A failure does not stop the sign-out."
+      "params": {
+        "userId": {
+          "type": "string",
+          "description": "The Matrix ID of the account or member session that leaves the phone."
+        }
+      },
+      "effect": "Deletes that session's pusher on the homeserver before the session ends and removes its registration. The pushers of the other sessions stay. A failure does not stop the sign-out."
+    },
+    "sessionAdded": {
+      "params": {
+        "userId": {
+          "type": "string",
+          "description": "The Matrix ID of the account or member session that opened."
+        }
+      },
+      "effect": "An account or an Interno member session opened on the phone, or was built again: it gets its pusher through appBecameActive and tokenReceived."
     }
   },
   "strings": [],
@@ -71,14 +97,14 @@
   ],
   "parity": [],
   "notes": [
-    "Pusher: kind Http with the gateway URL https://<push host>/_matrix/push/v1/notify, format EventIdOnly, appDisplayName bipe_app_name, deviceDisplayName the phone model, lang the app language (pt-BR or en), append false (one pusher per phone and app ID).",
+    "Pusher: kind Http with the gateway URL https://<push host>/_matrix/push/v1/notify, format EventIdOnly, appDisplayName bipe_app_name, deviceDisplayName the phone model, lang the app language (pt-BR or en), append true (bipe-chat/bipe#1519). On Synapse, append false deletes the pushers of every user with the same app ID and pushkey, so with it only one account on the phone kept its pusher. Exception: the first pusher set when registrations is empty (a new install, or every account signed out) uses append false, once, to remove pushers that an earlier install left with this token.",
     "Content-free pushes: EventIdOnly makes the homeserver send only the room ID, the event ID and the unread count, never the sender or the text. The phone fetches and decrypts the message (notification-service). This is the fact on bipe-web /quem-pode-ler/ and /lgpd/ (product/privacy.json apple, product/data.json push).",
     "Gateway and app IDs stay those of the forks, so Sygnal needs no change (client-rewrite-study section 5): same bundle ID and application ID, same APNs and FCM app IDs, one per build type (store and debug). The values live in the app build config, not in this spec.",
     "iOS: default_payload sets aps mutable-content 1 and an alert, so the notification service extension runs for every push.",
     "Android: FCM data messages with high priority. UnifiedPush stays out of scope until a later issue (product/parity.json differences, Push).",
     "Android FCM sends the push through Google. Before the own Android client ships pushes, product/data.json and product/privacy.json need a Google item next to the Apple one (AGENTS.md, privacy.json rule).",
     "The pusher is set after the system permission is allowed, never before. The permission is asked only by notifications-prompt or notification-settings.",
-    "Multi-account (later): one pusher per account on the same phone.",
+    "Multi-account (bipe-chat/bipe#1519): one pusher for each session on the phone, every account and every Interno member session, each with its own random account_route. The open account does not matter: switching account changes no pusher. A pusher is set once per app process even when its registration is unchanged, because Synapse deletes a pusher when Sygnal rejects its token.",
     "Account routing (notification-service): the APNs default_payload includes account_route, a random code bound on this phone to the registering session’s Matrix ID. The provider never receives that Matrix ID. Registration versioning forces one replacement of older pushers without this route. A mutable current-account preference never interprets an already delivered push. Android transport must resolve the same immutable registration ownership locally when it is added; no account is inferred from the foreground UI."
   ]
 }

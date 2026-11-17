@@ -1555,3 +1555,37 @@ write("assistant-send.json", {
   });
   if (canonicalJson({ b: 1, a: [true, null, "é"] }) !== '{"a":[true,null,"é"],"b":1}') throw new Error("moves: canonical JSON");
 }
+
+// Amigo secreto (bipe-chat/bipe#1527): setup problems and draw validity.
+{
+  const { validateAmigoSecreto, checkAmigoSecretoSetup, checkAmigoSecretoPairs } = await import("./lib/amigo-secreto.mjs");
+  const amigo = validateAmigoSecreto(JSON.parse(readFileSync(join(root, "registries/amigo-secreto.json"), "utf8")));
+  const ids = (n) => Array.from({ length: n }, (_, i) => `@p${i + 1}:bipe.net.br`);
+  const [a, b, c, d] = ids(4);
+  const setups = [
+    { name: "two people are too few", participants: ids(2), exclusions: [] },
+    { name: "three people, no exclusions", participants: ids(3), exclusions: [] },
+    { name: "the maximum", participants: ids(amigo.maxParticipants), exclusions: [] },
+    { name: "one above the maximum", participants: ids(amigo.maxParticipants + 1), exclusions: [] },
+    { name: "a duplicate", participants: [a, b, c, a], exclusions: [] },
+    { name: "an exclusion names a non-participant", participants: [a, b, c], exclusions: [[a, "@x:bipe.net.br"]] },
+    { name: "an exclusion with oneself", participants: [a, b, c], exclusions: [[a, a]] },
+    { name: "a couple among four", participants: [a, b, c, d], exclusions: [[a, b]] },
+    { name: "the same couple twice counts once", participants: [a, b, c, d], exclusions: [[a, b], [b, a]] },
+    { name: "a couple among three is impossible", participants: [a, b, c], exclusions: [[a, b]] },
+    { name: "two couples among four", participants: [a, b, c, d], exclusions: [[a, b], [c, d]] },
+    { name: "one person excluded with everyone else", participants: [a, b, c, d], exclusions: [[a, b], [a, c], [a, d]] },
+    { name: "too many exclusions for one person", participants: ids(6), exclusions: [[ids(6)[0], ids(6)[1]], [ids(6)[0], ids(6)[2]], [ids(6)[0], ids(6)[3]], [ids(6)[0], ids(6)[4]]] },
+  ].map((v) => ({ ...v, expected: checkAmigoSecretoSetup(v.participants, v.exclusions, amigo) }));
+  const pairs = [
+    { name: "a cycle of three", participants: [a, b, c], exclusions: [], pairs: { [a]: b, [b]: c, [c]: a } },
+    { name: "someone draws themself", participants: [a, b, c], exclusions: [], pairs: { [a]: a, [b]: c, [c]: b } },
+    { name: "two people draw the same person", participants: [a, b, c], exclusions: [], pairs: { [a]: b, [b]: a, [c]: a } },
+    { name: "a person is missing", participants: [a, b, c], exclusions: [], pairs: { [a]: b, [b]: a } },
+    { name: "a stranger is drawn", participants: [a, b, c], exclusions: [], pairs: { [a]: b, [b]: c, [c]: "@x:bipe.net.br" } },
+    { name: "two swaps among four", participants: [a, b, c, d], exclusions: [], pairs: { [a]: b, [b]: a, [c]: d, [d]: c } },
+    { name: "an excluded pair draws one way", participants: [a, b, c, d], exclusions: [[a, b]], pairs: { [a]: c, [b]: a, [c]: d, [d]: b } },
+    { name: "a couple kept apart", participants: [a, b, c, d], exclusions: [[a, b]], pairs: { [a]: c, [c]: b, [b]: d, [d]: a } },
+  ].map((v) => ({ ...v, expected: checkAmigoSecretoPairs(v.participants, v.exclusions, v.pairs) }));
+  write("amigo-secreto.json", { setups, pairs });
+}

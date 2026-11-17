@@ -5676,7 +5676,7 @@ paths:
       security:
         -
           matrix: []
-      description: "A device of the work account that belongs to a person, else 403 seat_required. Stores the recovery key of the caller's member identity, encrypted at rest, and replaces an earlier one. 404 not_found when the seat has no member identity. POST .../members/session returns it to every later device of the same person, so the person's phone, computer and new installs open Interno with its history and no step by hand (bipe ADR 0284 point 34). The app sends it after enableRecovery on a verified member device."
+      description: "A device of the work account that belongs to a person, else 403 seat_required. Stores the recovery key of the caller's member identity, encrypted at rest, and replaces an earlier one. With replaces, the server compares under the seat row lock: it stores the key only when replaces is the SHA-256 of the stored key, or null when no key is stored, else 409 recovery_changed (bipe#1471). On 409 the app reads POST .../members/session again and recovers with that key; when that key does not open the key backup on the homeserver, it sends its own key again with the new replaces. 404 not_found when the seat has no member identity. POST .../members/session returns it to every later device of the same person, so the person's phone, computer and new installs open Interno with its history and no step by hand (bipe ADR 0284 point 34). The app sends it after enableRecovery on a verified member device."
       requestBody:
         required: true
         content:
@@ -5686,6 +5686,8 @@ paths:
       responses:
         "204":
           description: "Stored"
+        "409":
+          $ref: "#/components/responses/BusinessToolError"
         default:
           $ref: "#/components/responses/BusinessToolError"
   /v1/me/business/setup/second-seat-skip:

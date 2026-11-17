@@ -4405,8 +4405,12 @@
       "issue": 665,
       "fork": true,
       "macos": {
-        "status": "planned",
-        "issue": 1162
+        "status": "built",
+        "evidence": [
+          "bipe-app/macos/BipeMac/MacPins.swift",
+          "bipe-app/macos/BipeMac/MacTimeline.swift"
+        ],
+        "note": "Banner, list, Fixar and Desafixar in groups. Cross-device acceptance remains in #1162."
       },
       "windows": {
         "status": "planned",
@@ -6215,8 +6219,13 @@
         "reason": "Client interaction over existing encrypted Matrix transport; no separate server UI"
       },
       "macos": {
-        "status": "planned",
-        "issue": 1162
+        "status": "built",
+        "evidence": [
+          "bipe-app/macos/BipeMac/MacTyping.swift",
+          "bipe-app/macos/BipeMac/MacTimeline.swift",
+          "bipe-app/macos/BipeMac/MacSettings.swift"
+        ],
+        "note": "Sends and shows typing, with the privacy.presence switch on the Mac. Cross-device acceptance remains in #1162."
       },
       "windows": {
         "status": "planned",
@@ -6249,8 +6258,12 @@
         "reason": "Client interaction over existing encrypted Matrix transport; no separate server UI"
       },
       "macos": {
-        "status": "planned",
-        "issue": 1162
+        "status": "built",
+        "evidence": [
+          "bipe-app/macos/BipeMac/MacTimeline.swift",
+          "bipe-app/macos/BipeMac/MacDesign.swift"
+        ],
+        "note": "Retry on a failed own message and cancel of an unsent one through the SDK send handle. The identity send-anyway variant is in identity-change-warning."
       },
       "windows": {
         "status": "planned",

@@ -14,7 +14,7 @@
     }
   },
   "state": {
-    "reachNotice": { "type": "string", "optional": true, "description": "Set once after an invite fails with M_LIMIT_EXCEEDED: the reach notice of spec person-profile, shown above the list. The person keeps status failed (bipe-chat/bipe#1299)." },
+    "reachNotice": { "type": "string", "optional": true, "description": "Set once after an invite fails with M_LIMIT_EXCEEDED: the reach notice of spec person-profile, shown above the list. The person keeps status failed (bipe-chat/bipe#1299). After a refused invite in a full group (registries/group-limits.json maxMembers joined and invited members, the groups service account not counted, ADR 0253), it is bipe_group_link_full instead." },
     "mode": {
       "type": "enum",
       "values": ["pick", "invite"],
@@ -50,6 +50,7 @@
     "cancel": { "effect": "Closes. pick mode keeps the people group-create had." }
   },
   "strings": [
+    "bipe_group_link_full",
     "bipe_reach_limit_body",
     "bipe_reach_limit_body_none",
     "bipe_account_status_raise_verify",

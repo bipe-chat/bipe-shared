@@ -1,6 +1,8 @@
 // The web client target (bipe-chat/bipe#901, ADR 0216): bipe-app web/src/bipe/generated. The browser gets the same
 // registries, strings, screen ids, colour tokens and reference rules as iOS, Android and bipe-api.
 //   registries.json  the validated registries (loadRegistries), as data
+//   signed-lists.json the bundled operator list and issuer registry envelopes and the list signer set
+//                    (docs/signed-lists.md "Bundled fallback"), which bipe-core verifies like a fetched list
 //   strings.ts       pt-BR (default) and en, with t() for %1$s placeholders
 //   screens.ts       the screen ids of product/screens
 //   tokens.css       the colour tokens as CSS custom properties
@@ -66,7 +68,7 @@ export type BipeScreenId = (typeof BipeScreen)[keyof typeof BipeScreen];
  * Writes the web target. `license` is the app licence text (no comment marks), `header` the "Generated" lines as
  * // comments, `check` throws when an Element name would reach bipe-app.
  */
-export function writeWeb(dir, { root, reg, screens, css, businessApi, license, header, check }) {
+export function writeWeb(dir, { root, reg, signedLists, screens, css, businessApi, license, header, check }) {
   const js = `${license.replace(/^(?=.)/gm, "// ")}${header}`;
   const block = `/*\n${license.replace(/^(?=.)/gm, " * ")}${header.replace(/^\/\/ /gm, " * ")} */\n`;
   const write = (file, text) => {
@@ -76,6 +78,7 @@ export function writeWeb(dir, { root, reg, screens, css, businessApi, license, h
   rmSync(dir, { recursive: true, force: true });
   mkdirSync(join(dir, "lib"), { recursive: true });
   write("registries.json", `${JSON.stringify(reg, null, 1)}\n`);
+  write("signed-lists.json", `${JSON.stringify(signedLists, null, 1)}\n`);
   write("strings.ts", stringsModule(js, reg.strings.strings, reg.stringsEn.strings));
   const themeHeader = js.replace("bipe-shared/registries and bipe-shared/strings", "bipe-shared/design/tokens.json and design/chat-fruits.mjs");
   write("appearance.ts", appearanceModule(JSON.parse(readFileSync(join(root, "design/tokens.json"), "utf8")), themeHeader));

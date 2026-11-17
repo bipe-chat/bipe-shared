@@ -497,6 +497,25 @@
       }
     },
     {
+      "id": "public-feed-reports",
+      "basis": "legitimate-interest",
+      "places": [
+        "server"
+      ],
+      "pt": {
+        "name": "Denúncias e ações no feed público",
+        "what": "Para cada denúncia de uma publicação: a publicação, o motivo, a data e a decisão. Para cada ação do Bipe: o que saiu ou voltou, quando e por quê. A denúncia não guarda quem denunciou nem o endereço.",
+        "why": "Tirar do ar o que fere a lei ou as regras, e publicar o relatório de transparência.",
+        "retention": "Dois anos. Quando a conta dona do feed é apagada, as denúncias saem e as ações ficam sem o @."
+      },
+      "en": {
+        "name": "Reports and actions on public feeds",
+        "what": "For each report of a post: the post, the reason, the date and the decision. For each action by Bipe: what came down or went back up, when and why. A report does not keep who reported it or their address.",
+        "why": "To take down what breaks the law or the rules, and to publish the transparency report.",
+        "retention": "Two years. When the account that owns the feed is deleted, its reports go and its actions lose the handle."
+      }
+    },
+    {
       "id": "phone-moves",
       "basis": "contract",
       "places": [

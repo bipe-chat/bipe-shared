@@ -77,3 +77,36 @@ The homeserver sees that the account has a private room and when messages arrive
 
 - The rules live in honest clients. A modified client can send without a draft. The draft rule keeps honest clients honest (ADR 0130, ADR 0210).
 - The writer runs on the user's machine as an unattested device (ADR 0043). It gets the room keys like any device the user approved.
+
+## Device entries (ADR 0291)
+
+The drafts room also holds one entry per device of the account, for the list Aparelhos e assistentes. Decision: [ADR 0291](https://github.com/bipe-chat/bipe/blob/main/docs/adr/0291-devices-and-assistants-settings-group.md). Names and rules: `registries/device-kinds.json`. Generated as `deviceInfoField`, `deviceInfoMsgtype`, `deviceKinds`, `deviceUserAgents`, `deviceBrowsers`, `deviceSystems` (Swift), `DEVICE_INFO_FIELD` and the others (Kotlin), and `DEVICE_*` in bipe-core. Every platform passes `test-vectors/device-kinds.json`.
+
+An entry is an `m.room.message` with msgtype `m.notice` and the field `chat.bipe.device_info`. A custom event type would not reach the apps: the SDK timeline has no item for it. The field has no `chat.bipe.draft`, so no app shows an entry as a draft. Other Matrix apps show the body as a notice:
+
+```json
+{
+  "msgtype": "m.notice",
+  "body": "Pixel 8 · Android 15",
+  "chat.bipe.device_info": {
+    "device_id": "ABCDEFGHIJ",
+    "source": "self",
+    "kind": "phone",
+    "model": "Pixel 8",
+    "os": "Android 15",
+    "app": "Bipe 1.4.2 (812)",
+    "linked_at": 1762000000000,
+    "linked_by": "KLMNOPQRST",
+    "attested": true
+  }
+}
+```
+
+- `kind`: `phone`, `computer-app`, `browser`, `assistant` or `bridge`. Never `unknown`: that is what a device with no entry shows.
+- `source: "self"`: the device describes itself. Every Bipe client, `bipe-mcp` and the Beeper bridge write one on link, and again on start when a field changed.
+- `source: "approval"`: the phone that approved a new device describes it from the user agent on the consent screen (`userAgentInfo`).
+- `model`, `os`, `app`, `linked_by`: optional text, at most `fieldMaxLength` characters after trim. `linked_at`: optional, milliseconds. `attested`: optional, false when absent (ADR 0043).
+- A reader accepts an entry only from the account's own user ID and only when the SDK shows no shield on the event (the sending device is verified). The rule is `deviceInfoFromEvent`. The SDK timeline does not give the sending device ID, so a reader cannot check which device wrote an entry.
+- Per device, a self entry beats an approval entry; among entries of the same source, the newest wins. The rule is `deviceRows`.
+- A writer that finds no drafts room creates it with the rules of "The room" above. A writer never redacts another device's entry. Signing a device out leaves its entries; `deviceRows` ignores entries of devices that are not in the device list.
+- A device of the account can write a false entry, for itself or for another device. The entry tells honest devices apart; it does not prove what a device is. Attestation stays the proof (ADR 0043).

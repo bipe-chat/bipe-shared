@@ -1,6 +1,6 @@
 {
-  "checked": "2026-10-18",
-  "scope": "40 retained statistics, 7 charts, 29 scam types, both languages. Source IDs refer to scams.json. Descriptions and recovery advice were checked against the cited glossary, Febraban, CERT.br and official specialist sources. Feature descriptions and availability follow product.json.",
+  "checked": "2026-11-11",
+  "scope": "45 retained statistics, 7 charts, 29 scam types, both languages. Source IDs refer to scams.json. Descriptions and recovery advice were checked against the cited glossary, Febraban, CERT.br and official specialist sources. Feature descriptions and availability follow product.json.",
   "stats": [
     {
       "stat": "falsoParente60",
@@ -201,6 +201,31 @@
       "stat": "whatsappOrigin",
       "source": "silverguard2025",
       "locator": "PDF pp. 11-13, 12,197 reports Jan-Jun 2025; WhatsApp 29.6%, Instagram 21.4%, Facebook 13.1%; publisher Meta total 64.0% differs from 64.1% sum of displayed rounded components"
+    },
+    {
+      "stat": "nordFakeCall",
+      "source": "nordvpn2026",
+      "locator": "Blog section 'Os golpes mais frequentes no Brasil': fake bank and support calls 55%, the highest share listed"
+    },
+    {
+      "stat": "nordFakeJob",
+      "source": "nordvpn2026",
+      "locator": "Same section: fake job offers 44%"
+    },
+    {
+      "stat": "nordFakeOffer",
+      "source": "nordvpn2026",
+      "locator": "Same section: fake financial offers 53%"
+    },
+    {
+      "stat": "nordFootball",
+      "source": "nordvpn2026",
+      "locator": "Same section: 34% met football scams, 11% lost money; loss usually R$251 to R$500 in section 'Mídias sociais'. Not used: 75% met a sports betting scam, base unclear (above the 48% for football, entertainment and travel together)"
+    },
+    {
+      "stat": "nordFootballWhats",
+      "source": "nordvpn2026",
+      "locator": "Section 'Mídias sociais': base is people who met football scams; WhatsApp 48%, Instagram 51%. Methodology: Syno International, 3 to 10 Nov 2025, n=1,000, ages 18 to 64, quotas for age, gender and region"
     }
   ],
   "charts": {

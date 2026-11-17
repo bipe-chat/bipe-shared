@@ -2,6 +2,8 @@
 export function generateDmSelection(registry, language, header) {
   if (registry.order !== "latest-event-descending" || registry.tieBreak !== "room-id-ascending") throw new Error("unsupported DM selection policy");
   if (language === "swift") return `${header}
+import BipeCore
+
 /// Local room facts for ADR 0141. Eligibility excludes left, invited and non-DM rooms. Clear markers stay separate.
 public struct BipeDmCandidate: Equatable, Sendable {
     public let roomId: String
@@ -19,19 +21,14 @@ public struct BipeDmCandidate: Equatable, Sendable {
     }
 }
 
-/// Same selected room in lists, unread/search results and Start chat. No network or room mutation.
+/// Same selected room in lists, unread/search results and Start chat. No network or room mutation. The rule runs in
+/// bipe-core (newestDmRooms, bipe-chat/bipe#1475).
 public enum BipeDmSelection {
     public static func newestRooms(_ candidates: [BipeDmCandidate], includingCleared: Bool = false) -> [String: String] {
-        var chosen: [String: BipeDmCandidate] = [:]
-        for candidate in candidates where candidate.eligible && (includingCleared || !candidate.cleared) && !candidate.roomId.isEmpty && !candidate.peerUserId.isEmpty {
-            if let previous = chosen[candidate.peerUserId] {
-                let oldTime = previous.latestActivityMs ?? Int64.min
-                let newTime = candidate.latestActivityMs ?? Int64.min
-                if newTime < oldTime || (newTime == oldTime && candidate.roomId >= previous.roomId) { continue }
-            }
-            chosen[candidate.peerUserId] = candidate
-        }
-        return chosen.mapValues(\\.roomId)
+        newestDmRooms(candidates: candidates.map {
+            DmCandidate(roomId: $0.roomId, peerUserId: $0.peerUserId, eligible: $0.eligible, cleared: $0.cleared,
+                        latestActivityMs: $0.latestActivityMs)
+        }, includingCleared: includingCleared)
     }
 }
 `;
@@ -39,25 +36,16 @@ public enum BipeDmSelection {
   return `${header}
 package chat.bipe.shared.generated
 
+import chat.bipe.core.DmCandidate
+import chat.bipe.core.newestDmRooms
+
 /** Local room facts for ADR 0141. Eligibility excludes left, invited and non-DM rooms. Clear markers stay separate. */
 data class BipeDmCandidate(val roomId: String, val peerUserId: String, val latestActivityMs: Long?, val eligible: Boolean, val cleared: Boolean = false)
 
-/** Same selected room in lists, unread/search results and Start chat. No network or room mutation. */
+/** Same selected room in lists, unread/search results and Start chat. The rule runs in bipe-core (newestDmRooms, bipe-chat/bipe#1475). */
 object BipeDmSelection {
-    fun newestRooms(candidates: List<BipeDmCandidate>, includingCleared: Boolean = false): Map<String, String> {
-        val chosen = mutableMapOf<String, BipeDmCandidate>()
-        for (candidate in candidates) {
-            if (!candidate.eligible || (!includingCleared && candidate.cleared) || candidate.roomId.isEmpty() || candidate.peerUserId.isEmpty()) continue
-            val previous = chosen[candidate.peerUserId]
-            if (previous != null) {
-                val oldTime = previous.latestActivityMs ?: Long.MIN_VALUE
-                val newTime = candidate.latestActivityMs ?: Long.MIN_VALUE
-                if (newTime < oldTime || (newTime == oldTime && candidate.roomId >= previous.roomId)) continue
-            }
-            chosen[candidate.peerUserId] = candidate
-        }
-        return chosen.mapValues { it.value.roomId }
-    }
+    fun newestRooms(candidates: List<BipeDmCandidate>, includingCleared: Boolean = false): Map<String, String> =
+        newestDmRooms(candidates.map { DmCandidate(it.roomId, it.peerUserId, it.eligible, it.cleared, it.latestActivityMs) }, includingCleared)
 }
 `;
 }

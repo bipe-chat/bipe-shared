@@ -4720,8 +4720,13 @@
       "issue": 671,
       "fork": true,
       "macos": {
-        "status": "planned",
-        "issue": 1162
+        "status": "built",
+        "evidence": [
+          "bipe-app/macos/BipeMac/MacSearch.swift",
+          "bipe-app/macos/BipeMac/MacConversationsView.swift",
+          "bipe-app/macos/BipeMac/MacAccount.swift"
+        ],
+        "note": "SDK local search index with the store key, sidebar message hits, search in one chat, recent queries and the @ lookup. The index holds messages received after the update. Device acceptance remains in #1222."
       },
       "windows": {
         "status": "planned",

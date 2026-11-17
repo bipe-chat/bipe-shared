@@ -3411,8 +3411,13 @@
       },
       "issue": 536,
       "macos": {
-        "status": "planned",
-        "issue": 1162
+        "status": "built",
+        "evidence": [
+          "bipe-app/macos/BipeMac/MacDmBars.swift",
+          "bipe-app/macos/BipeMac/BipeMacApp.swift",
+          "bipe-app/macos/BipeMac/MacAccount.swift"
+        ],
+        "note": "The unblock bar replaces the composer and opens the unblock confirm. Blocking a person from a profile waits for the Mac person profile in #1225."
       },
       "windows": {
         "status": "planned",
@@ -3446,8 +3451,11 @@
       },
       "issue": 533,
       "macos": {
-        "status": "planned",
-        "issue": 1162
+        "status": "built",
+        "evidence": [
+          "bipe-app/macos/BipeMac/MacDmBars.swift",
+          "bipe-app/macos/BipeMac/MacTimeline.swift"
+        ]
       },
       "windows": {
         "status": "planned",
@@ -5238,8 +5246,13 @@
       "issue": 770,
       "fork": true,
       "macos": {
-        "status": "planned",
-        "issue": 1165
+        "status": "built",
+        "evidence": [
+          "bipe-app/macos/BipeMac/MacDmBars.swift",
+          "bipe-app/macos/BipeMac/BipeMacApp.swift",
+          "bipe-app/macos/BipeMac/MacTimeline.swift"
+        ],
+        "note": "Shares the iOS IdentityChangeModel. Bar, OK, learn more, the send block after a lost verification and send anyway. Cross-device acceptance remains in #1165."
       },
       "windows": {
         "status": "planned",

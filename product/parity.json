@@ -391,8 +391,13 @@
       "note": "The apps show the seal for a valid pix or govbr badge. No issuer signs those levels in production yet (bipe#17, bipe#543), so server stays planned and no person has a seal today",
       "issue": 543,
       "macos": {
-        "status": "planned",
-        "issue": 1165
+        "status": "built",
+        "evidence": [
+          "bipe-app/macos/BipeMac/MacBadges.swift",
+          "bipe-app/macos/BipeMac/MacConversationsView.swift",
+          "bipe-app/macos/BipeMac/MacDesign.swift"
+        ],
+        "note": "The seal of the device-verified badge store on DM rows, the chat header and group sender lines. The person-seal sheet is public-verification-level, still planned."
       },
       "windows": {
         "status": "planned",
@@ -729,8 +734,14 @@
       },
       "issue": 384,
       "macos": {
-        "status": "planned",
-        "issue": 1165
+        "status": "built",
+        "evidence": [
+          "bipe-app/macos/BipeMac/MacBadges.swift",
+          "bipe-app/macos/BipeMac/MacConversationsView.swift",
+          "bipe-app/macos/BipeMac/MacChatRequests.swift",
+          "bipe-app/macos/BipeMac/MacDesign.swift"
+        ],
+        "note": "On every name the Mac shows: chat list, chat header, requests and group sender lines. The person profile and member list come with #1225 and #1163."
       },
       "windows": {
         "status": "planned",
@@ -3640,8 +3651,12 @@
         "reason": "Client behaviour; no Bipe server code"
       },
       "macos": {
-        "status": "planned",
-        "issue": 1162
+        "status": "built",
+        "evidence": [
+          "bipe-app/macos/BipeMac/MacSettings.swift",
+          "bipe-app/macos/BipeMac/MacTimeline.swift"
+        ],
+        "note": "The synced switch sends private DM receipts while off and hides the other person's read (ADR 0222). Delivered acks are dm-delivered-tick, still planned."
       },
       "windows": {
         "status": "planned",

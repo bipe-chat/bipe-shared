@@ -75,7 +75,8 @@
     "bipe_privacy_assistant_send",
     "bipe_privacy_assistant_send_footer",
     "bipe_linked_devices_sign_out",
-    "bipe_linked_devices_last_used"
+    "bipe_linked_devices_last_used",
+    "bipe_device_detail_bridge_sees"
   ],
   "sdk": [
     "Client.deviceId"
@@ -86,6 +87,6 @@
   ],
   "notes": [
     "The device ID shows only here and on the long press on the version (ADR 0291).",
-    "A bridge's detail says that Beeper sees room names, members and timing outside Brazil (ADR 0128)."
+    "A bridge's detail shows bipe_device_detail_bridge_sees above the sign-out: Beeper sees room names, members and timing outside Brazil; message content stays encrypted (ADR 0128 point 2, bipe-chat/bipe#1516)."
   ]
 }

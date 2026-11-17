@@ -3563,8 +3563,11 @@
       },
       "issue": 537,
       "macos": {
-        "status": "planned",
-        "issue": 1162
+        "status": "built",
+        "evidence": [
+          "bipe-app/macos/BipeMac/MacTimeline.swift",
+          "bipe-app/macos/BipeMac/MacDesign.swift"
+        ]
       },
       "windows": {
         "status": "planned",

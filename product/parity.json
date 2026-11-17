@@ -3405,8 +3405,11 @@
       },
       "issue": 532,
       "macos": {
-        "status": "planned",
-        "issue": 1162
+        "status": "built",
+        "evidence": [
+          "bipe-app/macos/BipeMac/MacAccount.swift"
+        ],
+        "note": "Start chat creates the DM with the shared NativeDm.create of the iOS app, so the DM gets the power levels of registries/dm-power-levels.json."
       },
       "windows": {
         "status": "planned",

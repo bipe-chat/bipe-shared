@@ -41,8 +41,12 @@
         "note": "The shared ScamDetector checks text, formatted link targets, captions, file names, image descriptions and quoted replies. Voice transcripts wait for Mac voice in #1220."
       },
       "windows": {
-        "status": "planned",
-        "issue": 1019
+        "status": "built",
+        "evidence": [
+          "bipe-app/android/desktop-runtime/src/main/kotlin/chat/bipe/desktop/safety/CoreSafety.kt",
+          "bipe-app/android/desktop-app/src/main/kotlin/chat/bipe/desktop/ui/SafetyViews.kt"
+        ],
+        "note": "In bipe-app#671 (Compose for Desktop, source build only). No tester build yet; Windows 11 real-phone acceptance is in bipe-chat/bipe#1346."
       }
     },
     {
@@ -130,8 +134,12 @@
         "note": "BipeMoneyPause: the countdown on the card, Copiar off and links closed in the bubble and the media viewers."
       },
       "windows": {
-        "status": "planned",
-        "issue": 1019
+        "status": "built",
+        "evidence": [
+          "bipe-app/android/desktop-runtime/src/main/kotlin/chat/bipe/desktop/safety/MoneyPause.kt",
+          "bipe-app/android/desktop-app/src/main/kotlin/chat/bipe/desktop/ui/SafetyViews.kt"
+        ],
+        "note": "In bipe-app#671 (Compose for Desktop, source build only). No tester build yet; Windows 11 real-phone acceptance is in bipe-chat/bipe#1346."
       }
     },
     {
@@ -376,8 +384,13 @@
         "note": "MZ confirmed real phone linking on 6 November 2026; no phone update."
       },
       "windows": {
-        "status": "planned",
-        "issue": 1019
+        "status": "built",
+        "evidence": [
+          "bipe-app/android/desktop-runtime/src/main/kotlin/chat/bipe/desktop/link/PhoneLinkAttempt.kt",
+          "bipe-app/android/desktop-runtime/src/main/kotlin/chat/bipe/desktop/link/BinaryLinkQr.kt",
+          "bipe-app/android/desktop-runtime/src/main/kotlin/chat/bipe/desktop/link/PendingDeviceRecovery.kt"
+        ],
+        "note": "In bipe-app#671 (Compose for Desktop, source build only). No tester build yet; Windows 11 real-phone acceptance is in bipe-chat/bipe#1346."
       }
     },
     {
@@ -1526,8 +1539,12 @@
         "issue": 1161
       },
       "windows": {
-        "status": "planned",
-        "issue": 1019
+        "status": "built",
+        "evidence": [
+          "bipe-app/android/desktop-runtime/src/main/kotlin/chat/bipe/desktop/account/MatrixAccountRuntime.kt",
+          "bipe-app/android/desktop-runtime/src/main/kotlin/chat/bipe/desktop/storage/WindowsSecrets.kt"
+        ],
+        "note": "In bipe-app#671 (Compose for Desktop, source build only). No tester build yet; Windows 11 real-phone acceptance is in bipe-chat/bipe#1346."
       }
     },
     {
@@ -3532,8 +3549,12 @@
         "issue": 1162
       },
       "windows": {
-        "status": "planned",
-        "issue": 1019
+        "status": "built",
+        "evidence": [
+          "bipe-app/android/desktop-runtime/src/main/kotlin/chat/bipe/desktop/chat/RoomNotifications.kt",
+          "bipe-app/android/desktop-app/src/main/kotlin/chat/bipe/desktop/ui/RoomNotificationDialog.kt"
+        ],
+        "note": "In bipe-app#671 (Compose for Desktop, source build only). No tester build yet; Windows 11 real-phone acceptance is in bipe-chat/bipe#1346."
       }
     },
     {
@@ -3611,8 +3632,12 @@
         ]
       },
       "windows": {
-        "status": "planned",
-        "issue": 1019
+        "status": "built",
+        "evidence": [
+          "bipe-app/android/desktop-runtime/src/main/kotlin/chat/bipe/desktop/chat/DmReceipts.kt",
+          "bipe-app/android/desktop-app/src/main/kotlin/chat/bipe/desktop/ui/TimelineControls.kt"
+        ],
+        "note": "In bipe-app#671 (Compose for Desktop, source build only). No tester build yet; Windows 11 real-phone acceptance is in bipe-chat/bipe#1346."
       }
     },
     {
@@ -4299,8 +4324,12 @@
         "issue": 1162
       },
       "windows": {
-        "status": "planned",
-        "issue": 1019
+        "status": "built",
+        "evidence": [
+          "bipe-app/android/desktop-runtime/src/main/kotlin/chat/bipe/desktop/chat/AccountArchive.kt",
+          "bipe-app/android/desktop-app/src/main/kotlin/chat/bipe/desktop/ui/ChatRowControls.kt"
+        ],
+        "note": "In bipe-app#671 (Compose for Desktop, source build only). No tester build yet; Windows 11 real-phone acceptance is in bipe-chat/bipe#1346."
       }
     },
     {
@@ -4849,8 +4878,12 @@
         "note": "Synced tag-filtered stream, three-column grid, stable account-data order, per-scope drag/accessible reordering, no duplicate rows or Unread chip. Cross-device acceptance remains in #1162. Shared palette selection for favourites and conversation/request rows, with a native per-item context-menu target, shipped in bipe-app#561. Device visual/interaction acceptance remains in #1306. Included in public Mac preview 1.0.1 (684), source 0b81d7aa0b8be76388c7ed2ab058a81aa7dc5510, after universal Debug/Release, native tests and publication passed in CI run 42532749871. Tester availability does not pass cross-client device acceptance."
       },
       "windows": {
-        "status": "planned",
-        "issue": 1019
+        "status": "built",
+        "evidence": [
+          "bipe-app/android/desktop-runtime/src/main/kotlin/chat/bipe/desktop/chat/AccountFavourites.kt",
+          "bipe-app/android/desktop-runtime/src/main/kotlin/chat/bipe/desktop/chat/ChatListSections.kt"
+        ],
+        "note": "In bipe-app#671 (Compose for Desktop, source build only). No tester build yet; Windows 11 real-phone acceptance is in bipe-chat/bipe#1346."
       }
     },
     {
@@ -5628,8 +5661,12 @@
         "note": "Same six palettes and four backgrounds, labels/order/defaults generated. Running Dock icon follows the palette; signed Finder bundle icon stays the default macOS icon. Shared palette selection for favourites and conversation/request rows, with a native per-item context-menu target, shipped in bipe-app#561. Device visual/interaction acceptance remains in #1306. Included in public Mac preview 1.0.1 (684), source 0b81d7aa0b8be76388c7ed2ab058a81aa7dc5510, after universal Debug/Release, native tests and publication passed in CI run 42532749871. Tester availability does not pass cross-client device acceptance."
       },
       "windows": {
-        "status": "planned",
-        "issue": 1019
+        "status": "built",
+        "evidence": [
+          "bipe-app/android/desktop-runtime/src/main/kotlin/chat/bipe/desktop/settings/AccountAppearance.kt",
+          "bipe-app/android/desktop-app/src/main/kotlin/chat/bipe/desktop/ui/SettingsViews.kt"
+        ],
+        "note": "In bipe-app#671 (Compose for Desktop, source build only). No tester build yet; Windows 11 real-phone acceptance is in bipe-chat/bipe#1346."
       }
     },
     {
@@ -6028,8 +6065,12 @@
         "note": "Included in public Mac preview 1.0.1 (684), source 0b81d7aa0b8be76388c7ed2ab058a81aa7dc5510, after universal Debug/Release, native tests and publication passed in CI run 42532749871. Tester availability does not pass cross-client device acceptance."
       },
       "windows": {
-        "status": "planned",
-        "issue": 1019
+        "status": "built",
+        "evidence": [
+          "bipe-app/android/desktop-runtime/src/main/kotlin/chat/bipe/desktop/chat/DesktopTimeline.kt",
+          "bipe-app/android/desktop-app/src/main/kotlin/chat/bipe/desktop/ui/TimelineControls.kt"
+        ],
+        "note": "In bipe-app#671 (Compose for Desktop, source build only). No tester build yet; Windows 11 real-phone acceptance is in bipe-chat/bipe#1346."
       }
     },
     {
@@ -6069,8 +6110,12 @@
         "note": "Mac tester artifact from bipe-app PR #532 passed native Debug/Release builds and tests in CI run 42467741795. Quotes load original details and navigate through up to five history pages; edited marks and deleted placeholders share the Apple presentation. Cross-client device acceptance remains in #1217."
       },
       "windows": {
-        "status": "planned",
-        "issue": 1019
+        "status": "built",
+        "evidence": [
+          "bipe-app/android/desktop-runtime/src/main/kotlin/chat/bipe/desktop/chat/ReplyActions.kt",
+          "bipe-app/android/desktop-app/src/main/kotlin/chat/bipe/desktop/ui/MessageControls.kt"
+        ],
+        "note": "In bipe-app#671 (Compose for Desktop, source build only). No tester build yet; Windows 11 real-phone acceptance is in bipe-chat/bipe#1346."
       }
     },
     {
@@ -6110,8 +6155,12 @@
         "note": "Mac tester artifact from bipe-app PR #532 passed native Debug/Release builds and tests in CI run 42467741795. Quotes load original details and navigate through up to five history pages; edited marks and deleted placeholders share the Apple presentation. Cross-client device acceptance remains in #1217."
       },
       "windows": {
-        "status": "planned",
-        "issue": 1019
+        "status": "built",
+        "evidence": [
+          "bipe-app/android/desktop-runtime/src/main/kotlin/chat/bipe/desktop/chat/EditActions.kt",
+          "bipe-app/android/desktop-app/src/main/kotlin/chat/bipe/desktop/ui/MessageControls.kt"
+        ],
+        "note": "In bipe-app#671 (Compose for Desktop, source build only). No tester build yet; Windows 11 real-phone acceptance is in bipe-chat/bipe#1346."
       }
     },
     {
@@ -6151,8 +6200,12 @@
         "note": "Mac tester artifact from bipe-app PR #532 passed native Debug/Release builds and tests in CI run 42467741795. Quotes load original details and navigate through up to five history pages; edited marks and deleted placeholders share the Apple presentation. Cross-client device acceptance remains in #1217."
       },
       "windows": {
-        "status": "planned",
-        "issue": 1019
+        "status": "built",
+        "evidence": [
+          "bipe-app/android/desktop-runtime/src/main/kotlin/chat/bipe/desktop/chat/DeleteActions.kt",
+          "bipe-app/android/desktop-app/src/main/kotlin/chat/bipe/desktop/ui/MessageControls.kt"
+        ],
+        "note": "In bipe-app#671 (Compose for Desktop, source build only). No tester build yet; Windows 11 real-phone acceptance is in bipe-chat/bipe#1346."
       }
     },
     {
@@ -6189,8 +6242,12 @@
         "note": "Included in public Mac preview 1.0.1 (684), source 0b81d7aa0b8be76388c7ed2ab058a81aa7dc5510, after universal Debug/Release, native tests and publication passed in CI run 42532749871. Tester availability does not pass cross-client device acceptance."
       },
       "windows": {
-        "status": "planned",
-        "issue": 1019
+        "status": "built",
+        "evidence": [
+          "bipe-app/android/desktop-runtime/src/main/kotlin/chat/bipe/desktop/chat/ReactionActions.kt",
+          "bipe-app/android/desktop-app/src/main/kotlin/chat/bipe/desktop/ui/Reactions.kt"
+        ],
+        "note": "In bipe-app#671 (Compose for Desktop, source build only). No tester build yet; Windows 11 real-phone acceptance is in bipe-chat/bipe#1346."
       }
     },
     {
@@ -6228,8 +6285,12 @@
         "note": "Sends and shows typing, with the privacy.presence switch on the Mac. Cross-device acceptance remains in #1162."
       },
       "windows": {
-        "status": "planned",
-        "issue": 1019
+        "status": "built",
+        "evidence": [
+          "bipe-app/android/desktop-runtime/src/main/kotlin/chat/bipe/desktop/chat/RoomTyping.kt",
+          "bipe-app/android/desktop-runtime/src/main/kotlin/chat/bipe/desktop/settings/DevicePresence.kt"
+        ],
+        "note": "In bipe-app#671 (Compose for Desktop, source build only). No tester build yet; Windows 11 real-phone acceptance is in bipe-chat/bipe#1346."
       }
     },
     {

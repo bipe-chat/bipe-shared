@@ -8,6 +8,10 @@ info:
     token validated against MAS (OIDC).
     Business tool routes /v1/businesses/{handle}/... take the company's @handle or, for a company with no handle,
     its Matrix ID (percent-encoded). Any other account answers 404 not_found.
+    Language (ADR 0298): the apps send the app's screen language in Accept-Language on every request with a
+    Matrix access token. The server keeps one language per user, pt or en: a first value that starts with pt is pt,
+    any other value is en, and no header changes nothing. Text that the server sends (news, the news room name and
+    topic, the welcome message) uses it.
 servers:
   - url: https://api.bipe.net.br
 paths:

@@ -36,9 +36,9 @@
       "type": "list",
       "of": {
         "type": "string",
-        "description": "A room name."
+        "description": "A room ID, shown by the room's name."
       },
-      "description": "Only for kind assistant: the chats where it reads every member (the chat.bipe.assistant room state, ADR 0130)."
+      "description": "Only for kind assistant: the joined chats where it reads every member, by name (bipe-chat/bipe#1515). A chat is in the list when its room state chat.bipe.assistant with state key = the account's user ID has the field set to true (ADR 0130 point 3; the auth rules let only that user send a state event whose key is its own ID). Read per chat with GET /rooms/{roomId}/state/chat.bipe.assistant/{userId}: the SDK has no call for a custom state event. Empty: bipe_device_detail_reads_own_only. Failed read: bipe_device_detail_reads_failed, never the own-only line."
     }
   },
   "actions": {
@@ -56,6 +56,15 @@
     },
     "signOut": {
       "effect": "The same flow as askSignOut on linked-devices. Hidden for this device and on read-only platforms."
+    },
+    "openChat": {
+      "params": {
+        "roomId": {
+          "type": "string",
+          "description": "A room of fullContentRooms."
+        }
+      },
+      "effect": "Opens that chat."
     }
   },
   "strings": [
@@ -76,7 +85,11 @@
     "bipe_privacy_assistant_send_footer",
     "bipe_linked_devices_sign_out",
     "bipe_linked_devices_last_used",
-    "bipe_device_detail_bridge_sees"
+    "bipe_device_detail_bridge_sees",
+    "bipe_device_detail_reads_all",
+    "bipe_device_detail_reads_all_footer",
+    "bipe_device_detail_reads_own_only",
+    "bipe_device_detail_reads_failed"
   ],
   "sdk": [
     "Client.deviceId"

@@ -1,0 +1,27 @@
+{
+  "id": "desktop-pending-link",
+  "title": "Recover an unfinished desktop link",
+  "flow": "launch",
+  "summary": "Recover an interrupted computer link without promoting a partial session or touching another linked account.",
+  "state": {
+    "phase": { "type": "enum", "values": ["review", "working", "failed", "done"], "description": "One recovery operation at a time. A failure keeps the recoverable state and offers retry." },
+    "remoteEnded": { "type": "bool", "description": "True only after this slot's SDK logout returned successfully and that result was durably journaled. Local forgetting never sets it." }
+  },
+  "actions": {
+    "signOut": { "effect": "After teardown of the old pending runtime, lock and recheck this pending slot. Restore only its saved session for Client.logout, with no sync or linked promotion. Journal successful logout before native teardown, key revocation and file cleanup. Failure keeps the pending session or cleanup journal for retry." },
+    "forgetLocal": { "effect": "Ask with bipe_desktop_pending_forget_title/body. On confirmation, journal local-only discard, retire callbacks, drain native handles, revoke this slot's local key and clear its files. Do not claim server logout. Show bipe_desktop_pending_done_local and direct the person to Linked devices on the phone." },
+    "finishCleanup": { "effect": "Resume a journaled discard or tombstoned local cleanup after complete native teardown. Do not log in or create another device. Failed key/file cleanup stays retryable." },
+    "cancel": { "effect": "Leave review or failed without deleting the slot. Working cannot be dismissed or submitted twice." }
+  },
+  "strings": ["bipe_desktop_pending_title", "bipe_desktop_pending_body", "bipe_desktop_pending_sign_out", "bipe_desktop_pending_forget", "bipe_desktop_pending_forget_title", "bipe_desktop_pending_forget_body", "bipe_desktop_pending_cleanup", "bipe_desktop_pending_working", "bipe_desktop_pending_failed", "bipe_desktop_pending_done_local", "bipe_desktop_pending_done_remote", "bipe_app_retry", "bipe_app_cancel", "bipe_app_close"],
+  "sdk": ["Client.restoreSession", "Client.logout"],
+  "parity": ["phone-account"],
+  "notes": [
+    "Windows source checkpoint under bipe#1473/#1346/#1345; no native acceptance is claimed. Mac feature work stays paused under ADR0288. This recovery surface is not yet implemented on Mac or web; it does not change their existing sign-out screens.",
+    "A saved pending token is not a linked account. The actual disk record is rechecked under an exclusive lock before every destructive operation. A linked record is always refused, even if the UI was stale.",
+    "No token can also mean that the server created a device before local credential persistence failed. Never infer server absence from a missing pending session. Local-only forgetting must keep the phone follow-up explicit.",
+    "A durable cleanup journal survives a crash after logout. It cannot be promoted or overwritten by a late session callback. Native cleanup failure retains its owner/slot lock for retry before keys or files are removed.",
+    "A crash between the server logout acknowledgement and journal commit leaves an unresolved pending record. An expired or invalid token is not proof of confirmed logout; local forgetting and phone device management remain available.",
+    "This signs out only the unfinished device whose session was restored. It never signs out every device or the already linked account when a duplicate link fails. Device IDs, credentials, paths and exception bodies never appear in recovery UI or logs."
+  ]
+}

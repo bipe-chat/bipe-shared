@@ -1,0 +1,124 @@
+{
+  "id": "games-menu",
+  "title": "Games menu",
+  "flow": "chat",
+  "summary": "The Jogos sheet from the composer menu in a one-to-one chat or a group. It starts a duel (par ou ímpar, jokenpô) with one opponent, or a roll (dice, pênalti, arremesso, dardo). Typing 🎲 alone in the composer shows a Rolar button that opens the dice roll directly.",
+  "state": {
+    "isGroup": {
+      "type": "bool",
+      "description": "true in a group; the duel then needs pickOpponent."
+    },
+    "opponentUserId": {
+      "type": "string",
+      "optional": true,
+      "description": "In a one-to-one chat, the other person; in a group, the member picked."
+    },
+    "reason": {
+      "type": "string",
+      "optional": true,
+      "description": "At most reasonMaxGraphemes. Shown on the card. No bet or money field."
+    },
+    "diceSides": {
+      "type": "int",
+      "description": "From kinds.dice: defaultSides, a presetSides entry or any number from minSides to maxSides."
+    },
+    "diceCount": {
+      "type": "int",
+      "description": "From minCount to maxCount."
+    }
+  },
+  "actions": {
+    "pickOpponent": {
+      "params": {
+        "userId": {
+          "type": "string",
+          "description": "A member of the group who is not this account."
+        }
+      },
+      "effect": "Sets opponentUserId. Shows bipe_games_pick_opponent."
+    },
+    "setReason": {
+      "params": {
+        "text": {
+          "type": "string",
+          "description": "The reason."
+        }
+      },
+      "effect": "Sets reason."
+    },
+    "challenge": {
+      "params": {
+        "kind": {
+          "type": "enum",
+          "values": [
+            "parOuImpar",
+            "jokenpo"
+          ],
+          "description": "The duel."
+        }
+      },
+      "effect": "Sends a challenge step (eventType) with a new gameId, kind, opponentUserId and reason. For par ou ímpar the challenger also picks a side (bipe_games_pick_side) and it goes in the challenge. Then the challenger picks a number or hand on the card."
+    },
+    "roll": {
+      "params": {
+        "kind": {
+          "type": "enum",
+          "values": [
+            "dice",
+            "soccer",
+            "basketball",
+            "darts"
+          ],
+          "description": "The roll."
+        }
+      },
+      "effect": "Checks checkRoll (tools/lib/games.mjs). Makes a random seed of seedBytes and sends a roll step with a new gameId, kind, sides, count and the commit gameCommit(gameId, ownUserId, \"roll\", seed). Keeps the seed on this phone until it reveals."
+    },
+    "setDiceSides": {
+      "params": {
+        "sides": {
+          "type": "int",
+          "description": "The sides."
+        }
+      },
+      "effect": "Long press on 🎲. Sets diceSides."
+    },
+    "setDiceCount": {
+      "params": {
+        "count": {
+          "type": "int",
+          "description": "The count."
+        }
+      },
+      "effect": "Sets diceCount."
+    }
+  },
+  "strings": [
+    "bipe_games_menu",
+    "bipe_games_par_ou_impar",
+    "bipe_games_jokenpo",
+    "bipe_games_dice",
+    "bipe_games_soccer",
+    "bipe_games_basketball",
+    "bipe_games_darts",
+    "bipe_games_pick_opponent",
+    "bipe_games_reason",
+    "bipe_games_reason_placeholder",
+    "bipe_games_pick_side",
+    "bipe_games_side_par",
+    "bipe_games_side_impar",
+    "bipe_games_roll",
+    "bipe_games_dice_sides",
+    "bipe_games_dice_count"
+  ],
+  "sdk": [
+    "Room.sendRaw",
+    "Room.members"
+  ],
+  "parity": [],
+  "notes": [
+    "Default chosen: duels in a group name exactly one opponent, because a commit and reveal with more players needs a different card. mz can overrule.",
+    "The menu has no slot machine and no money field, because betting-shaped features are risky with minors.",
+    "Web chat: plays the same card; starting a game from web can wait (bipe-chat/bipe#1535 step 4)."
+  ]
+}

@@ -1589,3 +1589,58 @@ write("assistant-send.json", {
   ].map((v) => ({ ...v, expected: checkAmigoSecretoPairs(v.participants, v.exclusions, v.pairs) }));
   write("amigo-secreto.json", { setups, pairs });
 }
+
+// Games (bipe-chat/bipe#1535): commits, duel winners, roll checks and roll values.
+{
+  const { validateGames, gameCommit, checkReveal, parOuImparWinner, jokenpoWinner, checkRoll, rollValues, wordToValue, rollOutcome } = await import("./lib/games.mjs");
+  const games = validateGames(JSON.parse(readFileSync(join(root, "registries/games.json"), "utf8")));
+  const ana = "@ana:bipe.net.br";
+  const bia = "@bia:bipe.net.br";
+  const hex = (seed) => createHash("sha256").update(`games-vector-${seed}`).digest("hex");
+  const commits = [
+    { gameId: "g-par-1", userId: ana, choice: "7", saltHex: hex(1) },
+    { gameId: "g-par-1", userId: bia, choice: "0", saltHex: hex(2) },
+    { gameId: "g-jkp-1", userId: ana, choice: "pedra", saltHex: hex(3) },
+    { gameId: "g-jkp-1", userId: bia, choice: "tesoura", saltHex: hex(4) },
+    { gameId: "g-dice-1", userId: ana, choice: "roll", saltHex: hex(5) },
+    { gameId: "jogo ção 🎲", userId: ana, choice: "10", saltHex: hex(6) },
+  ].map((v) => ({ ...v, commitHex: gameCommit(games, v.gameId, v.userId, v.choice, v.saltHex) }));
+  const base = commits[0];
+  const reveals = [
+    { name: "the right reveal", ...base, revealUserId: ana, revealChoice: "7", revealSaltHex: base.saltHex },
+    { name: "a copied commit revealed by the other player", ...base, revealUserId: bia, revealChoice: "7", revealSaltHex: base.saltHex },
+    { name: "another choice", ...base, revealUserId: ana, revealChoice: "8", revealSaltHex: base.saltHex },
+    { name: "another salt", ...base, revealUserId: ana, revealChoice: "7", revealSaltHex: hex(9) },
+    { name: "an uppercase salt", ...base, revealUserId: ana, revealChoice: "7", revealSaltHex: base.saltHex.toUpperCase() },
+    { name: "a short salt", ...base, revealUserId: ana, revealChoice: "7", revealSaltHex: base.saltHex.slice(2) },
+  ].map((v) => ({ name: v.name, gameId: v.gameId, userId: v.revealUserId, choice: v.revealChoice, saltHex: v.revealSaltHex, commitHex: v.commitHex, expected: checkReveal(games, v.gameId, v.revealUserId, v.revealChoice, v.revealSaltHex, v.commitHex) }));
+  const parOuImpar = [];
+  const k = games.kinds.parOuImpar;
+  for (const side of [...k.sides, "nenhum"]) for (const a of [k.minNumber - 1, ...Array.from({ length: k.maxNumber + 1 }, (_, i) => i), k.maxNumber + 1]) for (const b of [0, 1, 5, 10]) {
+    if (side === "nenhum" && (a !== 0 || b !== 0)) continue;
+    parOuImpar.push({ challengerSide: side, challengerNumber: a, opponentNumber: b, expected: parOuImparWinner(games, side, a, b) });
+  }
+  const jokenpo = [];
+  for (const a of [...games.kinds.jokenpo.hands, "lagarto"]) for (const b of games.kinds.jokenpo.hands) jokenpo.push({ challengerHand: a, opponentHand: b, expected: jokenpoWinner(games, a, b) });
+  const d = games.kinds.dice;
+  const rollChecks = [
+    ["dice", 6, 1], ["dice", d.minSides, d.minCount], ["dice", d.maxSides, d.maxCount], ["dice", d.minSides - 1, 1], ["dice", d.maxSides + 1, 1],
+    ["dice", 6, 0], ["dice", 6, d.maxCount + 1], ["dice", 6.5, 1], ["soccer", 5, 1], ["soccer", 6, 1], ["soccer", 5, 2], ["darts", 6, 1], ["basketball", 5, 1], ["parOuImpar", 6, 1], ["slots", 6, 1],
+  ].map(([kind, sides, count]) => ({ kind, sides, count, expected: checkRoll(games, kind, sides, count) }));
+  const sideList = [...new Set([2, 3, 7, d.defaultSides, ...d.presetSides, 997, d.maxSides])].sort((x, y) => x - y);
+  const rolls = [];
+  for (const sides of sideList) for (let count = d.minCount; count <= d.maxCount; count++) {
+    const gameId = `g-roll-${sides}-${count}`;
+    const senderSeedHex = hex(`s${sides}-${count}`);
+    const answerSeedHex = hex(`a${sides}-${count}`);
+    rolls.push({ gameId, senderSeedHex, answerSeedHex, sides, count, expected: rollValues(games, gameId, senderSeedHex, answerSeedHex, sides, count) });
+  }
+  const words = [];
+  for (const sides of [2, 3, 6, 7, 100, 1000]) {
+    const limit = Math.floor(2 ** 32 / sides) * sides;
+    for (const x of [0, 1, sides - 1, sides, limit - 1, limit, 2 ** 32 - 1]) if (x >= 0 && x < 2 ** 32) words.push({ x, sides, expected: wordToValue(x, sides) });
+  }
+  const outcomes = [];
+  for (const kind of ["soccer", "basketball", "darts"]) for (let v = 1; v <= games.kinds[kind].sides; v++) outcomes.push({ kind, value: v, expected: rollOutcome(games, kind, v) });
+  write("games.json", { commits, reveals, parOuImpar, jokenpo, rollChecks, rolls, words, outcomes });
+}

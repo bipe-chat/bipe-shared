@@ -59,7 +59,7 @@
     "bipe_app_sign_out_body takes pinLength, then the sheet lists the ways back by name. Never join the names into one sentence (linguagem.md section 6).",
     "No way back: bipe_app_sign_out_no_way_back above the buttons, and bipe_app_sign_out_add_way first. Sign-out stays possible: the user decides.",
     "isLastDevice and not hasRecoveryKey: bipe_app_sign_out_history. The old messages exist only on this phone; without a recovery key they do not come back (ADR 0073).",
-    "Device-first account: the hidden password is the only sign-in secret and it lives on this phone. After sign-out the account comes back only through a way back plus the PIN (recovery-start).",
+    "Device-first account: no phone keeps the hidden password (ADR 0283); the session is the phone's only credential. After sign-out the account comes back only through a way back plus the PIN (recovery-start). Sign-out also deletes the device key.",
     "With two accounts on the phone (ADR 0086), this signs out the active account only.",
     "Haptics: registries/haptics.json has no sign_out use yet. Add one under warning in the same change that builds this screen, or play none.",
     "Bipe logic: BipeWaysBack (BipeKit BipeSettingsSupport.swift), BipeCredentialStore (BipeKit); BipeWayBack.kt, BipeDeviceAccount and BipeRecoveryTokenStore (libraries/bipe).",

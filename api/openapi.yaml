@@ -369,9 +369,9 @@ paths:
         random password of 32 bytes, sets it through the MAS admin API and returns it once,
         with a recovery token of 32 bytes. The server stores neither in clear: it never stores
         the password, and it keeps only the SHA-256 of the token. The app keeps the password on
-        this device only (iOS Keychain ThisDeviceOnly, Android storage without backup), syncs the
-        token (iCloud Keychain, Block Store), and signs in with m.login.password (user_id and
-        password). An optional pin is set at once (pinProblem() in registries/accounts.json).
+        this device only (iOS Keychain ThisDeviceOnly, Android storage without backup) until it
+        registers its device key (POST /v1/me/device-key, ADR 0283), syncs the token (iCloud
+        Keychain, Block Store), and signs in with m.login.password (user_id and password). An optional pin is set at once (pinProblem() in registries/accounts.json).
         An optional email is a recovery fallback, never a login: it is not given to MAS, and
         the server sends a link to confirm it (when outgoing email is on).
         Legacy (beta apps): email and password both given. The server sets both in MAS as before
@@ -1053,6 +1053,98 @@ paths:
         "204": { description: Recorded }
         "400": { $ref: "#/components/responses/Error" }
         "401": { $ref: "#/components/responses/Error" }
+        "429": { $ref: "#/components/responses/Error" }
+  /v1/me/device-key:
+    post:
+      summary: Register this phone's hardware key, which asks for a one-time password (ADR 0283)
+      x-summary-pt: "Registra a chave deste aparelho"
+      description: >
+        Phones keep no hidden password (ADR 0283, bipe#1351). After each new session (sign-up, any recovery, QR
+        join) the app makes a non-exportable P-256 key (iOS Secure Enclave, Android Keystore with StrongBox when
+        present), never synced and not in backups, and sends its public key. The device comes from the access token,
+        never from the body; a token without a device answers 400 bad_request. The first key of a device stays: the
+        same key again answers 204, another key answers 409 device_key_exists, so a stolen access token cannot
+        replace a phone's key. public_key is base64 SubjectPublicKeyInfo DER of a P-256 key (iOS: the 26-byte prefix
+        in test-vectors/device-keys.json followed by SecKeyCopyExternalRepresentation); another key type answers 400
+        bad_request. A migrating phone registers its key, then deletes its stored password.
+      security: [{ matrix: [] }]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [public_key]
+              properties:
+                public_key: { type: string, maxLength: 512 }
+      responses:
+        "204": { description: Registered }
+        "400": { $ref: "#/components/responses/Error" }
+        "401": { $ref: "#/components/responses/Error" }
+        "409": { $ref: "#/components/responses/Error" }
+        "429": { $ref: "#/components/responses/Error" }
+  /v1/me/password-once/challenge:
+    post:
+      summary: One-time challenge for POST /v1/me/password-once (valid 5 minutes, single use)
+      x-summary-pt: "Desafio para a senha de uso único"
+      description: >
+        On a company account only an owner device (403 owner_only). No body. Rate-limited per account.
+      security: [{ matrix: [] }]
+      responses:
+        "200":
+          description: Challenge
+          content:
+            application/json:
+              schema:
+                type: object
+                required: [challenge]
+                properties:
+                  challenge: { type: string }
+        "401": { $ref: "#/components/responses/Error" }
+        "403": { $ref: "#/components/responses/Error" }
+        "429": { $ref: "#/components/responses/Error" }
+  /v1/me/password-once:
+    post:
+      summary: A one-time hidden password for this phone, asked for with its device key (ADR 0283)
+      x-summary-pt: "Senha oculta de uso único para este aparelho"
+      description: >
+        The phone needs the hidden MAS password only to approve a computer or a phone (ADR 0224). The device key
+        registered with POST /v1/me/device-key signs the UTF-8 bytes "bipe-password-once:v1\n" + user_id + "\n" +
+        device_id + "\n" + challenge (no final newline) with ECDSA P-256 SHA-256; signature is the DER signature in
+        base64 (iOS ecdsaSignatureMessageX962SHA256, Android SHA256withECDSA). test-vectors/device-keys.json has
+        reference bytes. device_id must be the device of the access token, else 400 bad_request. The server checks
+        the key of that device (409 device_key_missing when it has none: the phone recovers), spends the challenge
+        and checks the signature (403 signature_invalid), then sets a new random password through the MAS admin API
+        and returns it once. The app uses it at once and keeps it only in memory. One request at a time per account,
+        so two phones cannot race. A beta account with its own password answers 409 device_first_required (ADR 0283
+        decision 9). On a company account only an owner device (403 owner_only). The server logs each use without
+        the secret and alerts no device (ADR 0283 decision 7). The old password stops working; sessions stay.
+      security: [{ matrix: [] }]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [device_id, challenge, signature]
+              properties:
+                device_id: { type: string, maxLength: 255 }
+                challenge: { type: string, maxLength: 128 }
+                signature: { type: string, maxLength: 512 }
+      responses:
+        "200":
+          description: The password, shown once
+          content:
+            application/json:
+              schema:
+                type: object
+                required: [password]
+                properties:
+                  password: { type: string }
+        "400": { $ref: "#/components/responses/Error" }
+        "401": { $ref: "#/components/responses/Error" }
+        "403": { $ref: "#/components/responses/Error" }
+        "409": { $ref: "#/components/responses/Error" }
         "429": { $ref: "#/components/responses/Error" }
   /v1/me/approval-nudge:
     post:
@@ -8664,7 +8756,7 @@ components:
     Credentials:
       type: object
       required: [user_id, password, recovery_token]
-      description: Shown once. The app keeps the password on this device only and syncs the recovery token. Sign in with m.login.password.
+      description: Shown once. The app keeps the password on this device only until its device key is registered (ADR 0283) and syncs the recovery token. Sign in with m.login.password.
       properties:
         user_id: { type: string }
         password: { type: string, description: "base64url, 32 random bytes." }
@@ -8831,7 +8923,7 @@ components:
       properties:
         error:
           type: string
-          enum: [bad_request, invite_invalid, invite_quota_exhausted, email_taken, handle_invalid, handle_taken, handle_cooldown, password_weak, attestation_invalid, profile_invalid, photo_invalid, unauthorized, not_found, rate_limited, internal, cnpj_invalid, cnpj_not_active, cnpj_taken, signature_invalid, pin_weak, pin_wrong, pin_blocked, pin_not_set, already_device_first, recovery_invalid, email_unavailable, terms_required, support_unavailable, link_taken, link_unavailable, brand_not_verified, brand_mark_limit, deletion_pending, keep_limit, group_link_no_access, group_full, pin_reset_pending]
+          enum: [bad_request, invite_invalid, invite_quota_exhausted, email_taken, handle_invalid, handle_taken, handle_cooldown, password_weak, attestation_invalid, profile_invalid, photo_invalid, unauthorized, not_found, rate_limited, internal, cnpj_invalid, cnpj_not_active, cnpj_taken, signature_invalid, pin_weak, pin_wrong, pin_blocked, pin_not_set, already_device_first, recovery_invalid, email_unavailable, terms_required, support_unavailable, link_taken, link_unavailable, brand_not_verified, brand_mark_limit, deletion_pending, keep_limit, group_link_no_access, group_full, pin_reset_pending, device_key_exists, device_key_missing, device_first_required]
         reason: { type: string, description: "Detail, e.g. a HandleProblem or PinProblem id." }
         tries_left: { type: integer, description: "With pin_wrong: wrong PINs left before the PIN blocks." }
     BadgeEnvelope:

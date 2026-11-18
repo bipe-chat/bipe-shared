@@ -6,7 +6,7 @@
   "state": {
     "support": {
       "type": "LinkComputerSupport",
-      "description": "The Bipe support gate of link-computer-scan: the server advertises org.matrix.msc4108 and this phone holds the hidden password. The code shows only when it is supported."
+      "description": "The Bipe support gate of link-computer-scan: the server advertises org.matrix.msc4108 and this phone registered its device key for a device-first account (ADR 0283). The code shows only when it is supported."
     },
     "phase": {
       "type": "enum",

@@ -53,7 +53,7 @@
     "work-account-people"
   ],
   "notes": [
-    "This phone has no hidden password, so it cannot approve a device or a web session (link-computer-scan needsPin does not apply; the row does not show).",
+    "This phone is not an owner device: POST /v1/me/password-once answers owner_only, so it cannot approve a device or a web session (link-computer-scan needsPin does not apply; the row does not show).",
     "The account's type is company, so it does not count against the personal cap.",
     "bipe_account_new_existing keeps its meaning: an account the person made."
   ]

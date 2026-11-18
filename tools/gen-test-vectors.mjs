@@ -13,6 +13,7 @@ import { govbrIncoming, govbrResult } from "./lib/govbr.mjs";
 import { b64url as reportB64, deriveKeyPair as hpkeKeyPair, encryptMedia, envelopeError, open as hpkeOpen, openReport, sealReport, verifyMedia, REPORT_INFO } from "./lib/reports.mjs";
 import { canonicalJson, checkMoved, matrixKey, movedEnvelope, moveError, sentAfterMove, signAs, signedBytes } from "./lib/moves.mjs";
 import { homePlan } from "./lib/home-score.mjs";
+import { P256_SPKI_PREFIX, passwordOnceMessage, passwordOnceValid, spkiFromX963 } from "./lib/device-keys.mjs";
 import { loadSchedulingVectors, writeSchedulingApiFixture } from "./lib/scheduling-vectors.mjs";
 import { forwardChatLimit, forwardCount, forwardLine, forwardedContent, voiceSource, assistantReaders, assistantSendAllowed, assistantSender, draftFromEvent, deviceInfoFromEvent, deviceRows, userAgentInfo, workNoteFromEvent, replyByFromEvent, photoDistance, photoHash, photoMatches, personProofs, profileFactLines, relationshipNameWarning, stickerEmojiKey, stickerMatches, stickerQueryTags, stickerSearchFold, newestDmRooms, clearedChatHidden, bringPeopleReminder, chatListPrompt, clearedChatKeepsEvent, clearedChatMarker, clearedChatsWithClear, compareAppVersions, extractInviteCode, handleProblem, isBipeUserID, socialHandleClean, socialHandleProblem, socialUrl, handleSuggestions, pinReminderNext, pinProblem, remoteBannerState, badgeClass, badgeSchemeError, normalizeCnpj, normalizePhone, displayPhone, handleSkeleton, loadRegistries, syncedSettingsReconcile, profileProblem, sealLookalike, contactCollision, normalize, scamMatchIDs, scamWarningKind, trustFacts } from "./lib/registries.mjs";
 
@@ -42,6 +43,19 @@ for (const vector of trustVectors.vectors) {
   }
 }
 write("trust-facts.json", trustVectors);
+
+// Device key signatures (ADR 0283, bipe#1351): fixed vectors, checked here against the reference.
+const deviceKeyVectors = JSON.parse(readFileSync(join(root, "fixtures/device-keys.json"), "utf8"));
+if (deviceKeyVectors.spki_prefix_hex !== P256_SPKI_PREFIX.toString("hex")) throw new Error("device-keys: spki prefix");
+for (const key of deviceKeyVectors.keys) {
+  if (spkiFromX963(Buffer.from(key.x963_base64, "base64")).toString("base64") !== key.spki_base64) throw new Error("device-keys: x963 to spki");
+}
+const dkm = deviceKeyVectors.message;
+if (passwordOnceMessage(dkm.user_id, dkm.device_id, dkm.challenge).toString("utf8") !== dkm.message_utf8) throw new Error("device-keys: message");
+for (const v of deviceKeyVectors.vectors) {
+  if (passwordOnceValid(v.public_key, v.user_id, v.device_id, v.challenge, v.signature) !== v.expect) throw new Error(`device-keys: ${v.name}`);
+}
+write("device-keys.json", deviceKeyVectors);
 
 const profileFactVectors = JSON.parse(readFileSync(join(root, "fixtures/profile-facts.json"), "utf8"));
 for (const vector of profileFactVectors.vectors) {

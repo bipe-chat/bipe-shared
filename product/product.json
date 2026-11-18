@@ -2976,7 +2976,8 @@
           "who": "Órgãos do governo, ONGs, igrejas e associações.",
           "billing": "Metade do total.",
           "points": [
-            "O mesmo serviço, com 50% de desconto."
+            "O mesmo serviço, com 50% de desconto.",
+            "Avisos de serviço de órgão público: quem só recebe avisos conta R$ 0,03 por ano, antes do desconto."
           ]
         }
       },
@@ -3062,7 +3063,46 @@
         "curveColBand": "Clientes ativos",
         "curveColRate": "Por cliente, por ano"
       },
-      "pilotFreePrice": "Piloto gratuito"
+      "pilotFreePrice": "Piloto gratuito",
+      "govCalculator": {
+        "heading": "Avisos de órgãos públicos",
+        "lede": "Um órgão público com selo pode mandar avisos de serviço, como vacina, benefício e prazo, para quem verificou o CPF no Bipe e deixou os avisos ligados. A pessoa para de receber com um toque. Quem só recebe avisos conta %1$s por ano, e o órgão paga metade do total. Os avisos ainda não estão no ar.",
+        "presetsLabel": "Exemplos",
+        "presets": {
+          "city": "Prefeitura",
+          "state": "Governo estadual",
+          "federal": "Ministério"
+        },
+        "presetNotes": {
+          "city": "Prefeitura que avisa 50 mil pessoas sobre vacina e consulta. 2 mil delas conversam com a prefeitura no Bipe, com 5 atendentes.",
+          "state": "Governo estadual que avisa 1 milhão de pessoas sobre prazos e benefícios. 20 mil conversam com o governo no Bipe, com 20 atendentes.",
+          "federal": "Ministério que avisa 15 milhões de pessoas sobre vacinação. 100 mil conversam com o ministério no Bipe, com 50 atendentes."
+        },
+        "notices": "Pessoas que só recebem avisos",
+        "noticesHint": "Receberam um aviso nos últimos 12 meses e não escreveram para o órgão. As %1$s primeiras são grátis.",
+        "people": "Pessoas que conversam com o órgão",
+        "peopleHint": "Escreveram para o órgão no Bipe nos últimos 12 meses. As %1$s primeiras são grátis.",
+        "seats": "Atendentes",
+        "seatsHint": "Os %1$s primeiros são grátis.",
+        "resultLabel": "No Bipe",
+        "year": "por ano",
+        "monthLine": "%1$s por mês",
+        "rows": {
+          "notices": "Avisos",
+          "people": "Conversas",
+          "agents": "Atendentes",
+          "above": "%1$s acima dos %2$s grátis",
+          "cap": "Teto de %1$s por ano",
+          "half": "Metade do preço",
+          "total": "Total por ano",
+          "free": "Grátis até %1$s pessoas em cada medida e %2$s atendentes"
+        },
+        "dispensaBelow": "Abaixo de %1$s, o limite de dispensa por valor para serviços em %2$s.",
+        "dispensaAbove": "Acima de %1$s, o limite de dispensa por valor para serviços em %2$s.",
+        "dispensaNote": "O limite soma o que o órgão contrata do mesmo tipo de serviço no ano (Decreto 12.807/2025).",
+        "proposal": "Valores propostos. Podem mudar depois do piloto. Para órgãos públicos, o piloto é gratuito.",
+        "link": "Preço dos avisos do seu órgão"
+      }
     },
     "en": {
       "nav": "Pricing",
@@ -3147,7 +3187,8 @@
           "who": "Government bodies, NGOs, churches and associations.",
           "billing": "Half of the total.",
           "points": [
-            "The same service, at 50% off."
+            "The same service, at 50% off.",
+            "Service notices from a public body: a person who only gets notices counts R$ 0.03 a year, before the discount."
           ]
         }
       },
@@ -3233,10 +3274,49 @@
         "curveColBand": "Active customers",
         "curveColRate": "Per customer, per year"
       },
-      "pilotFreePrice": "Free pilot"
+      "pilotFreePrice": "Free pilot",
+      "govCalculator": {
+        "heading": "Notices from public bodies",
+        "lede": "A sealed public body can send service notices, such as vaccines, benefits and deadlines, to people who verified their CPF on Bipe and left notices on. A person stops them with one tap. A person who only gets notices counts %1$s a year, and the body pays half of the total. Notices are not live yet.",
+        "presetsLabel": "Examples",
+        "presets": {
+          "city": "City hall",
+          "state": "State government",
+          "federal": "Ministry"
+        },
+        "presetNotes": {
+          "city": "A city hall that sends vaccine and appointment notices to 50,000 people. 2,000 of them talk with the city hall on Bipe, with 5 agents.",
+          "state": "A state government that sends deadline and benefit notices to 1 million people. 20,000 talk with it on Bipe, with 20 agents.",
+          "federal": "A ministry that sends vaccination notices to 15 million people. 100,000 talk with it on Bipe, with 50 agents."
+        },
+        "notices": "People who only get notices",
+        "noticesHint": "They got a notice in the last 12 months and did not write to the body. The first %1$s are free.",
+        "people": "People who talk with the body",
+        "peopleHint": "They wrote to the body on Bipe in the last 12 months. The first %1$s are free.",
+        "seats": "Agents",
+        "seatsHint": "The first %1$s are free.",
+        "resultLabel": "On Bipe",
+        "year": "a year",
+        "monthLine": "%1$s a month",
+        "rows": {
+          "notices": "Notices",
+          "people": "Conversations",
+          "agents": "Agents",
+          "above": "%1$s above the %2$s free",
+          "cap": "Cap of %1$s a year",
+          "half": "Half price",
+          "total": "Total a year",
+          "free": "Free up to %1$s people on each meter and %2$s agents"
+        },
+        "dispensaBelow": "Below %1$s, the limit for a direct purchase of services without a tender (dispensa por valor) in %2$s.",
+        "dispensaAbove": "Above %1$s, the limit for a direct purchase of services without a tender (dispensa por valor) in %2$s.",
+        "dispensaNote": "The limit adds up everything the body buys of the same kind of service in the year (Decreto 12.807/2025).",
+        "proposal": "Proposed amounts. They may change after the pilot. For public bodies, the pilot is free.",
+        "link": "Price of your body's notices"
+      }
     },
     "proposal": {
-      "$comment": "ADR 0206 (Proposed, amended 28 Oct 2026; amounts are the proposal until the pilot ends, ADR 0075). One price, two meters that add up. customers: active customers (talked with the organisation on Bipe in the last 12 months), marginal tiers [first customer of the band, BRL per customer per year], the first band free, capped at capYearly. agents: free agents, then monthly BRL per agent up to chargedUpTo; above it no extra charge. halfFactor: public bodies, NGOs, churches and associations. annualMonths: what a year costs when paid at once. table: active-customer counts shown on /precos/.",
+      "$comment": "ADR 0206 (Proposed, amended 28 Oct 2026; amounts are the proposal until the pilot ends, ADR 0075). One price, two meters that add up. customers: active customers (talked with the organisation on Bipe in the last 12 months), marginal tiers [first customer of the band, BRL per customer per year], the first band free, capped at capYearly. agents: free agents, then monthly BRL per agent up to chargedUpTo; above it no extra charge. halfFactor: public bodies, NGOs, churches and associations. annualMonths: what a year costs when paid at once. table: active-customer counts shown on /precos/. notices: ADR 0301, public bodies only: people reached by notices only (a notice in the last 12 months, no message to the body), free first, then yearlyPerPerson at one rate; inside capYearly together with customers; halfFactor applies. dispensaLimit: BRL, the dispensa por valor limit for services in dispensaYear (Decreto 12.807/2025), shown by the government calculator.",
       "adr": "0206",
       "customers": {
         "free": 1000,
@@ -3287,7 +3367,14 @@
         2500000,
         5000000,
         10000000
-      ]
+      ],
+      "notices": {
+        "adr": "0301",
+        "free": 1000,
+        "yearlyPerPerson": 0.03,
+        "dispensaLimit": 65492.11,
+        "dispensaYear": 2026
+      }
     },
     "calculatorPresets": [
       {
@@ -3337,6 +3424,29 @@
         "seats": 200,
         "people": 500000,
         "spend": 336490
+      }
+    ],
+    "govCalculatorPresets": [
+      {
+        "id": "city",
+        "icon": "bank",
+        "notices": 50000,
+        "people": 2000,
+        "seats": 5
+      },
+      {
+        "id": "state",
+        "icon": "group",
+        "notices": 1000000,
+        "people": 20000,
+        "seats": 20
+      },
+      {
+        "id": "federal",
+        "icon": "shield",
+        "notices": 15000000,
+        "people": 100000,
+        "seats": 50
       }
     ]
   },
@@ -3611,7 +3721,7 @@
           },
           {
             "heading": "Aviso oficial com cara de aviso oficial",
-            "body": "Um aviso de uma conta com selo de instituição aparece diferente de uma conversa comum e só abre links do site do próprio órgão. Esse aviso está em desenvolvimento. A verificação de órgão público, que confere se o CNPJ é da administração pública, ainda é um plano."
+            "body": "Um aviso de uma conta com selo de instituição aparece diferente de uma conversa comum e só abre links do site do próprio órgão. Esse aviso está em desenvolvimento. A verificação de órgão público, que confere se o CNPJ é da administração pública, ainda é um plano. O órgão pode mandar o primeiro aviso para quem verificou o CPF e deixou os avisos ligados, e a pessoa para com um toque."
           },
           {
             "heading": "Dados no Brasil, código que dá para conferir",
@@ -3619,7 +3729,7 @@
           },
           {
             "heading": "Preço fixo por ano, sem preço por mensagem",
-            "body": "Órgão público paga metade do preço, num contrato anual pelo número de pessoas que falam com o órgão no Bipe. Até 1.000 pessoas ativas no Bipe e 3 atendentes, é de graça. Nenhum plano cobra por mensagem, então o custo não cresce a cada aviso. Os valores saem quando o piloto terminar."
+            "body": "Órgão público paga metade do preço, num contrato anual pelo número de pessoas que falam com o órgão no Bipe. Até 1.000 pessoas ativas no Bipe e 3 atendentes, é de graça. Quem só recebe avisos conta R$ 0,03 por ano, e o órgão paga metade disso. Nenhum plano cobra por mensagem, então o custo não cresce a cada aviso. Os valores saem quando o piloto terminar."
           }
         ],
         "cta": "Quer testar o Bipe num serviço do seu órgão? Conte como vocês falam com o cidadão hoje."
@@ -3637,7 +3747,7 @@
           },
           {
             "heading": "An official notice that looks official",
-            "body": "A notice from an account with an institution badge looks different from a normal chat and only opens links to the body's own site. This notice is in development. The public body check, which confirms that a CNPJ belongs to the public administration, is still a plan."
+            "body": "A notice from an account with an institution badge looks different from a normal chat and only opens links to the body's own site. This notice is in development. The public body check, which confirms that a CNPJ belongs to the public administration, is still a plan. The body can send the first notice to people who verified their CPF and left notices on, and a person stops them with one tap."
           },
           {
             "heading": "Data in Brazil, code you can check",
@@ -3645,7 +3755,7 @@
           },
           {
             "heading": "A fixed yearly price, no price per message",
-            "body": "A public body pays half the price, on a yearly contract by the number of people who talk with it on Bipe. Up to 1,000 active people on Bipe and 3 agents, it is free. No plan charges per message, so the cost doesn't grow with each notice. Amounts come out when the pilot ends."
+            "body": "A public body pays half the price, on a yearly contract by the number of people who talk with it on Bipe. Up to 1,000 active people on Bipe and 3 agents, it is free. A person who only gets notices counts R$ 0.03 a year, and the body pays half of that. No plan charges per message, so the cost doesn't grow with each notice. Amounts come out when the pilot ends."
           }
         ],
         "cta": "Want to test Bipe in one of your services? Tell us how you talk to citizens today."

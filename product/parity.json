@@ -3598,8 +3598,12 @@
       },
       "issue": 525,
       "macos": {
-        "status": "planned",
-        "issue": 1162
+        "status": "built",
+        "evidence": [
+          "bipe-app/macos/BipeMac/MacTimeline.swift",
+          "bipe-app/macos/BipeMac/BipeMacApp.swift"
+        ],
+        "note": "A DM has no pins, no copy link, no threads and no mention suggestions on the Mac, and shows bipe_dm_no_permission_to_post when the power levels forbid posting."
       },
       "windows": {
         "status": "planned",
@@ -4500,8 +4504,11 @@
       "issue": 666,
       "fork": true,
       "macos": {
-        "status": "planned",
-        "issue": 1162
+        "status": "built",
+        "evidence": [
+          "bipe-app/macos/BipeMac/MacTimeline.swift"
+        ],
+        "note": "Copiar link in groups (never in a DM) with Room.matrixToEventPermalink and the copied notice. Opening such links in place is matrix-links, still planned."
       },
       "windows": {
         "status": "planned",
@@ -5275,8 +5282,13 @@
       },
       "fork": true,
       "macos": {
-        "status": "planned",
-        "issue": 1162
+        "status": "built",
+        "evidence": [
+          "bipe-app/macos/BipeMac/MacJumpToDate.swift",
+          "bipe-app/macos/BipeMac/MacTimeline.swift",
+          "bipe-app/macos/BipeMac/BipeMacApp.swift"
+        ],
+        "note": "Toolbar calendar on the Mac in place of the phone's floating date pill; MSC3030 lookup, scroll to a loaded day, read-only day view for an older day."
       },
       "windows": {
         "status": "planned",

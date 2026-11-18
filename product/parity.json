@@ -5264,8 +5264,13 @@
       },
       "fork": true,
       "macos": {
-        "status": "planned",
-        "issue": 1162
+        "status": "built",
+        "evidence": [
+          "bipe-app/macos/BipeMac/MacJumpToDate.swift",
+          "bipe-app/macos/BipeMac/MacTimeline.swift",
+          "bipe-app/macos/BipeMac/BipeMacApp.swift"
+        ],
+        "note": "Toolbar calendar on the Mac in place of the phone's floating date pill; MSC3030 lookup, scroll to a loaded day, read-only day view for an older day."
       },
       "windows": {
         "status": "planned",

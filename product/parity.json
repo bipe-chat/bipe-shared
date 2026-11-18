@@ -808,9 +808,13 @@
       },
       "issue": 387,
       "macos": {
-        "status": "planned",
-        "issue": 1162,
-        "note": "The news switch is in Notifications on the Mac. The rest of the capability stays open."
+        "status": "built",
+        "evidence": [
+          "bipe-app/macos/BipeMac/MacNotificationSettings.swift",
+          "bipe-app/macos/BipeMac/MacRoomSummary.swift",
+          "bipe-app/macos/BipeMac/MacAccount.swift"
+        ],
+        "note": "The news switch is in Notifications; the shared NewsRoomCleanup reads the news room at connect and on activation, and the room shows bipe_news_room_name, the Bipe mark and the official badge. Device acceptance remains in #1162."
       },
       "windows": {
         "status": "planned",

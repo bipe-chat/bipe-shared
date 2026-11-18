@@ -1201,7 +1201,8 @@
             "attestation_invalid",
             "seat_required",
             "chat_taken",
-            "geral_exists"
+            "geral_exists",
+            "recovery_changed"
           ]
         },
         "reason": {
@@ -2941,7 +2942,7 @@
       }
     },
     "WorkMemberRecovery": {
-      "description": "The recovery key of the caller's member identity (matrix-sdk enableRecovery output). Never logged.",
+      "description": "The recovery key of the caller's member identity (matrix-sdk enableRecovery output). Never logged. replaces is the SHA-256 (64 lower-case hex characters) of the UTF-8 recovery key that the caller last got from POST .../members/session, or null when it got none. Apps before bipe#1471 send no replaces; the server then replaces the stored key with no check.",
       "type": "object",
       "additionalProperties": false,
       "required": [
@@ -2952,6 +2953,13 @@
           "type": "string",
           "minLength": 1,
           "maxLength": 256
+        },
+        "replaces": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "pattern": "^[0-9a-f]{64}$"
         }
       }
     }

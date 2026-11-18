@@ -1,0 +1,54 @@
+{
+  "id": "language-region",
+  "title": "Language and region",
+  "flow": "settings",
+  "summary": "One screen with two sections: the app language and the account region (ADR 0197, ADR 0298). It opens from the language row on onboarding-welcome, from chats.language and from account.region in settings-group.",
+  "state": {
+    "language": {
+      "type": "enum",
+      "values": ["system", "pt", "en"],
+      "description": "The app language on this device. system follows the phone (or the browser on web): en when the first system language is English, else pt."
+    },
+    "region": {
+      "type": "string",
+      "description": "The id of the account's region in registries/regions.json. Before sign-up, and today for every account: br."
+    }
+  },
+  "actions": {
+    "selectLanguage": {
+      "params": { "language": { "type": "string", "description": "system, pt or en." } },
+      "effect": "Android: sets the per-app language (LocaleManager on Android 13 and later; a stored choice that the activity applies on Android 8 to 12) and the screens change at once. iOS: opens the app's page in the system Settings (UIApplication.openSettingsURLString), where iOS keeps each app's language; iOS restarts the app after a change. Web: stores the choice in local storage and reloads the page. The next bipe-api request carries the new language in Accept-Language (ADR 0298)."
+    },
+    "selectRegion": {
+      "params": { "region": { "type": "string", "description": "An id of registries/regions.json." } },
+      "effect": "Nothing while registries/regions.json has one region: the row is checked and not a button. With two or more regions, the rules of ADR 0197 apply (an invite sets the region; a picker only without an invite)."
+    },
+    "close": {
+      "effect": "Back to the screen that opened it."
+    }
+  },
+  "strings": [
+    "bipe_settings_language_region",
+    "bipe_settings_language",
+    "bipe_settings_language_footer",
+    "bipe_settings_language_ios_footer",
+    "bipe_chats_appearance_system",
+    "bipe_web_appearance_system",
+    "bipe_language_pt",
+    "bipe_language_en",
+    "bipe_settings_region",
+    "bipe_settings_region_footer",
+    "bipe_region_br"
+  ],
+  "sdk": [],
+  "parity": [
+    "settings-structure",
+    "first-run"
+  ],
+  "notes": [
+    "Language section: three rows with a check mark on the current one: Igual ao celular (bipe_chats_appearance_system; web: bipe_web_appearance_system), Português (Brasil), English. The language names are in their own language on every screen. Footer bipe_settings_language_footer; on iOS bipe_settings_language_ios_footer.",
+    "Region section: one row per region of registries/regions.json, titled bipe_region_<id>, the account's region checked. Footer bipe_settings_region_footer.",
+    "The settings rows chats.language and account.region show the current value: the language name (or Igual ao celular) and the region name.",
+    "onboarding-welcome shows the current language and region as one quiet row on the cover, for example 'Português · Brasil'. It opens this screen as a sheet. The person never has to open it to sign up."
+  ]
+}

@@ -498,8 +498,11 @@
       },
       "issue": 227,
       "macos": {
-        "status": "planned",
-        "issue": 1165
+        "status": "built",
+        "evidence": [
+          "bipe-app/macos/BipeMac/MacPersonProfile.swift"
+        ],
+        "note": "The person profile shows identity proof, personal confirmation and identity changes apart, from the shared PersonTrust rules. Device acceptance remains in #1165."
       },
       "windows": {
         "status": "planned",
@@ -2482,8 +2485,12 @@
       },
       "issue": 598,
       "macos": {
-        "status": "planned",
-        "issue": 1165
+        "status": "built",
+        "evidence": [
+          "bipe-app/macos/BipeMac/MacPersonProfile.swift",
+          "bipe-app/macos/BipeMac/MacChatRequests.swift"
+        ],
+        "note": "The ADR 0049 lines show in chat requests and in the person profile, from POST /v1/profile-facts."
       },
       "windows": {
         "status": "planned",
@@ -3324,8 +3331,13 @@
       "issue": 464,
       "fork": true,
       "macos": {
-        "status": "planned",
-        "issue": 1162
+        "status": "built",
+        "evidence": [
+          "bipe-app/macos/BipeMac/MacReportChat.swift",
+          "bipe-app/macos/BipeMac/MacRoomList.swift",
+          "bipe-app/macos/BipeMac/MacTimeline.swift"
+        ],
+        "note": "Report chat from the person profile can delete the DM with the shared DmClear write; the list hides a cleared DM at once and the timeline drops events at or below the marker. Device acceptance remains in #1162."
       },
       "windows": {
         "status": "planned",

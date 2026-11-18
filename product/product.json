@@ -3215,7 +3215,7 @@
             "Pessoas atendidas é a base de clientes da empresa: clientes, pacientes ou associados, no Bipe ou não. Não é quem escreveu no mês.",
             "Quando a empresa passa do nível, o Bipe avisa no app e mostra o novo preço antes da próxima cobrança. Quando a empresa diminui, o preço desce também.",
             "O pagamento é configurado uma vez, com cartão, Pix ou boleto. Mudar de nível não pede uma compra nova. No Pix Automático, um valor acima do limite autorizado pede uma nova autorização no banco.",
-            "Atendente é uma pessoa. Robôs da empresa não contam como atendentes.",
+            "Atendente é uma pessoa.",
             "O selo e o nome nunca dependem do pagamento. Se o pagamento falhar, a conta volta ao nível grátis e mantém o selo."
           ]
         }
@@ -3543,7 +3543,7 @@
             "People served is the company's customer base: customers, patients or members, on Bipe or not. It is not who wrote in a month.",
             "When the company passes its level, Bipe tells you in the app and shows the new price before the next bill. When the company shrinks, the price goes down too.",
             "You set up payment once, by card, Pix or boleto. A level change needs no new purchase. With Pix Automático, an amount above the authorised limit needs a new authorisation at your bank.",
-            "An agent is a person. The company's bots do not count as agents.",
+            "An agent is a person.",
             "The badge and the name never depend on payment. If a payment fails, the account goes back to the free level and keeps the badge."
           ]
         }

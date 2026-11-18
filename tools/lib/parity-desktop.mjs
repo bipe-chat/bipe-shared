@@ -1,5 +1,9 @@
 // Desktop parity (ADR 0266). Shared library code alone is not evidence of a working desktop feature.
-export const DESKTOP = { macos: "bipe-app/macos/", windows: "bipe-app/windows/" };
+// Windows is Compose for Desktop in bipe-app/android/desktop-* (ADR 0238); bipe-app/windows/ holds its delivery metadata.
+export const DESKTOP = {
+  macos: { app: ["bipe-app/macos/"], shared: "bipe-app/ios/BipeKit/" },
+  windows: { app: ["bipe-app/windows/", "bipe-app/android/desktop-app/", "bipe-app/android/desktop-runtime/"], shared: "bipe-app/android/libraries/bipe/" },
+};
 const statuses = new Set(["planned", "built", "testing", "policy", "n/a"]);
 const shipped = new Set(["built", "testing"]);
 
@@ -8,7 +12,7 @@ export function checkDesktop(items, exists) {
   const unchecked = new Set();
   const issueRefs = [];
   for (const item of items ?? []) {
-    for (const [surface, prefix] of Object.entries(DESKTOP)) {
+    for (const [surface, { app, shared }] of Object.entries(DESKTOP)) {
       const entry = typeof item[surface] === "string" ? { status: item[surface] } : item[surface];
       const where = `item ${item.id} (${surface})`;
       if (!entry || !statuses.has(entry.status)) { problems.push(`${where}: valid status required`); continue; }
@@ -20,9 +24,9 @@ export function checkDesktop(items, exists) {
         problems.push(`${where}: ${entry.status} needs a reason and the accepted ADR`);
       }
       if (shipped.has(entry.status)) {
-        if (!entry.evidence?.some(path => path.startsWith(prefix))) problems.push(`${where}: desktop integration evidence under ${prefix} required`);
+        if (!entry.evidence?.some(path => app.some(prefix => path.startsWith(prefix)))) problems.push(`${where}: desktop integration evidence under ${app.join(" or ")} required`);
         for (const path of entry.evidence ?? []) {
-          if (!path.startsWith(prefix) && !path.startsWith("bipe-app/ios/BipeKit/")) {
+          if (!app.some(prefix => path.startsWith(prefix)) && !path.startsWith(shared)) {
             problems.push(`${where}: evidence ${path} must be desktop code or BipeKit`);
             continue;
           }

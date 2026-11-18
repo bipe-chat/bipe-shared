@@ -958,6 +958,25 @@
       }
     },
     {
+      "id": "app-language",
+      "basis": "contract",
+      "places": [
+        "server"
+      ],
+      "pt": {
+        "name": "Idioma do app",
+        "what": "Se o app está em português ou em inglês.",
+        "why": "Mandar as novidades e as mensagens do Bipe no mesmo idioma das telas.",
+        "retention": "Enquanto a conta existir."
+      },
+      "en": {
+        "name": "App language",
+        "what": "Whether the app shows Portuguese or English.",
+        "why": "To send news and Bipe's messages in the same language as your screens.",
+        "retention": "As long as the account exists."
+      }
+    },
+    {
       "id": "problem-reports",
       "basis": "consent",
       "places": [

@@ -2082,8 +2082,11 @@
         "reason": "Plain Matrix power levels; no Bipe server code"
       },
       "macos": {
-        "status": "planned",
-        "issue": 1163
+        "status": "built",
+        "evidence": [
+          "bipe-app/macos/BipeMac/MacGroupDetails.swift"
+        ],
+        "note": "Group details on the Mac list members with their roles, and admins change roles through the shared GroupMembersModel. Device acceptance remains in #1163."
       },
       "windows": {
         "status": "planned",
@@ -2287,8 +2290,12 @@
       },
       "fork": true,
       "macos": {
-        "status": "planned",
-        "issue": 1161
+        "status": "built",
+        "evidence": [
+          "bipe-app/macos/BipeMac/MacAppLock.swift",
+          "bipe-app/macos/BipeMac/MacSettings.swift"
+        ],
+        "note": "Off by default. The PIN and the Touch ID flag live in this Mac's Keychain (BipeAppLock, Mac service). The Mac locks at launch, on sleep, on screen lock and when Bipe is hidden. PIN digits tick, a wrong PIN buzzes and a set PIN plays success (NSHapticFeedbackManager). Device acceptance remains in #1161."
       },
       "windows": {
         "status": "planned",
@@ -5022,8 +5029,12 @@
       "issue": 674,
       "fork": true,
       "macos": {
-        "status": "planned",
-        "issue": 1163
+        "status": "built",
+        "evidence": [
+          "bipe-app/macos/BipeMac/MacGroupDetails.swift",
+          "bipe-app/macos/BipeMac/MacReportChat.swift"
+        ],
+        "note": "Report the group from group details, with also leave (report-chat)."
       },
       "windows": {
         "status": "planned",
@@ -5062,8 +5073,11 @@
       "issue": 675,
       "fork": true,
       "macos": {
-        "status": "planned",
-        "issue": 1163
+        "status": "built",
+        "evidence": [
+          "bipe-app/macos/BipeMac/MacGroupDetails.swift"
+        ],
+        "note": "The banned section of the member list and unban, for members who may ban, through the shared GroupMembersModel."
       },
       "windows": {
         "status": "planned",
@@ -5611,8 +5625,11 @@
       "issue": 824,
       "fork": true,
       "macos": {
-        "status": "planned",
-        "issue": 1164
+        "status": "built",
+        "evidence": [
+          "bipe-app/macos/BipeMac/MacVoiceView.swift"
+        ],
+        "note": "Voice messages play on the Mac with 1x, 1.5x and 2x, one setting for every row. Recording stays in media-voice (#1220)."
       },
       "windows": {
         "status": "planned",

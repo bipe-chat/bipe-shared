@@ -4348,8 +4348,12 @@
       "issue": 662,
       "fork": true,
       "macos": {
-        "status": "planned",
-        "issue": 1162
+        "status": "built",
+        "evidence": [
+          "bipe-app/macos/BipeMac/MacRoomList.swift",
+          "bipe-app/macos/BipeMac/MacRoomSummary.swift"
+        ],
+        "note": "The shared ChatArchiveModel (project.yml) keeps the archive markers in the account's data folder; a message from someone else after the archive removes m.lowpriority on every device. Device acceptance remains in #1162."
       },
       "windows": {
         "status": "built",

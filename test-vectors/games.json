@@ -1,0 +1,1899 @@
+{
+  "commits": [
+    {
+      "gameId": "g-par-1",
+      "userId": "@ana:bipe.net.br",
+      "choice": "7",
+      "saltHex": "b07c233571e99364f8d2bbae742833b25906792ba9b43a1b4ed3480ce40af33f",
+      "commitHex": "cbb54772a582a2afcec136ad4fcba4a125f8f6f2e815282fc5e3da0c33a3333e"
+    },
+    {
+      "gameId": "g-par-1",
+      "userId": "@bia:bipe.net.br",
+      "choice": "0",
+      "saltHex": "8227c28bf495f8ce8f5fe31a8db42f0591cbdebea3acdbe114e40258d81bad12",
+      "commitHex": "e09d42565be1e6198942c16158022b8954d2c7b92fbdaa2205af56eefac9b3d4"
+    },
+    {
+      "gameId": "g-jkp-1",
+      "userId": "@ana:bipe.net.br",
+      "choice": "pedra",
+      "saltHex": "99fd5805484532e0aca7877166e1966ff52fc1608c7c255b138a9dfba09640ed",
+      "commitHex": "6b94ccf7dc79af912951276fd713ddd0b42d35abc113874a215fd87e1bc946ad"
+    },
+    {
+      "gameId": "g-jkp-1",
+      "userId": "@bia:bipe.net.br",
+      "choice": "tesoura",
+      "saltHex": "649d280bc187c8fdaea15c4caa1260351a505ee7661c180c27e11dadcd27c0e6",
+      "commitHex": "377a837017594148834c4e1674f8e796c1937dd17642d163001234c35f5598dc"
+    },
+    {
+      "gameId": "g-dice-1",
+      "userId": "@ana:bipe.net.br",
+      "choice": "roll",
+      "saltHex": "bc3573964f04e40c7a26c32cb6ac6a72422de9262ce49e69350ce61763ac1dc4",
+      "commitHex": "5f0c3377708ecdc0894eb2af8e102d65537126b014f7fc92b61a366967e00d1c"
+    },
+    {
+      "gameId": "jogo ção 🎲",
+      "userId": "@ana:bipe.net.br",
+      "choice": "10",
+      "saltHex": "ec35fd071667ccb86e84e9f4bed2acfd8fd7ec9f7154d0734857206f82f961af",
+      "commitHex": "335c2936476aa34aaae82808e5413e9af790ad4d3c2c299393fc9d8e7c0c88f0"
+    }
+  ],
+  "reveals": [
+    {
+      "name": "the right reveal",
+      "gameId": "g-par-1",
+      "userId": "@ana:bipe.net.br",
+      "choice": "7",
+      "saltHex": "b07c233571e99364f8d2bbae742833b25906792ba9b43a1b4ed3480ce40af33f",
+      "commitHex": "cbb54772a582a2afcec136ad4fcba4a125f8f6f2e815282fc5e3da0c33a3333e",
+      "expected": true
+    },
+    {
+      "name": "a copied commit revealed by the other player",
+      "gameId": "g-par-1",
+      "userId": "@bia:bipe.net.br",
+      "choice": "7",
+      "saltHex": "b07c233571e99364f8d2bbae742833b25906792ba9b43a1b4ed3480ce40af33f",
+      "commitHex": "cbb54772a582a2afcec136ad4fcba4a125f8f6f2e815282fc5e3da0c33a3333e",
+      "expected": false
+    },
+    {
+      "name": "another choice",
+      "gameId": "g-par-1",
+      "userId": "@ana:bipe.net.br",
+      "choice": "8",
+      "saltHex": "b07c233571e99364f8d2bbae742833b25906792ba9b43a1b4ed3480ce40af33f",
+      "commitHex": "cbb54772a582a2afcec136ad4fcba4a125f8f6f2e815282fc5e3da0c33a3333e",
+      "expected": false
+    },
+    {
+      "name": "another salt",
+      "gameId": "g-par-1",
+      "userId": "@ana:bipe.net.br",
+      "choice": "7",
+      "saltHex": "b829b7953aefd1b87d08ef229fdb78c44af440a477abc44cfce0881f562613f4",
+      "commitHex": "cbb54772a582a2afcec136ad4fcba4a125f8f6f2e815282fc5e3da0c33a3333e",
+      "expected": false
+    },
+    {
+      "name": "an uppercase salt",
+      "gameId": "g-par-1",
+      "userId": "@ana:bipe.net.br",
+      "choice": "7",
+      "saltHex": "B07C233571E99364F8D2BBAE742833B25906792BA9B43A1B4ED3480CE40AF33F",
+      "commitHex": "cbb54772a582a2afcec136ad4fcba4a125f8f6f2e815282fc5e3da0c33a3333e",
+      "expected": false
+    },
+    {
+      "name": "a short salt",
+      "gameId": "g-par-1",
+      "userId": "@ana:bipe.net.br",
+      "choice": "7",
+      "saltHex": "7c233571e99364f8d2bbae742833b25906792ba9b43a1b4ed3480ce40af33f",
+      "commitHex": "cbb54772a582a2afcec136ad4fcba4a125f8f6f2e815282fc5e3da0c33a3333e",
+      "expected": false
+    }
+  ],
+  "parOuImpar": [
+    {
+      "challengerSide": "par",
+      "challengerNumber": -1,
+      "opponentNumber": 0,
+      "expected": null
+    },
+    {
+      "challengerSide": "par",
+      "challengerNumber": -1,
+      "opponentNumber": 1,
+      "expected": null
+    },
+    {
+      "challengerSide": "par",
+      "challengerNumber": -1,
+      "opponentNumber": 5,
+      "expected": null
+    },
+    {
+      "challengerSide": "par",
+      "challengerNumber": -1,
+      "opponentNumber": 10,
+      "expected": null
+    },
+    {
+      "challengerSide": "par",
+      "challengerNumber": 0,
+      "opponentNumber": 0,
+      "expected": "challenger"
+    },
+    {
+      "challengerSide": "par",
+      "challengerNumber": 0,
+      "opponentNumber": 1,
+      "expected": "opponent"
+    },
+    {
+      "challengerSide": "par",
+      "challengerNumber": 0,
+      "opponentNumber": 5,
+      "expected": "opponent"
+    },
+    {
+      "challengerSide": "par",
+      "challengerNumber": 0,
+      "opponentNumber": 10,
+      "expected": "challenger"
+    },
+    {
+      "challengerSide": "par",
+      "challengerNumber": 1,
+      "opponentNumber": 0,
+      "expected": "opponent"
+    },
+    {
+      "challengerSide": "par",
+      "challengerNumber": 1,
+      "opponentNumber": 1,
+      "expected": "challenger"
+    },
+    {
+      "challengerSide": "par",
+      "challengerNumber": 1,
+      "opponentNumber": 5,
+      "expected": "challenger"
+    },
+    {
+      "challengerSide": "par",
+      "challengerNumber": 1,
+      "opponentNumber": 10,
+      "expected": "opponent"
+    },
+    {
+      "challengerSide": "par",
+      "challengerNumber": 2,
+      "opponentNumber": 0,
+      "expected": "challenger"
+    },
+    {
+      "challengerSide": "par",
+      "challengerNumber": 2,
+      "opponentNumber": 1,
+      "expected": "opponent"
+    },
+    {
+      "challengerSide": "par",
+      "challengerNumber": 2,
+      "opponentNumber": 5,
+      "expected": "opponent"
+    },
+    {
+      "challengerSide": "par",
+      "challengerNumber": 2,
+      "opponentNumber": 10,
+      "expected": "challenger"
+    },
+    {
+      "challengerSide": "par",
+      "challengerNumber": 3,
+      "opponentNumber": 0,
+      "expected": "opponent"
+    },
+    {
+      "challengerSide": "par",
+      "challengerNumber": 3,
+      "opponentNumber": 1,
+      "expected": "challenger"
+    },
+    {
+      "challengerSide": "par",
+      "challengerNumber": 3,
+      "opponentNumber": 5,
+      "expected": "challenger"
+    },
+    {
+      "challengerSide": "par",
+      "challengerNumber": 3,
+      "opponentNumber": 10,
+      "expected": "opponent"
+    },
+    {
+      "challengerSide": "par",
+      "challengerNumber": 4,
+      "opponentNumber": 0,
+      "expected": "challenger"
+    },
+    {
+      "challengerSide": "par",
+      "challengerNumber": 4,
+      "opponentNumber": 1,
+      "expected": "opponent"
+    },
+    {
+      "challengerSide": "par",
+      "challengerNumber": 4,
+      "opponentNumber": 5,
+      "expected": "opponent"
+    },
+    {
+      "challengerSide": "par",
+      "challengerNumber": 4,
+      "opponentNumber": 10,
+      "expected": "challenger"
+    },
+    {
+      "challengerSide": "par",
+      "challengerNumber": 5,
+      "opponentNumber": 0,
+      "expected": "opponent"
+    },
+    {
+      "challengerSide": "par",
+      "challengerNumber": 5,
+      "opponentNumber": 1,
+      "expected": "challenger"
+    },
+    {
+      "challengerSide": "par",
+      "challengerNumber": 5,
+      "opponentNumber": 5,
+      "expected": "challenger"
+    },
+    {
+      "challengerSide": "par",
+      "challengerNumber": 5,
+      "opponentNumber": 10,
+      "expected": "opponent"
+    },
+    {
+      "challengerSide": "par",
+      "challengerNumber": 6,
+      "opponentNumber": 0,
+      "expected": "challenger"
+    },
+    {
+      "challengerSide": "par",
+      "challengerNumber": 6,
+      "opponentNumber": 1,
+      "expected": "opponent"
+    },
+    {
+      "challengerSide": "par",
+      "challengerNumber": 6,
+      "opponentNumber": 5,
+      "expected": "opponent"
+    },
+    {
+      "challengerSide": "par",
+      "challengerNumber": 6,
+      "opponentNumber": 10,
+      "expected": "challenger"
+    },
+    {
+      "challengerSide": "par",
+      "challengerNumber": 7,
+      "opponentNumber": 0,
+      "expected": "opponent"
+    },
+    {
+      "challengerSide": "par",
+      "challengerNumber": 7,
+      "opponentNumber": 1,
+      "expected": "challenger"
+    },
+    {
+      "challengerSide": "par",
+      "challengerNumber": 7,
+      "opponentNumber": 5,
+      "expected": "challenger"
+    },
+    {
+      "challengerSide": "par",
+      "challengerNumber": 7,
+      "opponentNumber": 10,
+      "expected": "opponent"
+    },
+    {
+      "challengerSide": "par",
+      "challengerNumber": 8,
+      "opponentNumber": 0,
+      "expected": "challenger"
+    },
+    {
+      "challengerSide": "par",
+      "challengerNumber": 8,
+      "opponentNumber": 1,
+      "expected": "opponent"
+    },
+    {
+      "challengerSide": "par",
+      "challengerNumber": 8,
+      "opponentNumber": 5,
+      "expected": "opponent"
+    },
+    {
+      "challengerSide": "par",
+      "challengerNumber": 8,
+      "opponentNumber": 10,
+      "expected": "challenger"
+    },
+    {
+      "challengerSide": "par",
+      "challengerNumber": 9,
+      "opponentNumber": 0,
+      "expected": "opponent"
+    },
+    {
+      "challengerSide": "par",
+      "challengerNumber": 9,
+      "opponentNumber": 1,
+      "expected": "challenger"
+    },
+    {
+      "challengerSide": "par",
+      "challengerNumber": 9,
+      "opponentNumber": 5,
+      "expected": "challenger"
+    },
+    {
+      "challengerSide": "par",
+      "challengerNumber": 9,
+      "opponentNumber": 10,
+      "expected": "opponent"
+    },
+    {
+      "challengerSide": "par",
+      "challengerNumber": 10,
+      "opponentNumber": 0,
+      "expected": "challenger"
+    },
+    {
+      "challengerSide": "par",
+      "challengerNumber": 10,
+      "opponentNumber": 1,
+      "expected": "opponent"
+    },
+    {
+      "challengerSide": "par",
+      "challengerNumber": 10,
+      "opponentNumber": 5,
+      "expected": "opponent"
+    },
+    {
+      "challengerSide": "par",
+      "challengerNumber": 10,
+      "opponentNumber": 10,
+      "expected": "challenger"
+    },
+    {
+      "challengerSide": "par",
+      "challengerNumber": 11,
+      "opponentNumber": 0,
+      "expected": null
+    },
+    {
+      "challengerSide": "par",
+      "challengerNumber": 11,
+      "opponentNumber": 1,
+      "expected": null
+    },
+    {
+      "challengerSide": "par",
+      "challengerNumber": 11,
+      "opponentNumber": 5,
+      "expected": null
+    },
+    {
+      "challengerSide": "par",
+      "challengerNumber": 11,
+      "opponentNumber": 10,
+      "expected": null
+    },
+    {
+      "challengerSide": "impar",
+      "challengerNumber": -1,
+      "opponentNumber": 0,
+      "expected": null
+    },
+    {
+      "challengerSide": "impar",
+      "challengerNumber": -1,
+      "opponentNumber": 1,
+      "expected": null
+    },
+    {
+      "challengerSide": "impar",
+      "challengerNumber": -1,
+      "opponentNumber": 5,
+      "expected": null
+    },
+    {
+      "challengerSide": "impar",
+      "challengerNumber": -1,
+      "opponentNumber": 10,
+      "expected": null
+    },
+    {
+      "challengerSide": "impar",
+      "challengerNumber": 0,
+      "opponentNumber": 0,
+      "expected": "opponent"
+    },
+    {
+      "challengerSide": "impar",
+      "challengerNumber": 0,
+      "opponentNumber": 1,
+      "expected": "challenger"
+    },
+    {
+      "challengerSide": "impar",
+      "challengerNumber": 0,
+      "opponentNumber": 5,
+      "expected": "challenger"
+    },
+    {
+      "challengerSide": "impar",
+      "challengerNumber": 0,
+      "opponentNumber": 10,
+      "expected": "opponent"
+    },
+    {
+      "challengerSide": "impar",
+      "challengerNumber": 1,
+      "opponentNumber": 0,
+      "expected": "challenger"
+    },
+    {
+      "challengerSide": "impar",
+      "challengerNumber": 1,
+      "opponentNumber": 1,
+      "expected": "opponent"
+    },
+    {
+      "challengerSide": "impar",
+      "challengerNumber": 1,
+      "opponentNumber": 5,
+      "expected": "opponent"
+    },
+    {
+      "challengerSide": "impar",
+      "challengerNumber": 1,
+      "opponentNumber": 10,
+      "expected": "challenger"
+    },
+    {
+      "challengerSide": "impar",
+      "challengerNumber": 2,
+      "opponentNumber": 0,
+      "expected": "opponent"
+    },
+    {
+      "challengerSide": "impar",
+      "challengerNumber": 2,
+      "opponentNumber": 1,
+      "expected": "challenger"
+    },
+    {
+      "challengerSide": "impar",
+      "challengerNumber": 2,
+      "opponentNumber": 5,
+      "expected": "challenger"
+    },
+    {
+      "challengerSide": "impar",
+      "challengerNumber": 2,
+      "opponentNumber": 10,
+      "expected": "opponent"
+    },
+    {
+      "challengerSide": "impar",
+      "challengerNumber": 3,
+      "opponentNumber": 0,
+      "expected": "challenger"
+    },
+    {
+      "challengerSide": "impar",
+      "challengerNumber": 3,
+      "opponentNumber": 1,
+      "expected": "opponent"
+    },
+    {
+      "challengerSide": "impar",
+      "challengerNumber": 3,
+      "opponentNumber": 5,
+      "expected": "opponent"
+    },
+    {
+      "challengerSide": "impar",
+      "challengerNumber": 3,
+      "opponentNumber": 10,
+      "expected": "challenger"
+    },
+    {
+      "challengerSide": "impar",
+      "challengerNumber": 4,
+      "opponentNumber": 0,
+      "expected": "opponent"
+    },
+    {
+      "challengerSide": "impar",
+      "challengerNumber": 4,
+      "opponentNumber": 1,
+      "expected": "challenger"
+    },
+    {
+      "challengerSide": "impar",
+      "challengerNumber": 4,
+      "opponentNumber": 5,
+      "expected": "challenger"
+    },
+    {
+      "challengerSide": "impar",
+      "challengerNumber": 4,
+      "opponentNumber": 10,
+      "expected": "opponent"
+    },
+    {
+      "challengerSide": "impar",
+      "challengerNumber": 5,
+      "opponentNumber": 0,
+      "expected": "challenger"
+    },
+    {
+      "challengerSide": "impar",
+      "challengerNumber": 5,
+      "opponentNumber": 1,
+      "expected": "opponent"
+    },
+    {
+      "challengerSide": "impar",
+      "challengerNumber": 5,
+      "opponentNumber": 5,
+      "expected": "opponent"
+    },
+    {
+      "challengerSide": "impar",
+      "challengerNumber": 5,
+      "opponentNumber": 10,
+      "expected": "challenger"
+    },
+    {
+      "challengerSide": "impar",
+      "challengerNumber": 6,
+      "opponentNumber": 0,
+      "expected": "opponent"
+    },
+    {
+      "challengerSide": "impar",
+      "challengerNumber": 6,
+      "opponentNumber": 1,
+      "expected": "challenger"
+    },
+    {
+      "challengerSide": "impar",
+      "challengerNumber": 6,
+      "opponentNumber": 5,
+      "expected": "challenger"
+    },
+    {
+      "challengerSide": "impar",
+      "challengerNumber": 6,
+      "opponentNumber": 10,
+      "expected": "opponent"
+    },
+    {
+      "challengerSide": "impar",
+      "challengerNumber": 7,
+      "opponentNumber": 0,
+      "expected": "challenger"
+    },
+    {
+      "challengerSide": "impar",
+      "challengerNumber": 7,
+      "opponentNumber": 1,
+      "expected": "opponent"
+    },
+    {
+      "challengerSide": "impar",
+      "challengerNumber": 7,
+      "opponentNumber": 5,
+      "expected": "opponent"
+    },
+    {
+      "challengerSide": "impar",
+      "challengerNumber": 7,
+      "opponentNumber": 10,
+      "expected": "challenger"
+    },
+    {
+      "challengerSide": "impar",
+      "challengerNumber": 8,
+      "opponentNumber": 0,
+      "expected": "opponent"
+    },
+    {
+      "challengerSide": "impar",
+      "challengerNumber": 8,
+      "opponentNumber": 1,
+      "expected": "challenger"
+    },
+    {
+      "challengerSide": "impar",
+      "challengerNumber": 8,
+      "opponentNumber": 5,
+      "expected": "challenger"
+    },
+    {
+      "challengerSide": "impar",
+      "challengerNumber": 8,
+      "opponentNumber": 10,
+      "expected": "opponent"
+    },
+    {
+      "challengerSide": "impar",
+      "challengerNumber": 9,
+      "opponentNumber": 0,
+      "expected": "challenger"
+    },
+    {
+      "challengerSide": "impar",
+      "challengerNumber": 9,
+      "opponentNumber": 1,
+      "expected": "opponent"
+    },
+    {
+      "challengerSide": "impar",
+      "challengerNumber": 9,
+      "opponentNumber": 5,
+      "expected": "opponent"
+    },
+    {
+      "challengerSide": "impar",
+      "challengerNumber": 9,
+      "opponentNumber": 10,
+      "expected": "challenger"
+    },
+    {
+      "challengerSide": "impar",
+      "challengerNumber": 10,
+      "opponentNumber": 0,
+      "expected": "opponent"
+    },
+    {
+      "challengerSide": "impar",
+      "challengerNumber": 10,
+      "opponentNumber": 1,
+      "expected": "challenger"
+    },
+    {
+      "challengerSide": "impar",
+      "challengerNumber": 10,
+      "opponentNumber": 5,
+      "expected": "challenger"
+    },
+    {
+      "challengerSide": "impar",
+      "challengerNumber": 10,
+      "opponentNumber": 10,
+      "expected": "opponent"
+    },
+    {
+      "challengerSide": "impar",
+      "challengerNumber": 11,
+      "opponentNumber": 0,
+      "expected": null
+    },
+    {
+      "challengerSide": "impar",
+      "challengerNumber": 11,
+      "opponentNumber": 1,
+      "expected": null
+    },
+    {
+      "challengerSide": "impar",
+      "challengerNumber": 11,
+      "opponentNumber": 5,
+      "expected": null
+    },
+    {
+      "challengerSide": "impar",
+      "challengerNumber": 11,
+      "opponentNumber": 10,
+      "expected": null
+    },
+    {
+      "challengerSide": "nenhum",
+      "challengerNumber": 0,
+      "opponentNumber": 0,
+      "expected": null
+    }
+  ],
+  "jokenpo": [
+    {
+      "challengerHand": "pedra",
+      "opponentHand": "pedra",
+      "expected": "draw"
+    },
+    {
+      "challengerHand": "pedra",
+      "opponentHand": "papel",
+      "expected": "opponent"
+    },
+    {
+      "challengerHand": "pedra",
+      "opponentHand": "tesoura",
+      "expected": "challenger"
+    },
+    {
+      "challengerHand": "papel",
+      "opponentHand": "pedra",
+      "expected": "challenger"
+    },
+    {
+      "challengerHand": "papel",
+      "opponentHand": "papel",
+      "expected": "draw"
+    },
+    {
+      "challengerHand": "papel",
+      "opponentHand": "tesoura",
+      "expected": "opponent"
+    },
+    {
+      "challengerHand": "tesoura",
+      "opponentHand": "pedra",
+      "expected": "opponent"
+    },
+    {
+      "challengerHand": "tesoura",
+      "opponentHand": "papel",
+      "expected": "challenger"
+    },
+    {
+      "challengerHand": "tesoura",
+      "opponentHand": "tesoura",
+      "expected": "draw"
+    },
+    {
+      "challengerHand": "lagarto",
+      "opponentHand": "pedra",
+      "expected": null
+    },
+    {
+      "challengerHand": "lagarto",
+      "opponentHand": "papel",
+      "expected": null
+    },
+    {
+      "challengerHand": "lagarto",
+      "opponentHand": "tesoura",
+      "expected": null
+    }
+  ],
+  "rollChecks": [
+    {
+      "kind": "dice",
+      "sides": 6,
+      "count": 1,
+      "expected": null
+    },
+    {
+      "kind": "dice",
+      "sides": 2,
+      "count": 1,
+      "expected": null
+    },
+    {
+      "kind": "dice",
+      "sides": 1000,
+      "count": 5,
+      "expected": null
+    },
+    {
+      "kind": "dice",
+      "sides": 1,
+      "count": 1,
+      "expected": "sides"
+    },
+    {
+      "kind": "dice",
+      "sides": 1001,
+      "count": 1,
+      "expected": "sides"
+    },
+    {
+      "kind": "dice",
+      "sides": 6,
+      "count": 0,
+      "expected": "count"
+    },
+    {
+      "kind": "dice",
+      "sides": 6,
+      "count": 6,
+      "expected": "count"
+    },
+    {
+      "kind": "dice",
+      "sides": 6.5,
+      "count": 1,
+      "expected": "sides"
+    },
+    {
+      "kind": "soccer",
+      "sides": 5,
+      "count": 1,
+      "expected": null
+    },
+    {
+      "kind": "soccer",
+      "sides": 6,
+      "count": 1,
+      "expected": "sides"
+    },
+    {
+      "kind": "soccer",
+      "sides": 5,
+      "count": 2,
+      "expected": "sides"
+    },
+    {
+      "kind": "darts",
+      "sides": 6,
+      "count": 1,
+      "expected": null
+    },
+    {
+      "kind": "basketball",
+      "sides": 5,
+      "count": 1,
+      "expected": null
+    },
+    {
+      "kind": "parOuImpar",
+      "sides": 6,
+      "count": 1,
+      "expected": "kind"
+    },
+    {
+      "kind": "slots",
+      "sides": 6,
+      "count": 1,
+      "expected": "kind"
+    }
+  ],
+  "rolls": [
+    {
+      "gameId": "g-roll-2-1",
+      "senderSeedHex": "09fa0070f62db783115b8b70b137d747205afae45550f0b7208211936c0e0eb8",
+      "answerSeedHex": "c8f793d0fb6bd32ddeac19439bd9127e1438d7b33986004c5e628c4aed11c3d1",
+      "sides": 2,
+      "count": 1,
+      "expected": [
+        2
+      ]
+    },
+    {
+      "gameId": "g-roll-2-2",
+      "senderSeedHex": "83e6d70ec93cb1abc727b75d045718534dd1fd16d0bf31ac34622616101d7a6c",
+      "answerSeedHex": "dba2c093a49adddf57eabe44a07b4d0786f19f483033cb3f37ea1d3a41145902",
+      "sides": 2,
+      "count": 2,
+      "expected": [
+        2,
+        2
+      ]
+    },
+    {
+      "gameId": "g-roll-2-3",
+      "senderSeedHex": "26bfd68bd2a262328711d3b08cfe9a336857b3a28a4cf9cc1462450eb9ae5fcb",
+      "answerSeedHex": "4e0f7c58c70a21fc814736dc9b26b28a80457325962f0222c4090ddfa790ec52",
+      "sides": 2,
+      "count": 3,
+      "expected": [
+        2,
+        2,
+        2
+      ]
+    },
+    {
+      "gameId": "g-roll-2-4",
+      "senderSeedHex": "34da92091413a237750c53a805263303de0e33fdd45acae413e90d4044c77612",
+      "answerSeedHex": "8d8616a75caff295f43ad5f252003f912d31793e57b8424245cf70382fca0311",
+      "sides": 2,
+      "count": 4,
+      "expected": [
+        1,
+        1,
+        1,
+        2
+      ]
+    },
+    {
+      "gameId": "g-roll-2-5",
+      "senderSeedHex": "0080ada7b1e48fa833dff3fa65709a38bb2ac74499388762150ac53236da8434",
+      "answerSeedHex": "45669b5ef15e51d7fc14acd5ef4c5a08f74d7f9cbb508c2067cf976fcf14c54d",
+      "sides": 2,
+      "count": 5,
+      "expected": [
+        1,
+        2,
+        2,
+        2,
+        2
+      ]
+    },
+    {
+      "gameId": "g-roll-3-1",
+      "senderSeedHex": "650f3d176b4ba1d0351e9e5f755ecfd0fb92991c0167879d5daa3c4066395586",
+      "answerSeedHex": "16fff992291ef8ed173ae5ed85c6e023f2f84c549916baa45ade95463432b840",
+      "sides": 3,
+      "count": 1,
+      "expected": [
+        2
+      ]
+    },
+    {
+      "gameId": "g-roll-3-2",
+      "senderSeedHex": "3945d9fc01fec02cd5ae021f03b321cb9f3d7d012ade4ca6100ce8cd8ee84817",
+      "answerSeedHex": "6eb44ef9de6679da50c4c93d4592ac3f4cae83f31e1be8fbd5d37d9dd8396a0a",
+      "sides": 3,
+      "count": 2,
+      "expected": [
+        2,
+        1
+      ]
+    },
+    {
+      "gameId": "g-roll-3-3",
+      "senderSeedHex": "b164c0c577e88a11f0bdb94efb3ba8b390ae6f5874525d32c10df49959962be8",
+      "answerSeedHex": "0baa5961d731cee17b407e6ce34170a6329d1b568f21bb5baa6a236f158d4229",
+      "sides": 3,
+      "count": 3,
+      "expected": [
+        3,
+        3,
+        3
+      ]
+    },
+    {
+      "gameId": "g-roll-3-4",
+      "senderSeedHex": "6d810d5a0612b7342302c090a1e05bfe0010c6ee165f38501d26f0574c594b9c",
+      "answerSeedHex": "cfe878a449c0e782cc551176e91351a18bb8a4ab3fbaa5f93c09472647067936",
+      "sides": 3,
+      "count": 4,
+      "expected": [
+        3,
+        3,
+        2,
+        3
+      ]
+    },
+    {
+      "gameId": "g-roll-3-5",
+      "senderSeedHex": "2efddfd1711d4b109033b508dd5b1a2ceebc65394707089042d5bf2ab282180d",
+      "answerSeedHex": "244727c1350731808ebd82d2e3d8ef101bff33fc0cb196452dc28f8aef9661fa",
+      "sides": 3,
+      "count": 5,
+      "expected": [
+        1,
+        2,
+        1,
+        1,
+        2
+      ]
+    },
+    {
+      "gameId": "g-roll-4-1",
+      "senderSeedHex": "41880763ecf8681bf39afa9a2474ab3420946dbfa4b234ccdedb1d60475b083a",
+      "answerSeedHex": "5bbcd8ebb13173ae5e44dc3a3b9af009dd28115dc2f455b8ea9c3ca081eec906",
+      "sides": 4,
+      "count": 1,
+      "expected": [
+        3
+      ]
+    },
+    {
+      "gameId": "g-roll-4-2",
+      "senderSeedHex": "d833ae682d3f62071d585d1b9353ccf8b3644f1021bd3e487c69565866ff5d13",
+      "answerSeedHex": "79f67056be123d08321d75f40e70eb0c66f12b185b0bc2114d0ea61bc98dcffd",
+      "sides": 4,
+      "count": 2,
+      "expected": [
+        3,
+        1
+      ]
+    },
+    {
+      "gameId": "g-roll-4-3",
+      "senderSeedHex": "77acc5d78695e37e93be6c3f5f38fff9bb3f58da2d0178898e228383815eb193",
+      "answerSeedHex": "6ab353840cac6bba6ed01704e0daecf54df0fe36d3f1e2996308f221e55b9675",
+      "sides": 4,
+      "count": 3,
+      "expected": [
+        1,
+        4,
+        1
+      ]
+    },
+    {
+      "gameId": "g-roll-4-4",
+      "senderSeedHex": "e9bc95a7629dbbe3d34e32f521cb53a343daf6e04d9f28f3e36f27fa1ea121b9",
+      "answerSeedHex": "56f23542d369dc826082e30d323c7949b51ec3c591dbdc0254e75e8446260740",
+      "sides": 4,
+      "count": 4,
+      "expected": [
+        2,
+        1,
+        3,
+        2
+      ]
+    },
+    {
+      "gameId": "g-roll-4-5",
+      "senderSeedHex": "894dd847be464a7f3482d3f5c0f595b31fd83dc3a1d29e3eadbcc28d50ecdf14",
+      "answerSeedHex": "99508c2b3941dfdc8905da6dd545e6322b6ee3e4c17d7ec95656b02fca2f9391",
+      "sides": 4,
+      "count": 5,
+      "expected": [
+        4,
+        1,
+        3,
+        3,
+        1
+      ]
+    },
+    {
+      "gameId": "g-roll-6-1",
+      "senderSeedHex": "4047fd905a40a0ec8da8a41f3514d1390cc0a6b831b854290d149bf5c6e23c34",
+      "answerSeedHex": "a8ff56da40905fdc4984e85c09936f9ee451148c72a7eaf0306634ad965ad6ba",
+      "sides": 6,
+      "count": 1,
+      "expected": [
+        3
+      ]
+    },
+    {
+      "gameId": "g-roll-6-2",
+      "senderSeedHex": "c89440c5c2116e81d0cd055fbc7c7170e26ef3023243917233423069597851f7",
+      "answerSeedHex": "529ff41b40915d14c95075fe6ffe48e79d9643b9ddb8bd02182c9c4380c23622",
+      "sides": 6,
+      "count": 2,
+      "expected": [
+        3,
+        2
+      ]
+    },
+    {
+      "gameId": "g-roll-6-3",
+      "senderSeedHex": "59fda3cb423affd6a88560d1b71f3dbd2e5e00ebd94ae177a052427c24c4f47a",
+      "answerSeedHex": "4ac81ff99af79da098c12ae73f2c25e0f55b8e6f106028743dd5c931db33056a",
+      "sides": 6,
+      "count": 3,
+      "expected": [
+        4,
+        6,
+        6
+      ]
+    },
+    {
+      "gameId": "g-roll-6-4",
+      "senderSeedHex": "5ac2cb1af285a318678a39c7df9521424348b210a8fbd13d8c13ef2e9edf54cb",
+      "answerSeedHex": "bf98eab69d601bab49e55287a924869958a181857113555301682dd424f03e90",
+      "sides": 6,
+      "count": 4,
+      "expected": [
+        4,
+        3,
+        2,
+        3
+      ]
+    },
+    {
+      "gameId": "g-roll-6-5",
+      "senderSeedHex": "f69204a64acd52d4b7838a7025eb6dc7820223327c0afdce0270249ae7938641",
+      "answerSeedHex": "cdcaf7860f366ce705b5155d3806928e7f45aff58b9623d917987da122306a0f",
+      "sides": 6,
+      "count": 5,
+      "expected": [
+        6,
+        1,
+        2,
+        5,
+        6
+      ]
+    },
+    {
+      "gameId": "g-roll-7-1",
+      "senderSeedHex": "bf05249650c8b29fa9c9179c51f21a08c798cf55d8109142d09f017f393decdf",
+      "answerSeedHex": "2204ed68c453b17388f7618689c3ac6e7bde239d04ee437ebeb07e2b3e3d87dc",
+      "sides": 7,
+      "count": 1,
+      "expected": [
+        7
+      ]
+    },
+    {
+      "gameId": "g-roll-7-2",
+      "senderSeedHex": "06862bf5a5b147a2af1fbeb46d0ae7cfc41d823c210c5bdcb4774f5d03addcce",
+      "answerSeedHex": "87df8e9e5ee33dd4277450f7c4d46dba177d488a4aa5f02c322607918c501a0e",
+      "sides": 7,
+      "count": 2,
+      "expected": [
+        3,
+        7
+      ]
+    },
+    {
+      "gameId": "g-roll-7-3",
+      "senderSeedHex": "c9bc7b067f5676aa0627436c875465f344b3b79559a3c1e46b440ec321ef227f",
+      "answerSeedHex": "3bb6d3158cf002048591aea628ba14a654271eeaa400d6d49ee5b3fcb3df899a",
+      "sides": 7,
+      "count": 3,
+      "expected": [
+        6,
+        6,
+        4
+      ]
+    },
+    {
+      "gameId": "g-roll-7-4",
+      "senderSeedHex": "bc59621cf170a0ae0a61aac5d5e7deb954fd0d944c3026e80f80d55040c595fe",
+      "answerSeedHex": "3233a5fedbce7737e09a9e0ac7370239d9f06cf5b1f1252e14b3825772da0162",
+      "sides": 7,
+      "count": 4,
+      "expected": [
+        5,
+        4,
+        1,
+        2
+      ]
+    },
+    {
+      "gameId": "g-roll-7-5",
+      "senderSeedHex": "da1b3eb868310eaaf9dad639cad088e51f0c14aab4099f41ace49517a31c9281",
+      "answerSeedHex": "438e5a2071a9a5cefbe63f5bf8a8d90ba46c0be62f251eb9816d9d8e486d1e73",
+      "sides": 7,
+      "count": 5,
+      "expected": [
+        2,
+        7,
+        3,
+        5,
+        5
+      ]
+    },
+    {
+      "gameId": "g-roll-8-1",
+      "senderSeedHex": "ee4a17ea706e3374f6d09750ced605a13e922a7bea53d14a924e7e70aa99039d",
+      "answerSeedHex": "a6119a2aaa7461232bb538e0b7a4f7d26f1ad82d90b41850055d014fd86f0dd6",
+      "sides": 8,
+      "count": 1,
+      "expected": [
+        8
+      ]
+    },
+    {
+      "gameId": "g-roll-8-2",
+      "senderSeedHex": "dda326ec965ec95e2ebf0488c043d15a5ac9faf285b496c198116e4a51889431",
+      "answerSeedHex": "beb4d90cb6623818940f4ca408c3fab2981726f06e562680df7adced1225bd3d",
+      "sides": 8,
+      "count": 2,
+      "expected": [
+        7,
+        7
+      ]
+    },
+    {
+      "gameId": "g-roll-8-3",
+      "senderSeedHex": "10b74cb3e6cb0f6f4dcf262867395919d222846b8918bc3a4408e6c092337612",
+      "answerSeedHex": "4693efe9bf4443ab552f87b968f2737309a5e6ea927707f6a58891430e33db3e",
+      "sides": 8,
+      "count": 3,
+      "expected": [
+        1,
+        4,
+        1
+      ]
+    },
+    {
+      "gameId": "g-roll-8-4",
+      "senderSeedHex": "6991a034cb4ef62f579b7bd6fc36d8aa906d6974a13b7875cd9ec37b77502b00",
+      "answerSeedHex": "f7b64d6b2cf373470a9e7a0d77a9a80ffdc926091ba61373a6f88d3d9b6bafb4",
+      "sides": 8,
+      "count": 4,
+      "expected": [
+        8,
+        4,
+        7,
+        8
+      ]
+    },
+    {
+      "gameId": "g-roll-8-5",
+      "senderSeedHex": "724fe649fcb7b2e62f0563a2f104df9da02b52ecd03f934fc8124e59259e9826",
+      "answerSeedHex": "ea33ca9efb93a2451988a5f375f849eb4aa2c5e49126c0bca3ec07d6f06319df",
+      "sides": 8,
+      "count": 5,
+      "expected": [
+        5,
+        6,
+        6,
+        4,
+        5
+      ]
+    },
+    {
+      "gameId": "g-roll-10-1",
+      "senderSeedHex": "4c8b4baa7229b2221b67cd43482fdbdf6f1c0454572a132095d4892edc0e360a",
+      "answerSeedHex": "c22d142f4b0bec8bf95677d14a851d3e011fa6a6ef61cb0f8aa08a45dc41ea55",
+      "sides": 10,
+      "count": 1,
+      "expected": [
+        7
+      ]
+    },
+    {
+      "gameId": "g-roll-10-2",
+      "senderSeedHex": "ccfc13c2665d0a1198d889a18a4b4357c71be6661d7594cb6476d60892d80599",
+      "answerSeedHex": "c246aa26927da62a1cee8d32ccadcdd58a024d9ae9bc317a57e18959e5b2e6cc",
+      "sides": 10,
+      "count": 2,
+      "expected": [
+        10,
+        7
+      ]
+    },
+    {
+      "gameId": "g-roll-10-3",
+      "senderSeedHex": "64b12d4ab201e192349bb7c5e41a2deb390c187ec85ad430cc4416a5b6da70b0",
+      "answerSeedHex": "7a4f9e40124c24b70c62edde15f88eacdaaf2b56ab21d4c177fb6183ac86f2b1",
+      "sides": 10,
+      "count": 3,
+      "expected": [
+        7,
+        3,
+        4
+      ]
+    },
+    {
+      "gameId": "g-roll-10-4",
+      "senderSeedHex": "7be2cba6244e8e3dff310c7588fc3d2486cb853cab1cb3acbecc32c1383bf9af",
+      "answerSeedHex": "083206a7fe48dd0458f89305b9ec943715b54856a8a1751c4c9c93ed6ff6004a",
+      "sides": 10,
+      "count": 4,
+      "expected": [
+        7,
+        2,
+        5,
+        4
+      ]
+    },
+    {
+      "gameId": "g-roll-10-5",
+      "senderSeedHex": "b05be55c67375157806acd1d2d78e1c79629559e13758d83451d1fc2d405a96f",
+      "answerSeedHex": "f16791916bbe89898204bbeb26d3b9559170995d5932b87f1ad3510a0b7e626e",
+      "sides": 10,
+      "count": 5,
+      "expected": [
+        2,
+        10,
+        5,
+        4,
+        4
+      ]
+    },
+    {
+      "gameId": "g-roll-12-1",
+      "senderSeedHex": "79030d35578e45eba931bd6c6bd45b68ada1c15912ee7970086c99d308b110c4",
+      "answerSeedHex": "2f036c7c200d3d7710259c451244216ae80e28e385a4975656801473c42f962a",
+      "sides": 12,
+      "count": 1,
+      "expected": [
+        6
+      ]
+    },
+    {
+      "gameId": "g-roll-12-2",
+      "senderSeedHex": "f7d669b770fce9833c9aab04e779af48059d4f235a3199406238651a60a25869",
+      "answerSeedHex": "7f1f1b4dab435f85bf49998d4cb944f1223ef931711f7697c2fe6329ca36d6fc",
+      "sides": 12,
+      "count": 2,
+      "expected": [
+        6,
+        6
+      ]
+    },
+    {
+      "gameId": "g-roll-12-3",
+      "senderSeedHex": "eb72775b848f9e3291cb0450fe025573f3d5982e48427149e4e834bc403b2766",
+      "answerSeedHex": "3c1c91479959618451801e53fac8a041103137cd2c58c519fc69a9078ae3f2db",
+      "sides": 12,
+      "count": 3,
+      "expected": [
+        6,
+        11,
+        1
+      ]
+    },
+    {
+      "gameId": "g-roll-12-4",
+      "senderSeedHex": "2264290785f8e224edee70f49dc79899dee54286f1d3b2e09f29fb30159e492a",
+      "answerSeedHex": "abe8a80d8faeb84b165d1dd948af2d7f08c168e475a172b639ccf94a04dee374",
+      "sides": 12,
+      "count": 4,
+      "expected": [
+        8,
+        2,
+        2,
+        11
+      ]
+    },
+    {
+      "gameId": "g-roll-12-5",
+      "senderSeedHex": "58aa74a4b6f339e00cac1c85695b6a3eac6b8697ea2a5708cb90dc456a2991f9",
+      "answerSeedHex": "f1103b7df4b7eafa661d9626ee62739cd3327a978e2de9a627c57425266dd1d9",
+      "sides": 12,
+      "count": 5,
+      "expected": [
+        8,
+        5,
+        12,
+        4,
+        3
+      ]
+    },
+    {
+      "gameId": "g-roll-20-1",
+      "senderSeedHex": "227795d03b3795202996645544b8cd59cba8f359c9eb28dde17db4b4b55e6a72",
+      "answerSeedHex": "2b5d3f350b661f144cdf6e0927b848df4954d92437d4935ca610bfcd0dd8e1af",
+      "sides": 20,
+      "count": 1,
+      "expected": [
+        5
+      ]
+    },
+    {
+      "gameId": "g-roll-20-2",
+      "senderSeedHex": "ef011e6ccdcf7b40d277f92d9240961bf5e9b2bf4c021bbfd329c15ef92e4836",
+      "answerSeedHex": "2631d465001dafef5a46d7d9a89ecf3f861ea82b66a8afe7bd973b3b45e4a47b",
+      "sides": 20,
+      "count": 2,
+      "expected": [
+        11,
+        9
+      ]
+    },
+    {
+      "gameId": "g-roll-20-3",
+      "senderSeedHex": "ebd6107ec8000b019d5732e7f86cedebb9174b4720dd6e0faee6f02d0a942390",
+      "answerSeedHex": "5a2100a80cc915b8c95721fba10c4e7eafca1fce35be6ffb99b313122d10198b",
+      "sides": 20,
+      "count": 3,
+      "expected": [
+        10,
+        9,
+        8
+      ]
+    },
+    {
+      "gameId": "g-roll-20-4",
+      "senderSeedHex": "dc30b9f0074e818362c6bcbd1a99f05a2c6d36e05a19b31dbecfa5a9e5218146",
+      "answerSeedHex": "d4580c9fda19dc6f88145f6ccc24d6b50958dd93cfde58e6d664b989e82ddf57",
+      "sides": 20,
+      "count": 4,
+      "expected": [
+        10,
+        18,
+        4,
+        2
+      ]
+    },
+    {
+      "gameId": "g-roll-20-5",
+      "senderSeedHex": "81f9bf4a0bdc2b2f5a303b81a646ff915e24e5cb73ffcd84d92fb2c1b4a33ddc",
+      "answerSeedHex": "2226bfdb31aff6a093894231779d7bc12336d1c0e029688649d6cea8c262241f",
+      "sides": 20,
+      "count": 5,
+      "expected": [
+        17,
+        14,
+        19,
+        12,
+        9
+      ]
+    },
+    {
+      "gameId": "g-roll-100-1",
+      "senderSeedHex": "65b264a372ec0bcf5e65aa2bd3398bccc3b899a6e630cb6965f350a59472e2bf",
+      "answerSeedHex": "b4d712d1c961f533b43ff934ed29d5c1b5980a0831a22553e9666ed98d1702b7",
+      "sides": 100,
+      "count": 1,
+      "expected": [
+        2
+      ]
+    },
+    {
+      "gameId": "g-roll-100-2",
+      "senderSeedHex": "830f816ef8133ad3d5faa8f9157099c9b6644eaf21cbeb5b7b60d4ed1efc3d56",
+      "answerSeedHex": "c629d087aad9385423294ac809544721688099872af4e0fa4167b6c6a456f803",
+      "sides": 100,
+      "count": 2,
+      "expected": [
+        78,
+        55
+      ]
+    },
+    {
+      "gameId": "g-roll-100-3",
+      "senderSeedHex": "7593e41f97d478e19e05506ab63ae0f3841940e6c254c9c64e20b0d4e1c8616c",
+      "answerSeedHex": "1966075b179e5eaa3c439f6ccb700997716d6923a824b6e67f3b0ed7b980afbd",
+      "sides": 100,
+      "count": 3,
+      "expected": [
+        48,
+        9,
+        94
+      ]
+    },
+    {
+      "gameId": "g-roll-100-4",
+      "senderSeedHex": "23ca496e7acbadd4730f75a65b18b59a81b8f172e7a1b6c05491eb4cba3a1064",
+      "answerSeedHex": "cc8d82c49e083085d3e3dc6629dfabdd4d2ec2aa7dc36fa33feb54c5ace0ef3a",
+      "sides": 100,
+      "count": 4,
+      "expected": [
+        41,
+        49,
+        25,
+        73
+      ]
+    },
+    {
+      "gameId": "g-roll-100-5",
+      "senderSeedHex": "914bc58e92207bc62aa63099f016ab60f07be5878592e5f6903284df8b6e259e",
+      "answerSeedHex": "a3fdf347b9d0ad24d30702a0e697244c25b39c3a5029b53ef42fc00693f65d02",
+      "sides": 100,
+      "count": 5,
+      "expected": [
+        21,
+        56,
+        14,
+        25,
+        1
+      ]
+    },
+    {
+      "gameId": "g-roll-997-1",
+      "senderSeedHex": "f3c102b0f233adeefce5a2043ed10cfc18d4fd8726c6115a6d9460a50043aa52",
+      "answerSeedHex": "966a294407ea72e8d1dee3999b54d9d54e14c70b0cec519be8bda8741be43908",
+      "sides": 997,
+      "count": 1,
+      "expected": [
+        736
+      ]
+    },
+    {
+      "gameId": "g-roll-997-2",
+      "senderSeedHex": "cc0020241e9d848e41a01084ad16edbb0fbae030ebb2ba7af2737a0b052041e5",
+      "answerSeedHex": "49ec5d9ab41b73bfa7a483b2f2bf3b02e7c189292a72248716a16b66d9366325",
+      "sides": 997,
+      "count": 2,
+      "expected": [
+        633,
+        711
+      ]
+    },
+    {
+      "gameId": "g-roll-997-3",
+      "senderSeedHex": "8c3e92042ea2c84abdf0fd8831ff3eab6ef4ec91907353d5d29bab0615b8cb2a",
+      "answerSeedHex": "e2d256428bdfcb877d6409a8a3760102654d179df51eb861ead4d71944eb4dfd",
+      "sides": 997,
+      "count": 3,
+      "expected": [
+        407,
+        135,
+        273
+      ]
+    },
+    {
+      "gameId": "g-roll-997-4",
+      "senderSeedHex": "5f92c22b47233f3eee9b2d5e1bc9c07b39e6e73270107897ffb41f353e0f3dfd",
+      "answerSeedHex": "ac65323db8a83834930da78b457f8fea289db9ee8169b1bd4a2024e5bfdf6947",
+      "sides": 997,
+      "count": 4,
+      "expected": [
+        507,
+        925,
+        156,
+        946
+      ]
+    },
+    {
+      "gameId": "g-roll-997-5",
+      "senderSeedHex": "141650285e518bdd7f97fe939634ca90d5a0c20b81d2b06d7a5c8d2ab85183d6",
+      "answerSeedHex": "1fd4fa1125eee3c40550a0330b21c09865f3b705ce91a4ee1be334c44fbeef00",
+      "sides": 997,
+      "count": 5,
+      "expected": [
+        267,
+        20,
+        774,
+        124,
+        342
+      ]
+    },
+    {
+      "gameId": "g-roll-1000-1",
+      "senderSeedHex": "9f07eeaa62fa0e7cba523cfe95bea9c2162a27dd28a1dca879ba50828b0266d3",
+      "answerSeedHex": "6f0e48ef180cb9b48fe0ae06f1c8cdc1b604670d47946871d5961b54754d3e3f",
+      "sides": 1000,
+      "count": 1,
+      "expected": [
+        830
+      ]
+    },
+    {
+      "gameId": "g-roll-1000-2",
+      "senderSeedHex": "b06a051794acfd6ed990dbc82ad4af8314a378fbc12d7704b1cd76ce8ad61c1c",
+      "answerSeedHex": "0512ad9c7506ce72e781b1f7263410b6ca040d8cc6696636a2cb6651b4f7bc07",
+      "sides": 1000,
+      "count": 2,
+      "expected": [
+        958,
+        342
+      ]
+    },
+    {
+      "gameId": "g-roll-1000-3",
+      "senderSeedHex": "4fde0cc55321a1debca63d389f0a802794652377c30d21991cf8bf6ee4fef9ef",
+      "answerSeedHex": "926872b31e38995ace392fed0d9bba54f617b5a6e78660e21670a9a89580fa29",
+      "sides": 1000,
+      "count": 3,
+      "expected": [
+        808,
+        660,
+        264
+      ]
+    },
+    {
+      "gameId": "g-roll-1000-4",
+      "senderSeedHex": "02d46a50a4bda1c680c1d31b5495c975494fdb8073329d76eace89d34beccd6c",
+      "answerSeedHex": "803949d99a762ca9b35830c8115c36cb37edbd079a67a071f717ae0f4e1934ec",
+      "sides": 1000,
+      "count": 4,
+      "expected": [
+        480,
+        800,
+        840,
+        879
+      ]
+    },
+    {
+      "gameId": "g-roll-1000-5",
+      "senderSeedHex": "cdaf24420c7bbc71003779a39c033463f4d9fed615123bb51754fd9899f319b7",
+      "answerSeedHex": "bd60c3b3924f75910e78ccfd659562e8cd7c69ecfe63bdd74f1858ec413fa0ba",
+      "sides": 1000,
+      "count": 5,
+      "expected": [
+        169,
+        867,
+        174,
+        162,
+        855
+      ]
+    }
+  ],
+  "words": [
+    {
+      "x": 0,
+      "sides": 2,
+      "expected": 1
+    },
+    {
+      "x": 1,
+      "sides": 2,
+      "expected": 2
+    },
+    {
+      "x": 1,
+      "sides": 2,
+      "expected": 2
+    },
+    {
+      "x": 2,
+      "sides": 2,
+      "expected": 1
+    },
+    {
+      "x": 4294967295,
+      "sides": 2,
+      "expected": 2
+    },
+    {
+      "x": 4294967295,
+      "sides": 2,
+      "expected": 2
+    },
+    {
+      "x": 0,
+      "sides": 3,
+      "expected": 1
+    },
+    {
+      "x": 1,
+      "sides": 3,
+      "expected": 2
+    },
+    {
+      "x": 2,
+      "sides": 3,
+      "expected": 3
+    },
+    {
+      "x": 3,
+      "sides": 3,
+      "expected": 1
+    },
+    {
+      "x": 4294967294,
+      "sides": 3,
+      "expected": 3
+    },
+    {
+      "x": 4294967295,
+      "sides": 3,
+      "expected": null
+    },
+    {
+      "x": 4294967295,
+      "sides": 3,
+      "expected": null
+    },
+    {
+      "x": 0,
+      "sides": 6,
+      "expected": 1
+    },
+    {
+      "x": 1,
+      "sides": 6,
+      "expected": 2
+    },
+    {
+      "x": 5,
+      "sides": 6,
+      "expected": 6
+    },
+    {
+      "x": 6,
+      "sides": 6,
+      "expected": 1
+    },
+    {
+      "x": 4294967291,
+      "sides": 6,
+      "expected": 6
+    },
+    {
+      "x": 4294967292,
+      "sides": 6,
+      "expected": null
+    },
+    {
+      "x": 4294967295,
+      "sides": 6,
+      "expected": null
+    },
+    {
+      "x": 0,
+      "sides": 7,
+      "expected": 1
+    },
+    {
+      "x": 1,
+      "sides": 7,
+      "expected": 2
+    },
+    {
+      "x": 6,
+      "sides": 7,
+      "expected": 7
+    },
+    {
+      "x": 7,
+      "sides": 7,
+      "expected": 1
+    },
+    {
+      "x": 4294967291,
+      "sides": 7,
+      "expected": 7
+    },
+    {
+      "x": 4294967292,
+      "sides": 7,
+      "expected": null
+    },
+    {
+      "x": 4294967295,
+      "sides": 7,
+      "expected": null
+    },
+    {
+      "x": 0,
+      "sides": 100,
+      "expected": 1
+    },
+    {
+      "x": 1,
+      "sides": 100,
+      "expected": 2
+    },
+    {
+      "x": 99,
+      "sides": 100,
+      "expected": 100
+    },
+    {
+      "x": 100,
+      "sides": 100,
+      "expected": 1
+    },
+    {
+      "x": 4294967199,
+      "sides": 100,
+      "expected": 100
+    },
+    {
+      "x": 4294967200,
+      "sides": 100,
+      "expected": null
+    },
+    {
+      "x": 4294967295,
+      "sides": 100,
+      "expected": null
+    },
+    {
+      "x": 0,
+      "sides": 1000,
+      "expected": 1
+    },
+    {
+      "x": 1,
+      "sides": 1000,
+      "expected": 2
+    },
+    {
+      "x": 999,
+      "sides": 1000,
+      "expected": 1000
+    },
+    {
+      "x": 1000,
+      "sides": 1000,
+      "expected": 1
+    },
+    {
+      "x": 4294966999,
+      "sides": 1000,
+      "expected": 1000
+    },
+    {
+      "x": 4294967000,
+      "sides": 1000,
+      "expected": null
+    },
+    {
+      "x": 4294967295,
+      "sides": 1000,
+      "expected": null
+    }
+  ],
+  "outcomes": [
+    {
+      "kind": "soccer",
+      "value": 1,
+      "expected": "miss"
+    },
+    {
+      "kind": "soccer",
+      "value": 2,
+      "expected": "miss"
+    },
+    {
+      "kind": "soccer",
+      "value": 3,
+      "expected": "goal"
+    },
+    {
+      "kind": "soccer",
+      "value": 4,
+      "expected": "goal"
+    },
+    {
+      "kind": "soccer",
+      "value": 5,
+      "expected": "goal"
+    },
+    {
+      "kind": "basketball",
+      "value": 1,
+      "expected": "miss"
+    },
+    {
+      "kind": "basketball",
+      "value": 2,
+      "expected": "miss"
+    },
+    {
+      "kind": "basketball",
+      "value": 3,
+      "expected": "miss"
+    },
+    {
+      "kind": "basketball",
+      "value": 4,
+      "expected": "score"
+    },
+    {
+      "kind": "basketball",
+      "value": 5,
+      "expected": "score"
+    },
+    {
+      "kind": "darts",
+      "value": 1,
+      "expected": "miss"
+    },
+    {
+      "kind": "darts",
+      "value": 2,
+      "expected": "outer"
+    },
+    {
+      "kind": "darts",
+      "value": 3,
+      "expected": "outer"
+    },
+    {
+      "kind": "darts",
+      "value": 4,
+      "expected": "inner"
+    },
+    {
+      "kind": "darts",
+      "value": 5,
+      "expected": "inner"
+    },
+    {
+      "kind": "darts",
+      "value": 6,
+      "expected": "bullseye"
+    }
+  ]
+}

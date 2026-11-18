@@ -1,0 +1,158 @@
+{
+  "id": "game-card",
+  "title": "Game card",
+  "flow": "chat",
+  "summary": "The card in the timeline for one game. A duel card waits for both players, then shows both picks and the winner with a short animation. A roll card animates and lands on the same values on every phone.",
+  "state": {
+    "gameId": {
+      "type": "string",
+      "description": "From the challenge or roll step."
+    },
+    "kind": {
+      "type": "enum",
+      "values": [
+        "parOuImpar",
+        "jokenpo",
+        "dice",
+        "soccer",
+        "basketball",
+        "darts"
+      ],
+      "description": "From the first step."
+    },
+    "reason": {
+      "type": "string",
+      "optional": true,
+      "description": "From the first step."
+    },
+    "phase": {
+      "type": "enum",
+      "values": [
+        "waiting",
+        "revealing",
+        "done",
+        "declined",
+        "expired",
+        "notRevealed",
+        "verifyFailed"
+      ],
+      "description": "waiting: a commit or answer is missing. revealing: all commits are in and a reveal is missing. done: the result is known. verifyFailed: a reveal does not match its commit (checkReveal)."
+    },
+    "isPlayer": {
+      "type": "bool",
+      "description": "true when this account is the challenger or the opponent of a duel."
+    },
+    "ownPickMade": {
+      "type": "bool",
+      "description": "true when this account sent its commit."
+    },
+    "challengerPick": {
+      "type": "string",
+      "optional": true,
+      "description": "After the reveal: a number or a hand."
+    },
+    "opponentPick": {
+      "type": "string",
+      "optional": true,
+      "description": "After the reveal."
+    },
+    "winner": {
+      "type": "enum",
+      "values": [
+        "challenger",
+        "opponent",
+        "draw"
+      ],
+      "optional": true,
+      "description": "From parOuImparWinner or jokenpoWinner."
+    },
+    "rollValues": {
+      "type": "list",
+      "of": {
+        "type": "int",
+        "description": "One die, 1 to sides."
+      },
+      "description": "From rollValues(gameId, senderSeed, answerSeed, sides, count)."
+    },
+    "outcome": {
+      "type": "string",
+      "optional": true,
+      "description": "For soccer, basketball and darts: rollOutcome of the single value."
+    }
+  },
+  "actions": {
+    "pick": {
+      "params": {
+        "choice": {
+          "type": "string",
+          "description": "A number minNumber to maxNumber as a decimal string, or pedra, papel or tesoura."
+        }
+      },
+      "effect": "Makes a salt of saltBytes and sends a commit step with gameCommit(gameId, ownUserId, choice, salt). Keeps the choice and salt on this phone. Shows bipe_games_chosen."
+    },
+    "reveal": {
+      "effect": "Automatic, no tap. When both commits of a duel are in the timeline, the phone sends a reveal step with its choice and salt. For a roll, when the first answer is in the timeline, the sender's phone sends a reveal step with its seed."
+    },
+    "answer": {
+      "effect": "Automatic, no tap. The first phone of another member that sees a roll with no answer yet sends an answer step with a fresh random seed of seedBytes in clear. Every phone uses the first answer in timeline order and ignores later ones."
+    },
+    "decline": {
+      "effect": "The opponent sends a decline step. The card shows bipe_games_declined."
+    },
+    "playAgain": {
+      "effect": "Starts a new game of the same kind with the same people and reason."
+    }
+  },
+  "strings": [
+    "bipe_games_challenge",
+    "bipe_games_accept",
+    "bipe_games_decline",
+    "bipe_games_declined",
+    "bipe_games_expired",
+    "bipe_games_pick_side",
+    "bipe_games_side_par",
+    "bipe_games_side_impar",
+    "bipe_games_pick_number",
+    "bipe_games_pick_hand",
+    "bipe_games_hand_pedra",
+    "bipe_games_hand_papel",
+    "bipe_games_hand_tesoura",
+    "bipe_games_waiting",
+    "bipe_games_chosen",
+    "bipe_games_sum",
+    "bipe_games_result_par",
+    "bipe_games_result_impar",
+    "bipe_games_you_won",
+    "bipe_games_you_lost",
+    "bipe_games_winner",
+    "bipe_games_draw",
+    "bipe_games_play_again",
+    "bipe_games_rolling",
+    "bipe_games_dice_total",
+    "bipe_games_coin_heads",
+    "bipe_games_coin_tails",
+    "bipe_games_outcome_goal",
+    "bipe_games_outcome_score",
+    "bipe_games_outcome_miss",
+    "bipe_games_outcome_outer",
+    "bipe_games_outcome_inner",
+    "bipe_games_outcome_bullseye",
+    "bipe_games_not_revealed",
+    "bipe_games_not_revealed_footer",
+    "bipe_games_verify_failed"
+  ],
+  "sdk": [
+    "Room.timeline",
+    "Room.sendRaw"
+  ],
+  "parity": [],
+  "notes": [
+    "A duel expires after duelExpirySeconds without both commits. A roll shows bipe_games_not_revealed when the sender's phone does not reveal within rollRevealTimeoutSeconds after the answer.",
+    "A d2 with one die shows bipe_games_coin_heads for 1 and bipe_games_coin_tails for 2.",
+    "Several dice: the card shows each value and bipe_games_dice_total.",
+    "Par ou ímpar shows bipe_games_sum and bipe_games_result_par or bipe_games_result_impar.",
+    "The phone checks every reveal with checkReveal before it shows a result. A failed check shows bipe_games_verify_failed and no winner.",
+    "Only the players' phones send commits and reveals. Other members of a group watch the card.",
+    "Limit: a person who controls two accounts in the same chat can choose a roll result."
+  ]
+}

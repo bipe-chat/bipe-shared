@@ -8,7 +8,7 @@
       "phase": {
         "type": "enum",
         "values": ["checking", "supported", "needsPin", "notSupported"],
-        "description": "checking: the support gate runs. supported: the server advertises org.matrix.msc4108 and this phone holds the hidden password. needsPin: a beta account with no hidden password on this phone; it needs the PIN first (ADR 0057). notSupported: the server does not advertise MSC4108, or no hidden password for another reason."
+        "description": "checking: the support gate runs. supported: the server advertises org.matrix.msc4108, the account is device-first (GET /v1/me/account device_first) and this phone registered its device key (ADR 0283). needsPin: a beta account (device_first false); it needs the PIN first (ADR 0057). notSupported: the server does not advertise MSC4108, or this phone has no registered device key."
       }
     }
   },
@@ -38,7 +38,7 @@
       "effect": "From Settings > Linked devices > Link a computer (bipe_linked_devices_link_computer). Runs the support gate: Bipe check, never Client.isLoginWithQrCodeSupported (ADR 0118). supported: asks for the camera and sets scanning. needsPin: shows bipe_link_computer_needs_pin with bipe_link_computer_create_pin. notSupported: shows bipe_link_computer_not_supported."
     },
     "createPin": {
-      "effect": "needsPin: opens the signup-pin steps, then POST /v1/me/device-first, which stores a new hidden password on this phone. Then runs open again."
+      "effect": "needsPin: opens the signup-pin steps, then POST /v1/me/device-first. The app signs in with nothing new: it registers its device key (account-start deviceKey) and forgets the returned password. Then runs open again."
     },
     "codeRead": {
       "params": { "bytes": { "type": "string", "description": "The raw bytes that the camera's QR decoder read." } },
@@ -112,7 +112,7 @@
   "parity": ["web-sign-in"],
   "notes": [
     "Single entry point (ADR 0116, security.md rule 5): only Settings > Linked devices > Link a computer opens this scanner. The general camera, chat attachments, links and QR codes in messages never start a web sign-in. The scanner for profile and invite codes never hands a sign-in code to this flow.",
-    "The support gate replaces the SDK gate, which is false for an m.login.password session (ADR 0118 F10a): GET /_matrix/client/versions advertises org.matrix.msc4108 in unstable_features, and this phone holds the hidden password of the account. The grant handler works without OAuth. Bipe logic: BipeWebLink.qrLoginFeature and BipeMatrixAccountAPI.supportsQRLogin (iOS BipeKit); BipeWebLinkSession.isSupported (Android libraries/bipe weblink).",
+    "The support gate replaces the SDK gate, which is false for an m.login.password session (ADR 0118 F10a): GET /_matrix/client/versions advertises org.matrix.msc4108 in unstable_features, and this phone registered its device key for a device-first account (ADR 0283). The grant handler works without OAuth. Bipe logic: BipeWebLink.qrLoginFeature and BipeMatrixAccountAPI.supportsQRLogin (iOS BipeKit); BipeWebLinkSession.isSupported (Android libraries/bipe weblink).",
     "needsPin is the beta account case (made before ADR 0057): POST /v1/me/device-first needs a PIN first (409 pin_not_set). bipe_link_computer_needs_pin takes pinLength from registries/accounts.json.",
     "Time: the Synapse rendezvous session lives 60 seconds from the QR code on the computer (registries/accounts.json webLinkCooldownSeconds comment). The scan, the check code, the warning, the cooldown, the biometric check and the MAS page must fit in it. An expired session ends as notFound or expired; the user reloads the site for a new code.",
     "The check code is not secret from the user: it proves that the browser and this phone share the channel. Show it large. Never read it aloud and never send it anywhere.",

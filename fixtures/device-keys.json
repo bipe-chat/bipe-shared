@@ -1,0 +1,73 @@
+{
+  "$comment": "ADR 0283 (bipe#1351). TEST-ONLY P-256 keys (private scalars 31..31 and 32..32), never in a release build. A device key signs message_utf8 of passwordOnceMessage(user_id, device_id, challenge) with ECDSA P-256 SHA-256; the signature is DER, base64. public_key is base64 SubjectPublicKeyInfo DER. iOS: public_key is spki_prefix_hex + SecKeyCopyExternalRepresentation (x963). Reference: tools/lib/device-keys.mjs. Written once by hand (ECDSA signatures are random); tools/gen-test-vectors.mjs checks each one.",
+  "tag": "bipe-password-once:v1",
+  "spki_prefix_hex": "3059301306072a8648ce3d020106082a8648ce3d030107034200",
+  "keys": [
+    {
+      "x963_base64": "BHQxsY8FWshzset9dNhxatHj3waQiwDML5ARU/jrZCgYSGfA/asznGxJCjmucE0ptbTC8SRDUKKQWWIs9JtCEVU=",
+      "spki_base64": "MFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAEdDGxjwVayHOx63102HFq0ePfBpCLAMwvkBFT+OtkKBhIZ8D9qzOcbEkKOa5wTSm1tMLxJENQopBZYiz0m0IRVQ=="
+    }
+  ],
+  "message": {
+    "user_id": "@fmtestuser01:bipe.net.br",
+    "device_id": "ABCDEFGHIJ",
+    "challenge": "dGVzdC1vbmx5LWNoYWxsZW5nZS0wMDAwMDAwMDAwMDA",
+    "message_utf8": "bipe-password-once:v1\n@fmtestuser01:bipe.net.br\nABCDEFGHIJ\ndGVzdC1vbmx5LWNoYWxsZW5nZS0wMDAwMDAwMDAwMDA"
+  },
+  "vectors": [
+    {
+      "name": "valid",
+      "public_key": "MFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAEdDGxjwVayHOx63102HFq0ePfBpCLAMwvkBFT+OtkKBhIZ8D9qzOcbEkKOa5wTSm1tMLxJENQopBZYiz0m0IRVQ==",
+      "user_id": "@fmtestuser01:bipe.net.br",
+      "device_id": "ABCDEFGHIJ",
+      "challenge": "dGVzdC1vbmx5LWNoYWxsZW5nZS0wMDAwMDAwMDAwMDA",
+      "signature": "MEUCIHnBhn9SYUizxepWMa3k2ljZo+4aq6+uUllRcsY7LLuNAiEA3XK2dv391yElWHxdNUdxusrdYbB4UdwuETBVwwtzoig=",
+      "expect": true
+    },
+    {
+      "name": "another key signed",
+      "public_key": "MFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAEdDGxjwVayHOx63102HFq0ePfBpCLAMwvkBFT+OtkKBhIZ8D9qzOcbEkKOa5wTSm1tMLxJENQopBZYiz0m0IRVQ==",
+      "user_id": "@fmtestuser01:bipe.net.br",
+      "device_id": "ABCDEFGHIJ",
+      "challenge": "dGVzdC1vbmx5LWNoYWxsZW5nZS0wMDAwMDAwMDAwMDA",
+      "signature": "MEQCIHt2Yq+QIzI29DFjmbn3b3+3C3d7vAUo09ATKmQDaA+NAiA71VkofsDYwWxFUlwFu0eDQEvMxy95nDtacSlOro7g3Q==",
+      "expect": false
+    },
+    {
+      "name": "signed for another device",
+      "public_key": "MFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAEdDGxjwVayHOx63102HFq0ePfBpCLAMwvkBFT+OtkKBhIZ8D9qzOcbEkKOa5wTSm1tMLxJENQopBZYiz0m0IRVQ==",
+      "user_id": "@fmtestuser01:bipe.net.br",
+      "device_id": "ABCDEFGHIJ",
+      "challenge": "dGVzdC1vbmx5LWNoYWxsZW5nZS0wMDAwMDAwMDAwMDA",
+      "signature": "MEUCIFO2AbyqPjA2iHYW/cMhiKmGuNtulyEUGN4hCRfbWgTVAiEAxF2a4mvThP02mCe6eVW5keinwCQHP2pY1DcYrB/0vps=",
+      "expect": false
+    },
+    {
+      "name": "signed for another user",
+      "public_key": "MFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAEdDGxjwVayHOx63102HFq0ePfBpCLAMwvkBFT+OtkKBhIZ8D9qzOcbEkKOa5wTSm1tMLxJENQopBZYiz0m0IRVQ==",
+      "user_id": "@fmtestuser01:bipe.net.br",
+      "device_id": "ABCDEFGHIJ",
+      "challenge": "dGVzdC1vbmx5LWNoYWxsZW5nZS0wMDAwMDAwMDAwMDA",
+      "signature": "MEUCIQD9+b/ub+8VhcsHWAFkITbDmlxP9gX5Y7ciXTjyVYzlQAIgGOzJoVtGhqiS9Y7RSMF2Z6rymNNAXHUaejCFmBqqO1M=",
+      "expect": false
+    },
+    {
+      "name": "signed another challenge",
+      "public_key": "MFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAEdDGxjwVayHOx63102HFq0ePfBpCLAMwvkBFT+OtkKBhIZ8D9qzOcbEkKOa5wTSm1tMLxJENQopBZYiz0m0IRVQ==",
+      "user_id": "@fmtestuser01:bipe.net.br",
+      "device_id": "ABCDEFGHIJ",
+      "challenge": "dGVzdC1vbmx5LWNoYWxsZW5nZS0wMDAwMDAwMDAwMDA",
+      "signature": "MEQCICqNSgWmxEbJIeaFc9J+Lk/+VhKF6N+8J7Lrq5grh36tAiBvpiTIQzxbOtfgayLG+w6sKIn9FEgz/zYpWYBcnGUawg==",
+      "expect": false
+    },
+    {
+      "name": "raw r||s signature, not DER",
+      "public_key": "MFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAEdDGxjwVayHOx63102HFq0ePfBpCLAMwvkBFT+OtkKBhIZ8D9qzOcbEkKOa5wTSm1tMLxJENQopBZYiz0m0IRVQ==",
+      "user_id": "@fmtestuser01:bipe.net.br",
+      "device_id": "ABCDEFGHIJ",
+      "challenge": "dGVzdC1vbmx5LWNoYWxsZW5nZS0wMDAwMDAwMDAwMDA",
+      "signature": "kyJKITdgwzkXVcAt5AbdMe0GajvZduWou8btkhlaNJA6VIoiGj3DATntfjLkYk7eDImDNrdSuwZDp12ipkA3HQ==",
+      "expect": false
+    }
+  ]
+}

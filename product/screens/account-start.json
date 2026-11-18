@@ -2,7 +2,7 @@
   "id": "account-start",
   "title": "Account start",
   "flow": "launch",
-  "summary": "Opens the account that lives on this phone. Device-first accounts have no login screen (ADR 0057): the app signs in with the hidden password from the device credential store, then restores the session on later starts.",
+  "summary": "Opens the account that lives on this phone. Device-first accounts have no login screen (ADR 0057): the app signs in with the hidden password that sign-up or recovery just stored, registers this phone's device key and deletes the password (ADR 0283), then restores the session on later starts.",
   "state": {
     "phase": {
       "type": "enum",
@@ -27,6 +27,9 @@
   "actions": {
     "start": {
       "effect": "On launch: restore the saved SDK session if one exists; else finish a pending sign-up with POST /v1/signup/resume (signup-create, ADR 0094); else read the device credentials of every account on this phone (BipeKit BipeCredentialStore.password() on iOS, libraries/bipe on Android) and sign in with it; else go to noAccount. Before noAccount it checks for legacy data (legacyKept)."
+    },
+    "deviceKey": {
+      "effect": "ADR 0283 (bipe#1351). After each ready session (start, sign-up, every recovery, QR join, POST /v1/me/device-first) and on every launch for each account with a session: if this phone has no device key for the account, makes one (iOS Secure Enclave P-256, kSecAttrAccessibleAfterFirstUnlockThisDeviceOnly, never synced; Android Keystore EC P-256, StrongBox when present, never in a backup), then POST /v1/me/device-key. On 204, deletes the stored hidden password of the account and keeps the account record (user ID and the date it was stored first), so the account list and its order stay. On 409 device_key_exists, makes no new key and keeps nothing else: the phone cannot approve links until it recovers. A network error tries again on the next launch. No screen, no text."
     },
     "retry": {
       "effect": "From failed: run start again."
@@ -74,6 +77,7 @@
     "Carry-over from the fork (bipe/docs/client-switch-plan.md step 3, bipe-chat/bipe#603): with the store ID set the app reads the earlier app's data in place and copies what it can read (keychain move on iOS, BipeForkVault on Android). It never deletes, moves over or writes into a legacy item, except the one move of the fork's vault file to bipe-account.fork on Android, which keeps every byte.",
     "Never show an empty chat list or onboarding-welcome as if the phone had no account while legacyKept is true: noAccount shows bipe_app_start_legacy_title, bipe_app_start_legacy_body, then bipe_app_start_legacy_recover (recoverLegacy, primary) and bipe_app_start_legacy_fresh (startFresh).",
     "Account isolation: every legacy item maps to the one Matrix ID it names. An item without a Matrix ID is never given to an account; it shows up only in the structure report.",
-    "Structure report (rehearsal evidence, bipe-chat/bipe#603): when legacy data is on the phone, problem-report adds it as one more compressed-log file, legacy-data.json, only when includeLogs is on. It lists names, sizes, value types, JSON key names and SQLite table names; never a value, a password, a token, a key, a message or a Matrix ID (Matrix IDs show as their server name only)."
+    "Structure report (rehearsal evidence, bipe-chat/bipe#603): when legacy data is on the phone, problem-report adds it as one more compressed-log file, legacy-data.json, only when includeLogs is on. It lists names, sizes, value types, JSON key names and SQLite table names; never a value, a password, a token, a key, a message or a Matrix ID (Matrix IDs show as their server name only).",
+    "No phone keeps the hidden password after its device key is registered (ADR 0283). The password from sign-up, a recovery or the beta move lives on the phone only until deviceKey succeeds; start signs in with it only while it is there and no session is saved. A session the server refuses never signs in again by itself (soft-logout)."
   ]
 }

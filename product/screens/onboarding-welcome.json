@@ -39,6 +39,9 @@
     },
     "haveAccount": {
       "effect": "Opens the way back into an existing account (recovery-start, bipe-chat/bipe#555)."
+    },
+    "openLanguageRegion": {
+      "effect": "Opens language-region as a sheet (ADR 0197, ADR 0298)."
     }
   },
   "strings": [
@@ -49,11 +52,13 @@
     "bipe_onboarding_have_account",
     "bipe_onboarding_paste_link",
     "bipe_onboarding_learn_more",
-    "bipe_signup_title"
+    "bipe_signup_title",
+    "bipe_settings_language_region"
   ],
   "sdk": [],
   "parity": ["first-run", "onboarding-welcome", "invites", "deferred-invite", "phone-account"],
   "notes": [
+    "A quiet row on the cover shows the app language and the region, for example 'Português · Brasil' (language name · region name, from language-region). Its accessibility label is bipe_settings_language_region. It runs openLanguageRegion.",
     "Each pair of invitePending and inviteRequired matches exactly one start variant in registries/onboarding.json. The generated onboarding code (gen.mjs) gives the title and buttons; the screen never hard-codes them.",
     "No points list: the welcome line and the title say what Bipe is. The scam check, Brazil and no-ads points belong to the store listing and the site (product/appstore.md), not to this screen. The bipe_onboarding_point_* strings stay for those surfaces.",
     "Layout: a full-bleed açaí cover with the Bipe mark, the wordmark, the welcome line and the title; the cover also holds learnMore. The cover is not an inset card. Under it, the variant's primary button (filled) and its text buttons (haveAccount) as a tonal button of the same width. A tall window gives the cover all the height above the buttons; a wide window makes the cover the left half of the whole window, so the split meets the iPhone Duo fold. No paste row here: pasting a code belongs to signup-invite-code. The one exception is pasteLink on iOS, a text button under haveAccount that shows only while the clipboard holds a URL, because iOS has no install referrer.",

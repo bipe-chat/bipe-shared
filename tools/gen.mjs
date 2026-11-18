@@ -472,6 +472,8 @@ ${reg.workHours.defaultDays.map((d) => `        (day: ${d.day}, ranges: [${d.ran
     public static let mapsLiveDefaultDistanceMetres = ${reg.maps.live.defaultDistanceMetres}
     public static let mapsLiveMinIntervalSeconds = ${reg.maps.live.minIntervalSeconds}
     public static let mapsLiveMaxIntervalSeconds = ${reg.maps.live.maxIntervalSeconds}
+    /// Region ids (registries/regions.json, ADR 0197), in order. Each has the string bipe_region_<id>.
+    public static let regionIds: [String] = ${swiftArray(reg.regions.regions.map((r) => JSON.stringify(r.id)))}
 
     /// Verificar com gov.br (bipe-chat/bipe#544; registries/govbr.json). Rules: BipeGovbrFlow, test-vectors/govbr-verify.json.
     public static let govbrFileName = ${swiftString(reg.govbr.fileName)}
@@ -954,6 +956,8 @@ ${reg.workHours.defaultDays.map((d) => `        ${d.day} to listOf(${d.ranges.ma
     const val MAPS_LIVE_DEFAULT_DISTANCE_METRES = ${reg.maps.live.defaultDistanceMetres}
     const val MAPS_LIVE_MIN_INTERVAL_SECONDS = ${reg.maps.live.minIntervalSeconds}
     const val MAPS_LIVE_MAX_INTERVAL_SECONDS = ${reg.maps.live.maxIntervalSeconds}
+    /** Region ids (registries/regions.json, ADR 0197), in order. Each has the string bipe_region_<id>. */
+    val REGION_IDS: List<String> = listOf(${reg.regions.regions.map((r) => JSON.stringify(r.id)).join(", ")})
 
     /** Verificar com gov.br (bipe-chat/bipe#544; registries/govbr.json). Rules: BipeGovbrFlow, test-vectors/govbr-verify.json. */
     const val GOVBR_FILE_NAME = ${kotlinString(reg.govbr.fileName)}

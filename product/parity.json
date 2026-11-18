@@ -4412,8 +4412,13 @@
       "issue": 664,
       "fork": true,
       "macos": {
-        "status": "planned",
-        "issue": 1162
+        "status": "built",
+        "evidence": [
+          "bipe-app/macos/BipeMac/MacMessageSheets.swift",
+          "bipe-app/macos/BipeMac/MacTimeline.swift",
+          "bipe-app/macos/BipeMac/MacDesign.swift"
+        ],
+        "note": "Picker with check marks and the chat limit, the forward mark and line, done and failed notices, and selection mode for forward and delete. Cross-device acceptance remains in #1162."
       },
       "windows": {
         "status": "planned",

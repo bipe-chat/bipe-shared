@@ -3683,8 +3683,12 @@
         "reason": "Client behaviour; no Bipe server code"
       },
       "macos": {
-        "status": "planned",
-        "issue": 1162
+        "status": "built",
+        "evidence": [
+          "bipe-app/macos/BipeMac/MacRoomList.swift",
+          "bipe-app/macos/BipeMac/MacTimeline.swift"
+        ],
+        "note": "The Mac sends and receives chat.bipe.delivered through the shared iOS DeliveredAcks (project.yml); the delivered log is local to the Mac. Device acceptance remains in #1162."
       },
       "windows": {
         "status": "planned",

@@ -27,6 +27,15 @@ test("shared code or phone UI alone cannot claim desktop parity", () => {
   assert.deepEqual(checkDesktop([item({ status: "built", evidence: ["bipe-app/macos/BipeMac/Example.swift"] })], () => true).problems, []);
   assert.match(checkDesktop([item({ status: "testing", evidence: ["bipe-app/macos/Missing.swift"] })], () => false).problems.join(), /does not exist/);
 });
+test("Windows evidence is the Compose desktop modules, not phone code or shared code alone", () => {
+  const planned = { status: "planned", issue: 1018 };
+  const windows = evidence => checkDesktop([item(planned, { status: "built", evidence })], () => true).problems;
+  assert.deepEqual(windows(["bipe-app/android/desktop-app/src/main/kotlin/Example.kt", "bipe-app/android/libraries/bipe/src/main/kotlin/Shared.kt"]), []);
+  assert.deepEqual(windows(["bipe-app/android/desktop-runtime/src/main/kotlin/Example.kt"]), []);
+  assert.ok(windows(["bipe-app/android/libraries/bipe/src/main/kotlin/Shared.kt"]).length);
+  assert.ok(windows(["bipe-app/android/app/src/main/kotlin/Example.kt"]).length);
+  assert.ok(windows(["bipe-app/macos/BipeMac/Example.swift"]).length);
+});
 test("desktop exclusions need a policy decision and evidence is checked only for implemented entries", () => {
   assert.ok(checkDesktop([item({ status: "n/a", reason: "phone" })], () => true).problems.length);
   assert.ok(checkDesktop([item({ status: "policy", adr: 266 })], () => true).problems.length);

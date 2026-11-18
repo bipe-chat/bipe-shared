@@ -2638,7 +2638,7 @@
           "points": [
             "O preço soma os clientes que falam com vocês no Bipe e os atendentes a mais.",
             "Mil mensagens ou um milhão, o valor é o mesmo. Nenhum plano cobra por mensagem.",
-            "Até 3 atendentes e 1.000 clientes ativos no Bipe, é de graça.",
+            "Quem atende até 1.000 pessoas não paga. Acima disso, um mínimo por mês pelo tamanho, de R$ 19 a R$ 2.990, e o uso entra nesse mínimo.",
             "Depois, R$ 1,00 por cliente ativo por ano e R$ 69 por atendente a mais por mês, em reais.",
             "No piloto, a empresa paga metade, e esse valor vira crédito no primeiro ano.",
             "Ofertas é opcional e cobra à parte, por seguidor. Só recebe quem escolheu seguir. Ainda não está no ar."
@@ -2666,7 +2666,7 @@
           "heading": "Como o Bipe se paga",
           "points": [
             "Quem usa o Bipe para conversar nunca paga.",
-            "A empresa paga pelos clientes que falam com ela no Bipe e pelos atendentes a mais. Até 3 atendentes e 1.000 clientes ativos, é de graça.",
+            "A empresa paga o mínimo do seu nível, de R$ 0 a R$ 2.990 por mês pelo número de pessoas que atende, ou o uso, o que for maior. Quem atende até 1.000 pessoas não paga.",
             "No Bipe não tem preço por mensagem.",
             "O Bipe não vende anúncio: nenhuma empresa paga para aparecer para quem não pediu. A empresa pode pagar por quem escolheu receber as ofertas dela.",
             "O Bipe planeja um financiamento coletivo, para quem quiser apoiar. O apoio é voluntário e não compra selo nem voto."
@@ -2779,7 +2779,7 @@
           "points": [
             "The price adds the customers who talk with you on Bipe and the extra agents.",
             "A thousand messages or a million, the amount is the same. No plan charges per message.",
-            "Up to 3 agents and 1,000 active customers on Bipe, it is free.",
+            "A company that serves up to 1,000 people pays nothing. Above that, a monthly minimum by size, from R$ 19 to R$ 2,990, and usage counts toward it.",
             "Then R$ 1.00 per active customer per year and R$ 69 per extra agent per month, in reais.",
             "In the pilot, a company pays half, and that amount becomes credit in the first year.",
             "Offers are optional and charged apart, per follower. Only people who chose to follow receive them. This is not live yet."
@@ -2807,7 +2807,7 @@
           "heading": "How Bipe pays for itself",
           "points": [
             "People who use Bipe to chat never pay.",
-            "A company pays for the customers who talk with it on Bipe and for extra agents. Up to 3 agents and 1,000 active customers, it is free.",
+            "A company pays its level's minimum, from R$ 0 to R$ 2,990 a month by the number of people it serves, or its usage, whichever is higher. A company that serves up to 1,000 people pays nothing.",
             "Bipe has no price per message.",
             "Bipe sells no ads: no company can pay to appear in front of someone who did not ask. A company can pay for people who chose to receive its offers.",
             "Bipe plans a crowdfunding campaign for people who want to support it. Support is voluntary and buys no seal and no vote."
@@ -2904,7 +2904,7 @@
           "Os dados e os servidores ficam no Brasil, sob a lei brasileira.",
           "Preço fixo em reais, por mês ou por ano. Nenhum plano cobra por mensagem.",
           "O selo não está à venda. Dinheiro não compra selo, nível de verificação, análise mais rápida nem o nome de outra organização. O plano paga serviço: atendentes, suporte, monitoramento e condições de contrato.",
-          "Quem usa o Bipe para conversar nunca paga.",
+          "Quem usa o Bipe para conversar nunca paga. Quem atende até 1.000 pessoas também não.",
           "Nenhuma empresa paga para aparecer para quem não pediu.",
           "O Bipe planeja um financiamento coletivo, para quem quiser apoiar. O apoio é voluntário e não compra selo nem voto."
         ]
@@ -2931,13 +2931,13 @@
           "O Bipe não usa dados de ninguém para escolher quem vê a oferta."
         ]
       },
-      "tiersHeading": "Como o preço funciona",
+      "tiersHeading": "O uso, quando passar do mínimo",
       "freePrice": "R$ 0",
       "pilotPrice": "Metade no piloto",
       "tiers": {
         "small": {
           "name": "Grátis",
-          "who": "Até 3 atendentes e até 1.000 clientes ativos no Bipe.",
+          "who": "Quem atende até 1.000 pessoas.",
           "billing": "Sem mensalidade.",
           "points": [
             "Selo de CNPJ verificado e nome reservado, com a verificação automática.",
@@ -2999,23 +2999,23 @@
       "ctaForm": "Quero usar o Bipe",
       "calculator": {
         "heading": "Quanto o Bipe custa para vocês",
-        "lede": "Preço fixo em reais. Você paga pelos clientes que usam o Bipe com você e pelos atendentes a mais. Mil mensagens ou um milhão, o valor é o mesmo.",
+        "lede": "Preço fixo em reais. A empresa paga o mínimo do nível ou o uso, o que for maior. Mil mensagens ou um milhão, o valor é o mesmo.",
         "presetsLabel": "Exemplos",
         "presets": {
-          "shop": "Loja online",
-          "city": "Prefeitura",
+          "street": "Banca de café",
+          "shop": "Padaria ou salão",
           "clinics": "Rede de clínicas",
-          "coop": "Cooperativa de crédito",
-          "health": "Plano de saúde regional",
-          "bank": "Banco médio"
+          "regional": "Banco regional",
+          "national": "Varejista nacional",
+          "brand": "Grande marca"
         },
         "presetNotes": {
-          "shop": "Loja com 5 atendentes e 3 mil clientes ativos no Bipe. Gasto de hoje: 30 mil mensagens por mês, metade avisos de pedido e metade respostas.",
-          "city": "Prefeitura com 15 atendentes e 20 mil pessoas ativas no Bipe. Gasto de hoje: 100 mil mensagens por mês, metade avisos e metade respostas. Órgão público paga metade.",
-          "clinics": "Rede com 10 atendentes e 10 mil pacientes ativos no Bipe. Gasto de hoje: 80 mil mensagens por mês, metade lembretes de consulta e metade respostas.",
-          "coop": "Cooperativa com 20 atendentes e 30 mil cooperados ativos no Bipe. Gasto de hoje: 300 mil mensagens por mês, metade avisos e metade respostas.",
-          "health": "Plano com 50 atendentes e 100 mil beneficiários ativos no Bipe. Gasto de hoje: 1 milhão de mensagens por mês, metade avisos e metade respostas.",
-          "bank": "Banco com 200 atendentes e 500 mil clientes ativos no Bipe. Gasto de hoje: 10 milhões de mensagens por mês, metade avisos e metade respostas."
+          "street": "Banca que atende 400 pessoas, com 100 delas no Bipe. Hoje não paga nada para falar com os clientes.",
+          "shop": "Padaria que atende 3 mil pessoas, com 300 no Bipe e 2 atendentes. Gasto de hoje: cerca de 3 mil mensagens por mês.",
+          "clinics": "Rede que atende 30 mil pacientes, com 3 mil no Bipe e 8 atendentes. Gasto de hoje: cerca de 30 mil mensagens por mês.",
+          "regional": "Banco que atende 400 mil clientes, com 20 mil no Bipe e 20 atendentes. Gasto de hoje: cerca de 400 mil mensagens por mês.",
+          "national": "Varejista que atende 5 milhões de clientes, com 150 mil no Bipe e 50 atendentes. Gasto de hoje: cerca de 5 milhões de mensagens por mês.",
+          "brand": "Marca que atende 30 milhões de clientes, com 600 mil no Bipe e 200 atendentes. Gasto de hoje: cerca de 30 milhões de mensagens por mês."
         },
         "orgs": {
           "company": "Empresa ou instituição",
@@ -3054,14 +3054,21 @@
           "above": "%1$s acima dos %2$s grátis",
           "half": "Metade do preço",
           "free": "Grátis até %1$s atendentes e %2$s clientes ativos",
-          "total": "Total por mês"
+          "total": "Total por mês",
+          "floor": "Mínimo do nível %1$s",
+          "usage": "Uso",
+          "usageIn": "O uso cabe no mínimo",
+          "usageOver": "O uso passou do mínimo",
+          "freeServed": "Grátis: até %1$s pessoas atendidas"
         },
         "compareHeading": "Comparado com hoje",
         "today": "Hoje",
         "saveYear": "%1$s por ano",
         "more": "No Bipe, %1$s a mais por mês.",
         "curveColBand": "Clientes ativos",
-        "curveColRate": "Por cliente, por ano"
+        "curveColRate": "Por cliente, por ano",
+        "served": "Pessoas que vocês atendem hoje",
+        "servedHint": "Clientes, pacientes ou associados, no Bipe ou não. Define o nível e o mínimo."
       },
       "pilotFreePrice": "Piloto gratuito",
       "govCalculator": {
@@ -3102,6 +3109,106 @@
         "dispensaNote": "O limite soma o que o órgão contrata do mesmo tipo de serviço no ano (Decreto 12.807/2025).",
         "proposal": "Valores propostos. Podem mudar depois do piloto. Para órgãos públicos, o piloto é gratuito.",
         "link": "Preço dos avisos do seu órgão"
+      },
+      "levels": {
+        "heading": "Um nível para cada tamanho de empresa",
+        "lede": "O golpe começa com um nome copiado. No Bipe, o nome da empresa fica verificado e reservado antes que alguém tente usar. O preço segue o número de pessoas que a empresa atende hoje, não o número de mensagens. Quem atende até 1.000 pessoas não paga.",
+        "perMonth": "por mês",
+        "threatLabel": "O golpe que mais pega",
+        "free": "Grátis",
+        "items": {
+          "street": {
+            "name": "Banca",
+            "served": "Até 1.000 pessoas atendidas",
+            "who": "A banca de café da manhã, a manicure, o MEI.",
+            "threat": "O WhatsApp clonado que pede Pix aos seus clientes.",
+            "points": [
+              "Selo com o CNPJ, também do MEI, e nome reservado.",
+              "Ninguém cria conta com um nome parecido com o seu.",
+              "Catálogo, pedidos, agenda e fila.",
+              "Cobrança por Pix com o seu nome verificado, sem link.",
+              "QR code para o balcão."
+            ]
+          },
+          "shop": {
+            "name": "Loja",
+            "served": "De 1.000 a 10 mil pessoas",
+            "who": "A padaria, o salão, a academia, a clínica pequena.",
+            "threat": "O perfil falso da loja e a chave Pix trocada.",
+            "points": [
+              "Tudo do nível Banca.",
+              "Caixa de entrada com 3 atendentes.",
+              "Perguntas com opções e API."
+            ]
+          },
+          "clinics": {
+            "name": "Rede",
+            "served": "De 10 mil a 100 mil pessoas",
+            "who": "A rede de clínicas, a escola, a rede de lojas, a cooperativa.",
+            "threat": "O falso agendamento que cobra um sinal.",
+            "points": [
+              "Tudo do nível Loja.",
+              "Lembretes com confirmação em um toque.",
+              "Mais atendentes na mesma fila."
+            ]
+          },
+          "regional": {
+            "name": "Regional",
+            "served": "De 100 mil a 1 milhão de pessoas",
+            "who": "O banco regional, o plano de saúde, a rede de varejo.",
+            "threat": "A falsa central e o boleto falso.",
+            "points": [
+              "Tudo do nível Rede.",
+              "Família de nomes reservados: a marca, o atendimento, a central.",
+              "Monitoramento de nomes parecidos.",
+              "Suporte com prazo de resposta em contrato."
+            ]
+          },
+          "national": {
+            "name": "Nacional",
+            "served": "De 1 a 10 milhões de pessoas",
+            "who": "O banco médio, a distribuidora de energia, o grande varejista.",
+            "threat": "O falso atendente em escala e a falsa promoção.",
+            "points": [
+              "Tudo do nível Regional.",
+              "Prazo de suporte menor.",
+              "Denúncia de perfis falsos com prazo em contrato."
+            ]
+          },
+          "brand": {
+            "name": "Grande marca",
+            "served": "Mais de 10 milhões de pessoas",
+            "who": "Os grandes bancos, as operadoras, as maiores marcas do país.",
+            "threat": "Falsa central, falsa vaga e falso investimento em nome da marca.",
+            "points": [
+              "Tudo do nível Nacional.",
+              "O nome protegido antes de os clientes chegarem.",
+              "Teto no uso: R$ 540 mil por ano."
+            ]
+          }
+        },
+        "usage": {
+          "heading": "O uso entra no mínimo",
+          "lede": "Quando os clientes chegam ao Bipe, o uso conta: clientes ativos e atendentes a mais. A empresa paga o mínimo do nível ou o uso, o que for maior. Nunca os dois."
+        },
+        "early": {
+          "heading": "Quem entra cedo paga menos",
+          "points": [
+            "No piloto, a empresa paga metade, e esse valor vira crédito no primeiro ano.",
+            "Quem entra antes do fim do piloto mantém o mínimo do nível por 24 meses depois do piloto.",
+            "Quem entra primeiro garante o nome e o @ da marca antes de um golpista tentar."
+          ]
+        },
+        "signup": {
+          "heading": "Entre sem falar com vendedor",
+          "steps": [
+            "Baixe o app e crie a conta de trabalho.",
+            "Informe o CNPJ. O Bipe confere na Receita e libera o selo.",
+            "Escolha o nível pelo número de pessoas que vocês atendem.",
+            "Pague com cartão ou Pix, por mês ou por ano. O ano custa 10 meses."
+          ],
+          "note": "O pagamento ainda não está no ar. Até lá, a conta funciona no nível grátis."
+        }
       }
     },
     "en": {
@@ -3115,7 +3222,7 @@
           "Data and servers stay in Brazil, under Brazilian law.",
           "A fixed price in reais, per month or per year. No plan charges per message.",
           "The seal is not for sale. Money does not buy a seal, a verification level, a faster review or another organisation's name. A plan pays for service: agents, support, monitoring and contract terms.",
-          "People who use Bipe to chat never pay.",
+          "People who use Bipe to chat never pay. Nor does a company that serves up to 1,000 people.",
           "No company can pay to appear in front of someone who did not ask.",
           "Bipe plans a crowdfunding campaign for people who want to support it. Support is voluntary and buys no seal and no vote."
         ]
@@ -3142,13 +3249,13 @@
           "Bipe uses nobody's data to choose who sees an offer."
         ]
       },
-      "tiersHeading": "How the price works",
+      "tiersHeading": "Usage, when it passes the minimum",
       "freePrice": "R$ 0",
       "pilotPrice": "Half price in the pilot",
       "tiers": {
         "small": {
           "name": "Free",
-          "who": "Up to 3 agents and up to 1,000 active customers on Bipe.",
+          "who": "A company that serves up to 1,000 people.",
           "billing": "No monthly fee.",
           "points": [
             "Verified CNPJ badge and reserved name, with the automatic check.",
@@ -3210,23 +3317,23 @@
       "ctaForm": "I want to use Bipe",
       "calculator": {
         "heading": "What Bipe costs you",
-        "lede": "A fixed price in reais. You pay for the customers who use Bipe with you and for extra agents. A thousand messages or a million, the amount is the same.",
+        "lede": "A fixed price in reais. A company pays its level's minimum or its usage, whichever is higher. A thousand messages or a million, the amount is the same.",
         "presetsLabel": "Examples",
         "presets": {
-          "shop": "Online shop",
-          "city": "City hall",
+          "street": "Breakfast stall",
+          "shop": "Bakery or salon",
           "clinics": "Clinic network",
-          "coop": "Credit cooperative",
-          "health": "Regional health plan",
-          "bank": "Mid-size bank"
+          "regional": "Regional bank",
+          "national": "National retailer",
+          "brand": "Major brand"
         },
         "presetNotes": {
-          "shop": "A shop with 5 agents and 3,000 active customers on Bipe. Spend today: 30,000 messages a month, half order notices and half replies.",
-          "city": "A city hall with 15 agents and 20,000 active people on Bipe. Spend today: 100,000 messages a month, half notices and half replies. Public bodies pay half.",
-          "clinics": "A network with 10 agents and 10,000 active patients on Bipe. Spend today: 80,000 messages a month, half appointment reminders and half replies.",
-          "coop": "A cooperative with 20 agents and 30,000 active members on Bipe. Spend today: 300,000 messages a month, half notices and half replies.",
-          "health": "A health plan with 50 agents and 100,000 active members on Bipe. Spend today: 1 million messages a month, half notices and half replies.",
-          "bank": "A bank with 200 agents and 500,000 active customers on Bipe. Spend today: 10 million messages a month, half notices and half replies."
+          "street": "A stall that serves 400 people, 100 of them on Bipe. Today it pays nothing to talk with customers.",
+          "shop": "A bakery that serves 3,000 people, with 300 on Bipe and 2 agents. Spend today: about 3,000 messages a month.",
+          "clinics": "A network that serves 30,000 patients, with 3,000 on Bipe and 8 agents. Spend today: about 30,000 messages a month.",
+          "regional": "A bank that serves 400,000 customers, with 20,000 on Bipe and 20 agents. Spend today: about 400,000 messages a month.",
+          "national": "A retailer that serves 5 million customers, with 150,000 on Bipe and 50 agents. Spend today: about 5 million messages a month.",
+          "brand": "A brand that serves 30 million customers, with 600,000 on Bipe and 200 agents. Spend today: about 30 million messages a month."
         },
         "orgs": {
           "company": "Company or institution",
@@ -3265,14 +3372,21 @@
           "above": "%1$s above the %2$s free",
           "half": "Half price",
           "free": "Free up to %1$s agents and %2$s active customers",
-          "total": "Total a month"
+          "total": "Total a month",
+          "floor": "Minimum of the %1$s level",
+          "usage": "Usage",
+          "usageIn": "Usage fits inside the minimum",
+          "usageOver": "Usage is above the minimum",
+          "freeServed": "Free: up to %1$s people served"
         },
         "compareHeading": "Compared with today",
         "today": "Today",
         "saveYear": "%1$s a year",
         "more": "On Bipe, %1$s more a month.",
         "curveColBand": "Active customers",
-        "curveColRate": "Per customer, per year"
+        "curveColRate": "Per customer, per year",
+        "served": "People you serve today",
+        "servedHint": "Customers, patients or members, on Bipe or not. It sets the level and the minimum."
       },
       "pilotFreePrice": "Free pilot",
       "govCalculator": {
@@ -3313,10 +3427,110 @@
         "dispensaNote": "The limit adds up everything the body buys of the same kind of service in the year (Decreto 12.807/2025).",
         "proposal": "Proposed amounts. They may change after the pilot. For public bodies, the pilot is free.",
         "link": "Price of your body's notices"
+      },
+      "levels": {
+        "heading": "A level for every size of company",
+        "lede": "A scam starts with a copied name. On Bipe, the company's name is verified and reserved before anyone tries to use it. The price follows the number of people the company serves today, not the number of messages. A company that serves up to 1,000 people pays nothing.",
+        "perMonth": "a month",
+        "threatLabel": "The scam that hits most",
+        "free": "Free",
+        "items": {
+          "street": {
+            "name": "Stall",
+            "served": "Up to 1,000 people served",
+            "who": "The breakfast stall, the manicurist, the sole trader (MEI).",
+            "threat": "A cloned WhatsApp that asks your customers for Pix.",
+            "points": [
+              "Badge with the CNPJ, MEI included, and a reserved name.",
+              "Nobody can create an account with a name like yours.",
+              "Catalog, orders, bookings and queue.",
+              "Pix charges under your verified name, with no link.",
+              "A QR code for the counter."
+            ]
+          },
+          "shop": {
+            "name": "Shop",
+            "served": "1,000 to 10,000 people",
+            "who": "The bakery, the salon, the gym, the small clinic.",
+            "threat": "A fake profile of the shop and a swapped Pix key.",
+            "points": [
+              "Everything in Stall.",
+              "A shared inbox for 3 agents.",
+              "Questions with options, and the API."
+            ]
+          },
+          "clinics": {
+            "name": "Network",
+            "served": "10,000 to 100,000 people",
+            "who": "The clinic network, the school, the chain of shops, the cooperative.",
+            "threat": "A fake booking that charges a deposit.",
+            "points": [
+              "Everything in Shop.",
+              "Reminders confirmed with one tap.",
+              "More agents in the same queue."
+            ]
+          },
+          "regional": {
+            "name": "Regional",
+            "served": "100,000 to 1 million people",
+            "who": "The regional bank, the health plan, the retail chain.",
+            "threat": "The fake call centre and the fake boleto.",
+            "points": [
+              "Everything in Network.",
+              "A family of reserved names: the brand, its support, its call centre.",
+              "Monitoring of lookalike names.",
+              "Support with a response time in the contract."
+            ]
+          },
+          "national": {
+            "name": "National",
+            "served": "1 to 10 million people",
+            "who": "The mid-size bank, the power company, the large retailer.",
+            "threat": "Fake agents at scale and fake promotions.",
+            "points": [
+              "Everything in Regional.",
+              "Faster support.",
+              "Reports of fake profiles with a deadline in the contract."
+            ]
+          },
+          "brand": {
+            "name": "Major brand",
+            "served": "More than 10 million people",
+            "who": "The large banks, the mobile operators, the country's biggest brands.",
+            "threat": "Fake call centres, fake jobs and fake investments in the brand's name.",
+            "points": [
+              "Everything in National.",
+              "The name protected before customers arrive.",
+              "A cap on usage: R$ 540,000 a year."
+            ]
+          }
+        },
+        "usage": {
+          "heading": "Usage counts toward the minimum",
+          "lede": "When customers arrive on Bipe, usage counts: active customers and extra agents. The company pays its level's minimum or its usage, whichever is higher. Never both."
+        },
+        "early": {
+          "heading": "Join early, pay less",
+          "points": [
+            "In the pilot, a company pays half, and that amount becomes credit in the first year.",
+            "A company that joins before the pilot ends keeps its level's minimum for 24 months after the pilot.",
+            "The first to join secure the brand's name and @ before a scammer tries."
+          ]
+        },
+        "signup": {
+          "heading": "Join without talking to sales",
+          "steps": [
+            "Get the app and create a work account.",
+            "Enter the CNPJ. Bipe checks it with the Receita and grants the badge.",
+            "Pick the level by the number of people you serve.",
+            "Pay by card or Pix, monthly or yearly. A year costs 10 months."
+          ],
+          "note": "Payment is not live yet. Until then, the account works on the free level."
+        }
       }
     },
     "proposal": {
-      "$comment": "ADR 0206 (Proposed, amended 28 Oct 2026; amounts are the proposal until the pilot ends, ADR 0075). One price, two meters that add up. customers: active customers (talked with the organisation on Bipe in the last 12 months), marginal tiers [first customer of the band, BRL per customer per year], the first band free, capped at capYearly. agents: free agents, then monthly BRL per agent up to chargedUpTo; above it no extra charge. halfFactor: public bodies, NGOs, churches and associations. annualMonths: what a year costs when paid at once. table: active-customer counts shown on /precos/. notices: ADR 0301, public bodies only: people reached by notices only (a notice in the last 12 months, no message to the body), free first, then yearlyPerPerson at one rate; inside capYearly together with customers; halfFactor applies. dispensaLimit: BRL, the dispensa por valor limit for services in dispensaYear (Decreto 12.807/2025), shown by the government calculator.",
+      "$comment": "ADR 0206 (Proposed, amended 28 Oct 2026; amounts are the proposal until the pilot ends, ADR 0075). One price, two meters that add up. customers: active customers (talked with the organisation on Bipe in the last 12 months), marginal tiers [first customer of the band, BRL per customer per year], the first band free, capped at capYearly. agents: free agents, then monthly BRL per agent up to chargedUpTo; above it no extra charge. halfFactor: public bodies, NGOs, churches and associations. annualMonths: what a year costs when paid at once. table: active-customer counts shown on /precos/. notices: ADR 0301, public bodies only: people reached by notices only (a notice in the last 12 months, no message to the body), free first, then yearlyPerPerson at one rate; inside capYearly together with customers; halfFactor applies. dispensaLimit: BRL, the dispensa por valor limit for services in dispensaYear (Decreto 12.807/2025), shown by the government calculator. floors: ADR 0303, companies only (org company): bands [first person served, BRL per month]; the company pays max(floor, meters); foundingMonths: ADR 0304, months after the pilot that an early company keeps its floor.",
       "adr": "0206",
       "customers": {
         "free": 1000,
@@ -3374,56 +3588,92 @@
         "yearlyPerPerson": 0.03,
         "dispensaLimit": 65492.11,
         "dispensaYear": 2026
+      },
+      "floors": {
+        "adr": "0303",
+        "bands": [
+          [
+            0,
+            0
+          ],
+          [
+            1000,
+            19
+          ],
+          [
+            10000,
+            99
+          ],
+          [
+            100000,
+            490
+          ],
+          [
+            1000000,
+            1490
+          ],
+          [
+            10000000,
+            2990
+          ]
+        ],
+        "foundingMonths": 24
       }
     },
     "calculatorPresets": [
       {
+        "id": "street",
+        "icon": "person",
+        "org": "company",
+        "served": 400,
+        "seats": 1,
+        "people": 100,
+        "spend": 0
+      },
+      {
         "id": "shop",
         "icon": "bag",
         "org": "company",
-        "seats": 5,
-        "people": 3000,
-        "spend": 1015
-      },
-      {
-        "id": "city",
-        "icon": "bank",
-        "org": "half",
-        "seats": 15,
-        "people": 20000,
-        "spend": 3465
+        "served": 3000,
+        "seats": 2,
+        "people": 300,
+        "spend": 105
       },
       {
         "id": "clinics",
         "icon": "heart",
         "org": "company",
-        "seats": 10,
-        "people": 10000,
-        "spend": 2765
+        "served": 30000,
+        "seats": 8,
+        "people": 3000,
+        "spend": 1050
       },
       {
-        "id": "coop",
+        "id": "regional",
+        "icon": "bank",
+        "org": "company",
+        "served": 400000,
+        "seats": 20,
+        "people": 20000,
+        "spend": 14000
+      },
+      {
+        "id": "national",
         "icon": "group",
         "org": "company",
-        "seats": 20,
-        "people": 30000,
-        "spend": 10465
+        "served": 5000000,
+        "seats": 50,
+        "people": 150000,
+        "spend": 175000
       },
       {
-        "id": "health",
+        "id": "brand",
         "icon": "shield",
         "org": "company",
-        "seats": 50,
-        "people": 100000,
-        "spend": 34540
-      },
-      {
-        "id": "bank",
-        "icon": "card",
-        "org": "company",
+        "served": 30000000,
         "seats": 200,
-        "people": 500000,
-        "spend": 336490
+        "people": 600000,
+        "spend": 1050000
       }
     ],
     "govCalculatorPresets": [
@@ -3554,8 +3804,8 @@
         }
       },
       "small": {
-        "heading": "Até 3 atendentes e 1.000 clientes no Bipe?",
-        "body": "Você não precisa do formulário. Baixe o app e crie a conta em Você > Adicionar conta > Conta de trabalho. Até 3 atendentes e 1.000 clientes ativos no Bipe, é de graça, com o mesmo selo de quem paga. Dá para criar sem CNPJ.",
+        "heading": "Atende até 1.000 pessoas?",
+        "body": "Você não precisa do formulário. Baixe o app e crie a conta em Você > Adicionar conta > Conta de trabalho. Quem atende até 1.000 pessoas usa de graça, com o mesmo selo de quem paga. Dá para criar sem CNPJ.",
         "button": "Baixar o app"
       },
       "audiencesHeading": "Para cada tipo de organização"
@@ -3662,8 +3912,8 @@
         }
       },
       "small": {
-        "heading": "Up to 3 agents and 1,000 customers on Bipe?",
-        "body": "You don't need the form. Get the app and create the account in You > Your account > Create a company account. Up to 3 agents and 1,000 active customers on Bipe, it is free, with the same badge as paying organisations. You can create it with no CNPJ.",
+        "heading": "Do you serve up to 1,000 people?",
+        "body": "You don't need the form. Get the app and create the account in You > Your account > Create a company account. A company that serves up to 1,000 people uses it for free, with the same badge as paying organisations. You can create it with no CNPJ.",
         "button": "Get the app"
       },
       "audiencesHeading": "For each kind of organisation"

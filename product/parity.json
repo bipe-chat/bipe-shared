@@ -3974,9 +3974,14 @@
       "issue": 827,
       "fork": true,
       "macos": {
-        "status": "planned",
-        "issue": 1164,
-        "note": "Photo previews follow account m.media_preview_config and wait for a tap when hidden. Video/invite-avatar handling and the settings editor remain in #1164; capability stays planned."
+        "status": "built",
+        "evidence": [
+          "bipe-app/macos/BipeMac/MacMedia.swift",
+          "bipe-app/macos/BipeMac/MacSettings.swift",
+          "bipe-app/macos/BipeMac/MacPhotoView.swift",
+          "bipe-app/macos/BipeMac/MacVideoView.swift"
+        ],
+        "note": "Photos and video thumbnails follow m.media_preview_config and the request rooms; the Show media and request photos rows write the account settings (MSC4278). Device acceptance remains in #1164."
       },
       "windows": {
         "status": "planned",

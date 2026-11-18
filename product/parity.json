@@ -4377,8 +4377,14 @@
       "issue": 663,
       "fork": true,
       "macos": {
-        "status": "planned",
-        "issue": 1162
+        "status": "built",
+        "evidence": [
+          "bipe-app/macos/BipeMac/MacGroupLink.swift",
+          "bipe-app/macos/BipeMac/MacDesign.swift",
+          "bipe-app/macos/BipeMac/MacConversationsView.swift",
+          "bipe-app/macos/project.yml"
+        ],
+        "note": "Room, alias and event links open in the app, from a message or as a matrix: link from another app, with the shared RoomLinkOpenModel. User links wait for the Mac person profile in #1225."
       },
       "windows": {
         "status": "planned",

@@ -39,6 +39,8 @@
     "bipe_mac_sign_out_title",
     "bipe_mac_sign_out_body",
     "bipe_mac_sign_out_history",
+    "bipe_windows_sign_out_body",
+    "bipe_windows_sign_out_history",
     "bipe_account_sign_out",
     "bipe_app_sign_out_title",
     "bipe_app_sign_out_body",
@@ -63,6 +65,7 @@
     "With two accounts on the phone (ADR 0086), this signs out the active account only.",
     "Haptics: registries/haptics.json has no sign_out use yet. Add one under warning in the same change that builds this screen, or play none.",
     "Bipe logic: BipeWaysBack (BipeKit BipeSettingsSupport.swift), BipeCredentialStore (BipeKit); BipeWayBack.kt, BipeDeviceAccount and BipeRecoveryTokenStore (libraries/bipe).",
+    "Windows: signing out ends this linked session and clears the selected account’s protected store, including message search and recent queries. Another account stays signed in. The confirmation explains how to link again and warns about the recovery key if no other source for the old messages could be confirmed.",
     "Mac (ADR 0266): the title is bipe_mac_sign_out_title and the body is bipe_mac_sign_out_body, because a Mac comes back by linking from the phone and not with the PIN. bipe_mac_sign_out_history replaces bipe_app_sign_out_history. bipe_app_sign_out_no_way_back shows only when this Mac is the last device and the account has no way back. Signing out deletes the account record from the Keychain and its store folder. Other accounts on the Mac stay."
   ]
 }

@@ -44,7 +44,7 @@
     "MessageContent",
     "EventOrTransactionId"
   ],
-  "parity": [],
+  "parity": ["message-edit"],
   "notes": [
     "EventTimelineItem.isEditable decides canEdit: own text messages only. Undecryptable, deleted and media messages are not editable here; media captions come with #561.",
     "MessageContent.isEdited sets isEdited: the message shows bipe_app_message_edited after the time. Other people see the same label. There is no edit history view.",

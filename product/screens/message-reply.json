@@ -57,7 +57,7 @@
     "Timeline.fetchDetailsForEvent",
     "EventTimelineItem"
   ],
-  "parity": [],
+  "parity": ["message-reply"],
   "notes": [
     "MsgLikeContent.inReplyTo gives the quote. EmbeddedEventDetails Unavailable and Pending map to loading until loadReply ran once; Error maps to unavailable.",
     "The bar shows bipe_app_message_replying_to with the sender name, then the preview, and a close button labelled bipe_app_cancel.",

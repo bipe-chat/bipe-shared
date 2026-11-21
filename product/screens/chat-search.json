@@ -81,7 +81,7 @@
     "SearchService.paginate",
     "SearchService.subscribeToResults"
   ],
-  "parity": [],
+  "parity": ["message-search"],
   "notes": [
     "Filter: All of Joined, NonSpace, DeduplicateVersions and NormalizedMatchRoomName with the query. Both tabs together; each result shows whether it is a chat or a group.",
     "Message search (bipe-chat/bipe#671): message text is end-to-end encrypted, so the server cannot search it. The app turns on the SDK's local search index (ClientBuilder.withSearchIndexStore, a folder SearchIndex in the account's data folder, main app only, not the notification service). The SDK indexes the messages this phone receives or loads after the index exists; older history is not indexed. Default chosen: no password on the index, because the other SDK stores of the account have none and rely on the OS file protection. mz can overrule.",

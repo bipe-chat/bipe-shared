@@ -1,6 +1,6 @@
 // Drift check (ADR 0031, rule 5): regenerates everything bipe-shared generates into a temporary folder and
 // compares it with the generated files in the sibling repos (bipe-app Swift and Kotlin, the bipe-api copy,
-// bipe/docs/product.md) and with test-vectors/. The Element X forks are archived and not checked (ADR 0155).
+// bipe/docs/product.md, bipe/docs/feature-map.md) and with test-vectors/. The Element X forks are archived and not checked (ADR 0155).
 // Usage: node tools/check-drift.mjs [--against worktree|head] [--repos <dir>]
 //   worktree (default): compare with the files on disk. The pre-commit hook uses this.
 //   head: compare with each repo's committed HEAD. CI uses this.
@@ -102,6 +102,7 @@ try {
   node("gen.mjs", "--app", join(tmp, "app"), "--api", join(tmp, "api/src/generated"));
   node("gen-test-vectors.mjs", "--out", join(tmp, "test-vectors"), "--api-test-vectors", join(tmp, "api/test/fixtures"));
   node("gen-product-doc.mjs", "--out", join(tmp, "product.md"));
+  node("gen-feature-map.mjs", "--out", join(tmp, "feature-map.md"));
 
   for (const target of TARGETS) {
     const repoPath = join(reposDir, target.repo);
@@ -130,6 +131,10 @@ try {
   if (!existsSync(umbrella)) warnings.push(`bipe: not found in ${reposDir}, skipped`);
   else if (repoFile(umbrella, "docs/product.md") !== readFileSync(join(tmp, "product.md"), "utf8")) {
     problems.push("bipe: docs/product.md is out of date (run node tools/gen-product-doc.mjs)");
+  }
+  // bipe/docs/feature-map.md is generated from product/ too (bipe-chat/bipe#1619).
+  if (existsSync(umbrella) && repoFile(umbrella, "docs/feature-map.md") !== readFileSync(join(tmp, "feature-map.md"), "utf8")) {
+    problems.push("bipe: docs/feature-map.md is out of date (run node tools/gen-feature-map.mjs)");
   }
 
   // test-vectors: generated files must match; invite-codes.json is hand-written and checked by gen-test-vectors.

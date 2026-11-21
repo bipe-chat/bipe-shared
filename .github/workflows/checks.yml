@@ -78,7 +78,7 @@ jobs:
           fi
           generated() {
             case "$1" in
-              bipe) echo "docs/product.md" ;;
+              bipe) echo "docs/product.md docs/feature-map.md" ;;
               bipe-api) echo "src/generated test/fixtures" ;;
               bipe-app) echo "ios/BipeKit/Sources/BipeKit/Generated ios/BipeKit/Sources/BipeKit/Resources android/libraries/bipe/src/main web/src/bipe/generated core/crates/bipe-core/src/generated android/app/src/screenshotTest/kotlin/chat/bipe/app/store/generated" ;;
             esac
@@ -156,6 +156,7 @@ jobs:
           node bipe-shared/tools/gen.mjs
           node bipe-shared/tools/gen-test-vectors.mjs
           node bipe-shared/tools/gen-product-doc.mjs
+          node bipe-shared/tools/gen-feature-map.mjs
           for repo in $repos; do
             # shellcheck disable=SC2046
             git -C "$repo" add -A -- $(generated "$repo")

@@ -53,7 +53,7 @@
     "MediaSource",
     "Timeline.paginateBackwards"
   ],
-  "parity": [],
+  "parity": ["media-images", "media-videos"],
   "notes": [
     "The decrypted file stays in the app cache. Saving or sharing is the only way it leaves the app, and only when the person asks.",
     "Video plays inline in the viewer with the system player controls; sound on.",

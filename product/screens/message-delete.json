@@ -38,7 +38,7 @@
     "RoomPowerLevels.canOwnUserRedactOwn",
     "RoomPowerLevels.canOwnUserRedactOther"
   ],
-  "parity": [],
+  "parity": ["message-delete"],
   "notes": [
     "canDelete: own message and RoomPowerLevels.canOwnUserRedactOwn, or another person's message in a group and RoomPowerLevels.canOwnUserRedactOther. In a DM nobody deletes the other person's messages (ADR 0141: no moderation in a DM).",
     "No reason is sent with the redaction.",

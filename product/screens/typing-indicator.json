@@ -28,7 +28,7 @@
     "Room.typingNotice",
     "Room.memberDisplayName"
   ],
-  "parity": [],
+  "parity": ["typing-indicator"],
   "notes": [
     "One name: bipe_app_typing_one. Two: bipe_app_typing_two. Three or more: bipe_app_typing_many with the first name.",
     "In a DM the line shows the other person's name, like a group with one other member.",

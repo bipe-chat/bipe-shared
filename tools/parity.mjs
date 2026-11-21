@@ -16,6 +16,8 @@ import { fileURLToPath } from "node:url";
 import { checkApps, forkGaps } from "./lib/parity-apps.mjs";
 import { checkDesktop, checkDesktopPlan } from "./lib/parity-desktop.mjs";
 import { checkClientAssessment } from "./lib/client-assessment.mjs";
+import { looseEnds } from "./lib/feature-map.mjs";
+import { loadScreens } from "./lib/screens.mjs";
 
 const root = join(dirname(fileURLToPath(import.meta.url)), "..");
 const args = process.argv.slice(2);
@@ -244,6 +246,12 @@ const appRef = (item, s) => {
 lines.push(`## Fork app items: ${scope.length - gaps.length} of ${scope.length} shipped on both apps`, "");
 lines.push("Items the archived Element X fork app ships that bipe-app does not ship yet. Only merged bipe-app code with evidence counts.", "");
 lines.push(...(gaps.length ? ["| Item | iOS | Android |", "|---|---|---|", ...gaps.map(({ item }) => `| ${item.name} | ${appRef(item, "ios")} | ${appRef(item, "android")} |`)] : ["None."]), "");
+
+// Capabilities on no screen (bipe-chat/bipe#1619). Server-only and policy items need no screen.
+const { onNoScreen } = looseEnds(ledger.items, loadScreens(root).map(({ spec }) => spec));
+lines.push(`## Capabilities on no screen (${onNoScreen.length})`, "");
+lines.push("No spec in product/screens/ lists these items in its parity field. Server-only and policy items are left out. Add the id to the spec of the screen that serves it.", "");
+lines.push(...(onNoScreen.length ? ledger.items.filter((i) => onNoScreen.includes(i.id)).map((i) => `- \`${i.id}\`: ${i.name}`) : ["None."]), "");
 
 lines.push("## Issues that disagree with the ledger", "");
 if (!fetched) lines.push("Not checked: `gh` is not installed or not signed in.", "");
